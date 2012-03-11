@@ -1,0 +1,40 @@
+<div class="tile">
+   <div class="options">
+        <div class="links">
+            <a href="#">Like&nbsp;<i class="icon-heart"></i></a>&nbsp;
+            <a href="/item/~~$view->id~">Comment&nbsp;<i class="icon-comment"></i></a>&nbsp;
+        </div>
+    </div>
+	<div class="photo">         
+		<a href="/item/~~$view->id~">
+			<img src="~~$view->srcImage~" title="~~$view->originalName~"  alt="~~$view->originalName~"/>
+        </a> 
+    </div>
+	
+	<div class="description">
+		~~$view->description~
+	</div>
+	   
+	<div class="author">
+		<div class="meta">
+			<span class="b"> <a href="~~$view->userPageURI~">~~$view->userName~</a> </span>
+			<span>&nbsp;~~$view->createdOn~</span>
+		</div>
+	</div>
+    
+    ~if($view->hasGroups) {~
+    <div class="groups">
+    Groups:
+        ~foreach($view->groups as $group){~
+            <a href="/group/~~$group['slug']~">~~$group['display']~</a>&nbsp;
+
+        ~}~
+
+    </div>
+    ~}~
+
+	
+</div>
+
+
+   

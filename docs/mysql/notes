@@ -1,0 +1,52 @@
+
+
+Character set and Collation
+===========================
+
+1) show character set and collation of your database
+/> show variables like 'character%';
+/> show variables like 'collation%' ;
+
+2) show character set and collation of tables
+
+/> show table status from <dbname>
+/> show create table <tablename>
+
+3) Change to create scripts 
+
+create database scdb  character set utf8 collate utf8_general_ci ;
+
+drop table if exists sc_feedback;
+create table sc_feedback(
+	id int(11) NOT NULL auto_increment,
+	feedback text not null,
+	created_on TIMESTAMP  default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+ 
+
+4) change character set and collation of an existing DB and table
+alter database scdb character set utf8 collate utf8_general_ci ;
+alter table sc_question convert to character set utf8 collate utf8_general_ci ;
+
+5) my.cnf settings
+
+[mysql]
+[client]
+[mysqldump]
+ sections we have to add
+default-character-set=utf8
+
+[mysqld] section
+
+default-character-set=utf8
+collation-server = utf8_general_ci
+init-connect='SET NAMES utf8'
+character-set-server = utf8
+skip-character-set-client-handshake
+
+
+
+
+
+

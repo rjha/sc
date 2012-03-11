@@ -1,0 +1,30 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          searchd
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     
+# Default-Stop:      
+# X-Interactive:     true
+# Short-Description: Start/Stop/Restart searchd
+### END INIT INFO
+
+case "${1:-}" in
+  'start')
+        # put the command to start sphinx
+        /usr/local/sphinx/bin/searchd 
+		;;
+  'stop')
+        # stop command here
+		/usr/local/sphinx/bin/searchd --stopwait
+        ;;
+  'restart')
+        # restart command here
+		/usr/local/sphinx/bin/searchd --stopwait
+		/usr/local/sphinx/bin/searchd
+        ;;
+  *)
+        echo "Usage: $SELF start|stop|restart"
+        exit 1
+        ;;
+esac

@@ -1,0 +1,5 @@
+On Ubunut Lucid the package name is sphinxsearch
+You can use dpkg -L to list the content of this package
+A service script for searchd is supplied with the package
+
+

@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /callback/
+Disallow: /qa/
+Disallow: /share/
+Disallow: /user/

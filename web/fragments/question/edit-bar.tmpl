@@ -1,0 +1,7 @@
+<div class="ml40">
+	<span> <a class="btn " href="#form-wrapper">Add Comment</a></span> 
+    ~if($view->isLoggedInUser){~
+	<span> <a class="btn btn-primary" href="/qa/edit.php?id=~~$view->id~">Edit</a></span> 
+    ~}~
+</div>
+

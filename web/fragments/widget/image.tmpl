@@ -1,0 +1,37 @@
+<div class="widget bbd5">
+	<div class="row">
+		<div class="span7">
+
+			<div class="photo">
+				<a href="/item/~~$view->id~"> <img src="~~$view->srcImage~" class="alignleft" width="~~$view->width~" height="~~$view->height~" title="~~$view->originalName~"  alt="~~$view->originalName~"/> </a> 
+
+			</div>
+			<div class="description">
+				~~$view->description~
+			</div>
+
+		</div> <!-- span7-->
+		<div class="span2">
+
+			<div class="author">
+				<img src="/nuke/twitter-icon.png" height="32" width="32" alt="icon" /> 		
+				<div class="meta">
+					<span class="b">~~$view->userName~</span>
+					<br>
+					<span class="b">~~$view->createdOn~ </span>
+				</div>	
+				<div> <a href="/item/~~$view->id~">more&rarr;</a></div>
+			</div>
+			~if($view->isLoggedInUser) {~
+			<div class="btn-group">
+				<a data-toggle="dropdown" href="#">Actions<span class="caret"></span> </a>
+				  <ul class="dropdown-menu">
+					<li> <a href="/qa/edit.php?id=~~$view->id~">Edit</a></li>
+					<li> <a href="/qa/delete.php?id=~~$view->id~">Delete</a> </li>
+					
+				  </ul>
+			</div>	
+			~}~
+		</div> <!-- span2-->
+	</div> <!-- row -->
+</div>
