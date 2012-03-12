@@ -29,7 +29,7 @@ namespace com\indigloo\sc\controller{
             $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);	
             $questionDBRows = $questionDao->getPaged($paginator,$filter);
 
-            $template = $_SERVER['APP_WEB_DIR']. '/view/tiles.php';
+            $template = $_SERVER['APP_WEB_DIR']. '/view/tiles-page.php';
             //page variables
             $pageTitle = "public profile of ".$userName;
             $pageHeader = "Posts by ".$userName;

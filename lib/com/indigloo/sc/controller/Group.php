@@ -5,6 +5,7 @@ namespace com\indigloo\sc\controller{
 	use \com\indigloo\Util as Util;
     use com\indigloo\Url;
 	use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\ui\Pagination as Pagination ;
   
 	
     class Group {
@@ -20,20 +21,27 @@ namespace com\indigloo\sc\controller{
 
             //get match on group slug
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
-            $ids = $sphinx->getPostIdsOnGroup($token);
+            $total = $sphinx->getGroupsCount($token);
+            $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+            $pageSize =	50;
+            $paginator = new Pagination($qparams,$total,$pageSize);	
+
+            $ids = $sphinx->getGroups($token,$paginator);   
+            $sphinx->close();
 
             $template =  NULL ;
             $searchTitle = NULL ;
 
             if(sizeof($ids) > 0 ) {
-                $searchTitle = "Results for group $token" ;
-                $template = $_SERVER['APP_WEB_DIR']. '/search/results.php';
+                $pageHeader = "About $total results for $token" ;
+                $pageBaseUrl = "/group/$slug" ;
+                $template = $_SERVER['APP_WEB_DIR']. '/view/tiles.php';
                 $questionDao = new \com\indigloo\sc\dao\Question();
                 $questionDBRows = $questionDao->getOnSearchIds($ids) ;
 
             } else {
-                $searchTitle = "No Results for group $token" ;
-                $template = $_SERVER['APP_WEB_DIR']. '/search/noresult.php';
+                $pageHeader = "No Results for group $token" ;
+                $template = $_SERVER['APP_WEB_DIR']. '/view/notiles.php';
 
             }
 

@@ -33,8 +33,8 @@ namespace com\indigloo\sc\dao {
 			return $rows ;
 		}
 		
-        function getRandom($start,$limit) {
-			$rows = mysql\Question::getRandom($start,$limit);
+        function getRandom($limit) {
+			$rows = mysql\Question::getRandom($limit);
 			return $rows ;
 		}
 

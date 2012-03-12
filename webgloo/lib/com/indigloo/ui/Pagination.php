@@ -35,6 +35,10 @@ namespace com\indigloo\ui {
 			return $flag;
 		}
 
+        function getPageNo(){
+            return $this->pageNo ;
+        }
+
 		function getPageSize() {
 			return $this->pageSize ;
 		}

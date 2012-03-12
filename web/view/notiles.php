@@ -2,7 +2,7 @@
 <html>
 
        <head>
-        <title> 3mik.com - Search Results  </title>
+        <title> 3mik.com - No results found</title>
         <?php include($_SERVER['APP_WEB_DIR'] . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
@@ -31,7 +31,7 @@
 			<div class="row">
 				<div class="span12">
 					<div class="page-header">
-                        <h2> <?php echo $searchTitle; ?> </h2>
+                        <h2> <?php echo $pageHeader; ?> </h2>
 					</div>
 				</div> 
 			</div>

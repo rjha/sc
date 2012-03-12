@@ -11,37 +11,26 @@ namespace com\indigloo\sc\controller{
         
         function process($params,$options) {
             
-            //following variables will be visible in $file as well
 			$questionDao = new \com\indigloo\sc\dao\Question();
 			$total = $questionDao->getTotalCount();
 
-            //lets mix it a little
+            $rows1 = $questionDao->getRandom(25);
 
-            $indexes = array();
-
-            $random = mt_rand(1,$total/3);
-            array_push($indexes,$random);
-
-            $random = mt_rand($total/3,2*$total/3);
-            array_push($indexes,$random);
-
-            $random = mt_rand(2*total/3,$total-1);
-            array_push($indexes,$random);
-
-            $questionDBRows = array();
-
-            foreach($indexes as $index){
-                $rows = $questionDao->getRandom($index,20);
-                $questionDBRows = array_merge($rows,$questionDBRows);
+            $ids = array();
+            for($i = 1; $i <= 25;$i++) {
+                $ids[] = mt_rand(1,$total-1);
             }
 
-            //shuffle
-            shuffle($questionDBRows);
-
-            $file = $_SERVER['APP_WEB_DIR']. '/search/results.php' ;
+            $rows2 = $questionDao->getOnSearchIds($ids);
+            $questionDBRows = array_merge($rows1,$rows2);
+            
+            $pageHeader = "Random picks";
+            $file = $_SERVER['APP_WEB_DIR']. '/view/tiles.php' ;
             include ($file);
 		
         }
+
+
     }
 }
 ?>

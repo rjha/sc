@@ -26,23 +26,54 @@ namespace com\indigloo\sc\search {
 
         function close() {
             $this->connx->close();
-
+        }
+          
+        function getGroupsCount($token) {
+            $count = $this->getDocumentsCount('groups',$token);
+            return $count ;
         }
 
-        function getPostIdsOnGroup($token) {
-            $sql = " select id from groups where match('".$token."') limit 0,50" ;
-            $rows = MySQL\Helper::fetchRows($this->connx,$sql);
-            $ids = array();
+        function getGroups($token,$paginator) {
+            $ids = $this->getDocuments('groups',$token,$paginator);
+            return $ids;
+        }
+ 
+        function getPostsCount($token) {
+            $count = $this->getDocumentsCount('posts',$token);
+            return $count ;
+        }
 
-            foreach($rows as $row){
-                array_push($ids,$row['id']);
+        function getPosts($token,$paginator) {
+            $ids = $this->getDocuments('posts',$token,$paginator);
+            return $ids;
+        }
+
+        function getDocumentsCount($index,$token) {
+            $sql = " select id from %s where match('%s') limit 0,1" ;
+            $sql = sprintf($sql,$index,$token);
+            $rows = MySQL\Helper::fetchRows($this->connx,$sql);
+            // get meta data about this token
+            $sql = " show meta " ;
+            $stats = MySQL\Helper::fetchRows($this->connx,$sql);
+
+            $count = 0;
+            foreach($stats as $stat){
+                if($stat['Variable_name'] == 'total') {
+                    $count = $stat['Value'] ;
+                }
             }
 
-            return $ids ; 
+            return $count ;
         }
 
-        function getPostIds($token) {
-            $sql = " select id from posts where match('".$token."') limit 0,50" ;
+        function getDocuments($index,$token,$paginator) {
+            //get paginator params
+            $pageNo = $paginator->getPageNo();
+            $pageSize = $paginator->getPageSize();
+            $offset = ($pageNo-1) * $pageSize ;
+            
+            $sql = " select id from %s where match('%s') limit %d,%d" ;
+            $sql = sprintf($sql,$index,$token,$offset,$pageSize);
             $rows = MySQL\Helper::fetchRows($this->connx,$sql);
             $ids = array();
 

@@ -24,13 +24,16 @@ namespace com\indigloo\sc\mysql {
             return $row;
 		}
 
-         static function getRandom($start,$limit) {
+
+         //@see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/ 
+         static function getRandom($limit) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$start = $mysqli->real_escape_string($start);
 			$limit = $mysqli->real_escape_string($limit);
-			
-            $sql = " select q.* from sc_question q limit {start},{limit} " ;
-            $sql = str_replace(array("{start}","{limit}"), array(0 => $start, 1=> $limit), $sql); 
+
+            $sql = " SELECT q.*,l.name as user_name FROM sc_question q,sc_login l WHERE q.login_id = l.id " ;
+            $sql .=" and RAND()<(SELECT ((%d/COUNT(*))*4) FROM sc_question q2) ";
+            $sql .= " ORDER BY RAND() LIMIT %d";
+            $sql = sprintf($sql,$limit,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
