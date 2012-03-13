@@ -13,6 +13,7 @@
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
+    use \com\indigloo\sc\util\PseudoId as PseudoId ;
    	 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
         
@@ -74,7 +75,8 @@
 
             if ($code == com\indigloo\mysql\Connection::ACK_OK ) {
 				$newId = $data['lastInsertId'];
-				$location = "/item/$newId" ;
+                $itemId = PseudoId::encode($newId);
+				$location = "/item/$itemId" ;
                 header("Location: /qa/thanks.php?q=".$location );
                 
             } else {

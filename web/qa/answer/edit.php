@@ -11,10 +11,13 @@
     use com\indigloo\Constants as Constants;
     use com\indigloo\ui\form\Message as FormMessage;
     use com\indigloo\sc\auth\Login as Login;
+    use com\indigloo\sc\util\PseudoId as PseudoId;
      
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     
-    $answerId = Url::getQueryParam("id");
+	$encodedId = Url::getQueryParam("id");
+	$answerId = PseudoId::decode($encodedId);
+
     $answerDao = new com\indigloo\sc\dao\Answer();
     $answerDBRow = $answerDao->getOnId($answerId);
 
@@ -24,6 +27,7 @@
 	}
 
 	$sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
+    $itemId = PseudoId::encode($answerDBRow['question_id']);
     
     
 ?>  
@@ -103,7 +107,7 @@
                                             
                                         
 					<input type="hidden" name="answer_id" value="<?php echo $answerDBRow['id'] ; ?>" />
-					<input type="hidden" name="question_id" value="<?php echo $answerDBRow['question_id'];?>" />
+					<input type="hidden" name="item_id" value="<?php echo $itemId;?>" />
 					<input type="hidden" name="q" value="<?php echo $_SERVER["REQUEST_URI"];?>" />
 											
 					</form>

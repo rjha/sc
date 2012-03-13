@@ -5,6 +5,7 @@ namespace com\indigloo\sc\controller{
 	use \com\indigloo\Util as Util;
     use com\indigloo\Url;
 	use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\sc\util\PseudoId as PseudoId ;
   
 	
     class User {
@@ -14,7 +15,9 @@ namespace com\indigloo\sc\controller{
             if(is_null($params) || empty($params))
                 trigger_error("Required params is null or empty", E_USER_ERROR);
 
-			$loginId = Util::getArrayKey($params,"login_id");
+			$pubUserId = Util::getArrayKey($params,"login_id");
+            $loginId = PseudoId::decode($pubUserId);
+
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
 
             $userDao = new \com\indigloo\sc\dao\User();
@@ -33,7 +36,7 @@ namespace com\indigloo\sc\controller{
             //page variables
             $pageTitle = "public profile of ".$userName;
             $pageHeader = "Posts by ".$userName;
-            $pageBaseUrl = "/pub/user/".$loginId ;
+            $pageBaseUrl = "/pub/user/".$pubUserId ;
 
             include($template); 
 

@@ -13,10 +13,12 @@
     use com\indigloo\ui\SelectBox as SelectBox;
     use com\indigloo\ui\form\Message as FormMessage;
 	use \com\indigloo\sc\auth\Login as Login ;
+	use \com\indigloo\sc\util\PseudoId as PseudoId ;
      
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
-	$questionId = Url::getQueryParam("id");
+	$itemId = Url::getQueryParam("id");
+	$questionId = PseudoId::decode($itemId);
 
     $questionDao = new \com\indigloo\sc\dao\Question();
     $questionDBRow = $questionDao->getOnId($questionId);

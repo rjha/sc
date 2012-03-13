@@ -28,6 +28,8 @@ namespace com\indigloo\sc\dao {
 		}
 
 		function getOnSearchIds($arrayIds) {
+            if(empty($arrayIds)) { return array(); }
+
 			$strIds = implode(",",$arrayIds);
 			$rows = mysql\Question::getOnSearchIds($strIds);
 			return $rows ;

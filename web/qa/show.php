@@ -9,13 +9,14 @@
     use com\indigloo\ui\form\Sticky;
     use com\indigloo\Constants as Constants;
     use com\indigloo\ui\form\Message as FormMessage;
+    use \com\indigloo\sc\util\PseudoId as PseudoId;
      
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     
 	$questionId = Url::getQueryParam("id");
 
     //Add permanent redirect
-    $redirectUrl = "/item/".$questionId ;
+    $redirectUrl = "/item/".PseudoId::encode($questionId) ;
     header( "HTTP/1.1 301 Moved Permanently" ); 
     header( "Location: ".$redirectUrl );   
     exit ;

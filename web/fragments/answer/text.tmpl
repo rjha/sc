@@ -3,7 +3,7 @@
 	<div class="row">
 		<div class="span7">
 		   ~~$view->answer~
-		   <b>in reply to </b> <a href="/item/~~$view->questionId~"> ~~$view->title~</a>
+		   <b>in reply to </b> <a href="/item/~~$view->itemId~"> ~~$view->title~</a>
 		</div> <!-- span7 -->
 
 		<div class="span2">
@@ -19,8 +19,8 @@
 			<div class="btn-group">
 				<a data-toggle="dropdown" href="#">Actions<span class="caret"></span> </a>
 				  <ul class="dropdown-menu">
-					<li> <a href="/qa/answer/edit.php?id=~~$view->id~">Edit</a></li>
-					<li> <a href="/qa/answer/delete.php?id=~~$view->id~">Delete</a> </li>
+					<li> <a href="/qa/answer/edit.php?id=~~$view->encodedId~">Edit</a></li>
+					<li> <a href="/qa/answer/delete.php?id=~~$view->encodedId~">Delete</a> </li>
 					
 				  </ul>
 			</div>	

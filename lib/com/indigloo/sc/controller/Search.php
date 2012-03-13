@@ -23,7 +23,7 @@ namespace com\indigloo\sc\controller{
             $pageSize =	50;
             $paginator = new Pagination($qparams,$total,$pageSize);	
 
-            $ids = $sphinx->getPosts($token,$paginator);            
+            $ids = $sphinx->getPagedPosts($token,$paginator);            
             $sphinx->close();
 
             $template =  NULL ;

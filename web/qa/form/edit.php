@@ -11,6 +11,7 @@
     use \com\indigloo\Url as Url ;
     use \com\indigloo\sc\auth\Login as Login ;
     use \com\indigloo\util\StringUtil as StringUtil ;
+    use \com\indigloo\sc\util\PseudoId as PseudoId ;
 	
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
 
@@ -54,7 +55,8 @@
                                 $group_slug);
             
             if ($code == com\indigloo\mysql\Connection::ACK_OK ) {
-                $locationOnSuccess = "/item/".$fvalues['question_id'] ;
+                $itemId = PseudoId::encode($fvalues['question_id']);
+                $locationOnSuccess = "/item/".$itemId ;
                 header("Location: " . $locationOnSuccess);
                 
             } else {

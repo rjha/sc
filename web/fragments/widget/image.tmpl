@@ -3,7 +3,7 @@
 		<div class="span7">
 
 			<div class="photo">
-				<a href="/item/~~$view->id~"> <img src="~~$view->srcImage~" class="alignleft" width="~~$view->width~" height="~~$view->height~" title="~~$view->originalName~"  alt="~~$view->originalName~"/> </a> 
+				<a href="/item/~~$view->itemId~"> <img src="~~$view->srcImage~" class="alignleft" width="~~$view->width~" height="~~$view->height~" title="~~$view->originalName~"  alt="~~$view->originalName~"/> </a> 
 
 			</div>
 			<div class="description">
@@ -20,14 +20,14 @@
 					<br>
 					<span class="b">~~$view->createdOn~ </span>
 				</div>	
-				<div> <a href="/item/~~$view->id~">more&rarr;</a></div>
+				<div> <a href="/item/~~$view->itemId~">more&rarr;</a></div>
 			</div>
 			~if($view->isLoggedInUser) {~
 			<div class="btn-group">
 				<a data-toggle="dropdown" href="#">Actions<span class="caret"></span> </a>
 				  <ul class="dropdown-menu">
-					<li> <a href="/qa/edit.php?id=~~$view->id~">Edit</a></li>
-					<li> <a href="/qa/delete.php?id=~~$view->id~">Delete</a> </li>
+					<li> <a href="/qa/edit.php?id=~~$view->itemId~">Edit</a></li>
+					<li> <a href="/qa/delete.php?id=~~$view->itemId~">Delete</a> </li>
 					
 				  </ul>
 			</div>	

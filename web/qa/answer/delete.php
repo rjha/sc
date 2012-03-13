@@ -10,13 +10,16 @@
     use com\indigloo\Constants as Constants;
     use com\indigloo\ui\form\Sticky;
     use com\indigloo\ui\form\Message as FormMessage;
+    use com\indigloo\sc\util\PseudoId as PseudoId;
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
 	$qUrl = Url::tryQueryParam('q');
 	$qUrl = empty($qUrl) ? '/user/dashboard.php' : $qUrl;
 
-	$answerId = Url::getQueryParam("id");
+	$encodedId = Url::getQueryParam("id");
+	$answerId = PseudoId::decode($encodedId);
+
 	$answerDao = new \com\indigloo\sc\dao\Answer();
 	$answerDBRow = $answerDao->getOnId($answerId);
 

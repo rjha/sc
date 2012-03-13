@@ -2,10 +2,11 @@
 
 namespace com\indigloo\sc\html {
 
-    use com\indigloo\Template as Template;
-    use com\indigloo\Util as Util ;
-    use com\indigloo\Constants as Constants ;
-    use com\indigloo\util\StringUtil as StringUtil ;
+    use \com\indigloo\Template as Template;
+    use \com\indigloo\Util as Util ;
+    use \com\indigloo\Constants as Constants ;
+    use \com\indigloo\util\StringUtil as StringUtil ;
+    use \com\indigloo\sc\util\PseudoId as PseudoId;
     
     class Question {
 
@@ -16,9 +17,10 @@ namespace com\indigloo\sc\html {
 			$images = json_decode($imagesJson);
 			
 			$view = new \stdClass;
+
 			$view->description = Util::abbreviate($questionDBRow['description'],70);
-			$view->userPageURI = "/pub/user/".$questionDBRow['login_id'];
 			$view->id = $questionDBRow['id'];
+			$view->itemId = PseudoId::encode($view->id);
 
 			if(sizeof($images) > 0) {
 				
@@ -60,8 +62,10 @@ namespace com\indigloo\sc\html {
 			
 			$view = new \stdClass;
 			$view->description = Util::abbreviate($questionDBRow['description'],160);
-			$view->userPageURI = "/pub/user/".$questionDBRow['login_id'];
+
+			$view->userPageURI = "/pub/user/".PseudoId::encode($questionDBRow['login_id']);
 			$view->id = $questionDBRow['id'];
+			$view->itemId = PseudoId::encode($view->id);
 				
 			$view->userName = $questionDBRow['user_name'];
 			$view->createdOn = Util::formatDBTime($questionDBRow['created_on']);
@@ -126,15 +130,14 @@ namespace com\indigloo\sc\html {
 			
 			$view = new \stdClass;
 			$view->description = $questionDBRow['description'];
-			$view->id = $questionDBRow['id'];
 			
 				
 			$view->userName = $questionDBRow['user_name'];
 			$view->createdOn = Util::formatDBTime($questionDBRow['created_on']);
 			$view->tags = $questionDBRow['tags'];
             $view->loginId = $questionDBRow['login_id'];
+            $view->pubUserId = PseudoId::encode($view->loginId);
 
-			
 			$template = '/fragments/question/detail.tmpl' ;
 			$html = Template::render($template,$view);
 			
@@ -148,6 +151,7 @@ namespace com\indigloo\sc\html {
 			$view = new \stdClass;
             $view->isLoggedInUser = false ;
             $view->id = $questionDBRow['id'];
+            $view->itemId = PseudoId::encode($view->id);
 
 			if(!is_null($gSessionLogin) && ($gSessionLogin->id == $questionDBRow['login_id'])){
 				$view->isLoggedInUser = true ;
@@ -169,6 +173,7 @@ namespace com\indigloo\sc\html {
 			$view = new \stdClass;
 			$view->description = $questionDBRow['description'];
 			$view->id = $questionDBRow['id'];
+			$view->itemId = PseudoId::encode($view->id);
 			
 				
 			$view->userName = $questionDBRow['user_name'];

@@ -29,7 +29,7 @@ namespace com\indigloo\sc\controller{
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
             $pageSize =	50;
             $paginator = new Pagination($qparams,$total,$pageSize);	
-            $ids = $sphinx->getPosts($token,$paginator);            
+            $ids = $sphinx->getPagedPosts($token,$paginator);            
             $sphinx->close();
 
             $template =  NULL ;

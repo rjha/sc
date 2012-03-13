@@ -153,8 +153,8 @@
                     <h3> More from 3mik </h3>
                 </div>
 					<?php
-						foreach($tileDBRows as $tileDBRow) {
-							echo \com\indigloo\sc\html\Question::getSimpleTile($tileDBRow) ;
+						foreach($xrows as $xrow) {
+							echo \com\indigloo\sc\html\Question::getSimpleTile($xrow) ;
 						}
 					?>
 			</div>

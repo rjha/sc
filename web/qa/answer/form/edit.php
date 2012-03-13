@@ -32,7 +32,7 @@
             $code = $answerDao->update($fvalues['answer_id'], $fvalues['answer']);
             
             if ($code == com\indigloo\mysql\Connection::ACK_OK ) {
-                $locationOnSuccess =  "/item/".$fvalues['question_id'] ;
+                $locationOnSuccess =  "/item/".$fvalues['item_id'] ;
                 header("Location: " . $locationOnSuccess);
                 
             } else {

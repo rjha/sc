@@ -520,13 +520,13 @@
 	}
 	
 	div .stackImage{
-		   position :relative ;
-		   float : left;
-		   padding:7px;
-		   height:160px;
-		   width:200px;
-		   border:1px solid #DDD ;
-		   margin :2px;
+       position :relative ;
+       float : left;
+       padding:7px;
+       height:160px;
+       width:200px;
+       border:1px solid #DDD ;
+       margin :2px;
 	}
 		
 	.thumbnail-1 {

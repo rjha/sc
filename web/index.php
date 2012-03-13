@@ -1,7 +1,9 @@
 <?php
 
+    $s_time = microtime(true);
+
     include 'sc-app.inc';
-	include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
+    include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
 	
 	use \com\indigloo\Configuration as Config ;
 	use \com\indigloo\Logger  as Logger ;
@@ -48,8 +50,10 @@
 		
 		$controller = new $controllerName();
 		$controller->process($route["params"], $route["options"]);
-		
 	
 	}
+
+    $e_time = microtime(true);
+    printf("Request %s took %f microseconds \n", $_SERVER['REQUEST_URI'], ($e_time - $s_time)*1000);
 
 ?>

@@ -33,8 +33,17 @@ namespace com\indigloo\sc\search {
             return $count ;
         }
 
-        function getGroups($token,$paginator) {
-            $ids = $this->getDocuments('groups',$token,$paginator);
+        function getGroups($token,$offset,$limit) {
+            $ids = $this->getDocuments('groups',$token,$offset,$limit);
+            return $ids;
+        }
+
+        function getPagedGroups($token,$paginator) {
+            $pageNo = $paginator->getPageNo();
+            $limit = $paginator->getPageSize();
+            $offset = ($pageNo-1) * $limit ;
+
+            $ids = $this->getDocuments('groups',$token,$offset,$limit);
             return $ids;
         }
  
@@ -43,12 +52,24 @@ namespace com\indigloo\sc\search {
             return $count ;
         }
 
-        function getPosts($token,$paginator) {
-            $ids = $this->getDocuments('posts',$token,$paginator);
+        function getPosts($token,$offset,$limit) {
+            $ids = $this->getDocuments('posts',$token,$offset,$limit);
+            return $ids;
+        }
+
+        function getPagedPosts($token,$paginator) {
+            $pageNo = $paginator->getPageNo();
+            $limit = $paginator->getPageSize();
+            $offset = ($pageNo-1) * $limit ;
+
+            $ids = $this->getDocuments('posts',$token,$offset,$limit);
             return $ids;
         }
 
         function getDocumentsCount($index,$token) {
+            Util::isEmpty('index',$index);
+            Util::isEmpty('token',$token);
+
             $sql = " select id from %s where match('%s') limit 0,1" ;
             $sql = sprintf($sql,$index,$token);
             $rows = MySQL\Helper::fetchRows($this->connx,$sql);
@@ -66,14 +87,14 @@ namespace com\indigloo\sc\search {
             return $count ;
         }
 
-        function getDocuments($index,$token,$paginator) {
+        function getDocuments($index,$token,$offset,$limit) {
+            Util::isEmpty('index',$index);
+            Util::isEmpty('token',$token);
             //get paginator params
-            $pageNo = $paginator->getPageNo();
-            $pageSize = $paginator->getPageSize();
-            $offset = ($pageNo-1) * $pageSize ;
             
             $sql = " select id from %s where match('%s') limit %d,%d" ;
-            $sql = sprintf($sql,$index,$token,$offset,$pageSize);
+            $sql = sprintf($sql,$index,$token,$offset,$limit);
+
             $rows = MySQL\Helper::fetchRows($this->connx,$sql);
             $ids = array();
 

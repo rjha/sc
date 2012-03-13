@@ -45,8 +45,8 @@ namespace com\indigloo\sc\mysql {
 			$loginId = $mysqli->real_escape_string($loginId);
 			$limit = $mysqli->real_escape_string($limit);
 			
-            $sql = " select q.* from sc_question q where q.login_id = ".$loginId ;
-            $sql .=  " order by id desc limit ".$limit ;
+            $sql = " select q.*,l.name as user_name from sc_question q,sc_login l where q.login_id = l.id " ; 
+            $sql .= " and  q.login_id = ".$loginId ." order by id desc limit ".$limit ;
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
