@@ -7,7 +7,7 @@ create table sc_question(
 	id int(11) NOT NULL auto_increment,
     login_id int not null,
 	title varchar(128) not null,
-    description TEXT ,
+    description varchar(512),
     tags varchar(64),
     links_json TEXT ,
     images_json TEXT,

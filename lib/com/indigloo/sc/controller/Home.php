@@ -11,7 +11,6 @@ namespace com\indigloo\sc\controller{
         
         function process($params,$options) {
             
-            //following variables will be visible in $file as well
 			$questionDao = new \com\indigloo\sc\dao\Question();
 			$total = $questionDao->getTotalCount();
 
@@ -22,7 +21,6 @@ namespace com\indigloo\sc\controller{
 			$questionDBRows = $questionDao->getPaged($paginator);
 
             $file = $_SERVER['APP_WEB_DIR']. '/home.php' ;
-
             include ($file);
 		
         }

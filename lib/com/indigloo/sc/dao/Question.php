@@ -10,9 +10,11 @@ namespace com\indigloo\sc\dao {
     class Question {
 
 		const LOGIN_ID_COLUMN  = "oowyh1vm";
+		const FEATURE_COLUMN  = "dwndk1vo";
 
 		function createDBFilter($filter) {
-			$map = array(self::LOGIN_ID_COLUMN => mysql\Question::LOGIN_COLUMN);
+			$map = array(self::LOGIN_ID_COLUMN => mysql\Question::LOGIN_COLUMN,
+                            self::FEATURE_COLUMN => mysql\Question::FEATURE_COLUMN);
 			$dbfilter = mysql\Helper::createDBFilter($filter,$map);
 			return $dbfilter ;
 		}
@@ -37,6 +39,12 @@ namespace com\indigloo\sc\dao {
 		
         function getRandom($limit) {
 			$rows = mysql\Question::getRandom($limit);
+			return $rows ;
+		}
+
+        function getPosts($filter,$limit) {
+            $dbfilter = $this->createDBFilter($filter);
+			$rows = mysql\Question::getPosts($dbfilter,$limit);
 			return $rows ;
 		}
 
@@ -110,8 +118,7 @@ namespace com\indigloo\sc\dao {
                         $imagesJson,
                         $groupSlug) {
 			
-			$loginId = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
-
+			$loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
             $code = mysql\Question::update($questionId,
 						       $title,
                                $description,
@@ -125,9 +132,32 @@ namespace com\indigloo\sc\dao {
         }
 
 		function delete($questionId){
-			$loginId = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
+			$loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
             $code = mysql\Question::delete($questionId,$loginId);
             return $code ;
+        }
+
+        function doAdminAction($strIds,$action){
+            $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
+            $data = array('code' => 0);
+
+            switch($action) {
+            case 'delete' :
+                //do nothing till we fix the interface
+                break;
+            case 'add-feature' :
+                $code = mysql\Question::setFeature($loginId,$strIds,1);
+                $data["code"] = $code ;
+                break;
+            case 'remove-feature' :
+                $code = mysql\Question::setFeature($loginId,$strIds,0);
+                $data["code"] = $code ;
+                break;
+            default:
+                break;
+            }
+
+            return $data ;
         }
 
 

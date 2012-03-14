@@ -87,12 +87,19 @@ namespace com\indigloo\sc\auth {
 		static function tryLoginIdInSession() {
            	$loginId = NULL ; 
 
-			if (isset($_SESSION) 
-				&& isset($_SESSION[self::TOKEN])
-				&& isset($_SESSION[self::LOGIN_ID]) ) {
-
+			if (isset($_SESSION) && isset($_SESSION[self::TOKEN]) && isset($_SESSION[self::LOGIN_ID]) ) {
 				$loginId = $_SESSION[self::LOGIN_ID] ;
 			}
+			return $loginId ;
+        }
+
+        static function getLoginIdInSession() {
+           	$loginId = NULL ; 
+			if (isset($_SESSION) && isset($_SESSION[self::TOKEN]) && isset($_SESSION[self::LOGIN_ID]) ) {
+				$loginId = $_SESSION[self::LOGIN_ID] ;
+            } else{
+                trigger_error("No Login ID found in session" , E_USER_ERROR);
+            }
 
 			return $loginId ;
         }

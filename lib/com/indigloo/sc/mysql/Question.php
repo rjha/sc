@@ -6,6 +6,7 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Logger as Logger ;
+    use \com\indigloo\sc\util\PseudoId as PseudoId ;
     
     class Question {
         
@@ -13,6 +14,7 @@ namespace com\indigloo\sc\mysql {
 
 		//DB columns for filters
 		const LOGIN_COLUMN = "login_id" ;
+		const FEATURE_COLUMN = "is_feature" ;
 
 		static function getOnId($questionId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -40,6 +42,23 @@ namespace com\indigloo\sc\mysql {
 
 		}
 
+         static function getPosts($filter,$limit) {
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+			$limit = $mysqli->real_escape_string($limit);
+            $sql = "select q.*,l.name as user_name  from sc_question q, sc_login l where q.login_id = l.id ";
+
+            if(Util::tryArrayKey($filter,self::FEATURE_COLUMN)) {
+                $value = $mysqli->real_escape_string($filter[self::FEATURE_COLUMN]); 
+                $sql .= " and is_feature = ".$value;
+            }
+            
+            $sql .= " order by id desc limit ".$limit ;
+             
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+
+		}
+
         static function getOnLoginId($loginId,$limit) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 			$loginId = $mysqli->real_escape_string($loginId);
@@ -59,18 +78,20 @@ namespace com\indigloo\sc\mysql {
 		 * 1. we need to fetch rows from mysql doing a range scan on ids 
 		 * returned by sphinx.
 		 *
-		 * 2. we have to reorder the results returned by mysql because sphinx
-		 * results have a different order (e.g relevance) 
+         * 2. To preserve the order of ids returned by sphinx you need to create a
+         * sort field like 
+         * $sql .= " ORDER BY FIELD(q.id,".$strIds. ") " ;
 		 * @see http://sphinxsearch.com/info/faq/ 
-		 *
-		 * @todo - fix - this order by clause causes a FTS
+         *
+         * 3. we want sorting to be done on our DB created_on column (our choice)
 		 *
 		 */
 		static function getOnSearchIds($strIds) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = " select q.*,l.name as user_name from sc_question q, sc_login l " ;
             $sql .= " where l.id = q.login_id and q.id in (".$strIds. ") " ;
-            $sql .= " ORDER BY FIELD(q.id,".$strIds. ") " ;
+            $sql .= " ORDER BY q.id desc" ;
+
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 		}
@@ -163,9 +184,7 @@ namespace com\indigloo\sc\mysql {
                                $linksJson,
 							   $imagesJson,
                                $loginId,
-                               $groupSlug)
-		
-		{
+                               $groupSlug) {
 			
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = " update sc_question set title=?,description=?,location = ?,tags =?,links_json =?, " ;
@@ -221,6 +240,7 @@ namespace com\indigloo\sc\mysql {
 
             $code = MySQL\Connection::ACK_OK;
 			$lastInsertId = NULL;
+            $itemId = NULL ;
 
             $stmt = $mysqli->prepare($sql);
             
@@ -249,9 +269,15 @@ namespace com\indigloo\sc\mysql {
 			
 			if($code == MySQL\Connection::ACK_OK) {     
                 $lastInsertId = MySQL\Connection::getInstance()->getLastInsertId();
+                //update pseudo ID
+                $itemId = PseudoId::encode($lastInsertId);
+                $sql = " update sc_question set pseudo_id = %d where id = %d " ;
+                $sql = sprintf($sql,$itemId,$lastInsertId);
+                MySQL\Helper::executeSQL($mysqli,$sql);
+                
             }
 	
-			return array('code' => $code, 'lastInsertId' => $lastInsertId) ;
+			return array('code' => $code, 'itemId' => $itemId) ;
         }
 
 		static function delete($questionId,$loginId) {
@@ -273,6 +299,23 @@ namespace com\indigloo\sc\mysql {
 			
 			return $code ;
 		}
+
+        static function setFeature($loginId,$strIds,$value){
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //operation needs admin privileges
+            $userRow = \com\indigloo\sc\mysql\User::getOnLoginId($loginId);
+            if($userRow['is_admin'] != 1 ){
+                trigger_error("User does not have admin rights", E_USER_ERROR);
+            }
+
+            $sql = " update sc_question set is_feature = ".$value." where ID IN (".$strIds.")" ;
+            $code = MySQL\Connection::ACK_OK;
+            MySQL\Helper::executeSQL($mysqli,$sql);
+            return $code ;
+            
+		}
+
 
 	}
 }

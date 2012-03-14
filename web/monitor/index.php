@@ -9,7 +9,7 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\ui\Tabs as Tabs ;
 
-    $tabOptions = array("stat"=>"Stats","feature"=>"Featured");
+    $tabOptions = array("stat"=>"Stats","feature"=>"Featured","post"=>"Posts");
     $tabData = Tabs::render($tabOptions,'stat');
     $strTabUI = $tabData["buffer"];
     $activeTab = $tabData["active"];
@@ -28,19 +28,6 @@
         <link rel="stylesheet" type="text/css" href="/css/sc.css">
 		<script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-		<script type="text/javascript" src="/3p/jquery/jquery.xeyes.1.0.min.js"></script>
-		<script>
-			$(document).ready(function(){
-				//xeyes
-				$('.iris').xeyes({
-					padding: '12px',
-					position: 'topRight'
-				});
-				
-			});
-
-		</script>
-
        
     </head>
 
@@ -48,14 +35,14 @@
 		<div class="container mh800">
 			<div class="row">
 				<div class="span12">
-					<?php include($_SERVER['APP_WEB_DIR'] . '/inc/toolbar.inc'); ?>
+					<?php include($_SERVER['APP_WEB_DIR'] . '/monitor/inc/toolbar.inc'); ?>
 				</div> 
 				
 			</div>
 			
 			<div class="row">
 				<div class="span12">
-					<?php include($_SERVER['APP_WEB_DIR'] . '/inc/banner.inc'); ?>
+					<?php include($_SERVER['APP_WEB_DIR'] . '/monitor/inc/banner.inc'); ?>
 				</div>
 			</div>
 			
@@ -63,7 +50,6 @@
 			<div class="row">
 				<div class="span12">
 					<div>
-						<h2> Monitoring application </h2>
                         <?php echo $strTabUI; ?>
 
 					</div>

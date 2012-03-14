@@ -74,9 +74,7 @@
    			$code = $data['code'];
 
             if ($code == com\indigloo\mysql\Connection::ACK_OK ) {
-				$newId = $data['lastInsertId'];
-                $itemId = PseudoId::encode($newId);
-				$location = "/item/$itemId" ;
+				$location = "/item/".$data['itemId'];
                 header("Location: /qa/thanks.php?q=".$location );
                 
             } else {

@@ -344,3 +344,27 @@ CREATE TRIGGER trg_user_group2  AFTER  update ON sc_question
 delimiter ;
 
 
+--
+-- @13 mar 2012
+--
+-- @todo 
+-- alter table sc_question modify column description varchar(512);
+-- 14 Mar 2012
+-- 
+
+alter table sc_question add column is_feature int default 0 ;
+--
+-- it is important to make this column NULLABLE
+-- that way failed pseudo_id update do not interfere with record creation
+--
+
+alter table sc_question add column pseudo_id int  ;
+alter table sc_question add constraint unique(pseudo_id) ;
+--
+-- @todo now run the pseudo0id update DB script now
+--
+
+
+
+
+
