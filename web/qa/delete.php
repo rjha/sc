@@ -19,12 +19,12 @@
 	$qUrl = empty($qUrl) ? '/user/dashboard.php' : $qUrl;
 
 	$itemId = Url::getQueryParam("id");
-	$questionId = PseudoId::decode($itemId);
+	$postId = PseudoId::decode($itemId);
 
-	$questionDao = new \com\indigloo\sc\dao\Question();
-	$questionDBRow = $questionDao->getOnId($questionId);
+	$postDao = new \com\indigloo\sc\dao\Post();
+	$postDBRow = $postDao->getOnId($postId);
 
-	if(!Login::isOwner($questionDBRow['login_id'])) {
+	if(!Login::isOwner($postDBRow['login_id'])) {
 		header("Location: /qa/noowner.php");
         exit ;
 	}
@@ -76,7 +76,7 @@
 					</div>
 					
 					<?php FormMessage::render(); ?>
-					<?php echo \com\indigloo\sc\html\Question::getWidget(NULL,$questionDBRow); ?>
+					<?php echo \com\indigloo\sc\html\Post::getWidget(NULL,$postDBRow); ?>
 
 					<form id="web-form1"  name="web-form1" action="/qa/form/delete.php" method="POST">
 						<div>
@@ -84,7 +84,7 @@
 							<a href="<?php echo $qUrl; ?>"><button class="btn" type="button">Cancel</a></button></a>
 						</div>
 						<input type="hidden" name="q" value="<?php echo $qUrl; ?>" /> 
-						<input type="hidden" name="question_id" value="<?php echo $questionId; ?>" />
+						<input type="hidden" name="post_id" value="<?php echo $postId; ?>" />
 					</form>
 		
 				</div>

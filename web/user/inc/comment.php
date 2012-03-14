@@ -2,14 +2,14 @@
 
 	use com\indigloo\Configuration as Config;
 
-	$answerDao = new \com\indigloo\sc\dao\Answer() ;
+	$commentDao = new \com\indigloo\sc\dao\Comment() ;
 		
-	$filter = array($answerDao::LOGIN_ID_COLUMN => $loginId);
-	$total = $answerDao->getTotalCount($filter);
+	$filter = array($commentDao::LOGIN_ID_COLUMN => $loginId);
+	$total = $commentDao->getTotalCount($filter);
 
 	$pageSize =	Config::getInstance()->get_value("user.page.items");
 	$paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);	
-	$answerDBRows = $answerDao->getPaged($paginator,$filter);
+	$commentDBRows = $commentDao->getPaged($paginator,$filter);
 
 ?>
 
@@ -19,13 +19,13 @@
 		$startId = NULL ;
 		$endId = NULL ;
 
-		if(sizeof($answerDBRows) > 0 ) { 
-			$startId = $answerDBRows[0]['id'] ;
-			$endId =   $answerDBRows[sizeof($answerDBRows)-1]['id'] ;
+		if(sizeof($commentDBRows) > 0 ) { 
+			$startId = $commentDBRows[0]['id'] ;
+			$endId =   $commentDBRows[sizeof($commentDBRows)-1]['id'] ;
 		}	
 
-		foreach($answerDBRows as $answerDBRow){
-			echo \com\indigloo\sc\html\Answer::getWidget($gSessionLogin,$answerDBRow);
+		foreach($commentDBRows as $commentDBRow){
+			echo \com\indigloo\sc\html\Comment::getWidget($gSessionLogin,$commentDBRow);
 		}
 
 	?>

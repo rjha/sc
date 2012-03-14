@@ -56,13 +56,13 @@
 							$startId = NULL ;
 							$endId = NULL ;	
 
-							if(sizeof($questionDBRows) > 0 ) { 
-								$startId = $questionDBRows[0]['id'] ;
-								$endId =  $questionDBRows[sizeof($questionDBRows)-1]['id'] ;
+							if(sizeof($postDBRows) > 0 ) { 
+								$startId = $postDBRows[0]['id'] ;
+								$endId =  $postDBRows[sizeof($postDBRows)-1]['id'] ;
 							}	
 
-							foreach($questionDBRows as $questionDBRow) {
-								$html = \com\indigloo\sc\html\Question::getTile($questionDBRow);
+							foreach($postDBRows as $postDBRow) {
+								$html = \com\indigloo\sc\html\Post::getTile($postDBRow);
 								echo $html ;
 						
 							}

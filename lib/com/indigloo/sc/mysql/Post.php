@@ -8,20 +8,20 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     
-    class Question {
+    class Post {
         
-        const MODULE_NAME = 'com\indigloo\sc\mysql\Question';
+        const MODULE_NAME = 'com\indigloo\sc\mysql\Post';
 
 		//DB columns for filters
 		const LOGIN_COLUMN = "login_id" ;
 		const FEATURE_COLUMN = "is_feature" ;
 
-		static function getOnId($questionId) {
+		static function getOnId($postId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$questionId = $mysqli->real_escape_string($questionId);
+			$postId = $mysqli->real_escape_string($postId);
 			
             $sql = " select q.*,l.name as user_name from sc_question q,sc_login l " ;
-            $sql .= " where l.id = q.login_id and q.id = ".$questionId ;
+            $sql .= " where l.id = q.login_id and q.id = ".$postId ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 		}
@@ -176,7 +176,7 @@ namespace com\indigloo\sc\mysql {
 
 		}
 
-		static function update($questionId,
+		static function update($postId,
 						       $title,
                                $description,
                                $location,
@@ -204,7 +204,7 @@ namespace com\indigloo\sc\mysql {
                         $linksJson,
                         $imagesJson,
                         $groupSlug,
-						$questionId,
+						$postId,
 						$loginId);
                 
                       
@@ -280,7 +280,7 @@ namespace com\indigloo\sc\mysql {
 			return array('code' => $code, 'itemId' => $itemId) ;
         }
 
-		static function delete($questionId,$loginId) {
+		static function delete($postId,$loginId) {
 
 			$code = MySQL\Connection::ACK_OK ;
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -289,7 +289,7 @@ namespace com\indigloo\sc\mysql {
 			$stmt = $mysqli->prepare($sql);
 
             if ($stmt) {
-                $stmt->bind_param("ii",$questionId,$loginId) ;
+                $stmt->bind_param("ii",$postId,$loginId) ;
                 $stmt->execute();
                 $stmt->close();
 				

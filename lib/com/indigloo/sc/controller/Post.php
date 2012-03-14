@@ -30,18 +30,18 @@ namespace com\indigloo\sc\controller{
                 exit ;
             }
 
-			$questionDao = new \com\indigloo\sc\dao\Question();
-            $questionId = PseudoId::decode($itemId);
-			$questionDBRow = $questionDao->getOnId($questionId);
+			$postDao = new \com\indigloo\sc\dao\Post();
+            $postId = PseudoId::decode($itemId);
+			$postDBRow = $postDao->getOnId($postId);
 
-			$imagesJson = $questionDBRow['images_json'];
+			$imagesJson = $postDBRow['images_json'];
 			$images = json_decode($imagesJson);
 			
-			$linksJson = $questionDBRow['links_json'];
+			$linksJson = $postDBRow['links_json'];
 			$links = json_decode($linksJson);
 
-			$answerDao = new \com\indigloo\sc\dao\Answer();
-			$answerDBRows = $answerDao->getOnQuestionId($questionId);
+			$commentDao = new \com\indigloo\sc\dao\Comment();
+			$commentDBRows = $commentDao->getOnPostId($postId);
 			
 			$gWeb = \com\indigloo\core\Web::getInstance();
 			$sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
@@ -57,7 +57,7 @@ namespace com\indigloo\sc\controller{
 
             $xids = array();
             $xrows = array();
-            $group_slug = $questionDBRow['group_slug'];
+            $group_slug = $postDBRow['group_slug'];
 
             if(!Util::tryEmpty($group_slug)) {
 
@@ -67,7 +67,7 @@ namespace com\indigloo\sc\controller{
                 foreach($groups as $group) {
                     $ids = $sphinx->getGroups($group,0,5);  
                     foreach($ids as $id){
-                        if(!in_array($id,$xids) && ($id != $questionId)) {
+                        if(!in_array($id,$xids) && ($id != $postId)) {
                             array_push($xids,$id);
                         }
                     }
@@ -75,14 +75,14 @@ namespace com\indigloo\sc\controller{
 
                 //get posts on groups
                 if(!empty($xids)) {
-                    $xrows = $questionDao->getOnSearchIds($xids);
+                    $xrows = $postDao->getOnSearchIds($xids);
                 }
             }
 
             //get posts for same user
-            $userRows = $questionDao->getOnLoginId($questionDBRow['login_id'],10);
+            $userRows = $postDao->getOnLoginId($postDBRow['login_id'],10);
             foreach($userRows as $userRow) {
-                if(!in_array($userRow['id'],$xids) && ($userRow['id'] != $questionId)) {
+                if(!in_array($userRow['id'],$xids) && ($userRow['id'] != $postId)) {
                     array_push($xrows,$userRow);
                 }
             }
@@ -90,15 +90,15 @@ namespace com\indigloo\sc\controller{
             if(sizeof($xrows) < 12 ) {
                 //how many?
                 $limit = 12 - (sizeof($xrows)) ;
-                $randomRows = $questionDao->getRandom($limit);
+                $randomRows = $postDao->getRandom($limit);
                 $xrows = array_merge($xrows,$randomRows);
             }
 
 			$loginUrl = "/user/login.php?q=".$_SERVER['REQUEST_URI'];
 			$formErrors = FormMessage::render(); 
 
-			$pageTitle = Util::abbreviate($questionDBRow['title'],70);
-			$pageMetaDescription = Util::abbreviate($questionDBRow['description'],160);
+			$pageTitle = Util::abbreviate($postDBRow['title'],70);
+			$pageMetaDescription = Util::abbreviate($postDBRow['description'],160);
             $pageUrl = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 			
 			include($file);

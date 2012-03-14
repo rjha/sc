@@ -42,10 +42,10 @@
                 $group_slug = implode(Constants::SPACE,$slugs);
             }
 
-            $questionDao = new com\indigloo\sc\dao\Question();
+            $postDao = new com\indigloo\sc\dao\Post();
 			$title = Util::abbreviate($fvalues['description'],128);		
-            $code = $questionDao->update(
-								$fvalues['question_id'],
+            $code = $postDao->update(
+								$fvalues['post_id'],
 								$title,
                                 $fvalues['description'],
                                 'location',
@@ -55,7 +55,7 @@
                                 $group_slug);
             
             if ($code == com\indigloo\mysql\Connection::ACK_OK ) {
-                $itemId = PseudoId::encode($fvalues['question_id']);
+                $itemId = PseudoId::encode($fvalues['post_id']);
                 $locationOnSuccess = "/item/".$itemId ;
                 header("Location: " . $locationOnSuccess);
                 

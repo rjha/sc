@@ -18,12 +18,12 @@
 	$qUrl = empty($qUrl) ? '/user/dashboard.php' : $qUrl;
 
 	$encodedId = Url::getQueryParam("id");
-	$answerId = PseudoId::decode($encodedId);
+	$commentId = PseudoId::decode($encodedId);
 
-	$answerDao = new \com\indigloo\sc\dao\Answer();
-	$answerDBRow = $answerDao->getOnId($answerId);
+	$commentDao = new \com\indigloo\sc\dao\Comment();
+	$commentDBRow = $commentDao->getOnId($commentId);
 
-	if(!Login::isOwner($answerDBRow['login_id'])) {
+	if(!Login::isOwner($commentDBRow['login_id'])) {
 		header("Location: /qa/noowner.php");
 		exit ;
 	}
@@ -74,15 +74,15 @@
 					</div>
 					
 					<?php FormMessage::render(); ?>
-					<?php echo \com\indigloo\sc\html\Answer::getWidget(NULL,$answerDBRow); ?>
+					<?php echo \com\indigloo\sc\html\Comment::getWidget(NULL,$commentDBRow); ?>
 							
-					<form id="web-form1"  name="web-form1" action="/qa/answer/form/delete.php" method="POST">
+					<form id="web-form1"  name="web-form1" action="/qa/comment/form/delete.php" method="POST">
 						<div>
 							<button class="btn btn-danger" type="submit" name="delete" value="Delete" onclick="this.setAttribute('value','Delete');">Delete</button>
 							<a href="<?php echo $qUrl; ?>"><button class="btn" type="button">Cancel</a></button></a>
 						</div>
 						<input type="hidden" name="q" value="<?php echo $qUrl; ?>" />
-						<input type="hidden" name="answer_id" value="<?php echo $answerId; ?>" />
+						<input type="hidden" name="comment_id" value="<?php echo $commentId; ?>" />
 					</form>
 
 				</div>

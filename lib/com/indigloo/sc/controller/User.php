@@ -24,13 +24,13 @@ namespace com\indigloo\sc\controller{
             $userDBRow = $userDao->getOnLoginId($loginId);
             $userName = $userDBRow['name'];
 
-            $questionDao = new \com\indigloo\sc\dao\Question() ;
-            $filter = array($questionDao::LOGIN_ID_COLUMN => $loginId);
-            $total = $questionDao->getTotalCount($filter);
+            $postDao = new \com\indigloo\sc\dao\Post() ;
+            $filter = array($postDao::LOGIN_ID_COLUMN => $loginId);
+            $total = $postDao->getTotalCount($filter);
 
             $pageSize =	Config::getInstance()->get_value("user.page.items");
             $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);	
-            $questionDBRows = $questionDao->getPaged($paginator,$filter);
+            $postDBRows = $postDao->getPaged($paginator,$filter);
 
             $template = $_SERVER['APP_WEB_DIR']. '/view/tiles-page.php';
             //page variables

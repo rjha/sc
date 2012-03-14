@@ -12,9 +12,9 @@
     use com\indigloo\ui\form\Message as FormMessage;
      
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
-   	$questionId = Url::getQueryParam("id");
-	$questionDao = new \com\indigloo\sc\dao\Question() ;
-	$questionDBRow = $questionDao->getOnId($questionId);
+   	$postId = Url::getQueryParam("id");
+	$postDao = new \com\indigloo\sc\dao\Post() ;
+	$postDBRow = $postDao->getOnId($postId);
 
 ?>  
 
@@ -75,7 +75,7 @@
 			<div class="row">
 				<div class="span4">
 					<div> 
-						<?php echo \com\indigloo\sc\html\Question::getTile($questionDBRow); ?>
+						<?php echo \com\indigloo\sc\html\Post::getTile($postDBRow); ?>
 					</div>
 				</div> <!-- post summary -->
 

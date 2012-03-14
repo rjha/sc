@@ -7,25 +7,25 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\mysql as mysql;
     
-    class Question {
+    class Post {
 
 		const LOGIN_ID_COLUMN  = "oowyh1vm";
 		const FEATURE_COLUMN  = "dwndk1vo";
 
 		function createDBFilter($filter) {
-			$map = array(self::LOGIN_ID_COLUMN => mysql\Question::LOGIN_COLUMN,
-                            self::FEATURE_COLUMN => mysql\Question::FEATURE_COLUMN);
+			$map = array(self::LOGIN_ID_COLUMN => mysql\Post::LOGIN_COLUMN,
+                            self::FEATURE_COLUMN => mysql\Post::FEATURE_COLUMN);
 			$dbfilter = mysql\Helper::createDBFilter($filter,$map);
 			return $dbfilter ;
 		}
 
-		function getOnId($questionId) {
-			$row = mysql\Question::getOnId($questionId);
+		function getOnId($postId) {
+			$row = mysql\Post::getOnId($postId);
 			return $row ;
 		}
 
 		function getOnLoginId($loginId,$limit) {
-			$rows = mysql\Question::getOnLoginId($loginId,$limit);
+			$rows = mysql\Post::getOnLoginId($loginId,$limit);
 			return $rows ;
 		}
 
@@ -33,18 +33,18 @@ namespace com\indigloo\sc\dao {
             if(empty($arrayIds)) { return array(); }
 
 			$strIds = implode(",",$arrayIds);
-			$rows = mysql\Question::getOnSearchIds($strIds);
+			$rows = mysql\Post::getOnSearchIds($strIds);
 			return $rows ;
 		}
 		
         function getRandom($limit) {
-			$rows = mysql\Question::getRandom($limit);
+			$rows = mysql\Post::getRandom($limit);
 			return $rows ;
 		}
 
         function getPosts($filter,$limit) {
             $dbfilter = $this->createDBFilter($filter);
-			$rows = mysql\Question::getPosts($dbfilter,$limit);
+			$rows = mysql\Post::getPosts($dbfilter,$limit);
 			return $rows ;
 		}
 
@@ -69,20 +69,20 @@ namespace com\indigloo\sc\dao {
 
 				$start = base_convert($start,36,10);
 
-				$rows = mysql\Question::getPaged($start,$direction,$count,$dbfilter);
+				$rows = mysql\Post::getPaged($start,$direction,$count,$dbfilter);
 				return $rows ;
 			}
 		}
 
 		function getLatest($count,$filter=NULL) {
 			$dbfilter = $this->createDBFilter($filter);
-			$rows = mysql\Question::getLatest($count,$dbfilter);
+			$rows = mysql\Post::getLatest($count,$dbfilter);
 			return $rows ;
 		}
 		
 		function getTotalCount($filter=NULL) {
 			$dbfilter = $this->createDBFilter($filter);
-			$row = mysql\Question::getTotalCount($dbfilter);
+			$row = mysql\Post::getTotalCount($dbfilter);
             return $row['count'] ;
 		}
 
@@ -95,7 +95,7 @@ namespace com\indigloo\sc\dao {
                         $imagesJson,
                         $groupSlug) {
 			
-            $data = mysql\Question::create(
+            $data = mysql\Post::create(
 								$title,
 								$description,
 								$location,
@@ -109,7 +109,7 @@ namespace com\indigloo\sc\dao {
         }
 		
 		
-		function update($questionId,
+		function update($postId,
 						$title,
 						$description,
 						$location,
@@ -119,7 +119,7 @@ namespace com\indigloo\sc\dao {
                         $groupSlug) {
 			
 			$loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
-            $code = mysql\Question::update($questionId,
+            $code = mysql\Post::update($postId,
 						       $title,
                                $description,
                                $location,
@@ -131,9 +131,9 @@ namespace com\indigloo\sc\dao {
             return $code ;
         }
 
-		function delete($questionId){
+		function delete($postId){
 			$loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
-            $code = mysql\Question::delete($questionId,$loginId);
+            $code = mysql\Post::delete($postId,$loginId);
             return $code ;
         }
 
@@ -146,11 +146,11 @@ namespace com\indigloo\sc\dao {
                 //do nothing till we fix the interface
                 break;
             case 'add-feature' :
-                $code = mysql\Question::setFeature($loginId,$strIds,1);
+                $code = mysql\Post::setFeature($loginId,$strIds,1);
                 $data["code"] = $code ;
                 break;
             case 'remove-feature' :
-                $code = mysql\Question::setFeature($loginId,$strIds,0);
+                $code = mysql\Post::setFeature($loginId,$strIds,0);
                 $data["code"] = $code ;
                 break;
             default:

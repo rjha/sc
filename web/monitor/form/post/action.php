@@ -44,8 +44,8 @@
 
             $strDBIds = implode(",",$dbIds);
 
-            $questionDao = new com\indigloo\sc\dao\Question();
-            $data = $questionDao->doAdminAction($strDBIds,$action);
+            $postDao = new com\indigloo\sc\dao\Post();
+            $data = $postDao->doAdminAction($strDBIds,$action);
    			$code = $data['code'];
 
             if ($code == \com\indigloo\mysql\Connection::ACK_OK ) {

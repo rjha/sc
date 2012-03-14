@@ -58,10 +58,10 @@
             }
 
 
-            $questionDao = new com\indigloo\sc\dao\Question();
+            $postDao = new com\indigloo\sc\dao\Post();
 			$title = Util::abbreviate($fvalues['description'],128);		
 
-            $data = $questionDao->create(
+            $data = $postDao->create(
 								$title,
                                 $fvalues['description'],
                                 'location',

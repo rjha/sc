@@ -1,6 +1,6 @@
 <?php
 
-    //sc/qa/answer/edit.php
+    //sc/qa/comment/edit.php
     include ('sc-app.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
@@ -16,18 +16,18 @@
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     
 	$encodedId = Url::getQueryParam("id");
-	$answerId = PseudoId::decode($encodedId);
+	$commentId = PseudoId::decode($encodedId);
 
-    $answerDao = new com\indigloo\sc\dao\Answer();
-    $answerDBRow = $answerDao->getOnId($answerId);
+    $commentDao = new com\indigloo\sc\dao\Comment();
+    $commentDBRow = $commentDao->getOnId($commentId);
 
-	if(!Login::isOwner($answerDBRow['login_id'])) {
+	if(!Login::isOwner($commentDBRow['login_id'])) {
 		header("Location: /qa/noowner.php");
 		exit ;
 	}
 
 	$sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
-    $itemId = PseudoId::encode($answerDBRow['question_id']);
+    $itemId = PseudoId::encode($commentDBRow['question_id']);
     
     
 ?>  
@@ -89,13 +89,13 @@
 					<?php FormMessage::render(); ?>
                             
 					<div id="form-wrapper">
-					<form id="web-form1"  name="web-form1" action="/qa/answer/form/edit.php" enctype="multipart/form-data"  method="POST">
+					<form id="web-form1"  name="web-form1" action="/qa/comment/form/edit.php" enctype="multipart/form-data"  method="POST">
 
 						<div class="error">    </div>
 						<table class="form-table">
 							 <tr>
 								<td>
-									<textarea  name="answer" class="w580 h130 required" cols="60" rows="10" ><?php echo $sticky->get('answer',$answerDBRow['answer']); ?></textarea>
+									<textarea  name="comment" class="w580 h130 required" cols="60" rows="10" ><?php echo $sticky->get('comment',$commentDBRow['answer']); ?></textarea>
 								</td>
 							 </tr>
 							 
@@ -106,7 +106,7 @@
 						</div>
                                             
                                         
-					<input type="hidden" name="answer_id" value="<?php echo $answerDBRow['id'] ; ?>" />
+					<input type="hidden" name="comment_id" value="<?php echo $commentDBRow['id'] ; ?>" />
 					<input type="hidden" name="item_id" value="<?php echo $itemId;?>" />
 					<input type="hidden" name="q" value="<?php echo $_SERVER["REQUEST_URI"];?>" />
 											

@@ -38,8 +38,8 @@ namespace com\indigloo\sc\controller{
                 $pageHeader = "About $total results for $token" ;
                 $pageBaseUrl = "/group/$slug" ;
                 $template = $_SERVER['APP_WEB_DIR']. '/view/tiles.php';
-                $questionDao = new \com\indigloo\sc\dao\Question();
-                $questionDBRows = $questionDao->getOnSearchIds($ids) ;
+                $postDao = new \com\indigloo\sc\dao\Post();
+                $postDBRows = $postDao->getOnSearchIds($ids) ;
 
             } else {
                 $pageHeader = "No Results for group $token" ;

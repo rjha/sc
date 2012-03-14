@@ -1,5 +1,5 @@
 <?php
-    //sc/qa/answer/form/delete.php
+    //sc/qa/comment/form/delete.php
     
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
@@ -14,7 +14,7 @@
         
         $fhandler = new Form\Handler('web-form-1', $_POST);
         
-		$fhandler->addRule('answer_id', 'answer_id', array('required' => 1));
+		$fhandler->addRule('comment_id', 'comment_id', array('required' => 1));
 		$fhandler->addRule('q', 'q', array('required' => 1));
 		
         $fvalues = $fhandler->getValues();
@@ -24,13 +24,13 @@
         if ($fhandler->hasErrors()) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,$fhandler->getErrors());
-            header("Location: /qa/answer/delete.php?id=".$fvalues['answer_id']);
+            header("Location: /qa/comment/delete.php?id=".$fvalues['comment_id']);
             exit(1);
 			
         } else {
             
-            $answerDao = new com\indigloo\sc\dao\Answer();
-            $code = $answerDao->delete($fvalues['answer_id']);
+            $commentDao = new com\indigloo\sc\dao\Comment();
+            $code = $commentDao->delete($fvalues['comment_id']);
 
             if ($code == com\indigloo\mysql\Connection::ACK_OK ) {
                 header("Location: " . $qUrl);
@@ -39,7 +39,7 @@
                 $message = sprintf("DB Error: (code is %d) please try again!",$code);
                 $gWeb->store(Constants::STICKY_MAP, $fvalues);
                 $gWeb->store(Constants::FORM_ERRORS,array($message));
-				header("Location: /qa/answer/delete.php?id=".$fvalues['answer_id']);
+				header("Location: /qa/comment/delete.php?id=".$fvalues['comment_id']);
                 exit(1);
             }
            

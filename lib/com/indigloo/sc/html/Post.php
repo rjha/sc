@@ -8,18 +8,18 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\util\StringUtil as StringUtil ;
     use \com\indigloo\sc\util\PseudoId as PseudoId;
     
-    class Question {
+    class Post {
 
-		static function getSimpleTile($questionDBRow) {
+		static function getSimpleTile($postDBRow) {
 
 		    $html = NULL ;
-			$imagesJson = $questionDBRow['images_json'];
+			$imagesJson = $postDBRow['images_json'];
 			$images = json_decode($imagesJson);
 			
 			$view = new \stdClass;
 
-			$view->description = Util::abbreviate($questionDBRow['description'],70);
-			$view->id = $questionDBRow['id'];
+			$view->description = Util::abbreviate($postDBRow['description'],70);
+			$view->id = $postDBRow['id'];
 			$view->itemId = PseudoId::encode($view->id);
 
 			if(sizeof($images) > 0) {
@@ -54,24 +54,24 @@ namespace com\indigloo\sc\html {
 			
         }
 
-		static function getTile($questionDBRow) {
+		static function getTile($postDBRow) {
 
 		    $html = NULL ;
-			$imagesJson = $questionDBRow['images_json'];
+			$imagesJson = $postDBRow['images_json'];
 			$images = json_decode($imagesJson);
 			
 			$view = new \stdClass;
-			$view->description = Util::abbreviate($questionDBRow['description'],160);
+			$view->description = Util::abbreviate($postDBRow['description'],160);
 
-			$view->userPageURI = "/pub/user/".PseudoId::encode($questionDBRow['login_id']);
-			$view->id = $questionDBRow['id'];
+			$view->userPageURI = "/pub/user/".PseudoId::encode($postDBRow['login_id']);
+			$view->id = $postDBRow['id'];
 			$view->itemId = PseudoId::encode($view->id);
 				
-			$view->userName = $questionDBRow['user_name'];
-			$view->createdOn = Util::formatDBTime($questionDBRow['created_on']);
-			$view->tags = $questionDBRow['tags'];
+			$view->userName = $postDBRow['user_name'];
+			$view->createdOn = Util::formatDBTime($postDBRow['created_on']);
+			$view->tags = $postDBRow['tags'];
 
-            $group_slug = $questionDBRow['group_slug'];
+            $group_slug = $postDBRow['group_slug'];
             $groups = array();
 
             if(!is_null($group_slug) && (strlen($group_slug) > 0)) {
@@ -125,35 +125,35 @@ namespace com\indigloo\sc\html {
 			
         }
 
-		static function getDetail($questionDBRow) {
+		static function getDetail($postDBRow) {
 			$html = NULL ;
 			
 			$view = new \stdClass;
-			$view->description = $questionDBRow['description'];
+			$view->description = $postDBRow['description'];
 			
 				
-			$view->userName = $questionDBRow['user_name'];
-			$view->createdOn = Util::formatDBTime($questionDBRow['created_on']);
-			$view->tags = $questionDBRow['tags'];
-            $view->loginId = $questionDBRow['login_id'];
+			$view->userName = $postDBRow['user_name'];
+			$view->createdOn = Util::formatDBTime($postDBRow['created_on']);
+			$view->tags = $postDBRow['tags'];
+            $view->loginId = $postDBRow['login_id'];
             $view->pubUserId = PseudoId::encode($view->loginId);
 
-			$template = '/fragments/question/detail.tmpl' ;
+			$template = '/fragments/post/detail.tmpl' ;
 			$html = Template::render($template,$view);
 			
 			return $html ;	
 		}
 
-        static function getEditBar($gSessionLogin,$questionDBRow){
+        static function getEditBar($gSessionLogin,$postDBRow){
 			$html = NULL ;
-			$template = '/fragments/question/edit-bar.tmpl' ;
+			$template = '/fragments/post/edit-bar.tmpl' ;
 
 			$view = new \stdClass;
             $view->isLoggedInUser = false ;
-            $view->id = $questionDBRow['id'];
+            $view->id = $postDBRow['id'];
             $view->itemId = PseudoId::encode($view->id);
 
-			if(!is_null($gSessionLogin) && ($gSessionLogin->id == $questionDBRow['login_id'])){
+			if(!is_null($gSessionLogin) && ($gSessionLogin->id == $postDBRow['login_id'])){
 				$view->isLoggedInUser = true ;
             } 
 
@@ -162,27 +162,27 @@ namespace com\indigloo\sc\html {
 
         }
 
-		static function getWidget($gSessionLogin,$questionDBRow) {
+		static function getWidget($gSessionLogin,$postDBRow) {
            
 			$html = NULL ;
 
 			$template = '/fragments/widget/text.tmpl' ;
-			$imagesJson = $questionDBRow['images_json'];
+			$imagesJson = $postDBRow['images_json'];
 			$images = json_decode($imagesJson);
 			
 			$view = new \stdClass;
-			$view->description = $questionDBRow['description'];
-			$view->id = $questionDBRow['id'];
+			$view->description = $postDBRow['description'];
+			$view->id = $postDBRow['id'];
 			$view->itemId = PseudoId::encode($view->id);
 			
 				
-			$view->userName = $questionDBRow['user_name'];
-			$view->createdOn = Util::formatDBTime($questionDBRow['created_on']);
-			$view->tags = $questionDBRow['tags'];
+			$view->userName = $postDBRow['user_name'];
+			$view->createdOn = Util::formatDBTime($postDBRow['created_on']);
+			$view->tags = $postDBRow['tags'];
 
 			$view->isLoggedInUser = false ;
 
-			if(!is_null($gSessionLogin) && ($gSessionLogin->id == $questionDBRow['login_id'])){
+			if(!is_null($gSessionLogin) && ($gSessionLogin->id == $postDBRow['login_id'])){
 				$view->isLoggedInUser = true ;
 			} 
 			

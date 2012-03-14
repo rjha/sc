@@ -13,25 +13,25 @@
      
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     
-	$questionId = Url::getQueryParam("id");
+	$postId = Url::getQueryParam("id");
 
     //Add permanent redirect
-    $redirectUrl = "/item/".PseudoId::encode($questionId) ;
+    $redirectUrl = "/item/".PseudoId::encode($postId) ;
     header( "HTTP/1.1 301 Moved Permanently" ); 
     header( "Location: ".$redirectUrl );   
     exit ;
 
-    $questionDao = new com\indigloo\sc\dao\Question();
-    $questionDBRow = $questionDao->getOnId($questionId);
+    $postDao = new com\indigloo\sc\dao\Post();
+    $postDBRow = $postDao->getOnId($postId);
 
-    $imagesJson = $questionDBRow['images_json'];
+    $imagesJson = $postDBRow['images_json'];
     $images = json_decode($imagesJson);
     
-	$linksJson = $questionDBRow['links_json'];
+	$linksJson = $postDBRow['links_json'];
 	$links = json_decode($linksJson);
 
-    $answerDao = new com\indigloo\sc\dao\Answer();
-    $answerDBRows = $answerDao->getOnQuestionId($questionId);
+    $commentDao = new com\indigloo\sc\dao\Comment();
+    $commentDBRows = $commentDao->getOnPostId($postId);
 
 	$loginId = NULL ;
 
@@ -50,7 +50,7 @@
 <html>
 
        <head>
-        <title> 3mik.com - <?php echo $questionDBRow['title']; ?>  </title>
+        <title> 3mik.com - <?php echo $postDBRow['title']; ?>  </title>
         <?php include($_SERVER['APP_WEB_DIR'] . '/inc/meta.inc'); ?>
        
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
@@ -100,7 +100,7 @@
                            
 				<?php 
 					if(sizeof($images) > 0 ) { include('inc/carousel.inc') ; }
-					echo \com\indigloo\sc\html\Question::getDetail($questionDBRow) ; 
+					echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ; 
 
 					if(sizeof($links) > 0 ) {  
 						//@todo cleanup kludge in body html
@@ -125,8 +125,8 @@
 
 				<div class="mt20">
 					<?php
-						foreach($answerDBRows as $answerDBRow) {
-							echo \com\indigloo\sc\html\Answer::getSummary($loginId,$answerDBRow) ;
+						foreach($commentDBRows as $commentDBRow) {
+							echo \com\indigloo\sc\html\Comment::getSummary($loginId,$commentDBRow) ;
 						}
 					?>
 				</div>
@@ -135,7 +135,7 @@
 
                 <?php FormMessage::render(); ?>
 				<div id="form-wrapper">	
-				<form id="web-form1"  name="web-form1" action="/qa/form/answer.php" enctype="multipart/form-data"  method="POST">
+				<form id="web-form1"  name="web-form1" action="/qa/form/comment.php" enctype="multipart/form-data"  method="POST">
 
 					<div class="error">  </div>
 
@@ -148,7 +148,7 @@
 						</tr>
 						 <tr>
 							<td>
-								<textarea  name="answer" class="required w580 h130" title="Answer is required" cols="50" rows="4" ><?php echo $sticky->get('answer'); ?></textarea>
+								<textarea  name="comment" class="required w580 h130" title="Comment is required" cols="50" rows="4" ><?php echo $sticky->get('comment'); ?></textarea>
 							</td>
 						 </tr>
 						 
@@ -159,7 +159,7 @@
 						<button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Add your comment</span></button>
 					</div>
 
-				   <input type="hidden" name="question_id" value="<?php echo $questionDBRow['id']; ?>" />
+				   <input type="hidden" name="post_id" value="<?php echo $postDBRow['id']; ?>" />
 				   <input type="hidden" name="q" value="<?php echo $_SERVER['REQUEST_URI']; ?>" />
 				   
 				</form>

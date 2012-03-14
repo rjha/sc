@@ -34,8 +34,8 @@ namespace com\indigloo\sc\controller{
                 $pageBaseUrl = "/search/site";
 
                 $template = $_SERVER['APP_WEB_DIR']. '/view/tiles-page.php';
-                $questionDao = new \com\indigloo\sc\dao\Question();
-                $questionDBRows = $questionDao->getOnSearchIds($ids) ;
+                $postDao = new \com\indigloo\sc\dao\Post();
+                $postDBRows = $postDao->getOnSearchIds($ids) ;
 
             } else {
                 $pageHeader = "No Results for $token" ;

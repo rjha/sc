@@ -1,5 +1,5 @@
 <?php
-    //qa/form/answer.php
+    //qa/form/comment.php
     
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
@@ -17,7 +17,7 @@
         
 		
         $fhandler = new Form\Handler('web-form-1', $_POST);
-        $fhandler->addRule('answer', 'Answer', array('required' => 1));
+        $fhandler->addRule('comment', 'Comment', array('required' => 1));
         
         $fvalues = $fhandler->getValues();
         $ferrors = $fhandler->getErrors();
@@ -33,14 +33,9 @@
 			
         } else {
             
-            $answerDao = new com\indigloo\sc\dao\Answer();
+            $commentDao = new com\indigloo\sc\dao\Comment();
 			
-            $code = $answerDao->create(
-								$fvalues['question_id'],
-                                $fvalues['answer'],
-								$gSessionLogin->id);
-								
-    
+            $code = $commentDao->create( $fvalues['post_id'],$fvalues['comment'],$gSessionLogin->id);
             
             if ($code == com\indigloo\mysql\Connection::ACK_OK ) {
                 $locationOnSuccess = $_POST['q'];

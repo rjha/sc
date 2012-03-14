@@ -6,28 +6,28 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
     
-    class Answer {
+    class Comment {
         
-        const MODULE_NAME = 'com\indigloo\sc\mysql\Answer';
+        const MODULE_NAME = 'com\indigloo\sc\mysql\Comment';
 		//DB columns for filters
 		const LOGIN_COLUMN = "login_id" ;
 
-		static function getOnQuestionId($questionId) {
+		static function getOnPostId($postId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$questionId = $mysqli->real_escape_string($questionId);
+			$postId = $mysqli->real_escape_string($postId);
 			
             $sql = " select a.*,l.name as user_name from sc_answer a,sc_login l " ;
-            $sql .= " where l.id = a.login_id and  a.question_id = ".$questionId ;
+            $sql .= " where l.id = a.login_id and  a.question_id = ".$postId ;
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 		}
 		
-		static function getOnId($answerId) {
+		static function getOnId($commentId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$answerId = $mysqli->real_escape_string($answerId);
+			$commentId = $mysqli->real_escape_string($commentId);
 			
             $sql = " select a.*,l.name as user_name from sc_answer a,sc_login l ";
-            $sql .= " where l.id = a.login_id and a.id = ".$answerId ;
+            $sql .= " where l.id = a.login_id and a.id = ".$commentId ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 		}
@@ -106,8 +106,8 @@ namespace com\indigloo\sc\mysql {
 
 		}
 
-        static function create($questionId,
-								$answer,
+        static function create($postId,
+								$comment,
 								$loginId) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -119,8 +119,8 @@ namespace com\indigloo\sc\mysql {
             
             if ($stmt) {
                 $stmt->bind_param("isi",
-								$questionId,
-								$answer,
+								$postId,
+								$comment,
 								$loginId);
                 
                       
@@ -137,7 +137,7 @@ namespace com\indigloo\sc\mysql {
 			return $code ;
         }
 		
-		static function update($answerId,$answer,$loginId) {
+		static function update($commentId,$comment,$loginId) {
 			
 			$code = MySQL\Connection::ACK_OK ;
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -147,7 +147,7 @@ namespace com\indigloo\sc\mysql {
 			$stmt = $mysqli->prepare($sql);
             
             if ($stmt) {
-                $stmt->bind_param("sii",$answer,$answerId,$loginId) ;
+                $stmt->bind_param("sii",$comment,$commentId,$loginId) ;
                 $stmt->execute();
                 $stmt->close();
 				
@@ -159,7 +159,7 @@ namespace com\indigloo\sc\mysql {
 			
 		}
 
-		static function delete($answerId,$loginId) {
+		static function delete($commentId,$loginId) {
 
 			$code = MySQL\Connection::ACK_OK ;
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -168,7 +168,7 @@ namespace com\indigloo\sc\mysql {
 			$stmt = $mysqli->prepare($sql);
 
             if ($stmt) {
-                $stmt->bind_param("ii",$answerId,$loginId) ;
+                $stmt->bind_param("ii",$commentId,$loginId) ;
                 $stmt->execute();
                 $stmt->close();
 				

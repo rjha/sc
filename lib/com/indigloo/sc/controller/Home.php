@@ -8,22 +8,22 @@ namespace com\indigloo\sc\controller{
   
 	
     class Home {
-        
+      
         function process($params,$options) {
-            
-			$questionDao = new \com\indigloo\sc\dao\Question();
-			$total = $questionDao->getTotalCount();
+           	$postDao = new \com\indigloo\sc\dao\Post();
+			$total = $postDao->getTotalCount();
 
 			$qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
 			$pageSize =	Config::getInstance()->get_value("main.page.items");
 			$paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);	
 
-			$questionDBRows = $questionDao->getPaged($paginator);
+			$postDBRows = $postDao->getPaged($paginator);
 
             $file = $_SERVER['APP_WEB_DIR']. '/home.php' ;
             include ($file);
-		
+ 
         }
+
     }
 }
 ?>

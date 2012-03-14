@@ -6,24 +6,24 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\sc\mysql as mysql;
 	
-    class Answer {
+    class Comment {
 
 		const LOGIN_ID_COLUMN = "scr1flma";
 
 		function createDBFilter($filter) {
-			$map = array(self::LOGIN_ID_COLUMN => mysql\Answer::LOGIN_COLUMN);
+			$map = array(self::LOGIN_ID_COLUMN => mysql\Comment::LOGIN_COLUMN);
 			$dbfilter = mysql\Helper::createDBFilter($filter,$map);
 			return $dbfilter ;
 		}
 
 
-		function getOnQuestionId($questionId) {
-			$rows = mysql\Answer::getOnQuestionId($questionId);
+		function getOnPostId($postId) {
+			$rows = mysql\Comment::getOnPostId($postId);
 			return $rows ;
 		}
 		
-		function getOnId($answerId) {
-			$rows = mysql\Answer::getOnId($answerId);
+		function getOnId($commentId) {
+			$rows = mysql\Comment::getOnId($commentId);
 			return $rows ;
 		}
 
@@ -48,38 +48,38 @@ namespace com\indigloo\sc\dao {
 
 				$start = base_convert($start,36,10);
 
-				$rows = mysql\Answer::getPaged($start,$direction,$count,$dbfilter);
+				$rows = mysql\Comment::getPaged($start,$direction,$count,$dbfilter);
 				return $rows ;
 			}
 		}
 
 		function getLatest($count,$filter=NULL) {
 			$dbfilter = $this->createDBFilter($filter);
-			$rows = mysql\Answer::getLatest($count,$dbfilter);
+			$rows = mysql\Comment::getLatest($count,$dbfilter);
 			return $rows ;
 		}
 		
 		function getTotalCount($filter=NULL) {
 			$dbfilter = $this->createDBFilter($filter);
-			$row = mysql\Answer::getTotalCount($dbfilter);
+			$row = mysql\Comment::getTotalCount($dbfilter);
             return $row['count'] ;
 		}
 
 
-		function update($answerId,$answer) {
+		function update($commentId,$comment) {
 			$loginId = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
-			$code = mysql\Answer::update($answerId,$answer,$loginId) ;
+			$code = mysql\Comment::update($commentId,$comment,$loginId) ;
 			return $code ;
 		}
 			
-        function create($questionId, $answer,$loginId) {
-            $code = mysql\Answer::create($questionId, $answer, $loginId);
+        function create($postId, $comment,$loginId) {
+            $code = mysql\Comment::create($postId, $comment, $loginId);
             return $code ;
         }
 
-		function delete($answerId){
+		function delete($commentId){
 			$loginId = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
-            $code = mysql\Answer::delete($answerId,$loginId);
+            $code = mysql\Comment::delete($commentId,$loginId);
             return $code ;
         }
 

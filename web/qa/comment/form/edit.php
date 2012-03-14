@@ -1,5 +1,5 @@
 <?php
-    //qa/answer/form/edit.php
+    //qa/comment/form/edit.php
     
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
@@ -13,7 +13,7 @@
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
         
         $fhandler = new Form\Handler('web-form-1', $_POST);
-        $fhandler->addRule('answer', 'Answer', array('required' => 1));
+        $fhandler->addRule('comment', 'Comment', array('required' => 1));
         
         $fvalues = $fhandler->getValues();
         $ferrors = $fhandler->getErrors();
@@ -28,8 +28,8 @@
 			
         } else {
             
-            $answerDao = new com\indigloo\sc\dao\Answer();
-            $code = $answerDao->update($fvalues['answer_id'], $fvalues['answer']);
+            $commentDao = new com\indigloo\sc\dao\Comment();
+            $code = $commentDao->update($fvalues['comment_id'], $fvalues['comment']);
             
             if ($code == com\indigloo\mysql\Connection::ACK_OK ) {
                 $locationOnSuccess =  "/item/".$fvalues['item_id'] ;

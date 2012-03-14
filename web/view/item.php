@@ -79,7 +79,7 @@
                            
 				<?php 
 					if(sizeof($images) > 0 ) { include($_SERVER['APP_WEB_DIR'].'/qa/inc/carousel.inc') ; }
-					echo \com\indigloo\sc\html\Question::getDetail($questionDBRow) ; 
+					echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ; 
 
 					if(sizeof($links) > 0 ) {  
 						//@todo cleanup kludge in body html
@@ -94,14 +94,14 @@
 						echo "</ol> </div>" ;
 					}
 
-					echo \com\indigloo\sc\html\Question::getEditBar($gSessionLogin,$questionDBRow) ; 
+					echo \com\indigloo\sc\html\Post::getEditBar($gSessionLogin,$postDBRow) ; 
 
 				?>
 
 				<div class="mt20">
 					<?php
-						foreach($answerDBRows as $answerDBRow) {
-							echo \com\indigloo\sc\html\Answer::getSummary($loginId,$answerDBRow) ;
+						foreach($commentDBRows as $commentDBRow) {
+							echo \com\indigloo\sc\html\Comment::getSummary($loginId,$commentDBRow) ;
 						}
 					?>
 				</div>
@@ -110,7 +110,7 @@
 
                 <?php echo $formErrors; ?>
 				<div id="form-wrapper">	
-				<form id="web-form1"  name="web-form1" action="/qa/form/answer.php" enctype="multipart/form-data"  method="POST">
+				<form id="web-form1"  name="web-form1" action="/qa/form/comment.php" enctype="multipart/form-data"  method="POST">
 
 					<div class="error">  </div>
 
@@ -123,7 +123,7 @@
 						</tr>
 						 <tr>
 							<td>
-								<textarea  name="answer" class="required w580 h130" title="Answer is required" cols="50" rows="4" ><?php echo $sticky->get('answer'); ?></textarea>
+								<textarea  name="comment" class="required w580 h130" title="Comment is required" cols="50" rows="4" ><?php echo $sticky->get('comment'); ?></textarea>
 							</td>
 						 </tr>
 						 
@@ -134,7 +134,7 @@
 						<button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Save</span></button>
 					</div>
 
-				   <input type="hidden" name="question_id" value="<?php echo $questionDBRow['id']; ?>" />
+				   <input type="hidden" name="post_id" value="<?php echo $postDBRow['id']; ?>" />
 				   <input type="hidden" name="q" value="<?php echo $_SERVER['REQUEST_URI']; ?>" />
 				   
 				</form>
@@ -154,7 +154,7 @@
                 </div>
 					<?php
 						foreach($xrows as $xrow) {
-							echo \com\indigloo\sc\html\Question::getSimpleTile($xrow) ;
+							echo \com\indigloo\sc\html\Post::getSimpleTile($xrow) ;
 						}
 					?>
 			</div>

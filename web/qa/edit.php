@@ -18,13 +18,13 @@
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
 	$itemId = Url::getQueryParam("id");
-	$questionId = PseudoId::decode($itemId);
+	$postId = PseudoId::decode($itemId);
 
-    $questionDao = new \com\indigloo\sc\dao\Question();
-    $questionDBRow = $questionDao->getOnId($questionId);
+    $postDao = new \com\indigloo\sc\dao\Post();
+    $postDBRow = $postDao->getOnId($postId);
 	
 
-	if(!Login::isOwner($questionDBRow['login_id'])) {
+	if(!Login::isOwner($postDBRow['login_id'])) {
 		header("Location: /qa/noowner.php");
 		exit(1);
 	}
@@ -35,9 +35,9 @@
     $ugroups = $userDao->getGroups($loginId);
 
 
-    $imagesJson = $questionDBRow['images_json'];
-    $strImagesJson = $sticky->get('images_json',$questionDBRow['images_json']) ;
-    $strLinksJson = $sticky->get('links_json',$questionDBRow['links_json']) ;
+    $imagesJson = $postDBRow['images_json'];
+    $strImagesJson = $sticky->get('images_json',$postDBRow['images_json']) ;
+    $strLinksJson = $sticky->get('links_json',$postDBRow['links_json']) ;
 
     $strImagesJson = empty($strImagesJson) ? '[]' : $strImagesJson ;
     $strLinksJson = empty($strLinksJson) ? '[]' : $strLinksJson ;
@@ -130,7 +130,7 @@
                             <tr>
                                 <td>
 									<label>Details</label>
-									<textarea  name="description" class="required h130 w500" cols="50" rows="4" ><?php echo $sticky->get('description',$questionDBRow['description']); ?></textarea>
+									<textarea  name="description" class="required h130 w500" cols="50" rows="4" ><?php echo $sticky->get('description',$postDBRow['description']); ?></textarea>
 								</td>
 							</tr>
 							<tr>
@@ -142,7 +142,7 @@
 							</tr>
                             <tr>
                                 <td> 
-                                <?php echo \com\indigloo\sc\html\GroupPanel::render($ugroups,$questionDBRow['group_slug']); ?>
+                                <?php echo \com\indigloo\sc\html\GroupPanel::render($ugroups,$postDBRow['group_slug']); ?>
 
                                 </td>
 							</tr> <!-- groups --> 
@@ -164,7 +164,7 @@
 						
 						<input type="hidden" name="links_json" value='<?php echo $strLinksJson ; ?>' />
 						<input type="hidden" name="images_json" value='<?php echo $strImagesJson ; ?>' />
-						<input type="hidden" name="question_id" value="<?php echo $questionDBRow['id'];?>" />	
+						<input type="hidden" name="post_id" value="<?php echo $postDBRow['id'];?>" />	
 						<input type="hidden" name="q" value="<?php echo $_SERVER["REQUEST_URI"];?>" />	
 						        
 					</form>
