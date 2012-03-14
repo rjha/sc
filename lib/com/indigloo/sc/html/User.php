@@ -32,7 +32,7 @@ namespace com\indigloo\sc\html {
 			$view->image = $userDBRow['profile_image'];
 
 			if(empty($view->image)) {
-				$view->image = "/nuke/twitter-bird.png" ;
+				$view->image = "/css/images/twitter-bird.png" ;
 			}
 
 			$html = Template::render($template,$view);
