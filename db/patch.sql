@@ -348,8 +348,8 @@ delimiter ;
 -- @13 mar 2012
 --
 -- @todo 
--- alter table sc_question modify column description varchar(512);
 -- 14 Mar 2012
+-- 15 Mar 2012
 -- 
 
 alter table sc_question add column is_feature int default 0 ;
@@ -360,9 +360,99 @@ alter table sc_question add column is_feature int default 0 ;
 
 alter table sc_question add column pseudo_id int  ;
 alter table sc_question add constraint unique(pseudo_id) ;
+
+alter table sc_answer change column question_id post_id int not null;
+alter table sc_answer change column answer description varchar(512) ;
+
+rename table sc_question to sc_post ;
+rename table sc_answer to sc_comment;
+
+alter table sc_comment_archive change column question_id post_id int not null;
+alter table sc_comment_archive change column answer description varchar(512) ;
+
+
+DROP TRIGGER IF EXISTS trg_answer_title;
+
+delimiter //
+CREATE TRIGGER trg_comment_title BEFORE INSERT ON sc_comment
+    FOR EACH ROW
+    BEGIN
+	DECLARE p_title  varchar(128) ;
+	SELECT title into p_title from sc_post where id = NEW.post_id ;
+	set NEW.title = p_title ;
+	
+    END;//
+delimiter ;
+
+
+DROP TRIGGER IF EXISTS trg_post_archive;
+
+delimiter //
+CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
+    FOR EACH ROW
+    BEGIN
+        insert into sc_post_archive(title,description,location,tags,login_id,links_json,images_json)
+        select q.title,q.description,q.location,q.tags,q.login_id,q.links_json,q.images_json
+        from sc_post  q where q.id = OLD.id ; 
+    END;//
+delimiter ;
+
+
+DROP TRIGGER IF EXISTS trg_comment_archive;
+
+delimiter //
+CREATE TRIGGER trg_comment_archive  BEFORE DELETE ON sc_comment
+    FOR EACH ROW
+    BEGIN
+        insert into sc_comment_archive (login_id,post_id,title,description)
+        select a.login_id,a.post_id,a.title,a.description from sc_comment a where a.id = OLD.id ; 
+    END;//
+delimiter ;
+
+
+DROP TRIGGER IF EXISTS trg_user_group;
+
+delimiter //
+CREATE TRIGGER trg_user_group  AFTER  INSERT ON sc_post
+    FOR EACH ROW
+    BEGIN
+        DECLARE login_id INT ;
+        DECLARE slug varchar(64) ;
+
+        SET slug = NEW.group_slug ;
+        SET login_id = NEW.login_id ;
+        call fn_user_group(login_id,slug);
+
+    END;//
+delimiter ;
+
+
+DROP TRIGGER IF EXISTS trg_user_group2;
+
+delimiter //
+CREATE TRIGGER trg_user_group2  AFTER  update ON sc_post
+    FOR EACH ROW
+    BEGIN
+        DECLARE login_id INT ;
+        DECLARE slug varchar(64) ;
+
+        SET slug = NEW.group_slug ;
+        SET login_id = NEW.login_id ;
+        call fn_user_group(login_id,slug);
+
+    END;//
+delimiter ;
+
+
+alter table sc_post modify column description varchar(512);
+
 --
 -- @todo now run the pseudo0id update DB script now
 --
+
+
+
+
 
 
 

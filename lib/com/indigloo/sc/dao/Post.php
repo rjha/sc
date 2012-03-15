@@ -9,12 +9,15 @@ namespace com\indigloo\sc\dao {
     
     class Post {
 
-		const LOGIN_ID_COLUMN  = "oowyh1vm";
-		const FEATURE_COLUMN  = "dwndk1vo";
+		const LOGIN_ID_COLUMN  = "login_id";
+		const FEATURE_COLUMN  = "feature";
+		const DATE_COLUMN  = "created_on";
 
 		function createDBFilter($filter) {
-			$map = array(self::LOGIN_ID_COLUMN => mysql\Post::LOGIN_COLUMN,
-                            self::FEATURE_COLUMN => mysql\Post::FEATURE_COLUMN);
+            $map = array(
+                self::LOGIN_ID_COLUMN => mysql\Post::LOGIN_COLUMN,
+                self::FEATURE_COLUMN => mysql\Post::FEATURE_COLUMN,
+                self::DATE_COLUMN => mysql\Post::DATE_COLUMN);
 			$dbfilter = mysql\Helper::createDBFilter($filter,$map);
 			return $dbfilter ;
 		}

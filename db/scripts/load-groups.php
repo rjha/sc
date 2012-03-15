@@ -15,7 +15,7 @@
         $slug = trim($columns[2]);
         $id = trim($columns[0]);
 
-        $sql = sprintf("update sc_question set group_slug = '%s' where id = %d ; \n",$slug,$id);
+        $sql = sprintf("update sc_post set group_slug = '%s' where id = %d ; \n",$slug,$id);
         echo $sql;
         echo "\n" ; 
         if($columns[0] < 1000) break;

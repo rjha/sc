@@ -18,7 +18,7 @@
         $start =  $count*20 ;
         $end = $start + 20 ;
 
-        $sql = " select id,images_json from sc_question where  (id <= {end}) and (id >= {start} ) ";
+        $sql = " select id,images_json from sc_post where  (id <= {end}) and (id >= {start} ) ";
         $sql = str_replace(array("{end}", "{start}"),array( 0 => $end, 1=> $start),$sql);
         //printf("%s \n ", $sql);
         //$count++ ;
@@ -36,7 +36,7 @@
             foreach($images as $image) {
                 printf("processing image id %d \n",$image->id);
                 //load media DB row
-                // update sc_question.id with new media DB Row
+                // update sc_post.id with new media DB Row
                 $sql = " select * from sc_media where id = ".$image->id ;
                 $mediaDBRow = MySQL\Helper::fetchRow($mysqli, $sql);
                 $mediaVO = \com\indigloo\media\Data::create($mediaDBRow);
@@ -52,13 +52,13 @@
     }
     
 
-      function updateItem($mysqli,$questionId,$strMediaVO) {
+      function updateItem($mysqli,$postId,$strMediaVO) {
       
-        $updateSQL = " update sc_question set images_json = ? where id = ? " ;
+        $updateSQL = " update sc_post set images_json = ? where id = ? " ;
         $stmt = $mysqli->prepare($updateSQL);
 
         if ($stmt) {
-            $stmt->bind_param("si", $strMediaVO,$questionId);
+            $stmt->bind_param("si", $strMediaVO,$postId);
             $stmt->execute();
             $stmt->close();
         }

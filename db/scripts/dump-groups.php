@@ -9,7 +9,7 @@
 	error_reporting(-1);
     
     //dump id,description,group
-    $sql = " select id,description,group_slug from sc_question order by id desc ";
+    $sql = " select id,description,group_slug from sc_post order by id desc ";
     $mysqli = MySQL\Connection::getInstance()->getHandle();
     $rows = MySQL\Helper::fetchRows($mysqli, $sql);
 

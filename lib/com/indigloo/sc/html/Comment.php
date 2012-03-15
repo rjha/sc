@@ -14,7 +14,7 @@ namespace com\indigloo\sc\html {
 			$view = new \stdClass;
 			$template = '/fragments/comment/summary.tmpl' ;
 			
-			$view->comment = $commentDBRow['answer'];
+			$view->comment = $commentDBRow['description'];
 			$view->createdOn = Util::formatDBTime($commentDBRow['created_on']);
 			$view->userName = $commentDBRow['user_name'] ;
             $view->loginId = $commentDBRow['login_id'];
@@ -37,10 +37,10 @@ namespace com\indigloo\sc\html {
 			$view->encodedId = PseudoId::encode($view->id);
 
 			$view->title = $commentDBRow['title'];
-			$view->postId = $commentDBRow['question_id'];
+			$view->postId = $commentDBRow['post_id'];
 			$view->itemId = PseudoId::encode($view->postId);
 
-			$view->comment = $commentDBRow['answer'];
+			$view->comment = $commentDBRow['description'];
 			$view->createdOn = Util::formatDBTime($commentDBRow['created_on']);
 			$view->userName = $commentDBRow['user_name'] ;
 			$view->isLoggedInUser = false ;

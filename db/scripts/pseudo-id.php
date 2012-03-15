@@ -9,7 +9,7 @@
     $mysqli = MySQL\Connection::getInstance()->getHandle();
 
 
-    $sql = " select max(id) as max_id  from sc_question " ;
+    $sql = " select max(id) as max_id  from sc_post " ;
     $row = MySQL\Helper::fetchRow($mysqli,$sql);
     $maxId = $row['max_id'];
     echo "Max id = $maxId \n" ;
@@ -20,7 +20,7 @@
     }
 
     function update($mysqli,$x,$ex) {
-        $sql = "update sc_question set display_id = ? where id = ? " ;
+        $sql = "update sc_post set pseudo_id = ? where id = ? " ;
         $stmt = $mysqli->prepare($sql);
 
         if ($stmt) {

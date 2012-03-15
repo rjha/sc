@@ -51,26 +51,22 @@
 			<div class="row">
 				<div class="span12">
 					<div id="tiles">
+
 						<?php
-
-							$startId = NULL ;
-							$endId = NULL ;	
-
-							if(sizeof($postDBRows) > 0 ) { 
-								$startId = $postDBRows[0]['id'] ;
-								$endId =  $postDBRows[sizeof($postDBRows)-1]['id'] ;
-							}	
-
-							foreach($postDBRows as $postDBRow) {
+							foreach($this->homeDBRows as $postDBRow) {
 								$html = \com\indigloo\sc\html\Post::getTile($postDBRow);
 								echo $html ;
 						
 							}
+
 						?>
 						   
 					</div><!-- tiles -->
+                    <hr>
+                    <ul class="pager">
+                        <li> <a href="<?php echo $nextPageUrl ?>">Next &rarr;</a></li>
+                    </ul>
 
-					<?php $paginator->render('/',$startId,$endId);  ?>
                    <div id="feedback" class="vertical">
 						<a href="/share/feedback.php">
 							Y O U R    

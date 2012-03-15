@@ -16,8 +16,8 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 			$postId = $mysqli->real_escape_string($postId);
 			
-            $sql = " select a.*,l.name as user_name from sc_answer a,sc_login l " ;
-            $sql .= " where l.id = a.login_id and  a.question_id = ".$postId ;
+            $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
+            $sql .= " where l.id = a.login_id and  a.post_id = ".$postId ;
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 		}
@@ -26,7 +26,7 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 			$commentId = $mysqli->real_escape_string($commentId);
 			
-            $sql = " select a.*,l.name as user_name from sc_answer a,sc_login l ";
+            $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l ";
             $sql .= " where l.id = a.login_id and a.id = ".$commentId ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
@@ -42,7 +42,7 @@ namespace com\indigloo\sc\mysql {
 				$condition = " and a.login_id = ".$loginId;
 			}
 
-            $sql = " select a.*,l.name as user_name from sc_answer a,sc_login l " ;
+            $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
             $sql .= " where l.id = a.login_id ".$condition." order by id desc LIMIT ".$count ;
 			$rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
@@ -58,7 +58,7 @@ namespace com\indigloo\sc\mysql {
 				$condition = " where login_id = ".$loginId;
 			}
 
-            $sql = " select count(id) as count from sc_answer ".$condition ;
+            $sql = " select count(id) as count from sc_comment ".$condition ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 		}
@@ -66,7 +66,7 @@ namespace com\indigloo\sc\mysql {
 		static function getPaged($start,$direction,$count,$dbfilter) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             
-            $sql = " select a.*,l.name as user_name from sc_answer a,sc_login l where l.id = a.login_id " ;
+            $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l where l.id = a.login_id " ;
             $predicate = '' ;
 			$condition = '' ;
 
@@ -111,7 +111,7 @@ namespace com\indigloo\sc\mysql {
 								$loginId) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " insert into sc_answer(question_id,answer,login_id, created_on) " ;
+            $sql = " insert into sc_comment(post_id,description,login_id, created_on) " ;
             $sql .= " values(?,?,?,now()) ";
 
             $code = MySQL\Connection::ACK_OK;
@@ -141,7 +141,7 @@ namespace com\indigloo\sc\mysql {
 			
 			$code = MySQL\Connection::ACK_OK ;
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$sql = "update sc_answer set answer = ? where id = ? and login_id = ?" ;
+			$sql = "update sc_comment set description = ?, updated_on = now() where id = ? and login_id = ?" ;
 			
 			
 			$stmt = $mysqli->prepare($sql);
@@ -163,7 +163,7 @@ namespace com\indigloo\sc\mysql {
 
 			$code = MySQL\Connection::ACK_OK ;
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$sql = "delete from sc_answer where id = ? and login_id = ?" ;
+			$sql = "delete from sc_comment where id = ? and login_id = ?" ;
 
 			$stmt = $mysqli->prepare($sql);
 

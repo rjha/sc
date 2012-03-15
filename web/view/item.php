@@ -110,7 +110,7 @@
 
                 <?php echo $formErrors; ?>
 				<div id="form-wrapper">	
-				<form id="web-form1"  name="web-form1" action="/qa/form/comment.php" enctype="multipart/form-data"  method="POST">
+                    <form id="web-form1"  name="web-form1" action="/qa/form/comment.php?q=/item/<?php echo $itemId; ?>" enctype="multipart/form-data"  method="POST">
 
 					<div class="error">  </div>
 

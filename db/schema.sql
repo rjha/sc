@@ -2,8 +2,8 @@
 
 -- create database scdb  character set utf8 collate utf8_general_ci ;
 
-drop table if exists sc_question;
-create table sc_question(
+drop table if exists sc_post;
+create table sc_post(
 	id int(11) NOT NULL auto_increment,
     login_id int not null,
 	title varchar(128) not null,
@@ -17,13 +17,13 @@ create table sc_question(
 	updated_on timestamp default '0000-00-00 00:00:00' ,
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
     
-drop table if exists sc_answer;
-create table sc_answer(
+drop table if exists sc_comment;
+create table sc_comment(
 	id int(11) NOT NULL auto_increment,
     login_id int not null,
-	question_id int not null ,
+	post_id int not null ,
 	title varchar(128) ,
-    answer TEXT ,
+    description varchar(512),
     created_on timestamp default '0000-00-00 00:00:00',
 	updated_on timestamp default '0000-00-00 00:00:00' ,
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -146,9 +146,9 @@ drop table if exists sc_comment_archive;
 create table sc_comment_archive(
 	id int(11) NOT NULL auto_increment,
     login_id int not null,
-	question_id int not null ,
+	post_id int not null ,
 	title varchar(128) ,
-    answer TEXT ,
+    description varchar(512) ,
     created_on timestamp default '0000-00-00 00:00:00',
 	updated_on timestamp default '0000-00-00 00:00:00' ,
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -174,14 +174,14 @@ alter table sc_user_group add constraint UNIQUE(login_id,token);
 -- Triggers 
 --
 
-DROP TRIGGER IF EXISTS trg_answer_title;
+DROP TRIGGER IF EXISTS trg_comment_title;
 
 delimiter //
-CREATE TRIGGER trg_answer_title BEFORE INSERT ON sc_answer
+CREATE TRIGGER trg_comment_title BEFORE INSERT ON sc_comment
     FOR EACH ROW
     BEGIN
 	DECLARE p_title  varchar(128) ;
-	SELECT title into p_title from sc_question where id = NEW.question_id ;
+	SELECT title into p_title from sc_post where id = NEW.post_id ;
 	set NEW.title = p_title ;
 	
     END;//
@@ -202,12 +202,12 @@ delimiter ;
 DROP TRIGGER IF EXISTS trg_post_archive;
 
 delimiter //
-CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_question
+CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
     FOR EACH ROW
     BEGIN
         insert into sc_post_archive(title,description,location,tags,login_id,links_json,images_json)
         select q.title,q.description,q.location,q.tags,q.login_id,q.links_json,q.images_json
-        from sc_question q where q.id = OLD.id ; 
+        from sc_post  q where q.id = OLD.id ; 
     END;//
 delimiter ;
 
@@ -215,11 +215,11 @@ delimiter ;
 DROP TRIGGER IF EXISTS trg_comment_archive;
 
 delimiter //
-CREATE TRIGGER trg_comment_archive  BEFORE DELETE ON sc_answer
+CREATE TRIGGER trg_comment_archive  BEFORE DELETE ON sc_comment
     FOR EACH ROW
     BEGIN
-        insert into sc_comment_archive (login_id,question_id,title,answer)
-        select a.login_id,a.question_id,a.title,a.answer from sc_answer a where a.id = OLD.id ; 
+        insert into sc_comment_archive (login_id,post_id,title,description)
+        select a.login_id,a.post_id,a.title,a.description from sc_comment a where a.id = OLD.id ; 
     END;//
 delimiter ;
 
@@ -266,7 +266,7 @@ delimiter ;
 DROP TRIGGER IF EXISTS trg_user_group;
 
 delimiter //
-CREATE TRIGGER trg_user_group  AFTER  INSERT ON sc_question
+CREATE TRIGGER trg_user_group  AFTER  INSERT ON sc_post
     FOR EACH ROW
     BEGIN
         DECLARE login_id INT ;
@@ -283,7 +283,7 @@ delimiter ;
 DROP TRIGGER IF EXISTS trg_user_group2;
 
 delimiter //
-CREATE TRIGGER trg_user_group2  AFTER  update ON sc_question
+CREATE TRIGGER trg_user_group2  AFTER  update ON sc_post
     FOR EACH ROW
     BEGIN
         DECLARE login_id INT ;

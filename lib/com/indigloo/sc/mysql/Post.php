@@ -15,12 +15,13 @@ namespace com\indigloo\sc\mysql {
 		//DB columns for filters
 		const LOGIN_COLUMN = "login_id" ;
 		const FEATURE_COLUMN = "is_feature" ;
+		const DATE_COLUMN = "created_on" ;
 
 		static function getOnId($postId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 			$postId = $mysqli->real_escape_string($postId);
 			
-            $sql = " select q.*,l.name as user_name from sc_question q,sc_login l " ;
+            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
             $sql .= " where l.id = q.login_id and q.id = ".$postId ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
@@ -32,8 +33,8 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 			$limit = $mysqli->real_escape_string($limit);
 
-            $sql = " SELECT q.*,l.name as user_name FROM sc_question q,sc_login l WHERE q.login_id = l.id " ;
-            $sql .=" and RAND()<(SELECT ((%d/COUNT(*))*4) FROM sc_question q2) ";
+            $sql = " SELECT q.*,l.name as user_name FROM sc_post q,sc_login l WHERE q.login_id = l.id " ;
+            $sql .=" and RAND()<(SELECT ((%d/COUNT(*))*4) FROM sc_post q2) ";
             $sql .= " ORDER BY RAND() LIMIT %d";
             $sql = sprintf($sql,$limit,$limit);
 
@@ -45,7 +46,7 @@ namespace com\indigloo\sc\mysql {
          static function getPosts($filter,$limit) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 			$limit = $mysqli->real_escape_string($limit);
-            $sql = "select q.*,l.name as user_name  from sc_question q, sc_login l where q.login_id = l.id ";
+            $sql = "select q.*,l.name as user_name  from sc_post q, sc_login l where q.login_id = l.id ";
 
             if(Util::tryArrayKey($filter,self::FEATURE_COLUMN)) {
                 $value = $mysqli->real_escape_string($filter[self::FEATURE_COLUMN]); 
@@ -64,7 +65,7 @@ namespace com\indigloo\sc\mysql {
 			$loginId = $mysqli->real_escape_string($loginId);
 			$limit = $mysqli->real_escape_string($limit);
 			
-            $sql = " select q.*,l.name as user_name from sc_question q,sc_login l where q.login_id = l.id " ; 
+            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l where q.login_id = l.id " ; 
             $sql .= " and  q.login_id = ".$loginId ." order by id desc limit ".$limit ;
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
@@ -88,7 +89,7 @@ namespace com\indigloo\sc\mysql {
 		 */
 		static function getOnSearchIds($strIds) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " select q.*,l.name as user_name from sc_question q, sc_login l " ;
+            $sql = " select q.*,l.name as user_name from sc_post q, sc_login l " ;
             $sql .= " where l.id = q.login_id and q.id in (".$strIds. ") " ;
             $sql .= " ORDER BY q.id desc" ;
 
@@ -106,7 +107,7 @@ namespace com\indigloo\sc\mysql {
 				$condition = " and q.login_id = ".$loginId;
 			}
 
-            $sql = " select q.*,l.name as user_name from sc_question q,sc_login l " ;
+            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
             $sql .= " where l.id=q.login_id ".$condition." order by q.id desc LIMIT ".$count ;
 			
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
@@ -123,7 +124,12 @@ namespace com\indigloo\sc\mysql {
 				$condition = " where login_id = ".$loginId;
 			}
 
-            $sql = " select count(id) as count from sc_question ".$condition ;
+            if(array_key_exists(self::DATE_COLUMN,$dbfilter)) {
+				$condition = " where created_on > (now() - interval 24 HOUR) ";
+			}
+
+
+            $sql = " select count(id) as count from sc_post ".$condition ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 
@@ -136,7 +142,7 @@ namespace com\indigloo\sc\mysql {
             // latest posts has max(id) and appears on top
             // so AFTER (NEXT) means id < latest post id
             
-            $sql = " select q.*,l.name as user_name from sc_question q,sc_login l  where l.id = q.login_id " ;
+            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l  where l.id = q.login_id " ;
             $predicate = '' ;
 			$condition = '' ;
 
@@ -187,8 +193,8 @@ namespace com\indigloo\sc\mysql {
                                $groupSlug) {
 			
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " update sc_question set title=?,description=?,location = ?,tags =?,links_json =?, " ;
-			$sql .= " images_json=?,group_slug = ? where id = ? and login_id = ?" ;
+            $sql = " update sc_post set title=?,description=?,location = ?,tags =?,links_json =?, " ;
+			$sql .= " images_json=?,group_slug = ? , updated_on = now() where id = ? and login_id = ?" ;
 			
 			
             $code = MySQL\Connection::ACK_OK;
@@ -234,7 +240,7 @@ namespace com\indigloo\sc\mysql {
 			
 			
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " insert into sc_question(title,description,location,tags,login_id,links_json, " ;
+            $sql = " insert into sc_post(title,description,location,tags,login_id,links_json, " ;
             $sql .= "images_json,group_slug,created_on) ";
             $sql .= " values(?,?,?,?,?,?,?,?,now()) ";
 
@@ -271,7 +277,7 @@ namespace com\indigloo\sc\mysql {
                 $lastInsertId = MySQL\Connection::getInstance()->getLastInsertId();
                 //update pseudo ID
                 $itemId = PseudoId::encode($lastInsertId);
-                $sql = " update sc_question set pseudo_id = %d where id = %d " ;
+                $sql = " update sc_post set pseudo_id = %d where id = %d " ;
                 $sql = sprintf($sql,$itemId,$lastInsertId);
                 MySQL\Helper::executeSQL($mysqli,$sql);
                 
@@ -284,7 +290,7 @@ namespace com\indigloo\sc\mysql {
 
 			$code = MySQL\Connection::ACK_OK ;
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$sql = " delete from sc_question where id = ? and login_id = ?" ;
+			$sql = " delete from sc_post where id = ? and login_id = ?" ;
 
 			$stmt = $mysqli->prepare($sql);
 
@@ -309,7 +315,7 @@ namespace com\indigloo\sc\mysql {
                 trigger_error("User does not have admin rights", E_USER_ERROR);
             }
 
-            $sql = " update sc_question set is_feature = ".$value." where ID IN (".$strIds.")" ;
+            $sql = " update sc_post set is_feature = ".$value." where ID IN (".$strIds.")" ;
             $code = MySQL\Connection::ACK_OK;
             MySQL\Helper::executeSQL($mysqli,$sql);
             return $code ;

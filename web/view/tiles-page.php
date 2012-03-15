@@ -52,7 +52,7 @@
 			<div class="row">
 				<div class="span12">
 					<div class="page-header">
-                    <h2> <?php echo $pageHeader; ?> </h2>
+                        <h2> <?php echo $pageHeader; ?> </h2>
 					</div>
 
 					<div id="tiles">
@@ -72,6 +72,7 @@
 						?>
 						   
 					</div><!-- tiles -->
+                    <hr>
                     <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
 
 				</div> 

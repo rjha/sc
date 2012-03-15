@@ -27,7 +27,7 @@
 	}
 
 	$sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
-    $itemId = PseudoId::encode($commentDBRow['question_id']);
+    $itemId = PseudoId::encode($commentDBRow['post_id']);
     
     
 ?>  
@@ -95,7 +95,7 @@
 						<table class="form-table">
 							 <tr>
 								<td>
-									<textarea  name="comment" class="w580 h130 required" cols="60" rows="10" ><?php echo $sticky->get('comment',$commentDBRow['answer']); ?></textarea>
+									<textarea  name="comment" class="w580 h130 required" cols="60" rows="10" ><?php echo $sticky->get('comment',$commentDBRow['description']); ?></textarea>
 								</td>
 							 </tr>
 							 
