@@ -18,9 +18,32 @@
             <li><a href="/search/location/hyderabad">Hyderabad</a></li>
             <li><a href="/search/location/kolkata">Kolkata</a></li>
             <li><a href="/search/location/mumbai">Mumbai</a></li>
-
         </ul>
       </li> <!-- location -->
-    </ul>
+      <li> <a id="nav-group-open" href="">Browse Groups</a> </li>
+     </ul>
     </div>
+</div>
+
+<div id="nav-group-browser">
+    <div class="groups">
+    <?php 
+       $groupDao = new \com\indigloo\sc\dao\Group();
+        $navGroups = $groupDao->getLatest(50);
+  
+        if(isset($navGroups) && !empty($navGroups)) {
+            foreach($navGroups as $group) {
+                echo \com\indigloo\sc\html\Group::getLink($group); 
+            }
+        }
+    ?>
+
+    </div>
+    <div class="footer">
+        <div class="floatr">
+            <a id="nav-group-close" href="">Close</a>
+        </div>
+
+    </div>
+
 </div>

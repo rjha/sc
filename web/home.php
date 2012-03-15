@@ -10,29 +10,22 @@
 		<script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
 		<script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
+
+        <script type="text/javascript" src="/3p/json2.js"></script>
+        <script type="text/javascript" src="/js/sc.js"></script>
 	    
 		
 		<script type="text/javascript">
 			/* column width = css width + margin */
             $(document).ready(function(){
-				var $container = $('#tiles');
-				$container.imagesLoaded(function(){
-					$container.masonry({
-                        itemSelector : '.tile'
-					});
-                });
-
-                //show options on hover
-                $('.tile .options').hide();
-                $('.tile').mouseenter(function() { $(this).find('.options').toggle(); });
-                $('.tile').mouseleave(function() { $(this).find('.options').toggle(); }); 
-
-            });
+                webgloo.sc.home.addTiles();
+                webgloo.sc.home.addNavGroups();
+           });
 		</script>
 		
     </head>
 
-     <body class="dark-body">
+     <body class="dark-body2">
 		<div class="container">
 			<div class="row">
 				<div class="span12">

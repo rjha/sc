@@ -17,7 +17,7 @@
 		margin: 0;
 		padding: 0;
 		position: relative;
-		background : #FFFFFF ;
+		background-color:white  ;
 	}
 	
 	.dark-body{
@@ -765,21 +765,6 @@
         font-size:11px;
         line-height:16px;
     }
-
-    /*
-	.block {
-		padding:10px;
-		border:1px solid #a3a3a3;
-		font-size :15px;
-		min-height :160px;
-		margin-bottom:10px;
-	}
-	
-	.lightbg {
-		background-color : #f0fff0;
-		padding :20px;
-		border-radius:10px;
-	} */
  
     .block{
         border-bottom : 1px solid #E8E7E3; 
@@ -790,8 +775,49 @@
         color:#211922;
     }
 
-    /* override bootstrap css */
+    #nav-group-browser {
+        position: fixed;
+        top: 220px;
+        left: 280px;
+        width: 600px;
+        height: 320px;
+        background-color: white;
+        color: black;
+        opacity: 1.0;
+        z-index: 1009;
+        border:6px solid #d5d5d5;
+        padding:20px;
+        display:none;
+        max-height:340px;
+        overflow:hidden;
+    }
+
+    #nav-group-browser .groups{
+        padding:10px;
+        min-height :240px;
+        max-height: 280px;
+        line-height:18px;
+        overflow:hidden;
+    }
+
+    #nav-group-browser .groups span {
+        padding-left:5px;
+    }
+
+    #nav-group-browser .groups a {
+        font-weight: bold;
+        text-decoration : none ;
+    }
+
+    #nav-group-browser .footer{
+        border-top: 1px solid #d5d5d5 ;
+    }
+
+    
+
+    /* last section - override bootstrap css */
     .hero-unit {
         padding:30px;
         margin-bottom:10px;
     }
+

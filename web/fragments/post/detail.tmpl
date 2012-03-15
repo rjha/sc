@@ -13,3 +13,14 @@
 	</div>
 </div>
 
+
+    ~if($view->hasGroups) {~
+    <div class="groups">
+    Groups:
+        ~foreach($view->groups as $group){~
+            <a href="/group/~~$group['slug']~">~~$group['display']~</a>&nbsp;
+
+        ~}~
+
+    </div>
+    ~}~

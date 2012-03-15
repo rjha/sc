@@ -16,6 +16,36 @@ webgloo = window.webgloo || {};
 webgloo.sc = webgloo.sc || {};
 
 
+
+webgloo.sc.home = {
+    addTiles : function() {
+        var $container = $('#tiles');
+        $container.imagesLoaded(function(){
+            $container.masonry({
+                itemSelector : '.tile'
+            });
+        });
+        
+        //show options on hover
+        $('.tile .options').hide();
+        $('.tile').mouseenter(function() { $(this).find('.options').toggle(); });
+        $('.tile').mouseleave(function() { $(this).find('.options').toggle(); }); 
+
+    },
+    addNavGroups : function() {
+        //group browser
+        $("a#nav-group-open").click(function(event) {
+            event.preventDefault();
+            $("#nav-group-browser").slideDown("slow");
+        });
+
+        $("a#nav-group-close").click(function(event) {
+            event.preventDefault();
+            $("#nav-group-browser").slideUp("slow");
+        });
+    }
+}
+
 webgloo.sc.groups = {
     attachEvents : function() {
         $("a#more-groups-link").fancybox({ });

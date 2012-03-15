@@ -81,6 +81,7 @@ namespace com\indigloo\sc\controller{
                 $endId =   $latestDBRows[sizeof($latestDBRows)-1]['id'] ;
             }
 
+           
             $endId = base_convert($endId,10,36);
             $nparams = array('gpa' => $endId, 'gpage' => 2) ;
             $nextPageUrl = Url::addQueryParameters("/",$nparams);

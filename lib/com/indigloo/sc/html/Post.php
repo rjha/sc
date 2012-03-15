@@ -138,6 +138,28 @@ namespace com\indigloo\sc\html {
             $view->loginId = $postDBRow['login_id'];
             $view->pubUserId = PseudoId::encode($view->loginId);
 
+            $group_slug = $postDBRow['group_slug'];
+            $groups = array();
+
+            if(!is_null($group_slug) && (strlen($group_slug) > 0)) {
+                $slugs = explode(Constants::SPACE,$group_slug);
+                $display = NULL ;
+
+                foreach($slugs as $slug) {
+                    if(empty($slug)) continue ;
+
+                    $display = StringUtil::convertKeyToName($slug);
+                    $groups[] = array("slug" => $slug, "display"=> $display);
+                }
+            }
+
+            if(sizeof($groups) > 0 ) {
+                $view->hasGroups = true ;
+                $view->groups = $groups;
+            }else {
+                $view->hasGroups = false ;
+            }
+
 			$template = '/fragments/post/detail.tmpl' ;
 			$html = Template::render($template,$view);
 			

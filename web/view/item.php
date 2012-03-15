@@ -36,6 +36,8 @@
 				$('#myCarousel').carousel({
 				  interval: 5000
 				});
+
+                webgloo.sc.home.addNavGroups();
 				
             });
         </script>
@@ -80,7 +82,7 @@
 				<?php 
 					if(sizeof($images) > 0 ) { include($_SERVER['APP_WEB_DIR'].'/qa/inc/carousel.inc') ; }
 					echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ; 
-
+                     
 					if(sizeof($links) > 0 ) {  
 						//@todo cleanup kludge in body html
 						echo '<div class="p10"/> <ol>' ;
