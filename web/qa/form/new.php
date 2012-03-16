@@ -37,26 +37,29 @@
 			
         } else {
             
-            $group_slug = '' ;
-            $slugs = Util::tryArrayKey($fvalues,'g'); 
-
-            /*
-             * The group checkbox values are slugs (old) as well as names (new ones)
-             * so we first convert all (new) names to slugs by our map. we take this array
+            /* 
+             * we first convert all (new) names to array of slugs. we take this array
              * and implode on space to make slugs to be stored in DB (we need to implode on space to
              * index the field via sphinx.
              *
-             *
-             *
-             *
              */
-            if(!is_null($slugs)) {
-                //what is coming in are keys
-                $slugs = array_map(array("\com\indigloo\util\StringUtil","convertNameToKey"),$slugs);
+
+            $group_names =$fvalues['group_names']  ;
+            $group_slug = '' ;
+
+            if(!Util::tryEmpty($group_names)) {
+                $slugs = array();
+                $names = explode(",",$group_names);
+
+                foreach($names as $name) {
+                    if(Util::tryEmpty($name)) { continue ; }
+                    //make slug from name
+                    $slug = \com\indigloo\util\StringUtil::convertNameToKey($name);
+                    array_push($slugs,$slug);
+                }
+                //now arrange slugs
                 $group_slug = implode(Constants::SPACE,$slugs);
-
             }
-
 
             $postDao = new com\indigloo\sc\dao\Post();
 			$title = Util::abbreviate($fvalues['description'],128);		
@@ -64,8 +67,6 @@
             $data = $postDao->create(
 								$title,
                                 $fvalues['description'],
-                                'location',
-                                'tags',
 								$gSessionLogin->id,
                                 $_POST['links_json'],
                                 $_POST['images_json'],

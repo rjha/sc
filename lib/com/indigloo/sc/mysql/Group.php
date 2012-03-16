@@ -16,6 +16,26 @@ namespace com\indigloo\sc\mysql {
 			$rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 		}
+
+         static function getOnLoginId($loginId) {
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+			$loginId = $mysqli->real_escape_string($loginId);
+            $sql = "select ug.token as token from sc_user_group ug where ug.login_id = ".$loginId ;
+            $sql .= " order by token " ;
+
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
+        static function getCountOnLoginId($loginId) {
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+			$loginId = $mysqli->real_escape_string($loginId);
+            $sql = "select count(id) as count from sc_user_group ug where ug.login_id = ".$loginId ;
+
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+
 	}
 }
 ?>

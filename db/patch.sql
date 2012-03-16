@@ -448,7 +448,18 @@ alter table sc_post modify column description varchar(512);
 
 --
 -- @todo now run the pseudo0id update DB script now
+-- @todo verify on server
+-- 
+
 --
+-- 17 March 2012
+--
+
+alter table sc_post drop column location ;
+alter table sc_post drop column tags ;
+
+
+
 
 
 

@@ -26,15 +26,6 @@ namespace com\indigloo\sc\mysql {
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 		}
-
-        static function getGroups($loginId) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$loginId = $mysqli->real_escape_string($loginId);
-            $sql = "select ug.token from sc_user_group ug where ug.login_id = ".$loginId ;
-
-            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-            return $rows;
-        }
         
 		static function update($userId,$firstName,$lastName) {
 			$code = MySQL\Connection::ACK_OK;
@@ -80,9 +71,6 @@ namespace com\indigloo\sc\mysql {
 
 			return $code ;
 		}
-		
-
-		
 	}
 }
 ?>

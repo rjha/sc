@@ -20,10 +20,7 @@
     $strLinksJson = empty($strLinksJson) ? '[]' : $strLinksJson ;
 
     $loginId = Login::tryLoginIdInSession() ;
-    //get user groups
-    $userDao = new \com\indigloo\sc\dao\User();
-    $ugroups = $userDao->getGroups($loginId);
-    
+
 ?>  
 
 <!DOCTYPE html>
@@ -118,19 +115,19 @@
 									<textarea  name="description" class="required h130 w500" cols="50" rows="4" ><?php echo $sticky->get('description'); ?></textarea>
 								</td>
 							</tr>
+                            <tr>
+                                <td> <label>Tags (separate by comma)</label>
+                                <input type="text" name="group_names" value="<?php echo $sticky->get('group_names'); ?>" />
+
+                            </tr>
+ 
 							<tr>
 								<td>
 									<label>Link </label>
-									<input id="link-box" name="link" value="" />
+                                    <input id="link-box" name="link" value="<?php echo $sticky->get('link'); ?>" />
 									<button id="add-link" type="button" class="btn" value="Add"><i class="icon-plus-sign"> </i>&nbsp;Add</button> 
 								</td>
 							</tr>
-                            <tr>
-                                <td> 
-                                <?php echo \com\indigloo\sc\html\GroupPanel::render($ugroups); ?>
-
-                                </td>
-							</tr> <!-- groups --> 
 
 							<tr>
 								<td>

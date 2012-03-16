@@ -6,6 +6,7 @@
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
 	
     use com\indigloo\Util;
+    use com\indigloo\util\StringUtil as StringUtil;
     use com\indigloo\Url as Url;
     use com\indigloo\Constants as Constants;
 
@@ -29,11 +30,7 @@
 		exit(1);
 	}
 
-    $loginId = Login::tryLoginIdInSession() ;
-    //get user groups
-    $userDao = new \com\indigloo\sc\dao\User();
-    $ugroups = $userDao->getGroups($loginId);
-
+    $loginId = Login::getLoginIdInSession() ;
 
     $imagesJson = $postDBRow['images_json'];
     $strImagesJson = $sticky->get('images_json',$postDBRow['images_json']) ;
@@ -41,6 +38,26 @@
 
     $strImagesJson = empty($strImagesJson) ? '[]' : $strImagesJson ;
     $strLinksJson = empty($strLinksJson) ? '[]' : $strLinksJson ;
+
+    //find group names
+    $dbslug = $postDBRow['group_slug'];
+    $group_names = '';
+
+    if(!Util::tryEmpty($dbslug)) {
+        $slugs = explode(Constants::SPACE,$dbslug);
+        $names = array();
+
+        foreach($slugs as $slug) {
+            if(Util::tryEmpty($slug)) { continue ; }
+            $name = StringUtil::convertKeyToName($slug);
+            array_push($names,$name);
+        }
+        $group_names = implode(",",$names);
+    }
+
+    $groupDao = new \com\indigloo\sc\dao\Group();
+    $hasGroups = (($groupDao->getCountOnLoginId($loginId)) > 0) ? true : false;
+
 
 ?>  
 
@@ -133,20 +150,23 @@
 									<textarea  name="description" class="required h130 w500" cols="50" rows="4" ><?php echo $sticky->get('description',$postDBRow['description']); ?></textarea>
 								</td>
 							</tr>
+                            <tr>
+                                <td> <label>Tags (separate by comma)
+                                    <?php if($hasGroups) { ?>
+                                        &nbsp;|&nbsp;<a class="fancy-box" href="/user/group/cloud.php">show my tags&rarr;</a> </label>
+                                    <?php } ?>
+                                    <input type="text" name="group_names" value="<?php echo $sticky->get('group_names',$group_names); ?>" />
+
+                            </tr>
+
 							<tr>
 								<td>
 									<label>Link </label>
-									<input id="link-box" name="link" value="" />
+                                    <input id="link-box" name="link" value="<?php echo $sticky->get('link'); ?>" />
 									<button id="add-link" type="button" class="btn" value="Add"><i class="icon-plus-sign"> </i>&nbsp;Add</button> 
 								</td>
 							</tr>
                             <tr>
-                                <td> 
-                                <?php echo \com\indigloo\sc\html\GroupPanel::render($ugroups,$postDBRow['group_slug']); ?>
-
-                                </td>
-							</tr> <!-- groups --> 
- 	                       	<tr>
                                 <td>
 	
                                     <div class="form-actions"> 
@@ -176,7 +196,7 @@
 				<div class="span3">
 					 <?php include($_SERVER['APP_WEB_DIR'] .'/qa/sidebar/edit.inc'); ?>
 				</div>
-			
+
 			</div>
 			
 		</div> <!-- container -->   

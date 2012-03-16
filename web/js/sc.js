@@ -48,7 +48,11 @@ webgloo.sc.home = {
 
 webgloo.sc.groups = {
     attachEvents : function() {
-        $("a#more-groups-link").fancybox({ });
+        $(".fancy-box").fancybox({ 
+            'type':'iframe',
+            'width' : '75%',
+            'height' : '75%'
+        });
 
         $("#add-group-btn").click(function(event) {
             event.preventDefault(); 

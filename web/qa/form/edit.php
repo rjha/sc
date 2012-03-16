@@ -31,25 +31,30 @@
             exit(1);
 			
         } else {
-            
-            $group_slug = '' ;
-            //implode scheme in create/edit should match
-            $slugs = Util::tryArrayKey($fvalues,'g'); 
 
-            if(!is_null($slugs)) {
-                //what is coming in are keys
-                $slugs = array_map(array("\com\indigloo\util\StringUtil","convertNameToKey"),$slugs);
+            $group_names =$fvalues['group_names']  ;
+            $group_slug = '' ;
+
+            if(!Util::tryEmpty($group_names)) {
+                $slugs = array();
+                $names = explode(",",$group_names);
+
+                foreach($names as $name) {
+                    if(Util::tryEmpty($name)) { continue ; }
+                    $slug = \com\indigloo\util\StringUtil::convertNameToKey($name);
+                    array_push($slugs,$slug);
+                }
+
                 $group_slug = implode(Constants::SPACE,$slugs);
             }
 
+ 
             $postDao = new com\indigloo\sc\dao\Post();
 			$title = Util::abbreviate($fvalues['description'],128);		
             $code = $postDao->update(
 								$fvalues['post_id'],
 								$title,
                                 $fvalues['description'],
-                                'location',
-                                'tags',
                                 $_POST['links_json'],
                                 $_POST['images_json'],
                                 $group_slug);

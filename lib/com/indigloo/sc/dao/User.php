@@ -53,19 +53,7 @@ namespace com\indigloo\sc\dao {
 		function addFeedback($feedback) {
             $code = mysql\User::addFeedback($feedback);
             return $code ;
-        }
-
-		function getGroups($loginId) {
-
-            $groups = array();
-            $rows = mysql\User::getGroups($loginId);
-            foreach($rows as $row) {
-                array_push($groups,$row['token']);
-            }
-            
-            return $groups ;
-        }
-		
+        }		
         
     }
 

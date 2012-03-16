@@ -8,13 +8,13 @@ namespace com\indigloo\sc\html {
     
     class Group {
 
-		static function getCloudLink($group,$style) {
+		static function getCloudLink($group,$style,$link=true) {
 		    $html = NULL ;
 			$view = new \stdClass;
 			$template = '/fragments/group/link.tmpl' ;
 
             $token = $group["token"];    
-            $view->href = "/group/".$token ;
+            $view->href = ($link)? "/group/".$token : '' ;
             $view->name = StringUtil::convertKeyToName($token); 
             $view->color = 'tag-color'.$style ;
             $view->size = 'tag-size'.$style ;

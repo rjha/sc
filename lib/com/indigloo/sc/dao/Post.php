@@ -91,8 +91,6 @@ namespace com\indigloo\sc\dao {
 
         function create($title,
 						$description,
-						$location,
-						$tags,
 						$loginId,
 						$linksJson,
                         $imagesJson,
@@ -101,8 +99,6 @@ namespace com\indigloo\sc\dao {
             $data = mysql\Post::create(
 								$title,
 								$description,
-								$location,
-								$tags,
 								$loginId,
 								$linksJson,
                                 $imagesJson,
@@ -115,8 +111,6 @@ namespace com\indigloo\sc\dao {
 		function update($postId,
 						$title,
 						$description,
-						$location,
-						$tags,
 						$linksJson,
                         $imagesJson,
                         $groupSlug) {
@@ -125,8 +119,6 @@ namespace com\indigloo\sc\dao {
             $code = mysql\Post::update($postId,
 						       $title,
                                $description,
-                               $location,
-                               $tags,
                                $linksJson,
 							   $imagesJson,
                                $loginId,

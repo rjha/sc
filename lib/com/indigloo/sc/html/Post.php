@@ -69,7 +69,6 @@ namespace com\indigloo\sc\html {
 				
 			$view->userName = $postDBRow['user_name'];
 			$view->createdOn = Util::formatDBTime($postDBRow['created_on']);
-			$view->tags = $postDBRow['tags'];
 
             $group_slug = $postDBRow['group_slug'];
             $groups = array();
@@ -134,7 +133,6 @@ namespace com\indigloo\sc\html {
 				
 			$view->userName = $postDBRow['user_name'];
 			$view->createdOn = Util::formatDBTime($postDBRow['created_on']);
-			$view->tags = $postDBRow['tags'];
             $view->loginId = $postDBRow['login_id'];
             $view->pubUserId = PseudoId::encode($view->loginId);
 
@@ -200,8 +198,6 @@ namespace com\indigloo\sc\html {
 				
 			$view->userName = $postDBRow['user_name'];
 			$view->createdOn = Util::formatDBTime($postDBRow['created_on']);
-			$view->tags = $postDBRow['tags'];
-
 			$view->isLoggedInUser = false ;
 
 			if(!is_null($gSessionLogin) && ($gSessionLogin->id == $postDBRow['login_id'])){
