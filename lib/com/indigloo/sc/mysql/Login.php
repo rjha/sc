@@ -7,6 +7,7 @@ namespace com\indigloo\sc\mysql {
 	class Login {
 
 		const MODULE_NAME = 'com\indigloo\sc\mysql\Login';
+		const DATE_COLUMN = "created_on" ;
 
 		static function getOnId($loginId){
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -42,6 +43,21 @@ namespace com\indigloo\sc\mysql {
             }
             
             return array('code' => $code , 'lastInsertId' => $lastInsertId);
+		}
+
+        static function getTotalCount($dbfilter) {
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+
+			$condition = '';
+            if(array_key_exists(self::DATE_COLUMN,$dbfilter)) {
+				$condition = " where created_on > (now() - interval 24 HOUR) ";
+			}
+
+
+            $sql = " select count(id) as count from sc_login ".$condition ;
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+
 		}
 
 	}

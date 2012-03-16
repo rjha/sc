@@ -36,12 +36,12 @@ webgloo.sc.home = {
         //group browser
         $("a#nav-group-open").click(function(event) {
             event.preventDefault();
-            $("#nav-group-browser").slideDown("slow");
+            $("#nav-group-browser").toggle();
         });
 
         $("a#nav-group-close").click(function(event) {
             event.preventDefault();
-            $("#nav-group-browser").slideUp("slow");
+            $("#nav-group-browser").toggle();
         });
     }
 }

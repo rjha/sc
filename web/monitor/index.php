@@ -9,7 +9,7 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\ui\Tabs as Tabs ;
 
-    $tabOptions = array("stat"=>"Stats","feature"=>"Featured","post"=>"Posts");
+    $tabOptions = array("stat"=>"Stats","feature"=>"Featured","action"=>"Actions");
     $tabData = Tabs::render($tabOptions,'stat');
     $strTabUI = $tabData["buffer"];
     $activeTab = $tabData["active"];

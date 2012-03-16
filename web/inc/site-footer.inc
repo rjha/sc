@@ -17,6 +17,12 @@
 	</div>
 </div>
 
+<?php
+    //close resources
+    $gWeb = \com\indigloo\core\Web::getInstance();
+    $gWeb->end();
+?>
+
 <!-- Quantcast Tag -->
 <script type="text/javascript">
 var _qevents = _qevents || [];

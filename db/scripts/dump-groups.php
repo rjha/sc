@@ -5,6 +5,7 @@
 
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Configuration as Config;
+    use \com\indigloo\Util as Util;
        
 	error_reporting(-1);
     
@@ -15,7 +16,11 @@
 
     foreach($rows as $row) {
         //dump csv
-        printf("%d,%s,%s \n",$row['id'],$row['description'],$row['group_slug']);
+        $description = $row['description'] ;
+        //$description = str_replace(",", " ",$description);
+        $description = Util::squeeze($description);
+
+        printf("%d|%s|%s \n",$row['id'],$description,$row['group_slug']);
     } 
 
 ?>

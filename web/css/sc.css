@@ -760,7 +760,9 @@
     .form-actions {
         background : #FFF ;
     }
-    .tile .groups {
+
+    /* groups display */
+    .groups {
         color : #777 ;
         font-size:11px;
         line-height:16px;
@@ -777,41 +779,61 @@
 
     #nav-group-browser {
         position: fixed;
-        top: 220px;
-        left: 280px;
         width: 600px;
-        height: 320px;
+        height: 300px;
+        max-height:300px;
+        top: 50%;
+        left: 50%;
+        margin-top:-150px;
+        margin-left:-300px;
         background-color: white;
         color: black;
-        opacity: 1.0;
         z-index: 1009;
         border:6px solid #d5d5d5;
         padding:20px;
         display:none;
-        max-height:340px;
         overflow:hidden;
     }
 
-    #nav-group-browser .groups{
+    #nav-group-browser #groups{
         padding:10px;
-        min-height :240px;
-        max-height: 280px;
-        line-height:18px;
+        height :260px;
+        max-height: 260px;
         overflow:hidden;
     }
 
-    #nav-group-browser .groups span {
-        padding-left:5px;
+    .cloud {
+        line-height:200%;
+        font-weight:bold;
+        text-align:left ;
     }
 
-    #nav-group-browser .groups a {
-        font-weight: bold;
-        text-decoration : none ;
+    .cloud a {
+        text-decoration: none ;
     }
 
-    #nav-group-browser .footer{
-        border-top: 1px solid #d5d5d5 ;
+    .cloud a:hover {
+        color: black;
     }
+
+    .cloud .tag-color1{ color : #407ACC ; }
+    .cloud .tag-color2{ color : #7793BB ; }
+    .cloud .tag-color3{ color : #9FBBE5 ; }
+
+    .cloud .tag-size1{ font-size :20px; }
+    .cloud .tag-size2{ font-size :15px; }
+    .cloud .tag-size2{ font-size :12px; }
+
+    .cloud-item {
+        padding-left:7px;
+        display :inline-block;
+    }
+
+    .panel-footer{
+        /* border-top: 1px solid #d5d5d5 ; */
+        font-size: 15px;
+    }
+
 
     
 

@@ -100,6 +100,8 @@ namespace com\indigloo\core {
         }
 
         function end() {
+            $mysqli = \com\indigloo\mysql\Connection::getInstance()->getHandle();
+            $mysqli->close();
             if (Config::getInstance()->is_debug()) {
                 Logger::getInstance()->debug('web >> end >> hash is:: ' . spl_object_hash(self::$instance));
             }

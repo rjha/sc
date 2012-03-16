@@ -1,3 +1,16 @@
+
+<div class="row">
+    <div class="span9">
+
+
+    </div>
+
+
+
+</div>
+
+
+
 <?php
 
     $postDao = new \com\indigloo\sc\dao\Post();
@@ -8,3 +21,4 @@
     include($template); 
 
 ?>
+
