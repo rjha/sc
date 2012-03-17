@@ -92,7 +92,7 @@ namespace com\indigloo\sc\dao {
 
         function slugToName($dbslug){
             $group_names = '' ;
-            $names = $this->slugToNamesArray($dbSlug);
+            $names = $this->slugToNamesArray($dbslug);
             if(!empty($names)){
                 $group_names = implode(",",$names);
             }

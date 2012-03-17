@@ -8,11 +8,9 @@ create table sc_post(
     login_id int not null,
 	title varchar(128) not null,
     description varchar(512),
-    tags varchar(64),
     links_json TEXT ,
     images_json TEXT,
     group_slug varchar(64),
-    location varchar(32),
     created_on timestamp default '0000-00-00 00:00:00',
 	updated_on timestamp default '0000-00-00 00:00:00' ,
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -134,10 +132,10 @@ create table sc_post_archive(
     login_id int not null,
 	title varchar(128) not null,
     description TEXT ,
-    tags varchar(64),
     links_json TEXT ,
     images_json TEXT,
-    location varchar(32),
+    pseudo_int int ,
+    group_slug varchar(64),
     created_on timestamp default '0000-00-00 00:00:00',
 	updated_on timestamp default '0000-00-00 00:00:00' ,
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -205,8 +203,8 @@ delimiter //
 CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
     FOR EACH ROW
     BEGIN
-        insert into sc_post_archive(title,description,location,tags,login_id,links_json,images_json)
-        select q.title,q.description,q.location,q.tags,q.login_id,q.links_json,q.images_json
+        insert into sc_post_archive(title,description,login_id,links_json,images_json,group_slug,pseudo_id)
+        select q.title,q.description,q.login_id,q.links_json,q.images_json,q.group_slug,q.pseudo_id
         from sc_post  q where q.id = OLD.id ; 
     END;//
 delimiter ;

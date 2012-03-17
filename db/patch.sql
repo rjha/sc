@@ -177,10 +177,8 @@ create table sc_post_archive(
     login_id int not null,
 	title varchar(128) not null,
     description TEXT ,
-    tags varchar(64),
     links_json TEXT ,
     images_json TEXT,
-    location varchar(32),
     created_on timestamp default '0000-00-00 00:00:00',
 	updated_on timestamp default '0000-00-00 00:00:00' ,
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -458,6 +456,8 @@ alter table sc_post modify column description varchar(512);
 alter table sc_post drop column location ;
 alter table sc_post drop column tags ;
 
+
+
 --
 -- 17 March
 -- 
@@ -473,6 +473,31 @@ create table sc_feature_group(
 
 
 insert into sc_feature_group(id,slug) values(1,'');
+
+--
+-- 17 March B
+-- 
+
+alter table sc_post_archive drop column location ;
+alter table sc_post_archive drop column tags ;
+alter table sc_post_archive add column pseudo_id int;
+alter table sc_post_archive add column group_slug varchar(64);
+
+
+DROP TRIGGER IF EXISTS trg_post_archive;
+
+delimiter //
+CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
+    FOR EACH ROW
+    BEGIN
+        insert into sc_post_archive(title,description,login_id,links_json,images_json,group_slug,pseudo_id)
+        select q.title,q.description,q.login_id,q.links_json,q.images_json,q.group_slug,q.pseudo_id
+        from sc_post  q where q.id = OLD.id ; 
+    END;//
+delimiter ;
+
+alter table sc_post_archive add column is_feature int;
+
 
 
 

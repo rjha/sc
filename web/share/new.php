@@ -20,9 +20,6 @@
     $strLinksJson = empty($strLinksJson) ? '[]' : $strLinksJson ;
 
     $loginId = Login::tryLoginIdInSession() ;
-    //get user groups
-    $userDao = new \com\indigloo\sc\dao\User();
-    $ugroups = $userDao->getGroups($loginId);
 
     
 ?>  

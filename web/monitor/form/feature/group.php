@@ -41,7 +41,7 @@
             $code = $groupDao->setFeatureSlug($group_slug);
 
             if ($code == \com\indigloo\mysql\Connection::ACK_OK ) {
-                $gWeb->store(Constants::FORM_MESSAGES,array("Action $action is successful!"));
+                $gWeb->store(Constants::FORM_MESSAGES,array("Action is successful!"));
                 header("Location: ".$qUrl );
                 
             } else {

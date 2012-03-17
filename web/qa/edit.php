@@ -41,6 +41,7 @@
 
     $groupDao = new \com\indigloo\sc\dao\Group();
     $group_names = $groupDao->slugToName($postDBRow['group_slug']);
+
     $totalGroups = $groupDao->getCountOnLoginId($loginId);
     $hasGroups = ($totalGroups > 0) ? true : false;
 

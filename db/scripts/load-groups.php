@@ -8,9 +8,9 @@
        
 	error_reporting(-1);
 
-    $lines = file("groups.csv");
+    $lines = file("groups2.csv");
     foreach($lines as $line){
-        $columns = explode(",",$line);
+        $columns = explode("|",$line);
 
         $slug = trim($columns[2]);
         $id = trim($columns[0]);
@@ -18,7 +18,6 @@
         $sql = sprintf("update sc_post set group_slug = '%s' where id = %d ; \n",$slug,$id);
         echo $sql;
         echo "\n" ; 
-        if($columns[0] < 1000) break;
     }
 
     
