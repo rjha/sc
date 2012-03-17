@@ -715,9 +715,8 @@
 
     
     .group-panel {
-        /* display :none ; */
-        width:500px;
-        height: auto;
+        width:910px;
+        height:auto;
         line-height:18px;
         padding:0px;
         margin-bottom :10px;
@@ -727,6 +726,7 @@
 
     .group-panel .wrapper {
         padding:0px;
+        border-bottom:1px solid #ccc;
 
     }
 
@@ -737,8 +737,9 @@
     }
     .group-panel .wrapper .groups {
         padding: 10px 0px 5px 0px;
-        width:160px;
+        width:150px;
         float:left ;
+        margin-top:10px;
     }
 
     .group-panel input {
@@ -748,7 +749,7 @@
     }
 
     .group-panel #group-box {
-        width: 120px;
+        width: 400px;
         height : 16px;
     }
 

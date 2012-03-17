@@ -39,23 +39,8 @@
     $strImagesJson = empty($strImagesJson) ? '[]' : $strImagesJson ;
     $strLinksJson = empty($strLinksJson) ? '[]' : $strLinksJson ;
 
-    //find group names
-    $dbslug = $postDBRow['group_slug'];
-    $group_names = '';
-
-    if(!Util::tryEmpty($dbslug)) {
-        $slugs = explode(Constants::SPACE,$dbslug);
-        $names = array();
-
-        foreach($slugs as $slug) {
-            if(Util::tryEmpty($slug)) { continue ; }
-            $name = StringUtil::convertKeyToName($slug);
-            array_push($names,$name);
-        }
-        $group_names = implode(",",$names);
-    }
-
     $groupDao = new \com\indigloo\sc\dao\Group();
+    $group_names = $groupDao->slugToName($postDBRow['group_slug']);
     $hasGroups = (($groupDao->getCountOnLoginId($loginId)) > 0) ? true : false;
 
 
@@ -95,7 +80,7 @@
                               					
 				webgloo.media.init(["link","image"]);
 				webgloo.media.attachEvents();
-				webgloo.sc.groups.attachEvents();
+				webgloo.sc.groups.addCloudBox();
 				  
 				var uploader = new qq.FileUploader({
 					element: document.getElementById('image-uploader'),

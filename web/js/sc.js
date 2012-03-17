@@ -47,22 +47,44 @@ webgloo.sc.home = {
 }
 
 webgloo.sc.groups = {
-    attachEvents : function() {
+    addPanelEvents : function() {
+        $("#add-group-btn").click(function(event) {
+            event.preventDefault(); 
+            var group = jQuery.trim($("#group-box").val());
+			if( group == '' ) {return ; }
+            //split on commas
+            var tokens = group.split(",");
+            for (var i = 0; i < tokens.length; i++) { 
+               var token = jQuery.trim(tokens[i]);
+               if(token == '') continue ;
+                var node = ' <li> <input type="checkbox" name="g[]" checked ="checked" value="' + token + '"/>' + token + '</li> ' ;
+                //new groups are added to first panel
+                $(".group-panel .wrapper ul:first").append(node);
+            }
+
+            $("#group-box").val('');
+
+        });
+
+        $("a#uncheck-all-groups").click(function(event) {
+            event.preventDefault();
+            $(".group-panel").find(":checkbox").removeAttr("checked");
+        });
+
+        $("a#check-all-groups").click(function(event) {
+            event.preventDefault();
+            $(".group-panel").find(":checkbox").attr("checked","checked");
+        });
+
+    },
+    addCloudBox : function() {
         $(".fancy-box").fancybox({ 
             'type':'iframe',
             'width' : '75%',
             'height' : '75%'
         });
 
-        $("#add-group-btn").click(function(event) {
-            event.preventDefault(); 
-            var group = $("#group-box").val();
-            var node = ' <li> <input type="checkbox" name="g[]" checked ="checked" value="' 
-                + group + '"/>' + group + '</li> ' ;
-            $(".group-panel .wrapper ul:first").append(node);
-
-        });
-   }
+  }
 }
 
 

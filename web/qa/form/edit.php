@@ -10,7 +10,6 @@
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
     use \com\indigloo\sc\auth\Login as Login ;
-    use \com\indigloo\util\StringUtil as StringUtil ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
 	
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
@@ -32,22 +31,9 @@
 			
         } else {
 
+            $groupDao = new \com\indigloo\sc\dao\Group();
             $group_names =$fvalues['group_names']  ;
-            $group_slug = '' ;
-
-            if(!Util::tryEmpty($group_names)) {
-                $slugs = array();
-                $names = explode(",",$group_names);
-
-                foreach($names as $name) {
-                    if(Util::tryEmpty($name)) { continue ; }
-                    $slug = \com\indigloo\util\StringUtil::convertNameToKey($name);
-                    array_push($slugs,$slug);
-                }
-
-                $group_slug = implode(Constants::SPACE,$slugs);
-            }
-
+            $group_slug = $groupDao->nameToSlug($group_names);
  
             $postDao = new com\indigloo\sc\dao\Post();
 			$title = Util::abbreviate($fvalues['description'],128);		

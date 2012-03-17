@@ -458,9 +458,21 @@ alter table sc_post modify column description varchar(512);
 alter table sc_post drop column location ;
 alter table sc_post drop column tags ;
 
+--
+-- 17 March
+-- 
+
+   
+drop table if exists sc_feature_group;
+create table sc_feature_group(
+	id int(11) NOT NULL ,
+	slug text ,
+    created_on timestamp default '0000-00-00 00:00:00',
+	updated_on timestamp default '0000-00-00 00:00:00' ,
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
-
+insert into sc_feature_group(id,slug) values(1,'');
 
 
 
