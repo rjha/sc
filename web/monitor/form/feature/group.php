@@ -38,7 +38,7 @@
             }
 
             $groupDao = new \com\indigloo\sc\dao\Group();
-            $code = $groupDao->setFeature($group_slug);
+            $code = $groupDao->setFeatureSlug($group_slug);
 
             if ($code == \com\indigloo\mysql\Connection::ACK_OK ) {
                 $gWeb->store(Constants::FORM_MESSAGES,array("Action $action is successful!"));

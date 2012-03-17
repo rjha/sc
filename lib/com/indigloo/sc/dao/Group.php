@@ -11,12 +11,24 @@ namespace com\indigloo\sc\dao {
 
 		function getLatest($limit) {
 			$rows = mysql\Group::getLatest($limit);
-			return $rows ;
+            $groups = array();
+            foreach($rows as $row) {
+                $group = array('token' => $row['token'] ,
+                                'name' => StringUtil::convertKeyToName($row['token']));
+                array_push($groups,$group);
+            }
+			return $groups ;
 		}
 
         function getOnLoginId($loginId) {
             $rows = mysql\Group::getOnLoginId($loginId);
-            return $rows ;
+            $groups = array();
+            foreach($rows as $row) {
+                $group = array('token' => $row['token'] ,
+                                'name' => StringUtil::convertKeyToName($row['token']));
+                array_push($groups,$group);
+            }
+			return $groups ;
         }
 
         function getCountOnLoginId($loginId) {
@@ -29,16 +41,30 @@ namespace com\indigloo\sc\dao {
             return $count ;
         }
 
-        function getFeature() {
-            $row = mysql\Group::getFeature();
+        function getFeatureSlug() {
+            $row = mysql\Group::getFeatureSlug();
             $slug = $row['slug'];
             return $slug;
         }
 
-        function setFeature($slug) {
+        function setFeatureSlug($slug) {
             $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
-            $code = mysql\Group::setFeature($loginId,$slug);
+            $code = mysql\Group::setFeatureSlug($loginId,$slug);
             return $code ;
+        }
+
+        function slugToGroups($slug){
+            if(Util::tryEmpty($slug)) { return array(); }
+
+            $groups = array();
+            $slugs = explode(Constants::SPACE,$slug);
+            foreach($slugs as $slug){
+                if(!Util::tryEmpty($slug)) {
+                    $group = array('token' => $slug,'name' => StringUtil::convertKeyToName($slug));
+                    array_push($groups,$group);
+                }
+            }
+            return $groups;
         }
 
         /*
@@ -66,7 +92,7 @@ namespace com\indigloo\sc\dao {
 
         function slugToName($dbslug){
             $group_names = '' ;
-            $names = $this->slugToNamesArray();
+            $names = $this->slugToNamesArray($dbSlug);
             if(!empty($names)){
                 $group_names = implode(",",$names);
             }

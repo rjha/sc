@@ -7,7 +7,7 @@
     $postDBRows = $postDao->getPosts($filter,50);
 
     $groupDao = new \com\indigloo\sc\dao\Group();
-    $slug = $groupDao->getFeature();
+    $slug = $groupDao->getFeatureSlug();
 
 
 ?>

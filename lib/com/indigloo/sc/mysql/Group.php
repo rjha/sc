@@ -36,7 +36,7 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
-        static function setFeature($loginId,$slug) {
+        static function setFeatureSlug($loginId,$slug) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 			$loginId = $mysqli->real_escape_string($loginId);
 
@@ -52,7 +52,7 @@ namespace com\indigloo\sc\mysql {
             return $code ;
         }
 
-        static function getFeature() {
+        static function getFeatureSlug() {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "select slug from sc_feature_group where id = 1 " ; 
 			$row = MySQL\Helper::fetchRow($mysqli, $sql);

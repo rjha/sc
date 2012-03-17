@@ -41,7 +41,8 @@
 
     $groupDao = new \com\indigloo\sc\dao\Group();
     $group_names = $groupDao->slugToName($postDBRow['group_slug']);
-    $hasGroups = (($groupDao->getCountOnLoginId($loginId)) > 0) ? true : false;
+    $totalGroups = $groupDao->getCountOnLoginId($loginId);
+    $hasGroups = ($totalGroups > 0) ? true : false;
 
 
 ?>  
@@ -80,7 +81,7 @@
                               					
 				webgloo.media.init(["link","image"]);
 				webgloo.media.attachEvents();
-				webgloo.sc.groups.addCloudBox();
+				//webgloo.sc.groups.addCloudBox();
 				  
 				var uploader = new qq.FileUploader({
 					element: document.getElementById('image-uploader'),
@@ -138,7 +139,7 @@
                             <tr>
                                 <td> <label>Tags (separate by comma)
                                     <?php if($hasGroups) { ?>
-                                        &nbsp;|&nbsp;<a class="fancy-box" href="/user/group/cloud.php">show my tags&rarr;</a> </label>
+                                        &nbsp;|&nbsp;<a href="/group/cloud/user.php" target="_blank"><i class="icon-list"></i>&nbsp;show my tags&rarr;</a> </label>
                                     <?php } ?>
                                     <input type="text" name="group_names" value="<?php echo $sticky->get('group_names',$group_names); ?>" />
 

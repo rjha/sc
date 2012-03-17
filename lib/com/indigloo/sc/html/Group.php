@@ -8,20 +8,26 @@ namespace com\indigloo\sc\html {
     
     class Group {
 
-		static function getCloudLink($group,$style,$link=true) {
+		static function getCloud($groups) {
 		    $html = NULL ;
 			$view = new \stdClass;
-			$template = '/fragments/group/link.tmpl' ;
+            $view->groups = $groups ;
 
-            $token = $group["token"];    
-            $view->href = ($link)? "/group/".$token : '' ;
-            $view->name = StringUtil::convertKeyToName($token); 
-            $view->color = 'tag-color'.$style ;
-            $view->size = 'tag-size'.$style ;
+            printf("<div class=\"cloud\">");
+            foreach($groups as $group) {
+                $num = rand(1,3000);
+                $style = 1 ;
+                if($num > 1000 ) { $style = 2 ; }
+                if($num > 2000 ) { $style = 3 ; }
+                $href = "/group/".$group['token'];
+                $color = 'tag-color'.$style ;
+                $size = 'tag-size'.$style ;
 
-			$html = Template::render($template,$view);
-			
-            return $html ;
+                printf(" <a href=\"%s\" class=\"cloud-item %s\"> ",$href,$color);
+                printf(" <span class=\"%s\">%s</span> ",$size,$group['name']);
+            }
+
+            printf("</div>");
 
 		}
     } 
