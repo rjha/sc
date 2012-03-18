@@ -15,7 +15,16 @@ String.prototype.supplant = function (o) {
 webgloo = window.webgloo || {};
 webgloo.sc = webgloo.sc || {};
 
-
+webgloo.sc.util = {
+    addTextCounter: function(inputId,counterId) {
+        var max = $(inputId).attr("maxlength");
+        $(inputId).keydown (function () {
+            var text = $(inputId).val();
+            var current = text.length;
+            $(counterId).text(current + "/" + max);
+        });
+   }
+}
 
 webgloo.sc.home = {
     addTiles : function() {

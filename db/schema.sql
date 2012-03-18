@@ -11,6 +11,7 @@ create table sc_post(
     links_json TEXT ,
     images_json TEXT,
     group_slug varchar(64),
+    cat_code varchar(16),
     created_on timestamp default '0000-00-00 00:00:00',
 	updated_on timestamp default '0000-00-00 00:00:00' ,
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -135,7 +136,9 @@ create table sc_post_archive(
     links_json TEXT ,
     images_json TEXT,
     pseudo_int int ,
+    is_feature int ,
     group_slug varchar(64),
+    cat_code varchar(16),
     created_on timestamp default '0000-00-00 00:00:00',
 	updated_on timestamp default '0000-00-00 00:00:00' ,
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -166,7 +169,19 @@ create table sc_user_group(
 
 alter table sc_user_group add constraint UNIQUE(login_id,token);
     
-   
+
+drop table if exists sc_list;
+create table sc_list(
+    id int(11) NOT NULL auto_increment,
+    name varchar(16) not null,
+    code varchar(8) not null,
+    display varchar(32) not null,
+    ui_order int not null ,
+    created_on timestamp default '0000-00-00 00:00:00',
+	updated_on timestamp default '0000-00-00 00:00:00' ,
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
 
 --
 -- Triggers 
@@ -197,17 +212,35 @@ CREATE TRIGGER trg_mik_user_name AFTER UPDATE ON sc_user
 delimiter ;
 
 
+
 DROP TRIGGER IF EXISTS trg_post_archive;
 
 delimiter //
 CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
     FOR EACH ROW
     BEGIN
-        insert into sc_post_archive(title,description,login_id,links_json,images_json,group_slug,pseudo_id)
-        select q.title,q.description,q.login_id,q.links_json,q.images_json,q.group_slug,q.pseudo_id
+        insert into sc_post_archive(title,
+                                    description,
+                                    login_id,
+                                    links_json,
+                                    images_json,
+                                    group_slug,
+                                    pseudo_id,
+                                    cat_code,
+                                    created_on)
+        select q.title,
+                q.description,
+                q.login_id,
+                q.links_json,
+                q.images_json,
+                q.group_slug,
+                q.pseudo_id,
+                q.cat_code,
+                q.created_on
         from sc_post  q where q.id = OLD.id ; 
     END;//
 delimiter ;
+
 
 
 DROP TRIGGER IF EXISTS trg_comment_archive;

@@ -82,6 +82,7 @@
                               					
 				webgloo.media.init(["link","image"]);
 				webgloo.media.attachEvents();
+                webgloo.sc.util.addTextCounter("#description", "#description_counter");
 				  
 				var uploader = new qq.FileUploader({
 					element: document.getElementById('image-uploader'),
@@ -129,11 +130,28 @@
 							<div class="span9"><div id="image-uploader"> </div></div>
 						</div>
                         <table class="form-table">
-							
+						   <tr>
+                                <td> <label>Category</label>
+
+                                <?php
+                                    $options = array(
+                                        'name'=>'category',
+                                        'default'=>$postDBRow['cat_code'], 
+                                        'empty'=>true);
+
+                                    $selectBoxDao = new \com\indigloo\sc\dao\SelectBox();
+                                    $catRows = $selectBoxDao->get('CATEGORY');
+                                    echo \com\indigloo\ui\SelectBox::render($catRows,$options);
+                                  ?>
+                                </td>
+                            </tr>
+ 	
                             <tr>
                                 <td>
-									<label>Details</label>
-									<textarea  name="description" class="required h130 w500" cols="50" rows="4" ><?php echo $sticky->get('description',$postDBRow['description']); ?></textarea>
+									<label>Details*&nbsp;(max 512 chars)</label>
+									<textarea  id="description" maxlength="512" name="description" class="required h130 w500" cols="50" rows="4" ><?php echo $sticky->get('description',$postDBRow['description']); ?></textarea>
+                                    <br>
+                                   <span id="description_counter"></span> 
 								</td>
 							</tr>
                             <tr>

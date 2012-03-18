@@ -57,6 +57,7 @@
 					
 				webgloo.media.init(["image", "link"]);
 				webgloo.media.attachEvents();
+                webgloo.sc.util.addTextCounter("#description", "#description_counter");
 				  
 				var uploader = new qq.FileUploader({
 					element: document.getElementById('image-uploader'),
@@ -66,6 +67,8 @@
 						webgloo.media.addImage(responseJSON.mediaVO);
 					}
 				});
+
+
 			 
             });
             
@@ -105,20 +108,24 @@
 							<div class="span9"><div id="image-uploader"> </div></div>
 						</div>
 						<table class="form-table">
-                            <!-- @todo turn on category 
                             <tr>
                                 <td> <label>Category</label>
-                                    <select name="category">
-                                        <option value="1">option1</option>
-                                        <option value="2">option2</option>
-                                    </select>
+
+                                <?php
+                                    $options = array('name' => 'category', 'empty' => true);
+                                    $selectBoxDao = new \com\indigloo\sc\dao\SelectBox();
+                                    $catRows = $selectBoxDao->get('CATEGORY');
+                                    echo \com\indigloo\ui\SelectBox::render($catRows,$options);
+                                  ?>
                                 </td>
-                            </tr> -->
+                            </tr>
 
 							<tr>
 								<td>
-									<label>Details *</label>
-									<textarea  name="description" class="required h130 w500" cols="50" rows="4" ><?php echo $sticky->get('description'); ?></textarea>
+									<label>Details*&nbsp;(max 512 chars)</label>
+									<textarea  id="description" maxlength="512" name="description" class="required h130 w500" cols="50" rows="4" ><?php echo $sticky->get('description'); ?></textarea>
+                                    <br>
+                                   <span id="description_counter"></span> 
 								</td>
 							</tr>
                             <tr>

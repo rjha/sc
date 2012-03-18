@@ -94,7 +94,8 @@ namespace com\indigloo\sc\dao {
 						$loginId,
 						$linksJson,
                         $imagesJson,
-                        $groupSlug) {
+                        $groupSlug,
+                        $categoryCode) {
 			
             $data = mysql\Post::create(
 								$title,
@@ -102,7 +103,8 @@ namespace com\indigloo\sc\dao {
 								$loginId,
 								$linksJson,
                                 $imagesJson,
-                                $groupSlug);
+                                $groupSlug,
+                                $categoryCode);
 			
             return $data ;
         }
@@ -113,7 +115,8 @@ namespace com\indigloo\sc\dao {
 						$description,
 						$linksJson,
                         $imagesJson,
-                        $groupSlug) {
+                        $groupSlug,
+                        $categoryCode) {
 			
 			$loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
             $code = mysql\Post::update($postId,
@@ -122,7 +125,8 @@ namespace com\indigloo\sc\dao {
                                $linksJson,
 							   $imagesJson,
                                $loginId,
-                               $groupSlug);
+                               $groupSlug,
+                               $categoryCode);
             return $code ;
         }
 

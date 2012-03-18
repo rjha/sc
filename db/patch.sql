@@ -4,12 +4,11 @@
 --
 
 	
-insert into sc_list(name,ui_order,code,display) values('CATEGORY',1, 'BABY', 'Baby / Kids');
-insert into sc_list(name,ui_order,code,display) values('CATEGORY',2, 'BEAUTY', 'Beauty');
-insert into sc_list(name,ui_order,code,display) values('CATEGORY',3, 'BOOK', 'Books');
-insert into sc_list(name,ui_order,code,display) values('CATEGORY',4, 'CLOTH', 'Clothes');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',1, 'BABY', 'Baby/Kids');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',2, 'BOOK', 'Books');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',3, 'CLOTH', 'Clothes');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',4, 'FASHION', 'Fashion');
 
-insert into sc_list(name,ui_order,code,display) values('CATEGORY',5, 'MFASHION', 'Fashion - Male');
 insert into sc_list(name,ui_order,code,display) values('CATEGORY',6, 'FFASHION', 'Fashion - Female');
 
 insert into sc_list(name,ui_order,code,display) values('CATEGORY',7, 'HEALTH', 'Health / Fitness');
@@ -499,6 +498,59 @@ delimiter ;
 alter table sc_post_archive add column is_feature int;
 
 
+--
+-- 18 Mar 2012
+--
+
+
+drop table if exists sc_list;
+create table sc_list(
+    id int(11) NOT NULL auto_increment,
+    name varchar(16) not null,
+    code varchar(8) not null,
+    display varchar(32) not null,
+    ui_order int not null ,
+    created_on timestamp default '0000-00-00 00:00:00',
+	updated_on timestamp default '0000-00-00 00:00:00' ,
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
+alter table sc_post add column cat_code varchar(16);
+alter table sc_post_archive add column cat_code varchar(16);
+
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',1, 'BABY', 'Baby/Kids');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',2, 'BOOK', 'Books');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',3, 'CLOTH', 'Clothes');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',4, 'FASHION', 'Fashion');
+
+
+DROP TRIGGER IF EXISTS trg_post_archive;
+
+delimiter //
+CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
+    FOR EACH ROW
+    BEGIN
+        insert into sc_post_archive(title,
+                                    description,
+                                    login_id,
+                                    links_json,
+                                    images_json,
+                                    group_slug,
+                                    pseudo_id,
+                                    cat_code,
+                                    created_on)
+        select q.title,
+                q.description,
+                q.login_id,
+                q.links_json,
+                q.images_json,
+                q.group_slug,
+                q.pseudo_id,
+                q.cat_code,
+                q.created_on
+        from sc_post  q where q.id = OLD.id ; 
+    END;//
+delimiter ;
 
 
 

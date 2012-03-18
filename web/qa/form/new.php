@@ -50,7 +50,8 @@
 								$gSessionLogin->id,
                                 $_POST['links_json'],
                                 $_POST['images_json'],
-                                $group_slug);
+                                $group_slug,
+                                $fvalues['category']);
 								
    			$code = $data['code'];
 

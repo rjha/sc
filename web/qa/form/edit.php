@@ -43,7 +43,8 @@
                                 $fvalues['description'],
                                 $_POST['links_json'],
                                 $_POST['images_json'],
-                                $group_slug);
+                                $group_slug,
+                                $fvalues['category']);
             
             if ($code == com\indigloo\mysql\Connection::ACK_OK ) {
                 $itemId = PseudoId::encode($fvalues['post_id']);
