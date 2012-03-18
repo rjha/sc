@@ -62,8 +62,18 @@ namespace com\indigloo\media {
              
             //do image specific processing here
             $tBlobData = $this->computeHW($sBlobData);
-            $storeName = $this->store->persist($prefix,$this->mediaData->originalName,$sBlobData);
-            $thumbnail = $this->store->persist($prefix,$this->mediaData->originalName,$tBlobData);
+
+            //caching headers
+            $offset = 3600*24*365;
+            $expiresOn = gmdate('D, d M Y H:i:s \G\M\T', time() + $offset);
+            $headers = array('Expires' => $expiresOn, 'Cache-Control' => 'public, max-age=31536000');
+
+            $storeName = $this->store->persist($prefix,$this->mediaData->originalName,$sBlobData,$headers);
+
+
+            //set content type for thumbnails
+            $headers["Content-Type"] =  "image/jpeg";
+            $thumbnail = $this->store->persist($prefix,$this->mediaData->originalName,$tBlobData,$headers);
             
             if(is_null($storeName)) {
                 array_push($this->errors, "file storage failed");
@@ -86,7 +96,7 @@ namespace com\indigloo\media {
         
         public function computeHW($sBlobData) {
             //compute height and width using GD2 functions
-            // GD2 function in global namespace
+            // GD2 functions are in global namespace
             $oSourceImage = \imagecreatefromstring($sBlobData);
             if ($oSourceImage == false) {
                 //unrecoverable error
@@ -109,7 +119,7 @@ namespace com\indigloo\media {
                 $this->mediaData->width, $this->mediaData->height);
 
             ob_start();
-            //default is 75. is Quality 75 good enough for us?
+            //default quality is 75. 
             \imagejpeg($oDestinationImage, NULL, 100);
             $tBlobData = ob_get_contents();
             ob_end_clean();

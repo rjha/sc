@@ -15,7 +15,7 @@ namespace com\indigloo\media {
         
         }
 
-        function persist($prefix,$name,$sBlobData) {
+        function persist($prefix,$name,$sBlobData,$headers=array()) {
 
             //create a unique name for s3 store
             $storeName = \com\indigloo\media\FileStore::getHashedName($name) ;
@@ -35,10 +35,9 @@ namespace com\indigloo\media {
             $s3 = new \S3($awsKey, $awsSecret,false);
 
             $metaHeaders = array();
-            $requestHeaders = array();
             
             //$input, $bucket, $uri, $acl , $metaHeaders, $requestHeaders
-            $s3->putObject($sBlobData, $bucket, $storeName, \S3::ACL_PUBLIC_READ, $metaHeaders, $requestHeaders);
+            $s3->putObject($sBlobData, $bucket, $storeName, \S3::ACL_PUBLIC_READ, $metaHeaders, $headers);
             return $storeName;
 
         }

@@ -29,7 +29,7 @@ namespace com\indigloo\media {
             return $storeName ;
         }
 
-        function persist($prefix,$name,$sBlobData) {
+        function persist($prefix,$name,$sBlobData,$headers=array()) {
 
             $storeName = self::getHashedName($name) ;
             $storeName =  $prefix.$storeName ;

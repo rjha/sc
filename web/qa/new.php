@@ -56,7 +56,6 @@
 					
 				webgloo.media.init(["image","link"]);
 				webgloo.media.attachEvents();
-				webgloo.sc.groups.attachEvents();
 				  
 				var uploader = new qq.FileUploader({
 					element: document.getElementById('image-uploader'),
