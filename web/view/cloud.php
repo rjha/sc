@@ -43,12 +43,14 @@
 					<div class="page-header">
                         <h2> Groups </h2>
 					</div>
+                    <!-- start cloud -->
                     <?php 
                         if(isset($cloudGroups) && !empty($cloudGroups)) {
                             echo \com\indigloo\sc\html\Group::getCloud($cloudGroups); 
                          }
 
                     ?>
+                    <!-- end cloud -->
 				</div> 
 			</div>
 			

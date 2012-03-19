@@ -1,7 +1,19 @@
 <div style="background:#FFF;border-radius:5px;">
     <div style="margin-left:20px;">
     <ul class="nav nav-pills">
-      <li><a href="/surprise/me">surprise me!</a></li>
+
+     <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            Categories 
+            <b class="caret"></b>
+          </a>
+        <ul class="dropdown-menu">
+            <li><a href="/category/1">Arts/Crafts</a></li>
+            <li><a href="/category/2">Baby/Kids</a></li>
+            <li><a href="/category/3">Clothes/Accessories</a></li>
+        </ul>
+      </li> <!-- category -->
+
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
             Location 
@@ -16,7 +28,7 @@
             <li><a href="/search/location/mumbai">Mumbai</a></li>
         </ul>
       </li> <!-- location -->
-      <li> <a id="nav-group-open" href="">Browse Groups</a> </li>
+      <li> <a id="nav-group-open" href="">Popular Groups</a> </li>
      </ul>
     </div>
 </div>

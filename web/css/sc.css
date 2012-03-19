@@ -638,7 +638,7 @@
 	.vertical a {
 		text-decoration : none;
 		color: white;
-		color: black;
+        width:22px;
 
 	}
         
@@ -646,10 +646,7 @@
 		position:fixed;
 		top:200px;
 		right:0px;
-		/* background-color:orange; */
-		background-color:#333;
-		background-color:#B94A48;
-		background-color:#F89406;
+		background-color:#06C;
 		padding:5px;
 		font-size:14px;
 		font-weight:bold;
@@ -835,8 +832,9 @@
         font-size: 15px;
     }
 
-
-    
+    #home-tile h1 { 
+        margin : 0px 0px 0px 20px; 
+    }
 
     /* last section - override bootstrap css */
     .hero-unit {

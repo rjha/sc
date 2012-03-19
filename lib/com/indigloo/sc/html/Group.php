@@ -24,7 +24,7 @@ namespace com\indigloo\sc\html {
                 $size = 'tag-size'.$style ;
 
                 printf(" <a href=\"%s\" class=\"cloud-item %s\"> ",$href,$color);
-                printf(" <span class=\"%s\">%s</span> ",$size,$group['name']);
+                printf(" <span class=\"%s\">%s</span> </a>",$size,$group['name']);
             }
 
             printf("</div>");

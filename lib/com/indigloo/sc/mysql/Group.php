@@ -12,7 +12,7 @@ namespace com\indigloo\sc\mysql {
 
 		static function getLatest($limit) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "select token from sc_user_group order by id desc LIMIT ".$limit ; 
+            $sql = "select distinct token from sc_user_group order by id desc LIMIT ".$limit ; 
 			$rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 		}

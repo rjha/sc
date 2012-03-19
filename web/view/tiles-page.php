@@ -68,6 +68,14 @@
                     <hr>
                     <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
 
+                    <div id="feedback" class="vertical">
+						<a href="/share/feedback.php">
+							<br>
+                            F e e d b a c k 
+						</a>
+					</div>	<!-- feedback -->
+
+
 				</div> 
 			</div>
 			

@@ -45,8 +45,8 @@
 			<div class="row">
 				<div class="span12">
 					<div id="tiles">
-
-						<?php
+                        <?php include($_SERVER['APP_WEB_DIR'] . '/inc/home-tile.inc'); ?>
+                        <?php
 							foreach($this->homeDBRows as $postDBRow) {
 								$html = \com\indigloo\sc\html\Post::getTile($postDBRow);
 								echo $html ;
@@ -63,10 +63,8 @@
 
                    <div id="feedback" class="vertical">
 						<a href="/share/feedback.php">
-							Y O U R    
-							<br />
-							<br />
-						    F E E D B A C K 	
+							<br>
+                            F e e d b a c k 
 						</a>
 					</div>	<!-- feedback -->
  
