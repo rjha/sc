@@ -8,9 +8,14 @@
             <b class="caret"></b>
           </a>
         <ul class="dropdown-menu">
-            <li><a href="/category/1">Arts/Crafts</a></li>
-            <li><a href="/category/2">Baby/Kids</a></li>
-            <li><a href="/category/3">Clothes/Accessories</a></li>
+            <?php
+                $categoryDao = new \com\indigloo\sc\dao\Category();
+                $map = $categoryDao->getIdNameMap();
+                foreach($map as $item) {
+                    $strItem = sprintf("<li><a href=\"/category/%s\">%s</a></li>",$item['id'],$item['name']);
+                    echo $strItem ;
+                }
+            ?>
         </ul>
       </li> <!-- category -->
 

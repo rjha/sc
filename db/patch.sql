@@ -553,7 +553,24 @@ CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
 delimiter ;
 
 
+--
+-- 19 March 2012
+--
 
+alter table sc_list modify column code varchar(16) not null ;
+
+
+delete from sc_list ;
+
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',2, 'BABY', 'Baby/Kids');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',3, 'BOOKM', 'Books/Media');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',4, 'CLOTH', 'Clothes/Accessories');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',7, 'FASHION', 'Fashion');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',8, 'Food', 'Food/Restaurants');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',5, 'GADGET', 'Computer/Mobiles/Gadgets');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',6, 'COOL', 'Cool/Unusual');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',9, 'HOMEI', 'Home/Interiors');
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',1, 'ARTC', 'Arts/Crafts');
 
 
 

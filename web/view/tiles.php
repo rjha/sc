@@ -25,7 +25,7 @@
     </head>
 
      <body class="">
-		<div class="container">
+		<div class="container mh800">
 			<div class="row">
 				<div class="span12">
 					<?php include($_SERVER['APP_WEB_DIR'] . '/inc/toolbar.inc'); ?>

@@ -21,7 +21,14 @@ namespace com\indigloo\sc\search {
                 exit ;
             }
             $this->connx = $connx ;
-          
+        }
+
+        function escape($token) {
+            $from = array ( '\\', '(',')','|','-','!','@','~','"','&', '/', '^', '$', '=', "'", 
+                "\x00", "\n", "\r", "\x1a" );
+            $to   = array ( '\\\\', '\\\(','\\\)','\\\|','\\\-','\\\!','\\\@','\\\~','\\\"', '\\\&', '\\\/', 
+                 '\\\^', '\\\$', '\\\=', "\\'", "\\x00", "\\n", "\\r", "\\x1a" );
+            return str_replace ($from, $to, $token);
         }
 
         function close() {
@@ -67,8 +74,10 @@ namespace com\indigloo\sc\search {
         }
 
         function getDocumentsCount($index,$token) {
+            if(Util::tryEmpty($token)) { return 0 ; }
             Util::isEmpty('index',$index);
-            Util::isEmpty('token',$token);
+            //escape token
+            $token = $this->escape($token); 
 
             $sql = " select id from %s where match('%s') limit 0,1" ;
             $sql = sprintf($sql,$index,$token);
@@ -88,9 +97,11 @@ namespace com\indigloo\sc\search {
         }
 
         function getDocuments($index,$token,$offset,$limit) {
+            if(Util::tryEmpty($token)) { return array() ; } 
             Util::isEmpty('index',$index);
-            Util::isEmpty('token',$token);
             //get paginator params
+            //escape token
+            $token = $this->escape($token); 
             
             $sql = " select id from %s where match('%s') limit %d,%d" ;
             $sql = sprintf($sql,$index,$token,$offset,$limit);
