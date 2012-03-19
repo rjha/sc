@@ -17,9 +17,10 @@ namespace com\indigloo\sc\controller{
             $this->homeDBRows = array();
         }
 
-        function combine($item,$key) {
+        function combine($item) {
             if(!in_array($item['id'],$this->ids)) {
                 array_push($this->homeDBRows,$item);
+                array_push($this->ids,$item['id']);
             }
         }
       
@@ -71,17 +72,25 @@ namespace com\indigloo\sc\controller{
                 //pull random rows
                 $randomDBRows = $postDao->getRandom($short);
             }
-            
-            array_walk($featureDBRows,array($this,"combine"));
-            array_walk($latestDBRows,array($this,"combine"));
-            array_walk($randomDBRows,array($this,"combine"));
+
+            $bucket = array_merge($featureDBRows,$randomDBRows);
+            $count = sizeof($bucket);
+
+            for($i = 0 ; $i < $count ; $i++){
+                $this->combine($latestDBRows[$i]);
+                $this->combine($bucket[$i]);
+            }
+
+            for($i = $count; $i < sizeof($latestDBRows) ; $i++){
+                $this->combine($latestDBRows[$i]);
+            }
 
             $endId = NULL ;
             if(sizeof($latestDBRows) > 0 ) {
                 $endId =   $latestDBRows[sizeof($latestDBRows)-1]['id'] ;
             }
 
-           
+            
             $endId = base_convert($endId,10,36);
             $nparams = array('gpa' => $endId, 'gpage' => 2) ;
             $nextPageUrl = Url::addQueryParameters("/",$nparams);
