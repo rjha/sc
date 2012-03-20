@@ -14,7 +14,5 @@
     $gWeb = Web::getInstance();
     $gWeb->start();
     
-    $gSessionLogin = NULL ;
-    $gSiteAddress = 'http://'.$_SERVER['HTTP_HOST'] ;
 ?>
 

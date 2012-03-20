@@ -21,14 +21,14 @@ namespace com\indigloo\sc\auth {
 
 		static function startMikSession() {
             if (isset($_SESSION) && isset($_SESSION[WebglooUser::USER_TOKEN])) {
-				$row = $_SESSION[WebglooUser::USER_DATA];
+				$mikUser = $_SESSION[WebglooUser::USER_DATA];
 
-				if(empty($row) || empty($row['user_name']) || empty($row['login_id'])) {
+				if(empty($mikUser) || empty($mikUser['user_name']) || empty($mikUser['login_id'])) {
 					trigger_error("Missing user data in 3mik session", E_USER_ERROR);
 				}
 
-				$_SESSION[self::NAME] = $row['user_name'];
-				$_SESSION[self::LOGIN_ID] = $row['login_id'];
+				$_SESSION[self::NAME] = $mikUser['user_name'];
+				$_SESSION[self::LOGIN_ID] = $mikUser['login_id'];
 				$_SESSION[self::PROVIDER] = self::MIK;
 				$_SESSION[self::TOKEN] = Util::getBase36GUID();
 
@@ -104,18 +104,6 @@ namespace com\indigloo\sc\auth {
 			return $loginId ;
         }
 
-
-		static function isValid() {
-            $flag = false ;
-			if (isset($_SESSION) 
-				&& isset($_SESSION[self::TOKEN])	
-				&& isset($_SESSION[self::LOGIN_ID])) {
-                $flag = true ;
-            }
-            
-            return $flag ;
-        }
-
 		static function isOwner($loginId) {
 
             //false on NULL or empty
@@ -135,6 +123,29 @@ namespace com\indigloo\sc\auth {
 			
 			return $flag ;
 		}
+        
+        static function isAdmin(){
+            $flag = false ;
+            if (isset($_SESSION) && isset($_SESSION[WebglooUser::USER_TOKEN])) {
+				$mikUser = $_SESSION[WebglooUser::USER_DATA];
+                if(!empty($mikUser)) {
+                    $flag = ($mikUser['is_admin'] == 1 ) ? true : false ;
+
+                }
+            }
+
+            return $flag ;
+        }
+
+        static function hasSession(){
+            $flag = false ;
+            $loginId = self::tryLoginIdInSession();
+            if(!is_null($loginId)) {
+                $flag = true ;
+            }
+
+            return $flag ;
+        }
 
 	}
 }

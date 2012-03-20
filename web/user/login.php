@@ -9,7 +9,7 @@
     use com\indigloo\ui\form\Message as FormMessage;
 
 	//do we already have a login?
-	if(\com\indigloo\sc\auth\Login::isValid()) {
+	if(\com\indigloo\sc\auth\Login::hasSession()) {
 		header("Location: / ");
 	}	
      

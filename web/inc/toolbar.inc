@@ -1,15 +1,12 @@
 <?php
 
- use \com\indigloo\sc\auth\Login as Login;
- 
- if(Login::isValid()){
-    $gSessionLogin = Login::getLoginInSession();
-    include($_SERVER['APP_WEB_DIR'].'/inc/toolbar/user.inc') ;
+    use \com\indigloo\sc\auth\Login as Login;
+    $gSessionLogin = Login::tryLoginInSession();
+    
+    if(!is_null($gSessionLogin)) {
+        include($_SERVER['APP_WEB_DIR'].'/inc/toolbar/user.inc') ;
+    } else {
+        include($_SERVER['APP_WEB_DIR'].'/inc/toolbar/default.inc') ;
+    } 
 
-  } else {
-
-    include($_SERVER['APP_WEB_DIR'].'/inc/toolbar/default.inc') ;
-  }
-  
-  
 ?>
