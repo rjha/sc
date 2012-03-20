@@ -1,13 +1,15 @@
 <div class="tile">
     <div id="home-tile">
         <h1> 
-            Shop Social
+            Discover
+            <br>
+            and Share
             <br>
             with 3mik 
         </h1>
         <div class="p20">
             <a class="btn" href="/user/register.php">Register</a>
-            <a class="btn" href="#">Learn More</a>
+            <a class="btn" href="/site/about.php">Learn More</a>
         </div>
        <div class="well">
            <ul class="nav nav-list">

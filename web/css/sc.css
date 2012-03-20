@@ -130,56 +130,15 @@
 	
 	/* + Footer */
 	
-	.f-content {
-		text-align:right;
-		width: 960px;
-		margin: 0 auto;
-	}
-	
-	#copyright {
-		color:#777777;
-		font-size: 10px;
-	}
-	#social a {
-		background: url("images/social.png") no-repeat scroll 0 0 transparent;
-		display: block;
-		float: left;
-		height: 18px;
-		margin: 0 3px;
-		width: 18px;
-	}
-	#social .yt {
-		background-position: 0 -18px;
-	}
-	#social .fb {
-		background-position: 0 -36px;
-	}
-	
 	#footer {
-		background:#000000;
 		padding:16px 0 6px;
 		font-family: Arial, Helvetica, sans-serif;
-		color: #bfbebe;
-		margin-top:28px;
+		color: #AAA;
+		margin-top:18px;
+        font-size: 12px;
+        text-align:center;
+        line-height:18px;
 	}
-	
-	
-	#f-menu {}
-	#f-menu ul {
-		list-style:none;
-		margin:8px 0 0;
-		padding:0;
-		font-size:14px;
-	}
-	#f-menu ul li {
-		display:inline;
-	}
-	#f-menu ul li a {
-		color:#dbdada;
-		font-weight:bold;
-		margin:0 7px;
-	}
-	
 	
 	/* + custom web forms stuff */
 	
@@ -651,6 +610,10 @@
 		font-size:14px;
 		font-weight:bold;
 	}
+
+    #feedback a:hover {
+        background-color: #FF8B00;
+    }
 
 	.twitter-login {
 		padding:5px 10px 5px 20px;
