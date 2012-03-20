@@ -81,7 +81,7 @@
                            
 				<?php 
 					if(sizeof($images) > 0 ) { include($_SERVER['APP_WEB_DIR'].'/qa/inc/carousel.inc') ; }
-					echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ; 
+                    echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ; 
                      
 					if(sizeof($links) > 0 ) {  
 						//@todo cleanup kludge in body html
@@ -151,9 +151,7 @@
 				<div class="p10">
 					<a href="https://twitter.com/share" class="twitter-share-button" data-via="3mikindia" data-count="none">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                 </div>	
-                <div class="block">
-                    <h3> More from 3mik </h3>
-                </div>
+                <h3> More from 3mik </h3>
 					<?php
 						foreach($xrows as $xrow) {
 							echo \com\indigloo\sc\html\Post::getSimpleTile($xrow) ;

@@ -1,3 +1,1 @@
-
-<div class="hero-unit">  </div>
-
+<!-- no banner -->

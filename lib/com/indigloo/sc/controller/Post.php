@@ -65,12 +65,14 @@ namespace com\indigloo\sc\controller{
                 $sphinx = new \com\indigloo\sc\search\SphinxQL();
 
                 foreach($groups as $group) {
-                    $ids = $sphinx->getGroups($group,0,5);  
+                    $ids = $sphinx->getGroups($group,0,4);  
                     foreach($ids as $id){
                         if(!in_array($id,$xids) && ($id != $postId)) {
                             array_push($xids,$id);
+                            if(sizeof($xids) >= 4 ) { break; } 
                         }
                     }
+                    if(sizeof($xids) >= 4 ) { break; } 
                 }
 
                 //get posts on groups
@@ -79,17 +81,21 @@ namespace com\indigloo\sc\controller{
                 }
             }
 
-            //get posts for same user
-            $userRows = $postDao->getOnLoginId($postDBRow['login_id'],10);
-            foreach($userRows as $userRow) {
-                if(!in_array($userRow['id'],$xids) && ($userRow['id'] != $postId)) {
-                    array_push($xrows,$userRow);
+            $catCode = $postDBRow['cat_code'];
+
+            if(!Util::tryEmpty($catCode)) {
+                $categoryDao = new \com\indigloo\sc\dao\Category();
+                $catRows = $categoryDao->getLatest($catCode,4);
+                foreach($catRows as $catRow) {
+                    if(!in_array($catRow['id'],$xids) && ($catRow['id'] != $postId)) {
+                        array_push($xrows,$catRow);
+                    }
                 }
             }
-            
-            if(sizeof($xrows) < 12 ) {
+
+            if(sizeof($xrows) < 10 ) {
                 //how many?
-                $limit = 12 - (sizeof($xrows)) ;
+                $limit = 10 - (sizeof($xrows)) ;
                 $randomRows = $postDao->getRandom($limit);
                 $xrows = array_merge($xrows,$randomRows);
             }

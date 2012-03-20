@@ -68,7 +68,7 @@ namespace com\indigloo\sc\mysql {
             $code = $mysqli->real_escape_string($code);
             
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l  where l.id = q.login_id " ;
-			$sql .= " where cat_code ='".$code."' " ;
+			$sql .= " and cat_code ='".$code."' " ;
             $predicate = '' ;
 
             if($direction == 'after') {

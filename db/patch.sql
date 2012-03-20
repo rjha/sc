@@ -574,4 +574,58 @@ insert into sc_list(name,ui_order,code,display) values('CATEGORY',1, 'ARTC', 'Ar
 
 
 
+--
+-- 20 March 2012
+--
+
+update sc_list set code = 'FOOD' where name = 'CATEGORY' and ui_order =8 and  code = 'Food' ;
+update sc_post set cat_code = 'FOOD' where cat_code = 'Food';
+
+update sc_list set code = 'CLOTHA' where name = 'CATEGORY' and ui_order =4 and  code = 'CLOTH' ;
+update sc_post set cat_code = 'CLOTHA' where cat_code = 'CLOTH';
+
+update sc_list set code = 'COOLU' where name = 'CATEGORY' and ui_order =6 and  code = 'COOL' ;
+update sc_post set cat_code = 'COOLU' where cat_code = 'COOL';
+
+update sc_list set display = 'Fashion/Beauty' where name = 'CATEGORY' and ui_order =7 and  code = 'FASHION' ;
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',10, 'TRAVEL', 'Travel');
+
+--
+-- load categories data now
+--
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

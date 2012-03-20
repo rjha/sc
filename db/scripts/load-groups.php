@@ -8,14 +8,14 @@
        
 	error_reporting(-1);
 
-    $lines = file("groups2.csv");
+    $lines = file("cats.csv");
     foreach($lines as $line){
         $columns = explode("|",$line);
 
         $slug = trim($columns[2]);
         $id = trim($columns[0]);
 
-        $sql = sprintf("update sc_post set group_slug = '%s' where id = %d ; \n",$slug,$id);
+        $sql = sprintf("update sc_post set cat_code = '%s' where id = %d ; \n",$slug,$id);
         echo $sql;
         echo "\n" ; 
     }
