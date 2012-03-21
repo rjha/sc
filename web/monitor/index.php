@@ -9,10 +9,12 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\ui\Tabs as Tabs ;
 
-    $tabOptions = array("stat"=>"Stats","feature"=>"Featured","action"=>"Actions");
+    $tabOptions = array("stat"=>"Stats","feature"=>"Featured","action"=>"Actions", "feedback" => "Feedback");
     $tabData = Tabs::render($tabOptions,'stat');
     $strTabUI = $tabData["buffer"];
     $activeTab = $tabData["active"];
+
+    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
 
 ?>
 

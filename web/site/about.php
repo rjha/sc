@@ -48,22 +48,56 @@
 			
 			
 			<div class="row">
-				<div class="span12">
-					<div class="page-header">
-                        <h2> still working on it... </h2>
-					</div>
+				<div class="span4 offset1">
+                    <h1> 3mik is a sharing and discovery platform in India.</h1> 
+                    <blockquote class="pull-right">
+                        <p>
+                    3mik lets you share interesting and unique things in India. You can use 3mik to discover your interests and see stuff shared by others. Move around and see what you like! 
+                        </p>
+                    </blockquote>
+                </div>
+				<div class="span6 offset1 ">
+                <!-- collage -->
+                    <div>
+                        <div class="photo">
+                            <img src="/css/images/about-collage.jpg" />
 
-                    <div id="feedback" class="vertical">
-						<a href="/share/feedback.php">
-							<br>
-                            F e e d b a c k 
-						</a>
-					</div>	<!-- feedback -->
- 
-				</div> 
-			</div>
-			
-			
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="row p20" style="border-top:1px solid #DEDEDE;">
+                <div class="span6 offset4">
+                    <a class="btn" href="/user/register.php">Register</a>
+                    &nbsp;
+                    <small>Free and takes only a min.</small>
+                </div>
+            </div>
+            <div class="row mt20">
+                <div class="span4 offset2">
+                    <h2> what is there? </h2> 
+                    <ul class="unordered">
+                        <li> street food, best sandesh and jalebi!</li>
+                        <li> Designer sarees, what is that vidya balan is wearing?</li>
+                        <li> wood toys, warli art, puppets and handicrafts</li>
+                        <li> Fashion accessories </li>
+
+                    </ul>
+                </div>
+                <div class="span4">
+                    <ul class="unordered">
+                        <li> Rajnikanth shot glasses, chota bheem bags and other cool stuff</li>
+                        <li> chilli chocolate in Bangalore and Tappu Dabbawala in Mumbai</li>
+                        <li> Home decor ideas and gift ideas</li>
+                        <li> <a href="/">and lot more&rarr;</a></li>
+                    </ul>
+                </div>
+
+            </div>
+                    
 		</div>  <!-- container -->
               
        
