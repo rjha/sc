@@ -67,6 +67,9 @@
 				$name = "Anonymous" ;
 			}
 
+            $message = sprintf("Login:Twitter :: id %d ,name %s \n",$id,$name); 
+            Logger::getInstance()->info($message);
+
 			$twitterDao = new \com\indigloo\sc\dao\Twitter();
 			$loginId = $twitterDao->getOrCreate($id,$name,$screenName,$location,$image);
 

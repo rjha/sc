@@ -10,6 +10,7 @@
 	use com\indigloo\Util;
 	use com\indigloo\Constants as Constants;
 	use com\indigloo\Configuration as Config;
+	use com\indigloo\Logger as Logger;
 	use com\indigloo\ui\form\Message as FormMessage ;
 	
     $fbAppId = Config::getInstance()->get_value("facebook.app.id");
@@ -84,6 +85,9 @@
 		if(empty($name) && empty($firstName)) {
 			$name = "Anonymous" ;
 		}
+
+        $message = sprintf("Login:Facebook :: id %d ,email %s \n",$id,$email); 
+        Logger::getInstance()->info($message);
 
 		$facebookDao = new \com\indigloo\sc\dao\Facebook();
 		$loginId = $facebookDao->getOrCreate($id,$name,$firstName,$lastName,$link,$gender,$email);

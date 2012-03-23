@@ -80,7 +80,7 @@ create table sc_login(
 drop table if exists sc_twitter;
 create table sc_twitter(
 	id int(11) NOT NULL auto_increment,
-	twitter_id int(11) NOT NULL ,
+	twitter_id varchar(64) NOT NULL ,
 	login_id int(11) NOT NULL ,
 	name varchar(32) not null,
 	screen_name varchar(32) ,
@@ -100,14 +100,14 @@ alter table  sc_twitter add constraint UNIQUE uniq_id (twitter_id);
 drop table if exists sc_facebook;
 create table sc_facebook(
 	id int(11) NOT NULL auto_increment,
-	facebook_id int(11) NOT NULL ,
+	facebook_id varchar(64) NOT NULL ,
 	login_id int(11) NOT NULL ,
 	name varchar(32) not null,
 	first_name varchar(32) ,
 	last_name varchar(32) ,
 	link varchar(128) ,
     gender varchar(8) ,
-    email varchar(32) ,
+    email varchar(64) ,
 	created_on TIMESTAMP  default '0000-00-00 00:00:00',
     updated_on TIMESTAMP   default '0000-00-00 00:00:00',
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -174,7 +174,7 @@ drop table if exists sc_list;
 create table sc_list(
     id int(11) NOT NULL auto_increment,
     name varchar(16) not null,
-    code varchar(8) not null,
+    code varchar(16) not null,
     display varchar(32) not null,
     ui_order int not null ,
     created_on timestamp default '0000-00-00 00:00:00',
@@ -326,5 +326,16 @@ CREATE TRIGGER trg_user_group2  AFTER  update ON sc_post
 
     END;//
 delimiter ;
+
+
+
+
+
+
+
+
+
+
+  
 
 

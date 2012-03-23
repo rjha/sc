@@ -337,8 +337,8 @@
 	.widget a{
 		text-decoration: none;
 	}
-	.widget a:hover{ 
-        text-decoration:underline 
+	.widget a:hover { 
+        text-decoration:underline; 
     }
 	
 	/* Regular Post */

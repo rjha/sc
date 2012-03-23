@@ -4,6 +4,7 @@ namespace com\indigloo\sc\dao {
 
     
     use \com\indigloo\Util as Util ;
+    use \com\indigloo\Logger as Logger ;
     use \com\indigloo\sc\mysql as mysql;
 
     class Facebook {
@@ -11,8 +12,13 @@ namespace com\indigloo\sc\dao {
 			$loginId = NULL ;
 
 			//is existing record?
+            $id = trim($id);
 			$row = $this->getOnFacebookId($id); 
+
 			if(empty($row)){
+                $message = sprintf("Login:Facebook:create :: id %s, email %s \n",$id,$email);
+                Logger::getInstance()->info($message);
+
 				//create login 
 				$loginDao = new \com\indigloo\sc\dao\Login();
 				$data = $loginDao->create(\com\indigloo\sc\auth\Login::FACEBOOK,$name);

@@ -507,7 +507,7 @@ drop table if exists sc_list;
 create table sc_list(
     id int(11) NOT NULL auto_increment,
     name varchar(16) not null,
-    code varchar(8) not null,
+    code varchar(16) not null,
     display varchar(32) not null,
     ui_order int not null ,
     created_on timestamp default '0000-00-00 00:00:00',
@@ -596,6 +596,13 @@ insert into sc_list(name,ui_order,code,display) values('CATEGORY',10, 'TRAVEL', 
 
 
 
+
+--
+-- 23 March 2012
+--
+alter table sc_facebook modify column facebook_id varchar(64);
+alter table sc_facebook modify column email varchar(64);
+alter table sc_twitter modify column twitter_id varchar(64);
 
 
 

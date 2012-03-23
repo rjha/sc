@@ -11,9 +11,10 @@ namespace com\indigloo\sc\mysql {
         const MODULE_NAME = 'com\indigloo\sc\mysql\Facebook';
 
 		static function getOnFacebookId($facebookId) {
+            //@todo check if facebook_id > 64 chars
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 			$facebookId = $mysqli->real_escape_string($facebookId);
-			$sql = " select * from sc_facebook where facebook_id = ".$facebookId ;
+			$sql = " select * from sc_facebook where facebook_id = '".$facebookId. "' " ;
 			$row = MySQL\Helper::fetchRow($mysqli,$sql);
 			return $row ;
 		}
@@ -28,7 +29,12 @@ namespace com\indigloo\sc\mysql {
 
 
 		static function create($facebookId,$name,$firstName,$lastName,$link,$gender,$email,$loginId){
+            //@todo check column lengths
+            //log errors
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
+			$facebookId = $mysqli->real_escape_string($facebookId);
+			$email = $mysqli->real_escape_string($email);
+
 			$sql = " insert into sc_facebook(facebook_id,name,first_name,last_name,link,gender," ;
 			$sql .= " email,login_id,created_on) " ;
 			$sql .= " values(?,?,?,?,?,?,?,?,now()) ";
@@ -37,7 +43,7 @@ namespace com\indigloo\sc\mysql {
             $stmt = $mysqli->prepare($sql);
             
             if ($stmt) {
-                $stmt->bind_param("issssssi",
+                $stmt->bind_param("sssssssi",
                         $facebookId,
                         $name,
                         $firstName,
