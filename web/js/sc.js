@@ -11,6 +11,36 @@ String.prototype.supplant = function (o) {
         });
 };
 
+
+/* JSON support for old browsers */
+/* @see  https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/JSON  */
+
+if (!window.JSON) {
+    console.log("Old browser using imitation of native JSON object");
+    window.JSON = {
+        parse: function (sJSON) { return eval("(" + sJSON + ")"); },
+        stringify: function (vContent) {
+            if (vContent instanceof Object) {
+                var sOutput = "";
+                if (vContent.constructor === Array) {
+                    for (var nId = 0; nId < vContent.length; sOutput += this.stringify(vContent[nId]) + ",", nId++);
+                    return "[" + sOutput.substr(0, sOutput.length - 1) + "]";
+                }
+
+                if (vContent.toString !== Object.prototype.toString) { 
+                    return "\"" + vContent.toString().replace(/"/g, "\\$&") + "\""; 
+                }
+                for (var sProp in vContent) { 
+                    sOutput += "\"" + sProp.replace(/"/g, "\\$&") + "\":" + this.stringify(vContent[sProp]) + ","; 
+                }
+                return "{" + sOutput.substr(0, sOutput.length - 1) + "}";
+          }
+          return typeof vContent === "string" ? "\"" + vContent.replace(/"/g, "\\$&") + "\"" : String(vContent);
+        }
+  };
+}
+
+
 /* + namepsaces */
 webgloo = window.webgloo || {};
 webgloo.sc = webgloo.sc || {};
@@ -205,7 +235,7 @@ webgloo.media = {
 		$("#image-"+id).remove();
     },
     addImage : function(mediaVO) {
-	    console.log(mediaVO);	
+	    //console.log(mediaVO);	
         webgloo.media.images[mediaVO.id] = mediaVO ;
         if(mediaVO.store == 's3'){
             mediaVO.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.thumbnail ;

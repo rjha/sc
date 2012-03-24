@@ -11,7 +11,6 @@
 		<script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
 		<script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
 
-        <script type="text/javascript" src="/3p/json2.js"></script>
         <script type="text/javascript" src="/js/sc.js"></script>
 	    
 		
