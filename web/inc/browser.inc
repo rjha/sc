@@ -31,6 +31,7 @@
             <li><a href="/search/location/hyderabad">Hyderabad</a></li>
             <li><a href="/search/location/kolkata">Kolkata</a></li>
             <li><a href="/search/location/mumbai">Mumbai</a></li>
+            <li><a href="/search/location/pune">Pune</a></li>
         </ul>
       </li> <!-- location -->
       <li> <a id="nav-group-open" href="">Popular Groups</a> </li>

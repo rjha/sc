@@ -607,8 +607,13 @@ alter table sc_facebook modify column email varchar(64);
 alter table sc_twitter modify column twitter_id varchar(64);
 
 
+--
+-- 26 Mar 2012
+--
 
 
+update sc_list set ui_order = 11 where code = 'TRAVEL';
+insert into sc_list(name,ui_order,code,display) values('CATEGORY',10, 'RELIGION', 'Religion/Festivals');
 
 
 
