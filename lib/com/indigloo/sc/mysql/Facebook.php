@@ -13,16 +13,21 @@ namespace com\indigloo\sc\mysql {
 		static function getOnFacebookId($facebookId) {
             //@todo check if facebook_id > 64 chars
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            //facebookId is string 
 			$facebookId = $mysqli->real_escape_string($facebookId);
-			$sql = " select * from sc_facebook where facebook_id = '".$facebookId. "' " ;
+			$sql = " select * from sc_facebook where facebook_id = '%s' " ;
+            $sql = sprintf($sql,$facebookId);
+
 			$row = MySQL\Helper::fetchRow($mysqli,$sql);
 			return $row ;
 		}
 
 		static function getOnLoginId($loginId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$loginId = $mysqli->real_escape_string($loginId);
-			$sql = " select * from sc_facebook where login_id = ".$loginId ;
+            settype($loginId,"integer");
+
+			$sql = " select * from sc_facebook where login_id = %d " ;
+            $sql = sprintf($sql,$loginId);
 			$row = MySQL\Helper::fetchRow($mysqli,$sql);
 			return $row ;
 		}

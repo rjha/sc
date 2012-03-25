@@ -12,8 +12,10 @@ namespace com\indigloo\sc\mysql {
 
 		static function getLatest($limit) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-            $limit = $mysqli->real_escape_string($limit); 
-            $sql = " select f.* from sc_feedback f order by f.id desc limit ".$limit ;
+            settype($limit,"integer");
+
+            $sql = " select f.* from sc_feedback f order by f.id desc limit %d " ; 
+            $sql = sprintf($sql,$limit);
 			$rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 		
@@ -28,18 +30,23 @@ namespace com\indigloo\sc\mysql {
 
 		static function getPaged($start,$direction,$limit) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            settype($start,"integer");
+            settype($limit,"integer");
+			$direction = $mysqli->real_escape_string($direction);
+
             $sql = " select f.* from sc_feedback f " ;
 
             if($direction == 'after') {
-                $sql .= " where  f.id < ".$start ;
-                $sql .= " order by f.id DESC LIMIT " .$limit;
+                $sql .= " where  f.id < %d order by f.id DESC LIMIT %d ";
 
             } else if($direction == 'before'){
-                $sql .= " where f.id > ".$start ;
-                $sql .= " order by f.id ASC LIMIT " .$limit;
+                $sql .= " where  f.id > %d order by f.id ASC LIMIT %d ";
             } else {
                 trigger_error("Unknow sort direction in query", E_USER_ERROR);
             }
+
+            $sql = sprintf($sql,$start,$limit);
             
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             

@@ -22,7 +22,8 @@ namespace com\indigloo\sc\mysql {
 
         static function getCodeOnId($categoryId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-            $categoryId = $mysqli->real_escape_string($categoryId);
+            settype($categoryId,"integer");
+
             $sql = "select code from sc_list where name = 'CATEGORY' and ui_order = ".$categoryId ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
@@ -44,9 +45,11 @@ namespace com\indigloo\sc\mysql {
 			
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             $code = $mysqli->real_escape_string($code);
+            settype($limit,"integer");
 
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
-            $sql .= " where l.id=q.login_id  and q.cat_code = '".$code."' order by q.id desc LIMIT ".$limit ;
+            $sql .= " where l.id=q.login_id  and q.cat_code = '%s' order by q.id desc LIMIT %d ";
+            $sql = sprintf($sql,$code,$limit);
 			
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
@@ -57,7 +60,9 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             $code = $mysqli->real_escape_string($code);
 
-            $sql = " select count(id) as count from sc_post where cat_code ='".$code."' " ;
+            $sql = " select count(id) as count from sc_post where cat_code = '%s' " ;
+            $sql = sprintf($sql,$code);
+
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 
@@ -65,24 +70,25 @@ namespace com\indigloo\sc\mysql {
 
 		static function getPaged($start,$direction,$limit,$code) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input 
             $code = $mysqli->real_escape_string($code);
+            $direction = $mysqli->real_escape_string($direction);
+            settype($start,"integer");
+            settype($limit,"integer");
             
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l  where l.id = q.login_id " ;
-			$sql .= " and cat_code ='".$code."' " ;
-            $predicate = '' ;
+			$sql .= " and cat_code = '%s'" ;
 
             if($direction == 'after') {
-                $predicate = " and q.id < ".$start ;
-                $predicate .= " order by q.id DESC LIMIT " .$limit;
-
+                $sql  .= " and q.id < %d order by q.id DESC LIMIT %d " ;
             } else if($direction == 'before'){
-                $predicate = " and q.id > ".$start ;
-                $predicate .= " order by q.id ASC LIMIT " .$limit;
+                $sql .= " and q.id > %s  order by q.id ASC LIMIT %d " ;
             } else {
                 trigger_error("Unknow sort direction in query", E_USER_ERROR);
             }
             
-            $sql .= $predicate ;
+            $sql = sprintf($sql,$code,$start,$limit); 
             
             if(Config::getInstance()->is_debug()) {
                 Logger::getInstance()->debug("sql => $sql \n");

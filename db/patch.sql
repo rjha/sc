@@ -600,6 +600,8 @@ insert into sc_list(name,ui_order,code,display) values('CATEGORY',10, 'TRAVEL', 
 --
 -- 23 March 2012
 --
+
+
 alter table sc_facebook modify column facebook_id varchar(64);
 alter table sc_facebook modify column email varchar(64);
 alter table sc_twitter modify column twitter_id varchar(64);

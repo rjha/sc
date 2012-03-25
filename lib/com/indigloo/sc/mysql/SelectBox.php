@@ -12,7 +12,8 @@ namespace com\indigloo\sc\mysql {
             
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $name = $mysqli->real_escape_string($name);
-            $sql = " select * from sc_list where name = '".$name. "' order by ui_order ASC " ;
+            $sql = " select * from sc_list where name = '%s' order by ui_order ASC " ;
+            $sql = sprintf($sql,$name);
             
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows ;

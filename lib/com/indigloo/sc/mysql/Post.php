@@ -19,10 +19,11 @@ namespace com\indigloo\sc\mysql {
 
 		static function getOnId($postId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$postId = $mysqli->real_escape_string($postId);
+            settype($postId,"integer");
 			
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
-            $sql .= " where l.id = q.login_id and q.id = ".$postId ;
+            $sql .= " where l.id = q.login_id and q.id = %d " ;
+            $sql = sprintf($sql,$postId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 		}
@@ -31,7 +32,7 @@ namespace com\indigloo\sc\mysql {
          //@see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/ 
          static function getRandom($limit) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$limit = $mysqli->real_escape_string($limit);
+            settype($limit,"integer");
 
             $sql = " SELECT q.*,l.name as user_name FROM sc_post q,sc_login l WHERE q.login_id = l.id " ;
             $sql .=" and RAND()<(SELECT ((%d/COUNT(*))*4) FROM sc_post q2) ";
@@ -45,15 +46,17 @@ namespace com\indigloo\sc\mysql {
 
          static function getPosts($filter,$limit) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$limit = $mysqli->real_escape_string($limit);
+            settype($limit,"integer");
             $sql = "select q.*,l.name as user_name  from sc_post q, sc_login l where q.login_id = l.id ";
 
             if(Util::tryArrayKey($filter,self::FEATURE_COLUMN)) {
-                $value = $mysqli->real_escape_string($filter[self::FEATURE_COLUMN]); 
+                $value = $filter[self::FEATURE_COLUMN]; 
+                settype($value,"integer");
                 $sql .= " and is_feature = ".$value;
             }
             
-            $sql .= " order by id desc limit ".$limit ;
+            $sql .= " order by id desc limit %d " ;
+            $sql = sprintf($sql,$limit);
              
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
@@ -62,11 +65,13 @@ namespace com\indigloo\sc\mysql {
 
         static function getOnLoginId($loginId,$limit) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$loginId = $mysqli->real_escape_string($loginId);
-			$limit = $mysqli->real_escape_string($limit);
+
+            settype($limit,"integer");
+            settype($loginId,"integer");
 			
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l where q.login_id = l.id " ; 
-            $sql .= " and  q.login_id = ".$loginId ." order by id desc limit ".$limit ;
+            $sql .= " and  q.login_id = %d order by id desc limit %d " ;
+            $sql = sprintf($sql,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
@@ -89,6 +94,8 @@ namespace com\indigloo\sc\mysql {
 		 */
 		static function getOnSearchIds($strIds) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $strIds = $mysqli->real_escape_string($strIds);
+
             $sql = " select q.*,l.name as user_name from sc_post q, sc_login l " ;
             $sql .= " where l.id = q.login_id and q.id in (".$strIds. ") " ;
             $sql .= " ORDER BY q.id desc" ;
@@ -97,18 +104,20 @@ namespace com\indigloo\sc\mysql {
             return $rows;
 		}
 		
-		static function getLatest($count,$dbfilter) {
+		static function getLatest($limit,$dbfilter) {
 			
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            settype($limit,"integer");
 
 			$condition = '' ;
 			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
-				$loginId = $mysqli->real_escape_string($dbfilter[self::LOGIN_COLUMN]);
+                $loginId = $dbfilter[self::LOGIN_COLUMN]; 
+                settype($loginId,"integer");
 				$condition = " and q.login_id = ".$loginId;
 			}
 
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
-            $sql .= " where l.id=q.login_id ".$condition." order by q.id desc LIMIT ".$count ;
+            $sql .= " where l.id=q.login_id ".$condition." order by q.id desc LIMIT ".$limit ;
 			
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
@@ -120,7 +129,8 @@ namespace com\indigloo\sc\mysql {
 
 			$condition = '';
 			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
-				$loginId = $mysqli->real_escape_string($dbfilter[self::LOGIN_COLUMN]);
+                $loginId = $dbfilter[self::LOGIN_COLUMN]; 
+                settype($loginId,"integer");
 				$condition = " where login_id = ".$loginId;
 			}
 
@@ -135,37 +145,33 @@ namespace com\indigloo\sc\mysql {
 
 		}
 
-		static function getPaged($start,$direction,$count,$dbfilter) {
+		static function getPaged($start,$direction,$limit,$dbfilter) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             
+            settype($start,"integer");
+            settype($limit,"integer");
             // primary key id is an excellent proxy for created_on column
             // latest posts has max(id) and appears on top
             // so AFTER (NEXT) means id < latest post id
             
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l  where l.id = q.login_id " ;
-            $predicate = '' ;
-			$condition = '' ;
 
 			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
-				$loginId = $mysqli->real_escape_string($dbfilter[self::LOGIN_COLUMN]);
-				$condition = " and q.login_id = ".$loginId ;
+				$loginId = $dbfilter[self::LOGIN_COLUMN];
+                settype($loginId,"integer");
+				$sql .= " and q.login_id = ".$loginId ;
 			}
 
             if($direction == 'after') {
-                $predicate = " and q.id < ".$start ;
-                $predicate .= $condition ;
-                $predicate .= " order by q.id DESC LIMIT " .$count;
+                $sql .= " and q.id < %d order by q.id DESC LIMIT %d " ;
 
             } else if($direction == 'before'){
-                $predicate = " and q.id > ".$start ;
-                $predicate .= $condition ;
-                $predicate .= " order by q.id ASC LIMIT " .$count;
+                $sql .= " and q.id > %d order by q.id ASC LIMIT %d " ;
             } else {
                 trigger_error("Unknow sort direction in query", E_USER_ERROR);
             }
             
-            $sql .= $predicate ;
-            
+            $sql = sprintf($sql,$start,$limit);
             if(Config::getInstance()->is_debug()) {
                 Logger::getInstance()->debug("sql => $sql \n");
             }
@@ -305,13 +311,19 @@ namespace com\indigloo\sc\mysql {
         static function setFeature($loginId,$strIds,$value){
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 
+            $strIds = $mysqli->real_escape_string($strIds);
+            settype($loginId,"integer");
+            settype($value,"integer");
+
             //operation needs admin privileges
             $userRow = \com\indigloo\sc\mysql\User::getOnLoginId($loginId);
             if($userRow['is_admin'] != 1 ){
                 trigger_error("User does not have admin rights", E_USER_ERROR);
             }
 
-            $sql = " update sc_post set is_feature = ".$value." where ID IN (".$strIds.")" ;
+            $sql = " update sc_post set is_feature = %d where ID IN (%s)" ;
+            $sql = sprintf($sql,$value,$strIds);
+
             $code = MySQL\Connection::ACK_OK;
             MySQL\Helper::executeSQL($mysqli,$sql);
             return $code ;

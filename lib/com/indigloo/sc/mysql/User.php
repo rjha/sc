@@ -11,18 +11,20 @@ namespace com\indigloo\sc\mysql {
 
 		static function getOnId($userId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$userId = $mysqli->real_escape_string($userId);
+            settype($userId,"integer");
 			
-            $sql = " select * from sc_user where id = ".$userId ;
+            $sql = " select * from sc_user where id = %d " ;
+            $sql = sprintf($sql,$userId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 		}
 
 		static function getOnLoginId($loginId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$loginId = $mysqli->real_escape_string($loginId);
+            settype($loginId,"integer");
 			
-            $sql = " select * from sc_user where login_id = ".$loginId ;
+            $sql = " select * from sc_user where login_id = %d " ;
+            $sql = sprintf($sql,$loginId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 		}

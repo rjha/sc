@@ -14,36 +14,43 @@ namespace com\indigloo\sc\mysql {
 
 		static function getOnPostId($postId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$postId = $mysqli->real_escape_string($postId);
-			
+            settype($postId,"integer");
+
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
-            $sql .= " where l.id = a.login_id and  a.post_id = ".$postId ;
+            $sql .= " where l.id = a.login_id and  a.post_id = %d " ;
+            $sql = sprintf($sql,$postId);
+
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 		}
 		
 		static function getOnId($commentId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$commentId = $mysqli->real_escape_string($commentId);
+
+            settype($commentId,"integer");
 			
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l ";
-            $sql .= " where l.id = a.login_id and a.id = ".$commentId ;
+            $sql .= " where l.id = a.login_id and a.id = %d " ;
+            $sql = sprintf($sql,$commentId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 		}
 		
-		static function getLatest($count,$dbfilter) {
+		static function getLatest($limit,$dbfilter) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 
+            settype($limit,"integer");
 			$condition = '' ;
-			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
 
-				$loginId = $mysqli->real_escape_string($dbfilter[self::LOGIN_COLUMN]); 
+			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
+				$loginId = $dbfilter[self::LOGIN_COLUMN]; 
+                settype($loginId,"integer");
 				$condition = " and a.login_id = ".$loginId;
 			}
 
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
-            $sql .= " where l.id = a.login_id ".$condition." order by id desc LIMIT ".$count ;
+            $sql .= " where l.id = a.login_id ".$condition." order by id desc LIMIT %d " ;
+            $sql = sprintf($sql,$limit);
 			$rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 		
@@ -54,7 +61,8 @@ namespace com\indigloo\sc\mysql {
 
 			$condition = '';
 			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
-				$loginId = $mysqli->real_escape_string($dbfilter[self::LOGIN_COLUMN]); 
+				$loginId = $dbfilter[self::LOGIN_COLUMN]; 
+                settype($loginId,"integer");
 				$condition = " where login_id = ".$loginId;
 			}
 
@@ -63,32 +71,29 @@ namespace com\indigloo\sc\mysql {
             return $row;
 		}
 
-		static function getPaged($start,$direction,$count,$dbfilter) {
+		static function getPaged($start,$direction,$limit,$dbfilter) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-            
+
+            settype($start,"integer");
+            settype($limit,"integer");
+
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l where l.id = a.login_id " ;
-            $predicate = '' ;
-			$condition = '' ;
 
 			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
-				$loginId = $mysqli->real_escape_string($dbfilter[self::LOGIN_COLUMN]); 
-				$condition = " and a.login_id = ".$loginId ;
+				$loginId = $dbfilter[self::LOGIN_COLUMN]; 
+                settype($loginId,"integer");
+				$sql .= " and a.login_id = ".$loginId ;
 			}
 
             if($direction == 'after') {
-                $predicate = " and a.id < ".$start ;
-                $predicate .= $condition ;
-                $predicate .= " order by a.id DESC LIMIT " .$count;
-
+                $sql .= " and a.id < %d order by a.id DESC LIMIT %d " ;
             } else if($direction == 'before'){
-                $predicate = " and a.id > ".$start ;
-                $predicate .= $condition ;
-                $predicate .= " order by a.id ASC LIMIT " .$count;
+                $sql .= " and a.id > %d  order by a.id ASC LIMIT % d ";
             } else {
                 trigger_error("Unknow sort direction in query", E_USER_ERROR);
             }
             
-            $sql .= $predicate ;
+            $sql = sprintf($sql,$start,$limit); 
             
             if(Config::getInstance()->is_debug()) {
                 Logger::getInstance()->debug("sql => $sql \n");

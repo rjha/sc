@@ -15,16 +15,18 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 			$twitterId = $mysqli->real_escape_string($twitterId);
 
-			$sql = " select * from sc_twitter where twitter_id = '".$twitterId."' " ;
+			$sql = " select * from sc_twitter where twitter_id = '%s' " ;
+            $sql = sprintf($sql,$twitterId);
 			$row = MySQL\Helper::fetchRow($mysqli,$sql);
 			return $row ;
 		}
 
 		static function getOnLoginId($loginId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$loginId = $mysqli->real_escape_string($loginId);
+            settype($loginId,"integer");
 
-			$sql = " select * from sc_twitter where login_id = ".$loginId ;
+			$sql = " select * from sc_twitter where login_id = %d " ;
+            $sql = sprintf($sql,$loginId);
 			$row = MySQL\Helper::fetchRow($mysqli,$sql);
 			return $row ;
 		}

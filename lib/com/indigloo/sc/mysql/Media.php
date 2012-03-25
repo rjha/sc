@@ -10,16 +10,17 @@ namespace com\indigloo\sc\mysql {
         
         static function getMediaOnPostId($postId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $postId = $mysqli->real_escape_string($postId);
+            settype($postId,"integer");
 
-            $sql = " select * from sc_media where post_id = ".$postId ;
+            $sql = " select * from sc_media where post_id = %d " ;
+            $sql = sprintf($sql,$postId);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
         
         static function deleteOnId($mediaId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $mediaId = $mysqli->real_escape_string($mediaId);
+            settype($mediaId,"integer");
             
             
             $sql = " delete from sc_media where id = ? ";
