@@ -5,9 +5,7 @@
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
 	
-	if(is_null($gSessionLogin)) {
-		$gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
-	}
+    $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
 
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
