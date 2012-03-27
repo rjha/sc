@@ -20,6 +20,17 @@ namespace com\indigloo\sc\mysql {
 
 		}
 
+        static function getLatest($limit){
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            settype($limit, "integer");
+            $sql = " select * from sc_login order by id desc limit %d ";
+            $sql = sprintf($sql,$limit);
+            
+			$rows = MySQL\Helper::fetchRows($mysqli,$sql);
+			return $rows ;
+
+        }
+
 		static function create($provider,$name){
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 			$sql = "insert into sc_login (provider,name,created_on) values(?,?,now()) " ;

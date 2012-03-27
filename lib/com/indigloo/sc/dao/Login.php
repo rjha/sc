@@ -32,9 +32,12 @@ namespace com\indigloo\sc\dao {
 			$row = mysql\Login::getTotalCount($dbfilter);
             return $row['count'] ;
 
-
-
         } 
+
+        function getLatest($limit) {
+			$rows = mysql\Login::getLatest($limit);
+            return $rows;
+        }
 
 	}
 }

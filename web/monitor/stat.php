@@ -13,6 +13,7 @@
     $ldLoginCount = $loginDao->getTotalCount($filter); 
     $loginCount = $loginDao->getTotalCount(); 
 
+    $logins = $loginDao->getLatest(5);
 
 ?>
 
@@ -24,3 +25,7 @@
     <li> Posts in last 24 HR : <?php echo $ldPostsCount; ?>   </li>
     <li> Users in last 24 HR : <?php echo $ldLoginCount; ?> </li>
 </ol>
+
+<h3> Latest Users </h3>
+<?php echo \com\indigloo\sc\html\Login::getList($logins); ?>
+

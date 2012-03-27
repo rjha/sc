@@ -1,0 +1,8 @@
+
+<div class="widget">
+    <ol>
+        ~foreach($view as $login){~
+            <li>~~ucfirst($login['provider'])~&nbsp;/&nbsp;~~$login['name']~ </li>
+        ~}~
+    </ol>
+</div>
