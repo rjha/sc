@@ -156,7 +156,7 @@
                                     <?php if($hasGroups) { ?>
                                         &nbsp;|&nbsp;<a href="/group/cloud/user.php" target="_blank"><i class="icon-list"></i>&nbsp;show my tags&rarr;</a> </label>
                                     <?php } ?>
-                                    <input type="text" name="group_names" value="<?php echo $sticky->get('group_names',$group_names); ?>" />
+                                    <input type="text" name="group_names" maxlength="64" value="<?php echo $sticky->get('group_names',$group_names); ?>" />
 
                             </tr>
 

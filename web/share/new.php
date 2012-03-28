@@ -126,7 +126,7 @@
 							</tr>
                             <tr>
                                 <td> <label>Tags (separate by comma)</label>
-                                <input type="text" name="group_names" value="<?php echo $sticky->get('group_names'); ?>" />
+                                <input type="text" name="group_names" maxlength="64" value="<?php echo $sticky->get('group_names'); ?>" />
 
                             </tr>
 							

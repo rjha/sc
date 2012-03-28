@@ -19,6 +19,7 @@
 
         $fhandler->addRule('links_json', 'links_json', array('noprocess' => 1));
 		$fhandler->addRule('images_json', 'images_json', array('noprocess' => 1));
+		$fhandler->addRule('group_names', 'Tags', array('maxlength' => 64));
 		
         $fvalues = $fhandler->getValues();
         $ferrors = $fhandler->getErrors();
