@@ -611,10 +611,6 @@
 		font-weight:bold;
 	}
 
-    #feedback a:hover {
-        background-color: #FF8B00;
-    }
-
 	.twitter-login {
 		padding:5px 10px 5px 20px;
 		background:#59C9ED;

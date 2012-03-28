@@ -279,7 +279,11 @@ namespace com\indigloo\sc\mysql {
                 $lastInsertId = MySQL\Connection::getInstance()->getLastInsertId();
                 //update pseudo ID
                 $itemId = PseudoId::encode($lastInsertId);
-                $sql = " update sc_post set pseudo_id = %d where id = %d " ;
+                if(strlen($itemId) > 32 ) {
+                    trigger_error("exceeds pseudo_id column size of 32", E_USER_ERROR); 
+                }
+
+                $sql = " update sc_post set pseudo_id = %s where id = %d " ;
                 $sql = sprintf($sql,$itemId,$lastInsertId);
                 MySQL\Helper::executeSQL($mysqli,$sql);
                 

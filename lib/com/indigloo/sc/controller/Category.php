@@ -29,9 +29,9 @@ namespace com\indigloo\sc\controller{
             $catName = $categoryDao->getName($code);
 
             if(sizeof($postDBRows) > 0 ) {
-                $pageHeader = 'Category '.$catName;
+                $pageHeader = $catName;
             }else {
-                $pageHeader = 'No Results for Category '.$catName;
+                $pageHeader = 'No Results for '.$catName;
             }
 
             $pageBaseUrl = "/category/$categoryId";

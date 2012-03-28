@@ -17,11 +17,18 @@ namespace com\indigloo\sc\controller{
 
 			$pubUserId = Util::getArrayKey($params,"login_id");
             $loginId = PseudoId::decode($pubUserId);
-
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
 
             $userDao = new \com\indigloo\sc\dao\User();
             $userDBRow = $userDao->getOnLoginId($loginId);
+
+            if(empty($userDBRow)) {
+                //not found
+                $controller = new \com\indigloo\sc\controller\Http404();
+                $controller->process();
+                exit;
+            }
+
             $userName = $userDBRow['name'];
 
             $postDao = new \com\indigloo\sc\dao\Post() ;

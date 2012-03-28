@@ -14,9 +14,13 @@ namespace com\indigloo\sc\dao {
 		}
 
 		function getOnLoginId($loginId) {
-			//figure out the provider 
 			$loginDao = new \com\indigloo\sc\dao\Login();
 			$loginRow = $loginDao->getonId($loginId);
+
+            //no login 
+            if(empty($loginRow)) {
+                return null ;
+            }
 
 			$provider = $loginRow['provider'];
 			$row = NULL ;

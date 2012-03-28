@@ -34,6 +34,13 @@ namespace com\indigloo\sc\controller{
             $postId = PseudoId::decode($itemId);
 			$postDBRow = $postDao->getOnId($postId);
 
+            if(empty($postDBRow)) {
+                //not found
+                $controller = new \com\indigloo\sc\controller\Http404();
+                $controller->process();
+                exit;
+            }
+
 			$imagesJson = $postDBRow['images_json'];
 			$images = json_decode($imagesJson);
 			
@@ -45,15 +52,7 @@ namespace com\indigloo\sc\controller{
 			
 			$gWeb = \com\indigloo\core\Web::getInstance();
 			$sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
-			$loginId = NULL ;
-            $gSessionLogin = NULL ;
-
-			if(is_null($gSessionLogin)) {
-				$login = \com\indigloo\sc\auth\Login::tryLoginInSession();
-				if(!is_null($login)) {
-					$loginId = $login->id ;
-				}
-			}
+            $loginId = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
 
             $xids = array();
             $xrows = array();

@@ -615,6 +615,15 @@ alter table sc_twitter modify column twitter_id varchar(64);
 update sc_list set ui_order = 11 where code = 'TRAVEL';
 insert into sc_list(name,ui_order,code,display) values('CATEGORY',10, 'RELIGION', 'Religion/Festivals');
 
+-- 
+-- 28 mar 2012
+--
+
+-- 
+-- caution - never modify/touch the auto increment PK
+-- 
+ alter table sc_post modify column pseudo_id varchar(32) ;
+
 
 
 

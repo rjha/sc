@@ -135,7 +135,7 @@ create table sc_post_archive(
     description TEXT ,
     links_json TEXT ,
     images_json TEXT,
-    pseudo_int int ,
+    pseudo_id varchar(32) ,
     is_feature int ,
     group_slug varchar(64),
     cat_code varchar(16),

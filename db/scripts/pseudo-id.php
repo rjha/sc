@@ -24,7 +24,7 @@
         $stmt = $mysqli->prepare($sql);
 
         if ($stmt) {
-            $stmt->bind_param("is", $ex,$x);
+            $stmt->bind_param("ss", $ex,$x);
             $stmt->execute();
             $stmt->close();
         }

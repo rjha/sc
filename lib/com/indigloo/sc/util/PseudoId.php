@@ -11,11 +11,15 @@ namespace com\indigloo\sc\util{
 
         static function decode($esx) {
             $sx = base_convert($esx,10,26);
-
             $dsx = '';
             for($i = 0 ; $i < strlen($sx); $i++) {
                 $dsx .= self::$map[$sx{$i}];
             }
+
+            // base_convert is string operation but our 
+            // reverse map can only produce an integer 
+
+            if(!is_numeric($dsx)) return -1 ;
 
             $dsx = intval($dsx);
             $dsx = $dsx - 271 ;
@@ -24,7 +28,10 @@ namespace com\indigloo\sc\util{
 
         static function encode($x) {
 
-            //@todo pseudo - error check for incoming string values
+            if(!is_numeric($x)) {
+                trigger_error("bad input: encoder works on numbers only!",E_USER_ERROR);
+            }
+
             //e=2.718...
             $x = $x + 271 ;
             $sx = strval($x);
