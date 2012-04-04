@@ -5,7 +5,7 @@
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
 	
-    use com\indigloo\Util;
+    use com\indigloo\Util as Util;
     use com\indigloo\util\StringUtil as StringUtil;
     use com\indigloo\Url as Url;
     use com\indigloo\Constants as Constants;
@@ -32,12 +32,11 @@
 
     $loginId = Login::getLoginIdInSession() ;
 
-    $imagesJson = $postDBRow['images_json'];
     $strImagesJson = $sticky->get('images_json',$postDBRow['images_json']) ;
     $strLinksJson = $sticky->get('links_json',$postDBRow['links_json']) ;
 
-    $strImagesJson = empty($strImagesJson) ? '[]' : $strImagesJson ;
-    $strLinksJson = empty($strLinksJson) ? '[]' : $strLinksJson ;
+    $strImagesJson = Util::formSafeJson($strImagesJson);
+    $strLinksJson = Util::formSafeJson($strLinksJson);
 
     $groupDao = new \com\indigloo\sc\dao\Group();
     $group_names = $groupDao->slugToName($postDBRow['group_slug']);

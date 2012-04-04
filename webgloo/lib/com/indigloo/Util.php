@@ -240,6 +240,17 @@ namespace com\indigloo {
 			return $value ;
 		}
 
+        /*
+         * @param json string coming from database
+         * escape single quotes in json string 
+         *
+         */
+        static function formSafeJson($json) {
+            $json = empty($json) ? '[]' : $json ;
+            $json = str_replace("'","&#039;",$json);
+            return $json;
+        }
+
     }
 
 }

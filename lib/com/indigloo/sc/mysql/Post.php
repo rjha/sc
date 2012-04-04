@@ -27,6 +27,17 @@ namespace com\indigloo\sc\mysql {
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 		}
+        
+        static function getLinksJsonOnId($postId) {
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            settype($postId,"integer");
+            $sql = "select links_json as json from sc_post where id = %d ";
+            $sql = sprintf($sql,$postId);
+
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+
+        }
 
 
          //@see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/ 

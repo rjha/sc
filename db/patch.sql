@@ -624,6 +624,12 @@ insert into sc_list(name,ui_order,code,display) values('CATEGORY',10, 'RELIGION'
 -- 
  alter table sc_post modify column pseudo_id varchar(32) ;
 
+ --
+ -- 30 mar 2012
+ -- 
+
+ alter table sc_post_archive  modify column description varchar(512) ;
+
 
 
 

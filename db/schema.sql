@@ -132,7 +132,7 @@ create table sc_post_archive(
 	id int(11) NOT NULL auto_increment,
     login_id int not null,
 	title varchar(128) not null,
-    description TEXT ,
+    description varchar(512) ,
     links_json TEXT ,
     images_json TEXT,
     pseudo_id varchar(32) ,

@@ -86,6 +86,16 @@ namespace com\indigloo {
 			return $value ;
 		}
 
+        static function tryQueryPart($url) {
+            $qpart = NULL ;
+            $pos = strpos($url, '?');
+ 
+            if($pos !== false) {
+                $qpart = substr($url, $pos+1);
+            }
+
+            return $qpart;
+        }
 
     }
 

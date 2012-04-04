@@ -27,6 +27,32 @@ namespace com\indigloo\sc\dao {
 			return $row ;
 		}
 
+        /**
+         * @error if links json is empty or spaces in DB column
+         * @error if links json evaluates to NULL by json_decode 
+         * @error if links json is valid but not an array 
+         * @return $links an array of strings (links)
+         *
+         */
+
+		function getLinksJsonOnId($postId) {
+			$row = mysql\Post::getLinksJsonOnId($postId);
+            $json = $row['json'];
+            $links = NULL;
+
+            if(!Util::tryEmpty($json)) {
+                $links = json_decode($json);
+            } 
+
+            if(is_null($links) || !is_array($links)) {
+                $message = " Bad links json in post : expected a json array" ;
+                trigger_error($message,E_USER_ERROR);
+            }
+
+            return $links ;
+
+		}
+
 		function getOnLoginId($loginId,$limit) {
 			$rows = mysql\Post::getOnLoginId($loginId,$limit);
 			return $rows ;
