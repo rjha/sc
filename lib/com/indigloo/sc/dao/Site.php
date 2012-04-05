@@ -22,9 +22,33 @@ namespace com\indigloo\sc\dao {
         }
 
         function process($postId) {
-            trigger_error("Not implemented",E_USER_ERROR);
-        }
+            //get links
+            $postDao = new \com\indigloo\sc\dao\Post();
+            $links = $postDao->getLinksOnId($postId);
+            $siteIds = array();
 
+            foreach($links as $link) {
+                $page = $this->processUrl($link);
+                print_r($page);
+                $siteId = $this->getOrCreateSite($page);
+                if(!is_null($siteId)){
+                    array_push($siteIds,$siteId);
+                }
+
+                // push post_id + site_id  into SC_PS_TMP table
+                // pass post_id + version to a db procedure
+                // inside DB procedure
+                // Tx
+                // delete rows in sc_site_post table where post_id =<in.post_id>
+                // insert new rows using SC_PS_TMP table where post_id = <in.post_id>
+                // update sc_site_tracker set flag = 1 where version = <in.version> and post_id = <in.post_id> 
+                // commit 
+                // rollback on error
+
+            }
+
+
+        }
         
         function processFBUrl($url,$path,$qpart) {
             if(empty($path)) {

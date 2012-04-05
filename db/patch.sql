@@ -632,14 +632,144 @@ insert into sc_list(name,ui_order,code,display) values('CATEGORY',10, 'RELIGION'
 
 
 
+--
+-- 05 April 2012
+--
+
+alter table sc_post add column version int default 1 ;
+
+drop table if exists sc_site_tracker;
+create table sc_site_tracker(
+	id int NOT NULL auto_increment,
+	post_id int NOT NULL ,
+    version int not null,
+    flag int default 0, 
+	created_on TIMESTAMP  default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
+--
+-- populate site_tracker table 
+-- 
+
+insert into sc_site_tracker (post_id,created_on,version,flag) select id,created_on,version, 0 from sc_post ;
+
+
+-- 
+-- Adjust triggers 
+-- 
+
+DROP TRIGGER IF EXISTS trg_user_group;
+DROP TRIGGER IF EXISTS trg_user_group2;
+
+
+delimiter //
+CREATE TRIGGER trg_post_add  AFTER  INSERT ON sc_post
+    FOR EACH ROW
+    BEGIN
+        DECLARE login_id INT ;
+        DECLARE slug varchar(64) ;
+
+        SET slug = NEW.group_slug ;
+        SET login_id = NEW.login_id ;
+        call fn_user_group(login_id,slug);
+
+        insert into sc_site_tracker(post_id,flag,version,created_on) values (NEW.ID,0,NEW.version,NEW.created_on);
+
+    END;//
+delimiter ;
+
+
+delimiter //
+CREATE TRIGGER trg_post_edit  AFTER  update ON sc_post
+    FOR EACH ROW
+    BEGIN
+        DECLARE login_id INT ;
+        DECLARE slug varchar(64) ;
+
+        SET slug = NEW.group_slug ;
+        SET login_id = NEW.login_id ;
+        call fn_user_group(login_id,slug);
+
+        update sc_site_tracker set version = NEW.version, updated_on = now(), flag = 0 where post_id = NEW.id ;
+
+    END;//
+delimiter ;
+
+
+DROP TRIGGER IF EXISTS trg_post_archive;
+
+delimiter //
+CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
+    FOR EACH ROW
+
+    BEGIN
+        delete from sc_site_tracker where post_id = OLD.id ;
+        insert into sc_post_archive(title,
+                                    description,
+                                    login_id,
+                                    links_json,
+                                    images_json,
+                                    group_slug,
+                                    pseudo_id,
+                                    cat_code,
+                                    created_on)
+        select q.title,
+                q.description,
+                q.login_id,
+                q.links_json,
+                q.images_json,
+                q.group_slug,
+                q.pseudo_id,
+                q.cat_code,
+                q.created_on
+        from sc_post  q where q.id = OLD.id ; 
+    END; //
+delimiter ;
+
+
+-- 
+-- Add new tables
+--
+
+drop table if exists sc_site_master;
+create table sc_site_master(
+	id int NOT NULL auto_increment,
+	hash varchar(64) NOT NULL ,
+	host varchar(64) NOT NULL ,
+	canonical_url varchar(80) NOT NULL ,
+	created_on TIMESTAMP  default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
 
+drop table if exists sc_site_post;
+create table sc_site_post(
+	id int NOT NULL auto_increment,
+	post_id int NOT NULL ,
+	site_id int NOT NULL ,
+	created_on TIMESTAMP  default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
 
+delimiter //
+DROP PROCEDURE IF EXISTS MAKE_PSTMP_TABLE //
+CREATE PROCEDURE MAKE_PSTMP_TABLE () 
+BEGIN
+    DROP TEMPORARY TABLE IF EXISTS SC_PS_TMP;
+    CREATE TEMPORARY TABLE SC_PS_TMP (
+        id int NOT NULL ,
+        post_id int NOT NULL ,
+        site_id int NOT NULL 
+    ) ENGINE=MEMORY;
 
+END; //
 
+delimiter ;
 
 
 

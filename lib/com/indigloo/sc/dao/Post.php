@@ -31,11 +31,11 @@ namespace com\indigloo\sc\dao {
          * @error if links json is empty or spaces in DB column
          * @error if links json evaluates to NULL by json_decode 
          * @error if links json is valid but not an array 
-         * @return $links an array of strings (links)
+         * @return an array of strings (links)
          *
          */
 
-		function getLinksJsonOnId($postId) {
+		function getLinksOnId($postId) {
 			$row = mysql\Post::getLinksJsonOnId($postId);
             $json = $row['json'];
             $links = NULL;

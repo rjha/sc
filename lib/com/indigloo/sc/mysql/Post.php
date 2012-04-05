@@ -209,8 +209,8 @@ namespace com\indigloo\sc\mysql {
                                $categoryCode) {
 			
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " update sc_post set title=?,description=?, links_json =?,images_json= ?, " ;
-			$sql .= " group_slug = ? , updated_on = now(),cat_code = ? where id = ? and login_id = ?" ;
+            $sql = "update sc_post set title=?,description=?,links_json =?,images_json=?,version=version +1,";
+			$sql .= "group_slug = ? , updated_on = now(),cat_code = ? where id = ? and login_id = ?" ;
 			
 			
             $code = MySQL\Connection::ACK_OK;

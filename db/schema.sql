@@ -12,6 +12,7 @@ create table sc_post(
     images_json TEXT,
     group_slug varchar(64),
     cat_code varchar(16),
+    version int default 1 ,
     created_on timestamp default '0000-00-00 00:00:00',
 	updated_on timestamp default '0000-00-00 00:00:00' ,
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -182,6 +183,39 @@ create table sc_list(
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
+drop table if exists sc_site_tracker;
+create table sc_site_tracker(
+	id int NOT NULL auto_increment,
+	post_id int NOT NULL ,
+    version int not null,
+    flag int default 0, 
+	created_on TIMESTAMP  default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
+
+drop table if exists sc_site_master;
+create table sc_site_master(
+	id int NOT NULL auto_increment,
+	hash varchar(64) NOT NULL ,
+	host varchar(64) NOT NULL ,
+	canonical_url varchar(80) NOT NULL ,
+	created_on TIMESTAMP  default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
+
+drop table if exists sc_site_post;
+create table sc_site_post(
+	id int NOT NULL auto_increment,
+	post_id int NOT NULL ,
+	site_id int NOT NULL ,
+	created_on TIMESTAMP  default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
 
 --
 -- Triggers 
@@ -218,7 +252,9 @@ DROP TRIGGER IF EXISTS trg_post_archive;
 delimiter //
 CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
     FOR EACH ROW
+
     BEGIN
+        delete from sc_site_tracker where post_id = OLD.id ;
         insert into sc_post_archive(title,
                                     description,
                                     login_id,
@@ -238,7 +274,7 @@ CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
                 q.cat_code,
                 q.created_on
         from sc_post  q where q.id = OLD.id ; 
-    END;//
+    END; //
 delimiter ;
 
 
@@ -294,10 +330,10 @@ END;
 delimiter ;
 
 
-DROP TRIGGER IF EXISTS trg_user_group;
+DROP TRIGGER IF EXISTS trg_post_add;
 
 delimiter //
-CREATE TRIGGER trg_user_group  AFTER  INSERT ON sc_post
+CREATE TRIGGER trg_post_add  AFTER  INSERT ON sc_post
     FOR EACH ROW
     BEGIN
         DECLARE login_id INT ;
@@ -306,15 +342,18 @@ CREATE TRIGGER trg_user_group  AFTER  INSERT ON sc_post
         SET slug = NEW.group_slug ;
         SET login_id = NEW.login_id ;
         call fn_user_group(login_id,slug);
+
+        insert into sc_site_tracker(post_id,flag,version,created_on) values (NEW.ID,0,NEW.version,NEW.created_on);
 
     END;//
 delimiter ;
 
 
-DROP TRIGGER IF EXISTS trg_user_group2;
+DROP TRIGGER IF EXISTS trg_post_edit;
+
 
 delimiter //
-CREATE TRIGGER trg_user_group2  AFTER  update ON sc_post
+CREATE TRIGGER trg_post_edit  AFTER  update ON sc_post
     FOR EACH ROW
     BEGIN
         DECLARE login_id INT ;
@@ -323,6 +362,8 @@ CREATE TRIGGER trg_user_group2  AFTER  update ON sc_post
         SET slug = NEW.group_slug ;
         SET login_id = NEW.login_id ;
         call fn_user_group(login_id,slug);
+
+        update sc_site_tracker set version = NEW.version, updated_on = now(), flag = 0 where post_id = NEW.id ;
 
     END;//
 delimiter ;
