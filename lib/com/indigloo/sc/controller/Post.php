@@ -9,6 +9,7 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\ui\form\Sticky;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
+    use \com\indigloo\sc\html\Seo as SeoData ;
 
  
 	
@@ -57,6 +58,8 @@ namespace com\indigloo\sc\controller{
             $xids = array();
             $xrows = array();
             $group_slug = $postDBRow['group_slug'];
+            $groupDao = new \com\indigloo\sc\dao\Group();
+            $group_names = $groupDao->slugToName($postDBRow['group_slug']);
 
             if(!Util::tryEmpty($group_slug)) {
 
@@ -102,8 +105,10 @@ namespace com\indigloo\sc\controller{
 			$loginUrl = "/user/login.php?q=".$_SERVER['REQUEST_URI'];
 			$formErrors = FormMessage::render(); 
 
+
 			$pageTitle = Util::abbreviate($postDBRow['title'],70);
-			$pageMetaDescription = Util::abbreviate($postDBRow['description'],160);
+			$metaDescription = Util::abbreviate($postDBRow['description'],160);
+            $metaKeywords = SeoData::getMetaKeywords($group_names);
             $pageUrl = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 			
 			include($file);

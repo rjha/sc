@@ -5,6 +5,7 @@ namespace com\indigloo\sc\controller{
 	use \com\indigloo\Util as Util;
     use com\indigloo\Url;
 	use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\sc\html\Seo as SeoData ;
   
 	
     class Home {
@@ -45,6 +46,10 @@ namespace com\indigloo\sc\controller{
 
             $pageHeader = '';
             $pageBaseUrl = '/' ;
+
+            $pageTitle = SeoData::getHomePageTitle();
+            $metaKeywords = SeoData::getHomeMetaKeywords();
+            $metaDescription = SeoData::getHomeMetaDescription();
 
             $file = $_SERVER['APP_WEB_DIR']. '/view/tiles-page.php' ;
             include ($file);
@@ -94,6 +99,10 @@ namespace com\indigloo\sc\controller{
             $endId = base_convert($endId,10,36);
             $nparams = array('gpa' => $endId, 'gpage' => 2) ;
             $nextPageUrl = Url::addQueryParameters("/",$nparams);
+
+            $pageTitle = SeoData::getHomePageTitle();
+            $metaKeywords = SeoData::getHomeMetaKeywords();
+            $metaDescription = SeoData::getHomeMetaDescription();
 
             $file = $_SERVER['APP_WEB_DIR']. '/home.php' ;
             include ($file);

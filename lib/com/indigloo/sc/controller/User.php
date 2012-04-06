@@ -6,6 +6,7 @@ namespace com\indigloo\sc\controller{
     use com\indigloo\Url;
 	use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
+    use \com\indigloo\sc\html\Seo as SeoData ;
   
 	
     class User {
@@ -41,9 +42,12 @@ namespace com\indigloo\sc\controller{
 
             $template = $_SERVER['APP_WEB_DIR']. '/view/tiles-page.php';
             //page variables
-            $pageTitle = "public profile of ".$userName;
             $pageHeader = "Posts by ".$userName;
             $pageBaseUrl = "/pub/user/".$pubUserId ;
+
+            $pageTitle = SeoData::getHomePageTitle();
+            $metaKeywords = SeoData::getHomeMetaKeywords();
+            $metaDescription = SeoData::getHomeMetaDescription();
 
             include($template); 
 

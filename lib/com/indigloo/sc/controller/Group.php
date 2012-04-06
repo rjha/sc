@@ -6,6 +6,7 @@ namespace com\indigloo\sc\controller{
     use com\indigloo\Url;
 	use \com\indigloo\Configuration as Config ;
     use \com\indigloo\ui\Pagination as Pagination ;
+    use \com\indigloo\sc\html\Seo as SeoData ;
   
 	
     class Group {
@@ -35,18 +36,21 @@ namespace com\indigloo\sc\controller{
             $searchTitle = NULL ;
 
             if(sizeof($ids) > 0 ) {
-                $pageHeader = "About $total results for $token" ;
+                $pageHeader = "$token -  $total results" ;
                 $pageBaseUrl = "/group/$slug" ;
                 $template = $_SERVER['APP_WEB_DIR']. '/view/tiles.php';
                 $postDao = new \com\indigloo\sc\dao\Post();
                 $postDBRows = $postDao->getOnSearchIds($ids) ;
 
             } else {
-                $pageHeader = "No Results for group $token" ;
+                $pageHeader = "$token - No Results" ;
                 $template = $_SERVER['APP_WEB_DIR']. '/view/notiles.php';
 
             }
 
+            $pageTitle = SeoData::getPageTitle($token);
+            $metaKeywords = SeoData::getMetaKeywords($token);
+            $metaDescription = SeoData::getMetaDescription($token);
 
             include($template); 
         }

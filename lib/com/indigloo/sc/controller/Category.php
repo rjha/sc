@@ -7,6 +7,7 @@ namespace com\indigloo\sc\controller{
 	use \com\indigloo\Configuration as Config ;
 	use \com\indigloo\Constants as Constants;
     use \com\indigloo\ui\Pagination as Pagination;
+    use \com\indigloo\sc\html\Seo as SeoData ;
 	
     class Category {
         
@@ -35,6 +36,10 @@ namespace com\indigloo\sc\controller{
             }
 
             $pageBaseUrl = "/category/$categoryId";
+
+            $pageTitle = SeoData::getPageTitle($catName);
+            $metaKeywords = SeoData::getMetaKeywords($catName);
+            $metaDescription = SeoData::getMetaDescription($catName);
 
             $file = $_SERVER['APP_WEB_DIR']. '/view/tiles-page.php' ;
             include ($file);

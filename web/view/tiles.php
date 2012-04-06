@@ -2,8 +2,11 @@
 <html>
 
        <head>
-        <title> 3mik.com - <?php echo $pageHeader; ?>  </title>
-        <?php include($_SERVER['APP_WEB_DIR'] . '/inc/meta.inc'); ?>
+        <title> <?php echo $pageTitle; ?> - 3mik.com </title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="keywords" content="<?php echo $metaKeywords; ?>">
+        <meta name="description" content="<?php echo $metaDescription;  ?>">
          
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="/css/sc.css">

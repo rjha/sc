@@ -3,12 +3,12 @@
 <html>
 
     <head>
-        <title> 3mik.com - <?php echo $pageTitle; ?>  </title>
+        <title> <?php echo $pageTitle; ?> - 3mik.com </title>
          
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="keywords" content="3mik, share, discover, india, cool shopping items, shopping bookmarking">
-        <meta name="description" content="<?php echo $pageMetaDescription;  ?>">
+        <meta name="keywords" content="<?php echo $metaKeywords; ?>">
+        <meta name="description" content="<?php echo $metaDescription;  ?>">
 
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
