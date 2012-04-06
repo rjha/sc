@@ -664,6 +664,9 @@ DROP TRIGGER IF EXISTS trg_user_group;
 DROP TRIGGER IF EXISTS trg_user_group2;
 
 
+
+
+DROP TRIGGER IF EXISTS trg_post_add ;
 delimiter //
 CREATE TRIGGER trg_post_add  AFTER  INSERT ON sc_post
     FOR EACH ROW
@@ -674,13 +677,19 @@ CREATE TRIGGER trg_post_add  AFTER  INSERT ON sc_post
         SET slug = NEW.group_slug ;
         SET login_id = NEW.login_id ;
         call fn_user_group(login_id,slug);
+        
+        --
+        -- Add entry in site tracker
+        -- 
+        insert into sc_site_tracker(post_id,flag,version,created_on) 
+        values (NEW.ID,0,NEW.version,NEW.created_on);
 
-        insert into sc_site_tracker(post_id,flag,version,created_on) values (NEW.ID,0,NEW.version,NEW.created_on);
 
     END;//
 delimiter ;
 
 
+DROP TRIGGER IF EXISTS trg_post_edit ;
 delimiter //
 CREATE TRIGGER trg_post_edit  AFTER  update ON sc_post
     FOR EACH ROW
@@ -692,8 +701,8 @@ CREATE TRIGGER trg_post_edit  AFTER  update ON sc_post
         SET login_id = NEW.login_id ;
         call fn_user_group(login_id,slug);
 
-        update sc_site_tracker set version = NEW.version, updated_on = now(), flag = 0 where post_id = NEW.id ;
-
+        update sc_site_tracker set flag=0, version=NEW.version, updated_on= now() 
+        where post_id = NEW.id ;
     END;//
 delimiter ;
 
@@ -743,10 +752,10 @@ create table sc_site_master(
     updated_on TIMESTAMP   default '0000-00-00 00:00:00',
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
+alter table sc_site_master add constraint uniq_hash unique(hash);
 
-
-drop table if exists sc_site_post;
-create table sc_site_post(
+drop table if exists sc_post_site ;
+create table sc_post_site (
 	id int NOT NULL auto_increment,
 	post_id int NOT NULL ,
 	site_id int NOT NULL ,
@@ -756,20 +765,48 @@ create table sc_site_post(
 
 
 
+drop table if exists sc_tmp_ps ;
+create table sc_tmp_ps (
+	id int NOT NULL auto_increment,
+	post_id int NOT NULL ,
+	site_id int NOT NULL ,
+	created_on TIMESTAMP  default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
+
+
+
 delimiter //
-DROP PROCEDURE IF EXISTS MAKE_PSTMP_TABLE //
-CREATE PROCEDURE MAKE_PSTMP_TABLE () 
+DROP PROCEDURE IF EXISTS UPDATE_SITE_TRACKER //
+CREATE PROCEDURE UPDATE_SITE_TRACKER (IN v_post_id int, IN v_version int) 
 BEGIN
-    DROP TEMPORARY TABLE IF EXISTS SC_PS_TMP;
-    CREATE TEMPORARY TABLE SC_PS_TMP (
-        id int NOT NULL ,
-        post_id int NOT NULL ,
-        site_id int NOT NULL 
-    ) ENGINE=MEMORY;
+    DECLARE EXIT HANDLER for SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
 
-END; //
+    DECLARE EXIT HANDLER for SQLWARNING
+    BEGIN
+        ROLLBACK;
+    END;
 
+    START TRANSACTION;
+
+    delete from sc_post_site where post_id = v_post_id ;
+    insert into sc_post_site(post_id,site_id,created_on)  
+    select post_id,site_id,now() from sc_tmp_ps where post_id = v_post_id ;
+    --
+    -- set tracker flag 
+    -- 
+    update sc_site_tracker set flag = 1 where post_id = v_post_id and version = v_version ;
+    COMMIT; 
+
+END;//
 delimiter ;
+
+
 
 
 

@@ -35,8 +35,8 @@ namespace com\indigloo\sc\dao {
          *
          */
 
-		function getLinksOnId($postId) {
-			$row = mysql\Post::getLinksJsonOnId($postId);
+		function getLinkDataOnId($postId) {
+			$row = mysql\Post::getLinkDataOnId($postId);
             $json = $row['json'];
             $links = NULL;
 
@@ -49,7 +49,8 @@ namespace com\indigloo\sc\dao {
                 trigger_error($message,E_USER_ERROR);
             }
 
-            return $links ;
+            $data = array('links' => $links, 'version' => $row['version']);
+            return $data ;
 
 		}
 

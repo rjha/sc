@@ -28,10 +28,10 @@ namespace com\indigloo\sc\mysql {
             return $row;
 		}
         
-        static function getLinksJsonOnId($postId) {
+        static function getLinkDataOnId($postId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($postId,"integer");
-            $sql = "select links_json as json from sc_post where id = %d ";
+            $sql = "select version,links_json as json from sc_post where id = %d ";
             $sql = sprintf($sql,$postId);
 
             $row = MySQL\Helper::fetchRow($mysqli, $sql);

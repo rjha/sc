@@ -21,36 +21,65 @@ namespace com\indigloo\sc\dao {
             $this->fbRouter->initTable();
         }
 
+        function getOnHash($hash) {
+            $row = mysql\Site::getOnHash($hash);
+            return $row ;
+        }
+
+        function getOrCreate($hash,$host,$canonicalUrl) {
+            $hash = trim($hash);
+            $siteId = NULL ;
+
+			$row = $this->getOnHash($hash); 
+
+			if(empty($row)){
+				//create site 
+                $siteId = mysql\Site::create($hash,$host,$canonicalUrl);
+			} else {
+				//found
+				$siteId = $row['id'];
+			}
+
+			return $siteId ;
+
+        }
+
         function process($postId) {
             //get links
             $postDao = new \com\indigloo\sc\dao\Post();
-            $links = $postDao->getLinksOnId($postId);
-            $siteIds = array();
+            $linkData = $postDao->getLinkDataOnId($postId);
+            $links = $linkData["links"];
+            $version = $linkData["version"];
+
+            //clean tmp post-site table 
+            mysql\Site::deleteTmpPSData($postId);
 
             foreach($links as $link) {
                 $page = $this->processUrl($link);
-                print_r($page);
-                $siteId = $this->getOrCreateSite($page);
-                if(!is_null($siteId)){
-                    array_push($siteIds,$siteId);
+
+                if(empty($page) || empty($page["hash"])) {
+                    $message = sprintf("No hash for URL %s \n",$link);
+                    Logger::getInstance()->error($message);
+                    Logger::getInstance()->dump($page);
+                    continue;
+
                 }
 
-                // push post_id + site_id  into SC_PS_TMP table
-                // pass post_id + version to a db procedure
-                // inside DB procedure
-                // Tx
-                // delete rows in sc_site_post table where post_id =<in.post_id>
-                // insert new rows using SC_PS_TMP table where post_id = <in.post_id>
-                // update sc_site_tracker set flag = 1 where version = <in.version> and post_id = <in.post_id> 
-                // commit 
-                // rollback on error
+                $siteId = $this->getOrCreate($page["hash"],$page["host"],$page["canonicalUrl"]);
 
+                if(!is_null($siteId)){
+                    mysql\Site::addTmpPSData($postId,$siteId);
+                } else {
+                    trigger_error("Null site.id for $link", E_USER_ERROR);
+                }
             }
 
+            //Add new post+site data and update tracker
+            mysql\Site::updateTracker($postId,$version);
 
         }
-        
-        function processFBUrl($url,$path,$qpart) {
+
+        function processFBUrl($url,$path) {
             if(empty($path)) {
                 $path = "/" ;
             }
@@ -66,7 +95,7 @@ namespace com\indigloo\sc\dao {
 
                     case 'home' :
                         $page["canonicalUrl"] = $url ;
-                        $page["hash"] = 1 ;
+                        $page["hash"] = "FB1" ;
                         $page["url"] = $url ;
                         $page["host"] = "www.facebook.com" ;
 
@@ -74,7 +103,7 @@ namespace com\indigloo\sc\dao {
                     case 'page' :
                         $fbId = Util::getArrayKey($params, "id");
                         $page["canonicalUrl"] = $url ;
-                        $page["hash"] = $fbId ;
+                        $page["hash"] = "FB".$fbId ;
                         $page["url"] = $url ;
                         $page["host"] = "www.facebook.com" ;
                         break;
@@ -82,7 +111,8 @@ namespace com\indigloo\sc\dao {
                     case 'name' :
                         $token = Util::getArrayKey($params, "token");
                         $page["canonicalUrl"] = $url ;
-                        $page["hash"] = Graph::getIdOnName($token) ;
+                        $fbId =  Graph::getIdOnName($token) ;
+                        $page["hash"] = "FB".$fbId;
                         $page["url"] = $url ;
                         $page["host"] = "www.facebook.com" ;
                         break;
@@ -94,7 +124,7 @@ namespace com\indigloo\sc\dao {
                         
                         //get object URL
                         $page["canonicalUrl"] = Graph::getLinkOnId($fbId);
-                        $page["hash"] = $fbId ;
+                        $page["hash"] = "FB".$fbId ;
                         $page["url"] = $url ;
                         $page["host"] = "www.facebook.com" ;
                         break ;
@@ -105,7 +135,7 @@ namespace com\indigloo\sc\dao {
                         $fbId = FacebookUtil::getObjectIdInSet($set);
                         //get object URL
                         $page["canonicalUrl"] = Graph::getLinkOnId($fbId) ;
-                        $page["hash"] = $fbId ;
+                        $page["hash"] = "FB".$fbId ;
                         $page["url"] = $url ;
                         $page["host"] = "www.facebook.com" ;
                         break;
@@ -120,7 +150,7 @@ namespace com\indigloo\sc\dao {
             }
 
             if(Config::getInstance()->is_debug()) {
-                $message = sprintf("FB:: path is [%s] and query part is [%s] \n",$path,$qpart);
+                $message = sprintf("FB:: url is [%s] \n",$url);
                 Logger::getInstance()->debug($message);
                 Logger::getInstance()->debug("Dump of router ::");
                 Logger::getInstance()->dump($route);
@@ -148,7 +178,7 @@ namespace com\indigloo\sc\dao {
             $page = array();
 
             if($info["host"] == 'www.facebook.com' ) {
-                $page = $this->processFBUrl($url,$info["path"],$info["query"]);
+                $page = $this->processFBUrl($url,$info["path"]);
 
             } else {
                 //canonical name
