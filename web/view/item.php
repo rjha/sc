@@ -75,37 +75,24 @@
 			</div>
  	
 			
-			<div class="row">
+			<div class="row mt20">
 				<div class="span8">
                            
 				<?php 
-					if(sizeof($images) > 0 ) { include($_SERVER['APP_WEB_DIR'].'/qa/inc/carousel.inc') ; }
+
+                    $imageCount = sizeof($images);
+                    if($imageCount > 0 ) { 
+                        include($_SERVER['APP_WEB_DIR'].'/qa/inc/carousel.inc') ; 
+                    }
+
                     echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ; 
-                     
-					if(sizeof($links) > 0 ) {  
-						//@todo cleanup kludge in body html
-						echo '<div class="p10"/> <ol>' ;
-						$tmpl = '<li><a href="{href}" target="_blank">{href} </a></li>';	
+                    echo \com\indigloo\sc\html\Post::getLinks($links) ; 
+                    echo \com\indigloo\sc\html\Post::getEditBar($gSessionLogin,$postDBRow) ; 
 
-						foreach($links as $link) {
-							$strLink = str_replace("{href}",$link,$tmpl);
-							echo $strLink ;
-						}
-
-						echo "</ol> </div>" ;
-					}
-
-					echo \com\indigloo\sc\html\Post::getEditBar($gSessionLogin,$postDBRow) ; 
-
-				?>
-
-				<div class="mt20">
-					<?php
-						foreach($commentDBRows as $commentDBRow) {
-							echo \com\indigloo\sc\html\Comment::getSummary($loginId,$commentDBRow) ;
-						}
-					?>
-				</div>
+                    foreach($commentDBRows as $commentDBRow) {
+                        echo \com\indigloo\sc\html\Comment::getSummary($loginId,$commentDBRow) ;
+                    }
+                ?>
 
                 <br/>
 
@@ -143,14 +130,7 @@
 				
 			</div>
 			<div class="span4">
-               
-				<div class="p10">	
-                    <div class="fb-like" data-href="<?php echo $pageUrl;?>" data-send="true" data-layout="button_count" data-width="220" data-show-faces="false"></div>
-				</div>
-				<div class="p10">
-					<a href="https://twitter.com/share" class="twitter-share-button" data-via="3mikindia" data-count="none">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-                </div>	
-                <h3> More from 3mik </h3>
+                    <h3> Also on 3mik </h3>
 					<?php
 						foreach($xrows as $xrow) {
 							echo \com\indigloo\sc\html\Post::getSimpleTile($xrow) ;

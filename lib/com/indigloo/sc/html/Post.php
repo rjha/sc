@@ -10,6 +10,16 @@ namespace com\indigloo\sc\html {
     
     class Post {
 
+        static function getLinks($links) {
+            if(sizeof($links) == 0 ) {
+                return '' ;
+            }
+
+            $template = '/fragments/post/link.tmpl' ;
+            $html = Template::render($template,$links);
+            return $html;
+        }
+
 		static function getSimpleTile($postDBRow) {
 
 		    $html = NULL ;

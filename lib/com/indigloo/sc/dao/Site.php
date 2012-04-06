@@ -20,6 +20,21 @@ namespace com\indigloo\sc\dao {
             $this->fbRouter = new FacebookRouter();
             $this->fbRouter->initTable();
         }
+        
+        function getOnPostId($postId) {
+            $row = mysql\Site::getOnPostId($postId);
+            return $row ;
+        }
+
+        function getPostCount($postId) {
+            $row = mysql\Site::getPostCount($postId);
+            return $row['count'] ;
+        }
+
+        function getPosts($postId,$limit) {
+			$rows = mysql\Site::getPosts($postId,$limit);
+			return $rows ;
+		}
 
         function getOnHash($hash) {
             $row = mysql\Site::getOnHash($hash);

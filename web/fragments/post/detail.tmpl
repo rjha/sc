@@ -1,6 +1,6 @@
 
     ~if($view->hasGroups) {~
-    <div class="groups">
+    <div class="groups mt20">
     Groups:
         ~foreach($view->groups as $group){~
             <a href="/group/~~$group['slug']~">~~$group['display']~</a>&nbsp;

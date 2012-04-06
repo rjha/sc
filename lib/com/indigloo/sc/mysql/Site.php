@@ -11,6 +11,44 @@ namespace com\indigloo\sc\mysql {
         
         const MODULE_NAME = 'com\indigloo\sc\mysql\Site';
 
+        static function getOnPostId($postId) {
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            settype($postId,"integer");
+
+            $sql = " select sm.* from sc_site_master sm, sc_post_site ps where sm.id = ps.site_id " ;
+            $sql .= " and ps.post_id = %d limit 1 " ;
+            $sql = sprintf($sql,$postId);
+
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+
+        static function getPosts($postId,$limit) {
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            settype($postId,"integer");
+            settype($limit,"integer");
+
+            $sql = " select p.* from sc_post_site a, sc_post_site b, sc_post p  where p.id = a.post_id " ;
+            $sql .= " and a.site_id = b.site_id and b.post_id = %d order by a.post_id desc limit %d " ; 
+            $sql = sprintf($sql,$postId,$limit);
+
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
+        static function getPostCount($postId) {
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            settype($postId,"integer");
+
+            $sql = " select count(a.id)  as count from sc_post_site a, sc_post_site b " ;
+            $sql .= " where a.site_id = b.site_id and b.post_id = %d " ; 
+            $sql = sprintf($sql,$postId);
+
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+ 
         static function getOnHash($hash) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
