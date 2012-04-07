@@ -1,4 +1,7 @@
 <div class="ml20">
+    ~if($view->hasSite){~
+	<span> <a class="btn" href="/site/~~$view->siteId~/~~$view->siteUrl~">Go to Site</a></span> 
+    ~}~
 	<span> <a class="btn " href="#form-wrapper">Comment</a></span> 
     ~if($view->isLoggedInUser){~
 	<span> <a class="btn btn-primary" href="/qa/edit.php?id=~~$view->itemId~">Edit</a></span> 

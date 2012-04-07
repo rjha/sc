@@ -33,14 +33,14 @@
 
     <div class="row">
         <div class="mt20">
-        <div class="span3">
+        <div class="span5">
             Total images&nbsp; <span class="badge badge-warning"> <?php echo $count; ?> </span>
         </div>
 
-        <div class="span3">
+        <div class="span2">
             <div class="fb-like" data-href="<?php echo $pageUrl;?>" data-send="true" data-layout="button_count" data-width="220" data-show-faces="false"></div>
         </div>
-        <div class="span2">
+        <div class="span1">
 					<a href="https://twitter.com/share" class="twitter-share-button" data-via="3mikindia" data-count="none">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
         </div>
 

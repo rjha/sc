@@ -87,7 +87,8 @@
 
                     echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ; 
                     echo \com\indigloo\sc\html\Post::getLinks($links) ; 
-                    echo \com\indigloo\sc\html\Post::getEditBar($gSessionLogin,$postDBRow) ; 
+                    //gSessionLogin initialized in toolbar
+                    echo \com\indigloo\sc\html\Post::getEditBar($gSessionLogin,$postDBRow,$siteDBRow) ; 
 
                     foreach($commentDBRows as $commentDBRow) {
                         echo \com\indigloo\sc\html\Comment::getSummary($loginId,$commentDBRow) ;
@@ -105,7 +106,7 @@
 					<table class="form-table">
 						<tr> 
 						<?php if(is_null($loginId)) { ?>
-							<td> You need to <a href="<?php echo $loginUrl ?>">login</a></td>
+							<td> please <a href="<?php echo $loginUrl ?>">login</a> to comment</td>
 						<?php } ?>
 							
 						</tr>

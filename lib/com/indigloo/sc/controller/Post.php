@@ -16,7 +16,6 @@ namespace com\indigloo\sc\controller{
     class Post {
         
         function process($params,$options) {
-            $file = $_SERVER['APP_WEB_DIR']. '/view/item.php' ;
             
             if(is_null($params) || empty($params))
                 trigger_error("Required params is null or empty", E_USER_ERROR);
@@ -102,6 +101,9 @@ namespace com\indigloo\sc\controller{
                 $xrows = array_merge($xrows,$randomRows);
             }
 
+            $siteDao = new \com\indigloo\sc\dao\Site();
+            $siteDBRow = $siteDao->getOnPostId($postId);
+
 			$loginUrl = "/user/login.php?q=".$_SERVER['REQUEST_URI'];
 			$formErrors = FormMessage::render(); 
 
@@ -111,6 +113,7 @@ namespace com\indigloo\sc\controller{
             $metaKeywords = SeoData::getMetaKeywords($group_names);
             $pageUrl = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 			
+            $file = $_SERVER['APP_WEB_DIR']. '/view/item.php' ;
 			include($file);
         }
     }

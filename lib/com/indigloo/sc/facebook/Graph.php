@@ -4,6 +4,7 @@ namespace com\indigloo\sc\facebook {
 
     
     use \com\indigloo\Util as CoreUtil;
+    use \com\indigloo\Logger as Logger;
 
     class Graph {
 
@@ -14,7 +15,22 @@ namespace com\indigloo\sc\facebook {
             $response = @file_get_contents($graphUrl);
           	$fbObject = json_decode($response);
 
-            if(is_null($fbObject) || property_exists($fbObject, "error")) { return NULL ; }
+            //FACEBOOK GRAPH API can return true | false (surprise!)
+            // php json_decode can return TRUE | FALSE | NULL for invalid input
+            // use === operator to ensure TYPE check as well
+            // otherwise a valid fbObject will always evaluate to TRUE with == check
+            if($fbObject === FALSE || $fbObject ===  TRUE || $fbObject == NULL ) {
+                $message = sprintf("Graph URL %s returned TRUE|FALSE|NULL",$graphUrl) ;
+                Logger::getInstance()->error($message);
+                return NULL ;
+            }
+
+            if(property_exists($fbObject, "error")) { 
+                $message = sprintf("Graph URL %s returned error",$graphUrl) ;
+                Logger::getInstance()->error($message);
+                Logger::getInstance()->error($fbObject->error);
+                return NULL ; 
+            }
 
             if($fbObject->id == $fbId){
                 return $fbObject->link ;
@@ -27,10 +43,22 @@ namespace com\indigloo\sc\facebook {
             if(empty($name)) { return NULL ; }
 
             $graphUrl = sprintf("https://graph.facebook.com/%s",$name);
-            $response = @file_get_contents($graphUrl);
+            $response = file_get_contents($graphUrl);
           	$fbObject = json_decode($response);
 
-            if(is_null($fbObject) || property_exists($fbObject, "error")) { return NULL ; }
+            if($fbObject === FALSE || $fbObject ===  TRUE || $fbObject == NULL ) {
+                $message = sprintf("Graph URL %s returned TRUE|FALSE|NULL",$graphUrl) ;
+                Logger::getInstance()->error($message);
+                return NULL ;
+            }
+
+            if(property_exists($fbObject, "error")) { 
+                $message = sprintf("Graph URL %s returned error",$graphUrl) ;
+                Logger::getInstance()->error($message);
+                Logger::getInstance()->error($fbObject->error);
+                return NULL ; 
+            }
+
             return $fbObject->id ;
 
         }

@@ -174,7 +174,7 @@ namespace com\indigloo\sc\html {
 			return $html ;	
 		}
 
-        static function getEditBar($gSessionLogin,$postDBRow){
+        static function getEditBar($gSessionLogin,$postDBRow,$siteDBRow){
 			$html = NULL ;
 			$template = '/fragments/post/edit-bar.tmpl' ;
 
@@ -186,6 +186,13 @@ namespace com\indigloo\sc\html {
 			if(!is_null($gSessionLogin) && ($gSessionLogin->id == $postDBRow['login_id'])){
 				$view->isLoggedInUser = true ;
             } 
+
+            $view->hasSite = false ;
+            if(!empty($siteDBRow)) {
+                $view->hasSite = true ;
+                $view->siteId = $siteDBRow['id'];
+                $view->siteUrl = $siteDBRow['canonical_url'];
+            }
 
 			$html = Template::render($template,$view);
             return $html ;
