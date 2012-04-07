@@ -43,7 +43,7 @@ namespace com\indigloo\sc\facebook {
             if(empty($name)) { return NULL ; }
 
             $graphUrl = sprintf("https://graph.facebook.com/%s",$name);
-            $response = file_get_contents($graphUrl);
+            $response = @file_get_contents($graphUrl);
           	$fbObject = json_decode($response);
 
             if($fbObject === FALSE || $fbObject ===  TRUE || $fbObject == NULL ) {

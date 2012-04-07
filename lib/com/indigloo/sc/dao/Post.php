@@ -6,6 +6,7 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\mysql as mysql;
+    use \com\indigloo\Logger as Logger;
     
     class Post {
 
@@ -45,8 +46,9 @@ namespace com\indigloo\sc\dao {
             } 
 
             if(is_null($links) || !is_array($links)) {
-                $message = " Bad links json in post : expected a json array" ;
-                trigger_error($message,E_USER_ERROR);
+                $message = sprintf("Post %d has Bad json [ %s ] ",$postId,$json);
+                Logger::getInstance()->error($message);
+                $links = NULL ;
             }
 
             $data = array('links' => $links, 'version' => $row['version']);

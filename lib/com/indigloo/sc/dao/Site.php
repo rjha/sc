@@ -63,7 +63,9 @@ namespace com\indigloo\sc\dao {
             //get links
             $postDao = new \com\indigloo\sc\dao\Post();
             $linkData = $postDao->getLinkDataOnId($postId);
+
             $links = $linkData["links"];
+            if(is_null($links)) { return ; }
             $version = $linkData["version"];
 
             //clean tmp post-site table 
@@ -73,9 +75,8 @@ namespace com\indigloo\sc\dao {
                 $page = $this->processUrl($link);
 
                 if(empty($page) || empty($page["hash"])) {
-                    $message = sprintf("No hash for URL %s \n",$link);
+                    $message = sprintf("Invalid URL :: No hash found:: [ %s ]",$link);
                     Logger::getInstance()->error($message);
-                    Logger::getInstance()->dump($page);
                     continue;
 
                 }
@@ -85,7 +86,7 @@ namespace com\indigloo\sc\dao {
                 if(!is_null($siteId)){
                     mysql\Site::addTmpPSData($postId,$siteId);
                 } else {
-                    trigger_error("Null site.id for $link", E_USER_ERROR);
+                    trigger_error("Invalid URL :: Null site.id for $link", E_USER_ERROR);
                 }
             }
 
@@ -160,12 +161,12 @@ namespace com\indigloo\sc\dao {
                 }
 
             } else {
-                $message = sprintf("Unknown Facebook url pattern [%s] \n",$url);
+                $message = sprintf("Invalid URL :: Unknown Facebook pattern [%s]",$url);
                 Logger::getInstance()->error($message);
             }
 
             if(Config::getInstance()->is_debug()) {
-                $message = sprintf("FB:: url is [%s] \n",$url);
+                $message = sprintf("FB:: url is [%s] ",$url);
                 Logger::getInstance()->debug($message);
                 Logger::getInstance()->debug("Dump of router ::");
                 Logger::getInstance()->dump($route);
@@ -177,28 +178,33 @@ namespace com\indigloo\sc\dao {
         }
 
         function processUrl($url) {
+            $page = array();
             $scheme = \parse_url($url,PHP_URL_SCHEME);
+
             if(empty($scheme)) {
                 $url = "http://".$url ;
             } 
 
             $info = \parse_url($url);
+            if(!isset($info["host"]) || !isset($info["path"])) {
+                $message = sprintf("Invalid URL :: host or path not found [ %s ] ",$url);
+                Logger::getInstance()->error($message);
+                return $page;
+            }
 
             if(Config::getInstance()->is_debug()) {
-                $message = sprintf(" parse_url Dump for Url %s \n",$url);
+                $message = sprintf("parse_url Dump for Url %s \n",$url);
                 Logger::getInstance()->debug($message);
                 Logger::getInstance()->dump($info);
             }
 
-            $page = array();
-
-            if($info["host"] == 'www.facebook.com' ) {
+            if(strcasecmp($info["host"],'www.facebook.com') == 0 ) {
                 $page = $this->processFBUrl($url,$info["path"]);
 
             } else {
                 //canonical name
                 $page["host"] = $info["host"];
-                $page["hash"] = md5($info["host"]);
+                $page["hash"] = md5(strtolower($info["host"]));
                 $page["url"] = $url ;
                 $page["canonicalUrl"] = "http://".$info["host"];
             }
