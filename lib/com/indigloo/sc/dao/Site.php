@@ -26,13 +26,13 @@ namespace com\indigloo\sc\dao {
             return $row ;
         }
 
-        function getPostCount($postId) {
-            $row = mysql\Site::getPostCount($postId);
+        function getTotalPostsOnId($siteId) {
+            $row = mysql\Site::getTotalPostsOnId($siteId);
             return $row['count'] ;
         }
 
-        function getPosts($postId,$limit) {
-			$rows = mysql\Site::getPosts($postId,$limit);
+        function getPostsOnId($siteId,$limit) {
+			$rows = mysql\Site::getPostsOnId($siteId,$limit);
 			return $rows ;
 		}
 

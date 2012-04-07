@@ -23,27 +23,28 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
-        static function getPosts($postId,$limit) {
+        static function getPostsOnId($siteId,$limit) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 
-            settype($postId,"integer");
+            settype($siteId,"integer");
             settype($limit,"integer");
 
-            $sql = " select p.* from sc_post_site a, sc_post_site b, sc_post p  where p.id = a.post_id " ;
-            $sql .= " and a.site_id = b.site_id and b.post_id = %d order by a.post_id desc limit %d " ; 
-            $sql = sprintf($sql,$postId,$limit);
+            $sql = " select p.*,l.name as user_name from sc_post_site ps, sc_post p, sc_login l " ;
+            $sql .= " where l.id = p.login_id and p.id = ps.post_id and ps.site_id = %d " ;
+            $sql .= " order by ps.post_id desc limit %d " ; 
+            $sql = sprintf($sql,$siteId,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
 
-        static function getPostCount($postId) {
+        static function getTotalPostsOnId($siteId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-            settype($postId,"integer");
+            settype($siteId,"integer");
 
-            $sql = " select count(a.id)  as count from sc_post_site a, sc_post_site b " ;
-            $sql .= " where a.site_id = b.site_id and b.post_id = %d " ; 
-            $sql = sprintf($sql,$postId);
+            $sql = " select count(ps.id)  as count from sc_post_site ps, sc_post p " ;
+            $sql .= " where p.id = ps.post_id and ps.site_id = %d " ; 
+            $sql = sprintf($sql,$siteId);
 
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;

@@ -22,6 +22,7 @@ namespace com\indigloo\sc\router{
             $this->createRule('^search/location/(?P<location>\w+)$','com\indigloo\sc\controller\Location');
             $this->createRule('^surprise/me$','com\indigloo\sc\controller\Random');
             $this->createRule('^editor/picks$','com\indigloo\sc\controller\Editor');
+            $this->createRule('^site/(?P<site_id>\d+)$','com\indigloo\sc\controller\Site');
         }
     }
 }
