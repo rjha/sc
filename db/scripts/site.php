@@ -13,6 +13,13 @@
         Logger::getInstance()->error("offline error handler...");
         $message = sprintf("file %s - line - %s :: %s \n",$file,$line,$errorstr); 
         Logger::getInstance()->error($message);
+        ob_start();
+        debug_print_backtrace();
+        $trace = ob_get_contents();
+        @ ob_end_clean();
+        //debug_print_backtrace();
+        Logger::getInstance()->trace($file,$line,$errorstr,$trace);
+ 
         exit(1) ;
     }
 
