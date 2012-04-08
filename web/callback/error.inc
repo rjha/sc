@@ -17,14 +17,15 @@ function login_error_handler($errorno,$errorstr,$file,$line) {
             break ;
 
         case E_USER_ERROR:
-            com\indigloo\Logger::getInstance()->trace($file,$line,$errorstr,'TRACE');
+            \com\indigloo\Logger::getInstance()->error(" $file :: $line :: $errorstr");
+            com\indigloo\Logger::getInstance()->backtrace();
 			$_SESSION["form.errors"] = array($errorstr);
 			header('Location: /user/login.php');
             exit(1);
-			
 
 		default:
-            com\indigloo\Logger::getInstance()->trace($file,$line,$errorstr,'TRACE');
+            \com\indigloo\Logger::getInstance()->error(" $file :: $line :: $errorstr");
+            com\indigloo\Logger::getInstance()->backtrace();
 			$_SESSION["form.errors"] = array("Error happened during login");
 			header('Location: /user/login.php');
             exit(1);

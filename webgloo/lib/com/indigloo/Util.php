@@ -251,6 +251,19 @@ namespace com\indigloo {
             return $json;
         }
 
+        static function unsetInArray(&$data, $keys) {
+            foreach($keys as $key){
+                if(isset($data[$key]))
+                    unset($data[$key]);
+            }
+
+            foreach ($data as &$element) {
+                if (is_array($element)) {
+                    self::unsetInArray($element, $keys);
+                }
+            }
+        }
+
     }
 
 }

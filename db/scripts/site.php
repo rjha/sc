@@ -10,17 +10,20 @@
     use \com\indigloo\mysql as MySQL;
 
     function offline_error_handler($errorno,$errorstr,$file,$line) {
-        Logger::getInstance()->error("offline error handler...");
-        $message = sprintf("file %s - line - %s :: %s \n",$file,$line,$errorstr); 
-        Logger::getInstance()->error($message);
-        ob_start();
-        debug_print_backtrace();
-        $trace = ob_get_contents();
-        @ ob_end_clean();
-        //debug_print_backtrace();
-        Logger::getInstance()->trace($file,$line,$errorstr,$trace);
- 
-        exit(1) ;
+        switch($errorno) { 
+            case E_STRICT :
+                return true;
+            case E_NOTICE :
+            case E_USER_NOTICE :
+                Logger::getInstance()->error(" $file :: $line :: $errorstr");
+                break ;
+            default:
+                Logger::getInstance()->error("offline error handler...");
+                $message = sprintf("file %s - line - %s :: %s \n",$file,$line,$errorstr); 
+                Logger::getInstance()->error($message);
+                Logger::getInstance()->backtrace();
+                exit(1) ;
+        }
     }
 
     set_error_handler('offline_error_handler');

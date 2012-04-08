@@ -123,18 +123,27 @@ namespace com\indigloo {
             }
         }
 
-        function trace($file, $line, $message, $trace) {
-               
-            fwrite($this->fhandle," \n\n     __start_trace__    \n" );
-            $logMessage = sprintf("%s - %s : %s - %s \n", date("d.m.Y H:i:s"),$file,$line,$message);
-            fwrite($this->fhandle,$logMessage);
-            
-            fwrite($this->fhandle," Trace follows \n" );
-            fwrite($this->fhandle,$trace);
-            fwrite($this->fhandle," \n       __end_trace__      \n" );
+        function backtrace() {
+            fwrite($this->fhandle," ---- __backtrace__  ----- \n" );
+            $trace = debug_backtrace();
+            $message = '' ;
+
+            foreach ($trace as $i=>$t) {
+                $message = sprintf("#%d %s%s%s() called at %s:%d \n", 
+                    $i,$t['class'], $t['type'],$t['function'],$t['file'],$t['line']);
+                fwrite($this->fhandle,$message);
+
+                $args = $t['args'];
+
+                if(!empty($args)) {
+                    //remove blob strings from Argument
+                    Util::unsetInArray($args,array('sBlobData','tBlobData'));
+                    $this->dump($args);
+                }
+            }
 
         }
-        
+
         function logIt($message, $level) {
             $logMessage = sprintf("%s - %s - %s \n",  date("d.m.Y H:i:s"), $level,$message);
             fwrite($this->fhandle,$logMessage);
@@ -151,7 +160,7 @@ namespace com\indigloo {
 			// we should be fine since we do not call ob_start with callback anywhere
 			//
 			$message = var_export($var,true);
-			$this->logIt($message,'Dump');
+            fwrite($this->fhandle,$message."\n");
 		}
 
     }

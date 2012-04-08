@@ -186,8 +186,8 @@ namespace com\indigloo\sc\dao {
             } 
 
             $info = \parse_url($url);
-            if(!isset($info["host"]) || !isset($info["path"])) {
-                $message = sprintf("Invalid URL :: host or path not found [ %s ] ",$url);
+            if(!isset($info["host"])) {
+                $message = sprintf("Invalid URL :: host not found [ %s ] ",$url);
                 Logger::getInstance()->error($message);
                 return $page;
             }

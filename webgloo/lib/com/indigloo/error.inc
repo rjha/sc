@@ -26,17 +26,12 @@ function webgloo_error_handler($errorno,$errorstr,$file,$line) {
         //so we just let it be the default error case!
         case E_USER_ERROR:
         default:
-            ob_start();
-            debug_print_backtrace();
-            $trace = ob_get_contents();
-            @ ob_end_clean();
-            //debug_print_backtrace();
-            com\indigloo\Logger::getInstance()->trace($file,$line,$errorstr,$trace);
+            com\indigloo\Logger::getInstance()->error($errorstr);
+            com\indigloo\Logger::getInstance()->backtrace();
             //send generic json encoded message back to UI
             // 302 to error page
             $errorPageUrl = "/error.php?message=".base64_encode($errorstr) ;
             header('Location: '.$errorPageUrl);
-            
             //Imp:Finally error handler should die
             exit(1);
             
@@ -62,16 +57,13 @@ function webgloo_ajax_error_handler($errorno,$errorstr,$file,$line) {
 
         case E_USER_ERROR:
         default:
-            ob_start();
-            debug_print_backtrace();
-            $trace = ob_get_contents();
-            @ ob_end_clean();
-            com\indigloo\Logger::getInstance()->trace($file,$line,$errorstr,$trace);
+            com\indigloo\Logger::getInstance()->error($errorstr);
+            com\indigloo\Logger::getInstance()->backtrace();
             //send ajax error message back to UI
             $message =  'Internal server error happened. Please check log for details!';
             $error = array('code' => 500, 'message' => $message);
             $message =  json_encode($error) ;
-            echo $message ;
+            echo $message ; 
             //Imp:Finally error handler should die
             exit(1);
     }
