@@ -12,6 +12,8 @@ namespace com\indigloo\sc\html {
 
         static function getGallery($images) {
             if(sizeof($images) == 0 ) { return '' ; }
+
+			$view = new \stdClass;
             $records = array();
 
             foreach($images as $image) {
@@ -20,11 +22,19 @@ namespace com\indigloo\sc\html {
                 $record['source'] = $prefix.$image->bucket."/".$image->storeName ;
                 $record['thumbnail'] = $prefix.$image->bucket."/".$image->thumbnail ;
                 $record['title'] = $image->originalName;
+
+  	
+				$newxy = Util::foldXY($image->width,$image->height,190,140);
+				$record['width'] = $newxy["width"];
+				$record['height'] = $newxy["height"];
+
                 $records[] = $record;
             }
 
+            $view->records = $records ;
+
             $template = '/fragments/post/gallery.tmpl' ;
-            $html = Template::render($template,$records);
+            $html = Template::render($template,$view);
             return $html;
 
         }

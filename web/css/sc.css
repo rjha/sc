@@ -705,7 +705,6 @@
     .group-panel .wrapper {
         padding:0px;
         border-bottom:1px solid #ccc;
-
     }
 
     .group-panel .box {
@@ -827,6 +826,13 @@
 
     #home-tile h1 { 
         margin : 0px 0px 0px 20px; 
+    }
+
+    #gallery {
+        height:auto;
+        padding:0px;
+        margin-bottom :10px;
+        margin-top :10px;
     }
 
     #gallery img {
