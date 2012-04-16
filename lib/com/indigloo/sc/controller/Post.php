@@ -113,7 +113,7 @@ namespace com\indigloo\sc\controller{
             $metaKeywords = SeoData::getMetaKeywords($group_names);
             $pageUrl = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 			
-            $file = $_SERVER['APP_WEB_DIR']. '/view/item.php' ;
+            $file = $_SERVER['APP_WEB_DIR']. '/view/item2.php' ;
 			include($file);
         }
     }

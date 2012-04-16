@@ -1,0 +1,11 @@
+
+<div id="gallery">
+    ~foreach($view as $record){ ~
+        <a class="gallery" rel ="group1" title="~~$record['title']~" href="~~$record['source']~" > <img src="~~$record['thumbnail']~" alt="~~$record['title']~"/></a>
+    ~}~
+
+    <div class="info-bar">
+        <i class="icon-zoom-in"> </i> click to view full size
+    </div>
+
+</div>

@@ -1,10 +1,9 @@
-<div class="ml20">
+<div class="mt20">
     ~if($view->hasSite){~
-	<span> <a class="btn" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">More from site</a></span> 
+    <div class="item-link"> <a href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">More from this site&rarr;</a></div>
     ~}~
-	<span> <a class="btn " href="#form-wrapper">Comment</a></span> 
     ~if($view->isLoggedInUser){~
-	<span> <a class="btn btn-primary" href="/qa/edit.php?id=~~$view->itemId~">Edit Item</a></span> 
+	<div class="item-link"> <a href="/qa/edit.php?id=~~$view->itemId~">Edit Item&rarr;</a></div> 
     ~}~
 </div>
 

@@ -1,20 +1,6 @@
-
-    ~if($view->hasGroups) {~
-    <div class="groups mt20">
-    Groups:
-        ~foreach($view->groups as $group){~
-            <a href="/group/~~$group['slug']~">~~$group['display']~</a>&nbsp;
-
-        ~}~
-
-    </div>
-    ~}~
-
-<div class="well">
+<div class="well mt20">
 	~~$view->description~
 	<br>
-	<div class="tags"> </div>
-
 	<div class="author">
 		<img src="/css/images/twitter-icon.png" height="32" width="32" alt="icon" /> 		
 		<div class="meta">

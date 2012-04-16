@@ -721,10 +721,16 @@
     /* groups display */
     .groups {
         color : #777 ;
-        font-size:11px;
-        line-height:16px;
+        font-size:14px;
+        line-height:20px;
     }
  
+    .groups .label {
+        font-weight: bold ;
+        font-size:18px;
+        line-height:18px;
+    }
+
     .block{
         border-bottom : 1px solid #E8E7E3; 
     }
@@ -801,3 +807,28 @@
         margin-bottom:10px;
     }
 
+    .carousel img {
+        max-width :100% ;
+    }
+
+    #gallery img {
+        padding:5px;
+        background: white;
+        border: 1px solid #BBB; 
+        /* border: 1px solid #BBB; */
+        /* margin: 7px 14px 7px 0; */
+        /* width: 160px; */
+    }
+
+    .item-link {
+
+
+    }
+
+    .item-link a {
+        color: black;
+        font-size: 18px;
+        font-weight:bold;
+
+
+    }

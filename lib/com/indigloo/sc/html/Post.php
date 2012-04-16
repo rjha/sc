@@ -10,10 +10,27 @@ namespace com\indigloo\sc\html {
     
     class Post {
 
-        static function getLinks($links) {
-            if(sizeof($links) == 0 ) {
-                return '' ;
+        static function getGallery($images) {
+            if(sizeof($images) == 0 ) { return '' ; }
+            $records = array();
+
+            foreach($images as $image) {
+                $record = array();
+                $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? "http://" : "/" ;
+                $record['source'] = $prefix.$image->bucket."/".$image->storeName ;
+                $record['thumbnail'] = $prefix.$image->bucket."/".$image->thumbnail ;
+                $record['title'] = $image->originalName;
+                $records[] = $record;
             }
+
+            $template = '/fragments/post/gallery.tmpl' ;
+            $html = Template::render($template,$records);
+            return $html;
+
+        }
+
+        static function getLinks($links) {
+            if(sizeof($links) == 0 ) { return '' ; }
 
             $template = '/fragments/post/link.tmpl' ;
             $html = Template::render($template,$links);
@@ -146,6 +163,16 @@ namespace com\indigloo\sc\html {
             $view->loginId = $postDBRow['login_id'];
             $view->pubUserId = PseudoId::encode($view->loginId);
 
+			$template = '/fragments/post/detail.tmpl' ;
+			$html = Template::render($template,$view);
+			
+			return $html ;	
+		}
+
+        static function getGroups($postDBRow) {
+			$html = NULL ;
+			
+			$view = new \stdClass;
             $group_slug = $postDBRow['group_slug'];
             $groups = array();
 
@@ -155,20 +182,17 @@ namespace com\indigloo\sc\html {
 
                 foreach($slugs as $slug) {
                     if(empty($slug)) continue ;
-
                     $display = StringUtil::convertKeyToName($slug);
                     $groups[] = array("slug" => $slug, "display"=> $display);
                 }
             }
 
-            if(sizeof($groups) > 0 ) {
-                $view->hasGroups = true ;
-                $view->groups = $groups;
-            }else {
-                $view->hasGroups = false ;
+            if(sizeof($groups) == 0 ) {
+                return '' ;
             }
 
-			$template = '/fragments/post/detail.tmpl' ;
+            $view->groups = $groups;
+			$template = '/fragments/post/group.tmpl' ;
 			$html = Template::render($template,$view);
 			
 			return $html ;	
