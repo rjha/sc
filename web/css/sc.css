@@ -563,6 +563,28 @@
 		margin :0px;
 	}
     
+    /* smaller tile */
+
+    .tile2 {
+		width:180px;
+		margin:2px;
+		border:1px solid #DEDEDE ;
+		float:left ;
+		padding:8px;
+		background-color: #fff;
+		border-radius :2px;
+        /* position:relative ; */
+	}
+
+	.tile2 .photo {
+		padding:3px;
+	}
+	
+	.tile2 .photo img {
+		max-width:160px;
+		margin :0px;
+	}
+
 	.mh800 {
 		min-height:800px;
 	}
@@ -801,6 +823,26 @@
         margin : 0px 0px 0px 20px; 
     }
 
+    #gallery img {
+        padding:5px;
+        background: white;
+        border: 1px solid #BBB; 
+    }
+
+    .item-link {
+
+    }
+
+    .item-link a {
+        color: black;
+        font-size: 18px;
+        font-weight:bold;
+    }
+
+    #item-tiles {
+        margin-top:60px;
+    }
+
     /* last section - override bootstrap css */
     .hero-unit {
         padding:30px;
@@ -811,24 +853,4 @@
         max-width :100% ;
     }
 
-    #gallery img {
-        padding:5px;
-        background: white;
-        border: 1px solid #BBB; 
-        /* border: 1px solid #BBB; */
-        /* margin: 7px 14px 7px 0; */
-        /* width: 160px; */
-    }
-
-    .item-link {
-
-
-    }
-
-    .item-link a {
-        color: black;
-        font-size: 18px;
-        font-weight:bold;
-
-
-    }
+  

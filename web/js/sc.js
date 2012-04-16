@@ -71,6 +71,14 @@ webgloo.sc.home = {
         $('.tile').mouseleave(function() { $(this).find('.options').toggle(); }); 
 
     },
+    addSmallTiles : function() {
+        var $container = $('#tiles');
+        $container.imagesLoaded(function(){
+            $container.masonry({
+                itemSelector : '.tile2'
+            });
+        });
+    },
     addNavGroups : function() {
         //group browser
         $("a#nav-group-open").click(function(event) {

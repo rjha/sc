@@ -35,7 +35,7 @@
 				});
 
                 webgloo.sc.home.addNavGroups();
-                webgloo.sc.home.addTiles();
+                webgloo.sc.home.addSmallTiles();
                 $("a.gallery").fancybox();
 				
             });
@@ -75,14 +75,16 @@
                         echo \com\indigloo\sc\html\Post::getLinks($links) ; 
                     ?>
 
-                    <h3> Also on 3mik </h3>
-                    <div id="tiles">
-                        <?php
-						foreach($xrows as $xrow) {
-							echo \com\indigloo\sc\html\Post::getSimpleTile($xrow) ;
-						}
-                        ?>
-                    </div> <!-- tiles -->
+                    <div id="item-tiles">
+                        <h3> Also on 3mik </h3>
+                        <div id="tiles">
+                            <?php
+                            foreach($xrows as $xrow) {
+                                echo \com\indigloo\sc\html\Post::getSmallTile($xrow) ;
+                            }
+                            ?>
+                        </div> <!-- tiles -->
+                    </div>
                 </div>
 
                 <div class="span4">

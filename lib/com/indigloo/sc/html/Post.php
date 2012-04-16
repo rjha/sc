@@ -37,7 +37,7 @@ namespace com\indigloo\sc\html {
             return $html;
         }
 
-		static function getSimpleTile($postDBRow) {
+		static function getSmallTile($postDBRow) {
 
 		    $html = NULL ;
 			$imagesJson = $postDBRow['images_json'];
@@ -51,7 +51,7 @@ namespace com\indigloo\sc\html {
 
 			if(sizeof($images) > 0) {
 				
-				$template = '/fragments/tile/simple/image.tmpl' ;
+				$template = '/fragments/tile/small/image.tmpl' ;
 				/* image stuff */
 				$image = $images[0] ;
 				
@@ -73,7 +73,7 @@ namespace com\indigloo\sc\html {
 				
 			} else {
 				
-				$template = '/fragments/tile/simple/text.tmpl' ;
+				$template = '/fragments/tile/small/text.tmpl' ;
 				$html = Template::render($template,$view);
 			}
 			
