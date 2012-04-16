@@ -740,14 +740,20 @@
         background : #FFF ;
     }
 
-    /* groups display */
     .groups {
         color : #777 ;
+        font-size:11px;
+        line-height:16px;
+    }
+
+    /* item page groups */
+    .item-groups {
+        color : #777 ;
         font-size:14px;
-        line-height:20px;
+        line-height:18px;
     }
  
-    .groups .label {
+    .item-groups .label {
         font-weight: bold ;
         font-size:18px;
         line-height:18px;
@@ -830,10 +836,14 @@
     }
 
     .item-link {
-
+        margin-top:20px;
     }
 
-    .item-link a {
+    .item-link a:hover {
+       text-decoration:none ;
+    } 
+
+    .item-link .big {
         color: black;
         font-size: 18px;
         font-weight:bold;
@@ -842,6 +852,7 @@
     #item-tiles {
         margin-top:60px;
     }
+
 
     /* last section - override bootstrap css */
     .hero-unit {

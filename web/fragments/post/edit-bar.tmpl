@@ -1,7 +1,4 @@
 <div class="mt20">
-    ~if($view->hasSite){~
-    <div class="item-link"> <a href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">More from this site&rarr;</a></div>
-    ~}~
     ~if($view->isLoggedInUser){~
 	<div class="item-link"> <a href="/qa/edit.php?id=~~$view->itemId~">Edit Item&rarr;</a></div> 
     ~}~

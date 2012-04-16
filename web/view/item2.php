@@ -72,7 +72,7 @@
 				<div class="span8">
                     <?php 
                         echo \com\indigloo\sc\html\Post::getGallery($images) ; 
-                        echo \com\indigloo\sc\html\Post::getLinks($links) ; 
+                        echo \com\indigloo\sc\html\Post::getLinks($links,$siteDBRow) ; 
                     ?>
 
                     <div id="item-tiles">
@@ -91,7 +91,7 @@
                     <?php 
                         echo \com\indigloo\sc\html\Post::getGroups($postDBRow) ; 
                         //gSessionLogin initialized in toolbar
-                        echo \com\indigloo\sc\html\Post::getEditBar($gSessionLogin,$postDBRow,$siteDBRow) ; 
+                        echo \com\indigloo\sc\html\Post::getEditBar($gSessionLogin,$postDBRow) ; 
                         echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ; 
                         foreach($commentDBRows as $commentDBRow) {
                             echo \com\indigloo\sc\html\Comment::getSummary($loginId,$commentDBRow) ;

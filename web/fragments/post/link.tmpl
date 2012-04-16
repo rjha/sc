@@ -1,10 +1,10 @@
-<div class="p10">
-    <span class="label label-inverse">website </span> <br>
+<div class="item-link">
     <ul class="unstyled">
-    ~foreach($view as $link){ ~
+    ~foreach($view->links as $link){ ~
         <li><a href="~~$link~" target="_blank">~~$link~ </a></li>
 
     ~}~
-
     </ul>
+    <a class="big" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">More from this site&rarr;</a>
 </div>
+
