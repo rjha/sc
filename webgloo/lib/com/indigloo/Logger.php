@@ -132,16 +132,17 @@ namespace com\indigloo {
                 $message = sprintf("#%d %s%s%s() called at %s:%d \n", 
                     $i,$t['class'], $t['type'],$t['function'],$t['file'],$t['line']);
                 fwrite($this->fhandle,$message);
-
-                $args = $t['args'];
-
-                if(!empty($args)) {
-                    //remove blob strings from Argument
-                    Util::unsetInArray($args,array('sBlobData','tBlobData'));
-                    $this->dump($args);
+                
+                if ($this->isDebug) {
+                    if(isset($t['args']) && !empty($t['args'])) {
+                        //remove blob strings from Argument
+                        Util::unsetInArray($t['args'],array('sBlobData','tBlobData'));
+                        $this->dump($t['args']);
+                    } 
                 }
             }
 
+            fwrite($this->fhandle," \n -------- \n" );
         }
 
         function logIt($message, $level) {
@@ -152,14 +153,20 @@ namespace com\indigloo {
 		/* use to dump variables inside an error condition only */
 
 		function dump($var) {
-			//with print_r you should not forget to reset the array pointer
+            // print_r will print in human readable form only
+			// Also, with print_r you should not forget to reset the array pointer
 			// though right now that is not required but documentation mentions that 
 			// https://bugs.php.net/bug.php?id=54931 
+            //
 			// Logger::dump will __not__ work inside an ob_start callback function 
 			// callback is only needed if you want to modify the content of a buffer (like gzipping)
 			// we should be fine since we do not call ob_start with callback anywhere
+            //
+            // var_export has issues with PDO - Nesting level too deep error 
+            // @see https://bugs.php.net/bug.php?id=30471 
 			//
-			$message = var_export($var,true);
+
+            $message = var_export($var,true);
             fwrite($this->fhandle,$message."\n");
 		}
 
