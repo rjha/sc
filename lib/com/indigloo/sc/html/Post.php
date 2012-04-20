@@ -44,10 +44,12 @@ namespace com\indigloo\sc\html {
 
 			$view = new \stdClass;
             $view->links = $links;
+            $view->hasSite = false;
 
             if(!empty($siteDBRow)) {
                 $view->siteId = $siteDBRow['id'];
                 $view->siteUrl = $siteDBRow['canonical_url'];
+                $view->hasSite = true ;
             }
 
             $template = '/fragments/post/link.tmpl' ;
