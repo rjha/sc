@@ -22,10 +22,17 @@
 		trigger_error("Twitter login detected an old authentication token ",E_USER_ERROR);
 	}		
 
+    /* request is missing oauth verifier */
+    if(!isset($_REQUEST['oauth_verifier'])) {
+		clearSession();
+		trigger_error("Twitter login :: oauth verifier is missing",E_USER_ERROR);
+    }
+
 	$appId = Config::getInstance()->get_value("twitter.app.id");
 	$appSecret = Config::getInstance()->get_value("twitter.app.secret");
 
 	$connection = new TwitterOAuth($appId, $appSecret, $_SESSION['oauth_token'],$_SESSION['oauth_token_secret']);
+    
 
 	/* get access token from twitter and save in session */
 	$access_token = $connection->getAccessToken($_REQUEST['oauth_verifier']); 

@@ -117,6 +117,7 @@ namespace com\indigloo\sc\dao {
 
                         break;
                     case 'page' :
+                    case 'people': 
                         $fbId = Util::getArrayKey($params, "id");
                         $page["canonicalUrl"] = $url ;
                         $page["hash"] = "FB".$fbId ;
@@ -134,6 +135,7 @@ namespace com\indigloo\sc\dao {
                         break;
 
                     case 'media' :
+                    case 'photo' :
                         $qparams = Url::getQueryParams($url);
                         $set = $qparams["set"];
                         $fbId = FacebookUtil::getObjectIdInSet($set);
@@ -145,10 +147,9 @@ namespace com\indigloo\sc\dao {
                         $page["host"] = "www.facebook.com" ;
                         break ;
 
-                   case 'photo' :
+                    case 'profile' :
                         $qparams = Url::getQueryParams($url);
-                        $set = $qparams["set"];
-                        $fbId = FacebookUtil::getObjectIdInSet($set);
+                        $fbId = $qparams["id"];
                         //get object URL
                         $page["canonicalUrl"] = Graph::getLinkOnId($fbId) ;
                         $page["hash"] = "FB".$fbId ;

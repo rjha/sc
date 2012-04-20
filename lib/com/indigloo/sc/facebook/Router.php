@@ -17,10 +17,12 @@ namespace com\indigloo\sc\facebook{
             $this->createRule('^(?P<token>[-.\w]+)$', 'name');
             $this->createRule('^pages/(?P<token>[-.\w]+)$', 'name');
             $this->createRule('^pages/(?P<token>[-.\w]+)/(?P<id>\d+)$', 'page');
+            $this->createRule('^people/(?P<token>[-.\w]+)/(?P<id>\d+)$', 'people');
             $this->createRule('^media/set$', 'media');
             $this->createRule('^media/set/$', 'media');
-            //keep last - photo.php conflicts with ^/<token>$ path pattern
+            //keep last - photo.php conflicts with ^/<token>$ pattern
             $this->createRule('^photo.php$', 'photo');
+            $this->createRule('^profile.php$', 'profile');
         }
     }
 }

@@ -5,6 +5,8 @@
 
     ~}~
     </ul>
-    <a class="big" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">More from this site&rarr;</a>
+    ~if($view->hasSite) {~
+        <a class="big" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">More from this site&rarr;</a>
+    ~}~
 </div>
 
