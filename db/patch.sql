@@ -796,7 +796,7 @@ BEGIN
 
     delete from sc_post_site where post_id = v_post_id ;
     insert into sc_post_site(post_id,site_id,created_on)  
-    select post_id,site_id,now() from sc_tmp_ps where post_id = v_post_id ;
+        select post_id,site_id,now() from sc_tmp_ps where post_id = v_post_id ;
     --
     -- set tracker flag 
     -- 
@@ -808,18 +808,127 @@ delimiter ;
 
 
 
+--
+-- 18 April 2012
+--
 
 
+--
+-- 1) Add group master table 
+-- 
+   
+drop table if exists sc_group_master;
+create table sc_group_master(
+	id int(11) NOT NULL auto_increment,
+	token varchar(32) ,
+    cat_code varchar(16),
+    created_on timestamp default '0000-00-00 00:00:00',
+	updated_on timestamp default '0000-00-00 00:00:00' ,
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+alter table sc_group_master add constraint UNIQUE(token);
+
+--
+-- @todo run cron scripts before dropping table
+-- make sure site processing is not pending
+-- 2) Add new flags to site tracker
+-- 
+
+drop table if exists sc_site_tracker;
+create table sc_site_tracker(
+	id int NOT NULL auto_increment,
+	post_id int NOT NULL ,
+    version int not null,
+    site_flag int default 0, 
+    group_flag int default 0, 
+	created_on TIMESTAMP  default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
+--
+-- 3) remove the function to process group_slugs
+--
+
+DROP PROCEDURE IF EXISTS fn_user_group ;
+
+--
+-- 4) change trigger on post add 
+-- 
+
+DROP TRIGGER IF EXISTS trg_post_add ;
+delimiter //
+CREATE TRIGGER trg_post_add  AFTER  INSERT ON sc_post
+    FOR EACH ROW
+    BEGIN
+        --
+        -- Add entry in site tracker
+        -- 
+        insert into sc_site_tracker(post_id,site_flag,group_flag,version,created_on) 
+            values (NEW.ID,0,0,NEW.version,NEW.created_on);
 
 
+    END;//
+delimiter ;
+
+--
+-- 5) change trigger on post edit
+-- 
+
+DROP TRIGGER IF EXISTS trg_post_edit ;
+delimiter //
+CREATE TRIGGER trg_post_edit  AFTER  update ON sc_post
+    FOR EACH ROW
+    BEGIN
+        --
+        -- reset flags for offline processing 
+        --
+        update sc_site_tracker set site_flag = 0, group_flag = 0, version = NEW.version, updated_on= now() 
+            where post_id = NEW.id ;
+    END;//
+delimiter ;
 
 
+--
+-- 6)use new site_flag  
+-- 
 
 
+delimiter //
+DROP PROCEDURE IF EXISTS UPDATE_SITE_TRACKER //
+CREATE PROCEDURE UPDATE_SITE_TRACKER (IN v_post_id int, IN v_version int) 
+BEGIN
+    DECLARE EXIT HANDLER for SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
+
+    DECLARE EXIT HANDLER for SQLWARNING
+    BEGIN
+        ROLLBACK;
+    END;
+
+    START TRANSACTION;
+
+    delete from sc_post_site where post_id = v_post_id ;
+    insert into sc_post_site(post_id,site_id,created_on)  
+    select post_id,site_id,now() from sc_tmp_ps where post_id = v_post_id ;
+    --
+    -- set site tracker flag 
+    -- 
+    update sc_site_tracker set site_flag = 1 where post_id = v_post_id and version = v_version ;
+    COMMIT; 
+
+END;//
+delimiter ;
 
 
+--
+-- populate sc_site_tracker / No need to process sites
+--
+
+insert into sc_site_tracker (post_id,created_on,version,site_flag,group_flag) 
+    select id,created_on,version,1,0 from sc_post ;
 
 
 

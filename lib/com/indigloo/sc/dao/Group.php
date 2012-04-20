@@ -127,6 +127,19 @@ namespace com\indigloo\sc\dao {
 
             return $group_slug;
         }
+
+        function process($postId) {
+            $postDao = new \com\indigloo\sc\dao\Post();
+            $postDBRow = $postDao->getonId($postId);
+
+            $group_slug = $postDBRow['group_slug'];
+            $version = $postDBRow['version'];
+            $catCode = $postDBRow['cat_code'] ;
+            $loginId = $postDBRow['login_id'];
+
+            mysql\Group::process($postId,$loginId,$version,$catCode,$group_slug);
+
+        }
 		
     }
 }

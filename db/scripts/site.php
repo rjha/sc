@@ -11,7 +11,7 @@
 
     function process_sites($mysqli) {
         //process sites
-        $sql = " select post_id from sc_site_tracker where site_flag = 0 order by id limit 50";
+        $sql = " select post_id from sc_site_tracker where site_flag = 0 order by id desc limit 50";
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
         $siteDao = new \com\indigloo\sc\dao\Site();
 
@@ -23,19 +23,20 @@
     }
 
     function process_groups($mysqli) {
-        //process sites
-        $sql = " select post_id from sc_site_tracker where group_flag = 0 order by id limit 50";
+        //process groups 
+        $sql = " select post_id from sc_site_tracker where group_flag = 0 order by id desc limit 50";
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
         $groupDao = new \com\indigloo\sc\dao\Group();
 
         foreach($rows as $row) {
             $postId = $row["post_id"];
             $groupDao->process($postId);
-            sleep(1);
         }
     }
 
     $mysqli = MySQL\Connection::getInstance()->getHandle();
     process_sites($mysqli);
+    sleep(1);
+    process_groups($mysqli);
 
    ?>
