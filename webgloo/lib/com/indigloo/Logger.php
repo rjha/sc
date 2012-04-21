@@ -135,8 +135,6 @@ namespace com\indigloo {
                 
                 if ($this->isDebug) {
                     if(isset($t['args']) && !empty($t['args'])) {
-                        //remove blob strings from Argument
-                        Util::unsetInArray($t['args'],array('sBlobData','tBlobData'));
                         $this->dump($t['args']);
                     } 
                 }
