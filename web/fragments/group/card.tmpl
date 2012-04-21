@@ -1,0 +1,11 @@
+<div class="tile">
+<div class="card">
+    <ul>
+        ~foreach($view->groups as $group) {
+            $name = \com\indigloo\util\StringUtil::convertKeyToName($group['token']); ~
+           
+        <li class="item"> <a href="#"><span class="name">~~$name~</span></a> </li>
+        ~ }~
+    </ul>
+</div>
+</div>

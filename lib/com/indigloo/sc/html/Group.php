@@ -30,6 +30,17 @@ namespace com\indigloo\sc\html {
             printf("</div>");
 
 		}
+
+        static function getCard($groups) {
+		    $html = NULL ;
+			$view = new \stdClass;
+            $view->groups = $groups ;
+            $template = '/fragments/group/card.tmpl' ;
+            $html = Template::render($template,$view);
+            return $html;
+
+		}
+
     } 
 }
 ?>

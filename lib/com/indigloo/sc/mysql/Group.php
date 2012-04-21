@@ -15,7 +15,7 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
 
-            $sql = "select distinct token from sc_user_group order by id desc LIMIT %d " ; 
+            $sql = "select token from sc_group_master order by id desc LIMIT %d " ; 
             $sql = sprintf($sql,$limit);
 			$rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;

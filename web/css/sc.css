@@ -859,6 +859,31 @@
         margin-top:60px;
     }
 
+    .card {
+        color: #333 ;
+        font-size: 13.5px;
+        font-weight: bold;
+        cursor: pointer;
+        border: 1px solid #DEE2E5;
+        border-bottom-color: white;
+        background-color: #E7EBEE;
+
+    }
+    
+    .card .name {
+        white-space: nowrap;
+    }
+
+    .card .item {
+        padding: 2px 0;
+        list-style: square outside;
+        margin-bottom: 5px;
+        overflow: hidden;
+    }
+
+    .card .item a {
+        color: #333 ;
+    }
 
     /* last section - override bootstrap css */
     .hero-unit {
