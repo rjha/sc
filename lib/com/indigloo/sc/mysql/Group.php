@@ -15,13 +15,50 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
 
-            $sql = "select token from sc_group_master order by id desc LIMIT %d " ; 
+            $sql = "select g.* from sc_group_master g order by g.id desc LIMIT %d " ; 
             $sql = sprintf($sql,$limit);
 			$rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 		}
 
-         static function getOnLoginId($loginId) {
+        static function getPaged($start,$direction,$limit) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            
+            settype($start,"integer");
+            settype($limit,"integer");
+            
+            $sql = " select g.* from sc_group_master g where 1=1 " ;
+
+            if($direction == 'after') {
+                $sql .= "and g.id < %d order by g.id DESC LIMIT %d " ;
+
+            } else if($direction == 'before'){
+                $sql .= "and g.id > %d order by g.id ASC LIMIT %d " ;
+            } else {
+                trigger_error("Unknow sort direction in query", E_USER_ERROR);
+            }
+            
+            $sql = sprintf($sql,$start,$limit);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            
+            //reverse rows for 'before' direction
+            if($direction == 'before') {
+                $results = array_reverse($rows) ;
+                return $results ;
+            }
+            
+            return $rows;	
+
+        }
+
+        static function getTotalCount(){
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "select count(id) as count from sc_group_master " ;
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+
+        static function getOnLoginId($loginId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($loginId,"integer");
 
@@ -74,7 +111,7 @@ namespace com\indigloo\sc\mysql {
             settype($loginId,"integer");
             settype($version,"integer");
 
-            $sqlm1 = "insert ignore into sc_group_master(token,cat_code,created_on) values('%s','%s',now()) ";
+            $sqlm1 = "insert ignore into sc_group_master(token,name,cat_code,created_on) values('%s','%s','%s',now()) ";
             $sqlm2 = "insert ignore into sc_user_group(login_id,token,created_on) values('%d','%s',now()) ";
             $sqlm3 = "update sc_site_tracker set group_flag = 1 where post_id = %d and version = %d " ;
 
@@ -98,7 +135,8 @@ namespace com\indigloo\sc\mysql {
                 foreach($slugs as $slug){
                     if(Util::tryEmpty($slug)) continue;
                     //do processing
-                    $sql = sprintf($sqlm1,$slug,$catCode);
+                    $name = \com\indigloo\util\StringUtil::convertKeyToName($slug);
+                    $sql = sprintf($sqlm1,$slug,$name,$catCode);
                     $dbh->exec($sql);
                     $sql = sprintf($sqlm2,$loginId,$slug);
                     $dbh->exec($sql);

@@ -29,33 +29,25 @@ namespace com\indigloo\sc\dao {
 
 		function getPaged($paginator,$filter=NULL) {
  
-			//translate the filter in terms of DB Column
-			$params = $paginator->getDBParams();
-			$count = $paginator->getPageSize();
+			$limit = $paginator->getPageSize();
 
 			if($paginator->isHome()){
-				return $this->getLatest($count,$filter);
+				return $this->getLatest($limit,$filter);
 				
 			} else {
-				//convert back to base10
+                $params = $paginator->getDBParams();
 				$dbfilter = $this->createDBFilter($filter);
 				$start = $params['start'];
 				$direction = $params['direction'];
 
-				if(empty($start) || empty($direction)){
-					trigger_error('No start or direction DB params in paginator', E_USER_ERROR);
-				}
-
-				$start = base_convert($start,36,10);
-
-				$rows = mysql\Comment::getPaged($start,$direction,$count,$dbfilter);
+				$rows = mysql\Comment::getPaged($start,$direction,$limit,$dbfilter);
 				return $rows ;
 			}
 		}
 
-		function getLatest($count,$filter=NULL) {
+		function getLatest($limit,$filter=NULL) {
 			$dbfilter = $this->createDBFilter($filter);
-			$rows = mysql\Comment::getLatest($count,$dbfilter);
+			$rows = mysql\Comment::getLatest($limit,$dbfilter);
 			return $rows ;
 		}
 		

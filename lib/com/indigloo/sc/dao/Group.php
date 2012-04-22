@@ -11,14 +11,30 @@ namespace com\indigloo\sc\dao {
 
 		function getLatest($limit) {
 			$rows = mysql\Group::getLatest($limit);
-            $groups = array();
-            foreach($rows as $row) {
-                $group = array('token' => $row['token'] ,
-                                'name' => StringUtil::convertKeyToName($row['token']));
-                array_push($groups,$group);
-            }
-			return $groups ;
+			return $rows ;
 		}
+
+        function getTotalCount(){
+            $row = mysql\Group::getTotalCount();
+            return $row['count'] ;
+        }
+
+        function getPaged($paginator) {
+			$limit = $paginator->getPageSize();
+
+			if($paginator->isHome()){
+				return $this->getLatest($limit);
+				
+			} else {
+                $params = $paginator->getDBParams();
+				$start = $params['start'];
+				$direction = $params['direction'];
+
+				$rows = mysql\Group::getPaged($start,$direction,$limit);
+				return $rows ;
+			}
+
+        }
 
         function getOnLoginId($loginId) {
             $rows = mysql\Group::getOnLoginId($loginId);

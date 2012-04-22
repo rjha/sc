@@ -75,7 +75,7 @@ webgloo.sc.home = {
         var $container = $('#tiles');
         $container.imagesLoaded(function(){
             $container.masonry({
-                itemSelector : '.tile2'
+                itemSelector : '.stamp'
             });
         });
     },

@@ -42,22 +42,16 @@ namespace com\indigloo\sc\dao {
 
 		function getPaged($paginator,$code) {
  
-			//translate the filter in terms of DB Column
-			$params = $paginator->getDBParams();
 			$limit = $paginator->getPageSize();
 
 			if($paginator->isHome()){
 				return $this->getLatest($code,$limit);
 				
 			} else {
+                $params = $paginator->getDBParams();
 				$start = $params['start'];
 				$direction = $params['direction'];
 
-				if(empty($start) || empty($direction)){
-					trigger_error('No start or direction DB params in paginator', E_USER_ERROR);
-				}
-
-				$start = base_convert($start,36,10);
 				$rows = mysql\Category::getPaged($start,$direction,$limit,$code);
 				return $rows ;
 			}

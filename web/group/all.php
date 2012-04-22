@@ -3,8 +3,27 @@
     include ('sc-app.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
 
+    use \com\indigloo\Url as Url ;
+    use \com\indigloo\ui\Pagination as Pagination;
+
     $groupDao = new \com\indigloo\sc\dao\Group();
-    $groups = $groupDao->getLatest(100);
+    $total = $groupDao->getTotalCount();
+
+    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    $pageSize =	100;
+    $paginator = new Pagination($qparams,$total,$pageSize);	
+    $groups = $groupDao->getPaged($paginator);
+
+    $startId = NULL ;
+    $endId = NULL ;
+
+    if(sizeof($groups) > 0 ) {
+        $startId = $groups[0]['id'] ;
+        $endId =   $groups[sizeof($groups)-1]['id'] ;
+    }
+
+    $pageBaseUrl = "/group/all.php" ;
+
 ?>
 
 
@@ -56,7 +75,9 @@
                    
                         <?php
                             //make slices
-                            for($i = 0 ; $i <= 10 ; $i++ ) {
+                            $numCards = ceil((sizeof($groups)/10.0)) ;
+
+                            for($i = 0 ; $i < $numCards ; $i++ ) {
                                 $offset = $i*10 ;
                                 $slice = array_slice($groups,$offset,10);
                                 //print these 10 groups
@@ -69,6 +90,8 @@
                 </div>
 
             </div>
+            <hr>
+            <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
 
         </div> <!-- container -->
         <div id="ft">

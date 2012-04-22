@@ -65,7 +65,8 @@ namespace com\indigloo\sc\html {
 			
 			$view = new \stdClass;
 
-			$view->description = Util::abbreviate($postDBRow['description'],70);
+			//$view->description = Util::abbreviate($postDBRow['description'],70);
+			$view->description = $postDBRow['description'];
 			$view->id = $postDBRow['id'];
 			$view->itemId = PseudoId::encode($view->id);
 
@@ -83,7 +84,7 @@ namespace com\indigloo\sc\html {
                 $fileName = (property_exists($image,'thumbnail') && !empty($image->thumbnail)) ? $image->thumbnail : $image->storeName ;
 				$view->srcImage = $prefix.$image->bucket.'/'.$fileName;
 			    	
-				$newxy = Util::foldX($image->width,$image->height,190);
+				$newxy = Util::foldX($image->width,$image->height,100);
 				
 				$view->width = $newxy["width"];
 				$view->height = $newxy["height"];

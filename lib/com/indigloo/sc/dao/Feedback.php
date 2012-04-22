@@ -10,21 +10,16 @@ namespace com\indigloo\sc\dao {
 
 		function getPaged($paginator) {
  
-			$params = $paginator->getDBParams();
 			$limit = $paginator->getPageSize();
 
 			if($paginator->isHome()){
 				return $this->getLatest($limit);
 				
 			} else {
+                $params = $paginator->getDBParams();
 				$start = $params['start'];
 				$direction = $params['direction'];
 
-				if(empty($start) || empty($direction)){
-					trigger_error('No start or direction DB params in paginator', E_USER_ERROR);
-				}
-
-				$start = base_convert($start,36,10);
 				$rows = mysql\Feedback::getPaged($start,$direction,$limit);
 				return $rows ;
 			}

@@ -44,21 +44,28 @@ namespace com\indigloo\ui {
 		}
 
 		function getDBParams() {
-			$start = NULL;
-			$direction = NULL;
 		
-			if(array_key_exists('gpa',$this->qparams)) {
+            $start = NULL ;
+            $direction = NULL ;
+
+			if(isset($this->qparams) && isset($this->qparams['gpa'])) {
 				$direction = 'after' ;
 				$start = $this->qparams['gpa'] ;
 			}
 			
-			if(array_key_exists('gpb',$this->qparams)) {
+			if(isset($this->qparams) && isset($this->qparams['gpb'])) {
                 $direction = 'before' ;
                 $start = $this->qparams['gpb'] ;
+                return array('start' => $start , 'direction' => $direction);
 			}
 
-			return array('start' => $start , 'direction' => $direction);
+            if(empty($start) || empty($direction)) {
+                trigger_error('paginator is missing [start | direction ] parameter', E_USER_ERROR);
+            }
 
+            $start = base_convert($start,36,10);
+            return array('start' => $start , 'direction' => $direction);
+            
 		}
         
         function hasNext() {

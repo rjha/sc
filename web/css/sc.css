@@ -565,23 +565,20 @@
     
     /* smaller tile */
 
-    .tile2 {
-		width:180px;
+    .stamp {
+		width:110px;
 		margin:2px;
-		border:1px solid #DEDEDE ;
 		float:left ;
-		padding:8px;
+		padding:4px;
 		background-color: #fff;
-		border-radius :2px;
-        /* position:relative ; */
 	}
 
-	.tile2 .photo {
+	.stamp .photo {
 		padding:3px;
 	}
 	
-	.tile2 .photo img {
-		max-width:160px;
+	.stamp .photo img {
+		max-width:100px;
 		margin :0px;
 	}
 
