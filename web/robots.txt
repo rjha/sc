@@ -3,3 +3,9 @@ Disallow: /callback/
 Disallow: /qa/
 Disallow: /share/
 Disallow: /user/
+
+# Sitemaps
+
+Sitemap: http://www.3mik.com/sitemap.xml
+Sitemap: http://www.3mik.com/sitemap_groups.xml
+Sitemap: http://www.3mik.com/sitemap_items.xml
