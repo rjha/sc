@@ -23,7 +23,7 @@ namespace com\indigloo\sc\controller{
 			$itemId = Util::getArrayKey($params,"item_id");
 
             if($itemId < 1200) {
-                //Add permanent redirect
+                //@todo remove permanent redirect
                 $redirectUrl = "/item/".PseudoId::encode($itemId) ;
                 header( "HTTP/1.1 301 Moved Permanently" ); 
                 header( "Location: ".$redirectUrl );   
@@ -66,14 +66,14 @@ namespace com\indigloo\sc\controller{
                 $sphinx = new \com\indigloo\sc\search\SphinxQL();
 
                 foreach($groups as $group) {
-                    $ids = $sphinx->getGroups($group,0,4);  
+                    $ids = $sphinx->getGroups($group,0,8);  
                     foreach($ids as $id){
                         if(!in_array($id,$xids) && ($id != $postId)) {
                             array_push($xids,$id);
-                            if(sizeof($xids) >= 4 ) { break; } 
+                            if(sizeof($xids) >= 8 ) { break; } 
                         }
                     }
-                    if(sizeof($xids) >= 4 ) { break; } 
+                    if(sizeof($xids) >= 8 ) { break; } 
                 }
 
                 //get posts on groups
@@ -94,9 +94,9 @@ namespace com\indigloo\sc\controller{
                 }
             }
 
-            if(sizeof($xrows) < 10 ) {
+            if(sizeof($xrows) < 16 ) {
                 //how many?
-                $limit = 10 - (sizeof($xrows)) ;
+                $limit = 16 - (sizeof($xrows)) ;
                 $randomRows = $postDao->getRandom($limit);
                 $xrows = array_merge($xrows,$randomRows);
             }

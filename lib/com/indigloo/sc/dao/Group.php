@@ -9,33 +9,48 @@ namespace com\indigloo\sc\dao {
 	
     class Group {
 
-		function getLatest($limit) {
-			$rows = mysql\Group::getLatest($limit);
+        const TOKEN_COLUMN = "token" ;
+        function createDBFilter($filter) {
+            $map = array(self::TOKEN_COLUMN => mysql\Group::TOKEN_COLUMN);
+			$dbfilter = mysql\Helper::createDBFilter($filter,$map);
+			return $dbfilter ;
+		}
+
+		function getLatest($limit,$filter=NULL) {
+            $dbfilter = $this->createDBFilter($filter);
+			$rows = mysql\Group::getLatest($limit,$filter);
 			return $rows ;
 		}
 
-        function getTotalCount(){
-            $row = mysql\Group::getTotalCount();
+        function getRandom($limit) {
+			$rows = mysql\Group::getRandom($limit);
+			return $rows ;
+		}
+
+        function getTotalCount($filter=NULL){
+            $dbfilter = $this->createDBFilter($filter);
+            $row = mysql\Group::getTotalCount($dbfilter);
             return $row['count'] ;
         }
 
-        function getPaged($paginator) {
+        function getPaged($paginator,$filter=NULL) {
 			$limit = $paginator->getPageSize();
 
 			if($paginator->isHome()){
-				return $this->getLatest($limit);
+				return $this->getLatest($limit,$filter);
 				
 			} else {
+                $dbfilter = $this->createDBFilter($filter);
                 $params = $paginator->getDBParams();
 				$start = $params['start'];
 				$direction = $params['direction'];
 
-				$rows = mysql\Group::getPaged($start,$direction,$limit);
+				$rows = mysql\Group::getPaged($start,$direction,$limit,$dbfilter);
 				return $rows ;
 			}
 
         }
-
+       
         function getOnLoginId($loginId) {
             $rows = mysql\Group::getOnLoginId($loginId);
             $groups = array();

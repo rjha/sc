@@ -16,10 +16,10 @@
                <li class="nav-header">what is on 3mik?</li>
                <li><a href="/editor/picks">Editors Pick</a></li>
                <li><a href="/surprise/me">surprise me!</a></li>
-               <li><a href="/group/cloud/site.php">All Groups</a></li>
+               <li><a href="/group/all.php">Browse Groups</a></li>
             </ul>
-          </div> 
+      </div> 
 
-        </div>
-    </div> <!-- home tile -->
+    </div>
+</div> <!-- home tile -->
 

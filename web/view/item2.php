@@ -76,7 +76,7 @@
                     ?>
 
                     <div id="item-tiles">
-                        <h3> Also on 3mik </h3>
+                        <h3> explore 3mik </h3>
                         <div id="tiles">
                             <?php
                             foreach($xrows as $xrow) {

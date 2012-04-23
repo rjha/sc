@@ -59,7 +59,7 @@
     </div>
     <div class="panel-footer">
         <div class="floatr">
-            <a href="/group/cloud/site.php">See More Groups&rarr;</a>
+            <a href="/group/all.php">More Groups&rarr;</a>
             &nbsp;|&nbsp;
             <a id="nav-group-close" href="">Close&nbsp;<i class="icon-remove"></i></a>
         </div>

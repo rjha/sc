@@ -31,10 +31,11 @@ namespace com\indigloo\sc\html {
 
 		}
 
-        static function getCard($groups) {
+        static function getCard($groups,$card) {
 		    $html = NULL ;
 			$view = new \stdClass;
             $view->groups = $groups ;
+            $view->card = $card;
             $template = '/fragments/group/card.tmpl' ;
             $html = Template::render($template,$view);
             return $html;

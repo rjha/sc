@@ -1,11 +1,7 @@
-<div class="tile">
-<div class="card">
+<div class="stack card~~$view->card~">
     <ul>
-        ~foreach($view->groups as $group) {
-            $name = \com\indigloo\util\StringUtil::convertKeyToName($group['token']); ~
-           
-        <li class="item"> <a href="#"><span class="name">~~$name~</span></a> </li>
+        ~foreach($view->groups as $group) {~
+        <li class="item"> <a href="/group/~~$group['token']~"><span class="name">~~$group['name']~</span></a> </li>
         ~ }~
     </ul>
-</div>
 </div>

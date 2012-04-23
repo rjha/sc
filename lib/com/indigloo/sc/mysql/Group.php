@@ -10,30 +10,50 @@ namespace com\indigloo\sc\mysql {
     class Group {
         
         const MODULE_NAME = 'com\indigloo\sc\mysql\Group';
+        const TOKEN_COLUMN = "token" ;
 
-		static function getLatest($limit) {
+		static function getLatest($limit,$dbfilter) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
 
-            $sql = "select g.* from sc_group_master g order by g.id desc LIMIT %d " ; 
-            $sql = sprintf($sql,$limit);
+            $sql = "select g.* from sc_group_master g  where 1=1 " ;
+            $args = array();
+
+            if(isset($dbfilter) && Util::tryArrayKey($dbfilter,self::TOKEN_COLUMN)) {
+                $value = $dbfilter[self::TOKEN_COLUMN]; 
+                $value = $mysqli->real_escape_string($value);
+                //second %s is for literal % sign
+                $sql .= " and g.token like '%s%s' " ;
+                array_push($args,$value);
+                array_push($args,'%%');
+            }
+
+            $sql .= " order by g.id desc LIMIT %d " ; 
+            array_push($args,$limit);
+            $sql = vsprintf($sql,$args);
 			$rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 		}
 
-        static function getPaged($start,$direction,$limit) {
+        static function getPaged($start,$direction,$limit,$dbfilter) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             
             settype($start,"integer");
             settype($limit,"integer");
-            
-            $sql = " select g.* from sc_group_master g where 1=1 " ;
+            $sql = "select g.* from sc_group_master g where 1 = 1 " ;
+
+            if(isset($dbfilter) && Util::tryArrayKey($dbfilter,self::TOKEN_COLUMN)) {
+                $value = $dbfilter[self::TOKEN_COLUMN]; 
+                $value = $mysqli->real_escape_string($value);
+                $sql .= " and g.token like '%s%s' " ;
+                $sql = sprintf($sql,$value,'%%');
+            }
 
             if($direction == 'after') {
-                $sql .= "and g.id < %d order by g.id DESC LIMIT %d " ;
+                $sql .= " and g.id < %d order by g.id DESC LIMIT %d " ;
 
             } else if($direction == 'before'){
-                $sql .= "and g.id > %d order by g.id ASC LIMIT %d " ;
+                $sql .= " and g.id > %d order by g.id ASC LIMIT %d " ;
             } else {
                 trigger_error("Unknow sort direction in query", E_USER_ERROR);
             }
@@ -51,12 +71,34 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function getTotalCount(){
+        static function getTotalCount($dbfilter){
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "select count(id) as count from sc_group_master " ;
+            $sql = "select count(g.id) as count from sc_group_master g " ;
+
+            if(isset($dbfilter) && Util::tryArrayKey($dbfilter,self::TOKEN_COLUMN)) {
+                $value = $dbfilter[self::TOKEN_COLUMN]; 
+                $value = $mysqli->real_escape_string($value);
+                $sql .= " where g.token like '%s%s' " ;
+                $sql = sprintf($sql,$value,'%%');
+            }
+
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
+       
+        static function getRandom($limit) {
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            settype($limit,"integer");
+
+            $sql = " SELECT g.*  FROM sc_group_master g where " ;
+            $sql .=" RAND()<(SELECT ((%d/COUNT(*))*4) FROM sc_group_master g2) ";
+            $sql .= " ORDER BY RAND() LIMIT %d";
+            $sql = sprintf($sql,$limit,$limit);
+
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+
+		}
 
         static function getOnLoginId($loginId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();

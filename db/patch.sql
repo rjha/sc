@@ -820,7 +820,8 @@ delimiter ;
 drop table if exists sc_group_master;
 create table sc_group_master(
 	id int(11) NOT NULL auto_increment,
-	token varchar(32) ,
+	token varchar(32),
+	name varchar(32),
     cat_code varchar(16),
     created_on timestamp default '0000-00-00 00:00:00',
 	updated_on timestamp default '0000-00-00 00:00:00' ,

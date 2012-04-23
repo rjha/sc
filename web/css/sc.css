@@ -856,30 +856,48 @@
         margin-top:60px;
     }
 
-    .card {
-        color: #333 ;
-        font-size: 13.5px;
-        font-weight: bold;
+    .stack {
+        width:210px;
+        float:left;
+        padding:4px;
+        margin:4px;
         cursor: pointer;
+
+      
+    }
+
+    .card1 {
+        color: #333 ;
         border: 1px solid #DEE2E5;
         border-bottom-color: white;
         background-color: #E7EBEE;
-
+        font-size: 13.5px;
+        font-weight: bold;
+ 
     }
-    
-    .card .name {
+
+    .card2 {
+        color: #333 ;
+        border: 1px solid #D2D2D2;
+        background-color: white;
+        font-size: 13x;
+        font-weight: normal;
+    }
+
+    .stack .name {
         white-space: nowrap;
     }
 
-    .card .item {
+    .stack .item {
         padding: 2px 0;
         list-style: square outside;
         margin-bottom: 5px;
         overflow: hidden;
     }
 
-    .card .item a {
+    .stack .item a {
         color: #333 ;
+        text-decoration: none;
     }
 
     /* last section - override bootstrap css */
