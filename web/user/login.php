@@ -108,6 +108,8 @@
                                 <td class="field"> Password<span class="red-label">*</span></td>
                                 <td>
                                     <input type="password" name="password" maxlength="32" class="required" title="Password is required" value=""/>
+                                    &nbsp;<a href="#">Forgot Password?</a>
+
                                 </td>
                             </tr>
                          
@@ -126,7 +128,7 @@
                     </form>
                    </div> 
                     
-                </div> <!-- span61 -->
+                </div> <!-- span51 -->
                 <div class="span5">
                     <div id="social-login-wrapper">
                      <div class="row">
@@ -145,9 +147,9 @@
                         </div>
                     </div> <!-- row -->
                  </div> <!-- wrapper -->
-                </div> <!-- span62 -->
+                </div> <!-- span51 -->
             </div>
-
+           
        </div> <!-- container -->
                         
         <?php include($_SERVER['APP_WEB_DIR'] . '/inc/site-footer.inc'); ?>

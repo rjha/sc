@@ -933,5 +933,22 @@ insert into sc_site_tracker (post_id,created_on,version,site_flag,group_flag)
 
 
 
+--
+-- 29 April 2012
+--
+
+
+
+drop table if exists sc_reset_password;
+create table sc_reset_password(
+	id int NOT NULL auto_increment,
+	name varchar(64) not null ,
+	email varchar(64) not null ,
+	token varchar(64) not null ,
+    flag int default 0, 
+	created_on TIMESTAMP  default '0000-00-00 00:00:00',
+	expired_on TIMESTAMP  default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 

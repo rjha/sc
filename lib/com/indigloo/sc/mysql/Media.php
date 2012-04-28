@@ -44,7 +44,6 @@ namespace com\indigloo\sc\mysql {
         static function add($mediaVO) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $code = MySQL\Connection::ACK_OK;
             $mediaId = NULL ;
             
             $sql = " insert into sc_media(bucket,original_name, stored_name, " ;
@@ -75,7 +74,6 @@ namespace com\indigloo\sc\mysql {
                 $stmt->close();
             } else {
                 $dbCode = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
-                
             }
             
             if($dbCode == MySQL\Connection::ACK_OK) {

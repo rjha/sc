@@ -13,6 +13,11 @@ namespace com\indigloo\sc\dao {
 			return $row ;
 		}
 
+        function getOnEmail($email) {
+			$row = mysql\User::getOnEmail($email);
+			return $row ;
+        }
+
 		function getOnLoginId($loginId) {
 			$loginDao = new \com\indigloo\sc\dao\Login();
 			$loginRow = $loginDao->getonId($loginId);
@@ -58,7 +63,7 @@ namespace com\indigloo\sc\dao {
             $code = mysql\User::addFeedback($feedback);
             return $code ;
         }		
-        
+
     }
 
 }

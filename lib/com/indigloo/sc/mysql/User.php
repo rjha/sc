@@ -19,6 +19,16 @@ namespace com\indigloo\sc\mysql {
             return $row;
 		}
 
+        static function getOnEmail($email) {
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $email = $mysqli->real_escape_string($email);
+			
+            $sql = " select * from sc_user where email = '%s' " ;
+            $sql = sprintf($sql,$email);
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+		}
+
 		static function getOnLoginId($loginId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($loginId,"integer");
