@@ -59,7 +59,7 @@ namespace com\indigloo {
         static function formatDBTime($original, $format="%d-%b, %Y / %H:%M") {
 
              if (!isset($original) || empty($original)) {
-                trigger_error("Empty or Null timestamp supplied to utility function",E_USER_ERROR);
+                trigger_error("Wrong input: empty or null timestamp",E_USER_ERROR);
             }
             
             $dt = strftime($format, strtotime($original));
@@ -69,7 +69,7 @@ namespace com\indigloo {
         static function secondsInDBTimeFromNow($original) {
 
             if (!isset($original) || empty($original)) {
-                trigger_error("Empty or Null timestamp supplied to utility function",E_USER_ERROR);
+                trigger_error("Wrong input: empty or null timestamp",E_USER_ERROR);
             }
 
             //calculate base time stamp

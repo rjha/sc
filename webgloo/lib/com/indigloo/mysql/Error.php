@@ -17,21 +17,17 @@ namespace com\indigloo\mysql {
         static function handle($module, $dbHandle) {
 
             $errorNo = $dbHandle->errno;
-            //error code zero means operation success
+            //error code zero means success
             if (empty($errorNo)) {
                 return $errorNo;
             }
 
-            $map = array(
-                1062 => MySQL\Connection::DUPLICATE_KEY
-            );
-
-            $message = $module . ':: DB error no:: ' . $errorNo . ' :: message:: ' . $dbHandle->error;
+            $map = array( 1062 => MySQL\Connection::DUPLICATE_KEY);
+            $message = sprintf(" DB error code : %d  message : %s \n",$errorNo,$dbHandler->error);
             
-            // errors that we are willing to handle
+            // errors returned to upper layers
             if (array_key_exists($errorNo, $map)) {
                 Logger::getInstance()->error($message);
-                //get Gloo DB code for this error
                 $code = $map[$errorNo];
                 return $code;
             } else {

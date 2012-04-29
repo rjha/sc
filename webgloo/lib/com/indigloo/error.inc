@@ -27,7 +27,6 @@ function webgloo_error_handler($errorno,$errorstr,$file,$line) {
             \com\indigloo\Logger::getInstance()->error($errorstr);
             \com\indigloo\Logger::getInstance()->backtrace();
             //send generic json encoded message back to UI
-            // 302 to error page
             $errorPageUrl = "/error.php?message=".base64_encode($errorstr) ;
             header('Location: '.$errorPageUrl);
             //Imp:Finally error handler should die
@@ -88,7 +87,23 @@ function offline_error_handler($errorno,$errorstr,$file,$line) {
     return true ;
 }
 
+function webgloo_exception_handler($ex) {
+    $message = $ex->getMessage();
+    $message = sprintf("file %s - line - %d :: %s \n",$ex->getFile(),$ex->getLine(),$message); 
+    \com\indigloo\Logger::getInstance()->error($message);
+    \com\indigloo\Logger::getInstance()->backtrace($ex->getTrace());
+    $errorPageUrl = "/error.php?message=".base64_encode($message) ;
+    header('Location: '.$errorPageUrl);
+    exit(1) ;
+}
 
+function offline_exception_handler($ex) {
+    $message = $ex->getMessage();
+    $message = sprintf("file %s - line - %d :: %s \n",$ex->getFile(),$ex->getLine(),$message); 
+    \com\indigloo\Logger::getInstance()->error($message);
+    \com\indigloo\Logger::getInstance()->backtrace($ex->getTrace()); 
+    exit(1) ;
+}
 
 //set default error handler
 // Without error_types mask our error_handler will be called for every error regardless to 
@@ -97,5 +112,6 @@ function offline_error_handler($errorno,$errorstr,$file,$line) {
 
 ob_start();
 set_error_handler('webgloo_error_handler');
+set_exception_handler('webgloo_exception_handler');
 
 ?>

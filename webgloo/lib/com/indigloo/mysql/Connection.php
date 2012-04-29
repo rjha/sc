@@ -30,18 +30,8 @@ namespace com\indigloo\mysql {
 
             return self::$instance;
         }
-		
-		/*
-		 * mysql server error code 0 indicates success
-		 * so we check for $code > 1 for error condition 
-		 */
-		public function isOk($code) {
-			$flag = ($code > 0 ) ? false : true ;
-			return $flag ;
-		}
-
+	
         public function getHandle() {
-
             $this->numCalls++;
             if (Configuration::getInstance()->is_debug()) {
                 $message = 'Acquire mysql handle - ' . $this->connxId . ',call no - ' . $this->numCalls;

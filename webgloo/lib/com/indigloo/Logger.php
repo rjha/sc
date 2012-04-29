@@ -123,14 +123,25 @@ namespace com\indigloo {
             }
         }
 
-        function backtrace() {
+        function backtrace($trace=NULL) {
             fwrite($this->fhandle," ---- __backtrace__  ----- \n" );
-            $trace = debug_backtrace();
+            if(is_null($trace))
+                $trace = debug_backtrace();
             $message = '' ;
 
             foreach ($trace as $i=>$t) {
+                //class and type is not always available in trace
+                $class = isset($t['class']) ? $t['class'] : '@' ;
+                $type = isset($t['type']) ? $t['type'] : ' ' ;
+
                 $message = sprintf("#%d %s%s%s() called at %s:%d \n", 
-                    $i,$t['class'], $t['type'],$t['function'],$t['file'],$t['line']);
+                    $i,
+                    $class, 
+                    $type,
+                    $t['function'],
+                    $t['file'],
+                    $t['line']);
+
                 fwrite($this->fhandle,$message);
                 
                 if ($this->isDebug) {
@@ -140,7 +151,7 @@ namespace com\indigloo {
                 }
             }
 
-            fwrite($this->fhandle," \n -------- \n" );
+            fwrite($this->fhandle," --------- \n\n" );
         }
 
         function logIt($message, $level) {
