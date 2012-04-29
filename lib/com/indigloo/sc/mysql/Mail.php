@@ -8,6 +8,31 @@ namespace com\indigloo\sc\mysql {
         
         const MODULE_NAME = 'com\indigloo\sc\mysql\Mail';
         
+        static function getResetPassword($email,$token) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $email = $mysqli->real_escape_string($email);
+            $token = $mysqli->real_escape_string($token);
+            $sql = " select count(id) as count from sc_reset_password where email = '%s' and flag = 0 " ;
+            $sql .= " and token = '%s' and (now() < expired_on )  ";
+            $sql = sprintf($sql,$email,$token);
+
+			$row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+
+        }
+
+        static function getResetPasswordInRange($email) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $email = $mysqli->real_escape_string($email);
+            $sql = " select count(id) as count from sc_reset_password where email = '%s' and flag = 0 " ;
+            $sql .= " and (created_on > now() - INTERVAL 20 MINUTE) ";
+            $sql = sprintf($sql,$email);
+
+			$row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+
+        }
+
         static function addResetPassword($name,$email,$token) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
