@@ -27,7 +27,7 @@ namespace com\indigloo\sc\mysql {
                 $stmt->bind_param("sss",$name,$email,$token);
                 $stmt->execute();
                 if ($mysqli->affected_rows != 1) {
-                    $dbCode = MySQL\Error::handle(self::MODULE_NAME, $stmt);
+                    $code = MySQL\Error::handle(self::MODULE_NAME, $stmt);
                 }
 
                 $stmt->close();

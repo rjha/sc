@@ -1,5 +1,5 @@
 <?php
-    //sc/site/wf/password/form/mail.php
+    //sc/user/account/form/mail_password.php
     
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
@@ -9,57 +9,53 @@
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
+    use \com\indigloo\exception\UIException as UIException;
+    use com\indigloo\exception\DBException as DBException;
    	 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
-        
-        $fhandler = new Form\Handler('web-form-1', $_POST);
 
-		$fhandler->addRule('email', 'Email', array('maxlength' => 64, 'required' =>1));
-        $fvalues = $fhandler->getValues();
-        $ferrors = $fhandler->getErrors();
-		$qUrl = $fvalues['q'];
-        
-        if ($fhandler->hasErrors()) {
-            show_error($fvalues,$qUrl,$fhandler->getErrors()) ;
-        }
+        try {
+            $fhandler = new Form\Handler('web-form-1', $_POST);
+            $fhandler->addRule('email', 'Email', array('maxlength' => 64, 'required' =>1));
+            $fvalues = $fhandler->getValues();
+            $ferrors = $fhandler->getErrors();
+            $qUrl = $fvalues['q'];
+            $gWeb = \com\indigloo\core\Web::getInstance();
 
-        $userDao = new \com\indigloo\sc\dao\User();
-        $user = $userDao->getOnEmail($fvalues['email']);
+            if ($fhandler->hasErrors()) {
+                throw new UIException($fhandler->getErrors(),1);
+            }
 
-        if(empty($user)) {
-            $message = "Error: We did not find any account with this email!";
-            show_error($fvalues,$qUrl,array($message));
-        }
+            $userDao = new \com\indigloo\sc\dao\User();
+            $user = $userDao->getOnEmail($fvalues['email']);
+
+            if(empty($user)) {
+                $message = "Error: We did not find any account with this email!";
+                throw new UIException(array($message),1);
+            }
             
-        $mailDao = new \com\indigloo\sc\dao\Mail();
-        $code = $mailDao->addResetPassword($user['user_name'],$user['email']);
-        check_db_code($code,$fvalues,$qUrl);
+            $mailDao = new \com\indigloo\sc\dao\Mail();
+            $mailDao->addResetPassword($user['user_name'],$user['email']);
+            
+            $message = "Success! You will receive an email soon!";
+            $gWeb->store(Constants::STICKY_MAP, $fvalues);
+            $gWeb->store(Constants::FORM_MESSAGES,array($message));
+            header("Location: ".$qUrl);
+            exit;
 
-        $message = "Success! You will receive an email soon!";
-        $gWeb->store(Constants::STICKY_MAP, $fvalues);
-        $gWeb->store(Constants::FORM_MESSAGES,array($message));
-        header("Location: ".$qUrl);
-        exit;
-        
-    }
-
-    function check_db_code($code,$fvalues,$qUrl) {
-        $gWeb = \com\indigloo\core\Web::getInstance();
-        if ($code != com\indigloo\mysql\Connection::ACK_OK ) {
-            $message = sprintf("Error: (DB code is %d) please try again!",$code);
+        } catch(UIException $ex) {
+            $gWeb->store(Constants::STICKY_MAP, $fvalues);
+            $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
+            header("Location: " . $qUrl);
+            exit(1);
+        } catch(DBException $dbex) {
+            $message = $dbex->getMessage();
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,array($message));
             header("Location: " . $qUrl);
             exit(1);
         }
-    }
 
-    function show_error($fvalues,$qUrl,$errors) {
-        $gWeb = \com\indigloo\core\Web::getInstance();
-        $gWeb->store(Constants::STICKY_MAP, $fvalues);
-        $gWeb->store(Constants::FORM_ERRORS,$errors);
-        header("Location: " . $qUrl);
-        exit(1);
     }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-    //sc/site/wf/password/mail.php
+    //sc/user/account/mail_password.php
     include ('sc-app.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
 	
@@ -71,7 +71,7 @@
 					
 					<?php FormMessage::render(); ?>
 					
-					<form  id="web-form1"  name="web-form1" action="/site/wf/password/form/mail.php" enctype="multipart/form-data"  method="POST">
+					<form  id="web-form1"  name="web-form1" action="/user/account/form/mail_password.php" enctype="multipart/form-data"  method="POST">
 						<div class="row">
 							<div class="span9">
 								<div id="image-uploader"> </div>
