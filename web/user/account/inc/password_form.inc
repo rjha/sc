@@ -1,31 +1,8 @@
-<?php
-
-    //sc/user/profile/password.php
-    include ('sc-app.inc');
-    include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
-    include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
-	 
-    use com\indigloo\Util;
-    use com\indigloo\ui\form\Sticky;
-    use com\indigloo\Constants as Constants;
-    use com\indigloo\ui\form\Message as FormMessage;
-	use \com\indigloo\sc\auth\Login as Login ;
-     
-    $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
-	
-	$gSessionLogin = Login::getLoginInSession();
-	$loginId = $gSessionLogin->id ;
-
-    $userDao = new \com\indigloo\sc\dao\User() ;
-	$userDBRow = $userDao->getonLoginId($loginId);
-   
-?>  
-
 <!DOCTYPE html>
 <html>
 
        <head>
-        <title> Change password - <?php echo $userDBRow['first_name']; ?>  </title>
+        <title> Change password - <?php echo $title; ?>  </title>
         <?php include($_SERVER['APP_WEB_DIR'] . '/inc/meta.inc'); ?>
 		
 		<link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
@@ -74,7 +51,7 @@
 			<div class="row">
 				<div class="span9">
 					<div class="page-header">
-						<h2> Change Password - <?php echo $userDBRow['first_name']; ?> </h2>
+						<h2> Change Password - <?php echo $title; ?> </h2>
 					</div>
 					
 					<p class="help-text">
@@ -82,9 +59,9 @@
 
 					</p>
                                     
-                    <?php FormMessage::render(); ?>
+                    <?php \com\indigloo\ui\form\Message::render(); ?>
                                      
-					<form id="web-form1"  name="web-form1" action="/user/profile/form/password.php" enctype="multipart/form-data"  method="POST">
+                    <form id="web-form1"  name="web-form1" action="<?php echo $formUrl; ?>" enctype="multipart/form-data"  method="POST">
 
 						<div class="error">    </div>
 

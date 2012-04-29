@@ -20,10 +20,12 @@
         $email = urldecode($email);
         $mailDao = new \com\indigloo\sc\dao\Mail();
         $mailDao->checkResetPassword($email,$token);
+
         //everything fine
-        $userDao = new \com\indigloo\sc\dao\User();
-        $row = $userDao->getOnEmail($email);
-        printf("success!");
+        $title = $email;
+        $formUrl = "/user/account/form/reset_password.php" ;
+        include($_SERVER['APP_WEB_DIR'] . '/user/account/inc/password_form.inc');
+        
 
     } catch(DBException $dbex) {
         $gWeb = \com\indigloo\core\Web::getInstance();
@@ -34,7 +36,4 @@
         header("Location: /user/account/mail_password.php");
     }
 
-
-    
-   
 ?>  
