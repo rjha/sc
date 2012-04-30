@@ -1,6 +1,6 @@
 <?php
 
-    //sc/user/account/mail_password.php
+    //sc/user/account/mail-password.php
     include ('sc-app.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
 	
@@ -71,7 +71,7 @@
 					
 					<?php FormMessage::render(); ?>
 					
-					<form  id="web-form1"  name="web-form1" action="/user/account/form/mail_password.php" enctype="multipart/form-data"  method="POST">
+					<form  id="web-form1"  name="web-form1" action="/user/account/form/mail-password.php" enctype="multipart/form-data"  method="POST">
 						<div class="row">
 							<div class="span9">
 								<div id="image-uploader"> </div>
@@ -79,13 +79,15 @@
 						</div> <!-- top row -->
 						<table class="form-table">
                             <tr>
-                                <td> <label>Your email</label>
+                                <td> <label>Enter your email address</label>
                                 <input type="text" name="email" maxlength="64" value="<?php echo $sticky->get('email'); ?>" />
                             </tr>
  
 							<tr>
 								<td>
-                                    <p>To reset your password, enter your email.  A mail will be sent along with the instructions to reset your password.
+                                    <p>Fill in your email address. 
+                                       We will mail you instructions to reset your password. 
+                                    </p>
 								</td>
 							</tr>
 
@@ -93,7 +95,6 @@
 								<td>
                                   	<div class="form-actions"> 
                                         <button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button> 
-                                        <a href="/"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
                                     </div>
   
                                 </td>

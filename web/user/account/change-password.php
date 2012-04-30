@@ -1,6 +1,6 @@
 <?php
 
-    //sc/user/profile/password.php
+    //sc/user/account/change-password.php
     include ('sc-app.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
@@ -28,8 +28,8 @@
 
     $title = $userDBRow['email'];
     $pUrl = "/user/dashboard.php";
-    $formUrl = "/user/account/form/change_password.php" ;
-    include($_SERVER['APP_WEB_DIR'] . '/user/account/inc/password_form.inc');
+    $formUrl = "/user/account/form/change-password.php" ;
+    include($_SERVER['APP_WEB_DIR'] . '/user/account/inc/password-form.inc');
    
 ?>  
 

@@ -108,7 +108,7 @@
                                 <td class="field"> Password<span class="red-label">*</span></td>
                                 <td>
                                     <input type="password" name="password" maxlength="32" class="required" title="Password is required" value=""/>
-                                    &nbsp;<a href="/user/account/mail_password.php">Forgot Password?</a>
+                                    &nbsp;<a href="/user/account/mail-password.php">Forgot your password?</a>
 
                                 </td>
                             </tr>

@@ -1,5 +1,5 @@
 <?php
-    //sc/user/account/form/mail_password.php
+    //sc/user/account/form/mail-password.php
     
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');

@@ -1,6 +1,6 @@
 <?php
 
-    //sc/user/account/reset_password.php
+    //sc/user/account/reset-password.php
     include ('sc-app.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
 	
@@ -29,9 +29,9 @@
         $gWeb->store("change.password.token",$ftoken);        
 
         $title = $email;
-        $pUrl = "/user/account/login_now.php";
-        $formUrl = "/user/account/form/change_password.php" ;
-        include($_SERVER['APP_WEB_DIR'] . '/user/account/inc/password_form.inc');
+        $pUrl = "/user/account/login-now.php";
+        $formUrl = "/user/account/form/change-password.php" ;
+        include($_SERVER['APP_WEB_DIR'] . '/user/account/inc/password-form.inc');
         
 
     } catch(DBException $dbex) {
@@ -40,7 +40,7 @@
         $fvalues = array('email' => $email);
         $gWeb->store(Constants::STICKY_MAP, $fvalues);
         $gWeb->store(Constants::FORM_MESSAGES,array($message));
-        header("Location: /user/account/mail_password.php");
+        header("Location: /user/account/mail-password.php");
     }
 
 ?>  

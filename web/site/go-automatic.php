@@ -1,21 +1,8 @@
-<?php
-
-    include ('sc-app.inc');
-    include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
-
-	use \com\indigloo\Url as Url ;
-
-	$qUrl = Url::tryQueryParam('q');
-	$qUrl = empty($qUrl) ? '/' : $qUrl;
-   
-    
-?>  
-
 <!DOCTYPE html>
 <html>
 
        <head>
-        <title> Thank you for submitting a Post</title>
+        <title> <?php echo $title; ?> </title>
         <?php include($_SERVER['APP_WEB_DIR'] . '/inc/meta.inc'); ?>
 
 		<link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
@@ -24,7 +11,7 @@
 		<script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
 		<script>
-			window.setTimeout(function() {window.location.href = '<?php echo $qUrl; ?>'; }, 5000); 
+			window.setTimeout(function() {window.location.href = '<?php echo $goUrl; ?>'; }, 5000); 
 		</script>
 		 
     </head>
@@ -50,7 +37,7 @@
 					
 					
 					<div class="page-header">
-						<h2> Thanks for submitting your post. Redirecting ... </h2>
+                        <h2> <?php echo $header; ?> </h2>
 					</div>
 
 				    <div class="p20">
@@ -59,7 +46,7 @@
 					
 					<div class="well">
 						<p class="help-text">
-						   <a class="btn btn-primary" href="/"> Home Page </a>
+                            <a class="btn btn-inverse" href="<?php echo $goUrl; ?>"><?php echo $goText; ?> </a>
 						</p>   
 					</div>
 
