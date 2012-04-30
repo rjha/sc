@@ -1,4 +1,21 @@
+01 May 2012
+
+- Test site worker script and sphinx indexing
+- Test baeanstalk + Sphinx delta indexing
+- install new site-worker.sh script on server after testing
+- plug sendgrid mail now
+- Redo all form scripts using exception handling bits
+
+
+
 30 Apr 2012
+
+- make sure that all pUrl and qUrl are not processed by our forms - we need raw forms?
+- change noprocess to raw? recheck noprocess implementation - it may not work the way we want it to
+- better keep q.url and p.url in _SESSION? I think so 
+- implement lock for site processing 
+  - The standard unix trick of using a wrapper shell script to check for process name 
+    is good enough to prevent multiple running scripts
 
 29 April 2012
 - session in mysqldb - also read p.z. blog about locking issues in mysql

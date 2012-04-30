@@ -63,6 +63,14 @@ namespace com\indigloo\sc\mysql {
             return $code;
         }
 
+        static function flipResetPassword($email) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $email = $mysqli->real_escape_string($email);
+            $sql = " update sc_reset_password set flag = 1 where email = '%s' ";
+            $sql = sprintf($sql,$email);
+            MySQL\Helper::executeSQL($mysqli,$sql);
+        }
+
     }
 
 }

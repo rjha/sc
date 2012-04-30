@@ -34,6 +34,12 @@ namespace com\indigloo\sc\dao {
                 throw new DBException($message,$code);
             }
         }
+
+        function processResetPassword($email,$token) {
+            //@todo send mail using $email and $token
+            // mail success?
+            mysql\Mail::flipResetPassword($email);
+        }
         
     }
 

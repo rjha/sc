@@ -6,8 +6,11 @@
     include($_SERVER['WEBGLOO_LIB_ROOT'] . '/com/indigloo/error.inc');
 
     use \com\indigloo\mysql as MySQL;
+    use \com\indigloo\Logger as Logger;
+    use \com\indigloo\Configuration as Config;
 
     set_error_handler('offline_error_handler');
+    set_exception_handler('offline_exception_handler');
 
     function process_sites($mysqli) {
         //process sites
@@ -34,9 +37,27 @@
         }
     }
 
+    function process_reset_password($mysqli) {
+        $sql = " select email,token from sc_reset_password where flag = 0 order by id limit 10";
+        $map = array(); 
+        $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+        $mailDao = new \com\indigloo\sc\dao\Mail();
+
+        foreach($rows as $row) {
+            $email = $row['email'];
+            if(!in_array($email,$map)){
+                $mailDao->processResetPassword($row['email'], $row['token']);
+                array_push($map,$email);
+            }
+        }
+    }
+
+    //this script is locked via site-worker.sh shell script
     $mysqli = MySQL\Connection::getInstance()->getHandle();
     process_sites($mysqli);
     sleep(1);
     process_groups($mysqli);
+    sleep(1);
+    process_reset_password($mysqli);
 
    ?>
