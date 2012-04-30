@@ -3,6 +3,8 @@
 namespace com\indigloo {
 
 
+    use \com\indigloo\Configuration as Config;
+
     class Util {
 
         static function base64Encrypt($token) {
@@ -262,6 +264,21 @@ namespace com\indigloo {
                     self::unsetInArray($element, $keys);
                 }
             }
+        }
+
+        static function encrypt($text) {
+            //max key size 24 for MCRYPT_RIJNDAEL_256 
+            $key = Config::getInstance()->get_value("tmp.encrypt.key");
+            $crypt = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $text, MCRYPT_MODE_ECB);
+            $crypt = base64_encode($crypt);
+            return $crypt;
+        }
+
+        static function decrypt($crypt) {
+            $key = Config::getInstance()->get_value("tmp.encrypt.key");
+            $crypt = base64_decode($crypt);
+            $text = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, $crypt, MCRYPT_MODE_ECB);
+            return $text;
         }
 
     }

@@ -19,7 +19,15 @@
     $userDao = new \com\indigloo\sc\dao\User() ;
 	$userDBRow = $userDao->getonLoginId($loginId);
 
+    //tokens for use in next screen
+    $ftoken = Util::getMD5GUID();
+    $femail = Util::encrypt($email);
+    $gWeb = \com\indigloo\core\Web::getInstance();
+    $gWeb->store("change.password.email",$femail);        
+    $gWeb->store("change.password.token",$ftoken);    
+
     $title = $userDBRow['email'];
+    $pUrl = "/user/dashboard.php";
     $formUrl = "/user/account/form/change_password.php" ;
     include($_SERVER['APP_WEB_DIR'] . '/user/account/inc/password_form.inc');
    

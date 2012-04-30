@@ -55,7 +55,7 @@
 					</div>
 					
 					<p class="help-text">
-					   Please select a new password and click on Save.
+					   Please select a new password and click on Submit.
 
 					</p>
                                     
@@ -80,12 +80,15 @@
 						</table>
 
 						<div class="form-actions">
-							<button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Save</span></button>
+							<button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button>
 							 <a href="/">
 								<button class="btn" type="button" name="cancel"><span>Cancel</span></button>
 							</a>
 							
 						</div>
+                        <input type="hidden" name="ftoken" value="<?php echo $ftoken; ?>" />
+                        <input type="hidden" name="q" value="<?php echo $_SERVER['REQUEST_URI']; ?>" />
+                        <input type="hidden" name="p" value="<?php echo $pUrl ?>" />
 
 					</form>
 				</div>

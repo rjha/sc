@@ -21,9 +21,16 @@
         $mailDao = new \com\indigloo\sc\dao\Mail();
         $mailDao->checkResetPassword($email,$token);
 
-        //everything fine
+        //tokens for use in next screen
+        $ftoken = Util::getMD5GUID();
+        $femail = Util::encrypt($email);
+        $gWeb = \com\indigloo\core\Web::getInstance();
+        $gWeb->store("change.password.email",$femail);        
+        $gWeb->store("change.password.token",$ftoken);        
+
         $title = $email;
-        $formUrl = "/user/account/form/reset_password.php" ;
+        $pUrl = "/user/account/login_now.php";
+        $formUrl = "/user/account/form/change_password.php" ;
         include($_SERVER['APP_WEB_DIR'] . '/user/account/inc/password_form.inc');
         
 
