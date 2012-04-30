@@ -219,7 +219,7 @@ namespace com\indigloo\auth {
         
         static function changePassword($tableName,$userId,$email,$password) {
             
-             if(empty($tableName)) {
+            if(empty($tableName)) {
                 trigger_error("User Table name is not supplied",E_USER_ERROR);
                 exit(1);
             }
