@@ -3,8 +3,16 @@
     
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
-	
-    
+    require_once($_SERVER['WEBGLOO_LIB_ROOT']. '/ext/sendgrid-php/SendGrid_loader.php');
+
+    /* you can also preprend ext/sendgrid-php to APP_LIB_PATH 
+     * and get rid of above  inclusion 
+        $_SERVER['APP_LIB_PATH'] = array(
+            0 => '/home/rjha/code/github/sc/webgloo/lib/ext/sendgrid-php',
+            1 => '/home/rjha/code/github/sc/webgloo/lib');
+     */
+
+     
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
@@ -35,7 +43,7 @@
             }
             
             $mailDao = new \com\indigloo\sc\dao\Mail();
-            $mailDao->addResetPassword($user['user_name'],$user['email']);
+            $mailDao->addResetPassword($user['user_name'],$fvalues['email']);
             
             $message = "Success! You will receive an email soon!";
             $gWeb->store(Constants::STICKY_MAP, $fvalues);

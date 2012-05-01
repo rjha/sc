@@ -12,7 +12,7 @@ namespace com\indigloo\sc\mysql {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $email = $mysqli->real_escape_string($email);
             $token = $mysqli->real_escape_string($token);
-            $sql = " select count(id) as count from sc_reset_password where email = '%s' and flag = 0 " ;
+            $sql = " select count(id) as count from sc_reset_password where email = '%s' " ;
             $sql .= " and token = '%s' and (now() < expired_on )  ";
             $sql = sprintf($sql,$email,$token);
 
@@ -24,7 +24,7 @@ namespace com\indigloo\sc\mysql {
         static function getResetPasswordInRange($email) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $email = $mysqli->real_escape_string($email);
-            $sql = " select count(id) as count from sc_reset_password where email = '%s' and flag = 0 " ;
+            $sql = " select count(id) as count from sc_reset_password where email = '%s' " ;
             $sql .= " and (created_on > now() - INTERVAL 20 MINUTE) ";
             $sql = sprintf($sql,$email);
 

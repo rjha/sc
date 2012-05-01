@@ -33,12 +33,19 @@ namespace com\indigloo\sc\dao {
                 $message = sprintf("DB Error : code  %d ",$code);
                 throw new DBException($message,$code);
             }
+
+            //now send an email
+            \com\indigloo\sc\Mail::sendResetPassword($name,$email,$token);
+            //update flag in DB
+			mysql\Mail::flipResetPassword($email);
+
         }
 
         function processResetPassword($email,$token) {
-            //@todo send mail using $email and $token
-            // mail success?
-            mysql\Mail::flipResetPassword($email);
+            //now send an email
+            \com\indigloo\sc\Mail::sendResetPassword($name,$email,$token);
+            //update flag in DB
+			mysql\Mail::flipResetPassword($email);
         }
         
     }

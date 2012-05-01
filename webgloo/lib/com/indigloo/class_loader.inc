@@ -1,11 +1,11 @@
 <?php
     
-	function __autoload($className) {
+	function WebglooLoader($className) {
 
 		//replace double slashes in class name (PHP 5.3 namespace convention)
 		// with a forrward slash (or PATH_SEPARATOR on your box)
 		$file = str_replace('\\', '/', $className) . '.php';
-		
+
 		//try loading from APP_LIB_PATH first
 		$libpaths = $_SERVER['APP_LIB_PATH'];
 		foreach($libpaths as $libpath) {
@@ -21,4 +21,5 @@
 		trigger_error($message, E_USER_ERROR);
 	}
 
+    spl_autoload_register("WebglooLoader");
 ?>
