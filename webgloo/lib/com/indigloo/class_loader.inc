@@ -16,9 +16,6 @@
 				return;
 			}
 		}
-		
-		$message = sprintf("Class loader is unable to load  %s ",$className);
-		trigger_error($message, E_USER_ERROR);
 	}
 
     spl_autoload_register("WebglooLoader");
