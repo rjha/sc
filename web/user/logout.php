@@ -1,12 +1,22 @@
 <?php
 
     include ('sc-app.inc');
+    include($_SERVER['APP_CLASS_LOADER']);
+    include($_SERVER['APP_WEB_DIR'] . '/inc/session.inc');
+    include($_SERVER['WEBGLOO_LIB_ROOT'] . '/com/indigloo/error.inc');
+
     //destroy session
-    session_start();
     $_SESSION = array();
     session_destroy();
-    // delete session cookie
-    setcookie("PHPSESSID","",time()-3600,"/");  
+
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
+
     //go back to main site
     header('Location: /');
 
