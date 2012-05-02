@@ -954,7 +954,7 @@ create table sc_reset_password(
 
 drop table if exists sc_php_session;
 create table sc_php_session(
-	session_id varchar(32),
+	session_id varchar(40),
 	data TEXT,
     updated_on TIMESTAMP   default '0000-00-00 00:00:00',
 	PRIMARY KEY (session_id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;

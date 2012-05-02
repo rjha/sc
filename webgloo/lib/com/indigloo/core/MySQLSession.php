@@ -1,14 +1,11 @@
 <?php
 namespace com\indigloo\core {
     
-    use \com\indigloo\mysql as MySQL;
-    use \com\indigloo\Logger as Logger;
     use \com\indigloo\Configuration as Config;
 
     /*
-     * @todo - row level locking between read() and write()
-     * @todo - prune old rows from DB table inside open() 
-     * @todo - session_destroy() not firing?
+     * custom session handler to store PHP session data into mysql DB
+     * we use a -select for update- row leve lock 
      *
      */
     class MySQLSession {
@@ -29,6 +26,9 @@ namespace com\indigloo\core {
                 trigger_error(mysqli_connect_error(), E_USER_ERROR);
                 exit(1);
             }
+
+            //remove old sessions
+            $this->gc(1440);
            
             return TRUE ;
         }
@@ -40,7 +40,9 @@ namespace com\indigloo\core {
         }
 
         function read($sessionId) {
-            $sql = " select data from sc_php_session where session_id = '%s' ";
+            //start Tx
+            $this->mysqli->query("START TRANSACTION"); 
+            $sql = " select data from sc_php_session where session_id = '%s'  for update ";
             $sessionId = $this->mysqli->real_escape_string($sessionId);
             $sql = sprintf($sql,$sessionId);
 
@@ -72,11 +74,12 @@ namespace com\indigloo\core {
             } else {
                 trigger_error($this->mysqli->error, E_USER_ERROR);
             }
+            //end Tx
+            $this->mysqli->query("COMMIT"); 
 
         }
 
         function destroy($sessionId) {
-
             $sessionId = $this->mysqli->real_escape_string($sessionId);
             $sql = "DELETE FROM sc_php_session WHERE session_id = '%s' ";
             $sql = sprintf($sql,$sessionId);
