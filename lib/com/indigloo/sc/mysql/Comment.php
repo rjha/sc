@@ -111,9 +111,7 @@ namespace com\indigloo\sc\mysql {
 
 		}
 
-        static function create($postId,
-								$comment,
-								$loginId) {
+        static function create($postId, $comment, $loginId) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = " insert into sc_comment(post_id,description,login_id, created_on) " ;
@@ -123,12 +121,7 @@ namespace com\indigloo\sc\mysql {
             $stmt = $mysqli->prepare($sql);
             
             if ($stmt) {
-                $stmt->bind_param("isi",
-								$postId,
-								$comment,
-								$loginId);
-                
-                      
+                $stmt->bind_param("isi",$postId,$comment,$loginId);
                 $stmt->execute();
 
                 if ($mysqli->affected_rows != 1) {
@@ -147,7 +140,6 @@ namespace com\indigloo\sc\mysql {
 			$code = MySQL\Connection::ACK_OK ;
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 			$sql = "update sc_comment set description = ?, updated_on = now() where id = ? and login_id = ?" ;
-			
 			
 			$stmt = $mysqli->prepare($sql);
             

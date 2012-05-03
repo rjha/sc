@@ -959,4 +959,30 @@ create table sc_php_session(
     updated_on TIMESTAMP   default '0000-00-00 00:00:00',
 	PRIMARY KEY (session_id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
+--
+-- 04 May 2012
+-- 
+
+drop table if exists sc_user_bookmark;
+create table sc_user_bookmark(
+	id int NOT NULL auto_increment,
+	post_id int not null,
+	login_id int not null,
+    created_on TIMESTAMP   default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
+--
+-- u1->u2 , u1 is following u2, u2 has follower u1
+-- 
+drop table if exists sc_follow;
+create table sc_follow(
+	id int NOT NULL auto_increment,
+	follower_id int not null,
+	following_id int not null,
+    created_on TIMESTAMP   default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
 
