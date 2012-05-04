@@ -55,7 +55,7 @@ function webgloo_ajax_error_handler($errorno,$errorstr,$file,$line) {
             \com\indigloo\Logger::getInstance()->error($errorstr);
             \com\indigloo\Logger::getInstance()->backtrace();
             //send ajax error message back to UI
-            $message =  'Internal server error happened. Please check log for details!';
+            $message =  'The server encountered an error. Please try after some time!';
             $error = array('code' => 500, 'message' => $message);
             $message =  json_encode($error) ;
             echo $message ; 
