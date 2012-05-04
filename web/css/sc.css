@@ -764,11 +764,11 @@
         color:#211922;
     }
 
-    #nav-group-browser {
+    #simple-popup {
         position: fixed;
         width: 600px;
-        height: 320px;
-        max-height:320px;
+        /* height: 320px;
+        max-height:320px; */
         top: 50%;
         left: 50%;
         margin-top:-140px;
@@ -782,10 +782,9 @@
         overflow:hidden;
     }
 
-    #nav-group-browser #groups{
+    #simple-popup #content{
         padding:10px;
-        height :260px;
-        max-height: 260px;
+        min-height :20px;
         overflow:hidden;
     }
 
@@ -817,7 +816,7 @@
     }
 
     .panel-footer{
-        /* border-top: 1px solid #d5d5d5 ; */
+        border-top: 1px solid #d5d5d5 ;
         font-size: 15px;
     }
 

@@ -39,31 +39,9 @@
     </div>
 </div>
 
-<div id="nav-group-browser">
-    <div id="groups">
-        <?php 
-           $groupDao = new \com\indigloo\sc\dao\Group();
-           $feature_slug = $groupDao->getFeatureSlug();
-           $fgroups = $groupDao->slugToGroups($feature_slug);
-           $limit = 0 ;
-           $lgroups = array();
-
-           if(sizeof($fgroups) < 50 ) {
-               $limit = (50 - sizeof($fgroups)) + 10 ;
-               $lgroups = $groupDao->getLatest($limit);
-           }
-
-            $navGroups = array_merge($fgroups,$lgroups);
-            echo \com\indigloo\sc\html\Group::getCloud($navGroups); 
-        ?>
-    </div>
+<div id="simple-popup">
+    <div id="content"> </div>
     <div class="panel-footer">
-        <div class="floatr">
-            <a href="/group/all.php">More Groups&rarr;</a>
-            &nbsp;|&nbsp;
-            <a id="nav-group-close" href="">Close&nbsp;<i class="icon-remove"></i></a>
-        </div>
-
+        <div class="floatr"> <a id="simple-popup-close" href="">Close&nbsp;<i class="icon-remove"></i></a> </div>
     </div>
-
-</div>
+</div> <!-- simple popup -->

@@ -70,6 +70,33 @@ webgloo.sc.home = {
         $('.tile').mouseenter(function() { $(this).find('.options').toggle(); });
         $('.tile').mouseleave(function() { $(this).find('.options').toggle(); }); 
 
+        //add like & save callbacks
+        $("a.like-post-link").click(function(event){
+            event.preventDefault();
+            var dataObj = {}
+            dataObj.postId  = $(this).attr("id");
+            dataObj.action = "LIKE" ;
+            var targetUrl = "/qa/bookmark.php";
+            //open popup
+            var options = {};
+            options.dataType = "json" ;
+            webgloo.sc.SimplePopup.init(options);
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
+        }) ;
+
+        $("a.save-post-link").click(function(event){
+            event.preventDefault();
+            var dataObj = {}
+            dataObj.postId  = $(this).attr("id");
+            dataObj.action = "SAVE" ;
+            var targetUrl = "/qa/bookmark.php";
+            //open popup
+            var options = {};
+            options.dataType = "json" ;
+            webgloo.sc.SimplePopup.init(options);
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
+        }) ;
+
     },
     addSmallTiles : function() {
         var $container = $('#tiles');
@@ -83,15 +110,84 @@ webgloo.sc.home = {
         //group browser
         $("a#nav-group-open").click(function(event) {
             event.preventDefault();
-            $("#nav-group-browser").toggle();
-        });
-
-        $("a#nav-group-close").click(function(event) {
-            event.preventDefault();
-            $("#nav-group-browser").toggle();
+            $targetUrl= "/group/data/featured.php";
+            var options = {};
+            webgloo.sc.SimplePopup.init(options);
+            webgloo.sc.SimplePopup.load($targetUrl);
         });
     }
 }
+
+/* +simple popup object */
+webgloo.sc.SimplePopup = {
+
+    options : {},
+    init : function(options) { 
+        this.options.dataType = options.dataType || "text";
+        this.options.type = options.type || "POST";
+
+        $("a#simple-popup-close").click(function(event) {
+            event.preventDefault();
+            webgloo.sc.SimplePopup.close();
+        });
+        webgloo.sc.SimplePopup.show();
+    },
+    show : function () {
+        $("#simple-popup").show();
+    },
+    hide : function () {
+        $("#simple-popup").hide();
+    },
+    close : function() {
+        webgloo.sc.SimplePopup.addContent('');
+        $("#simple-popup").hide();
+    },
+    
+    addContent : function(content) {
+        $("#simple-popup #content").html('');
+        $("#simple-popup #content").html(content);
+        $("#simple-popup").show();
+    },
+    post:function (targetUrl,dataObj) {
+        //show spinner
+        webgloo.sc.SimplePopup.addContent('<img src="/css/images/ajax_loader.gif" alt="spinner" />');
+
+        //ajax call start
+        $.ajax({
+            url: targetUrl,
+            type: webgloo.sc.SimplePopup.options.type,
+            dataType: webgloo.sc.SimplePopup.options.dataType,
+            data : dataObj,
+            timeout: 9000,
+            //js errors callback
+            error: function(XMLHttpRequest, response){
+                webgloo.sc.SimplePopup.addContent(response);
+            },
+            //server script errors are reported inside success callback
+            success: function(response){
+                switch(webgloo.sc.SimplePopup.options.dataType) {
+                    case 'json' :
+                        if(response.code == 500 ) {
+                            //error - keep open
+                            webgloo.sc.SimplePopup.addContent(response.message);
+                        }else {
+                            webgloo.sc.SimplePopup.close();
+                        }
+                        break;
+                     default:
+                        webgloo.sc.SimplePopup.addContent(response);
+                        break;
+                }
+
+            }
+        }); //ajax call end
+    },
+    load: function(targetUrl) {
+        var dataObj = {};
+        this.post(targetUrl,dataObj);
+    }
+}
+
 
 webgloo.sc.groups = {
     addPanelEvents : function() {

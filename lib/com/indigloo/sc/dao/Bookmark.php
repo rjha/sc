@@ -8,10 +8,24 @@ namespace com\indigloo\sc\dao {
 	
     class Bookmark {
 
-    function add($loginId,$postId) {
-			$code = mysql\Bookmark::add($loginId,$postId);
-			return $code ;
+
+        function add($loginId,$postId) {
+            $code = mysql\Bookmark::add($loginId,$postId);
+            return $code ;
+        }
+
+        function delete($bookmarkId) {
+            $code = mysql\Bookmark::delete($bookmarkId);
+            return $code ;
+        }
+
+        function getOnLoginId($loginId) {
+			$rows = mysql\Bookmark::getOnLoginId($loginId);
+			return $rows ;
 		}
+		
+
+
 
     }
 

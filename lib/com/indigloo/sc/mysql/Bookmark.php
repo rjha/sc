@@ -10,6 +10,16 @@ namespace com\indigloo\sc\mysql {
         
         const MODULE_NAME = 'com\indigloo\sc\mysql\Bookmark';
 
+        static function getOnLoginId($loginId) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            settype($loginId,"integer");
+            $sql = " select * from sc_user_bookmark where login_id = %d ";
+            $sql = sprintf($sql,$loginId);
+
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
         static function add($loginId,$postId) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();

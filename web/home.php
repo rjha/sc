@@ -22,8 +22,12 @@
             $(document).ready(function(){
                 webgloo.sc.home.addTiles();
                 webgloo.sc.home.addNavGroups();
-           });
-		</script>
+            });
+
+            var dataObj = new Object();
+            dataObj.postId = 1234;
+            
+        </script>
 		
     </head>
 
