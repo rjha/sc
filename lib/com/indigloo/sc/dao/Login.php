@@ -3,6 +3,7 @@ namespace com\indigloo\sc\dao {
 
 	use \com\indigloo\Util as Util ;
     use \com\indigloo\sc\mysql as mysql;
+    use \com\indigloo\exception\DBException as DBException;
 
 	class Login {
 
@@ -23,6 +24,10 @@ namespace com\indigloo\sc\dao {
 		}
 
 		function create($provider,$name){
+            if(Util::tryEmpty($name)) {
+                throw new DBException("User name is missing!",1);
+            }
+
 			$data = mysql\Login::create($provider,$name);
 			return $data ;
 		}

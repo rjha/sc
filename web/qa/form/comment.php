@@ -10,46 +10,46 @@
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
+
+    use \com\indigloo\exception\UIException as UIException;
+    use com\indigloo\exception\DBException as DBException;
     
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
-        
-		
-        $fhandler = new Form\Handler('web-form-1', $_POST);
-        $fhandler->addRule('comment', 'Comment', array('required' => 1));
-        
-        $fvalues = $fhandler->getValues();
-        $ferrors = $fhandler->getErrors();
-    
-        
-        if ($fhandler->hasErrors()) {
-            $locationOnError = $_POST['q'] ;
-            $gWeb->store(Constants::STICKY_MAP, $fvalues);
-            $gWeb->store(Constants::FORM_ERRORS,$fhandler->getErrors());
+        try{	
+            $fhandler = new Form\Handler('web-form-1', $_POST);
+            $fhandler->addRule('comment', 'Comment', array('required' => 1));
             
+            $fvalues = $fhandler->getValues();
+            $ferrors = $fhandler->getErrors();
+            $qUrl = $_POST['q'];
+        
+            if ($fhandler->hasErrors()) {
+                throw new UIException($fhandler->getErrors(),1);
+            }
+
+            $commentDao = new com\indigloo\sc\dao\Comment();
+            $code = $commentDao->create( $fvalues['post_id'],$fvalues['comment'],$gSessionLogin->id);
+            if($code != 0 ) {
+                $message = "DB Error : code %d ";
+                $message = sprintf($message,$code);
+                throw new DBException($message,$code);
+            }
+ 
+            //success
+            header("Location: " . $qUrl);
+
+        } catch(UIException $ex) {
+            $gWeb->store(Constants::STICKY_MAP, $fvalues);
+            $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
             header("Location: " . $locationOnError);
             exit(1);
-			
-        } else {
-            
-            $commentDao = new com\indigloo\sc\dao\Comment();
-			
-            $code = $commentDao->create( $fvalues['post_id'],$fvalues['comment'],$gSessionLogin->id);
-            
-            if ($code == com\indigloo\mysql\Connection::ACK_OK ) {
-                $locationOnSuccess = $_POST['q'];
-                header("Location: " . $locationOnSuccess);
-                
-            } else {
-                $message = sprintf("DB Error: (code is %d) please try again!",$code);
-                $gWeb->store(Constants::STICKY_MAP, $fvalues);
-                $gWeb->store(Constants::FORM_ERRORS,array($message));
-                $locationOnError = $_POST['q'] ;
-                header("Location: " . $locationOnError);
-                exit(1);
-            }
-            
-           
+        } catch(DBException $dbex) {
+            $message = $dbex->getMessage();
+            $gWeb->store(Constants::STICKY_MAP, $fvalues);
+            $gWeb->store(Constants::FORM_ERRORS,array($message));
+            header("Location: " . $locationOnError);
+            exit(1);
         }
-        
+                
     }
 ?>

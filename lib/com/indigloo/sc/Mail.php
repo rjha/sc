@@ -15,6 +15,10 @@ namespace com\indigloo\sc {
             \com\indigloo\mail\SendGrid::sendViaWeb($email,$from,$subject,$text,$html);
         } 
 
+        static function sendNewAccount($name,$email,$password) {
+            //@todo
+        } 
+
 
     }
 

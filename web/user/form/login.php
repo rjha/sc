@@ -7,53 +7,46 @@
     
     use com\indigloo\ui\form as Form;
     use com\indigloo\Constants as Constants ;
+    use \com\indigloo\exception\UIException as UIException;
+    use com\indigloo\exception\DBException as DBException;
     
     if (isset($_POST['login']) && ($_POST['login'] == 'Login')) {
-        
-        $fhandler = new Form\Handler('web-form-1', $_POST);
-        $fhandler->addRule('email', 'Email', array('required' => 1, 'maxlength' => 64));
-        $fhandler->addRule('password', 'Password', array('required' => 1, 'maxlength' => 32));
-        
-        $fvalues = $fhandler->getValues();
-        $ferrors = $fhandler->getErrors();
-        
-        $qUrl = '/' ;
-		if(array_key_exists('q',$_POST) && !empty($_POST['q'])) {
-			$qUrl = $_POST['q'];
-		}
-        
-        if ($fhandler->hasErrors()) {
-            $locationOnError = '/user/login.php?q='.$qUrl ;
-            $gWeb->store(Constants::STICKY_MAP, $fvalues);
-            $gWeb->store(Constants::FORM_ERRORS,$fhandler->getErrors());
+        try{ 
+            $fhandler = new Form\Handler('web-form-1', $_POST);
+            $fhandler->addRule('email', 'Email', array('required' => 1, 'maxlength' => 64));
+            $fhandler->addRule('password', 'Password', array('required' => 1, 'maxlength' => 32));
             
-            header("Location: ".$locationOnError);
-            exit(1);
-        } else {
+            $fvalues = $fhandler->getValues();
+            $ferrors = $fhandler->getErrors();
             
-            $data = \com\indigloo\auth\User::login('sc_user',
-                                $fvalues['email'],
-                                $fvalues['password']);
-            
-            $code = $data['code'];
-            
-            if ($code > 0 ) {
-				//success set our own session variables
-				\com\indigloo\sc\auth\Login::startMikSession();
-                header("Location: ".$qUrl);
-                
-            } else{
-                
-                $gWeb->store(Constants::STICKY_MAP, $fvalues);
-                $gWeb->store(Constants::FORM_ERRORS,array("Error: wrong login or password"));
-                $locationOnError = '/user/login.php?q='.$qUrl ;
-                
-
-                header("Location: ".$locationOnError);
-                exit(1);
+            $qUrl = '/' ;
+            if(array_key_exists('q',$_POST) && !empty($_POST['q'])) {
+                $qUrl = $_POST['q'];
             }
             
-           
+            if ($fhandler->hasErrors()) {
+                throw new UIException($fhandler->getErrors(),1);
+            }
+
+            $data = \com\indigloo\auth\User::login('sc_user',$fvalues['email'],$fvalues['password']);
+            $code = $data['code'];
+            
+            if ($code < 0 ) {
+                $message = "Wrong login or password. Please try again!";
+                throw new UIException(array($message),1);
+            }
+
+            //success set our own session variables
+            \com\indigloo\sc\auth\Login::startMikSession();
+            header("Location: ".$qUrl);
+
+        }catch(UIException $ex) {
+            $gWeb->store(Constants::STICKY_MAP, $fvalues);
+            $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
+            $locationOnError = '/user/login.php?q='.$qUrl ;
+            header("Location: " . $locationOnError);
+            exit(1);
         }
+                
     }
 ?>

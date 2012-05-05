@@ -8,9 +8,16 @@ namespace com\indigloo\sc\dao {
 	
     class Bookmark {
 
+        function add($loginId,$postId,$action) {
+            $row = mysql\Bookmark::getRowCount($loginId,$postId,$action);
+            $count = $row['count'] ;
+            $code = 0 ;
+            if($count == 0 ) {
+                //actually insert
+                $code = mysql\Bookmark::add($loginId,$postId,$action);
+                return $code ;
+            }
 
-        function add($loginId,$postId) {
-            $code = mysql\Bookmark::add($loginId,$postId);
             return $code ;
         }
 

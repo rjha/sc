@@ -968,6 +968,7 @@ create table sc_user_bookmark(
 	id int NOT NULL auto_increment,
 	post_id int not null,
 	login_id int not null,
+    action int not null,
     created_on TIMESTAMP   default '0000-00-00 00:00:00',
     updated_on TIMESTAMP   default '0000-00-00 00:00:00',
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;

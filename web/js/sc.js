@@ -76,7 +76,7 @@ webgloo.sc.home = {
             var dataObj = {}
             dataObj.postId  = $(this).attr("id");
             dataObj.action = "LIKE" ;
-            var targetUrl = "/qa/bookmark.php";
+            var targetUrl = "/qa/ajax/bookmark.php";
             //open popup
             var options = {};
             options.dataType = "json" ;
@@ -89,7 +89,7 @@ webgloo.sc.home = {
             var dataObj = {}
             dataObj.postId  = $(this).attr("id");
             dataObj.action = "SAVE" ;
-            var targetUrl = "/qa/bookmark.php";
+            var targetUrl = "/qa/ajax/bookmark.php";
             //open popup
             var options = {};
             options.dataType = "json" ;
@@ -148,6 +148,25 @@ webgloo.sc.SimplePopup = {
         $("#simple-popup #content").html(content);
         $("#simple-popup").show();
     },
+    addJsonContent : function(response) {
+        switch(response.code) {
+            case 200:
+                webgloo.sc.SimplePopup.close();
+                break;
+            case 401:
+                //redirect to login page
+                qUrl = window.location.href;
+                gotoUrl = '/user/login.php?q='+qUrl;
+                window.location.replace(gotoUrl);
+                break;
+            case 500:
+                //error - keep open
+                webgloo.sc.SimplePopup.addContent(response.message);
+                break;
+            default:
+                webgloo.sc.SimplePopup.addContent(response.message);
+        }
+    },
     post:function (targetUrl,dataObj) {
         //show spinner
         webgloo.sc.SimplePopup.addContent('<img src="/css/images/ajax_loader.gif" alt="spinner" />');
@@ -167,12 +186,7 @@ webgloo.sc.SimplePopup = {
             success: function(response){
                 switch(webgloo.sc.SimplePopup.options.dataType) {
                     case 'json' :
-                        if(response.code == 500 ) {
-                            //error - keep open
-                            webgloo.sc.SimplePopup.addContent(response.message);
-                        }else {
-                            webgloo.sc.SimplePopup.close();
-                        }
+                        webgloo.sc.SimplePopup.addJsonContent(response);
                         break;
                      default:
                         webgloo.sc.SimplePopup.addContent(response);

@@ -76,7 +76,7 @@
 					
 					<?php FormMessage::render(); ?>
 			
-						<form id="web-form1"  name="web-form1" action="/user/profile/form/edit.php" enctype="multipart/form-data"  method="POST">
+						<form id="web-form1"  name="web-form1" action="/user/account/form/edit.php" enctype="multipart/form-data"  method="POST">
 
 							<div class="error">    </div>
 

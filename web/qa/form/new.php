@@ -11,31 +11,28 @@
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
+
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
+    use \com\indigloo\exception\UIException as UIException;
+    use com\indigloo\exception\DBException as DBException;
    	 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
+        try{
         
-        $fhandler = new Form\Handler('web-form-1', $_POST);
-
-        $fhandler->addRule('links_json', 'links_json', array('noprocess' => 1));
-		$fhandler->addRule('images_json', 'images_json', array('noprocess' => 1));
-		$fhandler->addRule('group_names', 'Tags', array('maxlength' => 64));
-		
-        $fvalues = $fhandler->getValues();
-        $ferrors = $fhandler->getErrors();
-
-		$qUrl = $fvalues['q'];
-    
-        
-        if ($fhandler->hasErrors()) {
-            $gWeb->store(Constants::STICKY_MAP, $fvalues);
-            $gWeb->store(Constants::FORM_ERRORS,$fhandler->getErrors());
+            $fhandler = new Form\Handler('web-form-1', $_POST);
+            $fhandler->addRule('links_json', 'links_json', array('noprocess' => 1));
+            $fhandler->addRule('images_json', 'images_json', array('noprocess' => 1));
+            $fhandler->addRule('group_names', 'Tags', array('maxlength' => 64));
             
-            header("Location: " . $qUrl);
-            exit(1);
-			
-        } else {
-           
+            $fvalues = $fhandler->getValues();
+            $ferrors = $fhandler->getErrors();
+
+            $qUrl = $fvalues['q'];
+            
+            if ($fhandler->hasErrors()) {
+                throw new UIException($fhandler->getErrors(),1);
+            } 
+
             $groupDao = new \com\indigloo\sc\dao\Group();
             $group_names =$fvalues['group_names']  ;
             $group_slug = $groupDao->nameToSlug($group_names);
@@ -53,20 +50,29 @@
                                 $fvalues['category']);
 								
    			$code = $data['code'];
-
-            if ($code == com\indigloo\mysql\Connection::ACK_OK ) {
-				$location = "/item/".$data['itemId'];
-                header("Location: /qa/thanks.php?q=".$location );
-                
-            } else {
-                $message = sprintf("DB Error: (code is %d) please try again!",$code);
-                $gWeb->store(Constants::STICKY_MAP, $fvalues);
-                $gWeb->store(Constants::FORM_ERRORS,array($message));
-                header("Location: " . $qUrl);
-                exit(1);
+            if($code != 0 ) {
+                $message = "DB Error : code %d ";
+                $message = sprintf($message,$code);
+                throw new DBException($message,$code);
             }
-           
+
+
+            //success
+            $location = "/item/".$data['itemId'];
+            header("Location: /qa/thanks.php?q=".$location );
+
+        } catch(UIException $ex) {
+            $gWeb->store(Constants::STICKY_MAP, $fvalues);
+            $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
+            header("Location: " . $qUrl);
+            exit(1);
+        } catch(DBException $dbex) {
+            $message = $dbex->getMessage();
+            $gWeb->store(Constants::STICKY_MAP, $fvalues);
+            $gWeb->store(Constants::FORM_ERRORS,array($message));
+            header("Location: " . $qUrl);
+            exit(1);
         }
-        
+
     }
 ?>
