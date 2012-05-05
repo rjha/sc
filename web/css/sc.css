@@ -847,7 +847,7 @@
 
     .item-link .big {
         color: black;
-        font-size: 18px;
+        font-size: 13px;
         font-weight:bold;
     }
 
@@ -898,6 +898,32 @@
         color: #333 ;
         text-decoration: none;
     }
+
+    div .toolbar {
+        background-color : white;
+        border: 1px solid #DEDEDE ;
+        vertical-align:baseline;
+        width:165px;
+    }
+
+	div .toolbar-button{
+       position :relative ;
+       float : left;
+       padding:2px;
+       height:32px;
+       width:48px;
+       border-right:1px solid #DEDEDE ;
+       margin :1px;
+       text-align:center;
+	}
+
+    .clear {
+        clear:both;
+        margin-top:-1px;
+        height:1px;
+        overflow:hidden;
+    }
+
 
     /* last section - override bootstrap css */
     .hero-unit {

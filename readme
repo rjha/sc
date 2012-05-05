@@ -1,16 +1,26 @@
+
+
+06 May 2012
+===========
+- Fix DB Errors - throw MySQLException from lower layers
+
 05 May 2012
 ===========
 Missing Features
 - Bind ESC key to simple popup
+- Avoid duplicate row insert on repeated clicks!
 - Login redirects for Ajax pages
+- Like + SAVE => add to item details
+- user account - show like/save/ left hand menu card!
+- email after registration 
+- Followers/Following
+- Need to fix the profile page : Ask for more data
+- Edit page - user groups - open in cards instead of as cloud
+- Redo all form scripts using exception handling bits
+
+- Nice editing for monitoring app and user account
 - fix DB filter creation
 - fix named parameters inside SQL query?
-- Need to fix the profile page : Ask for more data
-- Like + SAVE
-- Followers/Following
-- email on login creation
-- Redo all form scripts using exception handling bits
-- Nice editing for monitoring app and user account
     
 
 Nice @todo

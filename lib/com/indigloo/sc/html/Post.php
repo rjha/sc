@@ -57,6 +57,14 @@ namespace com\indigloo\sc\html {
             return $html;
         }
 
+        static function getToolbar($itemId) {
+            $view = new \stdClass;
+            $view->itemId = $itemId;
+            $template = '/fragments/post/toolbar.tmpl' ;
+            $html = Template::render($template,$view);
+            return $html;
+        }
+
 		static function getSmallTile($postDBRow) {
 
 		    $html = NULL ;

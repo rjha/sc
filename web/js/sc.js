@@ -70,33 +70,9 @@ webgloo.sc.home = {
         $('.tile').mouseenter(function() { $(this).find('.options').toggle(); });
         $('.tile').mouseleave(function() { $(this).find('.options').toggle(); }); 
 
-        //add like & save callbacks
-        $("a.like-post-link").click(function(event){
-            event.preventDefault();
-            var dataObj = {}
-            dataObj.postId  = $(this).attr("id");
-            dataObj.action = "LIKE" ;
-            var targetUrl = "/qa/ajax/bookmark.php";
-            //open popup
-            var options = {};
-            options.dataType = "json" ;
-            webgloo.sc.SimplePopup.init(options);
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
-        }) ;
-
-        $("a.save-post-link").click(function(event){
-            event.preventDefault();
-            var dataObj = {}
-            dataObj.postId  = $(this).attr("id");
-            dataObj.action = "SAVE" ;
-            var targetUrl = "/qa/ajax/bookmark.php";
-            //open popup
-            var options = {};
-            options.dataType = "json" ;
-            webgloo.sc.SimplePopup.init(options);
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
-        }) ;
-
+        //Add like + save events
+        webgloo.sc.item.addLike();
+        webgloo.sc.item.addSave();
     },
     addSmallTiles : function() {
         var $container = $('#tiles');
@@ -202,6 +178,37 @@ webgloo.sc.SimplePopup = {
     }
 }
 
+webgloo.sc.item = {
+    addLike : function() {
+        //add like & save callbacks
+        $("a.like-post-link").click(function(event){
+            event.preventDefault();
+            var dataObj = {}
+            dataObj.postId  = $(this).attr("id");
+            dataObj.action = "LIKE" ;
+            var targetUrl = "/qa/ajax/bookmark.php";
+            //open popup
+            var options = {};
+            options.dataType = "json" ;
+            webgloo.sc.SimplePopup.init(options);
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
+        }) ;
+    },
+    addSave : function() {
+        $("a.save-post-link").click(function(event){
+            event.preventDefault();
+            var dataObj = {}
+            dataObj.postId  = $(this).attr("id");
+            dataObj.action = "SAVE" ;
+            var targetUrl = "/qa/ajax/bookmark.php";
+            //open popup
+            var options = {};
+            options.dataType = "json" ;
+            webgloo.sc.SimplePopup.init(options);
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
+        }) ;
+    }
+}
 
 webgloo.sc.groups = {
     addPanelEvents : function() {
