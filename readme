@@ -1,34 +1,56 @@
-01 May 2012
-
-- Test site worker script and sphinx indexing
-- Test baeanstalk + Sphinx delta indexing
-- install new site-worker.sh script on server after testing
-- plug sendgrid mail now
+05 May 2012
+===========
+Missing Features
+- Bind ESC key to simple popup
+- Login redirects for Ajax pages
+- fix DB filter creation
+- fix named parameters inside SQL query?
+- Need to fix the profile page : Ask for more data
+- Like + SAVE
+- Followers/Following
+- email on login creation
 - Redo all form scripts using exception handling bits
+- Nice editing for monitoring app and user account
+    
+
+Nice @todo
+- Thumbnail creation - As a separate async process?
+
+Missing technology
+- ICU resource bundles and php-intl
+- Install a JOB queue for Async processes 
+- Look @ Redis and Beanstalkd
+- session in mysql - done
+- Sphinx delta indexing
+
+
+New item in Navigation Bar
+what can I do?
+    - share
+    - Ask
+    - Answer
+    - 
+
+ - sitemap - automatically generate every week
+ - fix fancybox related errors in nginx 
+ + server deployment
+     - Add new sc-app.inc and sc_config.ini now
+     - patch the db
+     - install new cron scripts
+     - logrotate : webgloo cron logs/webgloo app logs / nginx logs /sphinx logs 
+     - update codebase
+
+
 
 
 
 30 Apr 2012
 
-- make sure that all pUrl and qUrl are not processed by our forms - we need raw forms?
-- change noprocess to raw? recheck noprocess implementation - it may not work the way we want it to
-- better keep q.url and p.url in _SESSION? I think so 
+- make sure that all pUrl and qUrl are not processed by our form hander - we need raw urls
+- form protection by inserting unique tokens 
 - implement lock for site processing 
   - The standard unix trick of using a wrapper shell script to check for process name 
     is good enough to prevent multiple running scripts
-
-29 April 2012
-- session in mysqldb - also read p.z. blog about locking issues in mysql
-- php - how to read messages from bundles?
-- beanstalk to do real time async processing?
-- move scripts to new try-catch exception pattern, like the mail_password script
-- mysql : db filter and query maker | fix pagination f**k up also
-- how to do secure forms and store encrypted data in session 
-- Actually wiring send grid support
-- Message bundles in PHP - email messges
-
-
-
 
 27 April 2012
 - Easy/Better monitoring app
@@ -36,41 +58,11 @@
    - Easy way to push featured group/posts add/remove
    - Delete/Quarantine posts?
    - 
-- forgot password
-- post browsing - latest posts
-- User tags - show on a page instead of as cloud
 
-- Easy sharing toolbar
-- Save func
 - Better log errors
 - Mix photos with group browsing?
 - faceboo router => should detect scripts ending in .php => important!
-- Beanstalk for async messaging
 - interest based search/browsing?
-
-
-
-pinterest clones
-
-http://delicious.com/stacks/view/DSlZOC
-
-23 April
-- site map
-- group Alpha browsing
-- refactor code
-+ sitemaps - pretty imp.
-
-
-20 April
-+ Text only tile should be clickable 
-+ change image + text to image only for small tiles?
-+ item description - Add a big image by default
 + fix what we spew in logs for unknown URL patterns
 like: UNKNOWN_URL_PATTERN
-+ tumblroll style => for Also from 3mik
-+ dao.group.get_latest calls should use sc_group_master table now
-+  
-
-
-
 
