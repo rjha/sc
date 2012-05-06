@@ -57,9 +57,11 @@ namespace com\indigloo\sc\html {
             return $html;
         }
 
-        static function getToolbar($itemId) {
+        static function getToolbar($itemId,$loginId,$postLoginId) {
             $view = new \stdClass;
             $view->itemId = $itemId;
+            $view->followerId = $loginId;
+            $view->followingId = $postLoginId;
             $template = '/fragments/post/toolbar.tmpl' ;
             $html = Template::render($template,$view);
             return $html;

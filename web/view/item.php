@@ -38,6 +38,7 @@
                 webgloo.sc.home.addSmallTiles();
                 webgloo.sc.item.addLike();
                 webgloo.sc.item.addSave();
+                 webgloo.sc.item.addFollow();
                 $("a.gallery").fancybox();
 				
             });
@@ -75,7 +76,7 @@
                     <?php 
                         echo \com\indigloo\sc\html\Post::getGallery($images) ; 
                         echo \com\indigloo\sc\html\Post::getLinks($links,$siteDBRow) ; 
-                        echo \com\indigloo\sc\html\Post::getToolbar($itemId) ; 
+                        echo \com\indigloo\sc\html\Post::getToolbar($itemId,$loginId,$postDBRow['login_id']) ; 
                     ?>
                       <div id="item-tiles">
                         <h3> explore 3mik </h3>

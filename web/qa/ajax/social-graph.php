@@ -14,21 +14,13 @@
         echo $html;
         exit;
     }
-
-
-    //parameters
-    $loginId = Login::getLoginIdInSession();
-    $postId = Util::getArrayKey($_POST, "postId");
-    $action = Util::getArrayKey($_POST, "action");
-
-    $map = array();
-    $map["LIKE"] = 1 ;
-    $map["SAVE"] = 2 ;
     
-    $code = $map[$action];
+    $followerId = Util::getArrayKey($_POST, "followerId");
+    $followingId = Util::getArrayKey($_POST, "followingId");
 
-    $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
-    $bookmarkDao->add($loginId,$postId,$code);
+    
+    $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
+    $socialGraphDao->addFollower($followerId,$followingId);
     $html = array("code" => 200 , "message" => "success");
     $html = json_encode($html); 
     echo $html;

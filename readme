@@ -1,8 +1,9 @@
 
-
 06 May 2012
 ===========
 - Fix DB Errors - throw MySQLException from lower layers
+- Token expired bug!
+
 
 05 May 2012
 ===========
@@ -11,14 +12,15 @@ Missing Features
 - Avoid duplicate row insert on repeated clicks!
 - Login redirects for Ajax pages
 - Like + SAVE => add to item details
-- user account - show like/save/ left hand menu card!
-- email after registration 
 - Followers/Following
-- Need to fix the profile page : Ask for more data
-- Edit page - user groups - open in cards instead of as cloud
 - Redo all form scripts using exception handling bits
+- Edit page - user groups - open in cards instead of as cloud
+
+- user account - show like/save/ left hand menu card!
+- Need to fix the profile page : Ask for more data
 
 - Nice editing for monitoring app and user account
+- email after registration 
 - fix DB filter creation
 - fix named parameters inside SQL query?
     
@@ -49,6 +51,7 @@ what can I do?
      - install new cron scripts
      - logrotate : webgloo cron logs/webgloo app logs / nginx logs /sphinx logs 
      - update codebase
+     - adjust links to new webgloo repository
 
 
 

@@ -213,6 +213,25 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.init(options);
             webgloo.sc.SimplePopup.post(targetUrl,dataObj);
         }) ;
+    },
+     addFollow : function() {
+        $("a.follow-user-link").click(function(event){
+            event.preventDefault();
+            var dataObj = {}
+            var id = $(this).attr("id");
+            //parse id to get follower and following
+            var ids = id.split('|');
+            //u1 -> u2
+            dataObj.followerId  = ids[0] ;
+            dataObj.followingId = ids[1];
+            
+            var targetUrl = "/qa/ajax/social-graph.php";
+            //open popup
+            var options = {};
+            options.dataType = "json" ;
+            webgloo.sc.SimplePopup.init(options);
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
+        }) ;
     }
 }
 
