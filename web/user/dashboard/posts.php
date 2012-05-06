@@ -47,6 +47,21 @@
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
         
+        <script>
+            $(document).ready(function(){
+                //show options on widget hover
+                $('.widget .options').hide();
+                $('.widget').mouseenter(function() { 
+                    $(this).find('.options').toggle(); 
+                    $(this).css("background-color", "#F0FFFF");
+                });
+                $('.widget').mouseleave(function() { 
+                    $(this).find('.options').toggle(); 
+                    $(this).css("background-color", "#FFFFFF");
+                }); 
+            });
+            
+        </script>
 
     </head>
 

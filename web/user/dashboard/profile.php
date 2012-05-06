@@ -8,20 +8,20 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login;
-    
+     
     //$qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
 
     if (is_null($loginId)) {
-        trigger_error("Error : NULL login_id on user dashboard", E_USER_ERROR);
+        trigger_error("Error : NULL or invalid login_id", E_USER_ERROR);
     }
     
     $userDao = new \com\indigloo\sc\dao\User();
     $userDBRow = $userDao->getOnLoginId($loginId);
 
     if (empty($userDBRow)) {
-        trigger_error("No user record found for given login_id", E_USER_ERROR);
+        trigger_error("No user exists with this login_id", E_USER_ERROR);
     }
    
 ?>

@@ -1,4 +1,3 @@
-	@charset "utf-8";
 	
 	/* Global resets */
 	
@@ -206,17 +205,9 @@
 		color:red ;
 	}
 	
-	
-	/* ----- sc app styles ------ */
-	
-	
-	.author{
-		padding: 7px 0px 7px 0px ;
-		font-size : 12px;
-        /* border-bottom : 1px solid #E8E7E3; */
-	}
-
+    
 	/* 100 percent big orange button */
+    /*
 	div .orange-button {
 		margin-bottom:10px;
 		margin-top:20px;
@@ -256,7 +247,7 @@
 		 font-weight:bold;
 		 text-align:center;
 	
-	}
+	}*/
 	
 	/* +widgets */
 	
@@ -266,8 +257,66 @@
 		width: 100%;
 		clear: both;
 	}
+    
+     .widget .options {
+        display:none ;
+        margin:0px;
+        padding:0px;
+        height:40px;
+        width:100%;
+        
+    }
+
+    .widget .options .links {
+        padding : 5px 5px 10px 30px;
+        font-size:13px;
+        line-height:18px;
+    }
+
+    .widget .options .links a {
+        color : #777;
+    }
+    
+    .widget .photo {
+		padding: 10px;
+		
+	}
+    
+    /* Any photo inside a widget can only go till 90%  */
+	.widget img {
+		max-width : 90% ;
+	}
 	
-	.widget h2 {
+	.widget .photo img {
+		max-width:90%;
+		border:6px solid #d5d5d5;
+		
+	}
+    
+    img.alignright {float:right; margin:0 0 1em 1em}
+	img.alignleft {float:left; margin:0 1em 1em 0}
+	img.aligncenter {display: block; margin-left: auto; margin-right: auto}
+	
+	.video .alignright {float:right; margin:0 0 1em 1em}
+	.video .alignleft {float:left; margin:0 1em 1em 0}
+	.video .aligncenter {display: block; margin-left: auto; margin-right: auto}
+	
+    .widget a{
+		text-decoration: none;
+	}
+	.widget a:hover { 
+        text-decoration:underline; 
+    }
+    
+	.widget p{
+		margin-bottom: 5px;
+		text-align :justify ;
+		/* for a very long single word use word-wrap trick */
+		/* word-wrap: break-word; */
+        /* text-indent :20px; */
+	}
+    
+	/* .widget h2 {
 		font-weight:normal;
 		font-family: 'Georgia','Lucida Grande','Verdana','Arial','Sans-Serif';
 		color: #21759B;
@@ -291,33 +340,6 @@
 		font-size:12px;
 	}
 	
-	.widget .photo {
-		padding: 10px;
-		background-color: #fff;
-	   
-	}
-	
-	
-	/* Any photo inside a widget can only go till 90%  */
-	.widget img {
-		max-width : 90% ;
-	}
-	
-	.widget .photo img {
-		max-width:90%;
-		border:6px solid #d5d5d5;
-		
-	}
-	
-	/* image and video alignment */
-	
-	img.alignright {float:right; margin:0 0 1em 1em}
-	img.alignleft {float:left; margin:0 1em 1em 0}
-	img.aligncenter {display: block; margin-left: auto; margin-right: auto}
-	
-	.video .alignright {float:right; margin:0 0 1em 1em}
-	.video .alignleft {float:left; margin:0 1em 1em 0}
-	.video .aligncenter {display: block; margin-left: auto; margin-right: auto}
 	
 	.widget .embedCode { margin:10px;}
 	
@@ -334,14 +356,7 @@
 		width: 100%;
 	}
 	
-	.widget a{
-		text-decoration: none;
-	}
-	.widget a:hover { 
-        text-decoration:underline; 
-    }
 	
-	/* Regular Post */
 	.widget .regular {
 		font-size:        13px;
 		line-height:      18px;
@@ -355,13 +370,7 @@
 		padding: 9px 9px 0;
 		background: none;
 	}
-	.widget .regular p{
-		margin-bottom: 5px;
-		text-indent :20px;
-		text-align :justify ;
-		/* for a very long single word use word-wrap trick */
-		/* word-wrap: break-word; */
-	}
+	
 	.widget .regular strong{
 		font-weight: bold;
 	}
@@ -373,8 +382,6 @@
 		margin-left:23px;
 		padding:0 0 10px 0px;
 	}
-	
-	/* @todo div regular style for text ol li */
 	
 	.widget div.regular ol  li{
 		list-style:decimal; 
@@ -398,13 +405,15 @@
 		text-align:center;
 		
 	}
-	
-	.tags {
+    .tags {
 		font-size: 13px;
 		font-family : arial,sans-serif,serif;
 		padding:10px 0px 20px 10px;
 		color:#AAA;
 	}
+    */
+	
+	
 	
 	/* +fancybox stuff */
 	.fancybox-container {
@@ -420,13 +429,6 @@
 	
 	.hide-me {
 		display:none ;
-	}
-	div#link-data {
-	
-	}
-	
-	div#media-data {
-	
 	}
 	
 	div#link-container {
@@ -471,11 +473,11 @@
 	}
 	
 	#link-data {
-		   margin-top:20px;
+        margin-top:20px;
 	}
 	
 	#media-data {
-		   width: 580px;
+        width: 580px;
 	}
 	
 	div .stackImage{
@@ -591,7 +593,11 @@
 		padding: 3px 20px 3px 0px;
 
 	}	
-
+    
+	.author{
+		padding: 7px 0px 7px 0px ;
+		font-size : 12px;
+	}
 	.author img { 
 		float:left; 
 		padding:0px 10px 0px 0px;
@@ -879,7 +885,7 @@
         color: #333 ;
         border: 1px solid #D2D2D2;
         background-color: white;
-        font-size: 13x;
+        font-size: 13px;
         font-weight: normal;
     }
 

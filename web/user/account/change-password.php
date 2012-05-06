@@ -21,13 +21,14 @@
 
     //tokens for use in next screen
     $ftoken = Util::getMD5GUID();
+    $email = $userDBRow['email'];
     $femail = Util::encrypt($email);
     $gWeb = \com\indigloo\core\Web::getInstance();
     $gWeb->store("change.password.email",$femail);        
     $gWeb->store("change.password.token",$ftoken);    
 
     $title = $userDBRow['email'];
-    $pUrl = "/user/dashboard.php";
+    $pUrl = "/user/dashboard/profile.php";
     $formUrl = "/user/account/form/change-password.php" ;
     include($_SERVER['APP_WEB_DIR'] . '/user/account/inc/password-form.inc');
    

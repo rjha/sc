@@ -36,7 +36,7 @@
             }
             
             //success
-            header("Location: /user/dashboard.php ");
+            header("Location: /user/dashboard/profile.php ");
 
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);

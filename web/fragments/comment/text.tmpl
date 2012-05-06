@@ -1,29 +1,26 @@
 
-<div class="widget bbd5">
+<div class="widget">
 	<div class="row">
 		<div class="span7">
-		   ~~$view->comment~
-		   <b>in reply to </b> <a href="/item/~~$view->itemId~"> ~~$view->title~</a>
+		   <p> ~~$view->comment~
+            <b>in reply to </b> <a href="/item/~~$view->itemId~"> ~~$view->title~</a>
+           </p>
+            <div class="options">
+                <div class="links">
+                    <a href="/qa/comment/edit.php?id=~~$view->encodedId~"><i class="icon-edit"></i>&nbsp;Edit</a>
+                    &nbsp;|&nbsp;
+                    <a href="/qa/comment/delete.php?id=~~$view->encodedId~"><i class="icon-remove"></i>&nbsp;Delete</a>
+                </div>
+            </div>
 		</div> <!-- span7 -->
 
 		<div class="span2">
 			<div class="author">
 				<div class="meta">
-					<span class="b">~~$view->userName~</span>
-					<br>
 					<span class="b">~~$view->createdOn ~</span>
 				</div>	
 			</div>
-			~if($view->isLoggedInUser) {~
-			<div class="btn-group">
-				<a data-toggle="dropdown" href="#">Actions<span class="caret"></span> </a>
-				  <ul class="dropdown-menu">
-					<li> <a href="/qa/comment/edit.php?id=~~$view->encodedId~">Edit</a></li>
-					<li> <a href="/qa/comment/delete.php?id=~~$view->encodedId~">Delete</a> </li>
-					
-				  </ul>
-			</div>	
-			~}~
+			
 		</div> <!-- span2 -->
 	</div> <!-- row -->
 </div>

@@ -8,7 +8,7 @@ namespace com\indigloo\sc\html {
     
     class User {
         
-		static function get3mikProfile($loginId,$userDBRow) {
+		static function get3mikProfile($userDBRow) {
 		    $html = NULL ;
 			$view = new \stdClass;
 			$template = '/fragments/user/profile/3mik.tmpl' ;
@@ -21,7 +21,7 @@ namespace com\indigloo\sc\html {
             return $html ;
 		}
 		
-		static function getTwitterProfile($loginId,$userDBRow) {
+		static function getTwitterProfile($userDBRow) {
 		    $html = NULL ;
 			$view = new \stdClass;
 			$template = '/fragments/user/profile/twitter.tmpl' ;
@@ -39,7 +39,7 @@ namespace com\indigloo\sc\html {
             return $html ;
 		}
 
-		static function getFacebookProfile($loginId,$userDBRow) {
+		static function getFacebookProfile($userDBRow) {
 		    $html = NULL ;
 			$view = new \stdClass;
 			$template = '/fragments/user/profile/facebook.tmpl' ;
@@ -69,13 +69,13 @@ namespace com\indigloo\sc\html {
 
 			switch($provider) {
 				case \com\indigloo\sc\auth\Login::MIK :
-					$html = self::get3mikProfile($loginId,$userDBRow);
+					$html = self::get3mikProfile($userDBRow);
 					break;
 				case \com\indigloo\sc\auth\Login::FACEBOOK :
-					$html = self::getFacebookProfile($loginId,$userDBRow);
+					$html = self::getFacebookProfile($userDBRow);
 					break;
 				case \com\indigloo\sc\auth\Login::TWITTER :
-					$html = self::getTwitterProfile($loginId,$userDBRow);
+					$html = self::getTwitterProfile($userDBRow);
 					break;
 				default:
 					trigger_error("Unknown user provider",E_USER_ERROR);

@@ -1,30 +1,28 @@
-<div class="widget bbd5">
+<div class="widget">
+   
 	<div class="row">
 		<div class="span7">
-			~~$view->description~
-		
+			<p> ~~$view->description~  &nbsp; <a href="/item/~~$view->itemId~">more&rarr;</a> </p>
+           
+            <div class="options">
+                <div class="links">
+                    <a href="/qa/edit.php?id=~~$view->itemId~"><i class="icon-edit"></i>&nbsp;Edit</a>
+                    &nbsp;|&nbsp;
+                    <a href="/qa/delete.php?id=~~$view->itemId~"><i class="icon-remove"></i>&nbsp;Delete</a>
+                </div>
+            </div>
 		</div> <!-- span7 -->
 		<div class="span2">
-			<div class="author">
+			<div class="author p10">
 				<div class="meta">
-					<span class="b">~~$view->userName~</span>
-					<br>
 					<span class="b">~~$view->createdOn~</span>
 				</div>	
-				<div> <a href="/item/~~$view->itemId~">more&rarr;</a></div>
+				
 			</div>
-			~if($view->isLoggedInUser) {~
-			<div class="btn-group">
-				<a data-toggle="dropdown" href="#">Actions<span class="caret"></span> </a>
-				  <ul class="dropdown-menu">
-                        <li> <a href="/qa/edit.php?id=~~$view->itemId~">Edit</a></li>
-                        <li> <a href="/qa/delete.php?id=~~$view->itemId~">Delete</a> </li>
-				  </ul>
-			</div>	
-			~}~
-
-	
+			
 		</div> <!-- span2 -->
 	</div> <!-- row -->
+    
+
 </div>
 
