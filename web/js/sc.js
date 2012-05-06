@@ -102,6 +102,12 @@ webgloo.sc.SimplePopup = {
         this.options.dataType = options.dataType || "text";
         this.options.type = options.type || "POST";
 
+        $(document).bind('keydown', function(e) { 
+            if (e.keyCode == 27) {
+                webgloo.sc.SimplePopup.close();
+            }
+        }); 
+
         $("a#simple-popup-close").click(function(event) {
             event.preventDefault();
             webgloo.sc.SimplePopup.close();
