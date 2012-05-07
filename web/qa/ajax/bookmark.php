@@ -5,6 +5,7 @@
     
     use \com\indigloo\Util as Util;
     use \com\indigloo\sc\auth\Login as Login;
+    
     set_error_handler('webgloo_ajax_error_handler');
 
     //use login is required for bookmarking
@@ -15,20 +16,32 @@
         exit;
     }
 
-
     //parameters
     $loginId = Login::getLoginIdInSession();
-    $postId = Util::getArrayKey($_POST, "postId");
+    $itemId = Util::getArrayKey($_POST, "itemId");
     $action = Util::getArrayKey($_POST, "action");
 
     $map = array();
     $map["LIKE"] = 1 ;
     $map["SAVE"] = 2 ;
+    $map["REMOVE"] = 32 ;
     
     $code = $map[$action];
 
     $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
-    $bookmarkDao->add($loginId,$postId,$code);
+    
+    switch($code) {
+        case 1:
+        case 2:
+            $bookmarkDao->add($loginId,$itemId,$code);
+            break;
+        case 32 :
+             $bookmarkDao->unfavorite($loginId,$itemId);
+             break ;
+        default :
+            break;
+    }
+    
     $html = array("code" => 200 , "message" => "success");
     $html = json_encode($html); 
     echo $html;

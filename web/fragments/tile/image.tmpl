@@ -1,9 +1,17 @@
 <div class="tile">
    <div class="options">
         <div class="links">
+            ~if($view->hasLike){~
             <a id="~~$view->itemId~" class ="like-post-link" href="">Like&nbsp;<i class="icon-heart"></i></a>&nbsp;
+            ~}~
+            ~if($view->hasSave){~
             <a id="~~$view->itemId~" class="save-post-link" href="">Save&nbsp;</a>&nbsp;
-            <a href="/item/~~$view->itemId~">More</a>&nbsp;
+            ~}~
+            
+            ~if($view->hasRemove){~
+            <a id="~~$view->itemId~" class ="remove-post-link" href="">Remove&nbsp;<i class="icon-remove"></i></a>&nbsp;
+            ~}~
+
         </div>
     </div>
 	<div class="photo">         
@@ -13,7 +21,7 @@
     </div>
 	
 	<div class="description">
-		~~$view->description~
+		<p> ~~$view->description~ </p>
 	</div>
 	   
 	<div class="author">

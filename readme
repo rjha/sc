@@ -1,12 +1,19 @@
+07 May 2012
+LIKE/Favorites page - pagination
+Following like twitter
+Fix pagination in MySQL layer
+DB exception handling fix
+Add filters to UI
+
+
 
 06 May 2012
-===========
 - Fix DB Errors - throw MySQLException from lower layers
 - Token expired bug!
 
 
 05 May 2012
-===========
+
 Missing Features
 - Bind ESC key to simple popup
 - Avoid duplicate row insert on repeated clicks!

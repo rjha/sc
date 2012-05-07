@@ -36,9 +36,8 @@
 
                 webgloo.sc.home.addNavGroups();
                 webgloo.sc.home.addSmallTiles();
-                webgloo.sc.item.addLike();
-                webgloo.sc.item.addSave();
-                 webgloo.sc.item.addFollow();
+                webgloo.sc.item.addActions();
+                
                 $("a.gallery").fancybox();
 				
             });

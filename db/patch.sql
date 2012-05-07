@@ -987,3 +987,8 @@ create table sc_follow(
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
+--
+-- 07 May 2012
+--
+
+alter table sc_user_bookmark change post_id item_id int not null ;

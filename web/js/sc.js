@@ -70,9 +70,9 @@ webgloo.sc.home = {
         $('.tile').mouseenter(function() { $(this).find('.options').toggle(); });
         $('.tile').mouseleave(function() { $(this).find('.options').toggle(); }); 
 
-        //Add like + save events
-        webgloo.sc.item.addLike();
-        webgloo.sc.item.addSave();
+        //Add item toolbar actions
+        webgloo.sc.item.addActions();
+        
     },
     addSmallTiles : function() {
         var $container = $('#tiles');
@@ -185,12 +185,12 @@ webgloo.sc.SimplePopup = {
 }
 
 webgloo.sc.item = {
-    addLike : function() {
+    addActions : function() {
         //add like & save callbacks
         $("a.like-post-link").click(function(event){
             event.preventDefault();
             var dataObj = {}
-            dataObj.postId  = $(this).attr("id");
+            dataObj.itemId  = $(this).attr("id");
             dataObj.action = "LIKE" ;
             var targetUrl = "/qa/ajax/bookmark.php";
             //open popup
@@ -199,12 +199,11 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.init(options);
             webgloo.sc.SimplePopup.post(targetUrl,dataObj);
         }) ;
-    },
-    addSave : function() {
+  
         $("a.save-post-link").click(function(event){
             event.preventDefault();
             var dataObj = {}
-            dataObj.postId  = $(this).attr("id");
+            dataObj.itemId  = $(this).attr("id");
             dataObj.action = "SAVE" ;
             var targetUrl = "/qa/ajax/bookmark.php";
             //open popup
@@ -213,8 +212,20 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.init(options);
             webgloo.sc.SimplePopup.post(targetUrl,dataObj);
         }) ;
-    },
-     addFollow : function() {
+        //unfavorite
+        $("a.remove-post-link").click(function(event){
+            event.preventDefault();
+            var dataObj = {}
+            dataObj.itemId  = $(this).attr("id");
+            dataObj.action = "REMOVE" ;
+            var targetUrl = "/qa/ajax/bookmark.php";
+            //open popup
+            var options = {};
+            options.dataType = "json" ;
+            webgloo.sc.SimplePopup.init(options);
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
+        }) ;
+    
         $("a.follow-user-link").click(function(event){
             event.preventDefault();
             var dataObj = {}

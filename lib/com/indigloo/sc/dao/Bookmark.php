@@ -8,13 +8,13 @@ namespace com\indigloo\sc\dao {
 	
     class Bookmark {
 
-        function add($loginId,$postId,$action) {
-            $row = mysql\Bookmark::getRowCount($loginId,$postId,$action);
+        function add($loginId,$itemId,$action) {
+            $row = mysql\Bookmark::find($loginId,$itemId,$action);
             $count = $row['count'] ;
             $code = 0 ;
             if($count == 0 ) {
                 //actually insert
-                $code = mysql\Bookmark::add($loginId,$postId,$action);
+                $code = mysql\Bookmark::add($loginId,$itemId,$action);
                 return $code ;
             }
 
@@ -26,8 +26,13 @@ namespace com\indigloo\sc\dao {
             return $code ;
         }
 
-        function getOnLoginId($loginId) {
-			$rows = mysql\Bookmark::getOnLoginId($loginId);
+        function unfavorite($loginId,$itemId) {
+            $code = mysql\Bookmark::unfavorite($loginId,$itemId);
+            return $code ;
+        }
+        
+        function getOnLoginId($loginId,$action) {
+			$rows = mysql\Bookmark::getOnLoginId($loginId,$action);
 			return $rows ;
 		}
 		

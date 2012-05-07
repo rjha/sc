@@ -6,7 +6,9 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\util\StringUtil as StringUtil ;
+    
     use \com\indigloo\sc\util\PseudoId as PseudoId;
+    use \com\indigloo\sc\ui\Constants as UIConstants ;
     
     class Post {
 
@@ -112,7 +114,7 @@ namespace com\indigloo\sc\html {
 			
         }
 
-		static function getTile($postDBRow) {
+		static function getTile($postDBRow,$options=NULL) {
 
 		    $html = NULL ;
 			$imagesJson = $postDBRow['images_json'];
@@ -120,6 +122,15 @@ namespace com\indigloo\sc\html {
 			
 			$view = new \stdClass;
 			$view->description = Util::abbreviate($postDBRow['description'],160);
+            if(is_null($options)) {
+                $options = UIConstants::TILE_ALL & ~UIConstants::TILE_REMOVE ;
+            }
+            
+            //set action flags
+            $view->hasLike = $options & UIConstants::TILE_LIKE ;
+            $view->hasSave = $options & UIConstants::TILE_SAVE ;
+            $view->hasRemove = $options & UIConstants::TILE_REMOVE  ;
+            $view->hasMore = $options & UIConstants::TILE_MORE ;
 
 			$view->userPageURI = "/pub/user/".PseudoId::encode($postDBRow['login_id']);
 			$view->id = $postDBRow['id'];
