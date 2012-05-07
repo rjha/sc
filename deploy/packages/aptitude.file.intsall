@@ -1,0 +1,7 @@
+# to simulate the install (to check what is available etc.)
+# sudo aptitude --simulate install $(< wheezy.add.aptitude)
+# wheezy does not have package php5-suhosin and libmysqlclient16-dev
+# Actual install
+# sudo aptitude install $(< wheezy.add.aptitude)
+#
+

@@ -1,0 +1,34 @@
+cd to /etc/nginx
+make backup of original nginx.conf, fastcgi_params 
+delete sites-available directory
+delete sites-enabled/default file
+Add an entry for mint.3mik.com in /etc/hosts file
+copy our nginx.conf, fastcgi_params and sites-enabled/mint.3mik.com vhost file
+
+cd to /var
+create www/htdocs and vhosts/mint.3mik.com/htdocs folder
+create /var/www/apps folder
+copy index.html and echo.php to /var/www/vhosts/mint.3mik.com/htdocs folder
+
+setup php5-fpm now
+Go to /etc/php5/fpm folder
++ copy right fpm pool config file www.config to /etc/php5/fpm/pool.d/
+  - Make sure www.conf has listen directive set for TCP sockets on port 9100
++ copy right php.ini to 
+  - /etc/php5/fpm/php.ini
+  - /etc/php5/cgi/php.ini
+  - /etc/php5/cli/php.ini
+
+  comment out suhosin for debian wheezy
+
+Go to /var/www/vhosts/mint.3mik.com/htdocs
+ + copy index.html and echo.php 
+
+
+restart php-fpm
+/etc/init.d/php5-fpm [stop|start|restart]
+restart nginx
+/etc/init.d/nginx [stop|start|restart]
+
+
+copy nginx logrotate file to /etc/logrotate.d/ folder
