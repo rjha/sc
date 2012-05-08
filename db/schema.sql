@@ -353,7 +353,7 @@ DELIMITER ;
 DROP TABLE IF EXISTS  sc_user_bookmark ;
 CREATE TABLE  sc_user_bookmark  (
    id  int(11) NOT NULL AUTO_INCREMENT,
-   post_id  int(11) NOT NULL,
+   item_id  int(11) NOT NULL,
    login_id  int(11) NOT NULL,
    action  int(11) NOT NULL,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
