@@ -1,0 +1,16 @@
+
+To list cron jobs
+$sudo crontab -l
+
+To install a cron job
+$sudo crontab -e
+
++ existing cron jobs
+
+*/15 * * * * /home/rjha/cron/site-worker.sh >> /home/rjha/web/log/cron.log 2>&1 
+19,49  * * * * /usr/local/sphinx/bin/indexer --quiet --all --rotate >> /usr/local/sphinx/var/log/cron.log 2>&1 
+
+
+
+sudo chmod +x ~/cron/site-worker.php 
+sudo chmod +x ~/cron/site-worker.sh 

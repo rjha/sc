@@ -1,0 +1,18 @@
+/home/rjha/web/log/*.log {
+	size 2M
+	weekly	
+	missingok
+	rotate 3
+	compress
+	delaycompress
+	notifempty
+	create 640 www-data www-data
+}
+
+/usr/local/sphinx/var/log/*.log {
+        daily
+        missingok
+        rotate 3
+        create 640
+}
+

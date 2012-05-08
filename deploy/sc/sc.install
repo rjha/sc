@@ -1,0 +1,45 @@
+Pre-requisites
+Sphinx
+Nginx
+Php
+Mysql
+
+sudo chown -R www-data:www-data compiled
++ copy sc-app.inc and sc_config.ini
++ create symlink from /var/www/vhosts/mint.3mik.com/htdocs -> source area
+
+rjha@wheezy:/var/www/vhosts/mint.3mik.com$ sudo ln -nfs ~/code/github/sc/web htdocs
+
+
+
+$sudo mkdir -p web/log
+$sudo mkdir -p web/upload
+$sudo chown -R www-data:www-data web
+
+create symlinks inside web area
+
+rjha@wheezy:~/code/github/sc/web$ ln -nfs ~/web/upload/ media
+rjha@wheezy:~/code/github/sc/web$ ln -nfs ../webgloo/web/3p/ 3p
+rjha@wheezy:~/code/github/sc/web$ mkdir compiled
+$sudo chown -R www-data:www-data compiled
+
+
+Add to .gitignore
+web/compiled
+web/media
+web/3p
+
+
+Restart services and it should work
+
+check
++ log file location in sc_config.ini
+
+
+
+
+
+
+
+
+

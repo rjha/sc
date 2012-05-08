@@ -1,0 +1,18 @@
+
+mysql> create database scdb  character set utf8 collate utf8_general_ci ;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> grant all privileges on scdb.* to 
+    -> 'gloo'@'localhost' identified by 'password'
+    -> with grant option;
+Query OK, 0 rows affected (0.33 sec)
+
+mysql> \q
+Bye
+rjha@wheezy:/mnt/hgfs/vm/backup$ scp -P22001 rjha@www.indigloo.com:/home/rjha/server/mysql/scdb.latest.sql .
+rjha@www.indigloo.com's password: 
+scdb.latest.sql                    
+
+@wheezy:~$ mysql -u root -Dscdb < scdb.latest.sql 
+
+

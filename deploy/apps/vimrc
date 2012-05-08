@@ -1,0 +1,32 @@
+set ts=4
+set shiftwidth=4
+set expandtab 
+"set nu
+"highlight search
+set hlsearch
+
+call pathogen#infect()
+syntax on
+filetype plugin indent on
+"detect custom file types
+au BufNewFile,BufRead *.inc set filetype=php
+au BufNewFile,BufRead *.tmpl set filetype=php
+
+" to automatically start and close NERDTree
+"autocmd vimenter * NERDTree
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" map windows like copy +paste 
+nmap <C-V> "+gP
+imap <C-V> <ESC><C-V>
+vmap <C-C> "+y
+vmap <C-x> "+c
+
+" get rid of swp files in working dir
+"
+set backupdir=/home/rjha/nuke/swap
+set backup
+set directory=/home/rjha/nuke/swap
+
+" get rid of toolbar
+set guioptions-=T

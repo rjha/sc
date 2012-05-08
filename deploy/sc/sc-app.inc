@@ -10,10 +10,13 @@
 // that can also be defined in terms of APP_ROOT_DIR
 //
   
-$_SERVER['APP_LIB_PATH'] = array('/Users/rjha/code/localo/webgloo/lib','/Users/rjha/code/localo/sc/lib') ;
+$_SERVER['APP_LIB_PATH'] = array(
+    0 => '/home/rjha/code/github/sc/webgloo/lib',
+    1 => '/home/rjha/code/github/sc/lib') ;
+
 $_SERVER['APP_CONFIG_PATH'] = '/var/www/apps/sc_config.ini' ;
-$_SERVER['APP_CLASS_LOADER'] = '/Users/rjha/code/localo/webgloo/lib/com/indigloo/class_loader.inc' ;
-$_SERVER['APP_WEB_DIR'] = '/var/www/vhosts/www.sc.com/htdocs' ;
-$_SERVER['WEBGLOO_LIB_ROOT'] = '/Users/rjha/code/localo/webgloo/lib';
+$_SERVER['APP_CLASS_LOADER'] = '/home/rjha/code/github/sc/webgloo/lib/com/indigloo/class_loader.inc' ;
+$_SERVER['APP_WEB_DIR'] = '/var/www/vhosts/mint.3mik.com/htdocs' ;
+$_SERVER['WEBGLOO_LIB_ROOT'] = '/home/rjha/code/github/sc/webgloo/lib';
  
 ?>
