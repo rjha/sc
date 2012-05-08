@@ -62,7 +62,8 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
             $sql = "select q.*,l.name as user_name  from sc_post q, sc_login l where q.login_id = l.id ";
-
+            
+            
             if(Util::tryArrayKey($filter,self::FEATURE_COLUMN)) {
                 $value = $filter[self::FEATURE_COLUMN]; 
                 settype($value,"integer");
@@ -118,11 +119,17 @@ namespace com\indigloo\sc\mysql {
             return $rows;
 		}
 		
-		static function getLatest($limit,$dbfilter) {
+		static function getLatest($limit,$filters) {
 			
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
-
+            
+            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
+            $query = new Query($sql);
+            $query->filter($filters);
+            $sql = $query->getSQL();
+            echo $sql; exit ;
+            
 			$condition = '' ;
 			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
                 $loginId = $dbfilter[self::LOGIN_COLUMN]; 
@@ -130,7 +137,7 @@ namespace com\indigloo\sc\mysql {
 				$condition = " and q.login_id = ".$loginId;
 			}
 
-            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
+            
             $sql .= " where l.id=q.login_id ".$condition." order by q.id desc LIMIT ".$limit ;
 			
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
@@ -138,9 +145,13 @@ namespace com\indigloo\sc\mysql {
 			
 		}
 
-		static function getTotalCount($dbfilter) {
+		static function getTotalCount($filters) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-
+            $query = new Query(" select count(id) as count from sc_post ");
+            $query->filter($filters);
+            $sql = $query->getSQL();
+            
+            /*
 			$condition = '';
 			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
                 $loginId = $dbfilter[self::LOGIN_COLUMN]; 
@@ -151,9 +162,9 @@ namespace com\indigloo\sc\mysql {
             if(array_key_exists(self::DATE_COLUMN,$dbfilter)) {
 				$condition = " where created_on > (now() - interval 24 HOUR) ";
 			}
-
-
-            $sql = " select count(id) as count from sc_post ".$condition ;
+            
+            $sql = " ".$condition ; */
+            
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 

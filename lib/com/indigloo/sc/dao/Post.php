@@ -80,33 +80,31 @@ namespace com\indigloo\sc\dao {
 			return $rows ;
 		}
 
-		function getPaged($paginator,$filter=NULL) {
+		function getPaged($paginator,$filters=NULL) {
  
 			$limit = $paginator->getPageSize();
 
 			if($paginator->isHome()){
-				return $this->getLatest($limit,$filter);
+				return $this->getLatest($limit,$filters);
 				
 			} else {
-				$dbfilter = $this->createDBFilter($filter);
+			    
                 $params = $paginator->getDBParams();
 				$start = $params['start'];
 				$direction = $params['direction'];
 
-				$rows = mysql\Post::getPaged($start,$direction,$limit,$dbfilter);
+				$rows = mysql\Post::getPaged($start,$direction,$limit,$filters);
 				return $rows ;
 			}
 		}
 
-		function getLatest($limit,$filter=NULL) {
-			$dbfilter = $this->createDBFilter($filter);
-			$rows = mysql\Post::getLatest($limit,$dbfilter);
+		function getLatest($limit,$filters=NULL) {
+			$rows = mysql\Post::getLatest($limit,$filters);
 			return $rows ;
 		}
 		
-		function getTotalCount($filter=NULL) {
-			$dbfilter = $this->createDBFilter($filter);
-			$row = mysql\Post::getTotalCount($dbfilter);
+		function getTotalCount($filters=NULL) {
+			$row = mysql\Post::getTotalCount($filters);
             return $row['count'] ;
 		}
 
