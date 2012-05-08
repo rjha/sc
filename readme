@@ -1,88 +1,46 @@
-07 May 2012
-LIKE/Favorites page - pagination
-Following like twitter
-Fix pagination in MySQL layer
-DB exception handling fix
-Add filters to UI
+08 May 2012
 
+@todo Test
+ + login 
+ + registration
+ + FB registration
+ + Twitter registration
+ + Post create 
+ + Group process(site-worker.sh)
+ +3mik registration (success + error) 
+ + Test $pdo->exec errors : I suspect they do not throw errors - Group Process has to be redone now!
+ throwing exception depends on PDO settings. we do get errors from $dbh->execute. The error code mechanism is more for cases when you do not throw exception.
 
+@todo Code 
 
-06 May 2012
-- Fix DB Errors - throw MySQLException from lower layers
-- Token expired bug!
-
-
-05 May 2012
-
-Missing Features
-- Bind ESC key to simple popup
-- Avoid duplicate row insert on repeated clicks!
-- Login redirects for Ajax pages
-- Like + SAVE => add to item details
-- Followers/Following
-- Redo all form scripts using exception handling bits
-- Edit page - user groups - open in cards instead of as cloud
-
-- user account - show like/save/ left hand menu card!
-- Need to fix the profile page : Ask for more data
-
-- Nice editing for monitoring app and user account
-- email after registration 
-- fix DB filter creation
-- fix named parameters inside SQL query?
-    
-
-Nice @todo
-- Thumbnail creation - As a separate async process?
-
-Missing technology
-- ICU resource bundles and php-intl
-- Install a JOB queue for Async processes 
-- Look @ Redis and Beanstalkd
-- session in mysql - done
-- Sphinx delta indexing
-
-
-New item in Navigation Bar
-what can I do?
+1) Better log errors when site URL are bad like: UNKNOWN_URL_PATTERN
+2) - Mix photos with group browsing?
+3) Faceboo router => should detect scripts ending in .php => important!
+4) interest based search/browsing?
+5) make sure that all pUrl and qUrl are not processed by our form hander - we need raw urls
+Fix navigation for cancel button everywhere.
+6)Form protection by inserting unique tokens  - PRG or DejaVu' pattern to avoid form resubmission
+7) fix fancybox related errors in nginx 
+8) sitemap - automatically generate every week
+9) New item in Navigation Bar-  what can I do?
     - share
     - Ask
     - Answer
-    - 
-
- - sitemap - automatically generate every week
- - fix fancybox related errors in nginx 
- + server deployment
-     - Add new sc-app.inc and sc_config.ini now
-     - patch the db
-     - install new cron scripts
-     - logrotate : webgloo cron logs/webgloo app logs / nginx logs /sphinx logs 
-     - update codebase
-     - adjust links to new webgloo repository
-
-
-
-
-
-30 Apr 2012
-
-- make sure that all pUrl and qUrl are not processed by our form hander - we need raw urls
-- form protection by inserting unique tokens 
-- implement lock for site processing 
-  - The standard unix trick of using a wrapper shell script to check for process name 
-    is good enough to prevent multiple running scripts
-
-27 April 2012
-- Easy/Better monitoring app
-   - Ban User? Ban all posts by a user.
-   - Easy way to push featured group/posts add/remove
-   - Delete/Quarantine posts?
-   - 
-
-- Better log errors
-- Mix photos with group browsing?
-- faceboo router => should detect scripts ending in .php => important!
-- interest based search/browsing?
-+ fix what we spew in logs for unknown URL patterns
-like: UNKNOWN_URL_PATTERN
-
+10) MySQL session support - move to PDO / remove REPLACE with UPSERT
+11) Sphinx delta indexing
+12)Install a JOB queue for Async processes 
+- Look @ Redis and Beanstalkd
+- Async processes - registration /reset password mails , thumbnail creation
+13) store thumbnail information in media files
+14) Add correct file name (ending in .jpeg) for thumbnails
+15) create ICU resource bundles with php-intl
+16) fix DB filter creation - model on hibernate
+17) Need to fix the profile page : Ask for more data
+18) Redo all form scripts using exception handling bits
+19) Edit page - user groups - open in cards instead of as cloud
+20) Followers/Following page
+21) Fix DB Errors - throw MySQLException from lower layers
+22) Add pagination / filter / No record found messages everywhere (image?)
+23) Post widget actions - feature/unfeature
+24) Error page display fix - new page maybe?
+25) interest based browsing?

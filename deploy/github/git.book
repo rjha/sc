@@ -1,0 +1,47 @@
+
+
+Branch Basics
+http://git-scm.com/book/en/Git-Branching-Remote-Branches
++ create a local branch
+git branch xyz
+git checkout xyz
+To see your local branches
+git branch (the one you are working on will be starred)
+
+git branch -d xyz
+git branch --merged
+git branch --no-merged
+
+How to merge local branch changes into local master?
+ switch to local master branch
+ git checkout master
+ Do a merge
+ git merge xyz
+
+How to push your branch to origin server?
+    git push origin xyz
+    git push origin xyz:xyzworld
+    
+
+How do my collaborators get it?
+ git fetch origin
+ git merge origin/xyzworld
+
+ (This will merge in the default working branch - so beware!)
+
+To create a local branch for origin/xyzworld  branch (pushed by someone else)
+ git checkout -b myxyz origin/xyzworld
+ Now myxyz points to origin/xyzworld branch
+ How to push from local myxyz -> origin xyzworld branch
+ This is a tracking branch so any push from myxyz -> goes to origin/xyzworld 
+
+Delete local branch
+ - git branch -d myxyz
+
+Delete remote branch
+git push origin :xyzworld
+
+
+How to see changes between two branches?
+$git diff --name-status master..<branch>
+
