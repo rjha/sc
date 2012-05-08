@@ -93,7 +93,7 @@
                             }
 
                             foreach ($postDBRows as $postDBRow) {
-                                echo \com\indigloo\sc\html\Post::getWidget($gSessionLogin, $postDBRow);
+                                echo \com\indigloo\sc\html\Post::getWidget($postDBRow);
                             }
                         ?>
                    

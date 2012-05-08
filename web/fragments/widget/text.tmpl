@@ -2,13 +2,23 @@
    
 	<div class="row">
 		<div class="span7">
-			<p> ~~$view->description~  &nbsp; <a href="/item/~~$view->itemId~">more&rarr;</a> </p>
+			<p> ~~$view->description~  &nbsp; <a href="/item/~~$view->itemId~">more...</a> </p>
            
             <div class="options">
                 <div class="links">
-                    <a href="/qa/edit.php?id=~~$view->itemId~"><i class="icon-edit"></i>&nbsp;Edit</a>
-                    &nbsp;|&nbsp;
-                    <a href="/qa/delete.php?id=~~$view->itemId~"><i class="icon-remove"></i>&nbsp;Delete</a>
+                     ~if($view->hasEdit){~
+                        <a href="/qa/edit.php?id=~~$view->itemId~"><i class="icon-edit"></i>&nbsp;Edit</a>
+                    ~}~
+                    &nbsp;
+                    ~if($view->hasDelete){~
+                        <a href="/qa/delete.php?id=~~$view->itemId~"><i class="icon-remove"></i>&nbsp;Delete</a>
+                    ~}~
+                    ~if($view->hasFeature){~
+                        <a href="#"><i class="icon-star"></i>&nbsp;Feature</a>
+                    ~}~
+                    ~if($view->hasUnfeature){~
+                        <a href="#"><i class="icon-star-empty"></i>&nbsp;Unfeature</a>
+                    ~}~
                 </div>
             </div>
 		</div> <!-- span7 -->

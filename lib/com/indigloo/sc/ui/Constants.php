@@ -8,6 +8,11 @@
             const TILE_MORE =    8; 
             const TILE_ALL = 15;
             
+            const WIDGET_EDIT = 1 ;
+            const WIDGET_DELETE = 2 ;
+            const WIDGET_FEATURE = 4 ;
+            const WIDGET_UNFEATURE = 8 ;
+            const WIDGET_ALL = 15 ;
 
         }
 }

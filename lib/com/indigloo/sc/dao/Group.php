@@ -18,7 +18,7 @@ namespace com\indigloo\sc\dao {
 
 		function getLatest($limit,$filter=NULL) {
             $dbfilter = $this->createDBFilter($filter);
-			$rows = mysql\Group::getLatest($limit,$filter);
+			$rows = mysql\Group::getLatest($limit,$dbfilter);
 			return $rows ;
 		}
 

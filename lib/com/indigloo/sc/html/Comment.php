@@ -6,10 +6,11 @@ namespace com\indigloo\sc\html {
     use com\indigloo\sc\view\Media as MediaView ;
     use com\indigloo\Util as Util ;
     use \com\indigloo\sc\util\PseudoId as PseudoId;
+    use \com\indigloo\sc\ui\Constants as UIConstants ;
     
     class Comment {
 
-		static function getSummary($loginId,$commentDBRow) {
+		static function getSummary($commentDBRow) {
 		    $html = NULL ;
 			$view = new \stdClass;
 			$template = '/fragments/comment/summary.tmpl' ;
@@ -26,12 +27,15 @@ namespace com\indigloo\sc\html {
 
 		}
 
-        static function getWidget($gSessionLogin,$commentDBRow) {
+        static function getWidget($commentDBRow,$options=NULL) {
            
 		    $html = NULL ;
 			$view = new \stdClass;
 			$template = '/fragments/comment/text.tmpl' ;
 			
+            if(is_null($options)) {
+                $options = UIConstants::WIDGET_ALL ;
+            }
 			
 			$view->id = $commentDBRow['id'];
 			$view->encodedId = PseudoId::encode($view->id);
@@ -43,11 +47,7 @@ namespace com\indigloo\sc\html {
 			$view->comment = $commentDBRow['description'];
 			$view->createdOn = Util::formatDBTime($commentDBRow['created_on']);
 			$view->userName = $commentDBRow['user_name'] ;
-			$view->isLoggedInUser = false ;
-		
-			if(!is_null($gSessionLogin) && ($gSessionLogin->id == $commentDBRow['login_id'])){
-				$view->isLoggedInUser = true ;
-			} 
+			
 
 			$html = Template::render($template,$view);
             return $html ;

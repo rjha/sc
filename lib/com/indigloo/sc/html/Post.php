@@ -258,7 +258,7 @@ namespace com\indigloo\sc\html {
 
         }
 
-		static function getWidget($gSessionLogin,$postDBRow) {
+		static function getWidget($postDBRow,$options=NULL) {
            
 			$html = NULL ;
 
@@ -271,17 +271,19 @@ namespace com\indigloo\sc\html {
 			$view->id = $postDBRow['id'];
 			$view->itemId = PseudoId::encode($view->id);
 			
-				
 			$view->userName = $postDBRow['user_name'];
 			$view->createdOn = Util::formatDBTime($postDBRow['created_on']);
-			$view->isLoggedInUser = false ;
-
-			if(!is_null($gSessionLogin) && ($gSessionLogin->id == $postDBRow['login_id'])){
-				$view->isLoggedInUser = true ;
-			} 
 			
+            if(is_null($options)) {
+                $options = UIConstants::WIDGET_EDIT | UIConstants::WIDGET_DELETE ;
+            }
+            
+            $view->hasEdit = $options & UIConstants::WIDGET_EDIT ;
+            $view->hasDelete = $options & UIConstants::WIDGET_DELETE ;
+            $view->hasFeature = ($options & UIConstants::WIDGET_FEATURE) && !($postDBRow['is_feature']) ;
+            $view->hasUnfeature = ($options & UIConstants::WIDGET_FEATURE) && ($postDBRow['is_feature']) ;
+            
 			if(!empty($images) && (sizeof($images) > 0)) {
-				
 				/* image stuff */
 				$template = '/fragments/widget/image.tmpl' ;
 				

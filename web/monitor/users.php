@@ -1,6 +1,6 @@
 <?php
 
-    //sc/monitor/feedback.php
+    //sc/monitor/users.php
     include ('sc-app.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/admin.inc');
@@ -9,13 +9,11 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
     
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-    $feedbackDao = new \com\indigloo\sc\dao\Feedback();
-
-	$total = $feedbackDao->getTotalCount();
-	$pageSize =	20;
-	$paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);	
-	$feedbackDBRows = $feedbackDao->getPaged($paginator);
+    $loginDao = new \com\indigloo\sc\dao\Login();
+    $filter = array($loginDao::DATE_COLUMN => "24 HOUR");
+    $ldLoginCount = $loginDao->getTotalCount($filter); 
+    $loginCount = $loginDao->getTotalCount(); 
+    $logins = $loginDao->getLatest(5);
 
 ?>
 
@@ -34,16 +32,7 @@
         
         <script>
             $(document).ready(function(){
-                //show options on widget hover
-                $('.widget .options').hide();
-                $('.widget').mouseenter(function() { 
-                    $(this).find('.options').toggle(); 
-                    $(this).css("background-color", "#F0FFFF");
-                });
-                $('.widget').mouseleave(function() { 
-                    $(this).find('.options').toggle(); 
-                    $(this).css("background-color", "#FFFFFF");
-                }); 
+               
             });
             
         </script>
@@ -67,21 +56,15 @@
 
             <div class="row">
                 <div class="span9">
-                    <div class="page-header"> <h2> <?php echo $total ?> feedback </h2> </div>
+                    <div class="page-header"> <h2> <?php echo $loginCount ?> Users </h2> </div>
                     
-                        <?php
-                            $startId = NULL ;
-                            $endId = NULL ;
+                    <ol>
+                        <li> Users in last 24 HR : <?php echo $ldLoginCount; ?> </li>
+                    </ol>
 
-                            if(sizeof($feedbackDBRows) > 0 ) {
-                                $startId = $feedbackDBRows[0]['id'];
-                                $endId = $feedbackDBRows[sizeof($feedbackDBRows)-1]['id'];
-                            }
+                    <h3> Latest Users </h3>
+                    <?php echo \com\indigloo\sc\html\Login::getList($logins); ?>
 
-                            foreach($feedbackDBRows as $feedbackDBRow) {
-                                echo \com\indigloo\sc\html\Feedback::get($feedbackDBRow);
-                            }
-                        ?>
                    
                 </div>
                 <div class="span3">
@@ -89,7 +72,7 @@
                 </div>
             </div>
         </div> <!-- container -->
-        <?php $paginator->render('/monitor/feedback.php', $startId, $endId); ?>
+        
 
         <div id="ft">
         <?php include($_SERVER['APP_WEB_DIR'] . '/inc/site-footer.inc'); ?>

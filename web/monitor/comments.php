@@ -1,6 +1,5 @@
 <?php
-
-    //sc/monitor/feedback.php
+    //sc/monitor/comments.php
     include ('sc-app.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/admin.inc');
@@ -8,15 +7,17 @@
     use \com\indigloo\Util as Util;
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
+    use \com\indigloo\sc\auth\Login as Login;
+    use \com\indigloo\sc\ui\Constants as UIConstants;
     
     $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-    $feedbackDao = new \com\indigloo\sc\dao\Feedback();
-
-	$total = $feedbackDao->getTotalCount();
-	$pageSize =	20;
+    
+    $commentDao = new \com\indigloo\sc\dao\Comment() ;
+	$total = $commentDao->getTotalCount();
+    
+	$pageSize =	Config::getInstance()->get_value("user.page.items");
 	$paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);	
-	$feedbackDBRows = $feedbackDao->getPaged($paginator);
-
+	$commentDBRows = $commentDao->getPaged($paginator);
 ?>
 
 
@@ -24,7 +25,7 @@
 <html>
 
     <head>
-        <title> 3mik.com - feedback posted by users  </title>
+        <title> 3mik.com - All Comments  </title>
         <?php include($_SERVER['APP_WEB_DIR'] . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
@@ -67,19 +68,19 @@
 
             <div class="row">
                 <div class="span9">
-                    <div class="page-header"> <h2> <?php echo $total ?> feedback </h2> </div>
+                    <div class="page-header"> <h2><?php echo $total ?> Comments </h2> </div>
                     
                         <?php
                             $startId = NULL ;
                             $endId = NULL ;
 
-                            if(sizeof($feedbackDBRows) > 0 ) {
-                                $startId = $feedbackDBRows[0]['id'];
-                                $endId = $feedbackDBRows[sizeof($feedbackDBRows)-1]['id'];
-                            }
+                            if(sizeof($commentDBRows) > 0 ) { 
+                                $startId = $commentDBRows[0]['id'] ;
+                                $endId =   $commentDBRows[sizeof($commentDBRows)-1]['id'] ;
+                            }	
 
-                            foreach($feedbackDBRows as $feedbackDBRow) {
-                                echo \com\indigloo\sc\html\Feedback::get($feedbackDBRow);
+                            foreach($commentDBRows as $commentDBRow){
+                                echo \com\indigloo\sc\html\Comment::getWidget($commentDBRow);
                             }
                         ?>
                    
@@ -89,7 +90,7 @@
                 </div>
             </div>
         </div> <!-- container -->
-        <?php $paginator->render('/monitor/feedback.php', $startId, $endId); ?>
+        <?php $paginator->render('/monitor/comments.php', $startId, $endId); ?>
 
         <div id="ft">
         <?php include($_SERVER['APP_WEB_DIR'] . '/inc/site-footer.inc'); ?>
@@ -97,5 +98,6 @@
 
     </body>
 </html>
+
 
 

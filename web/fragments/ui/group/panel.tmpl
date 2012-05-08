@@ -1,5 +1,5 @@
  <div class="group-panel">
-    <b>Groups</b>&nbsp;
+    <b> ~~$view->total~ Featured Groups</b>&nbsp;
     <div class="box"> 
         Add Group 
         <input id="group-box" name="new-group" value="" />
@@ -11,7 +11,7 @@
     <div class="wrapper"> 
         <!-- first panel for new items -->
         <div class="groups">
-            <b>New </b>
+            <b>Pending... </b>
             <ul class="unstyled">
 
             </ul>
@@ -19,7 +19,7 @@
             
 
         <!-- rest of panels -->
-        ~for($count = 1 ; $count < ($view->total +1) ; $count = $count + $view->step ) {~
+        ~for($count = 0 ; $count < ($view->total) ; $count = $count + $view->step ) {~
             <div class="groups">
                 <ul class="unstyled">
                 ~for($i = $count ; (($i < $count+ $view->step) && ($i < $view->total)) ; $i++) {~

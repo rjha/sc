@@ -96,7 +96,7 @@
                         echo \com\indigloo\sc\html\Post::getEditBar($gSessionLogin,$postDBRow) ; 
                         echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ; 
                         foreach($commentDBRows as $commentDBRow) {
-                            echo \com\indigloo\sc\html\Comment::getSummary($loginId,$commentDBRow) ;
+                            echo \com\indigloo\sc\html\Comment::getSummary($commentDBRow) ;
                         }
                         include($_SERVER['APP_WEB_DIR'].'/qa/inc/comment.inc') ; 
                     ?>

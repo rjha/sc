@@ -1,5 +1,5 @@
 <?php
-    //monitor/form/feature/group.php
+    //monitor/form/group/featured.php
     
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
@@ -15,9 +15,8 @@
         $fhandler = new Form\Handler('web-form-1', $_POST);
 		
         $fvalues = $fhandler->getValues();
-        $ferrors = $fhandler->getErrors();
 		$qUrl = $fvalues['q'];
-    
+        $gWeb = \com\indigloo\core\Web::getInstance();
         
         if ($fhandler->hasErrors()) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
@@ -29,12 +28,16 @@
             
             $group_slug = '' ;
             $slugs = Util::tryArrayKey($fvalues,'g'); 
-
+           
             if(!is_null($slugs)) {
+                
+                //remove duplicate entries
+                $slugs = array_unique($slugs);
                 //input - new groups are names / old ones are slugs
                 $slugs = array_map(array("\com\indigloo\util\StringUtil","convertNameToKey"),$slugs);
                 //db slugs are space separated for sphinx indexing
                 $group_slug = implode(Constants::SPACE,$slugs);
+                
             }
 
             $groupDao = new \com\indigloo\sc\dao\Group();

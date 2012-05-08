@@ -95,7 +95,7 @@
                             }	
 
                             foreach($commentDBRows as $commentDBRow){
-                                echo \com\indigloo\sc\html\Comment::getWidget($gSessionLogin,$commentDBRow);
+                                echo \com\indigloo\sc\html\Comment::getWidget($commentDBRow);
                             }
 
                         ?>

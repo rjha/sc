@@ -76,7 +76,7 @@
 					</div>
 					
 					<?php FormMessage::render(); ?>
-					<?php echo \com\indigloo\sc\html\Post::getWidget(NULL,$postDBRow); ?>
+					<?php echo \com\indigloo\sc\html\Post::getWidget($postDBRow); ?>
 
 					<form id="web-form1"  name="web-form1" action="/qa/form/delete.php" method="POST">
 						<div>

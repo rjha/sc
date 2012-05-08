@@ -74,7 +74,7 @@
 					</div>
 					
 					<?php FormMessage::render(); ?>
-					<?php echo \com\indigloo\sc\html\Comment::getWidget(NULL,$commentDBRow); ?>
+					<?php echo \com\indigloo\sc\html\Comment::getWidget($commentDBRow); ?>
 							
 					<form id="web-form1"  name="web-form1" action="/qa/comment/form/delete.php" method="POST">
 						<div>

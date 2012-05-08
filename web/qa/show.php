@@ -125,7 +125,7 @@
 				<div class="mt20">
 					<?php
 						foreach($commentDBRows as $commentDBRow) {
-							echo \com\indigloo\sc\html\Comment::getSummary($loginId,$commentDBRow) ;
+							echo \com\indigloo\sc\html\Comment::getSummary($commentDBRow) ;
 						}
 					?>
 				</div>
