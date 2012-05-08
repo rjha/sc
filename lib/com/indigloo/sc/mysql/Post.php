@@ -7,6 +7,10 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
+
+    use com\indigloo\sc\util\PDOWrapper;
+    use \com\indigloo\exception\DBException;
+    
     
     class Post {
         
@@ -38,10 +42,9 @@ namespace com\indigloo\sc\mysql {
             return $row;
 
         }
-
-
+        
          //@see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/ 
-         static function getRandom($limit) {
+        static function getRandom($limit) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
 
@@ -252,55 +255,71 @@ namespace com\indigloo\sc\mysql {
                                $categoryCode) {
 
 			
-			
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " insert into sc_post(title,description,login_id,links_json, " ;
-            $sql .= "images_json,group_slug,cat_code,created_on) ";
-            $sql .= " values(?,?,?,?,?,?,?,now()) ";
-
-            $code = MySQL\Connection::ACK_OK;
-			$lastInsertId = NULL;
-            $itemId = NULL ;
-
-            $stmt = $mysqli->prepare($sql);
+            try {
+                $sql1 = " insert into sc_post(title,description,login_id,links_json, " ;
+                $sql1 .= "images_json,group_slug,cat_code,created_on) ";
+                $sql1 .= " values(?,?,?,?,?,?,?,now()) ";
             
-            if ($stmt) {
-                $stmt->bind_param("ssissss",
-                        $title,
-                        $description,
-						$loginId,
-                        $linksJson,
-                        $imagesJson,
-                        $groupSlug,
-                        $categoryCode);
+                $flag = true ;
+                $dbh = PDOWrapper::getHandle();
+                //Tx start
+                $dbh->beginTransaction();
                 
-                      
-                $stmt->execute();
-
-                if ($mysqli->affected_rows != 1) {
-                    $code = MySQL\Error::handle(self::MODULE_NAME, $stmt);
+                //insert post
+                $stmt = $dbh->prepare($sql1);
+                $stmt->bindParam(1, $title);
+                $stmt->bindParam(2, $description);
+                $stmt->bindParam(3, $loginId);
+                $stmt->bindParam(4, $linksJson);
+                $stmt->bindParam(5, $imagesJson);
+                $stmt->bindParam(6, $groupSlug);
+                $stmt->bindParam(7, $categoryCode);
+                   
+                $flag = $stmt->execute();
+                
+                if(!flag){
+                    $dbh->rollBack();
+                    $dbh = null;
+                    $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
+                    trigger_error($message,E_USER_ERROR);
                 }
-                $stmt->close();
-
-            } else {
-                $code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
-            }
-			
-			if($code == MySQL\Connection::ACK_OK) {     
-                $lastInsertId = MySQL\Connection::getInstance()->getLastInsertId();
-                //update pseudo ID
-                $itemId = PseudoId::encode($lastInsertId);
+                
+                $postId = $dbh->lastInsertId();
+                settype($postId, "integer");
+                $itemId = PseudoId::encode($postId);
+                
                 if(strlen($itemId) > 32 ) {
                     trigger_error("exceeds pseudo_id column size of 32", E_USER_ERROR); 
                 }
 
-                $sql = " update sc_post set pseudo_id = %s where id = %d " ;
-                $sql = sprintf($sql,$itemId,$lastInsertId);
-                MySQL\Helper::executeSQL($mysqli,$sql);
+                $sql2 = "update sc_post set pseudo_id = :item_id where id = :post_id " ;
+                $stmt = $dbh->prepare($sql2);
+                $stmt->bindParam(":item_id", $itemId);
+                $stmt->bindParam(":post_id", $postId);
+                $flag = $stmt->execute();
                 
+                if(!flag){
+                    $dbh->rollBack();
+                    $dbh = null;
+                    $message = sprintf("DB PDO Error : code is  %s",$stmt->errorCode());
+                    trigger_error($message,E_USER_ERROR);
+                }
+                
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+                
+                return $itemId;
+                
+            } catch (PDOException $e) {
+                $dbh->rollBack();
+                $dbh = null;
+                Logger::getInstance()->error($e->getMessage());
+                $errorCode = $e->getCode();
+                $message = sprintf("Database error code %d",$errorCode);
+                throw new DBException($message,$errorCode);
             }
-	
-			return array('code' => $code, 'itemId' => $itemId) ;
+			
         }
 
 		static function delete($postId,$loginId) {

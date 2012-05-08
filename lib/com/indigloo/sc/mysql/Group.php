@@ -7,6 +7,9 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Constants as Constants ;
     
+    use \com\indigloo\sc\util\PDOWrapper ;
+    use \com\indigloo\exception\DBException;
+    
     class Group {
         
         const MODULE_NAME = 'com\indigloo\sc\mysql\Group';
@@ -158,18 +161,7 @@ namespace com\indigloo\sc\mysql {
             $sqlm3 = "update sc_site_tracker set group_flag = 1 where post_id = %d and version = %d " ;
 
             try {
-
-                $host = Config::getInstance()->get_value("mysql.host");
-                $dbname = Config::getInstance()->get_value("mysql.database");
-                $dsn = sprintf("mysql:host=%s;dbname=%s",$host,$dbname);
-
-                $user = Config::getInstance()->get_value("mysql.user");
-                $password = Config::getInstance()->get_value("mysql.password");
-                $dbh = new \PDO($dsn, $user, $password);
-
-                //throw exceptions
-                $dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
+                $dbh =  PDOWrapper::getHandle();
                 //Tx start
                 $dbh->beginTransaction();
 

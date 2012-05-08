@@ -8,7 +8,7 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\sc\mysql as mysql;
 
     class Twitter {
-		function getOrCreate($id,$name,$screenName,$location,$image) {
+		function getOrCreate($twitterId,$name,$screenName,$location,$image) {
 			$loginId = NULL ;
 
 			//is existing record?
@@ -20,12 +20,9 @@ namespace com\indigloo\sc\dao {
                 $message = sprintf("Login:Twitter:create :: id %s ,name %s, screenname %s \n",$id,$name,$screenName); 
                 Logger::getInstance()->info($message);
 
-				//create login 
-				$loginDao = new \com\indigloo\sc\dao\Login();
-				$data = $loginDao->create(\com\indigloo\sc\auth\Login::TWITTER,$name);
-				$loginId = $data['lastInsertId'];
-				//create twitter user
-				$this->create($id,$name,$screenName,$location,$image,$loginId);
+                $provider = \com\indigloo\sc\auth\Login::TWITTER ;
+                $loginId = mysql\Twitter::create($twitterId,$name,$screenName,$location,$image,$provider);
+                
 
 			} else {
 				//found
@@ -40,12 +37,7 @@ namespace com\indigloo\sc\dao {
 			$row = mysql\Twitter::getOnTwitterId($twitterId);
 			return $row ;
 		}
-
-		function create($twitterId,$name,$screenName,$location,$image,$loginId) {
-			mysql\Twitter::create($twitterId,$name,$screenName,$location,$image,$loginId);
-		}
-
-
+        
 	}
 }
 

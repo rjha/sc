@@ -20,9 +20,9 @@
             $fhandler->addRule('password', 'Password', array('required' => 1 , 'maxlength' => 32));
         
             $fvalues = $fhandler->getValues();
-            $ferrors = $fhandler->getErrors();
             $qUrl = '/user/register.php' ;
-        
+            $gWeb = \com\indigloo\core\Web::getInstance();
+            
             //captcha code
             
             $privatekey = "6Lc3p80SAAAAABtSCxk0iHeZDRrMxvC0XTTqJpHI";
@@ -38,42 +38,14 @@
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors(),1);
             }
-         
-            $userName = $fvalues['first_name']. ' '.$fvalues['last_name'];
-			$provider = \com\indigloo\sc\auth\Login::MIK ;
-
-            //create a new login 
+            
+            //create a new login + user
             $loginDao = new \com\indigloo\sc\dao\Login();
-            $data = $loginDao->create($provider,$userName);
-            $code = $data['code'];
-            if($code != 0 ) {
-                $message = "DB Error : code %d ";
-                $message = sprintf($message,$code);
-                throw new DBException($messge,$code);
-            }
-
-            $loginId = $data['lastInsertId'];
-
-            if(is_null($loginId)){
-                $messages = array("Null login Id in registration");
-				throw new UIException($messages,1);
-			}
-
-            $data = \com\indigloo\auth\User::create('sc_user',
-								$fvalues['first_name'],
+            $loginDao->create($fvalues['first_name'],
                                 $fvalues['last_name'],
-								$userName,
                                 $fvalues['email'],
-								$fvalues['password'],
-								$loginId);
-    
-            $code = $data['code'];
-            if($code != 0 ) {
-                $message = "DB Error : code %d ";
-                $message = sprintf($message,$code);
-                throw new DBException($message,$code);
-            }
-
+								$fvalues['password']);
+           
             //success
             $gWeb->store(Constants::FORM_MESSAGES,array("Registration success! Please login."));
             header("Location: /user/login.php");

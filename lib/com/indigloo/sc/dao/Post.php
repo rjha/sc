@@ -118,7 +118,7 @@ namespace com\indigloo\sc\dao {
                         $groupSlug,
                         $categoryCode) {
 			
-            $data = mysql\Post::create(
+            $itemId = mysql\Post::create(
 								$title,
 								$description,
 								$loginId,
@@ -127,7 +127,7 @@ namespace com\indigloo\sc\dao {
                                 $groupSlug,
                                 $categoryCode);
 			
-            return $data ;
+            return $itemId ;
         }
 		
 		

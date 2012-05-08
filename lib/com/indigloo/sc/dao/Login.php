@@ -23,13 +23,16 @@ namespace com\indigloo\sc\dao {
 
 		}
 
-		function create($provider,$name){
-            if(Util::tryEmpty($name)) {
+		function create($firstName,$lastName,$email,$password){
+            $provider = \com\indigloo\sc\auth\Login::MIK ;
+            
+            if(Util::tryEmpty($firstName) || Util::tryEmpty($lastName)) {
                 throw new DBException("User name is missing!",1);
             }
-
-			$data = mysql\Login::create($provider,$name);
-			return $data ;
+            
+            $userName = $firstName. ' '.$lastName ;
+			mysql\Login::create($provider,$userName,$firstName,$lastName,$email,$password);
+			
 		}
 
         function getTotalCount($filter=NULL) {

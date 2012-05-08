@@ -17,7 +17,7 @@
             $fhandler->addRule('password', 'Password', array('required' => 1, 'maxlength' => 32));
             
             $fvalues = $fhandler->getValues();
-            $ferrors = $fhandler->getErrors();
+            $gWeb = \com\indigloo\core\Web::getInstance();
             
             $qUrl = '/' ;
             if(array_key_exists('q',$_POST) && !empty($_POST['q'])) {
@@ -28,8 +28,7 @@
                 throw new UIException($fhandler->getErrors(),1);
             }
 
-            $data = \com\indigloo\auth\User::login('sc_user',$fvalues['email'],$fvalues['password']);
-            $code = $data['code'];
+            $code = \com\indigloo\auth\User::login('sc_user',$fvalues['email'],$fvalues['password']);
             
             if ($code < 0 ) {
                 $message = "Wrong login or password. Please try again!";

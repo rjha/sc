@@ -28,7 +28,7 @@
             }
 
             //form token
-            $ftoken = $fvalues['ftoken'];
+            
             $session_token = $gWeb->find("change.password.token",true);
             if($fvalues['ftoken'] != $session_token) {
                 $message = "form token does not match the value stored in session";
@@ -44,8 +44,8 @@
             $userDBRow = $userDao->getOnEmail($email);
 
             //send raw password
-            $data = WebglooUser::changePassword('sc_user',$userDBRow['id'],$email,$_POST['password']) ;
-			$code = $data['code'];
+            $code = WebglooUser::changePassword('sc_user',$userDBRow['id'],$email,$_POST['password']) ;
+			
             if($code != \com\indigloo\mysql\Connection::ACK_OK ) {
                 $message = sprintf("DB Error : code %d \n",$code);
                 throw new DBException($message,1);

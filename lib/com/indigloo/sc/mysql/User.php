@@ -54,7 +54,7 @@ namespace com\indigloo\sc\mysql {
 				$stmt->close();
 				
 			} else {
-				$code = Gloo_MySQL_Error::handle(self::MODULE_NAME, $mysqli);
+				$code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
 			}
 
 			return $code ;
@@ -78,7 +78,7 @@ namespace com\indigloo\sc\mysql {
 				$stmt->close();
 
 			} else {
-				$code = Gloo_MySQL_Error::handle(self::MODULE_NAME, $mysqli);
+				$code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
 			}
 
 			return $code ;

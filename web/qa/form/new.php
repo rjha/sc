@@ -25,8 +25,8 @@
             $fhandler->addRule('group_names', 'Tags', array('maxlength' => 64));
             
             $fvalues = $fhandler->getValues();
-            $ferrors = $fhandler->getErrors();
-
+            $gWeb = \com\indigloo\core\Web::getInstance();
+            
             $qUrl = $fvalues['q'];
             
             if ($fhandler->hasErrors()) {
@@ -40,25 +40,16 @@
             $postDao = new com\indigloo\sc\dao\Post();
 			$title = Util::abbreviate($fvalues['description'],128);		
 
-            $data = $postDao->create(
-								$title,
+            $itemId = $postDao->create($title,
                                 $fvalues['description'],
 								$gSessionLogin->id,
                                 $_POST['links_json'],
                                 $_POST['images_json'],
                                 $group_slug,
                                 $fvalues['category']);
-								
-   			$code = $data['code'];
-            if($code != 0 ) {
-                $message = "DB Error : code %d ";
-                $message = sprintf($message,$code);
-                throw new DBException($message,$code);
-            }
-
-
+		    
             //success
-            $location = "/item/".$data['itemId'];
+            $location = "/item/".$itemId;
             header("Location: /qa/thanks.php?q=".$location );
 
         } catch(UIException $ex) {
