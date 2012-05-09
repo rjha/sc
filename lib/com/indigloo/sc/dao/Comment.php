@@ -18,33 +18,28 @@ namespace com\indigloo\sc\dao {
 			return $rows ;
 		}
 
-		function getPaged($paginator,$filter=NULL) {
+		function getPaged($paginator,$filters) {
  
 			$limit = $paginator->getPageSize();
-
 			if($paginator->isHome()){
-				return $this->getLatest($limit,$filter);
-				
+				return $this->getLatest($limit,$filters);
 			} else {
+
                 $params = $paginator->getDBParams();
-				$dbfilter = $this->createDBFilter($filter);
 				$start = $params['start'];
 				$direction = $params['direction'];
-
-				$rows = mysql\Comment::getPaged($start,$direction,$limit,$dbfilter);
+				$rows = mysql\Comment::getPaged($start,$direction,$limit,$filters);
 				return $rows ;
 			}
 		}
 
-		function getLatest($limit,$filter=NULL) {
-			$dbfilter = $this->createDBFilter($filter);
-			$rows = mysql\Comment::getLatest($limit,$dbfilter);
+		function getLatest($limit,$filters) {
+			$rows = mysql\Comment::getLatest($limit,$filters);
 			return $rows ;
 		}
 		
-		function getTotalCount($filter=NULL) {
-			$dbfilter = $this->createDBFilter($filter);
-			$row = mysql\Comment::getTotalCount($dbfilter);
+		function getTotalCount($filters) {
+			$row = mysql\Comment::getTotalCount($filters);
             return $row['count'] ;
 		}
 

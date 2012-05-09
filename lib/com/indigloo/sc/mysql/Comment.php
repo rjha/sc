@@ -9,8 +9,6 @@ namespace com\indigloo\sc\mysql {
     class Comment {
         
         const MODULE_NAME = 'com\indigloo\sc\mysql\Comment';
-		//DB columns for filters
-		const LOGIN_COLUMN = "login_id" ;
 
 		static function getOnPostId($postId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -36,54 +34,55 @@ namespace com\indigloo\sc\mysql {
             return $row;
 		}
 		
-		static function getLatest($limit,$dbfilter) {
+		static function getLatest($limit,$filters) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-
             settype($limit,"integer");
-			$condition = '' ;
-
-			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
-				$loginId = $dbfilter[self::LOGIN_COLUMN]; 
-                settype($loginId,"integer");
-				$condition = " and a.login_id = ".$loginId;
-			}
-
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
-            $sql .= " where l.id = a.login_id ".$condition." order by id desc LIMIT %d " ;
+
+            $query = new Query();
+            $query->setAlias("com\indigloo\sc\model\Comment","a");
+            //raw condition
+            $query->addCondition("l.id = a.login_id");
+            $query->filter($filters);
+            $condition = $query->get();
+
+            $sql .= $condition;
+            $sql .= " order by id desc LIMIT %d " ;
             $sql = sprintf($sql,$limit);
 			$rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 		
 		}
 		
-		static function getTotalCount($dbfilter) {
+		static function getTotalCount($filters) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = " select count(id) as count from sc_comment ";
 
-			$condition = '';
-			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
-				$loginId = $dbfilter[self::LOGIN_COLUMN]; 
-                settype($loginId,"integer");
-				$condition = " where login_id = ".$loginId;
-			}
+            $query = new Query();
+            $query->filter($filters);
+            $condition = $query->get();
 
-            $sql = " select count(id) as count from sc_comment ".$condition ;
+            $sql .= $condition ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 		}
 
-		static function getPaged($start,$direction,$limit,$dbfilter) {
+		static function getPaged($start,$direction,$limit,$filters) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 
             settype($start,"integer");
             settype($limit,"integer");
 
-            $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l where l.id = a.login_id " ;
+            $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
 
-			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
-				$loginId = $dbfilter[self::LOGIN_COLUMN]; 
-                settype($loginId,"integer");
-				$sql .= " and a.login_id = ".$loginId ;
-			}
+            $query = new Query();
+            $query->setAlias("com\indigloo\sc\model\Comment","a");
+            //raw condition
+            $query->addCondition("l.id = a.login_id");
+            $query->filter($filters);
+            $condition = $query->get();
+
+            $sql .= $condition;
 
             if($direction == 'after') {
                 $sql .= " and a.id < %d order by a.id DESC LIMIT %d " ;

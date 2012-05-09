@@ -32,6 +32,8 @@
     $fparams = $qparams;
     //now unset ft param
     unset($fparams["ft"]);
+    //ft urls start with page 1
+    $fparams['gpage'] = 1 ;
     //create filter Urls
     $ftBaseUrl = Url::createUrl("/user/dashboard/posts.php",$fparams);
     $ftFeaturedUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "featured"));
@@ -65,7 +67,7 @@
 
     $pageSize = Config::getInstance()->get_value("user.page.items");
     $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
-    $postDBRows = $postDao->getPaged($paginator, $filters);
+    $postDBRows = $postDao->getPaged($paginator,$filters);
     
 ?>
 
