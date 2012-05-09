@@ -1,4 +1,14 @@
+To list all remote branches
+============================
+$git fetch origin 
+$git branch -a
+lists all branches, local as well as remote
 
+or you can do a 
+$git ls-remote
+
+Q) How to remove stale remote branch reference from local index?
+(see below)
 
 Branch Basics
 http://git-scm.com/book/en/Git-Branching-Remote-Branches
@@ -44,4 +54,32 @@ git push origin :xyzworld
 
 How to see changes between two branches?
 $git diff --name-status master..<branch>
+
+Tracking Branches
+=================
+$git fetch -p
+
+This should remove all local branches that are remotely delete.
+
++ To delete a remote tracking branch
+ $git branch -rd origin/test-x
+
+
+Pruning unwanted(stale) branches
+* Do not use prune*  
+
+$git branch -r
+shows remote branches
+$git branch shows my local branches
+$git branch -a shows both
+
+Use $git remote show origin to see what branches are stale
+Then prune using
+$git remote prune -n origin (for dry run)
+$git remote prune origin (actual thing)
+
+verify by issuing $git branch -a
+
+ 
+
 
