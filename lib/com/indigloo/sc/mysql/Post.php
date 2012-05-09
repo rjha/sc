@@ -53,17 +53,17 @@ namespace com\indigloo\sc\mysql {
 
 		}
 
-         static function getPosts($filters,$limit) {
+         static function getPosts($limit,$filters) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
             $sql = "select q.*,l.name as user_name  from sc_post q, sc_login l ";
             
-            $query = new Query();
-            $query->setAlias("com\indigloo\sc\model\Post","q");
+            $q = new Query();
+            $q->setAlias("com\indigloo\sc\model\Post","q");
             //raw condition
-            $query->addCondition("l.id = q.login_id");
-            $query->filter($filters);
-            $condition = $query->get();
+            $q->addCondition("l.id = q.login_id");
+            $q->filter($filters);
+            $condition = $q->get();
 
             $sql .= $condition;
             $sql .= " order by id desc limit %d " ;
@@ -122,12 +122,12 @@ namespace com\indigloo\sc\mysql {
             
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l" ;
 
-            $query = new Query();
-            $query->setAlias("com\indigloo\sc\model\Post","q");
+            $q = new Query();
+            $q->setAlias("com\indigloo\sc\model\Post","q");
             //raw condition
-            $query->addCondition("l.id = q.login_id");
-            $query->filter($filters);
-            $condition = $query->get();
+            $q->addCondition("l.id = q.login_id");
+            $q->filter($filters);
+            $condition = $q->get();
             $sql .= $condition;
 
             $sql .= " order by q.id desc LIMIT ".$limit ;
@@ -141,9 +141,9 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "select count(id) as count from sc_post ";
 
-            $query = new Query();
-            $query->filter($filters);
-            $condition = $query->get();
+            $q = new Query();
+            $q->filter($filters);
+            $condition = $q->get();
             $sql .= $condition ;
             
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
@@ -162,12 +162,12 @@ namespace com\indigloo\sc\mysql {
             
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
 
-            $query = new Query();
-            $query->setAlias("com\indigloo\sc\model\Post","q");
+            $q = new Query();
+            $q->setAlias("com\indigloo\sc\model\Post","q");
             //raw condition
-            $query->addCondition("l.id = q.login_id");
-            $query->filter($filters);
-            $condition = $query->get();
+            $q->addCondition("l.id = q.login_id");
+            $q->filter($filters);
+            $condition = $q->get();
 
             $sql .= $condition;
 

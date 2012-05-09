@@ -8,10 +8,18 @@
     use \com\indigloo\Util as Util;
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
+    use \com\indigloo\sc\ui\Filter as Filter;
     
     $loginDao = new \com\indigloo\sc\dao\Login();
-    $filter = array($loginDao::DATE_COLUMN => "24 HOUR");
-    $ldLoginCount = $loginDao->getTotalCount($filter); 
+    
+    //past 24 hour filter
+    $filters = array();
+    $model = new \com\indigloo\sc\model\Login();
+    $filter = new Filter($model);
+    $filter->add($model::CREATED_ON,Filter::LT,"24 HOUR");
+    array_push($filters,$filter);
+
+    $ldLoginCount = $loginDao->getTotalCount($filters); 
     $loginCount = $loginDao->getTotalCount(); 
     $logins = $loginDao->getLatest(5);
 

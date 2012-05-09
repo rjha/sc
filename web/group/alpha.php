@@ -5,6 +5,7 @@
 
     use \com\indigloo\Url as Url ;
     use \com\indigloo\ui\Pagination as Pagination;
+    use \com\indigloo\sc\ui\Filter as Filter;
 
     $ft  = Url::tryQueryParam("ft");
     if(empty($ft)) {
@@ -12,14 +13,20 @@
     }
 
     $groupDao = new \com\indigloo\sc\dao\Group();
-    $filter = array($groupDao::TOKEN_COLUMN => $ft);
 
-    $total = $groupDao->getTotalCount($filter);
+    // Alpha filter
+    $filters = array();
+    $model = new \com\indigloo\sc\model\Group();
+    $filter = new Filter($model);
+    $filter->add($model::TOKEN,Filter::LIKE,$ft);
+    array_push($filters,$filter);
+
+    $total = $groupDao->getTotalCount($filters);
     
     $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $pageSize =	50;
     $paginator = new Pagination($qparams,$total,$pageSize);	
-    $groups = $groupDao->getPaged($paginator,$filter);
+    $groups = $groupDao->getPaged($paginator,$filters);
 
     $startId = NULL ;
     $endId = NULL ;

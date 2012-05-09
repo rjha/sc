@@ -24,11 +24,9 @@ namespace com\indigloo\sc\dao {
 			
 		}
 
-        function getTotalCount($filter=NULL) {
-			$dbfilter = $this->createDBFilter($filter);
-			$row = mysql\Login::getTotalCount($dbfilter);
+        function getTotalCount($filters=array()) {
+			$row = mysql\Login::getTotalCount($filters);
             return $row['count'] ;
-
         } 
 
         function getLatest($limit) {

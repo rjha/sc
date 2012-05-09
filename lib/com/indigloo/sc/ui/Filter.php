@@ -7,6 +7,7 @@ namespace com\indigloo\sc\ui {
         const LT = '<' ;
         const LTE = '<=' ;
         const GTE = '>=' ;
+        const LIKE = 'like' ;
 
         private $model;
         private $map ;

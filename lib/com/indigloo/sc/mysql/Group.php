@@ -15,42 +15,38 @@ namespace com\indigloo\sc\mysql {
         const MODULE_NAME = 'com\indigloo\sc\mysql\Group';
         const TOKEN_COLUMN = "token" ;
 
-		static function getLatest($limit,$dbfilter) {
+		static function getLatest($limit,$filters) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
 
-            $sql = "select g.* from sc_group_master g  where 1=1 " ;
-            $args = array();
+            $sql = "select g.* from sc_group_master g " ;
 
-            if(isset($dbfilter) && Util::tryArrayKey($dbfilter,self::TOKEN_COLUMN)) {
-                $value = $dbfilter[self::TOKEN_COLUMN]; 
-                $value = $mysqli->real_escape_string($value);
-                //second %s is for literal % sign
-                $sql .= " and g.token like '%s%s' " ;
-                array_push($args,$value);
-                array_push($args,'%%');
-            }
+            $q = new Query();
+            $q->setAlias("com\indigloo\sc\model\Group","g");
+            $q->filter($filters);
+            $condition = $q->get();
 
+            $sql .= $condition;
             $sql .= " order by g.id desc LIMIT %d " ; 
-            array_push($args,$limit);
-            $sql = vsprintf($sql,$args);
+            $sql = sprintf($sql,$limit);
+
 			$rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 		}
 
-        static function getPaged($start,$direction,$limit,$dbfilter) {
+        static function getPaged($start,$direction,$limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             
             settype($start,"integer");
             settype($limit,"integer");
-            $sql = "select g.* from sc_group_master g where 1 = 1 " ;
+            $sql = "select g.* from sc_group_master g " ;
 
-            if(isset($dbfilter) && Util::tryArrayKey($dbfilter,self::TOKEN_COLUMN)) {
-                $value = $dbfilter[self::TOKEN_COLUMN]; 
-                $value = $mysqli->real_escape_string($value);
-                $sql .= " and g.token like '%s%s' " ;
-                $sql = sprintf($sql,$value,'%%');
-            }
+            $q = new Query();
+            $q->setAlias("com\indigloo\sc\model\Group","g");
+            $q->filter($filters);
+            $condition = $q->get();
+
+            $sql .= $condition;
 
             if($direction == 'after') {
                 $sql .= " and g.id < %d order by g.id DESC LIMIT %d " ;
@@ -74,16 +70,16 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function getTotalCount($dbfilter){
+        static function getTotalCount($filters){
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "select count(g.id) as count from sc_group_master g " ;
 
-            if(isset($dbfilter) && Util::tryArrayKey($dbfilter,self::TOKEN_COLUMN)) {
-                $value = $dbfilter[self::TOKEN_COLUMN]; 
-                $value = $mysqli->real_escape_string($value);
-                $sql .= " where g.token like '%s%s' " ;
-                $sql = sprintf($sql,$value,'%%');
-            }
+            $q = new Query();
+            $q->setAlias("com\indigloo\sc\model\Group","g");
+            $q->filter($filters);
+            $condition = $q->get();
+
+            $sql .= $condition;
 
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;

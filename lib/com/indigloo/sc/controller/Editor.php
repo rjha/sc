@@ -13,7 +13,14 @@ namespace com\indigloo\sc\controller{
         function process($params,$options) {
             $postDao = new \com\indigloo\sc\dao\Post();
             $filter = array($postDao::FEATURE_COLUMN => 1);
-            $postDBRows = $postDao->getPosts($filter,50);
+
+            //post featured filter
+            $filters = array();
+            $model = new \com\indigloo\sc\model\Post();
+            $filter = new Filter($model);
+            $filter->add($model::FEATURED,Filter::EQ,TRUE);
+            array_push($filters,$filter);
+            $postDBRows = $postDao->getPosts(50,$filters);
 
             $pageHeader = 'Editor\'s Pick';
 			$pageTitle = SeoData::getHomePageTitle(); 

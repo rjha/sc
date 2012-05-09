@@ -18,7 +18,7 @@ namespace com\indigloo\sc\dao {
 			return $rows ;
 		}
 
-		function getPaged($paginator,$filters) {
+		function getPaged($paginator,$filters=array()) {
  
 			$limit = $paginator->getPageSize();
 			if($paginator->isHome()){
@@ -33,12 +33,12 @@ namespace com\indigloo\sc\dao {
 			}
 		}
 
-		function getLatest($limit,$filters) {
+		function getLatest($limit,$filters=array()) {
 			$rows = mysql\Comment::getLatest($limit,$filters);
 			return $rows ;
 		}
 		
-		function getTotalCount($filters) {
+		function getTotalCount($filters=array()) {
 			$row = mysql\Comment::getTotalCount($filters);
             return $row['count'] ;
 		}

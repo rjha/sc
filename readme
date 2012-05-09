@@ -1,3 +1,13 @@
+10 May 2012
+Fix filter models - common functionality/raw filters/date filters
+fix pagination sh*t
+monitor - comments - show user details as well
+filters - real_escape_string => all filter values
+model - DATA type should play a role in query formation
+
+- User dashboard pages - Help content
+- Group search results - Add extra navigation options there
+- 
 
 09 mar 2012
 fix db filter

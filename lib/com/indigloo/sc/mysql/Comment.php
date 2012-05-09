@@ -39,12 +39,12 @@ namespace com\indigloo\sc\mysql {
             settype($limit,"integer");
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
 
-            $query = new Query();
-            $query->setAlias("com\indigloo\sc\model\Comment","a");
+            $q = new Query();
+            $q->setAlias("com\indigloo\sc\model\Comment","a");
             //raw condition
-            $query->addCondition("l.id = a.login_id");
-            $query->filter($filters);
-            $condition = $query->get();
+            $q->addCondition("l.id = a.login_id");
+            $q->filter($filters);
+            $condition = $q->get();
 
             $sql .= $condition;
             $sql .= " order by id desc LIMIT %d " ;
@@ -58,9 +58,9 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = " select count(id) as count from sc_comment ";
 
-            $query = new Query();
-            $query->filter($filters);
-            $condition = $query->get();
+            $q = new Query();
+            $q->filter($filters);
+            $condition = $q->get();
 
             $sql .= $condition ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
@@ -75,12 +75,12 @@ namespace com\indigloo\sc\mysql {
 
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
 
-            $query = new Query();
-            $query->setAlias("com\indigloo\sc\model\Comment","a");
+            $q = new Query();
+            $q->setAlias("com\indigloo\sc\model\Comment","a");
             //raw condition
-            $query->addCondition("l.id = a.login_id");
-            $query->filter($filters);
-            $condition = $query->get();
+            $q->addCondition("l.id = a.login_id");
+            $q->filter($filters);
+            $condition = $q->get();
 
             $sql .= $condition;
 
