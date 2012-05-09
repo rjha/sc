@@ -8,15 +8,6 @@ namespace com\indigloo\sc\dao {
 	
     class Comment {
 
-		const LOGIN_ID_COLUMN = "scr1flma";
-
-		function createDBFilter($filter) {
-			$map = array(self::LOGIN_ID_COLUMN => mysql\Comment::LOGIN_COLUMN);
-			$dbfilter = mysql\Helper::createDBFilter($filter,$map);
-			return $dbfilter ;
-		}
-
-
 		function getOnPostId($postId) {
 			$rows = mysql\Comment::getOnPostId($postId);
 			return $rows ;
@@ -56,7 +47,6 @@ namespace com\indigloo\sc\dao {
 			$row = mysql\Comment::getTotalCount($dbfilter);
             return $row['count'] ;
 		}
-
 
 		function update($commentId,$comment) {
 			$loginId = \com\indigloo\sc\auth\Login::tryLoginIdInSession();

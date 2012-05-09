@@ -11,7 +11,6 @@
     
     use \com\indigloo\sc\ui\Filter as Filter; 
     
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
 
@@ -27,19 +26,27 @@
     }
     
     $postDao = new \com\indigloo\sc\dao\Post();
+    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
 
-    //filters
+    //copy URL parameters
+    $fparams = $qparams;
+    //now unset ft param
+    unset($fparams["ft"]);
+    //create filter Urls
+    $ftBaseUrl = Url::createUrl("/user/dashboard/posts.php",$fparams);
+    $ftFeaturedUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "featured"));
     
-    $ft = Url::tryQueryParam("ft");
+    //filters
     $filters = array();
-    $target = new \com\indigloo\sc\model\Post();
+    $model = new \com\indigloo\sc\model\Post();
+    $ft = Url::tryQueryParam("ft");
         
     if(!is_null($ft)) {
        
         switch($ft){
             case 'featured' :
-                $filter = new Filter($target);
-                $filter->add($target::FEATURED,TRUE);
+                $filter = new Filter($model);
+                $filter->add($model::FEATURED,Filter::EQ,TRUE);
                 array_push($filters,$filter);
                 break;
             default:
@@ -48,22 +55,18 @@
         }
     }
     
-    //Always add this filter
-    $filter = new Filter($target);
-    $filter->add($target::LOGIN_ID, $loginId);
+    //Always add login_id filter for user dashboard
+    $filter = new Filter($model);
+    $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
     array_push($filters,$filter);
      
     $postDBRows = array();
     $total = $postDao->getTotalCount($filters);
-    
-    
-   
 
     $pageSize = Config::getInstance()->get_value("user.page.items");
     $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
     $postDBRows = $postDao->getPaged($paginator, $filters);
     
-    $featuredUrl = Url::addQueryParameters($_SERVER['REQUEST_URI'], array("ft" => "featured"));
 ?>
 
 
@@ -122,8 +125,8 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="<?php echo $_SERVER['REQUEST_URI']; ?>">All Posts</a></li>
-                                <li><a href="<?php echo $featuredUrl; ?>">Featured Posts</a></li>
+                                <li><a href="<?php echo $ftBaseUrl; ?>">All Posts</a></li>
+                                <li><a href="<?php echo $ftFeaturedUrl; ?>">Featured Posts</a></li>
                             </ul>
                         </div> <!-- button group -->
                     </div>

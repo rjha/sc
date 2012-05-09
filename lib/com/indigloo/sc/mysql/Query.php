@@ -2,33 +2,47 @@
 
 namespace com\indigloo\sc\mysql {
 
+    use \com\indigloo\Util as Util;
+
 	class Query {
         
-        private $sql ;
+        const SQL_WHERE = "where";
+        const SQL_AND = "and";
+
+        private $query ;
+        private $amap ;
+        private $prefix;
         
-        function __construct($sql){
-            $this->sql = $sql ;
+        function __construct($prefix=self::SQL_WHERE){
+            $this->query = '' ;
+            $this->amap = array();
+            $this->prefix = $prefix;
+        }
+
+        function setAlias($class,$alias){
+            $this->amap[$class] = $alias;
         }
         
         function filter($filters) {
             if(is_null($filters) || empty($filters)){
                 return ;
             }
-            $count = 1 ;
+
             foreach($filters as $filter) {
-                $condition = $filter->getSQL();
-                if($count == 1 ) {
-                    $this->sql .= sprintf(" where %s ", $condition);
-                } else {
-                    $this->sql .= sprintf(" and %s ", $condition);
-                }
-                $count++ ;
-                
+                $model = $filter->model;
+                $alias = Util::tryArrayKey($this->amap,get_class($model));
+                $condition = $model->filter($filter,$alias);
+                $this->addCondition($condition);
             }
         }
         
-        function getSQL() {
-            return $this->sql ;
+        function addCondition($sql) {
+            $this->query = sprintf(" %s %s %s ",$this->query,$this->prefix,$sql);
+            $this->prefix = self::SQL_AND ;
+        }
+
+        function get() {
+            return $this->query;
         }
         
 	}

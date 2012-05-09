@@ -2,21 +2,32 @@
 namespace com\indigloo\sc\ui {
     
     class Filter {
+        const EQ = '=' ;
+        const GT =  '>' ;
+        const LT = '<' ;
+        const LTE = '<=' ;
+        const GTE = '>=' ;
+
         private $model;
-        private $sql ;
-        
+        private $map ;
+         
         function __construct($model) {
-             $this->model = $model ;
              $this->map = array();
-             $this->sql = '' ;
+             $this->map["model"] = $model ;
         }
-        
-        function add($key,$value) {
-            $this->sql = $this->model->process($key,$value);
+
+        function add($name,$condition,$value) {
+            $this->map["name"] = $name ;
+            $this->map["condition"] = $condition ;
+            $this->map["value"] = $value ;
         }
-        
-        function getSQL() {
-            return $this->sql;
+
+        function __get($name) {
+            if(array_key_exists($name,$this->map)) {
+                return $this->map[$name] ;
+            } else {
+                return NULL;
+            }
         }
     }
 }

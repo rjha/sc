@@ -9,13 +9,6 @@ namespace com\indigloo\sc\dao {
 	
     class Group {
 
-        const TOKEN_COLUMN = "token" ;
-        function createDBFilter($filter) {
-            $map = array(self::TOKEN_COLUMN => mysql\Group::TOKEN_COLUMN);
-			$dbfilter = mysql\Helper::createDBFilter($filter,$map);
-			return $dbfilter ;
-		}
-
 		function getLatest($limit,$filter=NULL) {
             $dbfilter = $this->createDBFilter($filter);
 			$rows = mysql\Group::getLatest($limit,$dbfilter);

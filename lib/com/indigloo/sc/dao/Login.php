@@ -7,20 +7,9 @@ namespace com\indigloo\sc\dao {
 
 	class Login {
 
-        
-		const DATE_COLUMN  = "created_on";
-
-		function createDBFilter($filter) {
-            $map = array(self::DATE_COLUMN => mysql\Login::DATE_COLUMN);
-			$dbfilter = mysql\Helper::createDBFilter($filter,$map);
-			return $dbfilter ;
-		}
-
 		function getOnId($loginId) {
 			$row = mysql\Login::getOnId($loginId);
 			return $row ;
-
-
 		}
 
 		function create($firstName,$lastName,$email,$password){

@@ -10,19 +10,6 @@ namespace com\indigloo\sc\dao {
     
     class Post {
 
-		const LOGIN_ID_COLUMN  = "login_id";
-		const FEATURE_COLUMN  = "feature";
-		const DATE_COLUMN  = "created_on";
-
-		function createDBFilter($filter) {
-            $map = array(
-                self::LOGIN_ID_COLUMN => mysql\Post::LOGIN_COLUMN,
-                self::FEATURE_COLUMN => mysql\Post::FEATURE_COLUMN,
-                self::DATE_COLUMN => mysql\Post::DATE_COLUMN);
-			$dbfilter = mysql\Helper::createDBFilter($filter,$map);
-			return $dbfilter ;
-		}
-
 		function getOnId($postId) {
 			$row = mysql\Post::getOnId($postId);
 			return $row ;
@@ -74,36 +61,32 @@ namespace com\indigloo\sc\dao {
 			return $rows ;
 		}
 
-        function getPosts($filter,$limit) {
-            $dbfilter = $this->createDBFilter($filter);
-			$rows = mysql\Post::getPosts($dbfilter,$limit);
+        function getPosts($filters,$limit) {
+			$rows = mysql\Post::getPosts(filters,$limit);
 			return $rows ;
 		}
 
-		function getPaged($paginator,$filters=NULL) {
- 
+		function getPaged($paginator,$filters) {
 			$limit = $paginator->getPageSize();
 
 			if($paginator->isHome()){
 				return $this->getLatest($limit,$filters);
-				
 			} else {
-			    
+
                 $params = $paginator->getDBParams();
 				$start = $params['start'];
 				$direction = $params['direction'];
-
 				$rows = mysql\Post::getPaged($start,$direction,$limit,$filters);
 				return $rows ;
 			}
 		}
 
-		function getLatest($limit,$filters=NULL) {
+		function getLatest($limit,$filters) {
 			$rows = mysql\Post::getLatest($limit,$filters);
 			return $rows ;
 		}
 		
-		function getTotalCount($filters=NULL) {
+		function getTotalCount($filters) {
 			$row = mysql\Post::getTotalCount($filters);
             return $row['count'] ;
 		}
