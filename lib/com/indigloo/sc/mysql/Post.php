@@ -58,7 +58,7 @@ namespace com\indigloo\sc\mysql {
             settype($limit,"integer");
             $sql = "select q.*,l.name as user_name  from sc_post q, sc_login l ";
             
-            $q = new Query();
+            $q = new Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Post","q");
             //raw condition
             $q->addCondition("l.id = q.login_id");
@@ -122,7 +122,7 @@ namespace com\indigloo\sc\mysql {
             
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l" ;
 
-            $q = new Query();
+            $q = new Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Post","q");
             //raw condition
             $q->addCondition("l.id = q.login_id");
@@ -141,7 +141,7 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "select count(id) as count from sc_post ";
 
-            $q = new Query();
+            $q = new Query($mysqli);
             $q->filter($filters);
             $condition = $q->get();
             $sql .= $condition ;
@@ -162,7 +162,7 @@ namespace com\indigloo\sc\mysql {
             
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
 
-            $q = new Query();
+            $q = new Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Post","q");
             //raw condition
             $q->addCondition("l.id = q.login_id");

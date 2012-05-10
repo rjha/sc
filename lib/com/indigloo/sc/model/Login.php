@@ -3,36 +3,35 @@ namespace com\indigloo\sc\model {
     
     use \com\indigloo\Util as Util ;
 
-    class Login {
+    class Login extends Table {
 
          const CREATED_ON = 1;
-         private $columns ;
          
          function __construct() {
-             $this->columns = array( self::CREATED_ON => "created_on");
+
          }
-         
-         function filter($filter,$alias) {
 
-             $column = Util::tryArrayKey($this->columns,$filter->name);
-             if(is_null($column)) {
-                 $message = sprintf("No column %s in model",$filter->name);
-                 trigger_error($message,E_USER_ERROR); 
-             }
+         public function getColumns() {
+             $columns = array( self::CREATED_ON => "created_on");
+             return $columns;
+         }
 
-             //Add alias to column
-             $column = (is_null($alias)) ? $column : $alias.".".$column ;
+         public function getValue($alias,$column,$condition,$value) {
+             if(strcmp($column,"created_on") == 0) {
+                 //special case: all processing in this block
+                 //value comes in as 24 HOUR / 1 WEEK / 1 MONTH etc.
+                 //mysql format for date comparison
 
-             $value = $filter->value ;
-             if($filter->name == self::CREATED_ON) {
-                 //special treatment
-                 $sql = " created_on > (now() - interval 24 HOUR) ";
+                 $column = (is_null($alias)) ? $column : $alias.".".$column ;
+                 $sql = sprintf("%s > (now() - interval %s) ",$column,$value);
                  return $sql;
              }
 
-             $sql = sprintf("%s %s %s ", $column,$filter->condition,$value);
+             $column = (is_null($alias)) ? $column : $alias.".".$column ;
+             $sql = sprintf("%s %s %s ", $column,$condition,$value);
              return $sql ;
          }
+         
     }
 
 }

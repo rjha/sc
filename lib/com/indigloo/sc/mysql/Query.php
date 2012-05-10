@@ -12,11 +12,13 @@ namespace com\indigloo\sc\mysql {
         private $query ;
         private $amap ;
         private $prefix;
+        private $mysqli;
         
-        function __construct($prefix=self::SQL_WHERE){
+        function __construct($mysqli,$prefix=self::SQL_WHERE){
             $this->query = '' ;
             $this->amap = array();
             $this->prefix = $prefix;
+            $this->mysqli = $mysqli;
         }
 
         function setAlias($class,$alias){
@@ -31,6 +33,11 @@ namespace com\indigloo\sc\mysql {
             foreach($filters as $filter) {
                 $model = $filter->model;
                 $alias = Util::tryArrayKey($this->amap,get_class($model));
+                $value = $filter->value ;
+                //sanitize input
+                $value = $this->mysqli->real_escape_string($value);
+                $filter->sanitize($value);
+               
                 $condition = $model->filter($filter,$alias);
                 $this->addCondition($condition);
             }

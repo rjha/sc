@@ -16,7 +16,7 @@
     $filters = array();
     $model = new \com\indigloo\sc\model\Login();
     $filter = new Filter($model);
-    $filter->add($model::CREATED_ON,Filter::LT,"24 HOUR");
+    $filter->add($model::CREATED_ON,Filter::GT,"24 HOUR");
     array_push($filters,$filter);
 
     $ldLoginCount = $loginDao->getTotalCount($filters); 

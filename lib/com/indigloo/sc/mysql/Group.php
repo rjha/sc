@@ -21,7 +21,7 @@ namespace com\indigloo\sc\mysql {
 
             $sql = "select g.* from sc_group_master g " ;
 
-            $q = new Query();
+            $q = new Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Group","g");
             $q->filter($filters);
             $condition = $q->get();
@@ -41,7 +41,7 @@ namespace com\indigloo\sc\mysql {
             settype($limit,"integer");
             $sql = "select g.* from sc_group_master g " ;
 
-            $q = new Query();
+            $q = new Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Group","g");
             $q->filter($filters);
             $condition = $q->get();
@@ -74,7 +74,7 @@ namespace com\indigloo\sc\mysql {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "select count(g.id) as count from sc_group_master g " ;
 
-            $q = new Query();
+            $q = new Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Group","g");
             $q->filter($filters);
             $condition = $q->get();

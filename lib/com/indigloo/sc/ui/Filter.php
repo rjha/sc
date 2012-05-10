@@ -23,8 +23,13 @@ namespace com\indigloo\sc\ui {
             $this->map["value"] = $value ;
         }
 
+        function sanitize($sanitized){
+            //sanitized filter input 
+            $this->map["value"] = $sanitized;
+        }
+
         function __get($name) {
-            if(array_key_exists($name,$this->map)) {
+            if(array_key_exists($name,$this->map) && !empty($this->map[$name])) {
                 return $this->map[$name] ;
             } else {
                 return NULL;
