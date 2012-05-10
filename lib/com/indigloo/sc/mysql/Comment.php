@@ -80,20 +80,10 @@ namespace com\indigloo\sc\mysql {
             //raw condition
             $q->addCondition("l.id = a.login_id");
             $q->filter($filters);
-            $condition = $q->get();
 
-            $sql .= $condition;
+            $sql .= $q->get();
+            $sql .= $q->getPagination($start,$direction,"a.id",$limit);
 
-            if($direction == 'after') {
-                $sql .= " and a.id < %d order by a.id DESC LIMIT %d " ;
-            } else if($direction == 'before'){
-                $sql .= " and a.id > %d  order by a.id ASC LIMIT % d ";
-            } else {
-                trigger_error("Unknow sort direction in query", E_USER_ERROR);
-            }
-            
-            $sql = sprintf($sql,$start,$limit); 
-            
             if(Config::getInstance()->is_debug()) {
                 Logger::getInstance()->debug("sql => $sql \n");
             }

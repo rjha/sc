@@ -39,25 +39,15 @@ namespace com\indigloo\sc\mysql {
             
             settype($start,"integer");
             settype($limit,"integer");
-            $sql = "select g.* from sc_group_master g " ;
+            $sql = "select g.* from sc_group_master g" ;
 
             $q = new Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Group","g");
             $q->filter($filters);
-            $condition = $q->get();
 
-            $sql .= $condition;
+            $sql .= $q->get();
+            $sql .= $q->getPagination($start,$direction,"g.id",$limit);
 
-            if($direction == 'after') {
-                $sql .= " and g.id < %d order by g.id DESC LIMIT %d " ;
-
-            } else if($direction == 'before'){
-                $sql .= " and g.id > %d order by g.id ASC LIMIT %d " ;
-            } else {
-                trigger_error("Unknow sort direction in query", E_USER_ERROR);
-            }
-            
-            $sql = sprintf($sql,$start,$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             
             //reverse rows for 'before' direction

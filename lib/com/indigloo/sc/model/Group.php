@@ -20,9 +20,8 @@ namespace com\indigloo\sc\model {
 
              if(strcmp($column,'token') == 0 ) {
                  $column = (is_null($alias)) ? $column : $alias.".".$column ;
-                 $sql = sprintf("%s %s '%s' ", $column,$condition,$value);
+                 $sql = sprintf("%s %s '%s%s' ", $column,$condition,$value,'%%');
                  return $sql ;
-
              }
 
              $column = (is_null($alias)) ? $column : $alias.".".$column ;

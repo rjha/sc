@@ -11,7 +11,6 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException;
     
-    
     class Post {
         
         const MODULE_NAME = 'com\indigloo\sc\mysql\Post';
@@ -167,20 +166,10 @@ namespace com\indigloo\sc\mysql {
             //raw condition
             $q->addCondition("l.id = q.login_id");
             $q->filter($filters);
-            $condition = $q->get();
 
-            $sql .= $condition;
+            $sql .= $q->get();
+            $sql .= $q->getPagination($start,$direction,"q.id",$limit);
 
-            if($direction == 'after') {
-                $sql .= " and q.id < %d order by q.id DESC LIMIT %d " ;
-
-            } else if($direction == 'before'){
-                $sql .= " and q.id > %d order by q.id ASC LIMIT %d " ;
-            } else {
-                trigger_error("Unknow sort direction in query", E_USER_ERROR);
-            }
-            
-            $sql = sprintf($sql,$start,$limit);
             if(Config::getInstance()->is_debug()) {
                 Logger::getInstance()->debug("sql => $sql \n");
             }
@@ -210,11 +199,9 @@ namespace com\indigloo\sc\mysql {
             $sql = "update sc_post set title=?,description=?,links_json =?,images_json=?,version=version +1,";
 			$sql .= "group_slug = ? , updated_on = now(),cat_code = ? where id = ? and login_id = ?" ;
 			
-			
             $code = MySQL\Connection::ACK_OK;
             $stmt = $mysqli->prepare($sql);
-            
-            
+
             if ($stmt) {
                 $stmt->bind_param("ssssssii",
                         $title,
@@ -358,7 +345,6 @@ namespace com\indigloo\sc\mysql {
             return $code ;
             
 		}
-
 
 	}
 }

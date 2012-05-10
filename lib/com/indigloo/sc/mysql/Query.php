@@ -14,10 +14,11 @@ namespace com\indigloo\sc\mysql {
         private $prefix;
         private $mysqli;
         
-        function __construct($mysqli,$prefix=self::SQL_WHERE){
+        function __construct($mysqli){
             $this->query = '' ;
             $this->amap = array();
-            $this->prefix = $prefix;
+            //pagination also depends on this prefix
+            $this->prefix = self::SQL_WHERE;
             $this->mysqli = $mysqli;
         }
 
@@ -48,10 +49,27 @@ namespace com\indigloo\sc\mysql {
             $this->prefix = self::SQL_AND ;
         }
 
+        function getPagination($start,$direction,$key,$limit){
+            //and _key [LT|GT] _start order by _key [DESC|ASC] _limit pagesize
+            $sql = " %s %s %s %d order by %s %s LIMIT %d ";
+
+            if($direction == 'after') {
+                $operator = "<" ;
+                $sort = "DESC" ; 
+            } else if($direction == 'before'){
+                $operator = ">" ;
+                $sort = "ASC" ; 
+            } else {
+                trigger_error("Unknow sort direction in pagination query", E_USER_ERROR);
+            }
+
+            $sql = sprintf($sql,$this->prefix,$key,$operator,$start,$key,$sort,$limit);
+            return $sql;
+        }
+
         function get() {
             return $this->query;
         }
-        
 	}
 }
 ?>
