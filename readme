@@ -1,4 +1,5 @@
 10 May 2012
+switch to MySQL based sessions? No fix the code and move to redis.io
 Fix filter models - common functionality/raw filters/date filters
 fix pagination sh*t
 monitor - comments - show user details as well
@@ -6,9 +7,17 @@ filters - real_escape_string => all filter values
 model - DATA type should play a role in query formation
 
 - User dashboard pages - Help content
-- Group search results - Add extra navigation options there
-- searchd not starting on debian machines
+- Group search results - Add extra navigation options, Like All Groups/ Alpha etc. 
+    And say @see more groups
+- sphinx searchd not starting on debian machines
  
+mysql sessions 
+ - PDO Tx start() and commit()
+ - To Make sure that we use two different connections/ session connx is the one holding Tx
+    + Rest of the page should not be affected
+ - init_connect and query.log
+ - mysql database mysql.user table, see super_priv for your user (init_connect not executed for user with super priv)
+ -   $_SESSION is the problem - one request/session design - use redis.io  
 
 09 mar 2012
 fix db filter
