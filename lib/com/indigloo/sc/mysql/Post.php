@@ -8,7 +8,7 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
 
-    use com\indigloo\sc\util\PDOWrapper;
+    use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException;
     
     

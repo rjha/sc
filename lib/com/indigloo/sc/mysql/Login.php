@@ -3,8 +3,9 @@ namespace com\indigloo\sc\mysql {
 
 	use \com\indigloo\Util as Util ;
 	use \com\indigloo\mysql as MySQL;
-    use com\indigloo\sc\util\PDOWrapper;
     use \com\indigloo\Logger ;
+
+    use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException;
     
 

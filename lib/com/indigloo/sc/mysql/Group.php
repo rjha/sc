@@ -7,7 +7,7 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Constants as Constants ;
     
-    use \com\indigloo\sc\util\PDOWrapper ;
+    use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException;
     
     class Group {
