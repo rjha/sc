@@ -34,7 +34,7 @@ namespace com\indigloo\sc\html {
 			$template = '/fragments/comment/text.tmpl' ;
 			
             if(is_null($options)) {
-                $options = UIConstants::WIDGET_ALL ;
+                $options = ~UIConstants::COMMENT_ALL ;
             }
 			
 			$view->id = $commentDBRow['id'];
@@ -46,8 +46,14 @@ namespace com\indigloo\sc\html {
 
 			$view->comment = $commentDBRow['description'];
 			$view->createdOn = Util::formatDBTime($commentDBRow['created_on']);
-			$view->userName = $commentDBRow['user_name'] ;
-			
+            $view->showUser = false ;
+
+            if($options & UIConstants::COMMENT_USER) {
+                $view->loginId = $commentDBRow['login_id'];
+                $view->pubUserId = PseudoId::encode($view->loginId);
+                $view->userName = $commentDBRow['user_name'] ;
+                $view->showUser = true ;
+            }
 
 			$html = Template::render($template,$view);
             return $html ;

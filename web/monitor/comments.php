@@ -80,7 +80,7 @@
                             }	
 
                             foreach($commentDBRows as $commentDBRow){
-                                echo \com\indigloo\sc\html\Comment::getWidget($commentDBRow);
+                                echo \com\indigloo\sc\html\Comment::getWidget($commentDBRow,UIConstants::COMMENT_USER);
                             }
                         ?>
                    

@@ -19,7 +19,7 @@
 
     //copy URL parameters
     $fparams = $qparams;
-    //now unset ft param
+    //now unset extra params
     unset($fparams["ft"]);
     //ft urls start with page 1
     $fparams['gpage'] = 1 ;
@@ -28,6 +28,12 @@
     $ftFeaturedUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "featured"));
     $ft24hoursUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "24hours"));
     $ft3daysUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "3days"));
+
+    //search clear link
+    $sparams = $qparams ;
+    unset($sparams["gt"]);
+    $clearSearchUrl = Url::createUrl("/monitor/index.php",$sparams);
+
     
     //filters
     $filters = array();
@@ -68,6 +74,10 @@
     $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
     $postDBRows = $postDao->getPaged($paginator,$filters);
 
+    $gtoken = Util::tryArrayKey($qparams,"gt");
+    //webgloo Url qparams are urlencoded 
+    //we need to decode before passing to DB layer
+    $gtoken = urldecode($gtoken);
 
 ?>
 
@@ -96,6 +106,7 @@
                     $(this).find('.options').toggle(); 
                     $(this).css("background-color", "#FFFFFF");
                 }); 
+
             });
             
         </script>
@@ -123,12 +134,17 @@
 
                         <div class="row">
                            <div class="span5">
-                            <h3> <?php echo $ftname; ?> -  <?php echo $total ?> Posts </h3> 
+                            <!-- <h3> <?php echo $ftname; ?> -  <?php echo $total ?> Posts </h3>  -->
+                            <form method="GET" action="<?php echo $clearSearchUrl; ?>">
+                            <input id="site-search" name="gt" type="text" class="search-query" placeholder="Quick Search"> &nbsp;<a href="<?php echo $clearSearchUrl; ?>">clear</a>
+                            <input type="hidden" name="ft" value="<?php echo $ft; ?>"/>
+                            </form>
+                            
                            </div>
                             <div class="span4">
                                 <div class="btn-group">
                                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                        &nbsp;Apply&nbsp;Filter
+                                        Filter&nbsp;Results
                                         <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu">
@@ -140,6 +156,11 @@
                                 </div> <!-- button group -->
                                </div>
                         </div> <!-- row -->
+                        <div class="p10">
+                            <span class="b"> filter </span> 
+                            <span class="color-red"><?php echo $gtoken; ?> / <?php echo $ftname; ?> </span>
+                            <span> <?php echo $total; ?> results
+                        </div>
 
                     </div>
                     

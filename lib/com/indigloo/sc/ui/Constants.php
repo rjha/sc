@@ -14,6 +14,10 @@
             const WIDGET_UNFEATURE = 8 ;
             const WIDGET_ALL = 15 ;
 
+            const COMMENT_USER = 1 ;
+            const COMMENT_ALL = 1 ;
+
+
         }
 }
 ?>
