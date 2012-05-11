@@ -26,11 +26,14 @@
     //create filter Urls
     $ftBaseUrl = Url::createUrl("/monitor/index.php",$fparams);
     $ftFeaturedUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "featured"));
+    $ft24hoursUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "24hours"));
+    $ft3daysUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "3days"));
     
     //filters
     $filters = array();
     $model = new \com\indigloo\sc\model\Post();
     $ft = Url::tryQueryParam("ft");
+    $ftname = '';
         
     if(!is_null($ft)) {
        
@@ -39,6 +42,19 @@
                 $filter = new Filter($model);
                 $filter->add($model::FEATURED,Filter::EQ,TRUE);
                 array_push($filters,$filter);
+                $ftname = 'Featured';
+                break;
+            case '24hours' :
+                $filter = new Filter($model);
+                $filter->add($model::CREATED_ON,Filter::GT,"24 HOUR");
+                array_push($filters,$filter);
+                $ftname = 'Last 24 hour';
+                break;
+            case '3days' :
+                $filter = new Filter($model);
+                $filter->add($model::CREATED_ON,Filter::GT,"3 DAY");
+                array_push($filters,$filter);
+                $ftname = 'Last 3 Days';
                 break;
             default:
                 break;
@@ -105,17 +121,25 @@
                 <div class="span9">
                     <div class="page-header"> 
 
-                        <h2><?php echo $total ?> Posts </h2> 
-                        <div class="btn-group">
-                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                Filter*
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="<?php echo $ftBaseUrl; ?>">All Posts</a></li>
-                                <li><a href="<?php echo $ftFeaturedUrl; ?>">Featured Posts</a></li>
-                            </ul>
-                        </div> <!-- button group -->
+                        <div class="row">
+                           <div class="span5">
+                            <h3> <?php echo $ftname; ?> -  <?php echo $total ?> Posts </h3> 
+                           </div>
+                            <div class="span4">
+                                <div class="btn-group">
+                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                        &nbsp;Apply&nbsp;Filter
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="<?php echo $ftBaseUrl; ?>">All Posts</a></li>
+                                        <li><a href="<?php echo $ftFeaturedUrl; ?>">Featured Posts</a></li>
+                                        <li><a href="<?php echo $ft24hoursUrl; ?>">Last 24 Hours</a></li>
+                                        <li><a href="<?php echo $ft3daysUrl; ?>">Last 3 days</a></li>
+                                    </ul>
+                                </div> <!-- button group -->
+                               </div>
+                        </div> <!-- row -->
 
                     </div>
                     
