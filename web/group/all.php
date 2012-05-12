@@ -12,27 +12,6 @@
     $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $filters = array();
 
-    /*
-    $ft = Utill::tryArrayKey($qparams,"ft");
-
-
-    if(!is_null($ft)) {
-        switch($ft) {
-            case 'user' :
-                $model = new \com\indigloo\sc\model\Group();
-                $loginId = Login::getLoginIdInSession();
-                $filter = new Filter($model);
-                $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
-                array_push($filters,$filter);
-
-            default:
-                trigger_error("Unknown group filter",E_USER_ERROR);
-                break;
-        }
-
-
-    } */
-
     $groupDao = new \com\indigloo\sc\dao\Group();
     $total = $groupDao->getTotalCount($filters);
 

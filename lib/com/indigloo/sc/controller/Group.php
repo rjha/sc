@@ -34,23 +34,23 @@ namespace com\indigloo\sc\controller{
 
             $template =  NULL ;
             $searchTitle = NULL ;
+            $groupName = \com\indigloo\util\StringUtil::convertKeyToName($token);
 
             if(sizeof($ids) > 0 ) {
-                $pageHeader = "$token -  $total results" ;
+                $pageHeader = "$groupName -  $total results" ;
                 $pageBaseUrl = "/group/$slug" ;
-                $template = $_SERVER['APP_WEB_DIR']. '/view/tiles.php';
+                $template = $_SERVER['APP_WEB_DIR']. '/view/group/tiles.php';
                 $postDao = new \com\indigloo\sc\dao\Post();
                 $postDBRows = $postDao->getOnSearchIds($ids) ;
 
             } else {
-                $pageHeader = "$token - No Results" ;
+                $pageHeader = "$groupName - No Results" ;
                 $template = $_SERVER['APP_WEB_DIR']. '/view/notiles.php';
-
             }
 
-            $pageTitle = SeoData::getPageTitle($token);
-            $metaKeywords = SeoData::getMetaKeywords($token);
-            $metaDescription = SeoData::getMetaDescription($token);
+            $pageTitle = SeoData::getPageTitle($groupName);
+            $metaKeywords = SeoData::getMetaKeywords($groupName);
+            $metaDescription = SeoData::getMetaDescription($groupName);
 
             include($template); 
         }
