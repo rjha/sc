@@ -94,7 +94,7 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 
             $sql = " select count(id) as count from sc_login ";
-            $q = new Query($mysqli);
+            $q = new MySQL\Query($mysqli);
             $q->filter($filters);
             $condition = $q->get();
 

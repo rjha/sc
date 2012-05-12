@@ -36,7 +36,7 @@ namespace com\indigloo\sc\mysql {
 			$direction = $mysqli->real_escape_string($direction);
 
             $sql = " select f.* from sc_feedback f " ;
-            $q = new Query($mysqli);
+            $q = new MySQL\Query($mysqli);
 
             $sql .= $q->getPagination($start,$direction,"f.id",$limit);
 

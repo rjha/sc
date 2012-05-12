@@ -39,7 +39,7 @@ namespace com\indigloo\sc\mysql {
             settype($limit,"integer");
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
 
-            $q = new Query($mysqli);
+            $q = new MySQL\Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Comment","a");
             //raw condition
             $q->addCondition("l.id = a.login_id");
@@ -58,7 +58,7 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = " select count(id) as count from sc_comment ";
 
-            $q = new Query($mysqli);
+            $q = new MySQL\Query($mysqli);
             $q->filter($filters);
             $condition = $q->get();
 
@@ -75,7 +75,7 @@ namespace com\indigloo\sc\mysql {
 
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
 
-            $q = new Query($mysqli);
+            $q = new MySQL\Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Comment","a");
             //raw condition
             $q->addCondition("l.id = a.login_id");

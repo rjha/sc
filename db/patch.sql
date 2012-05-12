@@ -1017,3 +1017,17 @@ init_connect = 'INSERT INTO scdb.mysql_connections (connect_time, user_host, con
 -- To check super privileges => see mysql.user table - user and super_priv columns
 -- 
 
+--
+-- 12 May 2012
+-- Add name column to sc_user_group
+--
+
+alter table sc_user_group add column name varchar(32) ;
+update sc_user_group ug set ug.name = (select g.name from sc_group_master g where g.token = ug.token) ;
+update sc_user_group set name = token where name is NULL;
+
+
+
+
+
+

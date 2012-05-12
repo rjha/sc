@@ -8,19 +8,24 @@
     use \com\indigloo\Util as Util;
        
 	error_reporting(-1);
-    
-    //dump id,description,group
-    $sql = " select id,description,group_slug from sc_post order by id desc ";
+    set_error_handler('offline_error_handler');
+
+    function process_groups($mysqli) {
+        //process groups 
+        $sql = " select post_id from sc_site_tracker where group_flag = 0 order by id desc limit 50";
+        $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+        $groupDao = new \com\indigloo\sc\dao\Group();
+
+        foreach($rows as $row) {
+            $postId = $row["post_id"];
+            $groupDao->process($postId);
+        }
+    }
+
     $mysqli = MySQL\Connection::getInstance()->getHandle();
-    $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-
-    foreach($rows as $row) {
-        //dump csv
-        $description = $row['description'] ;
-        //$description = str_replace(",", " ",$description);
-        $description = Util::squeeze($description);
-
-        printf("%d|%s|%s \n",$row['id'],$description,$row['group_slug']);
-    } 
+    for($i = 0 ; $i < 36 ; $i++){
+        process_groups($mysqli);
+        sleep(2);
+    }
 
 ?>

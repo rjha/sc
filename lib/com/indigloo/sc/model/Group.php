@@ -6,13 +6,14 @@ namespace com\indigloo\sc\model {
     class Group extends Table {
 
          const TOKEN = 1;
+         const LOGIN_ID = 2;
          
          function __construct() {
 
          }
 
          public function getColumns(){
-             $columns = array(self::TOKEN => "token");
+             $columns = array(self::TOKEN => "token", self::LOGIN_ID => "login_id");
              return $columns;
          }
 

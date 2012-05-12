@@ -7,7 +7,7 @@ namespace com\indigloo\sc\controller{
 	use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\html\Seo as SeoData ;
-    use \com\indigloo\sc\ui\Filter as Filter;
+    use \com\indigloo\ui\Filter as Filter;
   
 	
     class User {

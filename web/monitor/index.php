@@ -10,7 +10,7 @@
     use \com\indigloo\sc\auth\Login as Login;
 
     use \com\indigloo\sc\ui\Constants as UIConstants;
-    use \com\indigloo\sc\ui\Filter as Filter; 
+    use \com\indigloo\ui\Filter as Filter; 
     
     $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $options = UIConstants::WIDGET_ALL ;

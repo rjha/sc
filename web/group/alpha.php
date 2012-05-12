@@ -5,7 +5,7 @@
 
     use \com\indigloo\Url as Url ;
     use \com\indigloo\ui\Pagination as Pagination;
-    use \com\indigloo\sc\ui\Filter as Filter;
+    use \com\indigloo\ui\Filter as Filter;
 
     $ft  = Url::tryQueryParam("ft");
     if(empty($ft)) {
@@ -37,6 +37,9 @@
     }
 
     $pageBaseUrl = "/group/alpha.php" ;
+    $title = "All groups";
+    $hasNavigation = true ;
+
     include($_SERVER['APP_WEB_DIR'].'/group/inc/body.inc');
 
 ?>

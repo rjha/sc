@@ -13,7 +13,6 @@ namespace com\indigloo\sc\mysql {
     class Group {
         
         const MODULE_NAME = 'com\indigloo\sc\mysql\Group';
-        const TOKEN_COLUMN = "token" ;
 
 		static function getLatest($limit,$filters) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -21,7 +20,7 @@ namespace com\indigloo\sc\mysql {
 
             $sql = "select g.* from sc_group_master g " ;
 
-            $q = new Query($mysqli);
+            $q = new MySQL\Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Group","g");
             $q->filter($filters);
             $condition = $q->get();
@@ -41,7 +40,7 @@ namespace com\indigloo\sc\mysql {
             settype($limit,"integer");
             $sql = "select g.* from sc_group_master g" ;
 
-            $q = new Query($mysqli);
+            $q = new MySQL\Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Group","g");
             $q->filter($filters);
 
@@ -64,7 +63,7 @@ namespace com\indigloo\sc\mysql {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "select count(g.id) as count from sc_group_master g " ;
 
-            $q = new Query($mysqli);
+            $q = new MySQL\Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Group","g");
             $q->filter($filters);
             $condition = $q->get();
@@ -89,14 +88,44 @@ namespace com\indigloo\sc\mysql {
 
 		}
 
-        static function getOnLoginId($loginId) {
+        static function getUserGroups($limit,$filters) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($loginId,"integer");
+            $sql = "select ug.* from sc_user_group ug" ;
 
-            $sql = "select ug.token as token from sc_user_group ug where ug.login_id = %d order by token " ;
-            $sql = sprintf($sql,$loginId);
+            $q = new MySQL\Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\Group","ug");
+            $q->filter($filters);
+
+            $sql .= $q->get();
+            $sql .= " order by ug.id LIMIT %d " ; 
+            $sql = sprintf($sql,$limit);
+
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
+        }
+
+        static function getPagedUserGroups($start,$direction,$limit,$filters) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "select ug.* from sc_user_group ug" ;
+            
+            $q = new MySQL\Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\Group","ug");
+            $q->filter($filters);
+
+            $sql .= $q->get();
+            $sql .= $q->getPagination($start,$direction,"ug.id",$limit);
+
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            
+            //reverse rows for 'before' direction
+            if($direction == 'before') {
+                $results = array_reverse($rows) ;
+                return $results ;
+            }
+            
+            return $rows;	
+
         }
 
         static function getCountOnLoginId($loginId) {
@@ -143,7 +172,7 @@ namespace com\indigloo\sc\mysql {
             settype($version,"integer");
 
             $sqlm1 = "insert ignore into sc_group_master(token,name,cat_code,created_on) values('%s','%s','%s',now()) ";
-            $sqlm2 = "insert ignore into sc_user_group(login_id,token,created_on) values('%d','%s',now()) ";
+            $sqlm2 = "insert ignore into sc_user_group(login_id,token,name,created_on) values('%d','%s', '%s', now()) ";
             $sqlm3 = "update sc_site_tracker set group_flag = 1 where post_id = %d and version = %d " ;
 
             try {
@@ -158,7 +187,7 @@ namespace com\indigloo\sc\mysql {
                     $name = \com\indigloo\util\StringUtil::convertKeyToName($slug);
                     $sql = sprintf($sqlm1,$slug,$name,$catCode);
                     $dbh->exec($sql);
-                    $sql = sprintf($sqlm2,$loginId,$slug);
+                    $sql = sprintf($sqlm2,$loginId,$slug,$name);
                     $dbh->exec($sql);
 
                 }

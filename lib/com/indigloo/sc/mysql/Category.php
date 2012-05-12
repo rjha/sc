@@ -80,7 +80,7 @@ namespace com\indigloo\sc\mysql {
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l ";
 			$codeCondition = sprintf("cat_code = '%s'",$code);
 
-            $q = new Query($mysqli);
+            $q = new MySQL\Query($mysqli);
             $q->addCondition("l.id = q.login_id");
             $q->addCondition($codeCondition);
 

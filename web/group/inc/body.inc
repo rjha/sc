@@ -3,7 +3,7 @@
 <html>
 
        <head>
-        <title> Groups </title>
+       <title> <?php echo $title; ?> </title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
          
@@ -25,7 +25,7 @@
     </head>
 
      <body class="">
-		<div class="container mh800">
+		<div class="container">
 			<div class="row">
 				<div class="span12">
 					<?php include($_SERVER['APP_WEB_DIR'] . '/inc/toolbar.inc'); ?>
@@ -44,8 +44,9 @@
 			<div class="row">
 				<div class="span12">
                     <div class="stack">
-                        <h1> Groups</h1>
+                    <h1> <?php echo $title; ?> </h1>
                         <br>
+                        <?php if($hasNavigation) { ?> 
                         <div class="well">
                             <ul class="nav nav-list">
                                <li class="nav-header">Browse Groups</li>
@@ -54,6 +55,7 @@
                                <li><a href="/group/random.php">Random</a></li>
                             </ul>
                         </div> 
+                        <?php } ?> 
                        </div> <!-- first stack -->
 
 

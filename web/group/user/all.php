@@ -10,35 +10,22 @@
 
 
     $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-    $filters = array();
-
-    /*
-    $ft = Utill::tryArrayKey($qparams,"ft");
-
-
-    if(!is_null($ft)) {
-        switch($ft) {
-            case 'user' :
-                $model = new \com\indigloo\sc\model\Group();
-                $loginId = Login::getLoginIdInSession();
-                $filter = new Filter($model);
-                $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
-                array_push($filters,$filter);
-
-            default:
-                trigger_error("Unknown group filter",E_USER_ERROR);
-                break;
-        }
-
-
-    } */
+    $login = Login::getLoginInSession();
+    $loginId  = $login->id;
 
     $groupDao = new \com\indigloo\sc\dao\Group();
-    $total = $groupDao->getTotalCount($filters);
 
+    $filters = array();
+    $model = new \com\indigloo\sc\model\Group();
+    $filter = new Filter($model);
+    $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
+    array_push($filters,$filter);
+
+
+    $total = $groupDao->getCountOnLoginId($loginId);
     $pageSize =	100;
     $paginator = new Pagination($qparams,$total,$pageSize);	
-    $groups = $groupDao->getPaged($paginator,$filters);
+    $groups = $groupDao->getPagedUserGroups($paginator,$filters);
 
     $startId = NULL ;
     $endId = NULL ;
@@ -48,11 +35,14 @@
         $endId =   $groups[sizeof($groups)-1]['id'] ;
     }
 
-    $pageBaseUrl = "/group/all.php" ;
-    $title = "All groups";
-    $hasNavigation = true ;
+    $pageBaseUrl = "/group/user/all.php" ;
+    $title = sprintf("%s's groups",$login->name);
+    $hasNavigation = false ;
 
     include($_SERVER['APP_WEB_DIR'].'/group/inc/body.inc');
+
+
+    
 
 ?>
    </div> <!-- container -->
@@ -64,4 +54,3 @@
 
     </body>
 </html>
-

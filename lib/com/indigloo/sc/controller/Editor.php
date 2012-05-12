@@ -7,6 +7,7 @@ namespace com\indigloo\sc\controller{
 	use \com\indigloo\Configuration as Config ;
 	use \com\indigloo\Constants as Constants;
     use \com\indigloo\sc\html\Seo as SeoData ;
+    use \com\indigloo\ui\Filter as Filter;
 	
     class Editor {
         

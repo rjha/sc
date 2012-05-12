@@ -8,7 +8,7 @@
     use \com\indigloo\Util as Util;
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
-    use \com\indigloo\sc\ui\Filter as Filter;
+    use \com\indigloo\ui\Filter as Filter;
     
     $loginDao = new \com\indigloo\sc\dao\Login();
     

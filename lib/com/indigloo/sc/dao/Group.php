@@ -40,15 +40,25 @@ namespace com\indigloo\sc\dao {
 
         }
        
-        function getOnLoginId($loginId) {
-            $rows = mysql\Group::getOnLoginId($loginId);
-            $groups = array();
-            foreach($rows as $row) {
-                $group = array('token' => $row['token'] ,
-                                'name' => StringUtil::convertKeyToName($row['token']));
-                array_push($groups,$group);
-            }
-			return $groups ;
+        function getUserGroups($limit,$filters=array()) {
+            $rows = mysql\Group::getUserGroups($limit,$filters);
+			return $rows ;
+        }
+
+        function getPagedUserGroups($paginator,$filters=array()) {
+			$limit = $paginator->getPageSize();
+
+			if($paginator->isHome()){
+				return $this->getUserGroups($limit,$filters);
+			} else {
+
+                $params = $paginator->getDBParams();
+				$start = $params['start'];
+				$direction = $params['direction'];
+				$rows = mysql\Group::getPagedUserGroups($start,$direction,$limit,$filters);
+                return $rows ;
+			}
+
         }
 
         function getCountOnLoginId($loginId) {

@@ -9,7 +9,7 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login;
     
-    use \com\indigloo\sc\ui\Filter as Filter; 
+    use \com\indigloo\ui\Filter as Filter; 
     
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
