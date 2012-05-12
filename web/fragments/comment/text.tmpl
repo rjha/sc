@@ -4,6 +4,9 @@
 		<div class="span7">
 		   <p> ~~$view->comment~
             <b>in reply to </b> <a href="/item/~~$view->itemId~"> ~~$view->title~</a>
+            ~if($view->showUser){~
+                &nbsp;<b>posted by</b> <a href="/pub/user/~~$view->pubUserId~"> ~~$view->userName~</a>
+            ~}~
            </p>
             <div class="options">
                 <div class="links">

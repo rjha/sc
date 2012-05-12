@@ -36,9 +36,6 @@ namespace com\indigloo\sc\dao {
 			return $rows ;
 		}
 		
-
-
-
     }
 
 }

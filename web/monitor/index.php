@@ -8,17 +8,77 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login;
+
     use \com\indigloo\sc\ui\Constants as UIConstants;
+    use \com\indigloo\sc\ui\Filter as Filter; 
     
     $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $options = UIConstants::WIDGET_ALL ;
     
     $postDao = new \com\indigloo\sc\dao\Post();
-    $total = $postDao->getTotalCount();
+
+    //copy URL parameters
+    $fparams = $qparams;
+    //now unset extra params
+    unset($fparams["ft"]);
+    //ft urls start with page 1
+    $fparams['gpage'] = 1 ;
+    //create filter Urls
+    $ftBaseUrl = Url::createUrl("/monitor/index.php",$fparams);
+    $ftFeaturedUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "featured"));
+    $ft24hoursUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "24hours"));
+    $ft3daysUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "3days"));
+
+    //search clear link
+    $sparams = $qparams ;
+    unset($sparams["gt"]);
+    $clearSearchUrl = Url::createUrl("/monitor/index.php",$sparams);
+
+    
+    //filters
+    $filters = array();
+    $model = new \com\indigloo\sc\model\Post();
+    $ft = Url::tryQueryParam("ft");
+    $ftname = '';
+        
+    if(!is_null($ft)) {
+       
+        switch($ft){
+            case 'featured' :
+                $filter = new Filter($model);
+                $filter->add($model::FEATURED,Filter::EQ,TRUE);
+                array_push($filters,$filter);
+                $ftname = 'Featured';
+                break;
+            case '24hours' :
+                $filter = new Filter($model);
+                $filter->add($model::CREATED_ON,Filter::GT,"24 HOUR");
+                array_push($filters,$filter);
+                $ftname = 'Last 24 hour';
+                break;
+            case '3days' :
+                $filter = new Filter($model);
+                $filter->add($model::CREATED_ON,Filter::GT,"3 DAY");
+                array_push($filters,$filter);
+                $ftname = 'Last 3 Days';
+                break;
+            default:
+                break;
+        }
+    }
+
+    $postDBRows = array();
+    $total = $postDao->getTotalCount($filters);
     
     $pageSize = Config::getInstance()->get_value("user.page.items");
     $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
-    $postDBRows = $postDao->getPaged($paginator);
+    $postDBRows = $postDao->getPaged($paginator,$filters);
+
+    $gtoken = Util::tryArrayKey($qparams,"gt");
+    //webgloo Url qparams are urlencoded 
+    //we need to decode before passing to DB layer
+    $gtoken = urldecode($gtoken);
+
 ?>
 
 
@@ -46,6 +106,7 @@
                     $(this).find('.options').toggle(); 
                     $(this).css("background-color", "#FFFFFF");
                 }); 
+
             });
             
         </script>
@@ -69,7 +130,39 @@
 
             <div class="row">
                 <div class="span9">
-                    <div class="page-header"> <h2><?php echo $total ?> Posts </h2> </div>
+                    <div class="page-header"> 
+
+                        <div class="row">
+                           <div class="span5">
+                            <!-- <h3> <?php echo $ftname; ?> -  <?php echo $total ?> Posts </h3>  -->
+                            <form method="GET" action="<?php echo $clearSearchUrl; ?>">
+                            <input id="site-search" name="gt" type="text" class="search-query" placeholder="Quick Search"> &nbsp;<a href="<?php echo $clearSearchUrl; ?>">clear</a>
+                            <input type="hidden" name="ft" value="<?php echo $ft; ?>"/>
+                            </form>
+                            
+                           </div>
+                            <div class="span4">
+                                <div class="btn-group">
+                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                        Filter&nbsp;Results
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="<?php echo $ftBaseUrl; ?>">All Posts</a></li>
+                                        <li><a href="<?php echo $ftFeaturedUrl; ?>">Featured Posts</a></li>
+                                        <li><a href="<?php echo $ft24hoursUrl; ?>">Last 24 Hours</a></li>
+                                        <li><a href="<?php echo $ft3daysUrl; ?>">Last 3 days</a></li>
+                                    </ul>
+                                </div> <!-- button group -->
+                               </div>
+                        </div> <!-- row -->
+                        <div class="p10">
+                            <span class="b"> filter </span> 
+                            <span class="color-red"><?php echo $gtoken; ?> / <?php echo $ftname; ?> </span>
+                            <span> <?php echo $total; ?> results
+                        </div>
+
+                    </div>
                     
                         <?php
                             $startId = NULL;

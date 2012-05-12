@@ -8,6 +8,8 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login;
+
+    use \com\indigloo\sc\ui\Filter as Filter; 
     
     $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
@@ -26,12 +28,18 @@
     
     $commentDao = new \com\indigloo\sc\dao\Comment() ;
 		
-	$filter = array($commentDao::LOGIN_ID_COLUMN => $loginId);
-	$total = $commentDao->getTotalCount($filter);
+    //Add login_id filter
+    $model = new \com\indigloo\sc\model\Comment();
+    $filters = array(); 
+    $filter = new Filter($model);
+    $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
+    array_push($filters,$filter);
+
+	$total = $commentDao->getTotalCount($filters);
 
 	$pageSize =	Config::getInstance()->get_value("user.page.items");
 	$paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);	
-	$commentDBRows = $commentDao->getPaged($paginator,$filter);
+	$commentDBRows = $commentDao->getPaged($paginator,$filters);
     
 ?>
 

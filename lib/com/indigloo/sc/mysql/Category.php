@@ -77,18 +77,16 @@ namespace com\indigloo\sc\mysql {
             settype($start,"integer");
             settype($limit,"integer");
             
-            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l  where l.id = q.login_id " ;
-			$sql .= " and cat_code = '%s'" ;
+            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l ";
+			$codeCondition = sprintf("cat_code = '%s'",$code);
 
-            if($direction == 'after') {
-                $sql  .= " and q.id < %d order by q.id DESC LIMIT %d " ;
-            } else if($direction == 'before'){
-                $sql .= " and q.id > %s  order by q.id ASC LIMIT %d " ;
-            } else {
-                trigger_error("Unknow sort direction in query", E_USER_ERROR);
-            }
-            
-            $sql = sprintf($sql,$code,$start,$limit); 
+            $q = new Query($mysqli);
+            $q->addCondition("l.id = q.login_id");
+            $q->addCondition($codeCondition);
+
+            $sql .= $q->get();
+            $sql .= $q->getPagination($start,$direction, "q.id",$limit);
+
             
             if(Config::getInstance()->is_debug()) {
                 Logger::getInstance()->debug("sql => $sql \n");

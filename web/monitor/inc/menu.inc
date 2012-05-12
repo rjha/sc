@@ -7,6 +7,7 @@
                <li><a href="/monitor/groups.php">Groups</a></li>
                <li><a href="/monitor/feedback.php">Feedback</a></li>
                <li><a href="/monitor/users.php">Users</a></li>
+               <li><a href="#">Search Tokens</a></li>
                
             </ul>
       </div> 

@@ -7,6 +7,7 @@ namespace com\indigloo\sc\controller{
 	use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\html\Seo as SeoData ;
+    use \com\indigloo\sc\ui\Filter as Filter;
   
 	
     class User {
@@ -33,12 +34,19 @@ namespace com\indigloo\sc\controller{
             $userName = $userDBRow['name'];
 
             $postDao = new \com\indigloo\sc\dao\Post() ;
-            $filter = array($postDao::LOGIN_ID_COLUMN => $loginId);
-            $total = $postDao->getTotalCount($filter);
+
+            //create filter
+            $model = new \com\indigloo\sc\model\Post();
+            $filters= array();
+            $filter = new Filter($model);
+            $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
+            array_push($filters,$filter);
+
+            $total = $postDao->getTotalCount($filters);
 
             $pageSize =	Config::getInstance()->get_value("user.page.items");
             $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);	
-            $postDBRows = $postDao->getPaged($paginator,$filter);
+            $postDBRows = $postDao->getPaged($paginator,$filters);
 
             $template = $_SERVER['APP_WEB_DIR']. '/view/tiles-page.php';
             //page variables

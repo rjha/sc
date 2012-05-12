@@ -52,6 +52,15 @@
         }
     }
 
+    function remove_stale_sessions(){
+        //clean sessions inactive for half an hour
+        $mysql_session = new \com\indigloo\core\MySQLSession();
+        $mysql_session->open(null,null);
+        //30 minutes * 60 seconds
+        $mysql_session->gc(1800);
+        $mysql_session->close();
+    }
+
     //this script is locked via site-worker.sh shell script
     $mysqli = MySQL\Connection::getInstance()->getHandle();
     process_sites($mysqli);
@@ -59,5 +68,7 @@
     process_groups($mysqli);
     sleep(1);
     process_reset_password($mysqli);
+    sleep(1);
+    remove_stale_sessions();
 
    ?>

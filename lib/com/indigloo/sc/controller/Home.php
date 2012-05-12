@@ -6,6 +6,7 @@ namespace com\indigloo\sc\controller{
     use com\indigloo\Url;
 	use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\html\Seo as SeoData ;
+    use \com\indigloo\sc\ui\Filter as Filter;
   
 	
     class Home {
@@ -59,14 +60,17 @@ namespace com\indigloo\sc\controller{
 
         function processHome($params,$options) {
 
-            //get featured items
-
             $postDao = new \com\indigloo\sc\dao\Post();
 			$total = $postDao->getTotalCount();
 
-            $filter = array($postDao::FEATURE_COLUMN => 1);
-            $featureDBRows = $postDao->getPosts($filter,25);
+            //feature filter
+            $filters = array();
+            $model = new \com\indigloo\sc\model\Post();
+            $filter = new Filter($model);
+            $filter->add($model::FEATURED,Filter::EQ,TRUE);
+            array_push($filters,$filter);
 
+            $featureDBRows = $postDao->getPosts(25,$filters);
             $postDBRows = array();
             $randomDBRows = array();
 

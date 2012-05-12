@@ -8,18 +8,12 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
 
-    use com\indigloo\sc\util\PDOWrapper;
+    use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException;
-    
     
     class Post {
         
         const MODULE_NAME = 'com\indigloo\sc\mysql\Post';
-
-		//DB columns for filters
-		const LOGIN_COLUMN = "login_id" ;
-		const FEATURE_COLUMN = "is_feature" ;
-		const DATE_COLUMN = "created_on" ;
 
 		static function getOnId($postId) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -58,17 +52,19 @@ namespace com\indigloo\sc\mysql {
 
 		}
 
-         static function getPosts($filter,$limit) {
+         static function getPosts($limit,$filters) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
-            $sql = "select q.*,l.name as user_name  from sc_post q, sc_login l where q.login_id = l.id ";
-
-            if(Util::tryArrayKey($filter,self::FEATURE_COLUMN)) {
-                $value = $filter[self::FEATURE_COLUMN]; 
-                settype($value,"integer");
-                $sql .= " and is_feature = ".$value;
-            }
+            $sql = "select q.*,l.name as user_name  from sc_post q, sc_login l ";
             
+            $q = new Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\Post","q");
+            //raw condition
+            $q->addCondition("l.id = q.login_id");
+            $q->filter($filters);
+            $condition = $q->get();
+
+            $sql .= $condition;
             $sql .= " order by id desc limit %d " ;
             $sql = sprintf($sql,$limit);
              
@@ -118,48 +114,43 @@ namespace com\indigloo\sc\mysql {
             return $rows;
 		}
 		
-		static function getLatest($limit,$dbfilter) {
+		static function getLatest($limit,$filters) {
 			
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
+            
+            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l" ;
 
-			$condition = '' ;
-			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
-                $loginId = $dbfilter[self::LOGIN_COLUMN]; 
-                settype($loginId,"integer");
-				$condition = " and q.login_id = ".$loginId;
-			}
+            $q = new Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\Post","q");
+            //raw condition
+            $q->addCondition("l.id = q.login_id");
+            $q->filter($filters);
+            $condition = $q->get();
+            $sql .= $condition;
 
-            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
-            $sql .= " where l.id=q.login_id ".$condition." order by q.id desc LIMIT ".$limit ;
+            $sql .= " order by q.id desc LIMIT ".$limit ;
 			
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 			
 		}
 
-		static function getTotalCount($dbfilter) {
+		static function getTotalCount($filters) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "select count(id) as count from sc_post ";
 
-			$condition = '';
-			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
-                $loginId = $dbfilter[self::LOGIN_COLUMN]; 
-                settype($loginId,"integer");
-				$condition = " where login_id = ".$loginId;
-			}
-
-            if(array_key_exists(self::DATE_COLUMN,$dbfilter)) {
-				$condition = " where created_on > (now() - interval 24 HOUR) ";
-			}
-
-
-            $sql = " select count(id) as count from sc_post ".$condition ;
+            $q = new Query($mysqli);
+            $q->filter($filters);
+            $condition = $q->get();
+            $sql .= $condition ;
+            
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 
 		}
 
-		static function getPaged($start,$direction,$limit,$dbfilter) {
+		static function getPaged($start,$direction,$limit,$filters) {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             
             settype($start,"integer");
@@ -168,24 +159,17 @@ namespace com\indigloo\sc\mysql {
             // latest posts has max(id) and appears on top
             // so AFTER (NEXT) means id < latest post id
             
-            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l  where l.id = q.login_id " ;
+            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
 
-			if(array_key_exists(self::LOGIN_COLUMN,$dbfilter)) {
-				$loginId = $dbfilter[self::LOGIN_COLUMN];
-                settype($loginId,"integer");
-				$sql .= " and q.login_id = ".$loginId ;
-			}
+            $q = new Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\Post","q");
+            //raw condition
+            $q->addCondition("l.id = q.login_id");
+            $q->filter($filters);
 
-            if($direction == 'after') {
-                $sql .= " and q.id < %d order by q.id DESC LIMIT %d " ;
+            $sql .= $q->get();
+            $sql .= $q->getPagination($start,$direction,"q.id",$limit);
 
-            } else if($direction == 'before'){
-                $sql .= " and q.id > %d order by q.id ASC LIMIT %d " ;
-            } else {
-                trigger_error("Unknow sort direction in query", E_USER_ERROR);
-            }
-            
-            $sql = sprintf($sql,$start,$limit);
             if(Config::getInstance()->is_debug()) {
                 Logger::getInstance()->debug("sql => $sql \n");
             }
@@ -215,11 +199,9 @@ namespace com\indigloo\sc\mysql {
             $sql = "update sc_post set title=?,description=?,links_json =?,images_json=?,version=version +1,";
 			$sql .= "group_slug = ? , updated_on = now(),cat_code = ? where id = ? and login_id = ?" ;
 			
-			
             $code = MySQL\Connection::ACK_OK;
             $stmt = $mysqli->prepare($sql);
-            
-            
+
             if ($stmt) {
                 $stmt->bind_param("ssssssii",
                         $title,
@@ -363,7 +345,6 @@ namespace com\indigloo\sc\mysql {
             return $code ;
             
 		}
-
 
 	}
 }

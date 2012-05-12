@@ -9,7 +9,8 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login;
     
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    use \com\indigloo\sc\ui\Filter as Filter; 
+    
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
 
@@ -25,13 +26,49 @@
     }
     
     $postDao = new \com\indigloo\sc\dao\Post();
+    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
 
-    $filter = array($postDao::LOGIN_ID_COLUMN => $loginId);
-    $total = $postDao->getTotalCount($filter);
+    //copy URL parameters
+    $fparams = $qparams;
+    //now unset ft param
+    unset($fparams["ft"]);
+    //ft urls start with page 1
+    $fparams['gpage'] = 1 ;
+    //create filter Urls
+    $ftBaseUrl = Url::createUrl("/user/dashboard/posts.php",$fparams);
+    $ftFeaturedUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "featured"));
+    
+    //filters
+    $filters = array();
+    $model = new \com\indigloo\sc\model\Post();
+    $ft = Url::tryQueryParam("ft");
+        
+    if(!is_null($ft)) {
+       
+        switch($ft){
+            case 'featured' :
+                $filter = new Filter($model);
+                $filter->add($model::FEATURED,Filter::EQ,TRUE);
+                array_push($filters,$filter);
+                break;
+            default:
+                break;
+                
+        }
+    }
+    
+    //Always add login_id filter for user dashboard
+    $filter = new Filter($model);
+    $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
+    array_push($filters,$filter);
+     
+    $postDBRows = array();
+    $total = $postDao->getTotalCount($filters);
 
     $pageSize = Config::getInstance()->get_value("user.page.items");
     $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
-    $postDBRows = $postDao->getPaged($paginator, $filter);
+    $postDBRows = $postDao->getPaged($paginator,$filters);
+    
 ?>
 
 
@@ -82,7 +119,19 @@
 
             <div class="row">
                 <div class="span9">
-                    <div class="page-header"> <h2> Posts </h2> </div>
+                    <div class="page-header"> 
+                        <h2> Posts </h2> 
+                        <div class="btn-group">
+                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                Filter Posts
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<?php echo $ftBaseUrl; ?>">All Posts</a></li>
+                                <li><a href="<?php echo $ftFeaturedUrl; ?>">Featured Posts</a></li>
+                            </ul>
+                        </div> <!-- button group -->
+                    </div>
                     
                         <?php
                             $startId = NULL;

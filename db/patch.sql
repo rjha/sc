@@ -992,3 +992,28 @@ create table sc_follow(
 --
 
 alter table sc_user_bookmark change post_id item_id int not null ;
+
+--
+-- 11 May 2012
+-- 
+
+DROP TABLE IF EXISTS mysql_connections ;
+CREATE TABLE mysql_connections (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+    connect_time DATETIME NOT NULL, 
+    user_host VARCHAR(32) NOT NULL, 
+    connection_id INT UNSIGNED NOT NULL 
+) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+--
+-- put this at top of [mysqld] section in /etc/mysql/my.cnf file
+-- 
+-- @see http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html#sysvar_init_connect 
+init_connect = 'INSERT INTO scdb.mysql_connections (connect_time, user_host, connection_id) VALUES (NOW(), CURRENT_USER(), CONNECTION_ID()) '
+
+-- 
+-- The init_connect will not fire for users with SUPER privileges - little worry for us since our 
+-- web app runs as different user
+-- To check super privileges => see mysql.user table - user and super_priv columns
+-- 
+

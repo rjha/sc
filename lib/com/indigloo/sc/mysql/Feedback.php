@@ -36,18 +36,10 @@ namespace com\indigloo\sc\mysql {
 			$direction = $mysqli->real_escape_string($direction);
 
             $sql = " select f.* from sc_feedback f " ;
+            $q = new Query($mysqli);
 
-            if($direction == 'after') {
-                $sql .= " where  f.id < %d order by f.id DESC LIMIT %d ";
+            $sql .= $q->getPagination($start,$direction,"f.id",$limit);
 
-            } else if($direction == 'before'){
-                $sql .= " where  f.id > %d order by f.id ASC LIMIT %d ";
-            } else {
-                trigger_error("Unknow sort direction in query", E_USER_ERROR);
-            }
-
-            $sql = sprintf($sql,$start,$limit);
-            
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             
             //reverse rows for 'before' direction

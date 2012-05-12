@@ -7,20 +7,9 @@ namespace com\indigloo\sc\dao {
 
 	class Login {
 
-        
-		const DATE_COLUMN  = "created_on";
-
-		function createDBFilter($filter) {
-            $map = array(self::DATE_COLUMN => mysql\Login::DATE_COLUMN);
-			$dbfilter = mysql\Helper::createDBFilter($filter,$map);
-			return $dbfilter ;
-		}
-
 		function getOnId($loginId) {
 			$row = mysql\Login::getOnId($loginId);
 			return $row ;
-
-
 		}
 
 		function create($firstName,$lastName,$email,$password){
@@ -35,11 +24,9 @@ namespace com\indigloo\sc\dao {
 			
 		}
 
-        function getTotalCount($filter=NULL) {
-			$dbfilter = $this->createDBFilter($filter);
-			$row = mysql\Login::getTotalCount($dbfilter);
+        function getTotalCount($filters=array()) {
+			$row = mysql\Login::getTotalCount($filters);
             return $row['count'] ;
-
         } 
 
         function getLatest($limit) {

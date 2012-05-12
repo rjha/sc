@@ -18,6 +18,8 @@
     }
 
     //go back to main site
+    //@todo - redirect to a _session free page
+    //redirecting to HOME starts a new session
     header('Location: /');
 
 ?>

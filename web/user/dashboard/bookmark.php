@@ -28,9 +28,6 @@
         trigger_error("No user record found for given login_id", E_USER_ERROR);
     }
     
-    $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
-    $postDBRows = $bookmarkDao->getOnLoginId($loginId,$code);
-    
     $tileOptions = ~UIConstants::TILE_ALL ;
     $pageTitle = "%s %s on 3mik" ;
     
@@ -48,6 +45,9 @@
         default:
             break ;
     }
+
+    $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
+    $postDBRows = $bookmarkDao->getOnLoginId($loginId,$code);
 
             
 ?>

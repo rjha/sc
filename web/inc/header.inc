@@ -6,13 +6,20 @@
     
     
     include($_SERVER['APP_CLASS_LOADER']);
-    include($_SERVER['APP_WEB_DIR'] . '/inc/session.inc');
-    include($_SERVER['WEBGLOO_LIB_ROOT'] . '/com/indigloo/error.inc');
-    
+
     use com\indigloo\core\Web  ;
+    use com\indigloo\Configuration as Config  ;
+
+    $sessionBackend = Config::getInstance()->get_value("session.backend");
+    if(strcmp($sessionBackend,"mysql") == 0 ) {
+        include($_SERVER['APP_WEB_DIR'] . '/inc/mysql-session.inc');
+    }else{
+        include($_SERVER['APP_WEB_DIR'] . '/inc/session.inc');
+    }
+
+    include($_SERVER['WEBGLOO_LIB_ROOT'] . '/com/indigloo/error.inc');
     
     $gWeb = Web::getInstance();
     $gWeb->start();
-    
-?>
 
+?>

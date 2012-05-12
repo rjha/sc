@@ -9,16 +9,8 @@ namespace com\indigloo\sc\dao {
 	
     class Group {
 
-        const TOKEN_COLUMN = "token" ;
-        function createDBFilter($filter) {
-            $map = array(self::TOKEN_COLUMN => mysql\Group::TOKEN_COLUMN);
-			$dbfilter = mysql\Helper::createDBFilter($filter,$map);
-			return $dbfilter ;
-		}
-
-		function getLatest($limit,$filter=NULL) {
-            $dbfilter = $this->createDBFilter($filter);
-			$rows = mysql\Group::getLatest($limit,$dbfilter);
+		function getLatest($limit,$filters=array()) {
+			$rows = mysql\Group::getLatest($limit,$filters);
 			return $rows ;
 		}
 
@@ -27,25 +19,22 @@ namespace com\indigloo\sc\dao {
 			return $rows ;
 		}
 
-        function getTotalCount($filter=NULL){
-            $dbfilter = $this->createDBFilter($filter);
-            $row = mysql\Group::getTotalCount($dbfilter);
+        function getTotalCount($filters=array()){
+            $row = mysql\Group::getTotalCount($filters);
             return $row['count'] ;
         }
 
-        function getPaged($paginator,$filter=NULL) {
+        function getPaged($paginator,$filters=array()) {
 			$limit = $paginator->getPageSize();
 
 			if($paginator->isHome()){
-				return $this->getLatest($limit,$filter);
-				
+				return $this->getLatest($limit,$filters);
 			} else {
-                $dbfilter = $this->createDBFilter($filter);
+
                 $params = $paginator->getDBParams();
 				$start = $params['start'];
 				$direction = $params['direction'];
-
-				$rows = mysql\Group::getPaged($start,$direction,$limit,$dbfilter);
+				$rows = mysql\Group::getPaged($start,$direction,$limit,$filters);
 				return $rows ;
 			}
 
