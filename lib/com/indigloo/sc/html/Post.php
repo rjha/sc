@@ -20,10 +20,21 @@ namespace com\indigloo\sc\html {
 
             foreach($images as $image) {
                 $record = array();
-                $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? "http://" : "/" ;
-                $record['source'] = $prefix.$image->bucket."/".$image->storeName ;
-                $record['thumbnail'] = $prefix.$image->bucket."/".$image->thumbnail ;
+
+                //show thumbnail + original image
+                //@imp: if thumbnail is not available then fallback on original image
+                $tname = (property_exists($image,'thumbnailName')) ? $image->thumbnailName : $image->originalName ;
+                $title = $image->originalName ;
+
+                $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? 'http://' : '/' ;
+                $tfile = (property_exists($image,'thumbnail')) ? $image->thumbnail : $image->storeName ;
+				$timage = $prefix.$image->bucket.'/'.$tfile;
+
+
+                $record['source'] = $prefix.$image->bucket.'/'.$image->storeName ;
+                $record['thumbnail'] = $timage;
                 $record['title'] = $image->originalName;
+                $record['tname'] = $tname;
 
   	
 				$newxy = Util::foldXY($image->width,$image->height,190,140);
@@ -77,7 +88,6 @@ namespace com\indigloo\sc\html {
 			
 			$view = new \stdClass;
 
-			//$view->description = Util::abbreviate($postDBRow['description'],70);
 			$view->description = $postDBRow['description'];
 			$view->id = $postDBRow['id'];
 			$view->itemId = PseudoId::encode($view->id);
@@ -88,12 +98,13 @@ namespace com\indigloo\sc\html {
 				/* image stuff */
 				$image = $images[0] ;
 				
-				$view->originalName = $image->originalName;
 				$view->bucket = $image->bucket;
 
+                //show thumbnail 
+                $view->originalName = 
+                    (property_exists($image,'thumbnailName')) ?  $image->thumbnailName : $image->originalName ;
                 $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? 'http://' : '/' ;
-                //@todo remove property exists check after s3 migration?
-                $fileName = (property_exists($image,'thumbnail') && !empty($image->thumbnail)) ? $image->thumbnail : $image->storeName ;
+                $fileName = (property_exists($image,'thumbnail')) ? $image->thumbnail : $image->storeName ;
 				$view->srcImage = $prefix.$image->bucket.'/'.$fileName;
 			    	
 				$newxy = Util::foldX($image->width,$image->height,100);
@@ -166,17 +177,16 @@ namespace com\indigloo\sc\html {
 				$template = '/fragments/tile/image.tmpl' ;
 				/* image stuff */
 				$image = $images[0] ;
-				
-				$view->originalName = $image->originalName;
 				$view->bucket = $image->bucket;
 
+                //show thumbnail
+                $view->originalName = 
+                    (property_exists($image,'thumbnailName')) ?  $image->thumbnailName : $image->originalName ;
                 $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? 'http://' : '/' ;
-                //@todo remove property exists check after s3 migration?
-                $fileName = (property_exists($image,'thumbnail') && !empty($image->thumbnail)) ? $image->thumbnail : $image->storeName ;
+                $fileName = (property_exists($image,'thumbnail')) ? $image->thumbnail : $image->storeName ;
+
 				$view->srcImage = $prefix.$image->bucket.'/'.$fileName;
-			    	
 				$newxy = Util::foldX($image->width,$image->height,190);
-				
 				$view->width = $newxy["width"];
 				$view->height = $newxy["height"];
 				
@@ -289,21 +299,20 @@ namespace com\indigloo\sc\html {
 				
 				$image = $images[0] ;
 				
-				$view->originalName = $image->originalName;
 				$view->bucket = $image->bucket;
 
+                //show thumbnail
+                $view->originalName = 
+                    (property_exists($image,'thumbnailName')) ?  $image->thumbnailName : $image->originalName ;
                 $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? 'http://' : '/' ;
-                $fileName = (property_exists($image,'thumbnail') && !empty($image->thumbnail)) ? $image->thumbnail : $image->storeName ;
+                $fileName = (property_exists($image,'thumbnail')) ? $image->thumbnail : $image->storeName ;
+
 				$view->srcImage = $prefix.$image->bucket.'/'.$fileName;
-				
 				$newxy = Util::foldX($image->width,$image->height,190);
-				
 				$view->width = $newxy["width"];
 				$view->height = $newxy["height"];
 				
 				/* image stuff end */
-				
-				
 			}
 			
 			$html = Template::render($template,$view);

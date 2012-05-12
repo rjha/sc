@@ -8,8 +8,6 @@
     use \com\indigloo\Configuration as Config;
        
 	error_reporting(-1);
-    //printf("Make backup of DB first \n");
-    //exit ;
 
     $iter = 40;
     $count = 0 ;
@@ -20,9 +18,6 @@
 
         $sql = " select id,images_json from sc_post where  (id <= {end}) and (id >= {start} ) ";
         $sql = str_replace(array("{end}", "{start}"),array( 0 => $end, 1=> $start),$sql);
-        //printf("%s \n ", $sql);
-        //$count++ ;
-        //continue ;
 
         $mysqli = MySQL\Connection::getInstance()->getHandle();
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
@@ -51,8 +46,7 @@
         $count++ ;
     }
     
-
-      function updateItem($mysqli,$postId,$strMediaVO) {
+    function updateItem($mysqli,$postId,$strMediaVO) {
       
         $updateSQL = " update sc_post set images_json = ? where id = ? " ;
         $stmt = $mysqli->prepare($updateSQL);

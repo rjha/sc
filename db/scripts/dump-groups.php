@@ -23,6 +23,7 @@
     }
 
     $mysqli = MySQL\Connection::getInstance()->getHandle();
+    //find out the max(id) from sc_post
     for($i = 0 ; $i < 36 ; $i++){
         process_groups($mysqli);
         sleep(2);

@@ -1,11 +1,74 @@
+14 May 2012
+ - Better sharing with friends and social networks
+ - supercow button
+ - SQL injection : look @ all queries again please!
+ - Fix - PHP : No input file found exception
+ - Turn off publicizing Nginx + PHP version
+ - why the heck sphinx query.log are of size zero??
+ - image upload script :- should be protected by login
+ - error when MediaVO does not contain the required attributes (examine in JavaScript)
+
+
+ Fix thumbnail name issue:- 
+    thumbnails are always jpeg files and their extension should change
+    The way to do that is 
+    1. Add column thumbnail_name to sc_media
+    2. Run sql to fix the 9 posts for what we do not have data
+    3. Run the fix-thumbnail-name-script
+    4. Get a list of media ids and verify that they all have thumbnail_name 
+    5. Upload new code
+
+    
+ - 9 images were screwed because of "single quote (') issue " 
+   - Need to test more with strange image file names - we can simply filter such names
+   - Just put an alphanumeric filter (or our SEO key converter) in front of what the browser supplies
+   - Fix the broken images_json posts :- maybe override with '[]' ?
+   - An example:- http://mint.3mik.com/item/203755 
+   - Robust image error handling
+
+
+13 May 2012
+
+- UI fixing
+  - group: Alphabetical push buttons instead of Alpha bar that we have right now.
+  - Tampered URLs => what to do? Not found looks like better solution
+     => what kind of URL tampering can be done?
+     => what to do in each situation? 
+     
+  - When no results : Suggest things to user 
+    + Ask for email when items become available
+    + Random items from site? 
+
+  - Login in with google + yahoo as well?
+  - Add google/yahoo openID login options
+  + log it - what are people searching for on our site?
+  + User dashboard should be visible after user login - Right now under a link
+  + Help link
+  + supercow button should be visible after admin login 
+  + Profile page changes :- Capture additional details like website 
+    email /link/About you/Picture
+    User pub page - side strip :- show synopsis 
+        - Like groups / # of posts / Follow button
+        - when joined date 
+        - Likes/ comments/ Followers         
+        - website / Blog link 
+
+  + Browsing options - Top sites/Popular?
+  + Like/Save :- nice icons
+  + email harvesting
+ 
+
 12 May 2012
 - what are people searching for? what are they typing in our search boxes?
 - separate user and monitor widgets
 - Add supercow button to item details page for monitor logins
-- UI fixing
-  - group: Alphabetical push buttons instead of Alpha bar that we have right now.
-  - 
 
+ server deployment
+ - Fix user dashboard and upload!
+ - new config variable : session.backend
+ - DB patch - sc_user_group.name column
+ - shut off Nginx/PHP version  advertising
+   - URL like http://www.3mik.com/group/beta.php should return nginx 404
 
 11 May 2012
  - Redis

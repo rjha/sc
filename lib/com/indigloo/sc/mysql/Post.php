@@ -259,7 +259,7 @@ namespace com\indigloo\sc\mysql {
                    
                 $flag = $stmt->execute();
                 
-                if(!flag){
+                if(!$flag){
                     $dbh->rollBack();
                     $dbh = null;
                     $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
@@ -280,7 +280,7 @@ namespace com\indigloo\sc\mysql {
                 $stmt->bindParam(":post_id", $postId);
                 $flag = $stmt->execute();
                 
-                if(!flag){
+                if(!$flag){
                     $dbh->rollBack();
                     $dbh = null;
                     $message = sprintf("DB PDO Error : code is  %s",$stmt->errorCode());
