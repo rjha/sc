@@ -1,3 +1,10 @@
+To amend last commit message
+git commit --amend -m "new_message"
+
+To unstage a commit
+git reset HEAD
+
+
 To list all remote branches
 ============================
 $git fetch origin 
