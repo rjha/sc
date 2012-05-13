@@ -1,4 +1,35 @@
+15 May 2012
+
+ Test local deployment
+ server deployment
+    new config variable : session.backend => set to default on server
+    DB patching : 
+    
+alter table sc_user_group add column name varchar(32) ;
+update sc_user_group ug set ug.name = (select g.name from sc_group_master g where g.token = ug.token) ;
+update sc_user_group set name = token where name is NULL;
+alter table sc_media add column thumbnail_name varchar(256);
+
+
+-- pull new code
+-- run script to fix thumbnail names
+-- new cron script, comment out remove_stale_sessions fn()
+
+
+
+
+
+ - Fix user dashboard and upload!
+ - DB patch - sc_user_group.name column
+ - shut off Nginx/PHP version  advertising
+   - URL like http://www.3mik.com/group/beta.php should return nginx 404
+json_enocde and json_deocde error checks everywhere
+file upload - do not take more than 256 chars in name - js check
+malformed mediaVO - js check?
+
+
 14 May 2012
+ - Add SSL support for login page
  - Better sharing with friends and social networks
  - supercow button
  - SQL injection : look @ all queries again please!
@@ -25,6 +56,14 @@
    - Fix the broken images_json posts :- maybe override with '[]' ?
    - An example:- http://mint.3mik.com/item/203755 
    - Robust image error handling
+   - we have orphans in sc_media table because of edits
+     - upload  pic 1 - post.media.id = 1 
+     - edit and change to pic2 - now post.media.id=2 but sc_media has both 1,2 , 1 is orphan
+     - How to calculate post.media relations? => offline? why do we even record in sc_media??
+       if we have form.unique_token then we can do that?
+        session_id + unique token + media data in redis.io
+        when post is pushed : session_id + form_unique_token + post_id => add/update!
+    
 
 
 13 May 2012
@@ -63,12 +102,6 @@
 - separate user and monitor widgets
 - Add supercow button to item details page for monitor logins
 
- server deployment
- - Fix user dashboard and upload!
- - new config variable : session.backend
- - DB patch - sc_user_group.name column
- - shut off Nginx/PHP version  advertising
-   - URL like http://www.3mik.com/group/beta.php should return nginx 404
 
 11 May 2012
  - Redis
@@ -137,7 +170,5 @@ Mysql  session handler
 - Look @ Redis and Beanstalkd
 - Async processes - registration /reset password mails , thumbnail creation
 21) Fix DB Errors - throw MySQLException from lower layers
-
-
 
 24) Error page display fix - new page maybe?

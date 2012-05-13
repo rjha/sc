@@ -58,7 +58,7 @@
 				var uploader = new qq.FileUploader({
 					element: document.getElementById('image-uploader'),
 					action: '/upload/image.php',
-					debug: true,
+					debug: false,
 					onComplete: function(id, fileName, responseJSON) {
 						 webgloo.media.addImage(responseJSON.mediaVO);
 					}

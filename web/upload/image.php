@@ -7,7 +7,17 @@
 
     set_error_handler('webgloo_ajax_error_handler');
 	
-    use com\indigloo\Util as Util;
+    use \com\indigloo\Util as Util;
+    use \com\indigloo\sc\auth\Login as Login ;
+
+
+    //use login is required for bookmarking
+	if(!Login::hasSession()) {
+        $message = array("code" => 401 , "message" => "Authentication failure: You need to login!");
+        $json = json_encode($message); 
+        echo $json;
+        exit;
+    }
 
 	$uploader =  NULL ; 
     $prefix = sprintf("%s/",date('Y/m/d')) ;

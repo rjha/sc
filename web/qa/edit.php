@@ -35,6 +35,8 @@
     $strImagesJson = $sticky->get('images_json',$postDBRow['images_json']) ;
     $strLinksJson = $sticky->get('links_json',$postDBRow['links_json']) ;
 
+    //@imp: we are enclosing the JSON string in single quotes
+    //so the single quotes in string from DB should be escaped
     $strImagesJson = Util::formSafeJson($strImagesJson);
     $strLinksJson = Util::formSafeJson($strLinksJson);
 
@@ -83,7 +85,7 @@
 				var uploader = new qq.FileUploader({
 					element: document.getElementById('image-uploader'),
 					action: '/upload/image.php',
-					debug: true,
+					debug: false,
 					onComplete: function(id, fileName, responseJSON) {
 						 webgloo.media.addImage(responseJSON.mediaVO);
 					}

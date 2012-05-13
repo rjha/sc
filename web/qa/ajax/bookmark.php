@@ -10,8 +10,8 @@
 
     //use login is required for bookmarking
 	if(!Login::hasSession()) {
-        $html = array("code" => 401 , "message" => "login is required");
-        $html = json_encode($html); 
+        $message = array("code" => 401 , "message" => "Authentication failure: You need to login!");
+        $html = json_encode($message); 
         echo $html;
         exit;
     }
