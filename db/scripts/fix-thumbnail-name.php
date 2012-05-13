@@ -10,12 +10,15 @@
 	error_reporting(-1);
     set_error_handler('offline_error_handler');
 
-    //pre-req : add thumbnail_name varchar(
+    //pre-req : add thumbnail_name varchar(256)
     // alter table sc_media add column thumbnail_name varchar(256);
     //batch size is 50
     //$iter x 50 should be > max(sc_post.id)
+    //diagnostic script - After running
+    // select id  from sc_post where images_json not  like '%thumbnailName%' 
+    // and images_json <> '[]'  order by created_on ;
 
-    $iter = 36;
+    $iter = 42;
     $count = 0 ;
 
     while($count  <= $iter ){
@@ -31,31 +34,34 @@
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
 
         foreach($rows as $row) {
-            $images = json_decode($row["images_json"]);
+            //remove malformed utf-8 characters
+            $fjson = iconv('UTF-8', 'UTF-8//IGNORE', $row['images_json']);
+            $images = json_decode($fjson);
+            //printf("code from json_decode is %d \n",json_last_error());
             $data = array();
 
             if(!empty($images)) {
                 
                 foreach($images as $image) {
-                    //create thumbnail_name from original_name 
-                    // update sc_post.id with new VO 
-                    $sql = " select * from sc_media where id = ".$image->id ;
-                    $mediaDBRow = MySQL\Helper::fetchRow($mysqli, $sql);
-                    $mediaVO = \com\indigloo\media\Data::create($mediaDBRow);
-                    $mediaVO->thumbnailName = Util::getThumbnailName($mediaVO->originalName);
-                    array_push($data,$mediaVO);
+                    $image->thumbnailName = Util::getThumbnailName($image->originalName);
+                    //printf("tname is %s \n",$image->thumbnailName);
+                    array_push($data,$image);
                     //update sc_media.thumbnail_name
-                    updateMedia($mysqli,$image->id,$mediaVO->thumbnailName);
+                    updateMedia($mysqli,$image->id,$image->thumbnailName);
                 }
                 
                 //new mediaVO
                 $strMediaVO = json_encode($data);
                 //push new mediaVO to sc_post
                 updatePost($mysqli,$row['id'],$strMediaVO);
+            } else {
+                //no images case
+                $strMediaVO = '[]' ;
+                updatePost($mysqli,$row['id'],$strMediaVO);
             }
         }
 
-        sleep(2);
+        sleep(1);
         $count++ ;
     }
     

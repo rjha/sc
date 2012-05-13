@@ -1026,6 +1026,16 @@ alter table sc_user_group add column name varchar(32) ;
 update sc_user_group ug set ug.name = (select g.name from sc_group_master g where g.token = ug.token) ;
 update sc_user_group set name = token where name is NULL;
 
+--
+-- 13 May 2012
+-- Added thumbnail_name column to sc_media
+-- 
+alter table sc_media add column thumbnail_name varchar(256);
+
+
+
+
+
 
 
 
