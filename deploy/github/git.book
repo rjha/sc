@@ -90,3 +90,4 @@ verify by issuing $git branch -a
  
 
 
+git log --after=2012-05-07 --pretty=oneline > logs 
