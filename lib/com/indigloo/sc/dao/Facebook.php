@@ -12,8 +12,8 @@ namespace com\indigloo\sc\dao {
 			$loginId = NULL ;
 
 			//is existing record?
-            $id = trim($id);
-			$row = $this->getOnFacebookId($id); 
+            $facebookId = trim($facebookId);
+			$row = $this->getOnFacebookId($facebookId); 
 
 			if(empty($row)){
                 $message = sprintf("Login:Facebook:create :: id %s, email %s \n",$id,$email);

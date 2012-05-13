@@ -12,8 +12,8 @@ namespace com\indigloo\sc\dao {
 			$loginId = NULL ;
 
 			//is existing record?
-            $id = trim($id);
-			$row = $this->getOnTwitterId($id); 
+            $twitterId = trim($twitterId);
+			$row = $this->getOnTwitterId($twitterId); 
 
 			if(empty($row)){
 
