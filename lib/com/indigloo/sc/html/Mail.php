@@ -25,6 +25,26 @@ namespace com\indigloo\sc\html {
             return $data;
 
         }
+
+        static function getSearchTokens($tokens) {
+            $view = new \stdClass;
+            
+            $content = '' ;
+            foreach($tokens as $token) {
+                $content .= sprintf(" %s ",$token); 
+            }
+
+            $view->content = $content ;
+
+            $template = '/fragments/mail/text/search-tokens.tmpl' ;
+            $text = Template::render($template,$view);
+
+            $template = '/fragments/mail/html/search-tokens.tmpl' ;
+            $html = Template::render($template,$view);
+
+            $data = array('text' => $text , 'html' => $html);
+            return $data;
+        }
     }
 }
 ?>
