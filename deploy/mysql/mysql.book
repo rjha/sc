@@ -1,0 +1,397 @@
+
+--
+-- change password for server
+--
+
+create database webgloodb;
+
+grant all privileges on webgloodb.* to
+'gloo'@'localhost' identified by 'osje8L'
+with grant option ;
+
+
+grant all privileges on webgloodb.* to
+'gloo'@'%' identified by 'osje8L'
+with grant option ;
+
+
+
+--
+-- show triggers on a table, [show triggers] will show *all* triggers
+--
+show triggers LIKE '%block%'\G
+show triggers LIKE '%trg_new_org_menu%'\G
+
+--
+-- finding constraints on a table like UNIQUE constraints
+--
+
+select * from information_schema.table_constraints
+where table_schema =schema()
+and table_name  = 'gloo_ml_menu' ;
+
+--
+-- Dropping a UNIQUE constraint
+--
+alter table gloo_ca_login drop index login ;
+
+--
+-- Add a UNIQUE constraint with name
+--
+
+alter table  gloo_ca_login add constraint UNIQUE uniq_ca_login (org_id,login);
+
+-- show indexes on a table 
+
+show index from news_post ;
+
+-- Add an index
+
+alter table news_post add index media_index (s_media_id);
+
+-- dropping an index 
+
+alter table news_post drop index [index_name]
+
+
+--
+-- show all  procedures/triggers for current schema
+--
+
+select routine_name from information_schema.routines where routine_schema
+= schema() ;
+
+select trigger_name from information_schema.triggers
+where trigger_schema = schema();
+
+
+--
+-- Loading data from data dump (To Duplicate server database)
+--
+
+At times we may want to create schema first and then load data from an existing database.
+This can happen lets say when we want to change table column or add more constraints
+or want to add additional procedures etc.
+
+First we need to create only Tables (Enabling trigger would mean we would create additional
+data that is already part of the dump. Like adding home menu on ORG create via a trigger is
+not required because data dump already has whatever menus are required for organization.
+
+
+A. Create the tables only (using svn/db/webgloo-db.sql script)
+B. Load data from dump (using data-dump.sh script)
+C. Enable triggers and procedures after loadinig the data.
+((using svn/db/webgloo-db.sql script)
+
+
+Error 1172 - Happened because we were trying to create some data that was already loaded
+and the solution is to load dump w/o enabling triggers.
+
+Triggers/procedures should be enabled after loading the dump data. Please be aware of the
+fact that you need to run proc/triggers scripts as  MYSQL root.
+
+
+ mysql -u root -p < create-db.sql
+ mysql -u gloo -Dwebgloo250710 -p < webgloo-tables.sql
+ mysql -u gloo -Dwebgloo250710 -p < webgloodb.data.25072010.sql
+ mysql -u root -Dwebgloo250710 -p < webgloo-proc.sql
+
+
+rjha@indigloo1:~/db$ cat ./data-dump.sh
+
+x=`date +%d%m%Y`
+mysqldump  --no-create-info --complete-insert --skip-extended-insert
+--skip-triggers -u root -p webgloo250710 > webgloodb.data.$x.sql
+
+
+rjha@indigloo1:~/db$ cat full-dump.sh
+
+x=`date +%d%m%Y`
+mysqldump  --complete-insert --add-drop-table   --triggers  --routines
+-u root -p webgloo250710 > webgloodb.full.$x.sql
+
+
+rjha@indigloo1:~/db$ cat schema-dump.sh
+
+x=`date +%d%m%Y`
+mysqldump --no-data --add-drop-table --triggers --routines
+-u root -p webgloo250710  > webgloodb.schema.$x.sql
+
+
+
+MYSQL JDBC UTF-8 char insert issue
+===================================
+
+The local windows mysql DB was created as UTF-8 DB. Now we loaded/created these tables using a
+script dumped from server DB. server DB was installed with default charset (latin1)
+That dump script had default charset for tables as latin1 like:
+
+create table ...
+) ENGINE=MyISAM AUTO_INCREMENT=14072 DEFAULT CHARSET=latin1;
+
+
+=> This leads to some issues. when JDBC tries to insert UTF-8 strings into such table columns we get errors like
+java.sql.SQLException: Incorrect string value: '\xD0\x9A\xD0\xB5\xD0\xB9...' for column 'widget_html' at row 1
+        at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1075)
+        at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3566)
+        at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3498)
+
+The remedy is to fix the charset and collation for tables created using server DB dump.
+You have to do this for all problematic tables.
+
+mysql> alter table gloo_auto_post  convert to character set utf8 collate utf8_general_ci ;
+
+One more related error (when altering tables to utf-8 is following:
+
+mysql> alter table gloo_page  convert to character set utf8 collate utf8_general_ci ;
+ERROR 1071 (42000): Specified key was too long; max key length is 1000 bytes
+
+=> what this means is : earlier in latin1 our unique column was 512 char (byte) wide
+Now when we switch to utf8 we need (512 char x3 bytes/char = 1536 bytes) and that exceeds mysql limit of
+1000 bytes on keys. Solution is to change key lenght to be within 1000 /3 chars with utf8 charset.
+
+mysql> alter table gloo_page modify column seo_key varchar(256);
+
+alter table gloo_page modify column seo_key varchar(256);
+alter table gloo_page modify column page_name varchar(256);
+
+alter table gloo_auto_post  convert to character set utf8 collate utf8_general_ci ;
+alter table gloo_page  convert to character set utf8 collate utf8_general_ci ;
+
+
+--
+-- MySQL performance
+-- 
+
+On Ubuntu - The mysql conf file is in /etc/mysql/my.cnf
+
++ make sure you have following line under [mysqld]
+skip-innodb
+
+1) How to log slow queries?
+2) 
+
+
+tuning primer script
+=====================
+latest script has some bug (the one inside localo/misc has this bug fixed)
+This script produces color output that looks garbled with less
+one idea is to start $script
+run the script and view captured output using $more
+
+Suggestions from script and changes my.cnf
+
+A)
+Perhaps you should increase your tmp_table_size and/or max_heap_table_size
+to reduce the number of disk-based temporary tables
+
+Current max_heap_table_size = 16 M
+Current tmp_table_size = 16 M
+
+B)
+You are using less than 10% of your configured max_connections.
+Lowering max_connections could help to avoid an over-allocation of memory
+See "MEMORY USAGE" section to make sure you are not over-allocating
+
+Current max_connections = 151
+Current threads_connected = 1
+Historic max_used_connections = 2
+
+
+C)
+
+Max Memory Ever Allocated : 37 M
+Configured Max Per-thread Buffers : 405 M (151x2.7)
+Configured Max Global Buffers : 32 M
+
+Max Memory Limit :- is 437M
+
+D)
+
+Your query_cache_size seems to be too high.
+Perhaps you can use these resources elsewhere
+
+
+mysqltuner.pl script
+=====================
+$wget mysqltuner.pl
+
+Table cache hit rate is high (increase table_cache)
+Total buffers: 48.0M global + 2.7M per thread (151 max threads)
+change max_connections
+
+
+General recommendations:
+    Run OPTIMIZE TABLE to defragment tables for better performance
+    MySQL started within last 24 hours - recommendations may be inaccurate
+    Reduce your overall MySQL memory footprint for system stability
+    Enable the slow query log to troubleshoot bad queries
+    Increase table_cache gradually to avoid file descriptor limits
+Variables to adjust:
+  *** MySQL's maximum memory usage is dangerously high ***
+  *** Add RAM before increasing MySQL buffer variables ***
+    table_cache (> 64)
+    
+
+
+Recommended
+==========
+
+key_buffer_size=64M
+table_cache=256
+sort_buffer_size=4M
+read_buffer_size=1M
+query_cache_limit=2M
+query_cache_size=8M
+max_connections=32
+thread_cache_size=16
+
+
+How to calculate max_connections
+==================================
+
+
+mysql> show variables like '%BUFFER%';
++-------------------------+----------+
+| Variable_name           | Value    |
++-------------------------+----------+
+| bulk_insert_buffer_size | 8388608  |
+| join_buffer_size        | 131072   |
+| key_buffer_size         | 16777216 |
+| myisam_sort_buffer_size | 8388608  |
+| net_buffer_length       | 16384    |
+| preload_buffer_size     | 32768    |
+| read_buffer_size        | 131072   |
+| read_rnd_buffer_size    | 262144   |
+| sort_buffer_size        | 2097144  |
+| sql_buffer_result       | OFF      |
++-------------------------+----------+
+10 rows in set (0.00 sec)
+
+mysql> show variables like 'thread_cache_size';
+
+Global Buffer
+
+key_buffer_size 16,777216
+net_buffer_length 16384
+myisam_sort_buffer_size 8,388608
+bulk_insert_buffer_size 8,388608
+query_cache_size  16777216
+max_heap_table_size  16777216
+tmp_table_size  16777216 
+
+
+
+Thread Buffers
+     
+preload_buffer_size   32768
+sort_buffer_size 2,097144  2M
+read_buffer_size        0,131072 
+join_buffer_size        0,131072 
+read_rnd_buffer_size    0,262144
+
+
+ 
+Internal Temporary Tables
+==========================
+In some cases, the server creates internal temporary tables while processing queries.
+This may be required for GROUP BY and DISTINCT etc. Now to see whether a SQL query will 
+use internal temporary tables, use EXPLAIN PLAN
+
+Q. when do we use in-memory temporary table and when do we use on disk temporary tables?
+
+Tables with BLOB and TEXT columns will use on disk temporary tables.
+
+
+Explain Plan
+=============
+
+
++precede a select statement with explain [extended] keyword
+
+mysql> explain extended select post.*, media.bucket, media.id as media_id, media.stored_name,media.original_name, media.original_height,media.original_width from news_post post LEFT  JOIN news_media media ON post.s_media_id = media.id order by post.created_on DESC;
++----+-------------+-------+--------+---------------+---------+---------+------------------------+------+----------+----------------+
+| id | select_type | table | type   | possible_keys | key     | key_len | ref                    | rows | filtered | Extra          |
++----+-------------+-------+--------+---------------+---------+---------+------------------------+------+----------+----------------+
+|  1 | SIMPLE      | post  | ALL    | NULL          | NULL    | NULL    | NULL                   |   11 |   100.00 | Using filesort |
+|  1 | SIMPLE      | media | eq_ref | PRIMARY       | PRIMARY | 4       | newsdb.post.s_media_id |    1 |   100.00 |                |
++----+-------------+-------+--------+---------------+---------+---------+------------------------+------+----------+----------------+
+2 rows in set, 1 warning (0.00 sec)
+
+
+Here we are doing a FTS (Full Table Scan) on news_post table when using LIMIT on created_on variable
+
+
+mysql> explain select * from news_post order by created_on desc LIMIT 1,5 ;
++----+-------------+-----------+------+---------------+------+---------+------+------+----------------+
+| id | select_type | table     | type | possible_keys | key  | key_len | ref  | rows | Extra          |
++----+-------------+-----------+------+---------------+------+---------+------+------+----------------+
+|  1 | SIMPLE      | news_post | ALL  | NULL          | NULL | NULL    | NULL |   11 | Using filesort |
++----+-------------+-----------+------+---------------+------+---------+------+------+----------------+
+1 row in set (0.00 sec)
+
+If we create an index on created_on then the plan would use that index
+
+mysql/> alter table news_post add index co_index(created_on);
+
+mysql> explain extended select post.*, media.bucket, media.id as media_id,
+    ->  media.stored_name,media.original_name, media.original_height,media.original_width
+    ->  from news_post post LEFT  JOIN news_media media ON post.s_media_id = media.id 
+    ->  order by post.created_on DESC LIMIT 0,10;
++----+-------------+-------+--------+---------------+----------+---------+------------------------+------+----------+-------+
+| id | select_type | table | type   | possible_keys | key      | key_len | ref                    | rows | filtered | Extra |
++----+-------------+-------+--------+---------------+----------+---------+------------------------+------+----------+-------+
+|  1 | SIMPLE      | post  | index  | NULL          | co_index | 4       | NULL                   |   10 | 11190.00 |       |
+|  1 | SIMPLE      | media | eq_ref | PRIMARY       | PRIMARY  | 4       | newsdb.post.s_media_id |    1 |   100.00 |       |
++----+-------------+-------+--------+---------------+----------+---------+------------------------+------+----------+-------+
+2 rows in set, 1 warning (0.00 sec)
+
+
+
+
+Mysql slow queries log
+========================
+
+on Ubuntu machines, go to /etc/mysql/my.cnf file and turn on following 2 options under [mysqld] section
+(Query not using indexes - Better use explain plan ..)
+
+log_slow_queries        = /var/log/mysql/mysql-slow.log
+long_query_time = 2
+#log-queries-not-using-indexes
+
+restart the server and slow query logs will be in /var/log/mysql folder.
+Copy those files to your home area and examine with mysqldumpslow, like
+
+rjha@indigloo-beta:~/mysql$ sudo cp /var/log/mysql/mysql-slow.log.5.gz .
+rjha@indigloo-beta:~/mysql$ sudo chown -R rjha:rjha mysql*
+rjha@indigloo-beta:~/mysql$ gunzip *.gz
+rjha@indigloo-beta:~/mysql$ mysqldumpslow *.* | less
+
+
+
+Maosx pre-packaged MySQL
+=========================
+
+
+
+Macosx bundled mysql is installed in /usr/local/mysql
+Macosx install uses mysql defaults and there is no my.cnf as such
+To get a copy of my.cnf do :-
+
+rjha @mbp /usr/local/mysql $ sudo cp support-files/my-small.cnf  /etc/my.cnf
+Then edit my.cnf in usual way and restart the mysqld daemon
+we have checked in macosx my.cnf in misc/ folder (there are some changes)
+1) on macosx innodb support is built-in (for whatever reason) so we cannot put skip-innodb in my.cnf
+2) leave datadir etc as default (donot put in .cnf file)
+3) change socket location - on macosx it is in /tmp/mysql.sock (and not mysqld)
+4) use slow_query_log (needs > 5.1.12, on macosx lion, we have 5.5.15
+
+@mbp ~ $ mysql --version
+mysql  Ver 14.14 Distrib 5.5.15, for osx10.6 (i386) using readline 5.1
+
+
+
+
+
+
+

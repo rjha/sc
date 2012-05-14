@@ -1,0 +1,17 @@
+
+To create a new user on server
+
+$sudo adduser <user name>
+
+
+To reset password for a user
+
+$sudo passwd <username>
+
+You also have to allow the user in sshd. AllowUsers add with a space like
+AllowUsers user1 user2
+
+And then restart the SSH daemon
+
+$sudo vi sshd_config
+$sudo /etc/init.d/ssh restart
