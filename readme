@@ -27,13 +27,16 @@
 
 
 @todo
+=========
 Url.php @line78
+Fix fancybox related errors in nginx 
 Need to fix the profile page : Ask for more data
+All UNIQ KEy errors: check in UI via Ajax before hitting DB
+
 Add caching headers to old S3 images
 Fix user dashboard
  - following/followers
  - 
-Add SSL support for login page - Not now
 Supercow button on item details page
 SQL injection : look @ all queries again please!
 All ajax scripts should be protected by login
@@ -48,11 +51,11 @@ Faceboo router => should detect scripts ending in .php => important!
 make sure that all pUrl and qUrl are not processed by our form hander - we need raw urls
 Fix navigation for cancel button everywhere.
 Form protection by inserting unique tokens  - PRG or DejaVu' pattern to avoid form resubmission
-Fix fancybox related errors in nginx 
 
 
 
 @later
+=========
 sitemap - automatically generate every week
 Better sharing with friends and social networks
 json_enocde and json_deocde error checks everywhere with json_error_last
@@ -66,8 +69,10 @@ Redis for session and async job processing
 Interest based browsing?
 Mix photos with group browsing?
 Sphinx delta indexing
+Add SSL support for login page - Not now
 
 @research
+=========
 fix issue with sphinx query.log rotation - need to watch on server
 Tampered URLs => what to do? Not found looks like better solution
      => what kind of URL tampering can be done?
@@ -78,10 +83,12 @@ Sphix logs not rotating?
 create ICU resource bundles with php-intl
 
 @debatable
+============
 Fix DB Errors - throw MySQLException from lower layers
 
 
 @done
+=====
 sphinx query.log as email attachment
 shut off Nginx/PHP version  advertising
 URL like http://www.3mik.com/group/beta.php should return nginx 404

@@ -2,7 +2,26 @@
 #sphinx log rotation
 To make searchd open a new file, you need to send it a SIGUSR1 signal
 Plain logrotate config will interfere with sphinx query.log as searchd will keep writing to the old
-file instead of opening a new file.
+file instead of opening a new file. inside logrotate script add a postscript task to send this signal.
+
+#sphinx search daemon on debian wheezy
+
+debian wheezy is using insserv to manage boot dependencies now. This requries writing the init.d scripts in 
+new LSB init format. After copying the script, we need to do the usual 
+
+$update-rc.d searchd defaults
+
+update-rc.d in turn uses insserv (at least according to $man insserv)
+To verify that we have indeed added searchd to be started on boot time
+$sudo rcconfig 
+There should be an asterix against searchd
+OR
+$sudo chkconfig 
+searchd should be on
+
+
+
+
 
 
 
