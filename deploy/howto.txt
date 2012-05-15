@@ -1,0 +1,28 @@
+
+#server deployment procedure
+
+    First  Test local deployment
+    Any new config variable  or changes to sc-app.inc?
+    DB patching : do any necessary DB patching 
+    pull new code
+    Backup database
+    run any DB scripts
+    Any changes to site worker Run cron script? run cron script from cli.
+    Test site deployment
+
+
+
+#Test
+ + login 
+ + registration
+ + FB registration
+ + Twitter registration
+ + Post create 
+ + Group process(site-worker.sh)
+ +3mik registration (success + error) 
+ + Test $pdo->exec errors : I suspect they do not throw errors - Group Process has to be redone now!
+
+
+
+
+

@@ -1,0 +1,9 @@
+
+#sphinx log rotation
+To make searchd open a new file, you need to send it a SIGUSR1 signal
+Plain logrotate config will interfere with sphinx query.log as searchd will keep writing to the old
+file instead of opening a new file.
+
+
+
+
