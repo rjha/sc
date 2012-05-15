@@ -7,6 +7,7 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\Util as Util;
        
+    //report all PHP errors
 	error_reporting(-1);
     set_error_handler('offline_error_handler');
 

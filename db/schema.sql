@@ -9,7 +9,7 @@ CREATE TABLE  sc_comment  (
    title  varchar(128) DEFAULT NULL,
    login_id  int(11) DEFAULT NULL,
   PRIMARY KEY ( id )
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DELIMITER //
 CREATE  TRIGGER trg_comment_title BEFORE INSERT ON sc_comment
@@ -62,7 +62,7 @@ CREATE TABLE  sc_facebook  (
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
   UNIQUE KEY  uniq_id  ( facebook_id )
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS  sc_feature_group ;
@@ -81,7 +81,7 @@ CREATE TABLE  sc_feedback  (
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS  sc_follow ;
@@ -105,7 +105,7 @@ CREATE TABLE  sc_group_master  (
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
   UNIQUE KEY  token  ( token )
-) ENGINE=InnoDB AUTO_INCREMENT=5467 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS  sc_list ;
@@ -118,7 +118,7 @@ CREATE TABLE  sc_list  (
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS  sc_login ;
 CREATE TABLE  sc_login  (
@@ -128,13 +128,14 @@ CREATE TABLE  sc_login  (
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS  sc_media ;
 CREATE TABLE  sc_media  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    original_name  varchar(256) NOT NULL,
+   thumbnail_name  varchar(256) NOT NULL,
    stored_name  varchar(64) NOT NULL,
    bucket  varchar(32) NOT NULL,
    size  int(11) NOT NULL,
@@ -146,7 +147,7 @@ CREATE TABLE  sc_media  (
    store  varchar(8) NOT NULL DEFAULT 'local',
    thumbnail  varchar(64) DEFAULT NULL,
   PRIMARY KEY ( id )
-) ENGINE=InnoDB AUTO_INCREMENT=3225 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS  sc_php_session ;
@@ -175,7 +176,7 @@ CREATE TABLE  sc_post  (
    version  int(11) DEFAULT '1',
   PRIMARY KEY ( id ),
   UNIQUE KEY  pseudo_id  ( pseudo_id )
-) ENGINE=InnoDB AUTO_INCREMENT=1911 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DELIMITER //
  CREATE TRIGGER trg_post_add  AFTER  INSERT ON sc_post
@@ -240,7 +241,7 @@ CREATE TABLE  sc_post_archive  (
    is_feature  int(11) DEFAULT NULL,
    cat_code  varchar(16) DEFAULT NULL,
   PRIMARY KEY ( id )
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
  
 
 DROP TABLE IF EXISTS  sc_post_site ;
@@ -251,7 +252,7 @@ CREATE TABLE  sc_post_site  (
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
-) ENGINE=InnoDB AUTO_INCREMENT=2111 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
  
 
 DROP TABLE IF EXISTS  sc_reset_password ;
@@ -265,7 +266,7 @@ CREATE TABLE  sc_reset_password  (
    expired_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS  sc_site_master ;
@@ -278,7 +279,7 @@ CREATE TABLE  sc_site_master  (
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
   UNIQUE KEY  uniq_hash  ( hash )
-) ENGINE=InnoDB AUTO_INCREMENT=311 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS  sc_site_tracker ;
@@ -291,7 +292,7 @@ CREATE TABLE  sc_site_tracker  (
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
-) ENGINE=InnoDB AUTO_INCREMENT=2130 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS  sc_tmp_ps ;
@@ -302,7 +303,7 @@ CREATE TABLE  sc_tmp_ps  (
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
-) ENGINE=InnoDB AUTO_INCREMENT=2051 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS  sc_twitter ;
@@ -318,7 +319,7 @@ CREATE TABLE  sc_twitter  (
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
   UNIQUE KEY  uniq_id  ( twitter_id )
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
  
 
 DROP TABLE IF EXISTS  sc_user ;
@@ -339,7 +340,7 @@ CREATE TABLE  sc_user  (
    login_id  int(11) DEFAULT NULL,
   PRIMARY KEY ( id ),
   UNIQUE KEY  uniq_email  ( email )
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DELIMITER //
  CREATE TRIGGER trg_mik_user_name AFTER UPDATE ON sc_user
@@ -359,19 +360,20 @@ CREATE TABLE  sc_user_bookmark  (
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
  
 
 DROP TABLE IF EXISTS  sc_user_group ;
 CREATE TABLE  sc_user_group  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    login_id  int(11) NOT NULL,
-   token  varchar(32) DEFAULT NULL,
+   token  varchar(32) NOT  NULL,
+   name  varchar(32)  ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
   UNIQUE KEY  login_id  ( login_id , token )
-) ENGINE=InnoDB AUTO_INCREMENT=17593 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
  
 
 DROP PROCEDURE IF EXISTS  UPDATE_SITE_TRACKER  
