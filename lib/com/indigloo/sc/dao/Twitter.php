@@ -17,7 +17,7 @@ namespace com\indigloo\sc\dao {
 
 			if(empty($row)){
 
-                $message = sprintf("Login:Twitter:create :: id %s ,name %s, screenname %s \n",$id,$name,$screenName); 
+                $message = sprintf("Login:Twitter:create :: id %s ,name %s, screenname %s \n",$twitterId,$name,$screenName); 
                 Logger::getInstance()->info($message);
 
                 $provider = \com\indigloo\sc\auth\Login::TWITTER ;

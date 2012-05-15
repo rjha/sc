@@ -20,7 +20,7 @@ namespace com\indigloo\sc\facebook {
             // use === operator to ensure TYPE check as well
             // otherwise a valid fbObject will always evaluate to TRUE with == check
             if($fbObject === FALSE || $fbObject ===  TRUE || $fbObject == NULL ) {
-                $message = sprintf("Graph URL %s returned TRUE|FALSE|NULL",$graphUrl) ;
+                $message = sprintf("Graph URL {%s} returned TRUE|FALSE|NULL",$graphUrl) ;
                 Logger::getInstance()->error($message);
                 return NULL ;
             }

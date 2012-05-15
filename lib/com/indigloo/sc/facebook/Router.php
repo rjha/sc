@@ -20,7 +20,10 @@ namespace com\indigloo\sc\facebook{
             $this->createRule('^people/(?P<token>[-.\w]+)/(?P<id>\d+)$', 'people');
             $this->createRule('^media/set$', 'media');
             $this->createRule('^media/set/$', 'media');
-            //keep last - photo.php conflicts with ^/<token>$ pattern
+            $this->createRule('^(?P<token>[-.\w]+)/info$', 'name');
+            //php scripts
+            $this->createRule('^(?P<name>[\w+]+)\.php$', 'script');
+            //keep last - special php scripts 
             $this->createRule('^photo.php$', 'photo');
             $this->createRule('^profile.php$', 'profile');
         }

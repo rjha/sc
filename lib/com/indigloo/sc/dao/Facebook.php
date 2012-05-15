@@ -16,7 +16,7 @@ namespace com\indigloo\sc\dao {
 			$row = $this->getOnFacebookId($facebookId); 
 
 			if(empty($row)){
-                $message = sprintf("Login:Facebook:create :: id %s, email %s \n",$id,$email);
+                $message = sprintf("Login:Facebook:create :: id %s, email %s \n",$facebookId,$email);
                 Logger::getInstance()->info($message);
 
 				//create login + facebook user

@@ -75,7 +75,7 @@ namespace com\indigloo\sc\dao {
                 $page = $this->processUrl($link);
 
                 if(empty($page) || empty($page["hash"])) {
-                    $message = sprintf("Invalid URL :: No hash found:: [ %s ]",$link);
+                    $message = sprintf("UNKNOWN_URL_TYPE :: No hash found:: [ %s ]",$link);
                     Logger::getInstance()->error($message);
                     continue;
 
@@ -86,7 +86,7 @@ namespace com\indigloo\sc\dao {
                 if(!is_null($siteId)){
                     mysql\Site::addTmpPSData($postId,$siteId);
                 } else {
-                    trigger_error("Invalid URL :: Null site.id for $link", E_USER_ERROR);
+                    trigger_error("UNKNOWN_URL_TYPE :: Null site.id for $link", E_USER_ERROR);
                 }
             }
 
@@ -157,17 +157,23 @@ namespace com\indigloo\sc\dao {
                         $page["host"] = "www.facebook.com" ;
                         break;
 
+                    case 'script' :
+                        $message = sprintf("UNKNOWN_FB_URL_TYPE :: [%s]",$url);
+                        Logger::getInstance()->error($message);
+                        break;
+
+
                     default:
                         break;
                 }
 
             } else {
-                $message = sprintf("Invalid URL :: Unknown Facebook pattern [%s]",$url);
+                $message = sprintf("UNKNOWN_FB_URL_TYPE :: [%s]",$url);
                 Logger::getInstance()->error($message);
             }
 
             if(Config::getInstance()->is_debug()) {
-                $message = sprintf("FB:: url is [%s] ",$url);
+                $message = sprintf("FACEBOOK_URL ::  [%s] ",$url);
                 Logger::getInstance()->debug($message);
                 Logger::getInstance()->debug("Dump of router ::");
                 Logger::getInstance()->dump($route);
@@ -188,7 +194,7 @@ namespace com\indigloo\sc\dao {
 
             $info = \parse_url($url);
             if(!isset($info["host"])) {
-                $message = sprintf("Invalid URL :: host not found [ %s ] ",$url);
+                $message = sprintf("UNKNOWN_URL_TYPE :: host not found [ %s ] ",$url);
                 Logger::getInstance()->error($message);
                 return $page;
             }
