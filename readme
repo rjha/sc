@@ -28,8 +28,7 @@
 
 @todo
 =========
-Url.php @line78
-Fix fancybox related errors in nginx 
+fix bug in random groups :- include Navigation
 Need to fix the profile page : Ask for more data
 All UNIQ KEy errors: check in UI via Ajax before hitting DB
 
@@ -46,8 +45,6 @@ Pagination on monitor app/user dashboard
 Help content on user dahsboard pages
 Followers/Following page
 monitor - Post widget actions - feature/unfeature
-Better log errors when site URL are bad like: UNKNOWN_URL_PATTERN
-Faceboo router => should detect scripts ending in .php => important!
 make sure that all pUrl and qUrl are not processed by our form hander - we need raw urls
 Fix navigation for cancel button everywhere.
 Form protection by inserting unique tokens  - PRG or DejaVu' pattern to avoid form resubmission
@@ -99,6 +96,10 @@ filter original image names to weed out malformed input
 Mysql  session handler
 Edit page - user groups - open in cards instead of as cloud
 fix DB filter creation - model on hibernate
+Better log errors when site URL are bad like: UNKNOWN_URL_PATTERN
+Url.php @line78
+Fix fancybox related errors in nginx 
+Faceboo router => should detect scripts ending in .php => important!
 
 
 

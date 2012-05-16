@@ -10,6 +10,7 @@
     Any changes to site worker Run cron script? run cron script from cli.
     Test site deployment
 
+    fancybox css - IE section - make sure the image paths are absolute.
 
 
 #Test
