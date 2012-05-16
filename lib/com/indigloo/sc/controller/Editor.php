@@ -13,7 +13,6 @@ namespace com\indigloo\sc\controller{
         
         function process($params,$options) {
             $postDao = new \com\indigloo\sc\dao\Post();
-            $filter = array($postDao::FEATURE_COLUMN => 1);
 
             //post featured filter
             $filters = array();
