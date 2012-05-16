@@ -386,6 +386,12 @@ webgloo.media = {
 			$("div#link-data").find('a').each(function(index) {
 				links.push($(this).attr("href"));
 			});
+            
+            //Anything in the box?
+            var linkInBox = jQuery.trim($("#link-box").val());
+            if( linkInBox != '') {
+               links.push(linkInBox);
+            } 
 
 			var strLinks = JSON.stringify(links);
 			frm.links_json.value = strLinks ;
