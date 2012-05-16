@@ -19,14 +19,17 @@
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
         try{
         
+            $gWeb = \com\indigloo\core\Web::getInstance();
+
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('links_json', 'links_json', array('noprocess' => 1));
             $fhandler->addRule('images_json', 'images_json', array('noprocess' => 1));
             $fhandler->addRule('group_names', 'Tags', array('maxlength' => 64));
             
+            //check security token
+            $fhandler->checkToken("token",$gWeb->find("form.token",true)) ;
             $fvalues = $fhandler->getValues();
-            $gWeb = \com\indigloo\core\Web::getInstance();
-            
+
             $qUrl = $fvalues['q'];
             
             if ($fhandler->hasErrors()) {

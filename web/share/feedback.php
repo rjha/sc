@@ -9,7 +9,8 @@
     use com\indigloo\ui\form\Sticky;
     use com\indigloo\Constants as Constants;
     use com\indigloo\ui\form\Message as FormMessage;
-     
+    
+    $gWeb = \com\indigloo\core\Web::getInstance();
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
 	$loginId = NULL ;
@@ -20,6 +21,10 @@
 		$loginId = $gSessionLogin->id ;
 		$userName = $gSessionLogin->name ;
 	}
+
+    //add security token to form
+    $formToken = Util::getBase36GUID();
+    $gWeb->store("form.token",$formToken);
     
 ?>  
 
@@ -94,6 +99,7 @@
 							<button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Send feedback</span></button> 
 							<a href="/"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
 						</div>
+                        <input type="hidden" name="token" value="<?php echo $formToken; ?>" />
 						        
 					</form>
 					

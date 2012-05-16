@@ -13,14 +13,18 @@
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
         
         try{	
+
+            $gWeb = \com\indigloo\core\Web::getInstance();
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('feedback', 'Feedback', array('required' => 1));
+
+            //check security token
+            $fhandler->checkToken("token",$gWeb->find("form.token",true)) ;
             
             $fvalues = $fhandler->getValues();
             $ferrors = $fhandler->getErrors();
             $qUrl = "/share/feedback.php";
         
-            
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors(),1);
             }
