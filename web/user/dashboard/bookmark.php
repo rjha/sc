@@ -10,8 +10,9 @@
     use \com\indigloo\sc\auth\Login as Login;
     
     use \com\indigloo\sc\ui\Constants as UIConstants ;
+    use \com\indigloo\ui\Filter as Filter;
      
-    //$qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
     $code = Url::tryQueryParam("code");
@@ -29,26 +30,43 @@
     }
     
     $tileOptions = ~UIConstants::TILE_ALL ;
-    $pageTitle = "%s %s on 3mik" ;
+    $pageTitle = "your %s on 3mik" ;
     
     // LIKE - 1 
     // SAVE - 2 
     switch($code){
         case 1: 
             $tileOptions = UIConstants::TILE_SAVE ;
-            $pageTitle = sprintf($pageTitle,$userDBRow['user_name'], "'s likes") ; 
+            $pageTitle = sprintf($pageTitle, " likes") ; 
             break;
         case 2:
             $tileOptions = UIConstants::TILE_REMOVE ;
-            $pageTitle = sprintf($pageTitle,$userDBRow['user_name'], "'s favorites") ; 
+            $pageTitle = sprintf($pageTitle," favorites") ; 
             break;
         default:
             break ;
     }
 
     $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
-    $postDBRows = $bookmarkDao->getOnLoginId($loginId,$code);
 
+    //add login_id and code filters
+    $model = new \com\indigloo\sc\model\Bookmark();
+    $filters = array(); 
+    //filter-1
+    $filter = new Filter($model);
+    $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
+    array_push($filters,$filter);
+    //filter-2
+    $filter = new Filter($model);
+    $filter->add($model::ACTION,Filter::EQ,$code);
+    array_push($filters,$filter);
+
+
+    $total = $bookmarkDao->getTotal($filters);
+	$pageSize =	Config::getInstance()->get_value("user.page.items");
+	$paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);	
+    $postDBRows = $bookmarkDao->getPaged($paginator,$filters);
+    $pageBaseUrl = "/user/dashboard/bookmark.php";
             
 ?>
 <!DOCTYPE html>
@@ -116,7 +134,7 @@
 						   
 					</div><!-- tiles -->
                     <hr>
-                    <?php //$paginator->render($pageBaseUrl,$startId,$endId);  ?>
+                    <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
 
 				</div> 
                 <div class="span3">

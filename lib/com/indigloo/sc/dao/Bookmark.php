@@ -30,12 +30,31 @@ namespace com\indigloo\sc\dao {
             $code = mysql\Bookmark::unfavorite($loginId,$itemId);
             return $code ;
         }
+
+        function getTotal($filters=array()) {
+			$row = mysql\Bookmark::getTotal($filters);
+            return $row['count'];
+        }
+
+        function getLatest($limit,$filters) {
+            $rows = mysql\Bookmark::getLatest($limit,$filters);
+            return $rows ;
+        }
         
-        function getOnLoginId($loginId,$action) {
-			$rows = mysql\Bookmark::getOnLoginId($loginId,$action);
-			return $rows ;
-		}
-		
+        function getPaged($paginator,$filters) {
+           	$limit = $paginator->getPageSize();
+			if($paginator->isHome()){
+				return $this->getLatest($limit,$filters);
+			} else {
+
+                $params = $paginator->getDBParams();
+				$start = $params['start'];
+				$direction = $params['direction'];
+				$rows = mysql\Bookmark::getPaged($start,$direction,$limit,$filters);
+				return $rows ;
+			}
+        }
+
     }
 
 }

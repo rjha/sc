@@ -25,6 +25,64 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
+        static function getLatest($limit,$filters) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            settype($limit,"integer");
+            $sql = " select q.* , l.name as user_name from sc_post q, sc_user_bookmark b, sc_login l " ;
+
+            $q = new MySQL\Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\Bookmark","b");
+            $q->addCondition("q.pseudo_id = b.item_id");
+            $q->addCondition("q.login_id = l.id"); 
+            $q->filter($filters);
+            $sql .= $q->get();
+
+            $sql .= "order by id desc LIMIT %d ";
+            $sql = sprintf($sql,$limit);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
+        static function getTotal($filters) {
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = " select count(id) as count from sc_user_bookmark";
+
+            $q = new MySQL\Query($mysqli);
+            $q->filter($filters);
+            $sql .= $q->get();
+
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+		}
+
+		static function getPaged($start,$direction,$limit,$filters) {
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            settype($start,"integer");
+            settype($limit,"integer");
+
+            $sql = " select q.* , l.name as user_name from sc_post q, sc_user_bookmark b, sc_login l " ;
+
+            $q = new MySQL\Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\Bookmark","b");
+            $q->addCondition("q.pseudo_id = b.item_id");
+            $q->addCondition("q.login_id = l.id"); 
+            $q->filter($filters);
+            $sql .= $q->get();
+
+            $sql .= $q->getPagination($start,$direction,"b.id",$limit);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            
+            //reverse rows for 'before' direction
+            if($direction == 'before') {
+                $results = array_reverse($rows) ;
+                return $results ;
+            }
+            
+            return $rows;	
+		}
+
         static function getOnLoginId($loginId,$action) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($loginId,"integer");
