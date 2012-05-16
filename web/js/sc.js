@@ -323,13 +323,25 @@ webgloo.media = {
         $("#add-link").live("click", function(event){
             event.preventDefault();
             var link = jQuery.trim($("#link-box").val());
-			if( link == '' ) {return ; }
-			else {
+			if( link == '' ) 
+                return ;
+			else 
 				webgloo.media.addLink(link);
-
-			}
-		 	
         }) ;
+
+        //capture ENTER on link box
+        $("#link-box").keydown(function(event) { 
+            //donot submit form
+            if(event.which == 13) { 
+                event.preventDefault(); 
+                var link = jQuery.trim($("#link-box").val());
+                if( link == '' ) 
+                    return ;
+                else
+                    webgloo.media.addLink(link);
+            }
+
+        }); 
         
         $("a.remove-link").live("click", function(event){
             event.preventDefault(); 

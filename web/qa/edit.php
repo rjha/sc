@@ -153,9 +153,9 @@
 								</td>
 							</tr>
                             <tr>
-                                <td> <label>Tags (separate by comma)
+                                <td> <label>Groups (Separate groups using comma)
                                     <?php if($hasGroups) { ?>
-                                        &nbsp;|&nbsp;<a href="/group/user/all.php" target="_blank"><i class="icon-list"></i>&nbsp;show my tags&rarr;</a> </label>
+                                        &nbsp;|&nbsp;<a href="/group/user/all.php" target="_blank"><i class="icon-list"></i>&nbsp;Show my groups</a> </label>
                                     <?php } ?>
                                     <input type="text" name="group_names" maxlength="64" value="<?php echo $sticky->get('group_names',$group_names); ?>" />
 
@@ -163,7 +163,7 @@
 
 							<tr>
 								<td>
-									<label>Link </label>
+									<label>Website (Type website and click Add or press Enter) </label>
                                     <input id="link-box" name="link" value="<?php echo $sticky->get('link'); ?>" />
 									<button id="add-link" type="button" class="btn" value="Add"><i class="icon-plus-sign"> </i>&nbsp;Add</button> 
 								</td>

@@ -125,14 +125,14 @@
 								</td>
 							</tr>
                             <tr>
-                                <td> <label>Tags (separate by comma)</label>
+                                <td> <label>Groups (Separate groups using comma)</label>
                                 <input type="text" name="group_names" maxlength="64" value="<?php echo $sticky->get('group_names'); ?>" />
 
                             </tr>
 							
 							<tr>
 								<td>
-									<label>Link </label>
+									<label>Website (Type website and click Add or press Enter) </label>
                                     <input id="link-box" name="link" value="<?php echo $sticky->get('link'); ?>" />
 									<button id="add-link" type="button" class="btn" value="Add"><i class="icon-plus-sign"> </i>&nbsp;Add</button> 
 								</td>
