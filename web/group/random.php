@@ -8,6 +8,10 @@
 
     $groupDao = new \com\indigloo\sc\dao\Group();
     $groups = $groupDao->getRandom(50);
+
+    $title = "Random groups";
+    $hasNavigation = true ;
+
     include($_SERVER['APP_WEB_DIR'].'/group/inc/body.inc');
 
 ?>
