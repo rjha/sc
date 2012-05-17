@@ -22,7 +22,8 @@
             $fvalues = $fhandler->getValues();
             $ferrors = $fhandler->getErrors();
             $qUrl = $_POST['q'];
-        
+            $gWeb = \com\indigloo\core\Web::getInstance();
+
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors(),1);
             }
@@ -41,13 +42,13 @@
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
-            header("Location: " . $locationOnError);
+            header("Location: " . $qUrl);
             exit(1);
         } catch(DBException $dbex) {
             $message = $dbex->getMessage();
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,array($message));
-            header("Location: " . $locationOnError);
+            header("Location: " . $qUrl);
             exit(1);
         }
                 

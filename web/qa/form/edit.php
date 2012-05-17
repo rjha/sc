@@ -27,6 +27,7 @@
             $fvalues = $fhandler->getValues();
             $ferrors = $fhandler->getErrors();
             $qUrl = $fvalues['q'];
+            $gWeb = \com\indigloo\core\Web::getInstance();
 
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors(),1);

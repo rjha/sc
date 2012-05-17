@@ -9,40 +9,54 @@
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
+
+    use \com\indigloo\exception\UIException as UIException;
+    use \com\indigloo\exception\DBException as DBException;
+    use \com\indigloo\sc\util\PseudoId;
 	
     if (isset($_POST['delete']) && ($_POST['delete'] == 'Delete')) {
+
+        try{
         
-        $fhandler = new Form\Handler('web-form-1', $_POST);
-        
-		$fhandler->addRule('comment_id', 'comment_id', array('required' => 1));
-		$fhandler->addRule('q', 'q', array('required' => 1));
+            $fhandler = new Form\Handler('web-form-1', $_POST);
+            $fhandler->addRule('comment_id', 'comment_id', array('required' => 1));
+            $fhandler->addRule('q', 'q', array('required' => 1));
 		
-        $fvalues = $fhandler->getValues();
-        $ferrors = $fhandler->getErrors();
-		$qUrl = $fvalues['q'];
+            $fvalues = $fhandler->getValues();
+            $ferrors = $fhandler->getErrors();
+            $qUrl = $fvalues['q'];
 		
-        if ($fhandler->hasErrors()) {
-            $gWeb->store(Constants::STICKY_MAP, $fvalues);
-            $gWeb->store(Constants::FORM_ERRORS,$fhandler->getErrors());
-            header("Location: /qa/comment/delete.php?id=".$fvalues['comment_id']);
-            exit(1);
-			
-        } else {
-            
+            $gWeb = \com\indigloo\core\Web::getInstance();
+            $encodedId = PseudoId::encode($fvalues['comment_id']);
+            $locationOnError =  '/qa/comment/delete.php?id='.$encodedId;
+
+            if ($fhandler->hasErrors()) {
+                throw new UIException($fhandler->getErrors(),1);
+            }
+
             $commentDao = new com\indigloo\sc\dao\Comment();
             $code = $commentDao->delete($fvalues['comment_id']);
 
-            if ($code == com\indigloo\mysql\Connection::ACK_OK ) {
-                header("Location: " . $qUrl);
-                
-            } else {
-                $message = sprintf("DB Error: (code is %d) please try again!",$code);
+            if($code != 0 ) {
+                $message = "DB Error : code %d ";
+                $message = sprintf($message,$code);
+                throw new DBException($message,$code);
+            }
+
+            //success
+            header("Location: " . $qUrl);
+            
+            } catch(UIException $ex) {
+                $gWeb->store(Constants::STICKY_MAP, $fvalues);
+                $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
+                header("Location: " . $locationOnError);
+                exit(1);
+            } catch(DBException $dbex) {
+                $message = $dbex->getMessage();
                 $gWeb->store(Constants::STICKY_MAP, $fvalues);
                 $gWeb->store(Constants::FORM_ERRORS,array($message));
-				header("Location: /qa/comment/delete.php?id=".$fvalues['comment_id']);
+                header("Location: " . $locationOnError);
                 exit(1);
             }
-           
-        }
     }
 ?>

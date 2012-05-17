@@ -11,7 +11,8 @@
 
     use \com\indigloo\Url as Url ;
     use \com\indigloo\exception\UIException as UIException;
-    use com\indigloo\exception\DBException as DBException;
+    use \com\indigloo\exception\DBException as DBException;
+    use \com\indigloo\sc\util\PseudoId ;
 	
     if (isset($_POST['delete']) && ($_POST['delete'] == 'Delete')) {
         try{ 
@@ -22,8 +23,11 @@
             $fvalues = $fhandler->getValues();
             $ferrors = $fhandler->getErrors();
             $qUrl = $fvalues['q'];
-            $locationOnError = '/qa/delete.php?id='.$fvalues['post_id'];
-		
+            $gWeb = \com\indigloo\core\Web::getInstance();
+
+            $itemId = PseudoId::encode($fvalues['post_id']);
+            $locationOnError = '/qa/delete.php?id='.$itemId;
+
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors(),1);
             }
@@ -52,7 +56,5 @@
             exit(1);
         }
 
-                
     }
-        
 ?>

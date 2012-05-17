@@ -43,20 +43,6 @@
     $model = new \com\indigloo\sc\model\Post();
     $ft = Url::tryQueryParam("ft");
         
-    if(!is_null($ft)) {
-       
-        switch($ft){
-            case 'featured' :
-                $filter = new Filter($model);
-                $filter->add($model::FEATURED,Filter::EQ,TRUE);
-                array_push($filters,$filter);
-                break;
-            default:
-                break;
-                
-        }
-    }
-    
     //Always add login_id filter for user dashboard
     $filter = new Filter($model);
     $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
@@ -121,16 +107,6 @@
                 <div class="span9">
                     <div class="page-header"> 
                         <h2> Posts </h2> 
-                        <div class="btn-group">
-                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                Filter Posts
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="<?php echo $ftBaseUrl; ?>">All Posts</a></li>
-                                <li><a href="<?php echo $ftFeaturedUrl; ?>">Featured Posts</a></li>
-                            </ul>
-                        </div> <!-- button group -->
                     </div>
                     
                         <?php

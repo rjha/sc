@@ -16,7 +16,7 @@
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
 	$qUrl = Url::tryQueryParam('q');
-	$qUrl = empty($qUrl) ? '/user/dashboard.php' : $qUrl;
+	$qUrl = empty($qUrl) ? '/user/dashboard/posts.php' : $qUrl;
 
 	$itemId = Url::getQueryParam("id");
 	$postId = PseudoId::decode($itemId);

@@ -24,7 +24,7 @@
             $fvalues = $fhandler->getValues();
             $ferrors = $fhandler->getErrors();
             $qUrl = "/share/feedback.php";
-        
+
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors(),1);
             }
@@ -38,7 +38,8 @@
             }
  
             //success
-            header("Location: / ");
+            $gWeb->store(Constants::FORM_MESSAGES,array('Thanks for your feedback.'));
+            header("Location: ".$qUrl);
 
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);

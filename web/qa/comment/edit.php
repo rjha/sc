@@ -101,8 +101,8 @@
 							 
 						</table>
 						<div class="form-actions">
-							<button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Save your changes</span></button>
-							 <a href="/"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a> 
+							<button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button>
+							 <a href="/user/dashboard/comments.php"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a> 
 						</div>
                                             
                                         
