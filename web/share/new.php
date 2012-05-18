@@ -6,6 +6,7 @@
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
 	
     use \com\indigloo\Util;
+    use \com\indigloo\Url;
     use \com\indigloo\ui\form\Sticky;
     use \com\indigloo\Constants as Constants;
     use \com\indigloo\ui\form\Message as FormMessage;
@@ -13,6 +14,10 @@
      
     $gWeb = \com\indigloo\core\Web::getInstance();
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
+
+    $qUrl = Url::tryQueryParam("q");
+    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $fUrl = Url::current();
     
     $strImagesJson = $sticky->get('images_json') ;
     $strLinksJson = $sticky->get('links_json') ;
@@ -70,12 +75,9 @@
 					}
 				});
 
-
-			 
             });
             
         </script>
-       
        
     </head>
 
@@ -148,7 +150,7 @@
                                 <td> 
                                   	<div class="form-actions"> 
                                         <button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button> 
-                                        <a href="/"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
+                                        <a href="<?php echo $qUrl; ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
                                     </div>
                   
                                 </td>
@@ -162,8 +164,10 @@
                         <!-- put json data in single quotes to avoid interpreting double quotes --> 
 						<input type="hidden" name="links_json" value='<?php echo $strLinksJson ; ?>' />
 						<input type="hidden" name="images_json" value='<?php echo $strImagesJson ; ?>' />
-						<input type="hidden" name="q" value="<?php echo $_SERVER["REQUEST_URI"]; ?>" />
                         <input type="hidden" name="token" value="<?php echo $formToken; ?>" />
+                        <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                        <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
+
 						        
 					</form>
 					

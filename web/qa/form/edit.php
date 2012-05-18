@@ -20,13 +20,17 @@
         try{
             $fhandler = new Form\Handler('web-form-1', $_POST);
             
-            $fhandler->addRule('links_json', 'links_json', array('noprocess' => 1));
-            $fhandler->addRule('images_json', 'images_json', array('noprocess' => 1));
+            $fhandler->addRule('links_json', 'links_json', array('rawData' => 1));
+            $fhandler->addRule('images_json', 'images_json', array('rawData' => 1));
             $fhandler->addRule('group_names', 'Tags', array('maxlength' => 64));
+            $fhandler->addRule('qUrl', 'qUrl', array('required' => 1, 'rawData' =>1));
+            $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
             
             $fvalues = $fhandler->getValues();
             $ferrors = $fhandler->getErrors();
-            $qUrl = $fvalues['q'];
+
+            $qUrl = $fvalues['qUrl'];
+            $fUrl = $fvalues['fUrl'];
             $gWeb = \com\indigloo\core\Web::getInstance();
 
             if ($fhandler->hasErrors()) {
@@ -55,21 +59,18 @@
             }
  
             //success
-            
-            $itemId = PseudoId::encode($fvalues['post_id']);
-            $locationOnSuccess = "/item/".$itemId ;
-            header("Location: " . $locationOnSuccess);
+            header("Location: " . $qUrl);
                 
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
         } catch(DBException $dbex) {
             $message = $dbex->getMessage();
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,array($message));
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
         }
 

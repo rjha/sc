@@ -5,6 +5,7 @@
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
 		
     use com\indigloo\Util;
+    use com\indigloo\Url;
 	use \com\indigloo\sc\auth\Login as Login ;
     use com\indigloo\ui\form\Sticky;
     use com\indigloo\Constants as Constants;
@@ -12,6 +13,10 @@
     
     $gWeb = \com\indigloo\core\Web::getInstance();
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
+
+    $qUrl = Url::tryQueryParam("q");
+    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $fUrl = Url::current();
 
 	$loginId = NULL ;
 	$userName = '';
@@ -97,9 +102,10 @@
 					
 						<div class="form-actions"> 
 							<button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button> 
-							<a href="/"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
+                            <a href="<?php echo $qUrl; ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
 						</div>
                         <input type="hidden" name="token" value="<?php echo $formToken; ?>" />
+                        <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
 						        
 					</form>
 					

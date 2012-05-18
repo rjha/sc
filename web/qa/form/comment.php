@@ -18,10 +18,13 @@
         try{	
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('comment', 'Comment', array('required' => 1));
+            $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
             
             $fvalues = $fhandler->getValues();
             $ferrors = $fhandler->getErrors();
-            $qUrl = $_POST['q'];
+            //redirect always happens to item details page.
+            $fUrl = $fvalues['fUrl'];
+
             $gWeb = \com\indigloo\core\Web::getInstance();
 
             if ($fhandler->hasErrors()) {
@@ -36,19 +39,19 @@
                 throw new DBException($message,$code);
             }
  
-            //success
-            header("Location: " . $qUrl);
+            //success | error - always go back to form
+            header("Location: " . $fUrl);
 
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
         } catch(DBException $dbex) {
             $message = $dbex->getMessage();
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,array($message));
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
         }
                 

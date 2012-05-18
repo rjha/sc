@@ -3,6 +3,7 @@
     include ($_SERVER['APP_WEB_DIR'].'/inc/header.inc');
     
     use com\indigloo\Util;
+    use com\indigloo\Url;
     use com\indigloo\ui\form\Sticky;
     use com\indigloo\Constants as Constants;
     use com\indigloo\Configuration as Config;
@@ -13,13 +14,12 @@
 		header("Location: / ");
 	}	
      
-    $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
+    //qUrl and fUrl
+    $qUrl = Url::tryQueryParam("q");
+    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $fUrl = Url::current();
 
-	$qUrl = "/" ;
-	if(array_key_exists('q',$_GET) && !empty($_GET['q'])){
-		$qUrl = $_GET['q'] ;
-	}
-    
+    $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     $stoken = Util::getMD5GUID();
     $gWeb->store("fb_state",$stoken);
    
@@ -98,7 +98,7 @@
 
                             <table class="form-table">
                             <tr>
-                                <td class="field"> Email<span class="red-label">*</span></td>
+                                <td class="field">Email<span class="red-label">*</span></td>
                                 <td>
                                     <input type="text" name="email" maxlength="64" class="required" title="Email is required" value="<?php echo $sticky->get('email'); ?>"/>
                                 </td>
@@ -123,7 +123,8 @@
                             
                         </div>
 
-                        <input type="hidden" name="q" value="<?php echo $qUrl; ?>" />
+                        <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                        <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
                         
                     </form>
                    </div> 

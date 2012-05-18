@@ -17,6 +17,10 @@
 	use \com\indigloo\sc\util\PseudoId as PseudoId ;
      
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
+    //qUrl and fUrl
+    $qUrl = Url::tryQueryParam("q");
+    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $fUrl = Url::current();
 
 	$itemId = Url::getQueryParam("id");
 	$postId = PseudoId::decode($itemId);
@@ -173,7 +177,7 @@
 	
                                     <div class="form-actions"> 
                                         <button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button> 
-                                        <a href="/"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
+                                        <a href="<?php echo $qUrl; ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
                                     </div>
 
 								</td>
@@ -187,11 +191,11 @@
 						<input type="hidden" name="links_json" value='<?php echo $strLinksJson ; ?>' />
 						<input type="hidden" name="images_json" value='<?php echo $strImagesJson ; ?>' />
 						<input type="hidden" name="post_id" value="<?php echo $postDBRow['id'];?>" />	
-						<input type="hidden" name="q" value="<?php echo $_SERVER["REQUEST_URI"];?>" />	
-						        
+                        <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                        <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
+                        						        
+
 					</form>
-					
-									
 				   
 				</div> <!-- span9 -->
 				

@@ -10,7 +10,6 @@
     use \com\indigloo\sc\auth\Login as Login;
 
     use \com\indigloo\ui\Filter as Filter; 
-    
     $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
@@ -36,7 +35,6 @@
     array_push($filters,$filter);
 
 	$total = $commentDao->getTotalCount($filters);
-
 	$pageSize =	Config::getInstance()->get_value("user.page.items");
 	$paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);	
 	$commentDBRows = $commentDao->getPaged($paginator,$filters);

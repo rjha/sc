@@ -22,16 +22,19 @@
             $gWeb = \com\indigloo\core\Web::getInstance();
 
             $fhandler = new Form\Handler('web-form-1', $_POST);
-            $fhandler->addRule('links_json', 'links_json', array('noprocess' => 1));
-            $fhandler->addRule('images_json', 'images_json', array('noprocess' => 1));
+            $fhandler->addRule('links_json', 'links_json', array('rawData' => 1));
+            $fhandler->addRule('images_json', 'images_json', array('rawData' => 1));
             $fhandler->addRule('group_names', 'Tags', array('maxlength' => 64));
+
+            $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
             
             //check security token
             $fhandler->checkToken("token",$gWeb->find("form.token",true)) ;
             $fvalues = $fhandler->getValues();
 
-            $qUrl = $fvalues['q'];
             
+            $fUrl = $fvalues['fUrl'];
+
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors(),1);
             } 
@@ -51,20 +54,20 @@
                                 $group_slug,
                                 $fvalues['category']);
 		    
-            //success
+            //success - always go to item details
             $location = "/item/".$itemId;
             header("Location: /qa/thanks.php?q=".$location );
 
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
         } catch(DBException $dbex) {
             $message = $dbex->getMessage();
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,array($message));
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
         }
 

@@ -1,3 +1,14 @@
+<?php
+$params = array('q' => urlencode(\com\indigloo\Url::current()));
+$shareUrl = \com\indigloo\Url::createUrl('/share/new.php',$params);
+$askUrl = \com\indigloo\Url::createUrl('/qa/new.php',$params);
+$monitorUrl = '' ;
+if(\com\indigloo\sc\auth\Login::isAdmin()) { 
+    $monitorUrl = '<li><a href="/monitor/index.php">Monitor App</a></li>';
+} 
+
+?>
+
 <div id="header">
 	<div class="navbar">
 		<div class="navbar-inner">
@@ -8,16 +19,14 @@
 				<div class="pull-left">
 					<ul class="nav">
 						<li class="active"> <a href="/">Home</a> </li>
-						<li class="active"><a href="/share/new.php">Share</a></li>
-						<li class="active"><a href="/qa/new.php">Ask</a></li>
+                        <li class="active"><a href="<?php echo $shareUrl; ?>">Share</a></li>
+                        <li class="active"><a href="<?php echo $askUrl; ?>">Ask</a></li>
 						<li class="divider-vertical"></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $gSessionLogin->name; ?><b class="caret"></b> </a>
 							<ul class="dropdown-menu">
 								<li><a href="/user/dashboard/posts.php">My Account</a></li>
-                                <?php if(\com\indigloo\sc\auth\Login::isAdmin()) { ?>
-                                <li><a href="/monitor/index.php">Monitor App</a></li>
-                                <?php } ?>
+                                <?php echo $monitorUrl; ?>
 								<li class="divider"></li>
 								<li><a href="/user/logout.php">Logout</a></li>
 							</ul>

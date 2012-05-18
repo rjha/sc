@@ -5,6 +5,7 @@ namespace com\indigloo\sc\html {
     use com\indigloo\Template as Template;
     use com\indigloo\sc\view\Media as MediaView ;
     use com\indigloo\Util as Util ;
+    use com\indigloo\Url as Url ;
     use \com\indigloo\sc\util\PseudoId as PseudoId;
     use \com\indigloo\sc\ui\Constants as UIConstants ;
     
@@ -38,7 +39,6 @@ namespace com\indigloo\sc\html {
             }
 			
 			$view->id = $commentDBRow['id'];
-			$view->encodedId = PseudoId::encode($view->id);
 
 			$view->title = $commentDBRow['title'];
 			$view->postId = $commentDBRow['post_id'];
@@ -54,6 +54,11 @@ namespace com\indigloo\sc\html {
                 $view->userName = $commentDBRow['user_name'] ;
                 $view->showUser = true ;
             }
+
+			$encodedId = PseudoId::encode($view->id);
+            $params = array('id' => $encodedId, 'q' => urlencode(Url::current()));
+            $view->editUrl = Url::createUrl('/qa/comment/edit.php',$params);
+            $view->deleteUrl = Url::createUrl('/qa/comment/delete.php',$params);
 
 			$html = Template::render($template,$view);
             return $html ;

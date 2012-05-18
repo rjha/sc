@@ -15,14 +15,15 @@
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('email', 'Email', array('required' => 1, 'maxlength' => 64));
             $fhandler->addRule('password', 'Password', array('required' => 1, 'maxlength' => 32));
+
+            $fhandler->addRule('qUrl', 'qUrl', array('required' => 1, 'rawData' =>1));
+            $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
             
             $fvalues = $fhandler->getValues();
             $gWeb = \com\indigloo\core\Web::getInstance();
-            
-            $qUrl = '/' ;
-            if(array_key_exists('q',$_POST) && !empty($_POST['q'])) {
-                $qUrl = $_POST['q'];
-            }
+
+            $qUrl = $fvalues['qUrl'];
+            $fUrl = $fvalues['fUrl'];
             
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors(),1);
@@ -42,8 +43,7 @@
         }catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
-            $locationOnError = '/user/login.php?q='.$qUrl ;
-            header("Location: " . $locationOnError);
+            header("Location: " . $fUrl);
             exit(1);
         }
                 

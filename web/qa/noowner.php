@@ -3,9 +3,10 @@
     include ('sc-app.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
 
-	$qUrl = "/" ;
+    use \com\indigloo\Url;
+    $qUrl = Url::tryQueryParam("q");
+    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
    
-    
 ?>  
 
 <!DOCTYPE html>

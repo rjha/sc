@@ -28,22 +28,10 @@
     $postDao = new \com\indigloo\sc\dao\Post();
     $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
 
-    //copy URL parameters
-    $fparams = $qparams;
-    //now unset ft param
-    unset($fparams["ft"]);
-    //ft urls start with page 1
-    $fparams['gpage'] = 1 ;
-    //create filter Urls
-    $ftBaseUrl = Url::createUrl("/user/dashboard/posts.php",$fparams);
-    $ftFeaturedUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "featured"));
-    
     //filters
     $filters = array();
-    $model = new \com\indigloo\sc\model\Post();
-    $ft = Url::tryQueryParam("ft");
-        
     //Always add login_id filter for user dashboard
+    $model = new \com\indigloo\sc\model\Post();
     $filter = new Filter($model);
     $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
     array_push($filters,$filter);

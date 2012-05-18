@@ -18,6 +18,11 @@
 	$encodedId = Url::getQueryParam("id");
 	$commentId = PseudoId::decode($encodedId);
 
+    
+    $qUrl = Url::tryQueryParam("q");
+    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $fUrl = Url::current();
+
     $commentDao = new com\indigloo\sc\dao\Comment();
     $commentDBRow = $commentDao->getOnId($commentId);
 
@@ -102,13 +107,14 @@
 						</table>
 						<div class="form-actions">
 							<button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button>
-							 <a href="/user/dashboard/comments.php"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a> 
+                            <a href="<?php echo $qUrl; ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a> 
 						</div>
                                             
                                         
 					<input type="hidden" name="comment_id" value="<?php echo $commentDBRow['id'] ; ?>" />
 					<input type="hidden" name="item_id" value="<?php echo $itemId;?>" />
-					<input type="hidden" name="q" value="<?php echo $_SERVER["REQUEST_URI"];?>" />
+                    <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                    <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
 											
 					</form>
 					</div> <!-- form wrapper -->

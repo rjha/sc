@@ -4,6 +4,7 @@ namespace com\indigloo\sc\html {
 
     use \com\indigloo\Template as Template;
     use \com\indigloo\Util as Util ;
+    use \com\indigloo\Url as Url ;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\util\StringUtil as StringUtil ;
     
@@ -256,8 +257,10 @@ namespace com\indigloo\sc\html {
 
 			$view = new \stdClass;
             $view->isLoggedInUser = false ;
-            $view->id = $postDBRow['id'];
-            $view->itemId = PseudoId::encode($view->id);
+
+            $itemId = PseudoId::encode($postDBRow['id']);
+            $params = array('id' => $itemId , 'q' => urlencode(Url::current()));
+            $view->editUrl = Url::createUrl('/qa/edit.php',$params);
 
 			if(!is_null($gSessionLogin) && ($gSessionLogin->id == $postDBRow['login_id'])){
 				$view->isLoggedInUser = true ;
@@ -271,8 +274,45 @@ namespace com\indigloo\sc\html {
 		static function getWidget($postDBRow,$options=NULL) {
            
 			$html = NULL ;
+            $view = self::getWidgetView($postDBRow);
 
-			$template = '/fragments/widget/text.tmpl' ;
+			$template = ($view->hasImage) ? '/fragments/widget/image.tmpl' : '/fragments/widget/text.tmpl' ;
+            if(is_null($options)) {
+                $options = UIConstants::WIDGET_EDIT | UIConstants::WIDGET_DELETE ;
+            }
+            
+            $view->hasEdit = $options & UIConstants::WIDGET_EDIT ;
+            $view->hasDelete = $options & UIConstants::WIDGET_DELETE ;
+            $params = array('id' => $view->itemId, 'q' => urlencode(Url::current()));
+            $view->editUrl = Url::createUrl('/qa/edit.php',$params);
+            $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
+
+            //$view->hasFeature = ($options & UIConstants::WIDGET_FEATURE) && !($postDBRow['is_feature']) ;
+            //$view->hasUnfeature = ($options & UIConstants::WIDGET_FEATURE) && ($postDBRow['is_feature']) ;
+			$html = Template::render($template,$view);
+            return $html ;
+			
+        }
+
+        static function getAdminWidget($postDBRow) {
+            //@todo login check 
+           
+			$html = NULL ;
+            $view = self::getWidgetView($postDBRow);
+
+			$template = ($view->hasImage) ? '/fragments/widget/admin/image.tmpl' : '/fragments/widget/admin/text.tmpl' ;
+            $params = array('id' => $view->itemId, 'q' => Url::current());
+            $view->editUrl = Url::createUrl('/qa/edit.php',$params);
+            $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
+            //@todo - add more URL
+
+			$html = Template::render($template,$view);
+            return $html ;
+			
+        }
+
+        static function getWidgetView($postDBRow) {
+           
 			$imagesJson = $postDBRow['images_json'];
 			$images = json_decode($imagesJson);
 			
@@ -283,20 +323,11 @@ namespace com\indigloo\sc\html {
 			
 			$view->userName = $postDBRow['user_name'];
 			$view->createdOn = Util::formatDBTime($postDBRow['created_on']);
+            $view->hasImage = false ;	
 			
-            if(is_null($options)) {
-                $options = UIConstants::WIDGET_EDIT | UIConstants::WIDGET_DELETE ;
-            }
-            
-            $view->hasEdit = $options & UIConstants::WIDGET_EDIT ;
-            $view->hasDelete = $options & UIConstants::WIDGET_DELETE ;
-            $view->hasFeature = ($options & UIConstants::WIDGET_FEATURE) && !($postDBRow['is_feature']) ;
-            $view->hasUnfeature = ($options & UIConstants::WIDGET_FEATURE) && ($postDBRow['is_feature']) ;
-            
 			if(!empty($images) && (sizeof($images) > 0)) {
 				/* image stuff */
-				$template = '/fragments/widget/image.tmpl' ;
-				
+			    $view->hasImage = true ;	
 				$image = $images[0] ;
 				
 				$view->bucket = $image->bucket;
@@ -315,12 +346,9 @@ namespace com\indigloo\sc\html {
 				/* image stuff end */
 			}
 			
-			$html = Template::render($template,$view);
-            return $html ;
-			
+            return $view ;
         }
-
-        
+ 
     }
     
 }

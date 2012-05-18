@@ -25,7 +25,7 @@
         </div>
 
        <input type="hidden" name="post_id" value="<?php echo $postDBRow['id']; ?>" />
-       <input type="hidden" name="q" value="<?php echo $_SERVER['REQUEST_URI']; ?>" />
+       <input type="hidden" name="fUrl" value="<?php echo $_SERVER['REQUEST_URI']; ?>" />
        
     </form>
     </div> <!-- comment wrapper -->

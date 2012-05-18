@@ -14,8 +14,10 @@
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
-	$qUrl = Url::tryQueryParam('q');
-	$qUrl = empty($qUrl) ? '/user/dashboard/comments.php' : $qUrl;
+
+    $qUrl = Url::tryQueryParam("q");
+    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $fUrl = Url::current();
 
 	$encodedId = Url::getQueryParam("id");
 	$commentId = PseudoId::decode($encodedId);
@@ -81,7 +83,8 @@
 							<button class="btn btn-danger" type="submit" name="delete" value="Delete" onclick="this.setAttribute('value','Delete');">Delete</button>
 							<a href="<?php echo $qUrl; ?>"><button class="btn" type="button">Cancel</a></button></a>
 						</div>
-						<input type="hidden" name="q" value="<?php echo $qUrl; ?>" />
+						<input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                        <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
 						<input type="hidden" name="comment_id" value="<?php echo $commentId; ?>" />
 					</form>
 

@@ -1,3 +1,9 @@
+<?php
+$params = array('q' => urlencode(\com\indigloo\Url::current()));
+$shareUrl = \com\indigloo\Url::createUrl('/share/new.php',$params);
+$askUrl = \com\indigloo\Url::createUrl('/qa/new.php',$params);
+?>
+
 <div id="header">
 	<div class="navbar">
 		<div class="navbar-inner">
@@ -8,8 +14,8 @@
 				<div class="pull-left">
 					<ul class="nav">
 						<li class="active"> <a href="/">Home</a> </li>
-						<li class="active"><a href="/share/new.php">Share</a></li>
-						<li class="active"><a href="/qa/new.php">Ask</a></li>
+                        <li class="active"><a href="<?php echo $shareUrl; ?>">Share</a></li>
+                        <li class="active"><a href="<?php echo $askUrl; ?>">Ask</a></li>
 						<li class="active"><a href="/user/login.php">Login</a></li>
 						<li class="divider-vertical"></li>
 					</ul> <!-- links -->

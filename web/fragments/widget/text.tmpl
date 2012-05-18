@@ -7,17 +7,11 @@
             <div class="options">
                 <div class="links">
                      ~if($view->hasEdit){~
-                        <a href="/qa/edit.php?id=~~$view->itemId~"><i class="icon-edit"></i>&nbsp;Edit</a>
+                        <a href="~~$view->editUrl~"><i class="icon-edit"></i>&nbsp;Edit</a>
                     ~}~
                     &nbsp;
                     ~if($view->hasDelete){~
-                        <a href="/qa/delete.php?id=~~$view->itemId~"><i class="icon-remove"></i>&nbsp;Delete</a>
-                    ~}~
-                    ~if($view->hasFeature){~
-                        <a href="#"><i class="icon-star"></i>&nbsp;Feature</a>
-                    ~}~
-                    ~if($view->hasUnfeature){~
-                        <a href="#"><i class="icon-star-empty"></i>&nbsp;Unfeature</a>
+                        <a href="~~$view->deleteUrl~"><i class="icon-remove"></i>&nbsp;Delete</a>
                     ~}~
                 </div>
             </div>

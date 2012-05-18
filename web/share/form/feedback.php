@@ -17,13 +17,16 @@
             $gWeb = \com\indigloo\core\Web::getInstance();
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('feedback', 'Feedback', array('required' => 1));
+            $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
 
             //check security token
             $fhandler->checkToken("token",$gWeb->find("form.token",true)) ;
             
             $fvalues = $fhandler->getValues();
             $ferrors = $fhandler->getErrors();
-            $qUrl = "/share/feedback.php";
+
+            $fUrl = $fvalues['fUrl'];
+
 
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors(),1);
@@ -37,20 +40,20 @@
                 throw new DBException($message,$code);
             }
  
-            //success
+            //success - always go back to feedback form 
             $gWeb->store(Constants::FORM_MESSAGES,array('Thanks for your feedback.'));
-            header("Location: ".$qUrl);
+            header("Location: ".$fUrl);
 
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
         } catch(DBException $dbex) {
             $message = $dbex->getMessage();
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,array($message));
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
         }
     }
