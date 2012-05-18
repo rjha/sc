@@ -12,16 +12,6 @@ filetype plugin indent on
 au BufNewFile,BufRead *.inc set filetype=php
 au BufNewFile,BufRead *.tmpl set filetype=php
 
-" to automatically start and close NERDTree
-"autocmd vimenter * NERDTree
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-" map windows like copy +paste 
-nmap <C-V> "+gP
-imap <C-V> <ESC><C-V>
-vmap <C-C> "+y
-vmap <C-x> "+c
-
 " get rid of swp files in working dir
 "
 set backupdir=/home/rjha/nuke/swap
@@ -29,4 +19,7 @@ set backup
 set directory=/home/rjha/nuke/swap
 
 " get rid of toolbar
+" behave like mswin
 set guioptions-=T
+source /usr/share/vim/vim73/mswin.vim
+behave mswin

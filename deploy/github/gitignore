@@ -1,0 +1,9 @@
+.gitignore
+web/media
+web/compiled
+web/3p
+web/sitemap.xml
+db/scripts/sitemap.xml
+db/scripts/sitemap_groups.xml
+db/scripts/sitemap_items.xml
+
