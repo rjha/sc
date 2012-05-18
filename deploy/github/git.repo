@@ -1,17 +1,40 @@
+install  git
+$sudo aptitude install git git-core git-man
+
+copy ssh keys from server using SCP
+
 copy public/private keys for github
 mkdir ~/.ssh
-cp id_rsa* .ssh/
+cp id_rsa .ssh/
+cp id_rsa.pub  .ssh/
 ls ~/.ssh/
+
+create directory
+
 mkdir -p ~/code/github
 cd to ~/code/github
 clone git repository
     $git clone git@github.com:rjha/sc.git
-cd to repository
+
+clone webgloo repo
+
+cd ~/code/github
+
+#clone webgloo repo
+
+git clone git@github.com:rjha/webgloo.git
+
+
+set global preferences
+$git config --global github.user rjha
+$git config --global user.name rjha
+$git config --global user.email jha.rajeev@gmail.com
+
+cd to repository and verify that you can work
     $cd sc/
-issue git commands
--- verify that we are using ssh for github
+    $git fetch origin 
+
+
+verify that we are using ssh for github
+
 $ssh -T git@github.com
-# if required - set username to rjha/set email etc.
-git config --global github.user rjha
-# what is this for?
-git config --global github.token 6d25ba2ee686d1602d67d8d2445bb20a

@@ -1,24 +1,32 @@
 
-+install package g++ required for sphinx compile
+#install package g++ required for sphinx compile
 $sudo aptitude install g++
 
-sphinx.conf -> /usr/local/sphinx/etc/sphinx.conf
+#compile and build sphinx
+./configure --prefix=/usr/local/sphinx
+sudo make
+sudo make install
+
+#copy config
+cd /usr/local/sphinx
+sudo cp deploy/sphinx/sphinx.conf etc/.
+#build indexes
+sudo bin/indexer --all 
+
+#copy init.d service
 install searchd 
 
- sudo cp machine/install/sphinx/sphinx.conf /usr/local/sphinx/etc/.
  cd /etc/init.d/
- sudo cp ~/machine/install/sphinx/searchd .
+ sudo cp deploy/sphinx/searchd.debian searchd
  sudo chmod +x searchd
  sudo update-rc.d searchd defaults
 
- + create indexes for the first time
- cd /usr/local/sphinx/
- sudo bin/indexer --all 
+#verify with chkconfig
+$sudo chkconfig | grep searchd
+#start/stop the daemon
+sudo service searchd start
+sudo service searchd stop
 
- + star the daemon
- sudo /etc/init.d/searchd start
-
-
-+ install searchd cron job
+install searchd cron job
 
 

@@ -32,12 +32,12 @@ cp nginx/php.ini /etc/php5/cli/.
 #create symlinks in web area
 mkdir -p /home/rjha/web/log
 mkdir -p /home/rjha/web/upload
-chowm -R www-data:www-data  /home/rjha/web
+chown -R www-data:www-data  /home/rjha/web
 
 ln -nfs /home/rjha/code/github/webgloo/web/3p /home/rjha/code/github/sc/web/3p
 ln -nfs /home/rjha/web/upload /home/rjha/code/github/sc/web/media
 mkdir /home/rjha/code/github/sc/web/compiled
-chowm -R www-data:www-data  /home/rjha/code/github/sc/web/compiled
+chown -R www-data:www-data  /home/rjha/code/github/sc/web/compiled
 
 #copy gitignore
 cp github/gitignore /home/rjha/code/github/sc/.gitignore
