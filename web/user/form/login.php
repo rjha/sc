@@ -29,7 +29,10 @@
                 throw new UIException($fhandler->getErrors(),1);
             }
 
-            $code = \com\indigloo\auth\User::login('sc_user',$fvalues['email'],$fvalues['password']);
+            //canonical email - all lower case
+            $email = strtolower(trim($fvalues['email']));
+            $password = trim($fvalues['password']);
+            $code = \com\indigloo\auth\User::login('sc_user',$email,$password);
             
             if ($code < 0 ) {
                 $message = "Wrong login or password. Please try again!";

@@ -48,7 +48,9 @@
             $userDBRow = $userDao->getOnEmail($email);
 
             //send raw password
-            $code = WebglooUser::changePassword('sc_user',$userDBRow['id'],$email,$_POST['password']) ;
+            $email = strtolower(trim($email));
+            $password = trim($_POST['password']);
+            $code = WebglooUser::changePassword('sc_user',$userDBRow['id'],$email,$password) ;
 			
             if($code != \com\indigloo\mysql\Connection::ACK_OK ) {
                 $message = sprintf("DB Error : code %d \n",$code);
