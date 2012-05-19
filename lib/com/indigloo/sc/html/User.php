@@ -5,6 +5,7 @@ namespace com\indigloo\sc\html {
     use com\indigloo\Template as Template;
     use com\indigloo\sc\view\Media as MediaView ;
     use com\indigloo\Util as Util ;
+    use com\indigloo\Url as Url ;
     
     class User {
         
@@ -16,6 +17,9 @@ namespace com\indigloo\sc\html {
 			$view->name = $userDBRow['first_name']. ' '.$userDBRow['last_name'];
 			$view->createdOn = Util::formatDBTime($userDBRow['created_on']);
 			$view->email = $userDBRow['email'];
+
+            $params = array('q' => urlencode(Url::current()));
+            $view->passwordUrl = Url::createUrl("/user/account/change-password.php",$params); 
 			
 			$html = Template::render($template,$view);
             return $html ;

@@ -7,11 +7,13 @@
     include($_SERVER['WEBGLOO_LIB_ROOT'] . '/ext/recaptchalib.php');
     
     use com\indigloo\Util;
+    use com\indigloo\Url;
     use com\indigloo\ui\form\Sticky;
     use com\indigloo\Constants as Constants;
     use com\indigloo\ui\form\Message as FormMessage;
      
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
+    $fUrl = Url::current();
    
 ?>  
 
@@ -135,11 +137,12 @@
 						
 						<div class="form-actions">
 							<button class="btn btn-primary" type="submit" name="register" value="Register" onclick="this.setAttribute('value','Register');" ><span>Register</span></button>
-							 <a href="/">
+							 <a href="/user/login.php">
 								<button class="btn" type="button" name="cancel"><span>Cancel</span></button>
 							</a>
 							
 						</div>
+                        <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
 
 					</form>
 				</div>

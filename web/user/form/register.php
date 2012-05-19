@@ -18,9 +18,10 @@
             $fhandler->addRule('last_name', 'Last Name', array('required' => 1, 'maxlength' => 32));
             $fhandler->addRule('email', 'Email', array('required' => 1, 'maxlength' => 64));
             $fhandler->addRule('password', 'Password', array('required' => 1 , 'maxlength' => 32));
-        
+            $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1)); 
+
             $fvalues = $fhandler->getValues();
-            $qUrl = '/user/register.php' ;
+            $fUrl = $fvalues['fUrl'];
             $gWeb = \com\indigloo\core\Web::getInstance();
             
             //captcha code
@@ -53,13 +54,13 @@
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
         } catch(DBException $dbex) {
             $message = $dbex->getMessage();
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,array($message));
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
         }
 

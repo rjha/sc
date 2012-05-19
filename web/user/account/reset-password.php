@@ -29,8 +29,10 @@
         $gWeb->store("change.password.token",$ftoken);        
 
         $title = $email;
-        $pUrl = "/user/account/login-now.php";
-        $formUrl = "/user/account/form/change-password.php" ;
+        $qUrl = "/user/account/login-now.php";
+        $fUrl = Url::current(); 
+        $submitUrl = "/user/account/form/change-password.php" ;
+
         include($_SERVER['APP_WEB_DIR'] . '/user/account/inc/password-form.inc');
         
 

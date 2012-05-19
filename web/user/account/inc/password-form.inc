@@ -61,7 +61,7 @@
                                     
                     <?php \com\indigloo\ui\form\Message::render(); ?>
                                      
-                    <form id="web-form1"  name="web-form1" action="<?php echo $formUrl; ?>" enctype="multipart/form-data"  method="POST">
+                    <form id="web-form1"  name="web-form1" action="<?php echo $submitUrl; ?>" enctype="multipart/form-data"  method="POST">
 
 						<div class="error">    </div>
 
@@ -87,8 +87,8 @@
 							
 						</div>
                         <input type="hidden" name="ftoken" value="<?php echo $ftoken; ?>" />
-                        <input type="hidden" name="q" value="<?php echo $_SERVER['REQUEST_URI']; ?>" />
-                        <input type="hidden" name="p" value="<?php echo $pUrl ?>" />
+                        <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                        <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
 
 					</form>
 				</div>

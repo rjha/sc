@@ -6,6 +6,7 @@
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
 	 
     use com\indigloo\Util;
+    use com\indigloo\Url;
     use com\indigloo\ui\form\Sticky;
     use com\indigloo\Constants as Constants;
     use com\indigloo\ui\form\Message as FormMessage;
@@ -28,8 +29,12 @@
     $gWeb->store("change.password.token",$ftoken);    
 
     $title = $userDBRow['email'];
-    $pUrl = "/user/dashboard/profile.php";
-    $formUrl = "/user/account/form/change-password.php" ;
+
+    $qUrl = Url::tryQueryParam("q");
+    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $fUrl = Url::current(); 
+    $submitUrl = "/user/account/form/change-password.php" ;
+
     include($_SERVER['APP_WEB_DIR'] . '/user/account/inc/password-form.inc');
    
 ?>  
