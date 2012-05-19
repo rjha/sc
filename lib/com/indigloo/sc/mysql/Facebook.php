@@ -26,17 +26,19 @@ namespace com\indigloo\sc\mysql {
 			return $row ;
 		}
 
-		static function getOnLoginId($loginId) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
-            settype($loginId,"integer");
-
-			$sql = " select * from sc_facebook where login_id = %d " ;
-            $sql = sprintf($sql,$loginId);
-			$row = MySQL\Helper::fetchRow($mysqli,$sql);
-			return $row ;
-		}
-
-
+        /**
+         * function to create a facebook user data in our system. we populate the following tables
+         * sc_login
+         * sc_facebook
+         * sc_denorm_user (via a trigger)
+         * The data manipulated via our web forms is always stored in sc_denorm_table
+         * sc_facebook is for first time creation only. We could have removed the columns from
+         * sc_facebook that are already present in sc_denorm_user. However for lookup or other
+         * purposes (e.g. sc_user.email), common columns are a necessary evil. We should never
+         * update sc_facebook and other user base tables (sc_twitter, sc_user etc.) via our web forms.
+         *  
+         * 
+         */
 		static function create($facebookId,$name,$firstName,$lastName,$link,$gender,$email,$provider){
             
              try {

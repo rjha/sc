@@ -8,54 +8,26 @@ namespace com\indigloo\sc\dao {
      
     class User {
 
-		function getOnId($userId) {
-			$row = mysql\User::getOnId($userId);
-			return $row ;
-		}
-
         function getOnEmail($email) {
 			$row = mysql\User::getOnEmail($email);
 			return $row ;
         }
 
+        /*
+         * function to return sc_denorm_data on user.login_id
+         * There is a need to maintain common data or the data that can be changed
+         * via a form on our website in a common table. since we accept data from 
+         * different user sources like 3mik, facebook, twitter etc., the common 
+         * lookup parameter for us is login_id created by us and not the email of the user.
+         *
+         */
 		function getOnLoginId($loginId) {
-			$loginDao = new \com\indigloo\sc\dao\Login();
-			$loginRow = $loginDao->getonId($loginId);
-
-            //no login 
-            if(empty($loginRow)) {
-                return null ;
-            }
-
-			$provider = $loginRow['provider'];
-			$row = NULL ;
-
-			switch($provider) {
-				case \com\indigloo\sc\auth\Login::MIK :
-					$row = mysql\User::getOnLoginId($loginId);
-					//@todo - get rid of kludge
-					$row["name"] = $row["user_name"];
-					break;
-				case \com\indigloo\sc\auth\Login::FACEBOOK :
-					$row = mysql\Facebook::getOnLoginId($loginId);
-					break;
-				case \com\indigloo\sc\auth\Login::TWITTER :
-					$row = mysql\Twitter::getOnLoginId($loginId);
-					break;
-				default:
-					trigger_error("Unknown user provider",E_USER_ERROR);
-			}
-
-			//Add provider information
-			if(!empty($row)){
-				$row['provider'] = $provider ;
-			}
-
+            $row = mysql\User::getOnLoginId($loginId);
 			return $row ;
 		}
 		
-        function update($userId,$firstName,$lastName) {
-            $code = mysql\User::update($userId,$firstName,$lastName);
+        function update($loginId,$firstName,$lastName) {
+            $code = mysql\User::update($loginId,$firstName,$lastName);
             return $code ;
         }
 

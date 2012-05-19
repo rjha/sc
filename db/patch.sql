@@ -1008,12 +1008,135 @@ update sc_user_group set name = token where name is NULL;
 -- 
 alter table sc_media add column thumbnail_name varchar(256);
 
+--
+-- @next push
+-- 17 May 2012
+--
+
+DROP TRIGGER IF EXISTS trg_post_archive;
+
+DELIMITER //
+CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
+    FOR EACH ROW
+    BEGIN
+        delete from sc_site_tracker where post_id = OLD.id ;
+        insert into sc_post_archive(title,
+                                    description,
+                                    login_id,
+                                    links_json,
+                                    images_json,
+                                    group_slug,
+                                    pseudo_id,
+                                    cat_code,
+                                    created_on)
+        select q.title,
+                q.description,
+                q.login_id,
+                q.links_json,
+                q.images_json,
+                q.group_slug,
+                q.pseudo_id,
+                q.cat_code,
+                q.created_on
+        from sc_post  q where q.id = OLD.id ; 
+        delete from sc_comment where post_id = OLD.id;
+    END //
+DELIMITER ;
+
+--
+-- diagnostic script for orphan comments
+--
+-- select id from sc_comment where post_id not in (select id from sc_post);
+--
+-- move orphan comments to archive
+-- delete from sc_comment where id =
+--
+
+--
+-- change name column width 
+-- 
+alter table sc_facebook modify name varchar(64);
+alter table sc_twitter modify name varchar(64);
 
 
+-- 
+--
+-- Add denorm_user table
+--
+
+drop table if exists sc_denorm_user;
+create table sc_denorm_user(
+	id int(11) NOT NULL auto_increment,
+    login_id int not null,
+	name varchar(64) not null ,
+	nick_name varchar(32) ,
+    first_name  varchar(32) ,
+    last_name  varchar(32) ,
+    email  varchar(64) ,
+    provider varchar(16) NOT NULL,
+    website varchar(128) ,
+    blog varchar(128) ,
+    photo_url varchar(128) ,
+    location varchar(32) ,
+    about_me varchar(512) ,
+    gender varchar(1) ,
+	created_on TIMESTAMP  default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+--
+-- load data from sc_user, sc_facebook and sc_twitter tables
+-- 
+
+insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,created_on) 
+select u.login_id,u.user_name,u.first_name,u.last_name,u.email, '3mik', now() from sc_user u ;
+
+insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,website,created_on) 
+select u.login_id,u.name,u.first_name,u.last_name,u.email, 'facebook', u.link, now() from sc_facebook u ;
+
+insert into sc_denorm_user(login_id,name,nick_name,provider,photo_url,location,created_on) 
+select u.login_id,u.name,u.screen_name,'twitter',u.profile_image,u.location, now() from sc_twitter u ;
 
 
+-- 
+-- Add triggers to push data to sc_denorm_table on login creation
+-- 
 
 
+DROP TRIGGER IF EXISTS trg_mik_user_cp;
 
+DELIMITER //
+CREATE TRIGGER trg_mik_user_cp  BEFORE INSERT ON sc_user
+    FOR EACH ROW
+    BEGIN
+        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,created_on) 
+        values(NEW.login_id,NEW.user_name,NEW.first_name,NEW.last_name,NEW.email, '3mik', now()); 
+
+    END //
+DELIMITER ;
+
+
+DROP TRIGGER IF EXISTS trg_fb_user_cp;
+
+DELIMITER //
+CREATE TRIGGER trg_fb_user_cp  BEFORE INSERT ON sc_facebook
+    FOR EACH ROW
+    BEGIN
+        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,website,created_on) 
+        values(NEW.login_id,NEW.name,NEW.first_name,NEW.last_name,NEW.email, 'facebook', NEW.link, now()) ;
+    END //
+DELIMITER ;
+
+
+DROP TRIGGER IF EXISTS trg_twitter_user_cp;
+
+DELIMITER //
+CREATE TRIGGER trg_twitter_user_cp  BEFORE INSERT ON sc_twitter
+    FOR EACH ROW
+    BEGIN
+        insert into sc_denorm_user(login_id,name,nick_name,provider,photo_url,location,created_on) 
+        values(NEW.login_id,NEW.name,NEW.screen_name,'twitter',NEW.profile_image,NEW.location, now()) ;
+    END //
+DELIMITER ;
 
 

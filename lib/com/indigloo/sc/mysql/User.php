@@ -13,7 +13,7 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($userId,"integer");
 			
-            $sql = " select * from sc_user where id = %d " ;
+            $sql = " select * from sc_denorm_user where id = %d " ;
             $sql = sprintf($sql,$userId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
@@ -23,7 +23,7 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             $email = $mysqli->real_escape_string($email);
 			
-            $sql = " select * from sc_user where email = '%s' " ;
+            $sql = " select * from sc_denorm_user where email = '%s' " ;
             $sql = sprintf($sql,$email);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
@@ -33,23 +33,23 @@ namespace com\indigloo\sc\mysql {
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($loginId,"integer");
 			
-            $sql = " select * from sc_user where login_id = %d " ;
+            $sql = " select * from sc_denorm_user where login_id = %d " ;
             $sql = sprintf($sql,$loginId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 		}
         
-		static function update($userId,$firstName,$lastName) {
+		static function update($loginId,$firstName,$lastName) {
 			$code = MySQL\Connection::ACK_OK;
 
             $userName = $firstName. ' '.$lastName;
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$sql = " update sc_user set first_name = ? , last_name = ? , user_name = ?  where id = ?" ;
+			$sql = " update sc_denorm_user set first_name = ? , last_name = ? , name = ?  where login_id = ?" ;
 			
 			$stmt = $mysqli->prepare($sql);
         
 			if($stmt) {
-				$stmt->bind_param("sssi", $firstName, $lastName, $userName, $userId);
+				$stmt->bind_param("sssi", $firstName, $lastName, $userName, $loginId);
 				$stmt->execute();
 				$stmt->close();
 				

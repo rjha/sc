@@ -35,6 +35,13 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        /**
+         * function to create a 3mik user. we populate following tables
+         * sc_login
+         * sc_user
+         * sc_denorm_user (via a trigger)
+         *
+         */ 
 		static function create($provider,$userName,$firstName,$lastName,$email,$password){
             
             try {

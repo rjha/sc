@@ -3,11 +3,11 @@ DROP TABLE IF EXISTS  sc_comment ;
 CREATE TABLE  sc_comment  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    post_id  int(11) NOT NULL,
-   description  varchar(512) DEFAULT NULL,
+   description  varchar(512) ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   title  varchar(128) DEFAULT NULL,
-   login_id  int(11) DEFAULT NULL,
+   title  varchar(128) ,
+   login_id  int(11) ,
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -38,8 +38,8 @@ CREATE TABLE  sc_comment_archive  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    login_id  int(11) NOT NULL,
    post_id  int(11) NOT NULL,
-   title  varchar(128) DEFAULT NULL,
-   description  varchar(512) DEFAULT NULL,
+   title  varchar(128) ,
+   description  varchar(512) ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
@@ -50,14 +50,14 @@ CREATE TABLE  sc_comment_archive  (
 DROP TABLE IF EXISTS  sc_facebook ;
 CREATE TABLE  sc_facebook  (
    id  int(11) NOT NULL AUTO_INCREMENT,
-   facebook_id  varchar(64) DEFAULT NULL,
+   facebook_id  varchar(64) ,
    login_id  int(11) NOT NULL,
-   name  varchar(32) NOT NULL,
-   first_name  varchar(32) DEFAULT NULL,
-   last_name  varchar(32) DEFAULT NULL,
-   link  varchar(128) DEFAULT NULL,
-   gender  varchar(8) DEFAULT NULL,
-   email  varchar(64) DEFAULT NULL,
+   name  varchar(64) NOT NULL,
+   first_name  varchar(32) ,
+   last_name  varchar(32) ,
+   link  varchar(128) ,
+   gender  varchar(8) ,
+   email  varchar(64) ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
@@ -98,9 +98,9 @@ CREATE TABLE  sc_follow  (
 DROP TABLE IF EXISTS  sc_group_master ;
 CREATE TABLE  sc_group_master  (
    id  int(11) NOT NULL AUTO_INCREMENT,
-   token  varchar(32) DEFAULT NULL,
-   name  varchar(32) DEFAULT NULL,
-   cat_code  varchar(16) DEFAULT NULL,
+   token  varchar(32) ,
+   name  varchar(32) ,
+   cat_code  varchar(16) ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
@@ -140,12 +140,12 @@ CREATE TABLE  sc_media  (
    bucket  varchar(32) NOT NULL,
    size  int(11) NOT NULL,
    mime  varchar(64) NOT NULL,
-   original_height  int(11) DEFAULT NULL,
-   original_width  int(11) DEFAULT NULL,
+   original_height  int(11) ,
+   original_width  int(11) ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    store  varchar(8) NOT NULL DEFAULT 'local',
-   thumbnail  varchar(64) DEFAULT NULL,
+   thumbnail  varchar(64) ,
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -163,41 +163,21 @@ DROP TABLE IF EXISTS  sc_post ;
 CREATE TABLE  sc_post  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    title  varchar(128) NOT NULL,
-   description  varchar(512) DEFAULT NULL,
+   description  varchar(512) ,
    links_json  mediumtext,
    images_json  mediumtext,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   login_id  int(11) DEFAULT NULL,
-   group_slug  varchar(64) DEFAULT NULL,
+   login_id  int(11) ,
+   group_slug  varchar(64) ,
    is_feature  int(11) DEFAULT '0',
-   pseudo_id  varchar(32) DEFAULT NULL,
-   cat_code  varchar(16) DEFAULT NULL,
+   pseudo_id  varchar(32) ,
+   cat_code  varchar(16) ,
    version  int(11) DEFAULT '1',
   PRIMARY KEY ( id ),
   UNIQUE KEY  pseudo_id  ( pseudo_id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DELIMITER //
- CREATE TRIGGER trg_post_add  AFTER  INSERT ON sc_post
- FOR EACH ROW
-    BEGIN
-        insert into sc_site_tracker(post_id,site_flag,group_flag,version,created_on) 
-            values (NEW.ID,0,0,NEW.version,NEW.created_on);
-
-    END //
-DELIMITER ;
-
-DELIMITER //
- CREATE  TRIGGER trg_post_edit  AFTER  update ON sc_post
-    FOR EACH ROW
-    BEGIN
-        update sc_site_tracker set site_flag = 0, group_flag = 0, version = NEW.version, updated_on= now() 
-            where post_id = NEW.id ;
-    END  //
-DELIMITER ;
-
-DELIMITER //
 
 CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
     FOR EACH ROW
@@ -222,8 +202,31 @@ CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
                 q.cat_code,
                 q.created_on
         from sc_post  q where q.id = OLD.id ; 
+        delete from sc_comment where post_id = OLD.id;
     END //
 DELIMITER ;
+
+DELIMITER //
+ CREATE TRIGGER trg_post_add  AFTER  INSERT ON sc_post
+ FOR EACH ROW
+    BEGIN
+        insert into sc_site_tracker(post_id,site_flag,group_flag,version,created_on) 
+            values (NEW.ID,0,0,NEW.version,NEW.created_on);
+
+    END //
+DELIMITER ;
+
+DELIMITER //
+ CREATE  TRIGGER trg_post_edit  AFTER  update ON sc_post
+    FOR EACH ROW
+    BEGIN
+        update sc_site_tracker set site_flag = 0, group_flag = 0, version = NEW.version, updated_on= now() 
+            where post_id = NEW.id ;
+    END  //
+DELIMITER ;
+
+DELIMITER //
+
 
 
 DROP TABLE IF EXISTS  sc_post_archive ;
@@ -231,15 +234,15 @@ CREATE TABLE  sc_post_archive  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    login_id  int(11) NOT NULL,
    title  varchar(128) NOT NULL,
-   description  varchar(512) DEFAULT NULL,
+   description  varchar(512) ,
    links_json  text,
    images_json  text,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   pseudo_id  int(11) DEFAULT NULL,
-   group_slug  varchar(64) DEFAULT NULL,
-   is_feature  int(11) DEFAULT NULL,
-   cat_code  varchar(16) DEFAULT NULL,
+   pseudo_id  int(11) ,
+   group_slug  varchar(64) ,
+   is_feature  int(11) ,
+   cat_code  varchar(16) ,
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
  
@@ -309,12 +312,12 @@ CREATE TABLE  sc_tmp_ps  (
 DROP TABLE IF EXISTS  sc_twitter ;
 CREATE TABLE  sc_twitter  (
    id  int(11) NOT NULL AUTO_INCREMENT,
-   twitter_id  varchar(64) DEFAULT NULL,
+   twitter_id  varchar(64) ,
    login_id  int(11) NOT NULL,
-   name  varchar(32) NOT NULL,
-   screen_name  varchar(32) DEFAULT NULL,
-   profile_image  varchar(128) DEFAULT NULL,
-   location  varchar(32) DEFAULT NULL,
+   name  varchar(64) NOT NULL,
+   screen_name  varchar(32) ,
+   profile_image  varchar(128) ,
+   location  varchar(32) ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
@@ -337,7 +340,7 @@ CREATE TABLE  sc_user  (
    login_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   login_id  int(11) DEFAULT NULL,
+   login_id  int(11) ,
   PRIMARY KEY ( id ),
   UNIQUE KEY  uniq_email  ( email )
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -403,3 +406,71 @@ BEGIN
 
 END //
 DELIMITER ;
+
+
+
+--
+-- Add denorm_user table
+--
+
+create table sc_denorm_user(
+	id int(11) NOT NULL auto_increment,
+    login_id int not null,
+	name varchar(64) not null ,
+	nick_name varchar(32) ,
+    first_name  varchar(32) ,
+    last_name  varchar(32) ,
+    email  varchar(64) ,
+    provider varchar(16) NOT NULL,
+    website varchar(128) ,
+    blog varchar(128) ,
+    photo_url varchar(128) ,
+    location varchar(32) ,
+    about_me varchar(512) ,
+    gender varchar(1) ,
+	created_on TIMESTAMP  default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+-- 
+-- Add triggers to push data to sc_denorm_table on login creation
+-- 
+
+
+DROP TRIGGER IF EXISTS trg_mik_user_cp;
+
+DELIMITER //
+CREATE TRIGGER trg_mik_user_cp  BEFORE INSERT ON sc_user
+    FOR EACH ROW
+    BEGIN
+        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,created_on) 
+        values(NEW.login_id,NEW.user_name,NEW.first_name,NEW.last_name,NEW.email, '3mik', now()); 
+
+    END //
+DELIMITER ;
+
+
+DROP TRIGGER IF EXISTS trg_fb_user_cp;
+
+DELIMITER //
+CREATE TRIGGER trg_fb_user_cp  BEFORE INSERT ON sc_facebook
+    FOR EACH ROW
+    BEGIN
+        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,website,created_on) 
+        values(NEW.login_id,NEW.name,NEW.first_name,NEW.last_name,NEW.email, 'facebook', NEW.link, now()) ;
+    END //
+DELIMITER ;
+
+
+DROP TRIGGER IF EXISTS trg_twitter_user_cp;
+
+DELIMITER //
+CREATE TRIGGER trg_twitter_user_cp  BEFORE INSERT ON sc_twitter
+    FOR EACH ROW
+    BEGIN
+        insert into sc_denorm_user(login_id,name,nick_name,provider,photo_url,location,created_on) 
+        values(NEW.login_id,NEW.name,NEW.screen_name,'twitter',NEW.profile_image,NEW.location, now()) ;
+    END //
+DELIMITER ;
+
+

@@ -5,10 +5,11 @@
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
 	include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
 
-    use com\indigloo\ui\form as Form;
-    use com\indigloo\Constants as Constants ;
+    use \com\indigloo\ui\form as Form;
+    use \com\indigloo\Constants as Constants ;
     use \com\indigloo\exception\UIException as UIException;
-    use com\indigloo\exception\DBException as DBException;
+    use \com\indigloo\exception\DBException as DBException;
+    use \com\indigloo\sc\auth\Login as Login ;
 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
 
@@ -25,9 +26,9 @@
                 throw new UIException($fhandler->getErrors(),1);
             }
 
-            $mikUser = \com\indigloo\auth\User::getUserInSession();
+            $loginId = Login::getLoginIdInSession();
             $userDao = new \com\indigloo\sc\dao\User();
-			$code = $userDao->update($mikUser->id,$fvalues['first_name'], $fvalues['last_name']) ;
+			$code = $userDao->update($loginId,$fvalues['first_name'], $fvalues['last_name']) ;
 
             if($code != 0 ) {
                 $message = "DB Error : code %d ";

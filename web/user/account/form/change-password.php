@@ -3,11 +3,14 @@
     
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
+    include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
     
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
+
     use \com\indigloo\auth\User as WebglooUser ;
+    use \com\indigloo\sc\auth\Login as Login ;
     use \com\indigloo\exception\UIException as UIException;
     use com\indigloo\exception\DBException as DBException;
     
@@ -50,7 +53,7 @@
             //send raw password
             $email = strtolower(trim($email));
             $password = trim($_POST['password']);
-            $code = WebglooUser::changePassword('sc_user',$userDBRow['id'],$email,$password) ;
+            $code = WebglooUser::changePassword('sc_user',$userDBRow['login_id'],$email,$password) ;
 			
             if($code != \com\indigloo\mysql\Connection::ACK_OK ) {
                 $message = sprintf("DB Error : code %d \n",$code);

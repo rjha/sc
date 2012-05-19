@@ -25,17 +25,6 @@ namespace com\indigloo\sc\mysql {
 			return $row ;
 		}
 
-		static function getOnLoginId($loginId) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
-            settype($loginId,"integer");
-
-			$sql = " select * from sc_twitter where login_id = %d " ;
-            $sql = sprintf($sql,$loginId);
-			$row = MySQL\Helper::fetchRow($mysqli,$sql);
-			return $row ;
-		}
-
-
 		static function create($twitterId,$name,$screenName,$location,$image,$provider){
 
             try {

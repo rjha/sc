@@ -12,7 +12,7 @@ namespace com\indigloo\sc\auth {
 		const NAME = "SC_USER_NAME";
 		const LOGIN_ID = "SC_LOGIN_ID";
 		const PROVIDER = "SC_USER_PROVIDER";
-		const TOKEN = "TOKEN" ;
+		const TOKEN = "SC_LOGIN_TOKEN" ;
 
 		//providers
 		const MIK = "3mik" ;
@@ -23,12 +23,19 @@ namespace com\indigloo\sc\auth {
             if (isset($_SESSION) && isset($_SESSION[WebglooUser::USER_TOKEN])) {
 				$mikUser = $_SESSION[WebglooUser::USER_DATA];
 
-				if(empty($mikUser) || empty($mikUser['user_name']) || empty($mikUser['login_id'])) {
+				if(empty($mikUser) || empty($mikUser['login_id'])) {
 					trigger_error("Missing user data in 3mik session", E_USER_ERROR);
 				}
 
-				$_SESSION[self::NAME] = $mikUser['user_name'];
-				$_SESSION[self::LOGIN_ID] = $mikUser['login_id'];
+                // get denorm data on login from $userDao
+                // the data in sc_user is for first time creation only
+                // and denorm columns like name etc. can be stale in sc_user
+                $loginId = $mikUser['login_id'];
+                $userDao = new \com\indigloo\sc\dao\User();
+                $userDBRow = $userDao->getOnLoginId($loginId); 
+
+				$_SESSION[self::NAME] = $userDBRow['name'];
+				$_SESSION[self::LOGIN_ID] = $loginId;
 				$_SESSION[self::PROVIDER] = self::MIK;
 				$_SESSION[self::TOKEN] = Util::getBase36GUID();
 
@@ -39,15 +46,23 @@ namespace com\indigloo\sc\auth {
 		}
 
 		static function startTwitterSession($loginId,$name) {
+            $userDao = new \com\indigloo\sc\dao\User();
+            $userDBRow = $userDao->getOnLoginId($loginId); 
+            
+            //fetch name from sc_denorm_user table
 			$_SESSION[self::LOGIN_ID] = $loginId;
-			$_SESSION[self::NAME] = $name;
+			$_SESSION[self::NAME] = $userDBRow['name'];
 			$_SESSION[self::PROVIDER] = self::TWITTER;
 			$_SESSION[self::TOKEN] = Util::getBase36GUID();
 		}
 
 		static function startFacebookSession($loginId,$name) {
+            $userDao = new \com\indigloo\sc\dao\User();
+            $userDBRow = $userDao->getOnLoginId($loginId); 
+
+            //fetch name from sc_denorm_user table
 			$_SESSION[self::LOGIN_ID] = $loginId;
-			$_SESSION[self::NAME] = $name;
+			$_SESSION[self::NAME] = $userDBRow['name'];
 			$_SESSION[self::PROVIDER] = self::FACEBOOK;
 			$_SESSION[self::TOKEN] = Util::getBase36GUID();
 		}
@@ -72,7 +87,6 @@ namespace com\indigloo\sc\auth {
             
             if (isset($_SESSION) && isset($_SESSION[self::TOKEN])) {
 				$login = new \com\indigloo\sc\auth\view\Login();
-
 				$login->name = $_SESSION[self::NAME] ;
 				$login->provider = $_SESSION[self::PROVIDER] ;
 				$login->id = $_SESSION[self::LOGIN_ID] ;
@@ -130,7 +144,6 @@ namespace com\indigloo\sc\auth {
 				$mikUser = $_SESSION[WebglooUser::USER_DATA];
                 if(!empty($mikUser)) {
                     $flag = ($mikUser['is_admin'] == 1 ) ? true : false ;
-
                 }
             }
 
