@@ -1,6 +1,10 @@
 <?php 
     include ('sc-app.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
+
+    //public data
+    //do not put user role check here
+
     set_error_handler('webgloo_ajax_error_handler');
 
     $groupDao = new \com\indigloo\sc\dao\Group();

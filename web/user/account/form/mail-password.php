@@ -43,7 +43,7 @@
             }
             
             $mailDao = new \com\indigloo\sc\dao\Mail();
-            $mailDao->addResetPassword($user['user_name'],$fvalues['email']);
+            $mailDao->addResetPassword($user['name'],$fvalues['email']);
             
             $message = "Success! You will receive an email soon!";
             $gWeb->store(Constants::STICKY_MAP, $fvalues);

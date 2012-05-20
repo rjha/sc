@@ -3,14 +3,14 @@
     
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
-    include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
+    //This form is also used by mail reset workflow 
+    //so do not add role/user.inc here
     
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
 
     use \com\indigloo\auth\User as WebglooUser ;
-    use \com\indigloo\sc\auth\Login as Login ;
     use \com\indigloo\exception\UIException as UIException;
     use com\indigloo\exception\DBException as DBException;
     
