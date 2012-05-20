@@ -1047,10 +1047,8 @@ DELIMITER ;
 -- diagnostic script for orphan comments
 --
 -- select id from sc_comment where post_id not in (select id from sc_post);
---
+-- no orphan comments on server
 -- move orphan comments to archive
--- delete from sc_comment where id =
---
 
 --
 -- change name column width 
@@ -1136,6 +1134,24 @@ CREATE TRIGGER trg_twitter_user_cp  BEFORE INSERT ON sc_twitter
     BEGIN
         insert into sc_denorm_user(login_id,name,nick_name,provider,photo_url,location,created_on) 
         values(NEW.login_id,NEW.name,NEW.screen_name,'twitter',NEW.profile_image,NEW.location, now()) ;
+    END //
+DELIMITER ;
+
+
+
+--
+-- @next push
+-- 20 May 2012
+-- 
+
+DROP TRIGGER IF Exists trg_mik_user_name ;
+
+
+DELIMITER //
+ CREATE TRIGGER trg_mik_user_name AFTER UPDATE ON sc_denorm_user
+    FOR EACH ROW
+    BEGIN
+        update sc_login set name = NEW.name where id = NEW.login_id ;
     END //
 DELIMITER ;
 
