@@ -20,6 +20,7 @@ namespace com\indigloo\sc\html {
 
             $params = array('q' => urlencode(Url::current()));
             $view->passwordUrl = Url::createUrl("/user/account/change-password.php",$params); 
+            $view->editUrl = Url::createUrl("/user/account/edit.php",$params); 
 			
 			$html = Template::render($template,$view);
             return $html ;

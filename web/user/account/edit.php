@@ -5,19 +5,26 @@
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
 	 
-    use com\indigloo\Util;
-    use com\indigloo\ui\form\Sticky;
-    use com\indigloo\Constants as Constants;
-    use com\indigloo\ui\form\Message as FormMessage;
+    use \com\indigloo\Util;
+    use \com\indigloo\Url;
+    use \com\indigloo\ui\form\Sticky;
+    use \com\indigloo\Constants as Constants;
+    use \com\indigloo\ui\form\Message as FormMessage;
 	use \com\indigloo\sc\auth\Login as Login ;
      
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
+
+    $qUrl = Url::tryQueryParam("q");
+    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $fUrl = Url::current();
 	
 	$gSessionLogin = Login::getLoginInSession();
 	$loginId = $gSessionLogin->id ;
 
     $userDao = new \com\indigloo\sc\dao\User() ;
 	$userDBRow = $userDao->getonLoginId($loginId);
+
+
    
 ?>  
 
@@ -34,7 +41,6 @@
 		<script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
 		
         <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
-
 
         <script type="text/javascript">
             $(document).ready(function(){
@@ -99,13 +105,15 @@
 
 							<div class="form-actions">
 								<button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Save</span></button>
-								 <a href="/">
+                                <a href="<?php echo $qUrl;?>">
 									<button class="btn" type="button" name="cancel"><span>Cancel</span></button>
 								</a>
 								
 							</div>
 							
 							<div style="clear: both;"></div>
+                            <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                            <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
 
 						</form>
 				</div>
