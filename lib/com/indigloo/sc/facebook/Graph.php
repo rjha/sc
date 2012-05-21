@@ -32,9 +32,13 @@ namespace com\indigloo\sc\facebook {
                 return NULL ; 
             }
 
-            if($fbObject->id == $fbId){
-                return $fbObject->link ;
+            if(property_exists($fbObject, "id") 
+                && property_exists($fbObject, "link") 
+                && ($fbObject->id == $fbId)) { 
+                    return $fbObject->link ;
             } else {
+                $message = sprintf("Graph URL %s is missing [id|link] or has different ID",$graphUrl) ;
+                Logger::getInstance()->error($message);
                 return NULL ;
             }
         }
@@ -59,7 +63,13 @@ namespace com\indigloo\sc\facebook {
                 return NULL ; 
             }
 
-            return $fbObject->id ;
+            if(property_exists($fbObject, "id")) { 
+                return $fbObject->id ;
+            } else {
+                $message = sprintf("Graph URL %s returned No ID",$graphUrl) ;
+                Logger::getInstance()->error($message);
+                return NULL;
+            }
 
         }
 

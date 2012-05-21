@@ -74,19 +74,41 @@ namespace com\indigloo\sc\dao {
             foreach($links as $link) {
                 $page = $this->processUrl($link);
 
-                if(empty($page) || empty($page["hash"])) {
-                    $message = sprintf("UNKNOWN_URL_TYPE :: No hash found:: [ %s ]",$link);
+                if(empty($page) 
+                    || empty($page["canonicalUrl"]) 
+                    || empty($page["hash"]) 
+                    || empty($page["host"])) {
+
+                    $message = "URL_PROC_ERROR :: [%s] of post [%d] is missing required data" ;
+                    $message = sprintf($message,$link,$postId);
                     Logger::getInstance()->error($message);
+
+                    //write to bad.url log file
+                    $fhandle = NULL ;
+                    $logfile = Config::getInstance()->get_value("bad.url.log");
+                    if (!file_exists($logfile)) {
+                        //create the file
+                        $fhandle = fopen($logfile, "x+");
+                    } else {
+                        $fhandle = fopen($logfile, "a+");
+                    }
+                    fwrite($fhandle,$message);
+                    fclose($fhandle);
+
+                    // process next URL
+                    // there are pros and cons of continuing on bad url vs. bailing out
+                    // however URL processing is intensive job and it is better to examine
+                    // bad URL in leisure because we may not have a solution for processing
+                    // bad urls immediately
                     continue;
 
                 }
 
                 $siteId = $this->getOrCreate($page["hash"],$page["host"],$page["canonicalUrl"]);
-
                 if(!is_null($siteId)){
                     mysql\Site::addTmpPSData($postId,$siteId);
                 } else {
-                    trigger_error("UNKNOWN_URL_TYPE :: Null site.id for $link", E_USER_ERROR);
+                    trigger_error("URL_PROC_ERROR :: Null site.id for $link", E_USER_ERROR);
                 }
             }
 
@@ -158,7 +180,7 @@ namespace com\indigloo\sc\dao {
                         break;
 
                     case 'script' :
-                        $message = sprintf("UNKNOWN_FB_URL_TYPE :: [%s]",$url);
+                        $message = sprintf("UNKNOWN_FB_SCRIPT :: [%s]",$url);
                         Logger::getInstance()->error($message);
                         break;
 
@@ -168,7 +190,7 @@ namespace com\indigloo\sc\dao {
                 }
 
             } else {
-                $message = sprintf("UNKNOWN_FB_URL_TYPE :: [%s]",$url);
+                $message = sprintf("UNKNOWN_FB_URL :: [%s]",$url);
                 Logger::getInstance()->error($message);
             }
 
@@ -186,6 +208,12 @@ namespace com\indigloo\sc\dao {
 
         function processUrl($url) {
             $page = array();
+
+            //empty url
+            if(empty($url)) {
+                return $page ;
+            }
+
             $scheme = \parse_url($url,PHP_URL_SCHEME);
 
             if(empty($scheme)) {
@@ -193,8 +221,9 @@ namespace com\indigloo\sc\dao {
             } 
 
             $info = \parse_url($url);
+            //host check
             if(!isset($info["host"])) {
-                $message = sprintf("UNKNOWN_URL_TYPE :: host not found [ %s ] ",$url);
+                $message = sprintf("BAD_SITE_URL :: host not found [ %s ] ",$url);
                 Logger::getInstance()->error($message);
                 return $page;
             }
