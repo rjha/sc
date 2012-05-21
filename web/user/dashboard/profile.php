@@ -38,14 +38,9 @@
         <link rel="stylesheet" type="text/css" href="/css/sc.css">
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <script type="text/javascript" src="/3p/jquery/jquery.xeyes.1.0.min.js"></script>
+
 		<script>
 			$(document).ready(function(){
-				//xeyes
-				$('.iris').xeyes({
-					padding: '12px',
-					position: 'topRight'
-				});
 				
 			});
 

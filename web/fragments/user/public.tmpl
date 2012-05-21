@@ -1,0 +1,21 @@
+    <h3>~~$view->name~</h3>
+    <div class="widget">
+        <div class="photo"> <img src="~~$view->photoUrl~" alt ="~~$view->name~" /> </div>
+    </div>
+    <div class="well"> 
+        ~~$view->aboutMe~ 
+        ~if($view->defaultMe) {~
+            some default text some default text some default text
+            some default text some default text some default text
+            some default text some default text some default text
+
+        ~}~
+    </div>
+    <ul class="unstyled">
+    ~foreach($view->items as $key => $value){
+        if(!empty($value)) {
+    ~
+        <li> <b>~~$key~</b> </li>
+        <li> ~~$value~ </li>
+    ~}}~
+    </ul>

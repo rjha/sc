@@ -26,7 +26,7 @@
 	$userDBRow = $userDao->getonLoginId($loginId);
 
     $emailExtra = ' readonly="readonly" ' ;
-    if(strcmp($usrDBRow['provider'],Login::TWITTER) == 0 ) {
+    if(strcmp($userDBRow['provider'],Login::TWITTER) == 0 ) {
         //allow editing
         $emailExtra = '' ;
     }
@@ -42,32 +42,26 @@
 
 		<link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
 		<link rel="stylesheet" type="text/css" href="/3p/ful/valums/fileuploader.css">
-        <link rel="stylesheet" type="text/css" href="/css/sc.css">
 
 		<script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
 		
         <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
-        <script type="text/javascript" src="/3p/jquery/jquery.xeyes.1.0.min.js"></script>
 		<script type="text/javascript" src="/3p/ful/valums/fileuploader.js" ></script>
+
+        <link rel="stylesheet" type="text/css" href="/css/sc.css">
 		<script type="text/javascript" src="/js/sc.js" ></script>
 
         <script type="text/javascript">
             $(document).ready(function(){
                 $("#web-form1").validate({errorLabelContainer: $("#web-form1 div.error")});
                 webgloo.sc.util.addTextCounter("#about_me", "#about_me_counter");
-                //xeyes
-				$('.iris').xeyes({
-					padding: '12px',
-					position: 'topRight'
-				});
-
                 	  
 				var uploader = new qq.FileUploader({
 					element: document.getElementById('image-uploader'),
 					action: '/upload/image.php',
 					debug: true,
-                    labelOfButton : 'Change Picture',
+                    labelOfButton : 'Upload Photo',
 					onComplete: function(id, fileName, responseJSON) {
                         mediaVO = responseJSON.mediaVO;
                         var imageData = {};
@@ -127,6 +121,7 @@
 
             <div class="row">
                 <div class="span8">
+                    <div class="wrapper" style="border-right:1px dotted #ccc;">
 					
 					<?php FormMessage::render(); ?>
 			
@@ -157,7 +152,7 @@
 								  <tr>
 									<td class="field">Email<span class="red-label">*</span></td>
 									<td>
-                                    <input type="text" name="email" maxlength="64" value="<?php echo $sticky->get('email',$userDBRow['email']); ?>" <?php echo $emailExtra; ?> />
+                                    <input type="text" name="email" maxlength="64" class="required" title="&nbsp;Email is required" value="<?php echo $sticky->get('email',$userDBRow['email']); ?>" <?php echo $emailExtra; ?> />
 									</td>
 								 </tr>
 								  <tr>
@@ -213,21 +208,13 @@
                             <input type="hidden" name="photo_url" value="<?php echo $userDBRow['photo_url']; ?>" />
 
 						</form>
+                    </div> <!-- wrapper -->
 				</div>
                 <div class="span4">
-                   
-                    <div class="row">
-                        <div class="span4 p20 well">
-                            <div id="my-photo">
-                                <?php echo User::getPhoto($userDBRow['name'], $userDBRow['photo_url']); ?>
-                            </div>
-                        </div>
-                        <div class="span4">
-                            <div id="image-uploader"> </div>
-                        </div>
-                        
+                    <div id="my-photo">
+                        <?php echo User::getPhoto($userDBRow['name'], $userDBRow['photo_url']); ?>
                     </div>
-
+                    <div id="image-uploader"> </div>
                 </div>
 
 			</div> <!-- row -->

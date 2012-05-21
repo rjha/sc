@@ -34,7 +34,10 @@ namespace com\indigloo\sc\html {
 			$view->email = $userDBRow['email'];
             $view->aboutMe = $userDBRow['about_me'];
             $view->photoUrl = $userDBRow['photo_url'];
-            $view->xeyes = empty($view->photoUrl) ? true : false ;
+            if(empty($view->photoUrl)) {
+                $view->photoUrl = '/css/images/twitter-icon.png' ;
+            }
+
             $view->website = $userDBRow['website'];
             $view->blog = $userDBRow['blog'];
             $view->location = $userDBRow['location'];
@@ -61,7 +64,37 @@ namespace com\indigloo\sc\html {
 			$view = new \stdClass;
             $view->name = $name;
             $view->photoUrl = $photoUrl;
-            $view->xeyes = empty($view->photoUrl) ? true : false ;
+            if(empty($view->photoUrl)) {
+                $view->photoUrl = '/css/images/twitter-icon.png' ;
+            }
+
+			$html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+        static function getPublicInfo($userDBRow) {
+
+            $html = NULL ;
+			$view = new \stdClass;
+			$template = '/fragments/user/public.tmpl' ;
+			
+            $view->nickName = $userDBRow['nick_name'];
+			$view->name = (empty($view->nickName)) ? $userDBRow['name'] : $view->nickName ;
+            $view->aboutMe = $userDBRow['about_me'];
+            $view->defaultMe = (empty($view->aboutMe)) ? true : false ;
+            $view->photoUrl = $userDBRow['photo_url'];
+            if(empty($view->photoUrl)) {
+                $view->photoUrl = '/css/images/twitter-icon.png' ;
+            }
+
+            $items = array();
+            $items['website'] = $userDBRow['website'];
+            $items['blog'] = $userDBRow['blog'];
+            $items['location'] = $userDBRow['location'];
+            $view->items = $items;
+
+			$view->createdOn = Util::formatDBTime($userDBRow['created_on']);
 
 			$html = Template::render($template,$view);
             return $html ;

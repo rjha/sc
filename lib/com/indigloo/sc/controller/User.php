@@ -31,7 +31,6 @@ namespace com\indigloo\sc\controller{
                 exit;
             }
 
-            $userName = $userDBRow['name'];
 
             $postDao = new \com\indigloo\sc\dao\Post() ;
 
@@ -48,9 +47,9 @@ namespace com\indigloo\sc\controller{
             $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);	
             $postDBRows = $postDao->getPaged($paginator,$filters);
 
-            $template = $_SERVER['APP_WEB_DIR']. '/view/tiles-page.php';
+            $template = $_SERVER['APP_WEB_DIR']. '/view/user/pub.php';
+
             //page variables
-            $pageHeader = "Posts by ".$userName;
             $pageBaseUrl = "/pub/user/".$pubUserId ;
 
             $pageTitle = SeoData::getHomePageTitle();
