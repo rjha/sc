@@ -61,10 +61,14 @@
                 <?php include($_SERVER['APP_WEB_DIR']. '/monitor/inc/banner.inc'); ?>
                 </div>
             </div>
+            <div class="row">
+                <div class="span12">
+                <?php $activeTab = 'users'; include('inc/menu.inc'); ?>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="span9">
-                    <div class="page-header"> <h2> <?php echo $loginCount ?> Users </h2> </div>
                     
                     <ol>
                         <li> Users in last 24 HR : <?php echo $ldLoginCount; ?> </li>
@@ -75,9 +79,7 @@
 
                    
                 </div>
-                <div class="span3">
-                     <?php include($_SERVER['APP_WEB_DIR'].'/monitor/inc/menu.inc'); ?>
-                </div>
+                <div class="span3"> </div>
             </div>
         </div> <!-- container -->
         

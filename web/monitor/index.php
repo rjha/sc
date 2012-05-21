@@ -127,11 +127,14 @@
                 <?php include($_SERVER['APP_WEB_DIR']. '/monitor/inc/banner.inc'); ?>
                 </div>
             </div>
+            <div class="row">
+                <div class="span12">
+                <?php $activeTab = 'posts'; include('inc/menu.inc'); ?>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="span9">
-                    <div class="page-header"> 
-
                         <div class="row">
                            <div class="span5">
                             <!-- <h3> <?php echo $ftname; ?> -  <?php echo $total ?> Posts </h3>  -->
@@ -162,8 +165,6 @@
                             <span> <?php echo $total; ?> results
                         </div>
 
-                    </div>
-                    
                         <?php
                             $startId = NULL;
                             $endId = NULL;
@@ -173,14 +174,12 @@
                             }
 
                             foreach ($postDBRows as $postDBRow) {
-                                echo \com\indigloo\sc\html\Post::getWidget($postDBRow,$options);
+                                echo \com\indigloo\sc\html\Post::getAdminWidget($postDBRow,$options);
                             }
                         ?>
                    
                 </div>
-                <div class="span3">
-                     <?php include($_SERVER['APP_WEB_DIR'].'/monitor/inc/menu.inc'); ?>
-                </div>
+                <div class="span3"> </div>
             </div>
         </div> <!-- container -->
         <?php $paginator->render('/monitor/index.php', $startId, $endId); ?>

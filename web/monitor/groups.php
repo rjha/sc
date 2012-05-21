@@ -52,10 +52,14 @@
                 <?php include($_SERVER['APP_WEB_DIR']. '/monitor/inc/banner.inc'); ?>
                 </div>
             </div>
+            <div class="row">
+                <div class="span12">
+                <?php $activeTab = 'groups'; include('inc/menu.inc'); ?>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="span9">
-                    <div class="page-header"> <h2>Groups</h2> </div>
                     <?php FormMessage::render(); ?>
                         <form name="web-form1" action="/monitor/form/group/featured.php" method="POST">
                             <div class="row">
@@ -72,9 +76,7 @@
                         </form>
     
                 </div>
-                <div class="span3">
-                     <?php include($_SERVER['APP_WEB_DIR'].'/monitor/inc/menu.inc'); ?>
-                </div>
+                <div class="span3"> </div>
             </div>
         </div> <!-- container -->
         
