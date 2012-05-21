@@ -1,43 +1,54 @@
+<div class="row">
+    <div class="span4">
+        ~if($view->xeyes) {~
+        <div id="xeyes">
+            <div class="eye">
+                <div class="iris"></div>
+            </div>
+            <div class="eye">
+                <div class="iris"></div>
+            </div>
+        </div> <!-- xeyes -->
+        ~} else { ~
+        <div class="widget">
+            <div class="photo">
+                <img src="~~$view->photoUrl~" alt="~~$view->name~" />
+            </div>
 
-<div class="doc-table mt20">
-	<div class="row">
-	
-		<div class="span6">
-		   <table class="doc-table">
-				<tr>
-					<td> <b>Name</b> </td>
-					<td>~~$view->name~</td>
-				</tr>
-			   
-				<tr>
-					<td><b>Email</b></td>
-					<td>~~$view->email~</td>
-				</tr>
-				<tr>
-					<td><b>Created On</b> </td>
-					<td>~~$view->createdOn~</td>
-				</tr>
-				
-		   </table>
-		</div>
+        </div>
+        ~}~
+    </div>
+    <div class="span5">
+        <div class="">
 
-        <div class="span3">
-			<div id="xeyes">
-				<div class="eye">
-					<div class="iris"></div>
-				</div>
-				<div class="eye">
-					<div class="iris"></div>
-				</div>
-			</div>	
-		</div>
-	</div> <!-- row -->
-</div>
+        </div>
 
+    </div>
+
+</div> <!-- nested row -->
+    
 <div class="p10">
-	<span> <a  class="btn" href="~~$view->editUrl~">Edit profile</a> </span>
-	&nbsp;
-	<span> <a class="btn" href="~~$view->passwordUrl~">Change password</a> </span>
+	<span> <a href="~~$view->editUrl~">Edit profile</a> </span>
+	&nbsp;|&nbsp;
+	<span> <a href="~~$view->passwordUrl~">Change password</a> </span>
 </div>
+
+<div class="row">
+    <div class="span6 p20">
+        <table class="table table-condensed">
+            <tr> <td>Real name</td> <td>~~$view->name~</td> </tr>
+            <tr> <td>Nick name</td> <td>~~$view->nickName~</td> </tr>
+            <tr> <td>Email</td> <td>~~$view->email~</td> </tr>
+            <tr> <td>Website</td> <td>~~$view->website~</td> </tr>
+            <tr> <td>Blog</td> <td>~~$view->blog~</td> </tr>
+            <tr> <td>Location</td> <td>~~$view->location~</td> </tr>
+            <tr> <td>Age</td> <td></td> </tr>
+            <tr> <td>Gender</td> <td></td> </tr>
+            <tr> <td>Created on</td> <td>~~$view->createdOn~</td> </tr>
+        </table>
+    </div>
+
+</div> <!-- nested row -->
+  
 
 

@@ -588,12 +588,6 @@
 		min-height:800px;
 	}
 
-	.doc-table td {
-		vertical-align:top;
-		padding: 3px 20px 3px 0px;
-
-	}	
-    
 	.author{
 		padding: 7px 0px 7px 0px ;
 		font-size : 12px;
@@ -941,4 +935,7 @@
         max-width :100% ;
     }
 
+    .table th, .table td {
+        border-top : none ;
+    }
   

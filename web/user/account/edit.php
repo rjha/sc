@@ -11,6 +11,7 @@
     use \com\indigloo\Constants as Constants;
     use \com\indigloo\ui\form\Message as FormMessage;
 	use \com\indigloo\sc\auth\Login as Login ;
+    use \com\indigloo\sc\html\User as User;
      
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
@@ -24,8 +25,6 @@
     $userDao = new \com\indigloo\sc\dao\User() ;
 	$userDBRow = $userDao->getonLoginId($loginId);
 
-
-   
 ?>  
 
 <!DOCTYPE html>
@@ -36,15 +35,52 @@
         <?php include($_SERVER['APP_WEB_DIR'] . '/inc/meta.inc'); ?>
 
 		<link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="/3p/ful/valums/fileuploader.css">
         <link rel="stylesheet" type="text/css" href="/css/sc.css">
+
 		<script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
 		
         <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
+        <script type="text/javascript" src="/3p/jquery/jquery.xeyes.1.0.min.js"></script>
+		<script type="text/javascript" src="/3p/ful/valums/fileuploader.js" ></script>
+		<script type="text/javascript" src="/js/sc.js" ></script>
 
         <script type="text/javascript">
             $(document).ready(function(){
                 $("#web-form1").validate({errorLabelContainer: $("#web-form1 div.error")});
+                //xeyes
+				$('.iris').xeyes({
+					padding: '12px',
+					position: 'topRight'
+				});
+
+                	  
+				var uploader = new qq.FileUploader({
+					element: document.getElementById('image-uploader'),
+					action: '/upload/image.php',
+					debug: true,
+                    labelOfButton : 'Change Picture',
+					onComplete: function(id, fileName, responseJSON) {
+                        mediaVO = responseJSON.mediaVO;
+                        var imageData = {};
+                        imageData.name = mediaVO.originalName;
+                        if(mediaVO.store == 's3'){
+                            imageData.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.storeName ;
+                        } else {
+                             imageData.srcImage = '/' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
+                        }
+                        //update our display
+                        imageDiv = '<div class="widget"> <div class="photo"> ' +
+                                    ' <img src="{srcImage}" alt="{name}" /> </div> </div>' ;
+                        var buffer = imageDiv.supplant(imageData);
+                        $("#my-photo").html(buffer);
+                        //add to form
+                        frm = document.forms["web-form1"];
+                        frm.photo_url.value = imageData.srcImage ;
+
+                    }
+				});
 
             });
 
@@ -70,15 +106,20 @@
 			
 			
 			<div class="row">
-				<div class="span9">
+				<div class="span8">
 					<div class="page-header">
-						<h2> Edit Profile - <?php echo $userDBRow['first_name']; ?> </h2>
+						<h2> <?php echo $userDBRow['name']; ?> </h2>
 					</div>
 								
 					<p class="help-text">
-					   Please update the details and click on Save.
-
+                       Please update the details and click on Submit.  If you provide a nick name then your nick name 
+                       will be displayed instead of your real name.
 					</p>
+                </div>
+            </div> <!-- row -->
+
+            <div class="row">
+                <div class="span8">
 					
 					<?php FormMessage::render(); ?>
 			
@@ -100,11 +141,47 @@
 										<input type="text" name="last_name" maxlength="32" class="required" title="&nbsp;Last Name is required" value="<?php echo $sticky->get('last_name',$userDBRow['last_name']); ?>"/>
 									</td>
 								 </tr>
+								  <tr>
+									<td class="field">Nick Name</td>
+									<td>
+										<input type="text" name="nick_name" maxlength="32" value="<?php echo $sticky->get('nick_name',$userDBRow['nick_name']); ?>"/>
+									</td>
+								 </tr>
+								  <tr>
+									<td class="field">Email<span class="red-label">*</span></td>
+									<td>
+										<input type="text" name="email" maxlength="64" value="<?php echo $sticky->get('email',$userDBRow['email']); ?>"/>
+									</td>
+								 </tr>
+								  <tr>
+									<td class="field">Website</td>
+									<td>
+										<input type="text" name="website" maxlength="128" value="<?php echo $sticky->get('website',$userDBRow['website']); ?>"/>
+									</td>
+								 </tr>
+								 <tr>
+								  <td class="field">Blog</td>
+									<td>
+										<input type="text" name="blog" maxlength="128" value="<?php echo $sticky->get('blog',$userDBRow['blog']); ?>"/>
+									</td>
+								 </tr>
+								 <tr>
+								  <td class="field">Location</td>
+									<td>
+										<input type="text" name="location" maxlength="32" value="<?php echo $sticky->get('location',$userDBRow['location']); ?>"/>
+									</td>
+								 </tr>
+								 <tr>
+								  <td class="field">Age</td>
+									<td>
+										<input type="text" name="age" maxlength="2" value="<?php echo $sticky->get('age',$userDBRow['age']); ?>"/>
+									</td>
+								 </tr>
 								
 							</table>
 
 							<div class="form-actions">
-								<button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Save</span></button>
+								<button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button>
                                 <a href="<?php echo $qUrl;?>">
 									<button class="btn" type="button" name="cancel"><span>Cancel</span></button>
 								</a>
@@ -114,10 +191,27 @@
 							<div style="clear: both;"></div>
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                             <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
+                            <input type="hidden" name="photo_url" value="<?php echo $userDBRow['photo_url']; ?>" />
 
 						</form>
 				</div>
-			</div>
+                <div class="span4">
+                   
+                    <div class="row">
+                        <div class="span4 p20 well">
+                            <div id="my-photo">
+                                <?php echo User::getPhoto($userDBRow['name'], $userDBRow['photo_url']); ?>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div id="image-uploader"> </div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+
+			</div> <!-- row -->
 		</div> <!-- container -->
 		
         <div id="ft">

@@ -1156,3 +1156,5 @@ DELIMITER //
 DELIMITER ;
 
 
+ -- add age column
+ alter table sc_denorm_user  add column age int;

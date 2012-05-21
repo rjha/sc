@@ -38,18 +38,21 @@ namespace com\indigloo\sc\mysql {
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 		}
-        
-		static function update($loginId,$firstName,$lastName) {
+
+		static function update($loginId,$firstName,$lastName,$nickName,$email,
+                                $website,$blog,$location,$age,$photoUrl ) {
 			$code = MySQL\Connection::ACK_OK;
 
             $userName = $firstName. ' '.$lastName;
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$sql = " update sc_denorm_user set first_name = ? , last_name = ? , name = ?  where login_id = ?" ;
+            $sql = " update sc_denorm_user set first_name= ?, last_name= ?, name= ?, nick_name= ?, " ;
+            $sql .= " email= ?,website = ? , blog = ?, location = ?,age=?, photo_url=? where login_id= ? " ;
 			
 			$stmt = $mysqli->prepare($sql);
         
 			if($stmt) {
-				$stmt->bind_param("sssi", $firstName, $lastName, $userName, $loginId);
+				$stmt->bind_param("ssssssssisi",$firstName,$lastName,$userName,$nickName,$email,
+                                $website,$blog,$location,$age,$photoUrl,$loginId);
 				$stmt->execute();
 				$stmt->close();
 				

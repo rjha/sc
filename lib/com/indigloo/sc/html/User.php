@@ -9,54 +9,12 @@ namespace com\indigloo\sc\html {
     
     class User {
         
-		static function get3mikProfile($userDBRow) {
-		    $html = NULL ;
-			$view = new \stdClass;
-			$template = '/fragments/user/profile/3mik.tmpl' ;
-			
-			$view->name = $userDBRow['first_name']. ' '.$userDBRow['last_name'];
-			$view->createdOn = Util::formatDBTime($userDBRow['created_on']);
-			$view->email = $userDBRow['email'];
-
-            $params = array('q' => urlencode(Url::current()));
-            $view->passwordUrl = Url::createUrl("/user/account/change-password.php",$params); 
-            $view->editUrl = Url::createUrl("/user/account/edit.php",$params); 
-			
-			$html = Template::render($template,$view);
-            return $html ;
-		}
-		
-		static function getTwitterProfile($userDBRow) {
-		    $html = NULL ;
-			$view = new \stdClass;
-			$template = '/fragments/user/profile/twitter.tmpl' ;
-			
-			$view->name = $userDBRow['name'];
-			$view->createdOn = Util::formatDBTime($userDBRow['created_on']);
-			$view->location = $userDBRow['location'];
-			$view->image = $userDBRow['profile_image'];
-
-			if(empty($view->image)) {
-				$view->image = "/css/images/twitter-bird.png" ;
-			}
-
-			$html = Template::render($template,$view);
-            return $html ;
-		}
-
-		static function getFacebookProfile($userDBRow) {
-		    $html = NULL ;
-			$view = new \stdClass;
-			$template = '/fragments/user/profile/facebook.tmpl' ;
-			
-			$view->name = $userDBRow['name'];
-			$view->createdOn = Util::formatDBTime($userDBRow['created_on']);
-			$view->email = $userDBRow['email'];
-				
-			$html = Template::render($template,$view);
-            return $html ;
-		}
-
+        /**
+         *
+         * @param gSessionLogin $login data stored in session
+         * @param userDBRow - DB row for this login_id from sc_denorm_user table
+         * 
+         */
         static function getProfile($gSessionLogin,$userDBRow) {
 			if(is_null($gSessionLogin)) {
 				return '' ;
@@ -67,26 +25,46 @@ namespace com\indigloo\sc\html {
 
 			}
 
-			$loginId = $gSessionLogin->id ;
+            $html = NULL ;
+			$view = new \stdClass;
+			$template = '/fragments/user/profile/private.tmpl' ;
+			
+			$view->name = $userDBRow['name'];
+			$view->createdOn = Util::formatDBTime($userDBRow['created_on']);
+			$view->email = $userDBRow['email'];
+            $view->aboutMe = $userDBRow['about_me'];
+            $view->photoUrl = $userDBRow['photo_url'];
+            $view->xeyes = empty($view->photoUrl) ? true : false ;
+            $view->website = $userDBRow['website'];
+            $view->blog = $userDBRow['blog'];
+            $view->location = $userDBRow['location'];
+            $view->nickName = $userDBRow['nick_name'];
+            //@todo
+            //$view->age = $userDBRow['age'];
+            $view->gender = $userDBRow['gender'];
 
-			$html = NULL ;
-			$provider = $userDBRow['provider'];
 
-			switch($provider) {
-				case \com\indigloo\sc\auth\Login::MIK :
-					$html = self::get3mikProfile($userDBRow);
-					break;
-				case \com\indigloo\sc\auth\Login::FACEBOOK :
-					$html = self::getFacebookProfile($userDBRow);
-					break;
-				case \com\indigloo\sc\auth\Login::TWITTER :
-					$html = self::getTwitterProfile($userDBRow);
-					break;
-				default:
-					trigger_error("Unknown user provider",E_USER_ERROR);
-			}
+            $params = array('q' => urlencode(Url::current()));
+            $view->passwordUrl = Url::createUrl("/user/account/change-password.php",$params); 
+            $view->editUrl = Url::createUrl("/user/account/edit.php",$params); 
+			
+			$html = Template::render($template,$view);
+            return $html ;
 
-			return $html ;
+        }
+
+        static function getPhoto($name,$photoUrl) {
+            $html = NULL ;
+			$template = '/fragments/user/profile/photo.tmpl' ;
+
+			$view = new \stdClass;
+            $view->name = $name;
+            $view->photoUrl = $photoUrl;
+            $view->xeyes = empty($view->photoUrl) ? true : false ;
+
+			$html = Template::render($template,$view);
+            return $html ;
+
         }
 		
     }

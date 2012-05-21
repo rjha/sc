@@ -449,7 +449,8 @@ create table sc_denorm_user(
     blog varchar(128) ,
     photo_url varchar(128) ,
     location varchar(32) ,
-    about_me varchar(512) ,
+    about_me varchar(512),
+    age int ,
     gender varchar(1) ,
 	created_on TIMESTAMP  default '0000-00-00 00:00:00',
     updated_on TIMESTAMP   default '0000-00-00 00:00:00',
@@ -464,6 +465,15 @@ DELIMITER //
 DELIMITER ;
 
 
+
+
+DELIMITER //
+ CREATE TRIGGER trg_mik_user_name AFTER UPDATE ON sc_denorm_user
+    FOR EACH ROW
+    BEGIN
+        update sc_login set name = NEW.name where id = NEW.login_id ;
+    END //
+DELIMITER ;
 
 
 

@@ -23,7 +23,7 @@
     if (empty($userDBRow)) {
         trigger_error("No user exists with this login_id", E_USER_ERROR);
     }
-   
+
 ?>
 
 
@@ -70,15 +70,17 @@
 
             <div class="row">
                 <div class="span9">
-                    <div class="page-header"> <h2> Profile </h2> </div>
-                    <?php echo \com\indigloo\sc\html\User::getProfile($gSessionLogin,$userDBRow) ; ?>
-                      
-                   
+                    <div class="page-header"> <h2> <?php echo $userDBRow['name']; ?> </h2> </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class=span9">
+                <?php echo \com\indigloo\sc\html\User::getProfile($gSessionLogin,$userDBRow) ; ?>
                 </div>
                 <div class="span3">
                      <?php include('inc/menu.inc'); ?>
                 </div>
-            </div>
+            </div> <!-- row -->
         </div> <!-- container -->
      
 

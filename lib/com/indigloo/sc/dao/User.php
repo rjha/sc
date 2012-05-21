@@ -26,8 +26,12 @@ namespace com\indigloo\sc\dao {
 			return $row ;
 		}
 		
-        function update($loginId,$firstName,$lastName) {
-            $code = mysql\User::update($loginId,$firstName,$lastName);
+        function update($loginId,$firstName,$lastName,$nickName,$email,
+                                $website,$blog,$location,$age,$photoUrl) {
+
+            $code = mysql\User::update($loginId,$firstName,$lastName,$nickName,$email,
+                                $website,$blog,$location,$age,$photoUrl);
+
             return $code ;
         }
 

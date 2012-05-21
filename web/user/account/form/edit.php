@@ -17,6 +17,7 @@
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('first_name', 'First Name', array('required' => 1, 'maxlength' => 32));
             $fhandler->addRule('last_name', 'Last Name', array('required' => 1, 'maxlength' => 32));
+            $fhandler->addRule('email', 'Email', array('required' => 1, 'maxlength' => 64));
 
             $fhandler->addRule('qUrl', 'qUrl', array('required' => 1, 'rawData' =>1));
             $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
@@ -33,7 +34,16 @@
 
             $loginId = Login::getLoginIdInSession();
             $userDao = new \com\indigloo\sc\dao\User();
-			$code = $userDao->update($loginId,$fvalues['first_name'], $fvalues['last_name']) ;
+            $code = $userDao->update($loginId,
+                $fvalues['first_name'], 
+                $fvalues['last_name'],
+                $fvalues['nick_name'],
+                $fvalues['email'],
+                $fvalues['website'],
+                $fvalues['blog'],
+                $fvalues['location'],
+                $fvalues['age'],
+                $fvalues['photo_url']) ;
 
             if($code != 0 ) {
                 $message = "DB Error : code %d ";
