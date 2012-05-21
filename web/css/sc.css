@@ -924,6 +924,12 @@
         overflow:hidden;
     }
 
+    .binary {
+        background:black;
+        color:white;
+        font-weight:bold;
+    }
+
 
     /* last section - override bootstrap css */
     .hero-unit {

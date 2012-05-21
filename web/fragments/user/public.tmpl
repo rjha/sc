@@ -1,21 +1,14 @@
-    <h3>~~$view->name~</h3>
+    <h3>~~$view->data['name']~</h3>
     <div class="widget">
-        <div class="photo"> <img src="~~$view->photoUrl~" alt ="~~$view->name~" /> </div>
+        <div class="photo"> <img src="~~$view->data['photo_url']~" alt ="~~$view->data['name']~" /> </div>
     </div>
     <div class="well"> 
-        ~~$view->aboutMe~ 
-        ~if($view->defaultMe) {~
-            some default text some default text some default text
-            some default text some default text some default text
-            some default text some default text some default text
-
-        ~}~
+            ~~$view->data['about_me']~ 
     </div>
     <ul class="unstyled">
-    ~foreach($view->items as $key => $value){
-        if(!empty($value)) {
-    ~
-        <li> <b>~~$key~</b> </li>
-        <li> ~~$value~ </li>
-    ~}}~
+    ~foreach($view->columns as $key){ ~
+        <li> ~~$view->labels[$key]~ </li>
+        <li> ~~$view->data[$key]~ </li>
+    ~}~
+    
     </ul>

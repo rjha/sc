@@ -1140,7 +1140,6 @@ DELIMITER ;
 
 
 --
--- @next push
 -- 20 May 2012
 -- 
 
@@ -1158,3 +1157,35 @@ DELIMITER ;
 
  -- add age column
  alter table sc_denorm_user  add column age int;
+
+
+-- 
+-- 22 may 2012
+-- @next push
+-- 
+
+
+DROP TRIGGER IF Exists trg_mik_user_name ;
+
+DELIMITER //
+ CREATE TRIGGER trg_mik_user_name AFTER UPDATE ON sc_denorm_user
+    FOR EACH ROW
+    BEGIN
+        -- 
+        -- nickname takes precedence over name
+        --
+        IF (NEW.nick_name is NULL || NEW.nick_name = "" ) THEN 
+            update sc_login set name = NEW.name where id = NEW.login_id ;
+        ELSE
+            update sc_login set name = NEW.nick_name where id = NEW.login_id ;
+        END IF;
+
+    END //
+DELIMITER ;
+
+
+
+
+
+
+

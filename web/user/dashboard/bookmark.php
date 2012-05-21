@@ -31,6 +31,7 @@
     
     $tileOptions = ~UIConstants::TILE_ALL ;
     $pageTitle = "your %s on 3mik" ;
+    $activeTab = NULL ;
     
     // LIKE - 1 
     // SAVE - 2 
@@ -38,10 +39,12 @@
         case 1: 
             $tileOptions = UIConstants::TILE_SAVE ;
             $pageTitle = sprintf($pageTitle, " likes") ; 
+            $activeTab = 'likes' ;
             break;
         case 2:
             $tileOptions = UIConstants::TILE_REMOVE ;
             $pageTitle = sprintf($pageTitle," favorites") ; 
+            $activeTab = 'saves' ;
             break;
         default:
             break ;
@@ -106,11 +109,13 @@
 			<div class="row">
 				<div class="span12">
 					<?php include($_SERVER['APP_WEB_DIR'] . '/inc/banner.inc'); ?>
-                    <div class="page-header">
-                        <h2> <?php echo $pageTitle; ?> </h2>
-					</div>
 				</div>
 			</div>
+            <div class="row">
+                <div class="span12">
+                     <?php include('inc/menu.inc'); ?>
+                </div>
+            </div>
 			
 			
 			<div class="row">
@@ -137,9 +142,7 @@
                     <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
 
 				</div> 
-                <div class="span3">
-                     <?php include('inc/menu.inc'); ?>
-                </div>
+                <div class="span3"> </div>
 			</div>
 			
 		</div>  <!-- container -->

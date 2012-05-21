@@ -90,13 +90,14 @@
                 <?php include($_SERVER['APP_WEB_DIR'] . '/inc/banner.inc'); ?>
                 </div>
             </div>
+            <div class="row">
+                <div class="span12">
+                     <?php $activeTab = 'posts' ; include('inc/menu.inc'); ?>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="span9">
-                    <div class="page-header"> 
-                        <h2> Posts </h2> 
-                    </div>
-                    
                         <?php
                             $startId = NULL;
                             $endId = NULL;
@@ -112,7 +113,6 @@
                    
                 </div>
                 <div class="span3">
-                     <?php include('inc/menu.inc'); ?>
                 </div>
             </div>
         </div> <!-- container -->

@@ -49,7 +49,9 @@
                     <?php echo \com\indigloo\sc\html\User::getPublicInfo($userDBRow); ?>
                 </div> <!-- span3 -->
                 <div class="span9">
-
+                <div class="p20">
+                    <h3> <?php echo $total; ?> Posts </h3>
+                </div>
 					<div id="tiles">
 						<?php
                             $startId = NULL;

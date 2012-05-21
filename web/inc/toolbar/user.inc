@@ -25,7 +25,7 @@ if(\com\indigloo\sc\auth\Login::isAdmin()) {
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $gSessionLogin->name; ?><b class="caret"></b> </a>
 							<ul class="dropdown-menu">
-								<li><a href="/user/dashboard/posts.php">My Account</a></li>
+								<li><a href="/user/dashboard/profile.php">My Account</a></li>
                                 <?php echo $monitorUrl; ?>
 								<li class="divider"></li>
 								<li><a href="/user/logout.php">Logout</a></li>

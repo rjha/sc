@@ -62,18 +62,17 @@
                 <?php include($_SERVER['APP_WEB_DIR'] . '/inc/banner.inc'); ?>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="span9">
-                    <div class="page-header"> <h2> <?php echo $userDBRow['name']; ?> </h2> </div>
+             <div class="row">
+                <div class="span12">
+                     <?php $activeTab = 'profile' ; include('inc/menu.inc'); ?>
                 </div>
             </div>
+
             <div class="row">
                 <div class=span9">
                 <?php echo \com\indigloo\sc\html\User::getProfile($gSessionLogin,$userDBRow) ; ?>
                 </div>
                 <div class="span3">
-                     <?php include('inc/menu.inc'); ?>
                 </div>
             </div> <!-- row -->
         </div> <!-- container -->
