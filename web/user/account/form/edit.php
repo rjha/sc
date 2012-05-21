@@ -43,7 +43,8 @@
                 $fvalues['blog'],
                 $fvalues['location'],
                 $fvalues['age'],
-                $fvalues['photo_url']) ;
+                $fvalues['photo_url'],
+                $fvalues['about_me']) ;
 
             if($code != 0 ) {
                 $message = "DB Error : code %d ";

@@ -40,19 +40,19 @@ namespace com\indigloo\sc\mysql {
 		}
 
 		static function update($loginId,$firstName,$lastName,$nickName,$email,
-                                $website,$blog,$location,$age,$photoUrl ) {
+                                $website,$blog,$location,$age,$photoUrl,$aboutMe) {
 			$code = MySQL\Connection::ACK_OK;
 
             $userName = $firstName. ' '.$lastName;
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " update sc_denorm_user set first_name= ?, last_name= ?, name= ?, nick_name= ?, " ;
-            $sql .= " email= ?,website = ? , blog = ?, location = ?,age=?, photo_url=? where login_id= ? " ;
+            $sql = " update sc_denorm_user set first_name= ?, last_name= ?, name= ?, nick_name= ?, email = ? ," ;
+            $sql .= " website = ? , blog = ?, location = ?,age=?, photo_url=?, about_me = ? where login_id= ? " ;
 			
 			$stmt = $mysqli->prepare($sql);
         
 			if($stmt) {
-				$stmt->bind_param("ssssssssisi",$firstName,$lastName,$userName,$nickName,$email,
-                                $website,$blog,$location,$age,$photoUrl,$loginId);
+				$stmt->bind_param("ssssssssissi",$firstName,$lastName,$userName,$nickName,$email,
+                                $website,$blog,$location,$age,$photoUrl,$aboutMe,$loginId);
 				$stmt->execute();
 				$stmt->close();
 				

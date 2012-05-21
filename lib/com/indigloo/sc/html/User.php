@@ -39,9 +39,10 @@ namespace com\indigloo\sc\html {
             $view->blog = $userDBRow['blog'];
             $view->location = $userDBRow['location'];
             $view->nickName = $userDBRow['nick_name'];
+            $view->age = $userDBRow['age'];
+            $view->aboutMe = $userDBRow['about_me'];
             //@todo
-            //$view->age = $userDBRow['age'];
-            $view->gender = $userDBRow['gender'];
+            //$view->gender = $userDBRow['gender'];
 
 
             $params = array('q' => urlencode(Url::current()));

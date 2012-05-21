@@ -27,10 +27,10 @@ namespace com\indigloo\sc\dao {
 		}
 		
         function update($loginId,$firstName,$lastName,$nickName,$email,
-                                $website,$blog,$location,$age,$photoUrl) {
+                                $website,$blog,$location,$age,$photoUrl,$aboutMe) {
 
             $code = mysql\User::update($loginId,$firstName,$lastName,$nickName,$email,
-                                $website,$blog,$location,$age,$photoUrl);
+                                $website,$blog,$location,$age,$photoUrl,$aboutMe);
 
             return $code ;
         }

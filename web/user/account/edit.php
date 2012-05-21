@@ -25,6 +25,12 @@
     $userDao = new \com\indigloo\sc\dao\User() ;
 	$userDBRow = $userDao->getonLoginId($loginId);
 
+    $emailExtra = ' readonly="readonly" ' ;
+    if(strcmp($usrDBRow['provider'],Login::TWITTER) == 0 ) {
+        //allow editing
+        $emailExtra = '' ;
+    }
+
 ?>  
 
 <!DOCTYPE html>
@@ -49,6 +55,7 @@
         <script type="text/javascript">
             $(document).ready(function(){
                 $("#web-form1").validate({errorLabelContainer: $("#web-form1 div.error")});
+                webgloo.sc.util.addTextCounter("#about_me", "#about_me_counter");
                 //xeyes
 				$('.iris').xeyes({
 					padding: '12px',
@@ -150,7 +157,7 @@
 								  <tr>
 									<td class="field">Email<span class="red-label">*</span></td>
 									<td>
-										<input type="text" name="email" maxlength="64" value="<?php echo $sticky->get('email',$userDBRow['email']); ?>"/>
+                                    <input type="text" name="email" maxlength="64" value="<?php echo $sticky->get('email',$userDBRow['email']); ?>" <?php echo $emailExtra; ?> />
 									</td>
 								 </tr>
 								  <tr>
@@ -177,7 +184,19 @@
 										<input type="text" name="age" maxlength="2" value="<?php echo $sticky->get('age',$userDBRow['age']); ?>"/>
 									</td>
 								 </tr>
-								
+                                  <tr>
+                                      <td class="field">&nbsp;</td>
+                                      <td class="field">About me (512 characters)</td>
+								 </tr>
+
+                                 <tr>
+								  <td class="field">&nbsp;</td>
+                                   <td>
+									<textarea  id="about_me" maxlength="512" name="about_me" class="h130" cols="2" rows="4" ><?php echo $sticky->get('about_me',$userDBRow['about_me']); ?></textarea>
+                                    <br>
+                                   <span id="about_me_counter"></span> 
+								  </td>
+                                </tr>	
 							</table>
 
 							<div class="form-actions">
