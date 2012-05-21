@@ -48,9 +48,7 @@
 		<script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
 		 
 		<script type="text/javascript" src="/3p/ful/valums/fileuploader.js" ></script>
-
 		<script type="text/javascript" src="/js/sc.js"></script>
-		
 	  
         <script type="text/javascript">
        
@@ -68,6 +66,7 @@
 					element: document.getElementById('image-uploader'),
 					action: '/upload/image.php',
 					debug: false,
+                    labelOfButton : 'Add Images',
 					onComplete: function(id, fileName, responseJSON) {
 						 webgloo.media.addImage(responseJSON.mediaVO);
 					}

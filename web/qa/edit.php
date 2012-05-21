@@ -90,6 +90,7 @@
 					element: document.getElementById('image-uploader'),
 					action: '/upload/image.php',
 					debug: false,
+                    labelOfButton : 'Add Images',
 					onComplete: function(id, fileName, responseJSON) {
 						 webgloo.media.addImage(responseJSON.mediaVO);
 					}
