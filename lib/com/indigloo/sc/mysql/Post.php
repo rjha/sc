@@ -332,8 +332,8 @@ namespace com\indigloo\sc\mysql {
             settype($value,"integer");
 
             //operation needs admin privileges
-            $userRow = \com\indigloo\sc\mysql\User::getOnLoginId($loginId);
-            if($userRow['is_admin'] != 1 ){
+            $mikUserRow = \com\indigloo\sc\mysql\MikUser::getOnLoginId($loginId);
+            if($mikUserRow['is_admin'] != 1 ){
                 trigger_error("User does not have admin rights", E_USER_ERROR);
             }
 

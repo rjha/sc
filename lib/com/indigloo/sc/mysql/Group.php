@@ -145,8 +145,9 @@ namespace com\indigloo\sc\mysql {
 			$slug = $mysqli->real_escape_string($slug);
 
             //operation needs admin privileges
-            $userRow = \com\indigloo\sc\mysql\User::getOnLoginId($loginId);
-            if($userRow['is_admin'] != 1 ){
+            //read privileges from sc_user table
+            $mikUserRow = \com\indigloo\sc\mysql\MikUser::getOnLoginId($loginId);
+            if($mikUserRow['is_admin'] != 1 ){
                 trigger_error("User does not have admin rights", E_USER_ERROR);
             }
 
