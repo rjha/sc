@@ -26,7 +26,7 @@
     }
     
     $commentDao = new \com\indigloo\sc\dao\Comment() ;
-		
+        
     //Add login_id filter
     $model = new \com\indigloo\sc\model\Comment();
     $filters = array(); 
@@ -34,10 +34,10 @@
     $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
     array_push($filters,$filter);
 
-	$total = $commentDao->getTotalCount($filters);
-	$pageSize =	Config::getInstance()->get_value("user.page.items");
-	$paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);	
-	$commentDBRows = $commentDao->getPaged($paginator,$filters);
+    $total = $commentDao->getTotalCount($filters);
+    $pageSize = Config::getInstance()->get_value("user.page.items");
+    $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);    
+    $commentDBRows = $commentDao->getPaged($paginator,$filters);
     
 ?>
 
@@ -101,7 +101,7 @@
                             if(sizeof($commentDBRows) > 0 ) { 
                                 $startId = $commentDBRows[0]['id'] ;
                                 $endId =   $commentDBRows[sizeof($commentDBRows)-1]['id'] ;
-                            }	
+                            }   
 
                             foreach($commentDBRows as $commentDBRow){
                                 echo \com\indigloo\sc\html\Comment::getWidget($commentDBRow);

@@ -40,10 +40,10 @@
                 z-index:1;
             }
 
-			#mini_inner a {
-				text-decoration : none ;
+            #mini_inner a {
+                text-decoration : none ;
 
-			}
+            }
            
             .error{
                 display :block ;
@@ -59,11 +59,11 @@
             <img src="/css/images/alert.png" alt="alert" class="alert">
             <h1> Error! We Apologize.</h1>
             <p>This page has encountered an error </p>
-			<div class="error"> <?php echo $error ; ?> </div>
-			<br>
-			<p> To know more you can examine the logs or contact your administrator. </p>
-			<br>
-			Go back to  <a href="/"> Home page</a>
+            <div class="error"> <?php echo $error ; ?> </div>
+            <br>
+            <p> To know more you can examine the logs or contact your administrator. </p>
+            <br>
+            Go back to  <a href="/"> Home page</a>
         </div>
 
 

@@ -1,8 +1,8 @@
 
 <div class="widget">
-	<div class="row">
-		<div class="span7">
-		   <p> ~~$view->comment~
+    <div class="row">
+        <div class="span7">
+           <p> ~~$view->comment~
             <b>in reply to </b> <a href="/item/~~$view->itemId~">~~$view->title~</a>
             ~if($view->showUser){~
                 &nbsp;<b>posted by</b> <a href="/pub/user/~~$view->pubUserId~">~~$view->userName~</a>
@@ -15,16 +15,16 @@
                     <a href="~~$view->deleteUrl~"><i class="icon-remove"></i>&nbsp;Delete</a>
                 </div>
             </div>
-		</div> <!-- span7 -->
+        </div> <!-- span7 -->
 
-		<div class="span2">
-			<div class="author">
-				<div class="meta">
-					<span class="b">~~$view->createdOn ~</span>
-				</div>	
-			</div>
-			
-		</div> <!-- span2 -->
-	</div> <!-- row -->
+        <div class="span2">
+            <div class="author">
+                <div class="meta">
+                    <span class="b">~~$view->createdOn ~</span>
+                </div>  
+            </div>
+            
+        </div> <!-- span2 -->
+    </div> <!-- row -->
 </div>
 

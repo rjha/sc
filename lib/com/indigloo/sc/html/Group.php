@@ -8,9 +8,9 @@ namespace com\indigloo\sc\html {
     
     class Group {
 
-		static function getCloud($groups) {
-		    $html = NULL ;
-			$view = new \stdClass;
+        static function getCloud($groups) {
+            $html = NULL ;
+            $view = new \stdClass;
             $view->groups = $groups ;
 
             printf("<div class=\"cloud\">");
@@ -29,18 +29,18 @@ namespace com\indigloo\sc\html {
 
             printf("</div>");
 
-		}
+        }
 
         static function getCard($groups,$card) {
-		    $html = NULL ;
-			$view = new \stdClass;
+            $html = NULL ;
+            $view = new \stdClass;
             $view->groups = $groups ;
             $view->card = $card;
             $template = '/fragments/group/card.tmpl' ;
             $html = Template::render($template,$view);
             return $html;
 
-		}
+        }
 
     } 
 }

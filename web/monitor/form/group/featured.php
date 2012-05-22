@@ -4,18 +4,18 @@
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/admin.inc');
-	
+    
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
-   	 
+     
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
         
         $fhandler = new Form\Handler('web-form-1', $_POST);
-		
+        
         $fvalues = $fhandler->getValues();
-		$qUrl = $fvalues['q'];
+        $qUrl = $fvalues['q'];
         $gWeb = \com\indigloo\core\Web::getInstance();
         
         if ($fhandler->hasErrors()) {
@@ -23,7 +23,7 @@
             $gWeb->store(Constants::FORM_ERRORS,$fhandler->getErrors());
             header("Location: " . $qUrl);
             exit(1);
-			
+            
         } else {
             
             $group_slug = '' ;

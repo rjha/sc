@@ -13,7 +13,7 @@ namespace com\indigloo\sc\mysql {
 
 
         static function getIdNameMap(){
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "select ui_order as id, display as name from sc_list where name = 'CATEGORY' order by ui_order" ;
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
@@ -21,7 +21,7 @@ namespace com\indigloo\sc\mysql {
         }
 
         static function getCodeOnId($categoryId) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($categoryId,"integer");
 
             $sql = "select code from sc_list where name = 'CATEGORY' and ui_order = ".$categoryId ;
@@ -31,8 +31,8 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-		static function getName($code) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+        static function getName($code) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             $code = $mysqli->real_escape_string($code);
 
             $sql = "select display as name from sc_list where name = 'CATEGORY' and code ='".$code. "' " ;
@@ -41,23 +41,23 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-		static function getLatest($code,$limit) {
-			
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+        static function getLatest($code,$limit) {
+            
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             $code = $mysqli->real_escape_string($code);
             settype($limit,"integer");
 
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
             $sql .= " where l.id=q.login_id  and q.cat_code = '%s' order by q.id desc LIMIT %d ";
             $sql = sprintf($sql,$code,$limit);
-			
+            
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
-			
-		}
+            
+        }
 
-		static function getTotalCount($code) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+        static function getTotalCount($code) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             $code = $mysqli->real_escape_string($code);
 
             $sql = " select count(id) as count from sc_post where cat_code = '%s' " ;
@@ -66,10 +66,10 @@ namespace com\indigloo\sc\mysql {
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 
-		}
+        }
 
-		static function getPaged($start,$direction,$limit,$code) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+        static function getPaged($start,$direction,$limit,$code) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input 
             $code = $mysqli->real_escape_string($code);
@@ -78,7 +78,7 @@ namespace com\indigloo\sc\mysql {
             settype($limit,"integer");
             
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l ";
-			$codeCondition = sprintf("cat_code = '%s'",$code);
+            $codeCondition = sprintf("cat_code = '%s'",$code);
 
             $q = new MySQL\Query($mysqli);
             $q->addCondition("l.id = q.login_id");
@@ -100,10 +100,10 @@ namespace com\indigloo\sc\mysql {
                 return $results ;
             }
             
-            return $rows;	
+            return $rows;   
 
-		}
+        }
 
-	}
+    }
 }
 ?>

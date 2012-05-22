@@ -14,8 +14,8 @@ namespace com\indigloo\sc\mysql {
         
         const MODULE_NAME = 'com\indigloo\sc\mysql\Group';
 
-		static function getLatest($limit,$filters) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+        static function getLatest($limit,$filters) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
 
             $sql = "select g.* from sc_group_master g " ;
@@ -29,9 +29,9 @@ namespace com\indigloo\sc\mysql {
             $sql .= " order by g.id desc LIMIT %d " ; 
             $sql = sprintf($sql,$limit);
 
-			$rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
-		}
+        }
 
         static function getPaged($start,$direction,$limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -55,7 +55,7 @@ namespace com\indigloo\sc\mysql {
                 return $results ;
             }
             
-            return $rows;	
+            return $rows;   
 
         }
 
@@ -75,7 +75,7 @@ namespace com\indigloo\sc\mysql {
         }
        
         static function getRandom($limit) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
 
             $sql = " SELECT g.*  FROM sc_group_master g where " ;
@@ -86,10 +86,10 @@ namespace com\indigloo\sc\mysql {
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
-		}
+        }
 
         static function getUserGroups($limit,$filters) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($loginId,"integer");
             $sql = "select ug.* from sc_user_group ug" ;
 
@@ -124,12 +124,12 @@ namespace com\indigloo\sc\mysql {
                 return $results ;
             }
             
-            return $rows;	
+            return $rows;   
 
         }
 
         static function getCountOnLoginId($loginId) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($loginId,"integer");
 
             $sql = "select count(id) as count from sc_user_group ug where ug.login_id = %d " ;
@@ -140,9 +140,9 @@ namespace com\indigloo\sc\mysql {
         }
 
         static function setFeatureSlug($loginId,$slug) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($loginId,"integer");
-			$slug = $mysqli->real_escape_string($slug);
+            $slug = $mysqli->real_escape_string($slug);
 
             //operation needs admin privileges
             //read privileges from sc_user table
@@ -160,11 +160,11 @@ namespace com\indigloo\sc\mysql {
         }
 
         static function getFeatureSlug() {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "select slug from sc_feature_group where id = 1 " ; 
-			$row = MySQL\Helper::fetchRow($mysqli, $sql);
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
-		}
+        }
 
         static function process($postId,$loginId,$version,$catCode,$group_slug) {
 
@@ -207,6 +207,6 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-	}
+    }
 }
 ?>

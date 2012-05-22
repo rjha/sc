@@ -3,7 +3,7 @@
     //sc/user/account/reset-password.php
     include ('sc-app.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
-	
+    
     use com\indigloo\Util as Util;
     use com\indigloo\Url as Url;
     use com\indigloo\Constants as Constants;

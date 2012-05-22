@@ -32,9 +32,9 @@ namespace com\indigloo\sc\dao {
         }
 
         function getPostsOnId($siteId,$limit) {
-			$rows = mysql\Site::getPostsOnId($siteId,$limit);
-			return $rows ;
-		}
+            $rows = mysql\Site::getPostsOnId($siteId,$limit);
+            return $rows ;
+        }
 
         function getOnHash($hash) {
             $row = mysql\Site::getOnHash($hash);
@@ -45,17 +45,17 @@ namespace com\indigloo\sc\dao {
             $hash = trim($hash);
             $siteId = NULL ;
 
-			$row = $this->getOnHash($hash); 
+            $row = $this->getOnHash($hash); 
 
-			if(empty($row)){
-				//create site 
+            if(empty($row)){
+                //create site 
                 $siteId = mysql\Site::create($hash,$host,$canonicalUrl);
-			} else {
-				//found
-				$siteId = $row['id'];
-			}
+            } else {
+                //found
+                $siteId = $row['id'];
+            }
 
-			return $siteId ;
+            return $siteId ;
 
         }
 

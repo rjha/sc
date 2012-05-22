@@ -1,0 +1,6 @@
+bum - Bootup Manager - Graphical  - To improve startup time 
+rcconf - tool to set init.d daemons start/stop on boot
+#git graphical interfaces
+$gitg
+$gitk
+

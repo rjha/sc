@@ -4,10 +4,10 @@
   <div class="carousel-inner">
             <?php
                 $strItem = '<div class="item {active}"> <img src="{srcImage}"></div>';
-				$count = 0 ;
-				
+                $count = 0 ;
+                
                 foreach($images as $image) {
-					$active = ($count == 0) ? 'active' : '' ;
+                    $active = ($count == 0) ? 'active' : '' ;
                     $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? "http://" : "/" ;
                     $srcImage = $prefix.$image->bucket."/".$image->storeName ;
 
@@ -16,7 +16,7 @@
                                         array(0 => $srcImage, 1=> $active),
                                         $strItem);
                     echo $item;
-					$count++ ;
+                    $count++ ;
                     
                 }
             
@@ -24,9 +24,9 @@
   </div>
 
   <?php if($count >1 ) { ?>
-	  <!-- Carousel nav -->
-	  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-	  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+      <!-- Carousel nav -->
+      <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+      <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
   <?php } ?>
 
 </div> <!-- carousel -->
@@ -41,7 +41,7 @@
             <div class="fb-like" data-href="<?php echo $pageUrl;?>" data-send="true" data-layout="button_count" data-width="220" data-show-faces="false"></div>
         </div>
         <div class="span1">
-					<a href="https://twitter.com/share" class="twitter-share-button" data-via="3mikindia" data-count="none">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-via="3mikindia" data-count="none">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
         </div>
 
         </div>

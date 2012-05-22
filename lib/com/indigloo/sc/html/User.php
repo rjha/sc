@@ -17,22 +17,22 @@ namespace com\indigloo\sc\html {
          * 
          */
         static function getProfile($gSessionLogin,$userDBRow) {
-			if(is_null($gSessionLogin)) {
-				return '' ;
-			}
+            if(is_null($gSessionLogin)) {
+                return '' ;
+            }
 
-			if(!is_null($gSessionLogin) && ($gSessionLogin->id != $userDBRow['login_id'] )) {
-				return '' ;
+            if(!is_null($gSessionLogin) && ($gSessionLogin->id != $userDBRow['login_id'] )) {
+                return '' ;
 
-			}
+            }
 
             $html = NULL ;
-			$view = new \stdClass;
-			$template = '/fragments/user/profile/private.tmpl' ;
-			
-			$view->name = $userDBRow['name'];
-			$view->createdOn = Util::formatDBTime($userDBRow['created_on']);
-			$view->email = $userDBRow['email'];
+            $view = new \stdClass;
+            $template = '/fragments/user/profile/private.tmpl' ;
+            
+            $view->name = $userDBRow['name'];
+            $view->createdOn = Util::formatDBTime($userDBRow['created_on']);
+            $view->email = $userDBRow['email'];
             $view->aboutMe = $userDBRow['about_me'];
             $view->photoUrl = $userDBRow['photo_url'];
             if(empty($view->photoUrl)) {
@@ -56,24 +56,24 @@ namespace com\indigloo\sc\html {
             $params = array('q' => urlencode(Url::current()));
             $view->passwordUrl = Url::createUrl("/user/account/change-password.php",$params); 
             $view->editUrl = Url::createUrl("/user/account/edit.php",$params); 
-			
-			$html = Template::render($template,$view);
+            
+            $html = Template::render($template,$view);
             return $html ;
 
         }
 
         static function getPhoto($name,$photoUrl) {
             $html = NULL ;
-			$template = '/fragments/user/profile/photo.tmpl' ;
+            $template = '/fragments/user/profile/photo.tmpl' ;
 
-			$view = new \stdClass;
+            $view = new \stdClass;
             $view->name = $name;
             $view->photoUrl = $photoUrl;
             if(empty($view->photoUrl)) {
                 $view->photoUrl = '/css/images/twitter-icon.png' ;
             }
 
-			$html = Template::render($template,$view);
+            $html = Template::render($template,$view);
             return $html ;
 
         }
@@ -81,8 +81,8 @@ namespace com\indigloo\sc\html {
         static function getPublicInfo($userDBRow) {
 
             $html = NULL ;
-			$view = new \stdClass;
-			$template = '/fragments/user/public.tmpl' ;
+            $view = new \stdClass;
+            $template = '/fragments/user/public.tmpl' ;
 
             $data = array();
 
@@ -106,11 +106,11 @@ namespace com\indigloo\sc\html {
                         $data[$key] = $value ;
                 }     
             }
-			
+            
 
-			$data['name'] = (empty($userDBRow['nick_name'])) ? $userDBRow['name'] : $userDBRow['nick_name'] ;
-			$data['about_me'] = $userDBRow['about_me'];
-			$data['photo_url'] = $userDBRow['photo_url'];
+            $data['name'] = (empty($userDBRow['nick_name'])) ? $userDBRow['name'] : $userDBRow['nick_name'] ;
+            $data['about_me'] = $userDBRow['about_me'];
+            $data['photo_url'] = $userDBRow['photo_url'];
 
             if(empty($data['photo_url'])) {
                 $data['photo_url'] = '/css/images/twitter-icon.png' ;
@@ -123,25 +123,25 @@ namespace com\indigloo\sc\html {
                 
             }
 
-			$view->createdOn = Util::formatDBTime($userDBRow['created_on']);
+            $view->createdOn = Util::formatDBTime($userDBRow['created_on']);
             $view->columns = $columns;
             $view->data = $data;
             $view->labels = $labels ;
 
-			$html = Template::render($template,$view);
+            $html = Template::render($template,$view);
             return $html ;
 
         }
 
-       	static function getTable($rows) {
-		    $html = NULL ;
-			$template = '/fragments/user/table.tmpl' ;
-			$view = new \stdClass;
+        static function getTable($rows) {
+            $html = NULL ;
+            $template = '/fragments/user/table.tmpl' ;
+            $view = new \stdClass;
             $view->rows = $rows ;
-			$html = Template::render($template,$view);
+            $html = Template::render($template,$view);
             return $html ;
-		}
-		
+        }
+        
     }
     
 }

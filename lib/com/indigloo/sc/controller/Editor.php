@@ -2,13 +2,13 @@
 namespace com\indigloo\sc\controller{
 
 
-	use \com\indigloo\Util as Util;
+    use \com\indigloo\Util as Util;
     use \com\indigloo\Url;
-	use \com\indigloo\Configuration as Config ;
-	use \com\indigloo\Constants as Constants;
+    use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\Constants as Constants;
     use \com\indigloo\sc\html\Seo as SeoData ;
     use \com\indigloo\ui\Filter as Filter;
-	
+    
     class Editor {
         
         function process($params,$options) {
@@ -23,8 +23,8 @@ namespace com\indigloo\sc\controller{
             $postDBRows = $postDao->getPosts(50,$filters);
 
             $pageHeader = 'Editor\'s Pick';
-			$pageTitle = SeoData::getHomePageTitle(); 
-			$metaDescription = SeoData::getHomeMetaDescription();
+            $pageTitle = SeoData::getHomePageTitle(); 
+            $metaDescription = SeoData::getHomeMetaDescription();
             $metaKeywords = SeoData::getHomeMetaKeywords();
 
             $view = $_SERVER['APP_WEB_DIR']. '/view/tiles.php' ;

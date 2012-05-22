@@ -4,7 +4,7 @@
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
-	
+    
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
@@ -15,7 +15,7 @@
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\exception\UIException as UIException;
     use com\indigloo\exception\DBException as DBException;
-	
+    
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
         try{
             $fhandler = new Form\Handler('web-form-1', $_POST);
@@ -42,10 +42,10 @@
             $group_slug = $groupDao->nameToSlug($group_names);
  
             $postDao = new com\indigloo\sc\dao\Post();
-			$title = Util::abbreviate($fvalues['description'],128);		
+            $title = Util::abbreviate($fvalues['description'],128);     
             $code = $postDao->update(
-								$fvalues['post_id'],
-								$title,
+                                $fvalues['post_id'],
+                                $title,
                                 $fvalues['description'],
                                 $_POST['links_json'],
                                 $_POST['images_json'],

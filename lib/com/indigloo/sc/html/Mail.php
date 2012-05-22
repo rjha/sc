@@ -10,7 +10,7 @@ namespace com\indigloo\sc\html {
 
         static function getResetPassword($name,$email,$token) {
 
-			$view = new \stdClass;
+            $view = new \stdClass;
             $view->name = $name;
             $url = Config::getInstance()->get_value("reset.password.url");
             $view->url = sprintf($url,urlencode($email),$token);

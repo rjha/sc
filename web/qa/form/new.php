@@ -4,7 +4,7 @@
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
-	
+    
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     
     use \com\indigloo\ui\form as Form;
@@ -15,7 +15,7 @@
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\exception\UIException as UIException;
     use com\indigloo\exception\DBException as DBException;
-   	 
+     
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
         try{
         
@@ -44,16 +44,16 @@
             $group_slug = $groupDao->nameToSlug($group_names);
 
             $postDao = new com\indigloo\sc\dao\Post();
-			$title = Util::abbreviate($fvalues['description'],128);		
+            $title = Util::abbreviate($fvalues['description'],128);     
 
             $itemId = $postDao->create($title,
                                 $fvalues['description'],
-								$gSessionLogin->id,
+                                $gSessionLogin->id,
                                 $_POST['links_json'],
                                 $_POST['images_json'],
                                 $group_slug,
                                 $fvalues['category']);
-		    
+            
             //success - always go to item details
             $location = "/item/".$itemId;
             header("Location: /qa/thanks.php?q=".$location );

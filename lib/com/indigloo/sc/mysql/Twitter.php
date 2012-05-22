@@ -14,18 +14,18 @@ namespace com\indigloo\sc\mysql {
         
         const MODULE_NAME = 'com\indigloo\sc\mysql\Twitter';
 
-		static function getOnTwitterId($twitterId) {
+        static function getOnTwitterId($twitterId) {
             //@todo column length checks
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$twitterId = $mysqli->real_escape_string($twitterId);
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $twitterId = $mysqli->real_escape_string($twitterId);
 
-			$sql = " select * from sc_twitter where twitter_id = '%s' " ;
+            $sql = " select * from sc_twitter where twitter_id = '%s' " ;
             $sql = sprintf($sql,$twitterId);
-			$row = MySQL\Helper::fetchRow($mysqli,$sql);
-			return $row ;
-		}
+            $row = MySQL\Helper::fetchRow($mysqli,$sql);
+            return $row ;
+        }
 
-		static function create($twitterId,$name,$screenName,$location,$image,$provider){
+        static function create($twitterId,$name,$screenName,$location,$image,$provider){
 
             try {
                 $sql1 = "insert into sc_login (provider,name,created_on) values(:provider,:name,now()) " ;
@@ -89,6 +89,6 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-	}
+    }
 }
 ?>

@@ -15,8 +15,8 @@
     $groupDao = new \com\indigloo\sc\dao\Group();
     $total = $groupDao->getTotalCount($filters);
 
-    $pageSize =	100;
-    $paginator = new Pagination($qparams,$total,$pageSize);	
+    $pageSize = 100;
+    $paginator = new Pagination($qparams,$total,$pageSize); 
     $groups = $groupDao->getPaged($paginator,$filters);
 
     $startId = NULL ;

@@ -16,7 +16,7 @@
     
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
 
-	    try{	
+        try{    
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('password', 'Password', array('required' => 1 , 'maxlength' => 32));
 
@@ -54,7 +54,7 @@
             $email = strtolower(trim($email));
             $password = trim($_POST['password']);
             $code = WebglooUser::changePassword('sc_user',$userDBRow['login_id'],$email,$password) ;
-			
+            
             if($code != \com\indigloo\mysql\Connection::ACK_OK ) {
                 $message = sprintf("DB Error : code %d \n",$code);
                 throw new DBException($message,1);

@@ -6,18 +6,18 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\sc\mysql as mysql;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\util\StringUtil as StringUtil ;
-	
+    
     class Group {
 
-		function getLatest($limit,$filters=array()) {
-			$rows = mysql\Group::getLatest($limit,$filters);
-			return $rows ;
-		}
+        function getLatest($limit,$filters=array()) {
+            $rows = mysql\Group::getLatest($limit,$filters);
+            return $rows ;
+        }
 
         function getRandom($limit) {
-			$rows = mysql\Group::getRandom($limit);
-			return $rows ;
-		}
+            $rows = mysql\Group::getRandom($limit);
+            return $rows ;
+        }
 
         function getTotalCount($filters=array()){
             $row = mysql\Group::getTotalCount($filters);
@@ -25,39 +25,39 @@ namespace com\indigloo\sc\dao {
         }
 
         function getPaged($paginator,$filters=array()) {
-			$limit = $paginator->getPageSize();
+            $limit = $paginator->getPageSize();
 
-			if($paginator->isHome()){
-				return $this->getLatest($limit,$filters);
-			} else {
+            if($paginator->isHome()){
+                return $this->getLatest($limit,$filters);
+            } else {
 
                 $params = $paginator->getDBParams();
-				$start = $params['start'];
-				$direction = $params['direction'];
-				$rows = mysql\Group::getPaged($start,$direction,$limit,$filters);
-				return $rows ;
-			}
+                $start = $params['start'];
+                $direction = $params['direction'];
+                $rows = mysql\Group::getPaged($start,$direction,$limit,$filters);
+                return $rows ;
+            }
 
         }
        
         function getUserGroups($limit,$filters=array()) {
             $rows = mysql\Group::getUserGroups($limit,$filters);
-			return $rows ;
+            return $rows ;
         }
 
         function getPagedUserGroups($paginator,$filters=array()) {
-			$limit = $paginator->getPageSize();
+            $limit = $paginator->getPageSize();
 
-			if($paginator->isHome()){
-				return $this->getUserGroups($limit,$filters);
-			} else {
+            if($paginator->isHome()){
+                return $this->getUserGroups($limit,$filters);
+            } else {
 
                 $params = $paginator->getDBParams();
-				$start = $params['start'];
-				$direction = $params['direction'];
-				$rows = mysql\Group::getPagedUserGroups($start,$direction,$limit,$filters);
+                $start = $params['start'];
+                $direction = $params['direction'];
+                $rows = mysql\Group::getPagedUserGroups($start,$direction,$limit,$filters);
                 return $rows ;
-			}
+            }
 
         }
 
@@ -170,7 +170,7 @@ namespace com\indigloo\sc\dao {
             mysql\Group::process($postId,$loginId,$version,$catCode,$group_slug);
 
         }
-		
+        
     }
 }
 ?>

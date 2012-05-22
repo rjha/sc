@@ -13,7 +13,7 @@ namespace com\indigloo\sc\facebook {
 
             $graphUrl = sprintf("http://graph.facebook.com/%s",$fbId);
             $response = @file_get_contents($graphUrl);
-          	$fbObject = json_decode($response);
+            $fbObject = json_decode($response);
 
             //FACEBOOK GRAPH API can return true | false (surprise!)
             // php json_decode can return TRUE | FALSE | NULL for invalid input
@@ -48,7 +48,7 @@ namespace com\indigloo\sc\facebook {
 
             $graphUrl = sprintf("https://graph.facebook.com/%s",$name);
             $response = @file_get_contents($graphUrl);
-          	$fbObject = json_decode($response);
+            $fbObject = json_decode($response);
 
             if($fbObject === FALSE || $fbObject ===  TRUE || $fbObject == NULL ) {
                 $message = sprintf("Graph URL %s returned TRUE|FALSE|NULL",$graphUrl) ;
@@ -74,7 +74,7 @@ namespace com\indigloo\sc\facebook {
         }
 
 
-	}
+    }
 }
 
 ?>

@@ -10,7 +10,7 @@ namespace com\indigloo\sc\dao {
     class Mail {
 
         function checkResetPassword($email,$token) {
-			$row = mysql\Mail::getResetPassword($email,$token);
+            $row = mysql\Mail::getResetPassword($email,$token);
             $count = $row['count'] ;
             if($count < 1 ) {
                 $message = "This token has expired. Please submit again.";
@@ -20,7 +20,7 @@ namespace com\indigloo\sc\dao {
 
         function addResetPassword($name,$email) {
             //do we have a request pending already?
-			$row = mysql\Mail::getResetPasswordInRange($email);
+            $row = mysql\Mail::getResetPasswordInRange($email);
             $count = $row['count'] ;
             if($count > 0 ) {
                 $message = "Your request is already pending. Please try after 20 minutes.";
@@ -37,7 +37,7 @@ namespace com\indigloo\sc\dao {
             //now send an email
             \com\indigloo\sc\Mail::sendResetPassword($name,$email,$token);
             //update flag in DB
-			mysql\Mail::flipResetPassword($email);
+            mysql\Mail::flipResetPassword($email);
 
         }
 
@@ -45,7 +45,7 @@ namespace com\indigloo\sc\dao {
             //now send an email
             \com\indigloo\sc\Mail::sendResetPassword($name,$email,$token);
             //update flag in DB
-			mysql\Mail::flipResetPassword($email);
+            mysql\Mail::flipResetPassword($email);
         }
         
     }

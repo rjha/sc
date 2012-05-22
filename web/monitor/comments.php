@@ -13,11 +13,11 @@
     $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     
     $commentDao = new \com\indigloo\sc\dao\Comment() ;
-	$total = $commentDao->getTotalCount();
+    $total = $commentDao->getTotalCount();
     
-	$pageSize =	Config::getInstance()->get_value("user.page.items");
-	$paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);	
-	$commentDBRows = $commentDao->getPaged($paginator);
+    $pageSize = Config::getInstance()->get_value("user.page.items");
+    $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);    
+    $commentDBRows = $commentDao->getPaged($paginator);
 ?>
 
 
@@ -81,7 +81,7 @@
                             if(sizeof($commentDBRows) > 0 ) { 
                                 $startId = $commentDBRows[0]['id'] ;
                                 $endId =   $commentDBRows[sizeof($commentDBRows)-1]['id'] ;
-                            }	
+                            }   
 
                             foreach($commentDBRows as $commentDBRow){
                                 echo \com\indigloo\sc\html\Comment::getWidget($commentDBRow,UIConstants::COMMENT_USER);

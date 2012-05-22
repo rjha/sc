@@ -8,7 +8,7 @@
     set_error_handler('webgloo_ajax_error_handler');
 
     //use login is required for bookmarking
-	if(!Login::hasSession()) {
+    if(!Login::hasSession()) {
         $message = array("code" => 401 , "message" => "Authentication failure: You need to login!");
         $html = json_encode($message); 
         echo $html;

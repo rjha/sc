@@ -13,41 +13,41 @@
          
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="/css/sc.css">
-		<script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-		<script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
+        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
+        <script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
 
         <script type="text/javascript" src="/js/sc.js"></script>
-	    
-		
-		<script type="text/javascript">
+        
+        
+        <script type="text/javascript">
             $(document).ready(function(){
                 webgloo.sc.home.addTiles();
                 webgloo.sc.home.addNavGroups();
            });
-		</script>
-		
+        </script>
+        
     </head>
 
      <body class="">
-		<div class="container mh800">
-			<div class="row">
-				<div class="span12">
-					<?php include($_SERVER['APP_WEB_DIR'] . '/inc/toolbar.inc'); ?>
-				</div> 
-				
-			</div>
-			
-			<div class="row">
-				<div class="span12">
-					<?php include($_SERVER['APP_WEB_DIR'] . '/inc/banner.inc'); ?>
-					<?php include($_SERVER['APP_WEB_DIR'] . '/inc/browser.inc'); ?>
-				</div>
-			</div>
-			
-			
-			<div class="row">
-				<div class="span4 offset1">
+        <div class="container mh800">
+            <div class="row">
+                <div class="span12">
+                    <?php include($_SERVER['APP_WEB_DIR'] . '/inc/toolbar.inc'); ?>
+                </div> 
+                
+            </div>
+            
+            <div class="row">
+                <div class="span12">
+                    <?php include($_SERVER['APP_WEB_DIR'] . '/inc/banner.inc'); ?>
+                    <?php include($_SERVER['APP_WEB_DIR'] . '/inc/browser.inc'); ?>
+                </div>
+            </div>
+            
+            
+            <div class="row">
+                <div class="span4 offset1">
                     <h1> 3mik is a sharing and discovery platform in India.</h1> 
                     <blockquote class="pull-right">
                         <p>
@@ -55,7 +55,7 @@
                         </p>
                     </blockquote>
                 </div>
-				<div class="span6 offset1 ">
+                <div class="span6 offset1 ">
                 <!-- collage -->
                     <div>
                         <div class="photo">
@@ -97,7 +97,7 @@
 
             </div>
                     
-		</div>  <!-- container -->
+        </div>  <!-- container -->
               
        
         <div id="ft">

@@ -24,8 +24,8 @@
     $total = $groupDao->getTotalCount($filters);
     
     $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-    $pageSize =	50;
-    $paginator = new Pagination($qparams,$total,$pageSize);	
+    $pageSize = 50;
+    $paginator = new Pagination($qparams,$total,$pageSize); 
     $groups = $groupDao->getPaged($paginator,$filters);
 
     $startId = NULL ;

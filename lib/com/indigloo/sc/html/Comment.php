@@ -11,41 +11,41 @@ namespace com\indigloo\sc\html {
     
     class Comment {
 
-		static function getSummary($commentDBRow) {
-		    $html = NULL ;
-			$view = new \stdClass;
-			$template = '/fragments/comment/summary.tmpl' ;
-			
-			$view->comment = $commentDBRow['description'];
-			$view->createdOn = Util::formatDBTime($commentDBRow['created_on']);
-			$view->userName = $commentDBRow['user_name'] ;
+        static function getSummary($commentDBRow) {
+            $html = NULL ;
+            $view = new \stdClass;
+            $template = '/fragments/comment/summary.tmpl' ;
+            
+            $view->comment = $commentDBRow['description'];
+            $view->createdOn = Util::formatDBTime($commentDBRow['created_on']);
+            $view->userName = $commentDBRow['user_name'] ;
             $view->loginId = $commentDBRow['login_id'];
             $view->pubUserId = PseudoId::encode($view->loginId);
-			
-			$html = Template::render($template,$view);
-			
+            
+            $html = Template::render($template,$view);
+            
             return $html ;
 
-		}
+        }
 
         static function getWidget($commentDBRow,$options=NULL) {
            
-		    $html = NULL ;
-			$view = new \stdClass;
-			$template = '/fragments/comment/text.tmpl' ;
-			
+            $html = NULL ;
+            $view = new \stdClass;
+            $template = '/fragments/comment/text.tmpl' ;
+            
             if(is_null($options)) {
                 $options = ~UIConstants::COMMENT_ALL ;
             }
-			
-			$view->id = $commentDBRow['id'];
+            
+            $view->id = $commentDBRow['id'];
 
-			$view->title = $commentDBRow['title'];
-			$view->postId = $commentDBRow['post_id'];
-			$view->itemId = PseudoId::encode($view->postId);
+            $view->title = $commentDBRow['title'];
+            $view->postId = $commentDBRow['post_id'];
+            $view->itemId = PseudoId::encode($view->postId);
 
-			$view->comment = $commentDBRow['description'];
-			$view->createdOn = Util::formatDBTime($commentDBRow['created_on']);
+            $view->comment = $commentDBRow['description'];
+            $view->createdOn = Util::formatDBTime($commentDBRow['created_on']);
             $view->showUser = false ;
 
             if($options & UIConstants::COMMENT_USER) {
@@ -55,12 +55,12 @@ namespace com\indigloo\sc\html {
                 $view->showUser = true ;
             }
 
-			$encodedId = PseudoId::encode($view->id);
+            $encodedId = PseudoId::encode($view->id);
             $params = array('id' => $encodedId, 'q' => urlencode(Url::current()));
             $view->editUrl = Url::createUrl('/qa/comment/edit.php',$params);
             $view->deleteUrl = Url::createUrl('/qa/comment/delete.php',$params);
 
-			$html = Template::render($template,$view);
+            $html = Template::render($template,$view);
             return $html ;
         }
         

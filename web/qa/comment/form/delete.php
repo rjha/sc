@@ -4,7 +4,7 @@
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
-	
+    
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
@@ -13,7 +13,7 @@
     use \com\indigloo\exception\UIException as UIException;
     use \com\indigloo\exception\DBException as DBException;
     use \com\indigloo\sc\util\PseudoId;
-	
+    
     if (isset($_POST['delete']) && ($_POST['delete'] == 'Delete')) {
 
         try{

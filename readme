@@ -1,3 +1,22 @@
+22 May 2012
+insert one screen in workflow after login -> Dashboard/3mik Home page choice
+placeholder image on site/go-static and automatic pages
+Nice feedback from ajax scripts
+
+
+
+
+21 may 2012
+- How does sc_denorm_user update impact other tables and fields ? e.g. sc_login and sc_user
+- can we allow users to change email? should we update email in sc_user ? I do not think so..
+- Better idea is to make email box editable when we do not have email data readonly vs. writable box.
+- about me is missing.... 
+- URL/Blog :- add HTTP automatically!
+- default image instead of xeyes!
+- User policies - account merge? email change? user name change? Nick name policies?
+- Google/Yahoo
+
+
 15 May 2012
 
  
@@ -28,28 +47,24 @@
 
 @todo
 =========
-fix bug in random groups :- include Navigation
-Need to fix the profile page : Ask for more data
-All UNIQ KEy errors: check in UI via Ajax before hitting DB
-
+All UNIQ Key errors: check in UI via Ajax before hitting DB
 Add caching headers to old S3 images
+SQL injection : look @ all queries again please!
+Login with google + yahoo as well
+Favorite - clicking on remove :- reload/refresh the page
+
 Fix user dashboard
  - following/followers
- - 
+ - Need to fix the profile page : Ask for more data
+ - Help content on user dahsboard pages
+ - Add denorm_user 
+
++ Monitor App
+
+monitor - Post widget actions - feature/unfeature
 Supercow button on item details page
-SQL injection : look @ all queries again please!
-All ajax scripts should be protected by login
-Login in with google + yahoo as well
 Separate user and monitor widgets
 Pagination on monitor app/user dashboard
-Help content on user dahsboard pages
-Followers/Following page
-monitor - Post widget actions - feature/unfeature
-make sure that all pUrl and qUrl are not processed by our form hander - we need raw urls
-Fix navigation for cancel button everywhere.
-Form protection by inserting unique tokens  - PRG or DejaVu' pattern to avoid form resubmission
-
-
 
 @later
 =========
@@ -100,6 +115,14 @@ Better log errors when site URL are bad like: UNKNOWN_URL_PATTERN
 Url.php @line78
 Fix fancybox related errors in nginx 
 Faceboo router => should detect scripts ending in .php => important!
+fix bug in random groups :- include Navigation
+All ajax scripts should be protected by login
+Form protection by inserting unique tokens  - PRG or DejaVu' pattern to avoid form resubmission
+ Not required everywhere :- we do not have public forms
+ Login protected forms are fine.
+
+make sure that all pUrl and qUrl are not processed by our form hander - we need raw urls
+Fix navigation for cancel button everywhere.
 
 
 

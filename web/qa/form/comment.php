@@ -4,7 +4,7 @@
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
-	
+    
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
 
     use \com\indigloo\ui\form as Form;
@@ -15,7 +15,7 @@
     use com\indigloo\exception\DBException as DBException;
     
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
-        try{	
+        try{    
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('comment', 'Comment', array('required' => 1));
             $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));

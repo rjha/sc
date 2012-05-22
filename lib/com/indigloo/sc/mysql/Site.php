@@ -12,7 +12,7 @@ namespace com\indigloo\sc\mysql {
         const MODULE_NAME = 'com\indigloo\sc\mysql\Site';
 
         static function getOnPostId($postId) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($postId,"integer");
 
             $sql = " select sm.* from sc_site_master sm, sc_post_site ps where sm.id = ps.site_id " ;
@@ -24,7 +24,7 @@ namespace com\indigloo\sc\mysql {
         }
 
         static function getPostsOnId($siteId,$limit) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             settype($siteId,"integer");
             settype($limit,"integer");
@@ -39,7 +39,7 @@ namespace com\indigloo\sc\mysql {
         }
 
         static function getTotalPostsOnId($siteId) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($siteId,"integer");
 
             $sql = " select count(ps.id)  as count from sc_post_site ps, sc_post p " ;
@@ -72,7 +72,7 @@ namespace com\indigloo\sc\mysql {
         }
 
         static function create($hash,$host,$canonicalUrl){
-			
+            
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $hash = $mysqli->real_escape_string($hash);
             $host = $mysqli->real_escape_string($host);
@@ -104,25 +104,25 @@ namespace com\indigloo\sc\mysql {
             settype($postId,"integer");
             $code = MySQL\Connection::ACK_OK ;
 
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$sql = " delete from sc_tmp_ps where post_id = ? " ;
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = " delete from sc_tmp_ps where post_id = ? " ;
 
-			$stmt = $mysqli->prepare($sql);
+            $stmt = $mysqli->prepare($sql);
 
             if ($stmt) {
                 $stmt->bind_param("i",$postId) ;
                 $stmt->execute();
                 $stmt->close();
-				
+                
             } else {
                 $code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
             }
-			
-			return $code ;
+            
+            return $code ;
         }
 
         static function addTmpPSData($postId,$siteId){
-			
+            
             settype($postId,"integer");
             settype($siteId,"integer");
 
@@ -144,7 +144,7 @@ namespace com\indigloo\sc\mysql {
             } else {
                 $code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
             }
-			
+            
             return ;
         }
 

@@ -4,21 +4,21 @@
     include ('sc-app.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/role/user.inc');
-	 
+     
     use com\indigloo\Util;
     use com\indigloo\Url;
     use com\indigloo\ui\form\Sticky;
     use com\indigloo\Constants as Constants;
     use com\indigloo\ui\form\Message as FormMessage;
-	use \com\indigloo\sc\auth\Login as Login ;
+    use \com\indigloo\sc\auth\Login as Login ;
      
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
-	
-	$gSessionLogin = Login::getLoginInSession();
-	$loginId = $gSessionLogin->id ;
+    
+    $gSessionLogin = Login::getLoginInSession();
+    $loginId = $gSessionLogin->id ;
 
     $userDao = new \com\indigloo\sc\dao\User() ;
-	$userDBRow = $userDao->getonLoginId($loginId);
+    $userDBRow = $userDao->getonLoginId($loginId);
 
     //tokens for use in next screen
     $ftoken = Util::getMD5GUID();

@@ -47,7 +47,7 @@ echo " 1. Sphinx Installation "
 echo " 2. MySQL  Installation "
 echo " 3. Cron Scripts?  "
 echo " 4. copy sc_config.ini from server - change upload to local,session backend "
-echo " 5. Add mint.3mik.com entry in /etc/hosts file "
+echo " 5. Add mint.3mik.com entry in /etc/hosts file , logrotate "
 echo " 6. Restart Nginx, php-fpm,mysqld, searchd services "
 echo " ****************************** "
 

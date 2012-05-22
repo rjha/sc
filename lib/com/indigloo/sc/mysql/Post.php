@@ -15,19 +15,19 @@ namespace com\indigloo\sc\mysql {
         
         const MODULE_NAME = 'com\indigloo\sc\mysql\Post';
 
-		static function getOnId($postId) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+        static function getOnId($postId) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($postId,"integer");
-			
+            
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
             $sql .= " where l.id = q.login_id and q.id = %d " ;
             $sql = sprintf($sql,$postId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
-		}
+        }
         
         static function getLinkDataOnId($postId) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($postId,"integer");
             $sql = "select version,links_json as json from sc_post where id = %d ";
             $sql = sprintf($sql,$postId);
@@ -39,7 +39,7 @@ namespace com\indigloo\sc\mysql {
         
          //@see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/ 
         static function getRandom($limit) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
 
             $sql = " SELECT q.*,l.name as user_name FROM sc_post q,sc_login l WHERE q.login_id = l.id " ;
@@ -50,10 +50,10 @@ namespace com\indigloo\sc\mysql {
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
-		}
+        }
 
          static function getPosts($limit,$filters) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
             $sql = "select q.*,l.name as user_name  from sc_post q, sc_login l ";
             
@@ -71,14 +71,14 @@ namespace com\indigloo\sc\mysql {
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
-		}
+        }
 
         static function getOnLoginId($loginId,$limit) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             settype($limit,"integer");
             settype($loginId,"integer");
-			
+            
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l where q.login_id = l.id " ; 
             $sql .= " and  q.login_id = %d order by id desc limit %d " ;
             $sql = sprintf($sql,$limit);
@@ -86,24 +86,24 @@ namespace com\indigloo\sc\mysql {
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
-		}
+        }
 
 
-       	/*
-		 *
-		 * 1. we need to fetch rows from mysql doing a range scan on ids 
-		 * returned by sphinx.
-		 *
+        /*
+         *
+         * 1. we need to fetch rows from mysql doing a range scan on ids 
+         * returned by sphinx.
+         *
          * 2. To preserve the order of ids returned by sphinx you need to create a
          * sort field like 
          * $sql .= " ORDER BY FIELD(q.id,".$strIds. ") " ;
-		 * @see http://sphinxsearch.com/info/faq/ 
+         * @see http://sphinxsearch.com/info/faq/ 
          *
          * 3. we want sorting to be done on our DB created_on column (our choice)
-		 *
-		 */
-		static function getOnSearchIds($strIds) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+         *
+         */
+        static function getOnSearchIds($strIds) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             $strIds = $mysqli->real_escape_string($strIds);
 
             $sql = " select q.*,l.name as user_name from sc_post q, sc_login l " ;
@@ -112,11 +112,11 @@ namespace com\indigloo\sc\mysql {
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
-		}
-		
-		static function getLatest($limit,$filters) {
-			
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+        }
+        
+        static function getLatest($limit,$filters) {
+            
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit,"integer");
             
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l" ;
@@ -130,14 +130,14 @@ namespace com\indigloo\sc\mysql {
             $sql .= $condition;
 
             $sql .= " order by q.id desc LIMIT ".$limit ;
-			
+            
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
-			
-		}
+            
+        }
 
-		static function getTotalCount($filters) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+        static function getTotalCount($filters) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "select count(id) as count from sc_post ";
 
             $q = new MySQL\Query($mysqli);
@@ -148,10 +148,10 @@ namespace com\indigloo\sc\mysql {
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 
-		}
+        }
 
-		static function getPaged($start,$direction,$limit,$filters) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+        static function getPaged($start,$direction,$limit,$filters) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             
             settype($start,"integer");
             settype($limit,"integer");
@@ -182,23 +182,23 @@ namespace com\indigloo\sc\mysql {
                 return $results ;
             }
             
-            return $rows;	
+            return $rows;   
 
-		}
+        }
 
-		static function update($postId,
-						       $title,
+        static function update($postId,
+                               $title,
                                $description,
                                $linksJson,
-							   $imagesJson,
+                               $imagesJson,
                                $loginId,
                                $groupSlug,
                                $categoryCode) {
-			
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "update sc_post set title=?,description=?,links_json =?,images_json=?,version=version +1,";
-			$sql .= "group_slug = ? , updated_on = now(),cat_code = ? where id = ? and login_id = ?" ;
-			
+            $sql .= "group_slug = ? , updated_on = now(),cat_code = ? where id = ? and login_id = ?" ;
+            
             $code = MySQL\Connection::ACK_OK;
             $stmt = $mysqli->prepare($sql);
 
@@ -210,8 +210,8 @@ namespace com\indigloo\sc\mysql {
                         $imagesJson,
                         $groupSlug,
                         $categoryCode,
-						$postId,
-						$loginId);
+                        $postId,
+                        $loginId);
                 
                       
                 $stmt->execute();
@@ -226,17 +226,17 @@ namespace com\indigloo\sc\mysql {
             
             return $code ;
             
-		}
-		
+        }
+        
         static function create($title,
                                $description,
-							   $loginId,
+                               $loginId,
                                $linksJson,
                                $imagesJson,
                                $groupSlug,
                                $categoryCode) {
 
-			
+            
             try {
                 $sql1 = " insert into sc_post(title,description,login_id,links_json, " ;
                 $sql1 .= "images_json,group_slug,cat_code,created_on) ";
@@ -301,31 +301,31 @@ namespace com\indigloo\sc\mysql {
                 $message = sprintf("Database error code %d",$errorCode);
                 throw new DBException($message,$errorCode);
             }
-			
+            
         }
 
-		static function delete($postId,$loginId) {
+        static function delete($postId,$loginId) {
 
-			$code = MySQL\Connection::ACK_OK ;
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$sql = " delete from sc_post where id = ? and login_id = ?" ;
+            $code = MySQL\Connection::ACK_OK ;
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = " delete from sc_post where id = ? and login_id = ?" ;
 
-			$stmt = $mysqli->prepare($sql);
+            $stmt = $mysqli->prepare($sql);
 
             if ($stmt) {
                 $stmt->bind_param("ii",$postId,$loginId) ;
                 $stmt->execute();
                 $stmt->close();
-				
+                
             } else {
                 $code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
             }
-			
-			return $code ;
-		}
+            
+            return $code ;
+        }
 
         static function setFeature($loginId,$postId,$value){
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             settype($loginId,"integer");
             settype($postId,"integer");
@@ -340,8 +340,8 @@ namespace com\indigloo\sc\mysql {
             $sql = " update sc_post set is_feature = %d where ID = %d " ;
             $sql = sprintf($sql,$value,$postId);
             MySQL\Helper::executeSQL($mysqli,$sql);
-		}
+        }
 
-	}
+    }
 }
 ?>

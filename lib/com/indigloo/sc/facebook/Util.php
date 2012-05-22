@@ -18,7 +18,7 @@ namespace com\indigloo\sc\facebook {
             return $fbId ;
         }
 
-	}
+    }
 }
 
 ?>

@@ -7,7 +7,7 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\Util as Util;
        
-	error_reporting(-1);
+    error_reporting(-1);
     set_error_handler('offline_error_handler');
 
     function process_groups($mysqli) {

@@ -8,7 +8,7 @@
     use \com\indigloo\Util as Util;
        
     //report all PHP errors
-	error_reporting(-1);
+    error_reporting(-1);
     set_error_handler('offline_error_handler');
 
     //pre-req : add thumbnail_name varchar(256)

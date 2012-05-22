@@ -9,8 +9,8 @@ namespace com\indigloo\sc\dao {
     class User {
 
         function getOnEmail($email) {
-			$row = mysql\User::getOnEmail($email);
-			return $row ;
+            $row = mysql\User::getOnEmail($email);
+            return $row ;
         }
 
         /*
@@ -21,11 +21,11 @@ namespace com\indigloo\sc\dao {
          * lookup parameter for us is login_id created by us and not the email of the user.
          *
          */
-		function getOnLoginId($loginId) {
+        function getOnLoginId($loginId) {
             $row = mysql\User::getOnLoginId($loginId);
-			return $row ;
-		}
-		
+            return $row ;
+        }
+        
         function update($loginId,$firstName,$lastName,$nickName,$email,
                                 $website,$blog,$location,$age,$photoUrl,$aboutMe) {
 
@@ -35,10 +35,10 @@ namespace com\indigloo\sc\dao {
             return $code ;
         }
 
-		function addFeedback($feedback) {
+        function addFeedback($feedback) {
             $code = mysql\User::addFeedback($feedback);
             return $code ;
-        }		
+        }       
 
         function getLatest($limit,$filters=array()) {
             $rows = mysql\User::getLatest($limit,$filters);
@@ -46,7 +46,7 @@ namespace com\indigloo\sc\dao {
         }
 
         function getTotal($filters=array()) {
-			$row = mysql\User::getTotal($filters);
+            $row = mysql\User::getTotal($filters);
             return $row['count'] ;
         }
 

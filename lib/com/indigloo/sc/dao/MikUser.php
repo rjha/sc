@@ -12,11 +12,11 @@ namespace com\indigloo\sc\dao {
 
     class MikUser {
 
-		function getOnLoginId($loginId) {
+        function getOnLoginId($loginId) {
             $row = mysql\MikUser::getOnLoginId($loginId);
-			return $row ;
-		}
-		
+            return $row ;
+        }
+        
     }
 
 }

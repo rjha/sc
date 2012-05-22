@@ -1,3 +1,6 @@
+#tuning
+vm.swappiness set to 20 in /etc/sysctl.conf file
+we know our RAM usage and we would like no swapping
 
 #server deployment procedure
 

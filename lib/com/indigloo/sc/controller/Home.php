@@ -2,13 +2,13 @@
 namespace com\indigloo\sc\controller{
 
 
-	use \com\indigloo\Util as Util;
+    use \com\indigloo\Util as Util;
     use com\indigloo\Url;
-	use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\html\Seo as SeoData ;
     use \com\indigloo\ui\Filter as Filter;
   
-	
+    
     class Home {
 
         private $ids ;
@@ -37,13 +37,13 @@ namespace com\indigloo\sc\controller{
 
         function processNext($params,$options) {
             $postDao = new \com\indigloo\sc\dao\Post();
-			$total = $postDao->getTotalCount();
+            $total = $postDao->getTotalCount();
 
-			$qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-			$pageSize =	Config::getInstance()->get_value("main.page.items");
-			$paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);	
+            $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+            $pageSize = Config::getInstance()->get_value("main.page.items");
+            $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);    
 
-			$postDBRows = $postDao->getPaged($paginator);
+            $postDBRows = $postDao->getPaged($paginator);
 
             $pageHeader = '';
             $pageBaseUrl = '/' ;
@@ -61,7 +61,7 @@ namespace com\indigloo\sc\controller{
         function processHome($params,$options) {
 
             $postDao = new \com\indigloo\sc\dao\Post();
-			$total = $postDao->getTotalCount();
+            $total = $postDao->getTotalCount();
 
             //feature filter
             $filters = array();

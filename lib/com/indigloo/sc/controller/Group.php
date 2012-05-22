@@ -2,13 +2,13 @@
 namespace com\indigloo\sc\controller{
 
 
-	use \com\indigloo\Util as Util;
+    use \com\indigloo\Util as Util;
     use com\indigloo\Url;
-	use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\Configuration as Config ;
     use \com\indigloo\ui\Pagination as Pagination ;
     use \com\indigloo\sc\html\Seo as SeoData ;
   
-	
+    
     class Group {
         
         function process($params,$options) {
@@ -16,7 +16,7 @@ namespace com\indigloo\sc\controller{
             if(is_null($params) || empty($params))
                 trigger_error("Required params is null or empty", E_USER_ERROR);
 
-			$slug = Util::getArrayKey($params,"name");
+            $slug = Util::getArrayKey($params,"name");
             //break hyphenated tokens into normal words for sphinx
             //$token = \com\indigloo\util\StringUtil::convertKeyToName($slug);
             // group index settings - no prefix,charset_type sbcs, ignore_chars U+002D 
@@ -26,8 +26,8 @@ namespace com\indigloo\sc\controller{
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
             $total = $sphinx->getGroupsCount($token);
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-            $pageSize =	50;
-            $paginator = new Pagination($qparams,$total,$pageSize);	
+            $pageSize = 50;
+            $paginator = new Pagination($qparams,$total,$pageSize); 
 
             $ids = $sphinx->getPagedGroups($token,$paginator);   
             $sphinx->close();

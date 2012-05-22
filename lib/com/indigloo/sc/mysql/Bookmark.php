@@ -45,7 +45,7 @@ namespace com\indigloo\sc\mysql {
         }
 
         static function getTotal($filters) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = " select count(id) as count from sc_user_bookmark";
 
             $q = new MySQL\Query($mysqli);
@@ -54,10 +54,10 @@ namespace com\indigloo\sc\mysql {
 
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
-		}
+        }
 
-		static function getPaged($start,$direction,$limit,$filters) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+        static function getPaged($start,$direction,$limit,$filters) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             settype($start,"integer");
             settype($limit,"integer");
@@ -80,8 +80,8 @@ namespace com\indigloo\sc\mysql {
                 return $results ;
             }
             
-            return $rows;	
-		}
+            return $rows;   
+        }
 
         static function getOnLoginId($loginId,$action) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -117,46 +117,46 @@ namespace com\indigloo\sc\mysql {
             } else {
                 $code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
             }
-			
-			return $code ;
+            
+            return $code ;
         }
-	
-		static function delete($bookmarkId) {
-			$code = MySQL\Connection::ACK_OK ;
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$sql = "delete from sc_user_bookmark where id = ? " ;
-			$stmt = $mysqli->prepare($sql);
+    
+        static function delete($bookmarkId) {
+            $code = MySQL\Connection::ACK_OK ;
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "delete from sc_user_bookmark where id = ? " ;
+            $stmt = $mysqli->prepare($sql);
 
             if ($stmt) {
                 $stmt->bind_param("i",$bookmarkId) ;
                 $stmt->execute();
                 $stmt->close();
-				
+                
             } else {
                 $code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
             }
-			
-			return $code ;
-		}
+            
+            return $code ;
+        }
         
         static function unfavorite($loginId,$itemId) {
             //remove a save(favorite)- code 2
-			$code = MySQL\Connection::ACK_OK ;
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
-			$sql = "delete from sc_user_bookmark where login_id = ? and item_id = ? and action = 2 " ;
-			$stmt = $mysqli->prepare($sql);
+            $code = MySQL\Connection::ACK_OK ;
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "delete from sc_user_bookmark where login_id = ? and item_id = ? and action = 2 " ;
+            $stmt = $mysqli->prepare($sql);
 
             if ($stmt) {
                 $stmt->bind_param("ii",$loginId,$itemId) ;
                 $stmt->execute();
                 $stmt->close();
-				
+                
             } else {
                 $code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
             }
-			
-			return $code ;
-		}
-	}
+            
+            return $code ;
+        }
+    }
 }
 ?>

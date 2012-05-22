@@ -9,7 +9,7 @@
     set_error_handler('webgloo_ajax_error_handler');
 
     //Admin login is required 
-	if(!Login::isAdmin()) {
+    if(!Login::isAdmin()) {
         $message = array("code" => 401 , "message" => "Authentication failure! Admin credentials missing.");
         $html = json_encode($message); 
         echo $html;

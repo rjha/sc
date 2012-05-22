@@ -2,17 +2,17 @@
 namespace com\indigloo\sc\controller{
 
 
-	use \com\indigloo\Util as Util;
+    use \com\indigloo\Util as Util;
     use \com\indigloo\Url;
-	use \com\indigloo\Configuration as Config ;
-	use \com\indigloo\Constants as Constants;
+    use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\Constants as Constants;
     use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\ui\form\Sticky;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\html\Seo as SeoData ;
 
  
-	
+    
     class Post {
         
         function process($params,$options) {
@@ -20,7 +20,7 @@ namespace com\indigloo\sc\controller{
             if(is_null($params) || empty($params))
                 trigger_error("Required params is null or empty", E_USER_ERROR);
 
-			$itemId = Util::getArrayKey($params,"item_id");
+            $itemId = Util::getArrayKey($params,"item_id");
 
             if($itemId < 1200) {
                 //@todo remove permanent redirect
@@ -30,9 +30,9 @@ namespace com\indigloo\sc\controller{
                 exit ;
             }
 
-			$postDao = new \com\indigloo\sc\dao\Post();
+            $postDao = new \com\indigloo\sc\dao\Post();
             $postId = PseudoId::decode($itemId);
-			$postDBRow = $postDao->getOnId($postId);
+            $postDBRow = $postDao->getOnId($postId);
 
             if(empty($postDBRow)) {
                 //not found
@@ -41,17 +41,17 @@ namespace com\indigloo\sc\controller{
                 exit;
             }
 
-			$imagesJson = $postDBRow['images_json'];
-			$images = json_decode($imagesJson);
-			
-			$linksJson = $postDBRow['links_json'];
-			$links = json_decode($linksJson);
+            $imagesJson = $postDBRow['images_json'];
+            $images = json_decode($imagesJson);
+            
+            $linksJson = $postDBRow['links_json'];
+            $links = json_decode($linksJson);
 
-			$commentDao = new \com\indigloo\sc\dao\Comment();
-			$commentDBRows = $commentDao->getOnPostId($postId);
-			
-			$gWeb = \com\indigloo\core\Web::getInstance();
-			$sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
+            $commentDao = new \com\indigloo\sc\dao\Comment();
+            $commentDBRows = $commentDao->getOnPostId($postId);
+            
+            $gWeb = \com\indigloo\core\Web::getInstance();
+            $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
             $loginId = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
 
             $xids = array();
@@ -104,17 +104,17 @@ namespace com\indigloo\sc\controller{
             $siteDao = new \com\indigloo\sc\dao\Site();
             $siteDBRow = $siteDao->getOnPostId($postId);
 
-			$loginUrl = "/user/login.php?q=".$_SERVER['REQUEST_URI'];
-			$formErrors = FormMessage::render(); 
+            $loginUrl = "/user/login.php?q=".$_SERVER['REQUEST_URI'];
+            $formErrors = FormMessage::render(); 
 
 
-			$pageTitle = Util::abbreviate($postDBRow['title'],70);
-			$metaDescription = Util::abbreviate($postDBRow['description'],160);
+            $pageTitle = Util::abbreviate($postDBRow['title'],70);
+            $metaDescription = Util::abbreviate($postDBRow['description'],160);
             $metaKeywords = SeoData::getMetaKeywords($group_names);
             $pageUrl = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-			
+            
             $file = $_SERVER['APP_WEB_DIR']. '/view/item.php' ;
-			include($file);
+            include($file);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace com\indigloo\sc\dao {
     
     use \com\indigloo\Util as Util ;
     use \com\indigloo\sc\mysql as mysql;
-	
+    
     class Bookmark {
 
         function add($loginId,$itemId,$action) {
@@ -32,7 +32,7 @@ namespace com\indigloo\sc\dao {
         }
 
         function getTotal($filters=array()) {
-			$row = mysql\Bookmark::getTotal($filters);
+            $row = mysql\Bookmark::getTotal($filters);
             return $row['count'];
         }
 
@@ -42,17 +42,17 @@ namespace com\indigloo\sc\dao {
         }
         
         function getPaged($paginator,$filters) {
-           	$limit = $paginator->getPageSize();
-			if($paginator->isHome()){
-				return $this->getLatest($limit,$filters);
-			} else {
+            $limit = $paginator->getPageSize();
+            if($paginator->isHome()){
+                return $this->getLatest($limit,$filters);
+            } else {
 
                 $params = $paginator->getDBParams();
-				$start = $params['start'];
-				$direction = $params['direction'];
-				$rows = mysql\Bookmark::getPaged($start,$direction,$limit,$filters);
-				return $rows ;
-			}
+                $start = $params['start'];
+                $direction = $params['direction'];
+                $rows = mysql\Bookmark::getPaged($start,$direction,$limit,$filters);
+                return $rows ;
+            }
         }
 
     }

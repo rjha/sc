@@ -5,7 +5,7 @@ namespace com\indigloo\sc\dao {
     
     use \com\indigloo\Util as Util ;
     use \com\indigloo\sc\mysql as mysql;
-	
+    
     class SocialGraph {
 
         function addFollower($followerId,$followingId) {

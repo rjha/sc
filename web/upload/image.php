@@ -1,49 +1,49 @@
 <?php
 
-	//sc/upload/image.php
+    //sc/upload/image.php
     include ('sc-app.inc');
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
     require_once($_SERVER['WEBGLOO_LIB_ROOT']. '/ext/S3.php');
 
     set_error_handler('webgloo_ajax_error_handler');
-	
+    
     use \com\indigloo\Util as Util;
     use \com\indigloo\sc\auth\Login as Login ;
 
 
     //use login is required for bookmarking
-	if(!Login::hasSession()) {
+    if(!Login::hasSession()) {
         $message = array("code" => 401 , "message" => "Authentication failure: You need to login!");
         $json = json_encode($message); 
         echo $json;
         exit;
     }
 
-	$uploader =  NULL ; 
+    $uploader =  NULL ; 
     $prefix = sprintf("%s/",date('Y/m/d')) ;
     
     //special prefix - test machines 
     if($_SERVER["HTTP_HOST"] == 'mint.3mik.com' || $_SERVER["HTTP_HOST"] == 'mbp13.3mik.com') {
         $prefix = 'test/'.$prefix ;
     }
-		
-	if (isset($_GET['qqfile'])) {
-		$pipe = new \com\indigloo\media\XhrPipe();
-		$uploader = new com\indigloo\media\ImageUpload($pipe);
-		$uploader->process($prefix,$_GET['qqfile']);
-		
-	} elseif (isset($_FILES['qqfile'])) {
+        
+    if (isset($_GET['qqfile'])) {
+        $pipe = new \com\indigloo\media\XhrPipe();
+        $uploader = new com\indigloo\media\ImageUpload($pipe);
+        $uploader->process($prefix,$_GET['qqfile']);
+        
+    } elseif (isset($_FILES['qqfile'])) {
 
-		$pipe = new \com\indigloo\media\FormPipe();
-		$uploader = new com\indigloo\media\ImageUpload($pipe);
-		$uploader->process($prefix,"qqfile");
-		
-	} else {
-		trigger_error("what is this?", E_USER_ERROR); 
-	}
+        $pipe = new \com\indigloo\media\FormPipe();
+        $uploader = new com\indigloo\media\ImageUpload($pipe);
+        $uploader->process($prefix,"qqfile");
+        
+    } else {
+        trigger_error("what is this?", E_USER_ERROR); 
+    }
 
     //first - process the errors
-	$errors = $uploader->getErrors() ;
+    $errors = $uploader->getErrors() ;
 
     if (sizeof($errors) > 0 ) {
         $data = array('code' => 500, 'error' => $errors[0]);

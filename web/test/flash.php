@@ -22,18 +22,18 @@
         <script type="text/javascript">
             $(document).ready(function(){
                
-				//swfupload minimum flash req. can be seen inside swfupload.js file 
+                //swfupload minimum flash req. can be seen inside swfupload.js file 
                 if(swfobject.hasFlashPlayerVersion("9.0.28")){
-					 var playerVersion = swfobject.getFlashPlayerVersion();
-					 $("#major-no").html("major: " + playerVersion.major);
-					 $("#minor-no").html("minor: " + playerVersion.minor);
-					 $("#release-no").html("release: " + playerVersion.release);
-					 
-					 
-				
-				}else {
-					$("#major-no").html("Required flash version not found");
-				}
+                     var playerVersion = swfobject.getFlashPlayerVersion();
+                     $("#major-no").html("major: " + playerVersion.major);
+                     $("#minor-no").html("minor: " + playerVersion.minor);
+                     $("#release-no").html("release: " + playerVersion.release);
+                     
+                     
+                
+                }else {
+                    $("#major-no").html("Required flash version not found");
+                }
 
             });
             
@@ -56,17 +56,17 @@
                             <div id="content">
 
                             Flash detection page
-							<p id="major-no"> </p>
-							<p id="minor-no"> </p>
-							<p id="release-no"> </p>
-							
+                            <p id="major-no"> </p>
+                            <p id="minor-no"> </p>
+                            <p id="release-no"> </p>
+                            
                         </div> <!-- content -->
-						
-						 <div class="yui3-u-1-3">
+                        
+                         <div class="yui3-u-1-3">
                             <!-- sidebar -->
                         </div>
                     </div> 
-				</div>
+                </div>
 
                 </div> <!-- bd -->
 

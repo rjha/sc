@@ -281,7 +281,7 @@ webgloo.sc.groups = {
         $("#add-group-btn").click(function(event) {
             event.preventDefault(); 
             var group = jQuery.trim($("#group-box").val());
-			if( group == '' ) {return ; }
+            if( group == '' ) {return ; }
             //split on commas
             var tokens = group.split(",");
             for (var i = 0; i < tokens.length; i++) { 
@@ -323,29 +323,29 @@ webgloo.sc.groups = {
 
 webgloo.media = {
     images : {} ,
-	debug : false,
-	mode : ["image", "link"],
+    debug : false,
+    mode : ["image", "link"],
     init : function (mode) {
 
-		//make a copy of mode array
-		webgloo.media.mode = mode.slice(0) ;
+        //make a copy of mode array
+        webgloo.media.mode = mode.slice(0) ;
         frm = document.forms["web-form1"];
 
-		if(jQuery.inArray("image",webgloo.media.mode) != -1) {
-			var strImagesJson = frm.images_json.value ;
-			var images = JSON.parse(strImagesJson);
-			for(i = 0 ;i < images.length ; i++) {
-				webgloo.media.addImage(images[i]);
-			}
-		}
+        if(jQuery.inArray("image",webgloo.media.mode) != -1) {
+            var strImagesJson = frm.images_json.value ;
+            var images = JSON.parse(strImagesJson);
+            for(i = 0 ;i < images.length ; i++) {
+                webgloo.media.addImage(images[i]);
+            }
+        }
 
-		if(jQuery.inArray("link",webgloo.media.mode) != -1) {
-			var strLinksJson = frm.links_json.value ;
-			var links = JSON.parse(strLinksJson);
-			for(i = 0 ;i < links.length ; i++) {
-				webgloo.media.addLink(links[i]);
-			}
-		}
+        if(jQuery.inArray("link",webgloo.media.mode) != -1) {
+            var strLinksJson = frm.links_json.value ;
+            var links = JSON.parse(strLinksJson);
+            for(i = 0 ;i < links.length ; i++) {
+                webgloo.media.addLink(links[i]);
+            }
+        }
 
     },
     attachEvents : function() {
@@ -353,10 +353,10 @@ webgloo.media = {
         $("#add-link").live("click", function(event){
             event.preventDefault();
             var link = jQuery.trim($("#link-box").val());
-			if( link == '' ) 
+            if( link == '' ) 
                 return ;
-			else 
-				webgloo.media.addLink(link);
+            else 
+                webgloo.media.addLink(link);
         }) ;
 
         //capture ENTER on link box
@@ -378,7 +378,7 @@ webgloo.media = {
             webgloo.media.removeLink($(this));
         }) ;
 
-		$("a.remove-image").live("click", function(event){
+        $("a.remove-image").live("click", function(event){
             event.preventDefault(); 
             webgloo.media.removeImage($(this));
         }) ;
@@ -398,24 +398,24 @@ webgloo.media = {
     
         frm = document.forms["web-form1"];
         
-		if(jQuery.inArray("image",webgloo.media.mode) != -1) {
-			var images = new Array() ;
+        if(jQuery.inArray("image",webgloo.media.mode) != -1) {
+            var images = new Array() ;
 
-			$("div#image-data").find('a').each(function(index) {
-				 var imageId = $(this).attr("id");
-				 images.push(webgloo.media.images[imageId]);
-			});
+            $("div#image-data").find('a').each(function(index) {
+                 var imageId = $(this).attr("id");
+                 images.push(webgloo.media.images[imageId]);
+            });
 
-			var strImages =  JSON.stringify(images);
-			frm.images_json.value = strImages ;
-		}
+            var strImages =  JSON.stringify(images);
+            frm.images_json.value = strImages ;
+        }
 
-		if(jQuery.inArray("link",webgloo.media.mode) != -1) {
-			var links = new Array() ;
+        if(jQuery.inArray("link",webgloo.media.mode) != -1) {
+            var links = new Array() ;
 
-			$("div#link-data").find('a').each(function(index) {
-				links.push($(this).attr("href"));
-			});
+            $("div#link-data").find('a').each(function(index) {
+                links.push($(this).attr("href"));
+            });
             
             //Anything in the box?
             var linkInBox = jQuery.trim($("#link-box").val());
@@ -423,28 +423,28 @@ webgloo.media = {
                links.push(linkInBox);
             } 
 
-			var strLinks = JSON.stringify(links);
-			frm.links_json.value = strLinks ;
-		}
+            var strLinks = JSON.stringify(links);
+            frm.links_json.value = strLinks ;
+        }
         
     },
     addLink : function(linkData) {
         var buffer = webgloo.media.linkPreviewDIV.supplant({"link" : linkData});
         $("#link-data").append(buffer);
-		//clear out the box
-		$("#link-box").val('');
+        //clear out the box
+        $("#link-box").val('');
     },
     removeLink : function(linkObj) {
-		$(linkObj).parent().remove();
+        $(linkObj).parent().remove();
     },
 
     removeImage : function(linkObj) {
-		var id = $(linkObj).attr("id");
-		var imageId = "#image-" +id ;
-		$("#image-"+id).remove();
+        var id = $(linkObj).attr("id");
+        var imageId = "#image-" +id ;
+        $("#image-"+id).remove();
     },
     addImage : function(mediaVO) {
-	    //console.log(mediaVO);	
+        //console.log(mediaVO); 
         webgloo.media.images[mediaVO.id] = mediaVO ;
         if(mediaVO.store == 's3'){
             mediaVO.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.thumbnail ;

@@ -7,7 +7,7 @@
     use com\indigloo\Url as Url;
     use \com\indigloo\sc\util\PseudoId as PseudoId;
      
-	$postId = Url::getQueryParam("id");
+    $postId = Url::getQueryParam("id");
 
     //Add permanent redirect
     $redirectUrl = "/item/".PseudoId::encode($postId) ;

@@ -2,13 +2,13 @@
 namespace com\indigloo\sc\controller{
 
 
-	use \com\indigloo\Util as Util;
+    use \com\indigloo\Util as Util;
     use \com\indigloo\Url;
-	use \com\indigloo\Configuration as Config ;
-	use \com\indigloo\Constants as Constants;
+    use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\Constants as Constants;
     use \com\indigloo\ui\Pagination as Pagination;
     use \com\indigloo\sc\html\Seo as SeoData ;
-	
+    
     class Category {
         
         function process($params,$options) {
@@ -24,8 +24,8 @@ namespace com\indigloo\sc\controller{
 
             $total = $categoryDao->getTotalCount($code);
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-            $pageSize =	50;
-            $paginator = new Pagination($qparams,$total,$pageSize);	
+            $pageSize = 50;
+            $paginator = new Pagination($qparams,$total,$pageSize); 
             $postDBRows = $categoryDao->getPaged($paginator,$code);
             $catName = $categoryDao->getName($code);
 

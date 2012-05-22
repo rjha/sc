@@ -23,8 +23,8 @@
 
 
     $total = $groupDao->getCountOnLoginId($loginId);
-    $pageSize =	100;
-    $paginator = new Pagination($qparams,$total,$pageSize);	
+    $pageSize = 100;
+    $paginator = new Pagination($qparams,$total,$pageSize); 
     $groups = $groupDao->getPagedUserGroups($paginator,$filters);
 
     $startId = NULL ;

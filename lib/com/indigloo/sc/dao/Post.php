@@ -13,10 +13,10 @@ namespace com\indigloo\sc\dao {
         const FEATURE_POST = 1 ;
         const UNFEATURE_POST = 2 ;
 
-		function getOnId($postId) {
-			$row = mysql\Post::getOnId($postId);
-			return $row ;
-		}
+        function getOnId($postId) {
+            $row = mysql\Post::getOnId($postId);
+            return $row ;
+        }
 
         /**
          * @error if links json is empty or spaces in DB column
@@ -26,8 +26,8 @@ namespace com\indigloo\sc\dao {
          *
          */
 
-		function getLinkDataOnId($postId) {
-			$row = mysql\Post::getLinkDataOnId($postId);
+        function getLinkDataOnId($postId) {
+            $row = mysql\Post::getLinkDataOnId($postId);
             $json = $row['json'];
             $links = NULL;
 
@@ -44,99 +44,99 @@ namespace com\indigloo\sc\dao {
             $data = array('links' => $links, 'version' => $row['version']);
             return $data ;
 
-		}
+        }
 
-		function getOnLoginId($loginId,$limit) {
-			$rows = mysql\Post::getOnLoginId($loginId,$limit);
-			return $rows ;
-		}
+        function getOnLoginId($loginId,$limit) {
+            $rows = mysql\Post::getOnLoginId($loginId,$limit);
+            return $rows ;
+        }
 
-		function getOnSearchIds($arrayIds) {
+        function getOnSearchIds($arrayIds) {
             if(empty($arrayIds)) { return array(); }
 
-			$strIds = implode(",",$arrayIds);
-			$rows = mysql\Post::getOnSearchIds($strIds);
-			return $rows ;
-		}
-		
+            $strIds = implode(",",$arrayIds);
+            $rows = mysql\Post::getOnSearchIds($strIds);
+            return $rows ;
+        }
+        
         function getRandom($limit) {
-			$rows = mysql\Post::getRandom($limit);
-			return $rows ;
-		}
+            $rows = mysql\Post::getRandom($limit);
+            return $rows ;
+        }
 
         function getPosts($limit,$filters=array()) {
-			$rows = mysql\Post::getPosts($limit,$filters);
-			return $rows ;
-		}
+            $rows = mysql\Post::getPosts($limit,$filters);
+            return $rows ;
+        }
 
-		function getPaged($paginator,$filters=array()) {
-			$limit = $paginator->getPageSize();
+        function getPaged($paginator,$filters=array()) {
+            $limit = $paginator->getPageSize();
 
-			if($paginator->isHome()){
-				return $this->getLatest($limit,$filters);
-			} else {
+            if($paginator->isHome()){
+                return $this->getLatest($limit,$filters);
+            } else {
 
                 $params = $paginator->getDBParams();
-				$start = $params['start'];
-				$direction = $params['direction'];
-				$rows = mysql\Post::getPaged($start,$direction,$limit,$filters);
-				return $rows ;
-			}
-		}
+                $start = $params['start'];
+                $direction = $params['direction'];
+                $rows = mysql\Post::getPaged($start,$direction,$limit,$filters);
+                return $rows ;
+            }
+        }
 
-		function getLatest($limit,$filters=array()) {
-			$rows = mysql\Post::getLatest($limit,$filters);
-			return $rows ;
-		}
-		
-		function getTotalCount($filters=array()) {
-			$row = mysql\Post::getTotalCount($filters);
+        function getLatest($limit,$filters=array()) {
+            $rows = mysql\Post::getLatest($limit,$filters);
+            return $rows ;
+        }
+        
+        function getTotalCount($filters=array()) {
+            $row = mysql\Post::getTotalCount($filters);
             return $row['count'] ;
-		}
+        }
 
         function create($title,
-						$description,
-						$loginId,
-						$linksJson,
+                        $description,
+                        $loginId,
+                        $linksJson,
                         $imagesJson,
                         $groupSlug,
                         $categoryCode) {
-			
+            
             $itemId = mysql\Post::create(
-								$title,
-								$description,
-								$loginId,
-								$linksJson,
+                                $title,
+                                $description,
+                                $loginId,
+                                $linksJson,
                                 $imagesJson,
                                 $groupSlug,
                                 $categoryCode);
-			
+            
             return $itemId ;
         }
-		
-		
-		function update($postId,
-						$title,
-						$description,
-						$linksJson,
+        
+        
+        function update($postId,
+                        $title,
+                        $description,
+                        $linksJson,
                         $imagesJson,
                         $groupSlug,
                         $categoryCode) {
-			
-			$loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
+            
+            $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
             $code = mysql\Post::update($postId,
-						       $title,
+                               $title,
                                $description,
                                $linksJson,
-							   $imagesJson,
+                               $imagesJson,
                                $loginId,
                                $groupSlug,
                                $categoryCode);
             return $code ;
         }
 
-		function delete($postId){
-			$loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
+        function delete($postId){
+            $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
             $code = mysql\Post::delete($postId,$loginId);
             return $code ;
         }

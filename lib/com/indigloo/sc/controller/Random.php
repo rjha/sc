@@ -2,18 +2,18 @@
 namespace com\indigloo\sc\controller{
 
 
-	use \com\indigloo\Util as Util;
+    use \com\indigloo\Util as Util;
     use com\indigloo\Url;
-	use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\html\Seo as SeoData ;
   
-	
+    
     class Random {
         
         function process($params,$options) {
             
-			$postDao = new \com\indigloo\sc\dao\Post();
-			$total = $postDao->getTotalCount();
+            $postDao = new \com\indigloo\sc\dao\Post();
+            $total = $postDao->getTotalCount();
             $rows1 = $postDao->getRandom(25);
 
             $ids = array();
@@ -25,13 +25,13 @@ namespace com\indigloo\sc\controller{
             $postDBRows = array_merge($rows1,$rows2);
             
             $pageHeader = "Random picks";
-			$pageTitle = SeoData::getHomePageTitle(); 
-			$metaDescription = SeoData::getHomeMetaDescription();
+            $pageTitle = SeoData::getHomePageTitle(); 
+            $metaDescription = SeoData::getHomeMetaDescription();
             $metaKeywords = SeoData::getHomeMetaKeywords();
 
             $file = $_SERVER['APP_WEB_DIR']. '/view/tiles.php' ;
             include ($file);
-		
+        
         }
 
 

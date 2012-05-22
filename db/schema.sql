@@ -456,26 +456,21 @@ create table sc_denorm_user(
     updated_on TIMESTAMP   default '0000-00-00 00:00:00',
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
-DELIMITER //
- CREATE TRIGGER trg_mik_user_name AFTER UPDATE ON sc_denorm_user
-    FOR EACH ROW
-    BEGIN
-        update sc_login set name = NEW.name where id = NEW.login_id ;
-    END //
-DELIMITER ;
-
-
 
 
 DELIMITER //
  CREATE TRIGGER trg_mik_user_name AFTER UPDATE ON sc_denorm_user
     FOR EACH ROW
     BEGIN
-        update sc_login set name = NEW.name where id = NEW.login_id ;
+        -- 
+        -- nickname takes precedence over name
+        --
+        IF (NEW.nick_name is NULL || NEW.nick_name = "" ) THEN 
+            update sc_login set name = NEW.name where id = NEW.login_id ;
+        ELSE
+            update sc_login set name = NEW.nick_name where id = NEW.login_id ;
+        END IF;
+
     END //
 DELIMITER ;
-
-
-
-
 

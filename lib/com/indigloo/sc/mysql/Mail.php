@@ -16,7 +16,7 @@ namespace com\indigloo\sc\mysql {
             $sql .= " and token = '%s' and (now() < expired_on )  ";
             $sql = sprintf($sql,$email,$token);
 
-			$row = MySQL\Helper::fetchRow($mysqli, $sql);
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 
         }
@@ -28,7 +28,7 @@ namespace com\indigloo\sc\mysql {
             $sql .= " and (created_on > now() - INTERVAL 20 MINUTE) ";
             $sql = sprintf($sql,$email);
 
-			$row = MySQL\Helper::fetchRow($mysqli, $sql);
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 
         }

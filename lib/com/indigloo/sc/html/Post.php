@@ -16,7 +16,7 @@ namespace com\indigloo\sc\html {
         static function getGallery($images) {
             if(sizeof($images) == 0 ) { return '' ; }
 
-			$view = new \stdClass;
+            $view = new \stdClass;
             $records = array();
 
             foreach($images as $image) {
@@ -29,7 +29,7 @@ namespace com\indigloo\sc\html {
 
                 $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? 'http://' : '/' ;
                 $tfile = (property_exists($image,'thumbnail')) ? $image->thumbnail : $image->storeName ;
-				$timage = $prefix.$image->bucket.'/'.$tfile;
+                $timage = $prefix.$image->bucket.'/'.$tfile;
 
 
                 $record['source'] = $prefix.$image->bucket.'/'.$image->storeName ;
@@ -37,10 +37,10 @@ namespace com\indigloo\sc\html {
                 $record['title'] = $image->originalName;
                 $record['tname'] = $tname;
 
-  	
-				$newxy = Util::foldXY($image->width,$image->height,190,140);
-				$record['width'] = $newxy["width"];
-				$record['height'] = $newxy["height"];
+    
+                $newxy = Util::foldXY($image->width,$image->height,190,140);
+                $record['width'] = $newxy["width"];
+                $record['height'] = $newxy["height"];
 
                 $records[] = $record;
             }
@@ -56,7 +56,7 @@ namespace com\indigloo\sc\html {
         static function getLinks($links,$siteDBRow) {
             if(sizeof($links) == 0 ) { return '' ; }
 
-			$view = new \stdClass;
+            $view = new \stdClass;
             $view->links = $links;
             $view->hasSite = false;
 
@@ -81,59 +81,59 @@ namespace com\indigloo\sc\html {
             return $html;
         }
 
-		static function getSmallTile($postDBRow) {
+        static function getSmallTile($postDBRow) {
 
-		    $html = NULL ;
-			$imagesJson = $postDBRow['images_json'];
-			$images = json_decode($imagesJson);
-			
-			$view = new \stdClass;
+            $html = NULL ;
+            $imagesJson = $postDBRow['images_json'];
+            $images = json_decode($imagesJson);
+            
+            $view = new \stdClass;
 
-			$view->description = $postDBRow['description'];
-			$view->id = $postDBRow['id'];
-			$view->itemId = PseudoId::encode($view->id);
+            $view->description = $postDBRow['description'];
+            $view->id = $postDBRow['id'];
+            $view->itemId = PseudoId::encode($view->id);
 
-			if(sizeof($images) > 0) {
-				
-				$template = '/fragments/tile/small/image.tmpl' ;
-				/* image stuff */
-				$image = $images[0] ;
-				
-				$view->bucket = $image->bucket;
+            if(sizeof($images) > 0) {
+                
+                $template = '/fragments/tile/small/image.tmpl' ;
+                /* image stuff */
+                $image = $images[0] ;
+                
+                $view->bucket = $image->bucket;
 
                 //show thumbnail 
                 $view->originalName = 
                     (property_exists($image,'thumbnailName')) ?  $image->thumbnailName : $image->originalName ;
                 $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? 'http://' : '/' ;
                 $fileName = (property_exists($image,'thumbnail')) ? $image->thumbnail : $image->storeName ;
-				$view->srcImage = $prefix.$image->bucket.'/'.$fileName;
-			    	
-				$newxy = Util::foldX($image->width,$image->height,100);
-				
-				$view->width = $newxy["width"];
-				$view->height = $newxy["height"];
-				
-				/* image stuff end */
-				$html = Template::render($template,$view);
-				
-			} else {
-				
-				$template = '/fragments/tile/small/text.tmpl' ;
-				$html = Template::render($template,$view);
-			}
-			
+                $view->srcImage = $prefix.$image->bucket.'/'.$fileName;
+                    
+                $newxy = Util::foldX($image->width,$image->height,100);
+                
+                $view->width = $newxy["width"];
+                $view->height = $newxy["height"];
+                
+                /* image stuff end */
+                $html = Template::render($template,$view);
+                
+            } else {
+                
+                $template = '/fragments/tile/small/text.tmpl' ;
+                $html = Template::render($template,$view);
+            }
+            
             return $html ;
-			
+            
         }
 
-		static function getTile($postDBRow,$options=NULL) {
+        static function getTile($postDBRow,$options=NULL) {
 
-		    $html = NULL ;
-			$imagesJson = $postDBRow['images_json'];
-			$images = json_decode($imagesJson);
-			
-			$view = new \stdClass;
-			$view->description = Util::abbreviate($postDBRow['description'],160);
+            $html = NULL ;
+            $imagesJson = $postDBRow['images_json'];
+            $images = json_decode($imagesJson);
+            
+            $view = new \stdClass;
+            $view->description = Util::abbreviate($postDBRow['description'],160);
             if(is_null($options)) {
                 $options = UIConstants::TILE_ALL & ~UIConstants::TILE_REMOVE ;
             }
@@ -144,12 +144,12 @@ namespace com\indigloo\sc\html {
             $view->hasRemove = $options & UIConstants::TILE_REMOVE  ;
             $view->hasMore = $options & UIConstants::TILE_MORE ;
 
-			$view->userPageURI = "/pub/user/".PseudoId::encode($postDBRow['login_id']);
-			$view->id = $postDBRow['id'];
-			$view->itemId = PseudoId::encode($view->id);
-				
-			$view->userName = $postDBRow['user_name'];
-			$view->createdOn = Util::formatDBTime($postDBRow['created_on']);
+            $view->userPageURI = "/pub/user/".PseudoId::encode($postDBRow['login_id']);
+            $view->id = $postDBRow['id'];
+            $view->itemId = PseudoId::encode($view->id);
+                
+            $view->userName = $postDBRow['user_name'];
+            $view->createdOn = Util::formatDBTime($postDBRow['created_on']);
 
             $group_slug = $postDBRow['group_slug'];
             $groups = array();
@@ -172,13 +172,13 @@ namespace com\indigloo\sc\html {
             }else {
                 $view->hasGroups = false ;
             }
-		    	
-			if(sizeof($images) > 0) {
-				
-				$template = '/fragments/tile/image.tmpl' ;
-				/* image stuff */
-				$image = $images[0] ;
-				$view->bucket = $image->bucket;
+                
+            if(sizeof($images) > 0) {
+                
+                $template = '/fragments/tile/image.tmpl' ;
+                /* image stuff */
+                $image = $images[0] ;
+                $view->bucket = $image->bucket;
 
                 //show thumbnail
                 $view->originalName = 
@@ -186,46 +186,46 @@ namespace com\indigloo\sc\html {
                 $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? 'http://' : '/' ;
                 $fileName = (property_exists($image,'thumbnail')) ? $image->thumbnail : $image->storeName ;
 
-				$view->srcImage = $prefix.$image->bucket.'/'.$fileName;
-				$newxy = Util::foldX($image->width,$image->height,190);
-				$view->width = $newxy["width"];
-				$view->height = $newxy["height"];
-				
-				/* image stuff end */
-				$html = Template::render($template,$view);
-				
-			} else {
-				
-				$template = '/fragments/tile/text.tmpl' ;
-				$html = Template::render($template,$view);
-			}
-			
+                $view->srcImage = $prefix.$image->bucket.'/'.$fileName;
+                $newxy = Util::foldX($image->width,$image->height,190);
+                $view->width = $newxy["width"];
+                $view->height = $newxy["height"];
+                
+                /* image stuff end */
+                $html = Template::render($template,$view);
+                
+            } else {
+                
+                $template = '/fragments/tile/text.tmpl' ;
+                $html = Template::render($template,$view);
+            }
+            
             return $html ;
-			
+            
         }
 
-		static function getDetail($postDBRow) {
-			$html = NULL ;
-			
-			$view = new \stdClass;
-			$view->description = $postDBRow['description'];
-			
-				
-			$view->userName = $postDBRow['user_name'];
-			$view->createdOn = Util::formatDBTime($postDBRow['created_on']);
+        static function getDetail($postDBRow) {
+            $html = NULL ;
+            
+            $view = new \stdClass;
+            $view->description = $postDBRow['description'];
+            
+                
+            $view->userName = $postDBRow['user_name'];
+            $view->createdOn = Util::formatDBTime($postDBRow['created_on']);
             $view->loginId = $postDBRow['login_id'];
             $view->pubUserId = PseudoId::encode($view->loginId);
 
-			$template = '/fragments/post/detail.tmpl' ;
-			$html = Template::render($template,$view);
-			
-			return $html ;	
-		}
+            $template = '/fragments/post/detail.tmpl' ;
+            $html = Template::render($template,$view);
+            
+            return $html ;  
+        }
 
         static function getGroups($postDBRow) {
-			$html = NULL ;
-			
-			$view = new \stdClass;
+            $html = NULL ;
+            
+            $view = new \stdClass;
             $group_slug = $postDBRow['group_slug'];
             $groups = array();
 
@@ -245,38 +245,38 @@ namespace com\indigloo\sc\html {
             }
 
             $view->groups = $groups;
-			$template = '/fragments/post/group.tmpl' ;
-			$html = Template::render($template,$view);
-			
-			return $html ;	
-		}
+            $template = '/fragments/post/group.tmpl' ;
+            $html = Template::render($template,$view);
+            
+            return $html ;  
+        }
 
         static function getEditBar($gSessionLogin,$postDBRow){
-			$html = NULL ;
-			$template = '/fragments/post/edit-bar.tmpl' ;
+            $html = NULL ;
+            $template = '/fragments/post/edit-bar.tmpl' ;
 
-			$view = new \stdClass;
+            $view = new \stdClass;
             $view->isLoggedInUser = false ;
 
             $itemId = PseudoId::encode($postDBRow['id']);
             $params = array('id' => $itemId , 'q' => urlencode(Url::current()));
             $view->editUrl = Url::createUrl('/qa/edit.php',$params);
 
-			if(!is_null($gSessionLogin) && ($gSessionLogin->id == $postDBRow['login_id'])){
-				$view->isLoggedInUser = true ;
+            if(!is_null($gSessionLogin) && ($gSessionLogin->id == $postDBRow['login_id'])){
+                $view->isLoggedInUser = true ;
             } 
          
-			$html = Template::render($template,$view);
+            $html = Template::render($template,$view);
             return $html ;
 
         }
 
-		static function getWidget($postDBRow,$options=NULL) {
+        static function getWidget($postDBRow,$options=NULL) {
            
-			$html = NULL ;
+            $html = NULL ;
             $view = self::getWidgetView($postDBRow);
 
-			$template = ($view->hasImage) ? '/fragments/widget/image.tmpl' : '/fragments/widget/text.tmpl' ;
+            $template = ($view->hasImage) ? '/fragments/widget/image.tmpl' : '/fragments/widget/text.tmpl' ;
             if(is_null($options)) {
                 $options = UIConstants::WIDGET_EDIT | UIConstants::WIDGET_DELETE ;
             }
@@ -287,49 +287,49 @@ namespace com\indigloo\sc\html {
             $view->editUrl = Url::createUrl('/qa/edit.php',$params);
             $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
 
-			$html = Template::render($template,$view);
+            $html = Template::render($template,$view);
             return $html ;
-			
+            
         }
 
         static function getAdminWidget($postDBRow,$options) {
             //@todo login check 
            
-			$html = NULL ;
+            $html = NULL ;
             $view = self::getWidgetView($postDBRow);
 
-			$template = ($view->hasImage) ? '/fragments/widget/admin/image.tmpl' : '/fragments/widget/admin/text.tmpl' ;
+            $template = ($view->hasImage) ? '/fragments/widget/admin/image.tmpl' : '/fragments/widget/admin/text.tmpl' ;
             $params = array('id' => $view->itemId, 'q' => Url::current());
             $view->editUrl = Url::createUrl('/qa/edit.php',$params);
             $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
             $view->feature = ($postDBRow['is_feature'] == 0 ) ? true : false ;
             $view->unfeature = ($postDBRow['is_feature'] == 1 ) ? true : false ;
 
-			$html = Template::render($template,$view);
+            $html = Template::render($template,$view);
             return $html ;
-			
+            
         }
 
         static function getWidgetView($postDBRow) {
            
-			$imagesJson = $postDBRow['images_json'];
-			$images = json_decode($imagesJson);
-			
-			$view = new \stdClass;
-			$view->description = $postDBRow['description'];
-			$view->id = $postDBRow['id'];
-			$view->itemId = PseudoId::encode($view->id);
-			
-			$view->userName = $postDBRow['user_name'];
-			$view->createdOn = Util::formatDBTime($postDBRow['created_on']);
-            $view->hasImage = false ;	
-			
-			if(!empty($images) && (sizeof($images) > 0)) {
-				/* image stuff */
-			    $view->hasImage = true ;	
-				$image = $images[0] ;
-				
-				$view->bucket = $image->bucket;
+            $imagesJson = $postDBRow['images_json'];
+            $images = json_decode($imagesJson);
+            
+            $view = new \stdClass;
+            $view->description = $postDBRow['description'];
+            $view->id = $postDBRow['id'];
+            $view->itemId = PseudoId::encode($view->id);
+            
+            $view->userName = $postDBRow['user_name'];
+            $view->createdOn = Util::formatDBTime($postDBRow['created_on']);
+            $view->hasImage = false ;   
+            
+            if(!empty($images) && (sizeof($images) > 0)) {
+                /* image stuff */
+                $view->hasImage = true ;    
+                $image = $images[0] ;
+                
+                $view->bucket = $image->bucket;
 
                 //show thumbnail
                 $view->originalName = 
@@ -337,14 +337,14 @@ namespace com\indigloo\sc\html {
                 $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? 'http://' : '/' ;
                 $fileName = (property_exists($image,'thumbnail')) ? $image->thumbnail : $image->storeName ;
 
-				$view->srcImage = $prefix.$image->bucket.'/'.$fileName;
-				$newxy = Util::foldX($image->width,$image->height,190);
-				$view->width = $newxy["width"];
-				$view->height = $newxy["height"];
-				
-				/* image stuff end */
-			}
-			
+                $view->srcImage = $prefix.$image->bucket.'/'.$fileName;
+                $newxy = Util::foldX($image->width,$image->height,190);
+                $view->width = $newxy["width"];
+                $view->height = $newxy["height"];
+                
+                /* image stuff end */
+            }
+            
             return $view ;
         }
  

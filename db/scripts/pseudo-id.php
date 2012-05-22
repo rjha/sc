@@ -1,6 +1,6 @@
 <?php 
-	include('sc-app.inc');
-	include($_SERVER['APP_CLASS_LOADER']);
+    include('sc-app.inc');
+    include($_SERVER['APP_CLASS_LOADER']);
 
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Configuration as Config;

@@ -9,10 +9,10 @@
     use com\indigloo\Configuration as Config;
     use com\indigloo\ui\form\Message as FormMessage;
 
-	//do we already have a login?
-	if(\com\indigloo\sc\auth\Login::hasSession()) {
-		header("Location: / ");
-	}	
+    //do we already have a login?
+    if(\com\indigloo\sc\auth\Login::hasSession()) {
+        header("Location: / ");
+    }   
      
     //qUrl and fUrl
     $qUrl = Url::tryQueryParam("q");
@@ -25,7 +25,7 @@
    
     $fbAppId = Config::getInstance()->get_value("facebook.app.id");
 
-	$host = "http://".$_SERVER["HTTP_HOST"];
+    $host = "http://".$_SERVER["HTTP_HOST"];
     $fbCallback = $host."/callback/fb2.php" ;
     
     $fbDialogUrl = "https://www.facebook.com/dialog/oauth?client_id=".$fbAppId ;
@@ -41,9 +41,9 @@
          
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="/css/sc.css">
-		<script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-		
+        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
+        
         <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
 
 
@@ -57,28 +57,28 @@
             });
             
         </script>
-					
-							  
+                    
+                              
     </head>
 
      <body>
         
-		<div class="container mh800">
-			<div class="row">
-				<div class="span12">
-					<?php include($_SERVER['APP_WEB_DIR'] . '/inc/toolbar.inc'); ?>
-				</div> 
-			</div>
-			
-			<div class="row">
-				<div class="span12">
-					<?php include($_SERVER['APP_WEB_DIR'] . '/inc/banner.inc'); ?>
-				</div>
-			</div>
-			
-			
-			<div class="row">
-				<div class="span12">
+        <div class="container mh800">
+            <div class="row">
+                <div class="span12">
+                    <?php include($_SERVER['APP_WEB_DIR'] . '/inc/toolbar.inc'); ?>
+                </div> 
+            </div>
+            
+            <div class="row">
+                <div class="span12">
+                    <?php include($_SERVER['APP_WEB_DIR'] . '/inc/banner.inc'); ?>
+                </div>
+            </div>
+            
+            
+            <div class="row">
+                <div class="span12">
                     <div class="page-header">
                         <h2> Login Page </h2>
                     </div>

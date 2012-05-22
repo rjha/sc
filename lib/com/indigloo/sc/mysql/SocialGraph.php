@@ -45,11 +45,11 @@ namespace com\indigloo\sc\mysql {
             } else {
                 $code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
             }
-			
-			return $code ;
+            
+            return $code ;
         }
-	
-		
-	}
+    
+        
+    }
 }
 ?>

@@ -9,7 +9,7 @@
     use \com\indigloo\media\ImageUpload as ImageUpload;
     use \com\indigloo\media\FilePipe as FilePipe;
        
-	error_reporting(-1);
+    error_reporting(-1);
 
     $prefix = sprintf("%s/",date('Y/m/d')) ;
     $pipe = new \com\indigloo\media\FilePipe();

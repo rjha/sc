@@ -2,13 +2,13 @@
 namespace com\indigloo\sc\controller{
 
 
-	use \com\indigloo\Util as Util;
+    use \com\indigloo\Util as Util;
     use com\indigloo\Url;
-	use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\Configuration as Config ;
     use \com\indigloo\ui\Pagination as Pagination ;
     use \com\indigloo\sc\html\Seo as SeoData ;
   
-	
+    
     class Search {
         
         function process($params,$options) {
@@ -21,8 +21,8 @@ namespace com\indigloo\sc\controller{
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
             $total = $sphinx->getPostsCount($token);
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-            $pageSize =	50;
-            $paginator = new Pagination($qparams,$total,$pageSize);	
+            $pageSize = 50;
+            $paginator = new Pagination($qparams,$total,$pageSize); 
 
             $ids = $sphinx->getPagedPosts($token,$paginator);            
             $sphinx->close();

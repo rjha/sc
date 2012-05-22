@@ -7,7 +7,7 @@
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Configuration as Config;
        
-	error_reporting(-1);
+    error_reporting(-1);
 
     $iter = 40;
     $count = 0 ;

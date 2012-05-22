@@ -30,14 +30,14 @@ namespace com\indigloo\sc\html {
 
             }
 
-			$view = new \stdClass;
-			$template = '/fragments/ui/group/panel.tmpl' ;
+            $view = new \stdClass;
+            $template = '/fragments/ui/group/panel.tmpl' ;
 
             $view->records  = $records ;
             $view->total = sizeof($records);
             $view->step = 11 ;
 
-			$html = Template::render($template,$view);
+            $html = Template::render($template,$view);
             return $html ;
 
         }

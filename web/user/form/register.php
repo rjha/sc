@@ -3,7 +3,7 @@
     
     include 'sc-app.inc';
     include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
-	include($_SERVER['WEBGLOO_LIB_ROOT'] . '/ext/recaptchalib.php');
+    include($_SERVER['WEBGLOO_LIB_ROOT'] . '/ext/recaptchalib.php');
     require_once($_SERVER['WEBGLOO_LIB_ROOT']. '/ext/sendgrid-php/SendGrid_loader.php');
     
     use com\indigloo\ui\form as Form;
@@ -45,7 +45,7 @@
             $loginDao->create($fvalues['first_name'],
                                 $fvalues['last_name'],
                                 $fvalues['email'],
-								$fvalues['password']);
+                                $fvalues['password']);
            
             //success
             $gWeb->store(Constants::FORM_MESSAGES,array("Registration success! Please login."));

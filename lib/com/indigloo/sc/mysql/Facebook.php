@@ -14,17 +14,17 @@ namespace com\indigloo\sc\mysql {
         
         const MODULE_NAME = 'com\indigloo\sc\mysql\Facebook';
 
-		static function getOnFacebookId($facebookId) {
+        static function getOnFacebookId($facebookId) {
             //@todo check if facebook_id > 64 chars
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             //facebookId is string 
-			$facebookId = $mysqli->real_escape_string($facebookId);
-			$sql = " select * from sc_facebook where facebook_id = '%s' " ;
+            $facebookId = $mysqli->real_escape_string($facebookId);
+            $sql = " select * from sc_facebook where facebook_id = '%s' " ;
             $sql = sprintf($sql,$facebookId);
 
-			$row = MySQL\Helper::fetchRow($mysqli,$sql);
-			return $row ;
-		}
+            $row = MySQL\Helper::fetchRow($mysqli,$sql);
+            return $row ;
+        }
 
         /**
          * function to create a facebook user data in our system. we populate the following tables
@@ -39,7 +39,7 @@ namespace com\indigloo\sc\mysql {
          *  
          * 
          */
-		static function create($facebookId,$name,$firstName,$lastName,$link,$gender,$email,$provider){
+        static function create($facebookId,$name,$firstName,$lastName,$link,$gender,$email,$provider){
             
              try {
                 $sql1 = "insert into sc_login (provider,name,created_on) values(:provider,:name,now()) " ;
@@ -103,9 +103,9 @@ namespace com\indigloo\sc\mysql {
                 
             }
            
-		}
+        }
 
-	}
+    }
 }
 
 ?>

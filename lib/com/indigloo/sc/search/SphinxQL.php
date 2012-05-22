@@ -9,9 +9,9 @@ namespace com\indigloo\sc\search {
     
     class SphinxQL {
 
-		private $connx ;
+        private $connx ;
 
-		function __construct() {
+        function __construct() {
             //create connection
             $user = Config::getInstance()->get_value("mysql.user");
             $password = Config::getInstance()->get_value("mysql.password");

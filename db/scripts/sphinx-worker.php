@@ -1,8 +1,8 @@
 #!/usr/bin/php
 <?php 
 
-	include('sc-app.inc');
-	include($_SERVER['APP_CLASS_LOADER']);
+    include('sc-app.inc');
+    include($_SERVER['APP_CLASS_LOADER']);
     include($_SERVER['WEBGLOO_LIB_ROOT'] . '/com/indigloo/error.inc');
     require_once($_SERVER['WEBGLOO_LIB_ROOT']. '/ext/sendgrid-php/SendGrid_loader.php');
 

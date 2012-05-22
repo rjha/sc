@@ -1,37 +1,37 @@
 <?php
 namespace com\indigloo\sc\mysql {
 
-	use \com\indigloo\Util as Util ;
-	use \com\indigloo\mysql as MySQL;
+    use \com\indigloo\Util as Util ;
+    use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Logger ;
 
     use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException;
     
 
-	class Login {
+    class Login {
 
-		const MODULE_NAME = 'com\indigloo\sc\mysql\Login';
+        const MODULE_NAME = 'com\indigloo\sc\mysql\Login';
 
-		static function getOnId($loginId){
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+        static function getOnId($loginId){
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($loginId, "integer");
 
-			$sql = "select * from sc_login where id = %d " ;
+            $sql = "select * from sc_login where id = %d " ;
             $sql = sprintf($sql,$loginId);
-			$row = MySQL\Helper::fetchRow($mysqli,$sql);
-			return $row ;
+            $row = MySQL\Helper::fetchRow($mysqli,$sql);
+            return $row ;
 
-		}
+        }
 
         static function getLatest($limit){
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($limit, "integer");
             $sql = " select * from sc_login order by id desc limit %d ";
             $sql = sprintf($sql,$limit);
             
-			$rows = MySQL\Helper::fetchRows($mysqli,$sql);
-			return $rows ;
+            $rows = MySQL\Helper::fetchRows($mysqli,$sql);
+            return $rows ;
 
         }
 
@@ -42,7 +42,7 @@ namespace com\indigloo\sc\mysql {
          * sc_denorm_user (via a trigger)
          *
          */ 
-		static function create($provider,$userName,$firstName,$lastName,$email,$password){
+        static function create($provider,$userName,$firstName,$lastName,$email,$password){
             
             try {
 
@@ -72,12 +72,12 @@ namespace com\indigloo\sc\mysql {
                 $loginId = $dbh->lastInsertId();
                 settype($loginId, "integer");
                 $dbCode = \com\indigloo\auth\User::create('sc_user',
-								$firstName,
+                                $firstName,
                                 $lastName,
-								$userName,
+                                $userName,
                                 $email,
-								$password,
-								$loginId);
+                                $password,
+                                $loginId);
                 
                 if($dbCode > 0 ) {
                     $dbh->rollBack();
@@ -100,10 +100,10 @@ namespace com\indigloo\sc\mysql {
                 
             }
             
-		}
+        }
 
         static function getTotalCount($filters) {
-			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             $sql = " select count(id) as count from sc_login ";
             $q = new MySQL\Query($mysqli);
@@ -115,8 +115,8 @@ namespace com\indigloo\sc\mysql {
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 
-		}
+        }
 
-	}
+    }
 }
 ?>

@@ -8,11 +8,11 @@ namespace com\indigloo\sc\dao {
     
     class SelectBox {
 
-		function get($name) {
+        function get($name) {
             $rows = mysql\SelectBox::get($name);
             return $rows ;
-		}
-		
+        }
+        
         
     }
 

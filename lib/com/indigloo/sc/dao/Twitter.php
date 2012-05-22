@@ -8,14 +8,14 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\sc\mysql as mysql;
 
     class Twitter {
-		function getOrCreate($twitterId,$name,$screenName,$location,$image) {
-			$loginId = NULL ;
+        function getOrCreate($twitterId,$name,$screenName,$location,$image) {
+            $loginId = NULL ;
 
-			//is existing record?
+            //is existing record?
             $twitterId = trim($twitterId);
-			$row = $this->getOnTwitterId($twitterId); 
+            $row = $this->getOnTwitterId($twitterId); 
 
-			if(empty($row)){
+            if(empty($row)){
 
                 $message = sprintf("Login:Twitter:create :: id %s ,name %s, screenname %s \n",$twitterId,$name,$screenName); 
                 Logger::getInstance()->info($message);
@@ -24,21 +24,21 @@ namespace com\indigloo\sc\dao {
                 $loginId = mysql\Twitter::create($twitterId,$name,$screenName,$location,$image,$provider);
                 
 
-			} else {
-				//found
-				$loginId = $row['login_id'];
-			}
+            } else {
+                //found
+                $loginId = $row['login_id'];
+            }
 
-			return $loginId ;
+            return $loginId ;
 
-		}
+        }
 
-		function getOnTwitterId($twitterId) {
-			$row = mysql\Twitter::getOnTwitterId($twitterId);
-			return $row ;
-		}
+        function getOnTwitterId($twitterId) {
+            $row = mysql\Twitter::getOnTwitterId($twitterId);
+            return $row ;
+        }
         
-	}
+    }
 }
 
 ?>

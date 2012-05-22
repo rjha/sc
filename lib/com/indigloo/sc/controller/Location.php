@@ -2,13 +2,13 @@
 namespace com\indigloo\sc\controller{
 
 
-	use \com\indigloo\Util as Util;
+    use \com\indigloo\Util as Util;
     use \com\indigloo\Url;
-	use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\Configuration as Config ;
     use \com\indigloo\ui\Pagination as Pagination ;
     use \com\indigloo\sc\html\Seo as SeoData ;
   
-	
+    
     class Location {
         
         function process($params,$options) {
@@ -18,7 +18,7 @@ namespace com\indigloo\sc\controller{
 
             // our router discards the query part from a URL so the 
             // routing works with the query part as well (like /router/url?q1=x&q2=y
-			$token = Util::getArrayKey($params,"location");
+            $token = Util::getArrayKey($params,"location");
             if(is_null($token)) {
                 header("Location: / ");
             }
@@ -28,8 +28,8 @@ namespace com\indigloo\sc\controller{
             $total = $sphinx->getPostsCount($token);
 
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-            $pageSize =	50;
-            $paginator = new Pagination($qparams,$total,$pageSize);	
+            $pageSize = 50;
+            $paginator = new Pagination($qparams,$total,$pageSize); 
             $ids = $sphinx->getPagedPosts($token,$paginator);            
             $sphinx->close();
 
