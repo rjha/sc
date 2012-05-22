@@ -40,6 +40,16 @@ namespace com\indigloo\sc\dao {
             return $code ;
         }		
 
+        function getLatest($limit,$filters=array()) {
+            $rows = mysql\User::getLatest($limit,$filters);
+            return $rows ;
+        }
+
+        function getTotal($filters=array()) {
+			$row = mysql\User::getTotal($filters);
+            return $row['count'] ;
+        }
+
     }
 
 }

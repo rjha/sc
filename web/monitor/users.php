@@ -10,18 +10,18 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\ui\Filter as Filter;
     
-    $loginDao = new \com\indigloo\sc\dao\Login();
+    $userDao = new \com\indigloo\sc\dao\User();
     
     //past 24 hour filter
     $filters = array();
-    $model = new \com\indigloo\sc\model\Login();
+    $model = new \com\indigloo\sc\model\User();
     $filter = new Filter($model);
     $filter->add($model::CREATED_ON,Filter::GT,"24 HOUR");
     array_push($filters,$filter);
 
-    $ldLoginCount = $loginDao->getTotalCount($filters); 
-    $loginCount = $loginDao->getTotalCount(); 
-    $logins = $loginDao->getLatest(5);
+    $l24hTotal = $userDao->getTotal($filters); 
+    $total = $userDao->getTotal(); 
+    $userDBRows = $userDao->getLatest(20);
 
 ?>
 
@@ -35,6 +35,7 @@
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="/css/sc.css">
+
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
         
@@ -70,14 +71,9 @@
             <div class="row">
                 <div class="span9">
                     
-                    <ol>
-                        <li> Users in last 24 HR : <?php echo $ldLoginCount; ?> </li>
-                    </ol>
+                    <h3> Latest 20 / Total <?php echo $total; ?> / Last 24 HR <?php echo $l24hTotal; ?>   </h3>
+                    <?php echo \com\indigloo\sc\html\User::getTable($userDBRows); ?> 
 
-                    <h3> Latest Users </h3>
-                    <?php echo \com\indigloo\sc\html\Login::getList($logins); ?>
-
-                   
                 </div>
                 <div class="span3"> </div>
             </div>

@@ -39,6 +39,30 @@ namespace com\indigloo\sc\mysql {
             return $row;
 		}
 
+        static function getLatest($limit,$filters) {
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            settype($limit,"integer");
+            $sql = " select * from sc_denorm_user " ;
+            $sql .= " order by id desc LIMIT %d " ;
+            $sql = sprintf($sql,$limit);
+			$rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+		
+		}
+		
+		static function getTotal($filters) {
+			$mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = " select count(id) as count from sc_denorm_user ";
+
+            $q = new MySQL\Query($mysqli);
+            $q->filter($filters);
+            $condition = $q->get();
+
+            $sql .= $condition ;
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+		}
+
 		static function update($loginId,$firstName,$lastName,$nickName,$email,
                                 $website,$blog,$location,$age,$photoUrl,$aboutMe) {
 			$code = MySQL\Connection::ACK_OK;

@@ -132,6 +132,15 @@ namespace com\indigloo\sc\html {
             return $html ;
 
         }
+
+       	static function getTable($rows) {
+		    $html = NULL ;
+			$template = '/fragments/user/table.tmpl' ;
+			$view = new \stdClass;
+            $view->rows = $rows ;
+			$html = Template::render($template,$view);
+            return $html ;
+		}
 		
     }
     
