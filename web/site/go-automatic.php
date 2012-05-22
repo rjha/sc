@@ -46,7 +46,7 @@
 					
 					<div class="well">
 						<p class="help-text">
-                            <a class="btn btn-inverse" href="<?php echo $goUrl; ?>"><?php echo $goText; ?> </a>
+                            <a class="btn btn-large" href="<?php echo $goUrl; ?>"><?php echo $goText; ?> </a>
 						</p>   
 					</div>
 
