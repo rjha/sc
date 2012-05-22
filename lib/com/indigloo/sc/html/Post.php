@@ -287,14 +287,12 @@ namespace com\indigloo\sc\html {
             $view->editUrl = Url::createUrl('/qa/edit.php',$params);
             $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
 
-            //$view->hasFeature = ($options & UIConstants::WIDGET_FEATURE) && !($postDBRow['is_feature']) ;
-            //$view->hasUnfeature = ($options & UIConstants::WIDGET_FEATURE) && ($postDBRow['is_feature']) ;
 			$html = Template::render($template,$view);
             return $html ;
 			
         }
 
-        static function getAdminWidget($postDBRow) {
+        static function getAdminWidget($postDBRow,$options) {
             //@todo login check 
            
 			$html = NULL ;
@@ -304,7 +302,8 @@ namespace com\indigloo\sc\html {
             $params = array('id' => $view->itemId, 'q' => Url::current());
             $view->editUrl = Url::createUrl('/qa/edit.php',$params);
             $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
-            //@todo - add more URL
+            $view->feature = ($postDBRow['is_feature'] == 0 ) ? true : false ;
+            $view->unfeature = ($postDBRow['is_feature'] == 1 ) ? true : false ;
 
 			$html = Template::render($template,$view);
             return $html ;

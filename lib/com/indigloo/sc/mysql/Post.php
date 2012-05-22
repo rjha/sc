@@ -324,11 +324,11 @@ namespace com\indigloo\sc\mysql {
 			return $code ;
 		}
 
-        static function setFeature($loginId,$strIds,$value){
+        static function setFeature($loginId,$postId,$value){
 			$mysqli = MySQL\Connection::getInstance()->getHandle();
 
-            $strIds = $mysqli->real_escape_string($strIds);
             settype($loginId,"integer");
+            settype($postId,"integer");
             settype($value,"integer");
 
             //operation needs admin privileges
@@ -337,13 +337,9 @@ namespace com\indigloo\sc\mysql {
                 trigger_error("User does not have admin rights", E_USER_ERROR);
             }
 
-            $sql = " update sc_post set is_feature = %d where ID IN (%s)" ;
-            $sql = sprintf($sql,$value,$strIds);
-
-            $code = MySQL\Connection::ACK_OK;
+            $sql = " update sc_post set is_feature = %d where ID = %d " ;
+            $sql = sprintf($sql,$value,$postId);
             MySQL\Helper::executeSQL($mysqli,$sql);
-            return $code ;
-            
 		}
 
 	}

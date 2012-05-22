@@ -185,6 +185,36 @@ webgloo.sc.SimplePopup = {
 }
 
 webgloo.sc.item = {
+    addAdminActions : function() {
+        //feature posts
+        $("a.feature-post-link").click(function(event){
+            event.preventDefault();
+            var dataObj = {}
+            dataObj.postId  = $(this).attr("id");
+            dataObj.action = "ADD" ;
+            var targetUrl = "/monitor/ajax/feature.php";
+            //open popup
+            var options = {};
+            options.dataType = "json" ;
+            webgloo.sc.SimplePopup.init(options);
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
+        }) ;
+
+        //feature posts
+        $("a.unfeature-post-link").click(function(event){
+            event.preventDefault();
+            var dataObj = {}
+            dataObj.postId  = $(this).attr("id");
+            dataObj.action = "REMOVE" ;
+            var targetUrl = "/monitor/ajax/feature.php";
+            //open popup
+            var options = {};
+            options.dataType = "json" ;
+            webgloo.sc.SimplePopup.init(options);
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
+        }) ;
+
+    },
     addActions : function() {
         //add like & save callbacks
         $("a.like-post-link").click(function(event){

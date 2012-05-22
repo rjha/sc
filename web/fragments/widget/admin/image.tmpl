@@ -1,0 +1,46 @@
+<div class="widget">
+    
+	<div class="row">
+		<div class="span7">
+
+			<div class="photo">
+				<a href="/item/~~$view->itemId~"> <img src="~~$view->srcImage~" class="alignleft" width="~~$view->width~" height="~~$view->height~" title="~~$view->originalName~"  alt="~~$view->originalName~"/> </a> 
+
+			</div>
+			<p>
+				~~$view->description~
+			</p>
+            <div class="options">
+                 <div class="links">
+                    <a href="~~$view->editUrl~">Edit</a>
+                    &nbsp;|&nbsp;
+                    <a href="~~$view->deleteUrl~">Delete</a>
+                    ~if($view->feature){~
+                        &nbsp;|&nbsp;
+                        <a id="~~$view->id~" class ="feature-post-link" href="">Feature</a>&nbsp;
+                    ~}~
+                    ~if($view->unfeature){~
+                        &nbsp;|&nbsp;
+                        <a id="~~$view->id~" class ="unfeature-post-link" href="">Unfeature</a>&nbsp;
+                    ~}~            
+        
+                </div>
+            </div>
+
+		</div> <!-- span7-->
+		<div class="span2">
+
+			<div class="author p10">
+				<div class="meta">
+					<span class="b">~~$view->createdOn~ </span>
+				</div>	
+				<div id="ajax-feedback-~~$view->id~" class="meta">
+					<span class="badge badge-warning">&nbsp; </span>
+				</div>	
+			</div>
+			
+		</div> <!-- span2-->
+        
+	</div> <!-- row -->
+    
+</div>

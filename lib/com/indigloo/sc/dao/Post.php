@@ -10,6 +10,9 @@ namespace com\indigloo\sc\dao {
     
     class Post {
 
+        const FEATURE_POST = 1 ;
+        const UNFEATURE_POST = 2 ;
+
 		function getOnId($postId) {
 			$row = mysql\Post::getOnId($postId);
 			return $row ;
@@ -138,27 +141,21 @@ namespace com\indigloo\sc\dao {
             return $code ;
         }
 
-        function doAdminAction($strIds,$action){
+        function doAdminAction($postId,$action){
             $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
-            $data = array('code' => 0);
 
             switch($action) {
-            case 'delete' :
-                //do nothing till we fix the interface
-                break;
-            case 'add-feature' :
-                $code = mysql\Post::setFeature($loginId,$strIds,1);
-                $data["code"] = $code ;
-                break;
-            case 'remove-feature' :
-                $code = mysql\Post::setFeature($loginId,$strIds,0);
-                $data["code"] = $code ;
-                break;
-            default:
-                break;
+                case self::FEATURE_POST :
+                    $code = mysql\Post::setFeature($loginId,$postId,1);
+                    break;
+                case self::UNFEATURE_POST :
+                    $code = mysql\Post::setFeature($loginId,$postId,0);
+                    break;
+                default:
+                    break;
             }
 
-            return $data ;
+            return $code ;
         }
 
 
