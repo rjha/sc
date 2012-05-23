@@ -23,6 +23,7 @@
     $stoken = Util::getMD5GUID();
     $gWeb->store("mik_state_token",$stoken);
    
+    //Facebook OAuth2
     $fbAppId = Config::getInstance()->get_value("facebook.app.id");
 
     $host = "http://".$_SERVER["HTTP_HOST"];
@@ -31,11 +32,11 @@
     $fbDialogUrl = "https://www.facebook.com/dialog/oauth?client_id=".$fbAppId ;
     $fbDialogUrl .= "&redirect_uri=".urlencode($fbCallback)."&scope=email&state=".$stoken ;
     
-    $googleClientId = "656879161784-juimtmbmnb5qpn88r6inrcv8cb4o6lvh.apps.googleusercontent.com" ;
+    //Google OAuth2 
+    $googleClientId = Config::getInstance()->get_value("google.client.id");
     $googleCallback = "http://mint.3mik.com/callback/google2.php" ;
     
     $googleAuthUrl  = "https://accounts.google.com/o/oauth2/auth?scope=" ;
-    
     //space delimited scope
     $googleScope =  "https://www.googleapis.com/auth/userinfo.email" ;
     $googleScope =   $googleScope.Constants::SPACE."https://www.googleapis.com/auth/userinfo.profile" ;
@@ -46,7 +47,6 @@
     $googleAuthUrl .= "&response_type=code" ;
     $googleAuthUrl .= "&redirect_uri=".urlencode($googleCallback) ;
     
-    
 ?>  
 
 <!DOCTYPE html>
@@ -56,11 +56,14 @@
         <?php include($_SERVER['APP_WEB_DIR'] . '/inc/meta.inc'); ?>
          
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="/3p/zocial/css/zocial.css">
         <link rel="stylesheet" type="text/css" href="/css/sc.css">
+        
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
         
         <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
+
 
 
         <script type="text/javascript">
@@ -95,19 +98,16 @@
             
             <div class="row">
                 <div class="span12">
-                    <div class="page-header">
-                        <h2> Login Page </h2>
-                    </div>
-                    <div class="p20">
-                        <?php FormMessage::render(); ?>
-                    </div>
+                    <div class="page-header"> <h2> Login Page </h2> </div>  
+                    <div class="p10"> <?php FormMessage::render(); ?> </div>
                 </div>
-            </div>
+            </div> <!-- row -->
+            
             <div class="row">
                 <div class="span7">
                   <div id="mik-login-wrapper">
-                   <h3> You can login with 3mik.com account </h3>
-                         No 3mik.com account? <a href="/user/register.php"> Register for a new account</a> (Free and takes just 30 seconds!)
+                   <h3> You can login with 3mik account </h3>
+                        <a href="/user/register.php"> Register for a new 3mik account</a> (Free and takes just 30 seconds!)
                       
                         <form id="web-form1"  name="web-form1" action="/user/form/login.php" enctype="multipart/form-data"  method="POST">
                             <div class="error">    </div>
@@ -146,26 +146,29 @@
                    </div> 
                     
                 </div> <!-- span51 -->
-                <div class="span5">
-                    <div id="social-login-wrapper">
-                     <div class="row">
+                <div class="span4 social-buttons p20">
+                    <div class="row"> 
                        <h3> - OR - </h3>
-                       <div class="span5">
-                           <div class="facebook-login">
-                               <a href="<?php echo $fbDialogUrl; ?>"> Login with Facebook</a>
-                            </div>
+                    </div> <!-- row1 -->
+                    <div class="row"> 
+                        <div class="zocial facebook mt10">
+                               <a href="<?php echo $fbDialogUrl; ?>">Login with Facebook</a>
                         </div>
-                    </div>
+                    </div> <!-- row2 -->
+                    
                     <div class="row">
-                        <div class="span5">
-                            <div class="twitter-login">
-                                <a href="<?php echo $googleAuthUrl; ?>">Login with Google</a> 
-                            </div>
+                        <div class="zocial google mt10">
+                            <a href="<?php echo $googleAuthUrl; ?>">Login with Google</a>&nbsp;&nbsp;
                         </div>
-                    </div> <!-- row -->
-                 </div> <!-- wrapper -->
-                </div> <!-- span51 -->
-            </div>
+                    </div> <!-- row3 -->
+                     <div class="row">
+                        <div class="zocial twitter mt10">
+                            <a href="/user/twitter-login.php">Login with Twitter</a>&nbsp; 
+                        </div>
+                    </div> <!-- row3 -->
+                 
+                </div> <!-- span4 -->
+            </div> <!-- row -->
            
        </div> <!-- container -->
                         

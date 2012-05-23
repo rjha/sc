@@ -14,9 +14,9 @@
     use com\indigloo\ui\form\Message as FormMessage ;
     use \com\indigloo\sc\auth\Login as Login ;
     
-   
-    $clientSecret = "qnG3X4MlzENjbwZBooLrNTi8" ;
-    $googleClientId = "656879161784-juimtmbmnb5qpn88r6inrcv8cb4o6lvh.apps.googleusercontent.com" ;
+    
+    $googleClientId = Config::getInstance()->get_value("google.client.id");
+    $clientSecret = Config::getInstance()->get_value("google.client.secret");
     $googleCallback = "http://mint.3mik.com/callback/google2.php" ;
     
     $error = NULL ;
@@ -71,6 +71,7 @@
         }
         rtrim($fields, '&');
         
+        //get acces token
         $url = "https://accounts.google.com/o/oauth2/token" ;
         $post = curl_init();
  
@@ -80,7 +81,6 @@
         curl_setopt($post, CURLOPT_RETURNTRANSFER, 1);
       
         $response = curl_exec($post);
-      
         curl_close($post);
         
         //parse response as JSON Object
@@ -107,7 +107,6 @@
         }
         
         processUser($user);
-
         
     }
     else {
@@ -115,7 +114,7 @@
         trigger_error($message,E_USER_ERROR);
     }
 
-     function processUser($user) {
+    function processUser($user) {
         
         $id = $user->id;
         
@@ -126,12 +125,12 @@
         $lastName = property_exists($user,'family_name') ? $user->family_name : '';
         $photo = property_exists($user,'picture') ? $user->picture : '';
         
-        // we consider auth to be good enough for a user
+        // we consider id + auth to be good enough for a user
         if(empty($name) && empty($firstName)) {
             $name = "Anonymous" ;
         }
 
-        $message = sprintf("Login: Google :: id %d ,email %s \n",$id,$email); 
+        $message = sprintf("Login:Google :: id %d ,email %s ",$id,$email); 
         Logger::getInstance()->info($message);
 
         $googleDao = new \com\indigloo\sc\dao\Google();

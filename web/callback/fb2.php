@@ -100,7 +100,7 @@
             $name = "Anonymous" ;
         }
 
-        $message = sprintf("Login:Facebook :: id %d ,email %s \n",$id,$email); 
+        $message = sprintf("Login:Facebook :: id %d ,email %s ",$id,$email); 
         Logger::getInstance()->info($message);
 
         $facebookDao = new \com\indigloo\sc\dao\Facebook();
