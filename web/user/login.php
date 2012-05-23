@@ -34,7 +34,7 @@
     
     //Google OAuth2 
     $googleClientId = Config::getInstance()->get_value("google.client.id");
-    $googleCallback = "http://mint.3mik.com/callback/google2.php" ;
+    $googleCallback = $host. "/callback/google2.php" ;
     
     $googleAuthUrl  = "https://accounts.google.com/o/oauth2/auth?scope=" ;
     //space delimited scope

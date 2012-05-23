@@ -14,10 +14,10 @@
     use com\indigloo\ui\form\Message as FormMessage ;
     use \com\indigloo\sc\auth\Login as Login ;
     
-    
+    $host = "http://".$_SERVER["HTTP_HOST"];
     $googleClientId = Config::getInstance()->get_value("google.client.id");
     $clientSecret = Config::getInstance()->get_value("google.client.secret");
-    $googleCallback = "http://mint.3mik.com/callback/google2.php" ;
+    $googleCallback = $host. "/callback/google2.php" ;
     
     $error = NULL ;
     if(array_key_exists('error',$_REQUEST)) {
