@@ -1161,7 +1161,6 @@ DELIMITER ;
 
 -- 
 -- 22 may 2012
--- @next push
 -- 
 
 
@@ -1184,7 +1183,40 @@ DELIMITER //
 DELIMITER ;
 
 
+--
+-- 23 may
+-- @next push
+--
 
+alter table sc_facebook modify column facebook_id varchar(64) not null ;
+alter table sc_twitter modify column twitter_id varchar(64) not null ;
+
+
+DROP TABLE IF EXISTS  sc_google_user ;
+CREATE TABLE  sc_google_user  (
+   id  int(11) NOT NULL AUTO_INCREMENT,
+   google_id  varchar(64) NOT NULL,
+   login_id  int(11) NOT NULL,
+   name  varchar(64) NOT NULL,
+   first_name  varchar(32) ,
+   last_name  varchar(32) ,
+   photo  varchar(128) ,
+   email  varchar(64) ,
+   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY ( id ),
+  UNIQUE KEY  uniq_id  ( google_id )
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+
+DELIMITER //
+CREATE TRIGGER trg_google_user_cp  BEFORE INSERT ON sc_google_user
+    FOR EACH ROW
+    BEGIN
+        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,photo_url,created_on) 
+        values(NEW.login_id,NEW.name,NEW.first_name,NEW.last_name,NEW.email, 'google', NEW.photo,now()) ;
+    END //
+DELIMITER ;
 
 
 

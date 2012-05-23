@@ -21,7 +21,7 @@
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     $stoken = Util::getMD5GUID();
-    $gWeb->store("fb_state",$stoken);
+    $gWeb->store("mik_state_token",$stoken);
    
     $fbAppId = Config::getInstance()->get_value("facebook.app.id");
 
@@ -30,6 +30,22 @@
     
     $fbDialogUrl = "https://www.facebook.com/dialog/oauth?client_id=".$fbAppId ;
     $fbDialogUrl .= "&redirect_uri=".urlencode($fbCallback)."&scope=email&state=".$stoken ;
+    
+    $googleClientId = "656879161784-juimtmbmnb5qpn88r6inrcv8cb4o6lvh.apps.googleusercontent.com" ;
+    $googleCallback = "http://mint.3mik.com/callback/google2.php" ;
+    
+    $googleAuthUrl  = "https://accounts.google.com/o/oauth2/auth?scope=" ;
+    
+    //space delimited scope
+    $googleScope =  "https://www.googleapis.com/auth/userinfo.email" ;
+    $googleScope =   $googleScope.Constants::SPACE."https://www.googleapis.com/auth/userinfo.profile" ;
+    $googleAuthUrl .= urlencode($googleScope);
+    
+    $googleAuthUrl .= "&client_id=".$googleClientId ;
+    $googleAuthUrl .= "&state=".$stoken ;
+    $googleAuthUrl .= "&response_type=code" ;
+    $googleAuthUrl .= "&redirect_uri=".urlencode($googleCallback) ;
+    
     
 ?>  
 
@@ -143,7 +159,7 @@
                     <div class="row">
                         <div class="span5">
                             <div class="twitter-login">
-                                <a href="/user/twitter-login.php">Login with Twitter</a> 
+                                <a href="<?php echo $googleAuthUrl; ?>">Login with Google</a> 
                             </div>
                         </div>
                     </div> <!-- row -->

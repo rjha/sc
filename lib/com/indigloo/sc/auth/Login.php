@@ -18,8 +18,10 @@ namespace com\indigloo\sc\auth {
         const MIK = "3mik" ;
         const FACEBOOK = "facebook" ;
         const TWITTER = "twitter" ;
-
+        const GOOGLE = "google" ;
+         
         static function startMikSession() {
+            
             if (isset($_SESSION) && isset($_SESSION[WebglooUser::USER_TOKEN])) {
                 $mikUser = $_SESSION[WebglooUser::USER_DATA];
 
@@ -45,25 +47,15 @@ namespace com\indigloo\sc\auth {
     
         }
 
-        static function startTwitterSession($loginId,$name) {
-            $userDao = new \com\indigloo\sc\dao\User();
-            $userDBRow = $userDao->getOnLoginId($loginId); 
-            
-            //fetch name from sc_denorm_user table
-            $_SESSION[self::LOGIN_ID] = $loginId;
-            $_SESSION[self::NAME] = $userDBRow['name'];
-            $_SESSION[self::PROVIDER] = self::TWITTER;
-            $_SESSION[self::TOKEN] = Util::getBase36GUID();
-        }
-
-        static function startFacebookSession($loginId,$name) {
+        
+        static function startOAuth2Session($loginId,$name,$provider) {
             $userDao = new \com\indigloo\sc\dao\User();
             $userDBRow = $userDao->getOnLoginId($loginId); 
 
             //fetch name from sc_denorm_user table
             $_SESSION[self::LOGIN_ID] = $loginId;
             $_SESSION[self::NAME] = $userDBRow['name'];
-            $_SESSION[self::PROVIDER] = self::FACEBOOK;
+            $_SESSION[self::PROVIDER] = $provider;
             $_SESSION[self::TOKEN] = Util::getBase36GUID();
         }
 
@@ -116,6 +108,7 @@ namespace com\indigloo\sc\auth {
             }
 
             return $loginId ;
+            
         }
 
         static function isOwner($loginId) {

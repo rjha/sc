@@ -10,7 +10,8 @@
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\Configuration as Config ;
     use com\indigloo\Constants as Constants;
-
+    use \com\indigloo\sc\auth\Login as Login ;
+    
     function clearSession() {
         unset($_SESSION['oauth_token']);
         unset($_SESSION['oauth_token_secret']);
@@ -83,8 +84,8 @@
             if(empty($loginId)) {
                 trigger_error("Not able to create login for twitter user",E_USER_ERROR);
             }
-
-            \com\indigloo\sc\auth\Login::startTwitterSession($loginId,$name);
+            
+            Login::startOAuth2Session($loginId,$name,Login::TWITTER);
             header("Location: / ");
             
         }

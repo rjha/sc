@@ -12,6 +12,7 @@
     use com\indigloo\Configuration as Config;
     use com\indigloo\Logger as Logger;
     use com\indigloo\ui\form\Message as FormMessage ;
+    use \com\indigloo\sc\auth\Login as Login ;
     
     $fbAppId = Config::getInstance()->get_value("facebook.app.id");
     $fbAppSecret = Config::getInstance()->get_value("facebook.app.secret");
@@ -35,7 +36,7 @@
     if(empty($code) && empty($error)) {
         //new state token
         $stoken = Util::getMD5GUID();
-        $gWeb->store("fb_state",$stoken);
+        $gWeb->store("mik_state_token",$stoken);
         
         $fbDialogUrl = "http://www.facebook.com/dialog/oauth?client_id=" .$fbAppId;
         $fbDialogUrl .= "&redirect_uri=" . urlencode($fbCallback) ."&scope=email&state=".$stoken;
@@ -44,7 +45,7 @@
     }
 
     //last state token
-    $stoken = $gWeb->find('fb_state',true);
+    $stoken = $gWeb->find('mik_state_token',true);
     
     if(!empty($code) && ($_REQUEST['state'] == $stoken)) {
     
@@ -56,30 +57,43 @@
         $response = file_get_contents($fbTokenUrl);
         $params = null;
         parse_str($response, $params);
+        
+        if(!is_array($params) && !array_key_exists("access_token",$params)) {
+             $message = "Could not retrieve access token from Facebook";
+             trigger_error($message,E_USER_ERROR);
+        }
 
         $graph_url = "https://graph.facebook.com/me?access_token=".$params['access_token'];
         $user = json_decode(file_get_contents($graph_url));
+        
+        if(!property_exists($user,'id')) {
+            trigger_error("No facebook_id in graph API response", E_USER_ERROR);
+        }
+        
         processUser($user);
-
 
     }
     else {
-        $message = "The state on 3mik.com and Faceboo do not match. You may be a victim of CSRF.";
+        $message = "Facebook returned a different state token. Please try again.";
         trigger_error($message,E_USER_ERROR);
     }
 
     function processUser($user) {
         // exisitng record ? find on facebook_id
         // New record - create login + facebook record
-        // start login session  
+        // start login session
+        
         $id = $user->id;
-        $name = $user->name;
-        $firstName = $user->first_name ;
-        $lastName = $user->last_name ;
-        $link = $user->link ;
-        $gender = $user->gender ;
-        $email = $user->email ;
-
+        
+        //rest of the properties may be missing
+        $email = property_exists($user,'email') ? $user->email : '';
+        $name = property_exists($user,'name') ? $user->name : '';
+        $firstName = property_exists($user,'first_name') ? $user->first_name : '';
+        $lastName = property_exists($user,'last_name') ? $user->last_name : '';
+        $link = property_exists($user,'link') ? $user->link : '';
+        $gender = property_exists($user,'gender') ? $user->gender : '';
+        
+   
         // do not what facebook will return
         // we consider auth to be good enough for a user
         if(empty($name) && empty($firstName)) {
@@ -92,12 +106,11 @@
         $facebookDao = new \com\indigloo\sc\dao\Facebook();
         $loginId = $facebookDao->getOrCreate($id,$name,$firstName,$lastName,$link,$gender,$email);
 
-
         if(empty($loginId)) {
             trigger_error("Not able to create login for facebook user",E_USER_ERROR);
         }
-
-        \com\indigloo\sc\auth\Login::startFacebookSession($loginId,$name);
+        
+        Login::startOAuth2Session($loginId,$name,Login::FACEBOOK);
         header("Location: / ");
     }
 
