@@ -37,7 +37,7 @@ namespace com\indigloo\sc\mysql {
          *  
          * 
          */
-        static function create($googleId,$email,$name,$firstName,$lastName,$photo){
+        static function create($googleId,$email,$name,$firstName,$lastName,$photo,$provider){
             
              try {
                 $sql1 = "insert into sc_login (provider,name,created_on) values(:provider,:name,now()) " ;

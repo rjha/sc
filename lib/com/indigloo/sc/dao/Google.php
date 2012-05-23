@@ -16,9 +16,12 @@ namespace com\indigloo\sc\dao {
             $row = $this->getOnId($googleId); 
 
             if(empty($row)){
-                $message = sprintf("Login::Google:: create id %s, email %s \n",$googleId,$email);
+                $message = sprintf("Login::Google::create id %s, email %s ",$googleId,$email);
                 Logger::getInstance()->info($message);
-                $loginId = mysql\Google::create($googleId,$email,$name,$firstName,$lastName,$photo) ;
+                
+                $provider = \com\indigloo\sc\auth\Login::GOOGLE ;
+                $loginId = mysql\Google::create($googleId,$email,$name,$firstName,
+                                                $lastName,$photo,$provider) ;
                                         
             } else {
                 //found
