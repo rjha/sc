@@ -13,6 +13,7 @@ namespace com\indigloo\sc\mysql {
         static function find($loginId,$itemId,$action) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
+            //sanitize input 
             settype($loginId,"integer");
             settype($itemId,"integer");
             settype($action,"integer");
@@ -28,7 +29,9 @@ namespace com\indigloo\sc\mysql {
         static function getLatest($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
+            //sanitize input 
             settype($limit,"integer");
+
             $sql = " select q.* , l.name as user_name from sc_post q, sc_user_bookmark b, sc_login l " ;
 
             $q = new MySQL\Query($mysqli);
@@ -59,8 +62,10 @@ namespace com\indigloo\sc\mysql {
         static function getPaged($start,$direction,$limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
+            //sanitize input 
             settype($start,"integer");
             settype($limit,"integer");
+            $direction = $mysqli->real_escape_string($direction);
 
             $sql = " select q.* , l.name as user_name from sc_post q, sc_user_bookmark b, sc_login l " ;
 
@@ -85,7 +90,10 @@ namespace com\indigloo\sc\mysql {
 
         static function getOnLoginId($loginId,$action) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input 
             settype($loginId,"integer");
+            settype($action,"integer");
             
             $sql = " select q.* , l.name as user_name " ;
             $sql .= " from sc_post q, sc_user_bookmark b, sc_login l " ;

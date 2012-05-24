@@ -10,6 +10,8 @@ namespace com\indigloo\sc\mysql {
         
         static function getMediaOnPostId($postId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             settype($postId,"integer");
 
             $sql = " select * from sc_media where post_id = %d " ;
@@ -20,6 +22,8 @@ namespace com\indigloo\sc\mysql {
         
         static function deleteOnId($mediaId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             settype($mediaId,"integer");
             
             

@@ -22,6 +22,8 @@ namespace com\indigloo\sc\mysql {
 
         static function getCodeOnId($categoryId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input 
             settype($categoryId,"integer");
 
             $sql = "select code from sc_list where name = 'CATEGORY' and ui_order = ".$categoryId ;
@@ -33,6 +35,8 @@ namespace com\indigloo\sc\mysql {
 
         static function getName($code) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input 
             $code = $mysqli->real_escape_string($code);
 
             $sql = "select display as name from sc_list where name = 'CATEGORY' and code ='".$code. "' " ;
@@ -44,6 +48,8 @@ namespace com\indigloo\sc\mysql {
         static function getLatest($code,$limit) {
             
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input 
             $code = $mysqli->real_escape_string($code);
             settype($limit,"integer");
 
@@ -58,6 +64,8 @@ namespace com\indigloo\sc\mysql {
 
         static function getTotalCount($code) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input 
             $code = $mysqli->real_escape_string($code);
 
             $sql = " select count(id) as count from sc_post where cat_code = '%s' " ;

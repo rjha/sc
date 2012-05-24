@@ -15,10 +15,15 @@ namespace com\indigloo\sc\mysql {
         const MODULE_NAME = 'com\indigloo\sc\mysql\Facebook';
 
         static function getOnFacebookId($facebookId) {
-            //@todo check if facebook_id > 64 chars
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
             //facebookId is string 
+            //sanitize input 
             $facebookId = $mysqli->real_escape_string($facebookId);
+            if(strlen($facebookId) > 64 ) {
+                trigger_error("Facebook id is longer than 64 chars",E_USER_ERROR);
+            }
+
             $sql = " select * from sc_facebook where facebook_id = '%s' " ;
             $sql = sprintf($sql,$facebookId);
 

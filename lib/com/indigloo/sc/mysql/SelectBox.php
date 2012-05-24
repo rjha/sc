@@ -11,10 +11,12 @@ namespace com\indigloo\sc\mysql {
         static function get($name) {
             
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             $name = $mysqli->real_escape_string($name);
+
             $sql = " select * from sc_list where name = '%s' order by ui_order ASC " ;
             $sql = sprintf($sql,$name);
-            
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows ;
             

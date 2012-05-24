@@ -13,6 +13,7 @@ namespace com\indigloo\sc\mysql {
         static function checkFollower($followerId, $followingId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
+            //sanitize input
             settype($followerId,"integer");
             settype($followingId,"integer");
             

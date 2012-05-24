@@ -11,6 +11,8 @@ namespace com\indigloo\sc\mysql {
 
         static function getOnId($userId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             settype($userId,"integer");
             
             $sql = " select * from sc_denorm_user where id = %d " ;
@@ -21,6 +23,8 @@ namespace com\indigloo\sc\mysql {
 
         static function getOnEmail($email) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             $email = $mysqli->real_escape_string($email);
             
             $sql = " select * from sc_denorm_user where email = '%s' " ;
@@ -31,6 +35,8 @@ namespace com\indigloo\sc\mysql {
 
         static function getOnLoginId($loginId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             settype($loginId,"integer");
             
             $sql = " select * from sc_denorm_user where login_id = %d " ;
@@ -41,7 +47,10 @@ namespace com\indigloo\sc\mysql {
 
         static function getLatest($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             settype($limit,"integer");
+
             $sql = " select * from sc_denorm_user " ;
             $sql .= " order by id desc LIMIT %d " ;
             $sql = sprintf($sql,$limit);

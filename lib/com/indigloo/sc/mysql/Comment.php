@@ -12,6 +12,7 @@ namespace com\indigloo\sc\mysql {
 
         static function getOnPostId($postId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+            //sanitize input 
             settype($postId,"integer");
 
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
@@ -25,6 +26,7 @@ namespace com\indigloo\sc\mysql {
         static function getOnId($commentId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
+            //sanitize input 
             settype($commentId,"integer");
             
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l ";
@@ -36,6 +38,7 @@ namespace com\indigloo\sc\mysql {
         
         static function getLatest($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+            //sanitize input 
             settype($limit,"integer");
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
 
@@ -70,8 +73,10 @@ namespace com\indigloo\sc\mysql {
         static function getPaged($start,$direction,$limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
+            //sanitize input 
             settype($start,"integer");
             settype($limit,"integer");
+            $direction = $mysqli->real_escape_string($direction);
 
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
 

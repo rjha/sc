@@ -17,6 +17,8 @@ namespace com\indigloo\sc\mysql {
 
         static function getOnId($postId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             settype($postId,"integer");
             
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
@@ -28,7 +30,10 @@ namespace com\indigloo\sc\mysql {
         
         static function getLinkDataOnId($postId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             settype($postId,"integer");
+
             $sql = "select version,links_json as json from sc_post where id = %d ";
             $sql = sprintf($sql,$postId);
 
@@ -40,6 +45,8 @@ namespace com\indigloo\sc\mysql {
          //@see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/ 
         static function getRandom($limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             settype($limit,"integer");
 
             $sql = " SELECT q.*,l.name as user_name FROM sc_post q,sc_login l WHERE q.login_id = l.id " ;
@@ -54,7 +61,10 @@ namespace com\indigloo\sc\mysql {
 
          static function getPosts($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             settype($limit,"integer");
+
             $sql = "select q.*,l.name as user_name  from sc_post q, sc_login l ";
             
             $q = new MySQL\Query($mysqli);
@@ -76,6 +86,7 @@ namespace com\indigloo\sc\mysql {
         static function getOnLoginId($loginId,$limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
+            //sanitize input
             settype($limit,"integer");
             settype($loginId,"integer");
             
@@ -104,6 +115,8 @@ namespace com\indigloo\sc\mysql {
          */
         static function getOnSearchIds($strIds) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             $strIds = $mysqli->real_escape_string($strIds);
 
             $sql = " select q.*,l.name as user_name from sc_post q, sc_login l " ;
@@ -117,6 +130,8 @@ namespace com\indigloo\sc\mysql {
         static function getLatest($limit,$filters) {
             
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             settype($limit,"integer");
             
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l" ;
@@ -153,8 +168,11 @@ namespace com\indigloo\sc\mysql {
         static function getPaged($start,$direction,$limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             
+            //sanitize input
             settype($start,"integer");
             settype($limit,"integer");
+            $direction = $mysqli->real_escape_string($direction);
+
             // primary key id is an excellent proxy for created_on column
             // latest posts has max(id) and appears on top
             // so AFTER (NEXT) means id < latest post id
@@ -327,6 +345,7 @@ namespace com\indigloo\sc\mysql {
         static function setFeature($loginId,$postId,$value){
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
+            //sanitize input
             settype($loginId,"integer");
             settype($postId,"integer");
             settype($value,"integer");

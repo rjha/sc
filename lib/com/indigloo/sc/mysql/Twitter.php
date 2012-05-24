@@ -15,9 +15,13 @@ namespace com\indigloo\sc\mysql {
         const MODULE_NAME = 'com\indigloo\sc\mysql\Twitter';
 
         static function getOnTwitterId($twitterId) {
-            //@todo column length checks
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             $twitterId = $mysqli->real_escape_string($twitterId);
+            if(strlen($twitterId) > 64 ) {
+                trigger_error("Twitter id is longer than 64 chars",E_USER_ERROR);
+            }
 
             $sql = " select * from sc_twitter where twitter_id = '%s' " ;
             $sql = sprintf($sql,$twitterId);

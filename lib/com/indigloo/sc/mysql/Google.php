@@ -15,10 +15,15 @@ namespace com\indigloo\sc\mysql {
         const MODULE_NAME = 'com\indigloo\sc\mysql\Google';
 
         static function getOnId($googleId) {
-            //@todo check length of ID
+
             $mysqli = MySQL\Connection::getInstance()->getHandle();
              
+            //sanitize input
             $googleId = $mysqli->real_escape_string($googleId);
+            if(strlen($googleId) > 64 ) {
+                trigger_error("google id is longer than 64 chars",E_USER_ERROR);
+            }
+
             $sql = " select * from sc_google_user where google_id = '%s' " ;
             $sql = sprintf($sql,$googleId);
 

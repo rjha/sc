@@ -12,6 +12,8 @@ namespace com\indigloo\sc\mysql {
 
         static function getLatest($limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input 
             settype($limit,"integer");
 
             $sql = " select f.* from sc_feedback f order by f.id desc limit %d " ; 
@@ -31,6 +33,7 @@ namespace com\indigloo\sc\mysql {
         static function getPaged($start,$direction,$limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
+            //sanitize input 
             settype($start,"integer");
             settype($limit,"integer");
             $direction = $mysqli->real_escape_string($direction);

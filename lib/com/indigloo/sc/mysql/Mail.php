@@ -10,8 +10,11 @@ namespace com\indigloo\sc\mysql {
         
         static function getResetPassword($email,$token) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             $email = $mysqli->real_escape_string($email);
             $token = $mysqli->real_escape_string($token);
+
             $sql = " select count(id) as count from sc_reset_password where email = '%s' " ;
             $sql .= " and token = '%s' and (now() < expired_on )  ";
             $sql = sprintf($sql,$email,$token);
@@ -23,7 +26,10 @@ namespace com\indigloo\sc\mysql {
 
         static function getResetPasswordInRange($email) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             $email = $mysqli->real_escape_string($email);
+
             $sql = " select count(id) as count from sc_reset_password where email = '%s' " ;
             $sql .= " and (created_on > now() - INTERVAL 20 MINUTE) ";
             $sql = sprintf($sql,$email);
@@ -36,6 +42,8 @@ namespace com\indigloo\sc\mysql {
         static function addResetPassword($name,$email,$token) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             $name = $mysqli->real_escape_string($name);
             $email = $mysqli->real_escape_string($email);
             $token = $mysqli->real_escape_string($token);
@@ -65,7 +73,10 @@ namespace com\indigloo\sc\mysql {
 
         static function flipResetPassword($email) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             $email = $mysqli->real_escape_string($email);
+
             $sql = " update sc_reset_password set flag = 1 where email = '%s' ";
             $sql = sprintf($sql,$email);
             MySQL\Helper::executeSQL($mysqli,$sql);

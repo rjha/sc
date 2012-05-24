@@ -15,6 +15,8 @@ namespace com\indigloo\sc\mysql {
 
         static function getOnId($loginId){
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             settype($loginId, "integer");
 
             $sql = "select * from sc_login where id = %d " ;
@@ -26,6 +28,8 @@ namespace com\indigloo\sc\mysql {
 
         static function getLatest($limit){
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
             settype($limit, "integer");
             $sql = " select * from sc_login order by id desc limit %d ";
             $sql = sprintf($sql,$limit);
