@@ -1,13 +1,3 @@
-<?php
-
-    if(isset($_GET['debug']) && ($_GET['debug'] == '1')){
-        $error = $_GET['message'];
-        $error = base64_decode($error);
-    } else {
-        $error = '' ; //donot show
-    }
-    
-?>
 <!DOCTYPE html>
 <html>  
     <head>
@@ -59,7 +49,7 @@
             <img src="/css/images/alert.png" alt="alert" class="alert">
             <h1> Error! We Apologize.</h1>
             <p>This page has encountered an error </p>
-            <div class="error"> <?php echo $error ; ?> </div>
+            <div class="error"> &nbsp; </div>
             <br>
             <p> To know more you can examine the logs or contact your administrator. </p>
             <br>
