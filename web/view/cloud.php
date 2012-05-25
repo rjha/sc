@@ -3,7 +3,7 @@
 
        <head>
         <title> 3mik.com - Groups  </title>
-        <?php include($_SERVER['APP_WEB_DIR'] . '/inc/meta.inc'); ?>
+        <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
          
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="/css/sc.css">
@@ -24,15 +24,15 @@
         <div class="container mh800">
             <div class="row">
                 <div class="span12">
-                    <?php include($_SERVER['APP_WEB_DIR'] . '/inc/toolbar.inc'); ?>
+                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
                 </div> 
                 
             </div>
             
             <div class="row">
                 <div class="span12">
-                    <?php include($_SERVER['APP_WEB_DIR'] . '/inc/banner.inc'); ?>
-                    <?php include($_SERVER['APP_WEB_DIR'] . '/inc/browser.inc'); ?>
+                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
+                    <?php include(APP_WEB_DIR . '/inc/browser.inc'); ?>
                 </div>
             </div>
             
@@ -58,7 +58,7 @@
               
        
         <div id="ft">
-            <?php include($_SERVER['APP_WEB_DIR'] . '/inc/site-footer.inc'); ?>
+            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
         </div>
 
     </body>

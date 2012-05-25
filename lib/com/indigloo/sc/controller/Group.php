@@ -39,13 +39,13 @@ namespace com\indigloo\sc\controller{
             if(sizeof($ids) > 0 ) {
                 $pageHeader = "$groupName -  $total results" ;
                 $pageBaseUrl = "/group/$slug" ;
-                $template = $_SERVER['APP_WEB_DIR']. '/view/group/tiles.php';
+                $template = APP_WEB_DIR. '/view/group/tiles.php';
                 $postDao = new \com\indigloo\sc\dao\Post();
                 $postDBRows = $postDao->getOnSearchIds($ids) ;
 
             } else {
                 $pageHeader = "$groupName - No Results" ;
-                $template = $_SERVER['APP_WEB_DIR']. '/view/notiles.php';
+                $template = APP_WEB_DIR. '/view/notiles.php';
             }
 
             $pageTitle = SeoData::getPageTitle($groupName);

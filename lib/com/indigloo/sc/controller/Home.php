@@ -52,7 +52,7 @@ namespace com\indigloo\sc\controller{
             $metaKeywords = SeoData::getHomeMetaKeywords();
             $metaDescription = SeoData::getHomeMetaDescription();
 
-            $file = $_SERVER['APP_WEB_DIR']. '/view/tiles-page.php' ;
+            $file = APP_WEB_DIR. '/view/tiles-page.php' ;
             include ($file);
  
 
@@ -108,7 +108,7 @@ namespace com\indigloo\sc\controller{
             $metaKeywords = SeoData::getHomeMetaKeywords();
             $metaDescription = SeoData::getHomeMetaDescription();
 
-            $file = $_SERVER['APP_WEB_DIR']. '/home.php' ;
+            $file = APP_WEB_DIR. '/home.php' ;
             include ($file);
  
         }

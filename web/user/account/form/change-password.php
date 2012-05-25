@@ -2,7 +2,7 @@
     //sc/user/account/form/change-password.php
     
     include 'sc-app.inc';
-    include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
+    include(APP_WEB_DIR . '/inc/header.inc');
     //This form is also used by mail reset workflow 
     //so do not add role/user.inc here
     

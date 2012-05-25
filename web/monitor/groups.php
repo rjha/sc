@@ -1,8 +1,8 @@
 <?php
     //sc/monitor/groups.php
     include ('sc-app.inc');
-    include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
-    include($_SERVER['APP_WEB_DIR'] . '/inc/role/admin.inc');
+    include(APP_WEB_DIR . '/inc/header.inc');
+    include(APP_WEB_DIR . '/inc/role/admin.inc');
 
     use \com\indigloo\Util as Util;
     use \com\indigloo\Url as Url;
@@ -21,7 +21,7 @@
 
     <head>
         <title> 3mik.com - Featured Groups </title>
-        <?php include($_SERVER['APP_WEB_DIR'] . '/inc/meta.inc'); ?>
+        <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="/css/sc.css">
@@ -42,14 +42,14 @@
         <div class="container">
             <div class="row">
                 <div class="span12">
-                <?php include($_SERVER['APP_WEB_DIR'] . '/monitor/inc/toolbar.inc'); ?>
+                <?php include(APP_WEB_DIR . '/monitor/inc/toolbar.inc'); ?>
                 </div> 
 
             </div>
 
             <div class="row">
                 <div class="span12">
-                <?php include($_SERVER['APP_WEB_DIR']. '/monitor/inc/banner.inc'); ?>
+                <?php include(APP_WEB_DIR. '/monitor/inc/banner.inc'); ?>
                 </div>
             </div>
             <div class="row">
@@ -81,7 +81,7 @@
         </div> <!-- container -->
         
         <div id="ft">
-        <?php include($_SERVER['APP_WEB_DIR'] . '/inc/site-footer.inc'); ?>
+        <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
         </div>
 
     </body>

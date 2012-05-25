@@ -5,18 +5,12 @@
 // web scripts will be located via APP_ROOT_DIR
 // php libraries are located via APP_LIB_PATH variable and can have multiple entries
 // php.ini include_path entries are tried after APP_LIB_PATH entries
-// APP_CLASS_LOADER is needed if the application wants to override default class loader.
-// APP_WEB_DIR, WEB_TEMPLATE_DIR and WEB_TEMPLATE_COMPILE_DIR are handy shortcuts
-// that can also be defined in terms of APP_ROOT_DIR
-//
-  
-$_SERVER['APP_LIB_PATH'] = array(
-    0 => '/home/rjha/code/github/webgloo/lib',
-    1 => '/home/rjha/code/github/sc/lib') ;
 
-$_SERVER['APP_CONFIG_PATH'] = '/var/www/apps/sc_config.ini' ;
-$_SERVER['APP_CLASS_LOADER'] = '/home/rjha/code/github/webgloo/lib/com/indigloo/class_loader.inc' ;
-$_SERVER['APP_WEB_DIR'] = '/var/www/vhosts/mint.3mik.com/htdocs' ;
-$_SERVER['WEBGLOO_LIB_ROOT'] = '/home/rjha/code/github/webgloo/lib';
- 
+  
+define("APP_LIB_PATH", "/home/rjha/code/github/webgloo/lib, /home/rjha/code/github/sc/lib") ;
+define("APP_CONFIG_PATH", "/var/www/apps/sc_config.ini");
+define("APP_CLASS_LOADER", "/home/rjha/code/github/webgloo/lib/com/indigloo/class_loader.inc") ;
+define("APP_WEB_DIR", "/var/www/vhosts/mint.3mik.com/htdocs") ;
+define("WEBGLOO_LIB_ROOT","/home/rjha/code/github/webgloo/lib");
+
 ?>

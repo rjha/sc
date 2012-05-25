@@ -2,9 +2,9 @@
 <?php 
 
     include('sc-app.inc');
-    include($_SERVER['APP_CLASS_LOADER']);
-    include($_SERVER['WEBGLOO_LIB_ROOT'] . '/com/indigloo/error.inc');
-    require_once($_SERVER['WEBGLOO_LIB_ROOT']. '/ext/sendgrid-php/SendGrid_loader.php');
+    include(APP_CLASS_LOADER);
+    include(WEBGLOO_LIB_ROOT . '/com/indigloo/error.inc');
+    require_once(WEBGLOO_LIB_ROOT. '/ext/sendgrid-php/SendGrid_loader.php');
 
 
     use \com\indigloo\mysql as MySQL;

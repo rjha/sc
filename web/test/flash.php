@@ -1,7 +1,7 @@
 <?php
     
     include ('sc-app.inc');
-    include ($_SERVER['APP_WEB_DIR'].'/inc/header.inc');
+    include (APP_WEB_DIR.'/inc/header.inc');
     
 ?>  
 
@@ -10,7 +10,7 @@
 
        <head>
         <title> Flash detection page </title>
-        <?php include($_SERVER['APP_WEB_DIR'] . '/inc/meta.inc'); ?>
+        <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
          
         <link rel="stylesheet" type="text/css" href="/3p/yui3/grids-min.css">
         <link rel="stylesheet" type="text/css" href="/css/sc.css">
@@ -42,11 +42,11 @@
     </head>
 
     <body>
-        <?php include($_SERVER['APP_WEB_DIR'] . '/inc/toolbar.inc'); ?>
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div id="body-wrapper">
 
                 <div id="hd">
-                     <?php include($_SERVER['APP_WEB_DIR'] . '/inc/banner.inc'); ?>
+                     <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
                 </div>
                 <div id="bd">
 
@@ -72,7 +72,7 @@
 
         </div> <!-- body wrapper -->
         
-        <?php include($_SERVER['APP_WEB_DIR'] . '/inc/site-footer.inc'); ?>
+        <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
 
     </body>
 </html>

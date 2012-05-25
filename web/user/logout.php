@@ -1,9 +1,9 @@
 <?php
 
     include ('sc-app.inc');
-    include($_SERVER['APP_CLASS_LOADER']);
-    include($_SERVER['APP_WEB_DIR'] . '/inc/session.inc');
-    include($_SERVER['WEBGLOO_LIB_ROOT'] . '/com/indigloo/error.inc');
+    include(APP_CLASS_LOADER);
+    include(APP_WEB_DIR . '/inc/session.inc');
+    include(WEBGLOO_LIB_ROOT . '/com/indigloo/error.inc');
 
     //destroy session
     $_SESSION = array();

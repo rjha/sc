@@ -2,8 +2,8 @@
 
     //sc/upload/image.php
     include ('sc-app.inc');
-    include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
-    require_once($_SERVER['WEBGLOO_LIB_ROOT']. '/ext/S3.php');
+    include(APP_WEB_DIR . '/inc/header.inc');
+    require_once(WEBGLOO_LIB_ROOT. '/ext/S3.php');
 
     set_error_handler('webgloo_ajax_error_handler');
     

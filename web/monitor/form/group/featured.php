@@ -2,8 +2,8 @@
     //monitor/form/group/featured.php
     
     include 'sc-app.inc';
-    include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
-    include($_SERVER['APP_WEB_DIR'] . '/inc/role/admin.inc');
+    include(APP_WEB_DIR . '/inc/header.inc');
+    include(APP_WEB_DIR . '/inc/role/admin.inc');
     
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;

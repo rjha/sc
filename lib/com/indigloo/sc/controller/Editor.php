@@ -27,7 +27,7 @@ namespace com\indigloo\sc\controller{
             $metaDescription = SeoData::getHomeMetaDescription();
             $metaKeywords = SeoData::getHomeMetaKeywords();
 
-            $view = $_SERVER['APP_WEB_DIR']. '/view/tiles.php' ;
+            $view = APP_WEB_DIR. '/view/tiles.php' ;
             include($view); 
         }
     }

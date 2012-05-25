@@ -2,7 +2,7 @@
     //sc/share/form/feedback.php
     
     include 'sc-app.inc';
-    include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
+    include(APP_WEB_DIR . '/inc/header.inc');
     
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;

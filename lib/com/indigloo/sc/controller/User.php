@@ -47,7 +47,7 @@ namespace com\indigloo\sc\controller{
             $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);    
             $postDBRows = $postDao->getPaged($paginator,$filters);
 
-            $template = $_SERVER['APP_WEB_DIR']. '/view/user/pub.php';
+            $template = APP_WEB_DIR. '/view/user/pub.php';
 
             //page variables
             $pageBaseUrl = "/pub/user/".$pubUserId ;

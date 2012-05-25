@@ -40,13 +40,13 @@ namespace com\indigloo\sc\controller{
                 $pageHeader = "$token - $total results" ;
                 $pageBaseUrl = "/search/location/$token";
 
-                $template = $_SERVER['APP_WEB_DIR']. '/view/tiles-page.php';
+                $template = APP_WEB_DIR. '/view/tiles-page.php';
                 $postDao = new \com\indigloo\sc\dao\Post();
                 $postDBRows = $postDao->getOnSearchIds($ids) ;
 
             } else {
                 $pageHeader = "No Results for $token" ;
-                $template = $_SERVER['APP_WEB_DIR']. '/view/notiles.php';
+                $template = APP_WEB_DIR. '/view/notiles.php';
 
             }
 

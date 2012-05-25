@@ -2,9 +2,9 @@
     //sc/user/form/register.php
     
     include 'sc-app.inc';
-    include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
-    include($_SERVER['WEBGLOO_LIB_ROOT'] . '/ext/recaptchalib.php');
-    require_once($_SERVER['WEBGLOO_LIB_ROOT']. '/ext/sendgrid-php/SendGrid_loader.php');
+    include(APP_WEB_DIR . '/inc/header.inc');
+    include(WEBGLOO_LIB_ROOT . '/ext/recaptchalib.php');
+    require_once(WEBGLOO_LIB_ROOT. '/ext/sendgrid-php/SendGrid_loader.php');
     
     use com\indigloo\ui\form as Form;
     use com\indigloo\Constants as Constants ;

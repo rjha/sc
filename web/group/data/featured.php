@@ -1,6 +1,6 @@
 <?php 
     include ('sc-app.inc');
-    include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
+    include(APP_WEB_DIR . '/inc/header.inc');
 
     //public data
     //do not put user role check here

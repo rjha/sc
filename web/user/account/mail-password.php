@@ -2,7 +2,7 @@
 
     //sc/user/account/mail-password.php
     include ('sc-app.inc');
-    include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
+    include(APP_WEB_DIR . '/inc/header.inc');
     
     use com\indigloo\Util;
     use com\indigloo\ui\form\Sticky;
@@ -19,7 +19,7 @@
 
        <head>
         <title> 3mik.com - Share your find, need and knowledge</title>
-        <?php include($_SERVER['APP_WEB_DIR'] . '/inc/meta.inc'); ?>
+        <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
          
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
         
@@ -49,14 +49,14 @@
         <div class="container">
             <div class="row">
                 <div class="span12">
-                    <?php include($_SERVER['APP_WEB_DIR'] . '/inc/toolbar.inc'); ?>
+                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
                 </div> 
                 
             </div>
             
             <div class="row">
                 <div class="span12">
-                    <?php include($_SERVER['APP_WEB_DIR'] . '/inc/banner.inc'); ?>
+                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
                 </div>
             </div>
             
@@ -119,7 +119,7 @@
         </div> <!-- container -->   
                       
         <div id="ft">
-            <?php include($_SERVER['APP_WEB_DIR'] . '/inc/site-footer.inc'); ?>
+            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
         </div>
 
     </body>

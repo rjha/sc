@@ -1,7 +1,7 @@
 <?php
 
 include('sc-app.inc');
-include($_SERVER['APP_CLASS_LOADER']);
+include(APP_CLASS_LOADER);
 
 
 if($argc < 4) { 

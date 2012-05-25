@@ -1,10 +1,10 @@
 <?php
     include ('sc-app.inc');
-    include ($_SERVER['APP_WEB_DIR'].'/inc/header.inc');
-    require($_SERVER['WEBGLOO_LIB_ROOT'] . '/ext/twitteroauth/twitteroauth.php');
+    include (APP_WEB_DIR.'/inc/header.inc');
+    require(WEBGLOO_LIB_ROOT . '/ext/twitteroauth/twitteroauth.php');
 
     //set special error handler for callback scripts    
-    include ($_SERVER['APP_WEB_DIR'].'/callback/error.inc');
+    include (APP_WEB_DIR.'/callback/error.inc');
     set_error_handler('login_error_handler');
 
     use \com\indigloo\Logger as Logger ;

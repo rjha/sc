@@ -20,6 +20,7 @@ namespace com\indigloo\sc\model {
 
          public function getValue($alias,$column,$condition,$value) {
              $column = (is_null($alias)) ? $column : $alias.".".$column ;
+             settype($value,"integer");
              $sql = sprintf("%s %s %s ", $column,$condition,$value);
              return $sql ;
          }

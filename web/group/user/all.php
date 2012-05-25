@@ -1,7 +1,7 @@
 <?php
 
     include ('sc-app.inc');
-    include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
+    include(APP_WEB_DIR . '/inc/header.inc');
 
     use \com\indigloo\Url as Url ;
     use \com\indigloo\ui\Pagination as Pagination;
@@ -39,7 +39,7 @@
     $title = sprintf("%s's groups",$login->name);
     $hasNavigation = false ;
 
-    include($_SERVER['APP_WEB_DIR'].'/group/inc/body.inc');
+    include(APP_WEB_DIR.'/group/inc/body.inc');
 
 
     
@@ -49,7 +49,7 @@
    <hr>
     <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
     <div id="ft">
-        <?php include($_SERVER['APP_WEB_DIR'] . '/inc/site-footer.inc'); ?>
+        <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
     </div>
 
     </body>

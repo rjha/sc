@@ -3,7 +3,7 @@
     $s_time = microtime(true);
 
     include 'sc-app.inc';
-    include($_SERVER['APP_WEB_DIR'] . '/inc/header.inc');
+    include(APP_WEB_DIR . '/inc/header.inc');
     
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Logger  as Logger ;

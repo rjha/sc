@@ -1,7 +1,7 @@
 <?php 
     include('sc-app.inc');
-    include($_SERVER['APP_CLASS_LOADER']);
-    include($_SERVER['WEBGLOO_LIB_ROOT'] . '/com/indigloo/error.inc');
+    include(APP_CLASS_LOADER);
+    include(WEBGLOO_LIB_ROOT . '/com/indigloo/error.inc');
 
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Configuration as Config;
