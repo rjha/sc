@@ -11,8 +11,6 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\html\Seo as SeoData ;
 
- 
-    
     class Post {
         
         function process($params,$options) {
@@ -46,6 +44,35 @@ namespace com\indigloo\sc\controller{
             
             $linksJson = $postDBRow['links_json'];
             $links = json_decode($linksJson);
+
+            /* data for facebook share link */
+            $itemObj = new \stdClass ;
+            $itemObj->appId = Config::getInstance()->get_value("facebook.app.id");
+            $itemObj->host = "http://" .$_SERVER["HTTP_HOST"] ; 
+            /* google+ cannot redirect to local box */
+            $itemObj->netHost = "http://www.3mik.com" ;
+            $itemObj->callback = $itemObj->host."/callback/fb-share.php" ;
+
+
+            if(sizeof($images) > 0 ) {
+                $image = $images[0];
+                //Facebook dialog needs absolute URL
+                $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? 'http://' : $itemObj->host."/";
+                /* use original image for og snippets, smaller images may be ignored */
+                $itemObj->picture = $prefix.$image->bucket."/".$image->storeName ;
+            } else {
+                 $itemObj->picture = $itemObj->host."/css/images/logo.png";
+            }
+           
+            //do not urlencode - as we use this value as canonical url
+            $itemObj->link = $itemObj->host."/item/".$itemId ;
+            $itemObj->netLink = $itemObj->netHost."/item/".$itemId ;
+            $itemObj->name = urlencode($postDBRow['title']);
+            $itemObj->description = urlencode($postDBRow['description']) ;
+            $strItemObj = json_encode($itemObj);
+            //make the json string form safe
+            $strItemObj = Util::formSafeJson($strItemObj);
+
 
             $commentDao = new \com\indigloo\sc\dao\Comment();
             $commentDBRows = $commentDao->getOnPostId($postId);

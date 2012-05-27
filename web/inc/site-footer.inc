@@ -1,6 +1,7 @@
 
 <div id="footer">
     Copyright  © 2011-2012 ,3mik india private ltd.  </div>
+    
 </div>
 
 <?php

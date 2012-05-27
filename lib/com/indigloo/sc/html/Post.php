@@ -76,11 +76,20 @@ namespace com\indigloo\sc\html {
             $view->itemId = $itemId;
             $view->followerId = $loginId;
             $view->followingId = $postLoginId;
+
+            //edit item 
+            $view->isLoggedInUser = false ;
+            if(!is_null($loginId) && ($loginId == $postLoginId)) {
+                $view->isLoggedInUser = true ;
+                $params = array('id' => $itemId , 'q' => urlencode(Url::current()));
+                $view->editUrl = Url::createUrl('/qa/edit.php',$params);
+            }
+            
             $template = '/fragments/post/toolbar.tmpl' ;
             $html = Template::render($template,$view);
             return $html;
         }
-
+        
         static function getSmallTile($postDBRow) {
 
             $html = NULL ;
@@ -249,26 +258,6 @@ namespace com\indigloo\sc\html {
             $html = Template::render($template,$view);
             
             return $html ;  
-        }
-
-        static function getEditBar($gSessionLogin,$postDBRow){
-            $html = NULL ;
-            $template = '/fragments/post/edit-bar.tmpl' ;
-
-            $view = new \stdClass;
-            $view->isLoggedInUser = false ;
-
-            $itemId = PseudoId::encode($postDBRow['id']);
-            $params = array('id' => $itemId , 'q' => urlencode(Url::current()));
-            $view->editUrl = Url::createUrl('/qa/edit.php',$params);
-
-            if(!is_null($gSessionLogin) && ($gSessionLogin->id == $postDBRow['login_id'])){
-                $view->isLoggedInUser = true ;
-            } 
-         
-            $html = Template::render($template,$view);
-            return $html ;
-
         }
 
         static function getWidget($postDBRow,$options=NULL) {

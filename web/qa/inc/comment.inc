@@ -1,3 +1,12 @@
+<style type="text/css">
+    .form-table {
+        margin-bottom : 0px;
+    }
+    .form-table textarea {
+        width:500px;
+        height:60px;
+    }
+</style>
 <!-- include comment form -->
 <div id="comment-wrapper">
     <?php echo $formErrors; ?>
@@ -14,7 +23,7 @@
             </tr>
              <tr>
                 <td>
-                    <textarea  name="comment" class="required" style="width:300px;height:60px;" title="Comment is required" cols="50" rows="4" ><?php echo $sticky->get('comment'); ?></textarea>
+                    <textarea  name="comment" class="required comment-box" title="Comment is required" cols="50" rows="4" ><?php echo $sticky->get('comment'); ?></textarea>
                 </td>
              </tr>
             
