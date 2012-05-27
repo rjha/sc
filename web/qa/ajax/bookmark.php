@@ -5,6 +5,7 @@
     
     use \com\indigloo\Util as Util;
     use \com\indigloo\sc\auth\Login as Login;
+    use \com\indigloo\sc\util\PseudoId ;
     
     set_error_handler('webgloo_ajax_error_handler');
 
@@ -24,7 +25,7 @@
 
     $map = array();
     $map["LIKE"] = 1 ;
-    $map["SAVE"] = 2 ;
+    $map["FAVORITE"] = 2 ;
     $map["REMOVE"] = 32 ;
     
     $code = $map[$action];
@@ -43,7 +44,12 @@
             break;
     }
 
-    $message = sprintf(" %s action for item %s is success!",$action,$itemId);
+    $postDao = new \com\indigloo\sc\dao\Post();
+    $postId = PseudoId::decode($itemId);
+    $postDBRow = $postDao->getOnId($postId);
+    $postName = $postDBRow['title'];
+
+    $message = sprintf(" %s action for item %s is success!",$action,$postName);
     $html = array("code" => 200 , "message" => $message);
     $html = json_encode($html); 
     echo $html;

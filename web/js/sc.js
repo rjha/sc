@@ -240,11 +240,11 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
         }) ;
   
-        $("a.save-post-link").click(function(event){
+        $("a.favorite-post-link").click(function(event){
             event.preventDefault();
             var dataObj = {}
             dataObj.itemId  = $(this).attr("id");
-            dataObj.action = "SAVE" ;
+            dataObj.action = "FAVORITE" ;
             var targetUrl = "/qa/ajax/bookmark.php";
             //open popup
             webgloo.sc.SimplePopup.init();

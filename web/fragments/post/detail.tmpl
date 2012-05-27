@@ -1,14 +1,17 @@
 <div class="well mt20">
-    ~~$view->description~
-    <br>
-    <div class="author">
-        <img src="/css/images/twitter-icon.png" height="32" width="32" alt="icon" />        
-        <div class="meta">
-            <span class="b"> <a href="/pub/user/~~$view->pubUserId~">~~$view->userName~</a></span>
-            <br>
-            <span class="b">~~$view->createdOn~</span>
-        </div>  
-    </div>
+    <div class="row">
+        <div class="span5">
+            ~~$view->description~
+        </div>
+        <div class="span2">
+            <div class="author">
+                <img src="/css/images/twitter-icon.png" height="32" width="32" alt="icon" />        
+                <div class="meta">
+                    <span class="b"> <a href="/pub/user/~~$view->pubUserId~">~~$view->userName~</a></span>
+                    <br>
+                    <!-- ~~$view->createdOn~ -->
+                </div>  
+            </div>
+        </div>
+    </div> <!-- row -->
 </div>
-
-

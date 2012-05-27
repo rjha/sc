@@ -2,27 +2,27 @@
 <div class="tile">
    <div class="options">
         <div class="links">
-            ~if($view->hasLike){~
-            <a id="~~$view->itemId~" class ="like-post-link" href="">Like&nbsp;<i class="icon-heart"></i></a>&nbsp;
+             ~if($view->hasLike){~
+            <a id="~~$view->itemId~" class ="like-post-link" href="">
+                <i class="icon-asterisk"></i>&nbsp;Like</a> &nbsp;
             ~}~
             ~if($view->hasSave){~
-            <a id="~~$view->itemId~" class="save-post-link" href="">Save&nbsp;</a>&nbsp;
+            <a id="~~$view->itemId~" class="favorite-post-link" href="">
+                <i class="icon-bookmark"></i>&nbsp;Favorite</a> &nbsp;
             ~}~
-             
+            
             ~if($view->hasRemove){~
-            <a id="~~$view->itemId~" class ="remove-post-link" href="">Remove&nbsp;<i class="icon-remove"></i></a>&nbsp;
+            <a id="~~$view->itemId~" class ="remove-post-link" href="">
+                <i class="icon-remove"></i>&nbsp;Remove</a> &nbsp;
             ~}~
         </div>
     </div>
    <div class="description">
-     <p> ~~$view->description~ &nbsp;<a href="/item/~~$view->itemId~">more...</a> </p>
+     <p> ~~$view->description~&nbsp;<a href="/item/~~$view->itemId~">more...</a> </p>
    </div>
        
-    <div class="author">
-        <div class="meta">
-            <span class="b"> <a href="~~$view->userPageURI~">~~$view->userName~</a> </span>
-            <span>&nbsp;~~$view->createdOn~</span>
-        </div>
+    <div>
+        <span class="b"> <a href="~~$view->userPageURI~">~~$view->userName~</a> </span>
     </div>
 
     ~if($view->hasGroups) {~

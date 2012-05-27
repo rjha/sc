@@ -35,9 +35,6 @@
             
         <script type="text/javascript">   
 
-
-            
-
             $(document).ready(function(){   
 
                 webgloo.sc.item.openShareWindow = function(title,url) {
@@ -144,11 +141,6 @@
                     <?php 
                         echo \com\indigloo\sc\html\Post::getGallery($images) ; 
                         echo \com\indigloo\sc\html\Post::getLinks($links,$siteDBRow) ; 
-
-                    ?>
-
-                    <?php
-
                         echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ; 
                         foreach($commentDBRows as $commentDBRow) {
                             echo \com\indigloo\sc\html\Comment::getSummary($commentDBRow) ;
