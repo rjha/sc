@@ -87,21 +87,15 @@ webgloo.sc.home = {
         $("a#nav-group-open").click(function(event) {
             event.preventDefault();
             $targetUrl= "/group/data/featured.php";
-            var options = {};
-            webgloo.sc.SimplePopup.init(options);
-            webgloo.sc.SimplePopup.load($targetUrl);
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.load($targetUrl,{});
         });
     }
 }
 
 /* +simple popup object */
 webgloo.sc.SimplePopup = {
-
-    options : {},
-    init : function(options) { 
-        this.options.dataType = options.dataType || "text";
-        this.options.type = options.type || "POST";
-
+    init : function() { 
         $(document).bind('keydown', function(e) { 
             if (e.keyCode == 27) {
                 webgloo.sc.SimplePopup.close();
@@ -112,29 +106,41 @@ webgloo.sc.SimplePopup = {
             event.preventDefault();
             webgloo.sc.SimplePopup.close();
         });
-        webgloo.sc.SimplePopup.show();
-    },
-    show : function () {
-        $("#simple-popup").show();
-    },
-    hide : function () {
-        $("#simple-popup").hide();
     },
     close : function() {
-        webgloo.sc.SimplePopup.addContent('');
+        this.addContent('');
         $("#simple-popup").hide();
     },
     
     addContent : function(content) {
+        this.removeSpinner();
         $("#simple-popup #content").html('');
         $("#simple-popup #content").html(content);
         $("#simple-popup").show();
     },
-    addJsonContent : function(response) {
+    addSpinner : function() {
+        this.close();
+        $("#block-spinner").html('');
+        var content = '<img src="/css/images/ajax_loader.gif" alt="loading ..." />' ;
+        $("#block-spinner").html(content);
+        $("#block-spinner").show();
+    },
+    removeSpinner : function() {
+        $("#block-spinner").html('');
+        $("#block-spinner").hide();
+
+    },
+    processJson : function(response,options) {
+        console.log(options.keepOpen);
         switch(response.code) {
-            case 200:
-                webgloo.sc.SimplePopup.close();
+            case 200 :
+                //success
+                if(options.keepOpen)
+                    this.addContent(response.message);
+                else
+                    this.close();
                 break;
+
             case 401:
                 //redirect to login page
                 qUrl = window.location.href;
@@ -143,32 +149,42 @@ webgloo.sc.SimplePopup = {
                 break;
             case 500:
                 //error - keep open
-                webgloo.sc.SimplePopup.addContent(response.message);
+                this.addContent(response.message);
                 break;
             default:
-                webgloo.sc.SimplePopup.addContent(response.message);
+                this.addContent(response.message);
+                break;
         }
     },
-    post:function (targetUrl,dataObj) {
+    post:function (targetUrl,dataObj,options) {
+
+        //@todo deal with undefined or NULL options
         //show spinner
-        webgloo.sc.SimplePopup.addContent('<img src="/css/images/ajax_loader.gif" alt="spinner" />');
+        this.addSpinner();
+
+        options.keepOpen = options.keepOpen || true ;
+        options.type =  options.type || "POST" ; 
+        options.dataType = options.dataType || "text" ; 
 
         //ajax call start
         $.ajax({
             url: targetUrl,
-            type: webgloo.sc.SimplePopup.options.type,
-            dataType: webgloo.sc.SimplePopup.options.dataType,
+            type: options.type ,
+            dataType: options.dataType,
             data : dataObj,
             timeout: 9000,
             //js errors callback
             error: function(XMLHttpRequest, response){
+                //remove spinner
+                webgloo.sc.SimplePopup.removeSpinner();
                 webgloo.sc.SimplePopup.addContent(response);
             },
             //server script errors are reported inside success callback
             success: function(response){
-                switch(webgloo.sc.SimplePopup.options.dataType) {
+                webgloo.sc.SimplePopup.removeSpinner();
+                switch(options.dataType) {
                     case 'json' :
-                        webgloo.sc.SimplePopup.addJsonContent(response);
+                        webgloo.sc.SimplePopup.processJson(response,options);
                         break;
                      default:
                         webgloo.sc.SimplePopup.addContent(response);
@@ -178,9 +194,9 @@ webgloo.sc.SimplePopup = {
             }
         }); //ajax call end
     },
-    load: function(targetUrl) {
+    load: function(targetUrl,options) {
         var dataObj = {};
-        this.post(targetUrl,dataObj);
+        this.post(targetUrl,dataObj,options);
     }
 }
 
@@ -194,10 +210,8 @@ webgloo.sc.item = {
             dataObj.action = "ADD" ;
             var targetUrl = "/monitor/ajax/feature.php";
             //open popup
-            var options = {};
-            options.dataType = "json" ;
-            webgloo.sc.SimplePopup.init(options);
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
         }) ;
 
         //feature posts
@@ -208,10 +222,8 @@ webgloo.sc.item = {
             dataObj.action = "REMOVE" ;
             var targetUrl = "/monitor/ajax/feature.php";
             //open popup
-            var options = {};
-            options.dataType = "json" ;
-            webgloo.sc.SimplePopup.init(options);
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
         }) ;
 
     },
@@ -224,10 +236,8 @@ webgloo.sc.item = {
             dataObj.action = "LIKE" ;
             var targetUrl = "/qa/ajax/bookmark.php";
             //open popup
-            var options = {};
-            options.dataType = "json" ;
-            webgloo.sc.SimplePopup.init(options);
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
         }) ;
   
         $("a.save-post-link").click(function(event){
@@ -237,10 +247,8 @@ webgloo.sc.item = {
             dataObj.action = "SAVE" ;
             var targetUrl = "/qa/ajax/bookmark.php";
             //open popup
-            var options = {};
-            options.dataType = "json" ;
-            webgloo.sc.SimplePopup.init(options);
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
         }) ;
         //unfavorite
         $("a.remove-post-link").click(function(event){
@@ -250,10 +258,8 @@ webgloo.sc.item = {
             dataObj.action = "REMOVE" ;
             var targetUrl = "/qa/ajax/bookmark.php";
             //open popup
-            var options = {};
-            options.dataType = "json" ;
-            webgloo.sc.SimplePopup.init(options);
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
         }) ;
     
         $("a.follow-user-link").click(function(event){
@@ -268,10 +274,8 @@ webgloo.sc.item = {
             
             var targetUrl = "/qa/ajax/social-graph.php";
             //open popup
-            var options = {};
-            options.dataType = "json" ;
-            webgloo.sc.SimplePopup.init(options);
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj);
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
         }) ;
     }
 }

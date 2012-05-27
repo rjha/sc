@@ -577,17 +577,30 @@
     #simple-popup {
         position: fixed;
         width: 600px;
-        /* height: 320px;
-        max-height:320px; */
         top: 50%;
         left: 50%;
         margin-top:-140px;
         margin-left:-300px;
-        background-color: white;
+        background : white;
         color: black;
         z-index: 1009;
         border:6px solid #d5d5d5;
         padding:20px;
+        display:none;
+        overflow:hidden;
+    }
+
+    #block-spinner {
+        position: fixed;
+        width: 160px;
+        top: 50%;
+        left: 50%;
+        margin-top:-40px;
+        margin-left:-80px;
+        background:black;
+        z-index: 1009;
+        border:3px solid #d5d5d5;
+        padding:10px;
         display:none;
         overflow:hidden;
     }

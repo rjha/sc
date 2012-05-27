@@ -16,6 +16,7 @@
         exit;
     }
 
+    sleep(1);
     //parameters
     $loginId = Login::getLoginIdInSession();
     $itemId = Util::getArrayKey($_POST, "itemId");
@@ -41,8 +42,9 @@
         default :
             break;
     }
-    
-    $html = array("code" => 200 , "message" => "success");
+
+    $message = sprintf(" %s action for item %s is success!",$action,$itemId);
+    $html = array("code" => 200 , "message" => $message);
     $html = json_encode($html); 
     echo $html;
 ?>

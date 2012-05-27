@@ -15,13 +15,22 @@
         exit;
     }
     
+    sleep(1);
+
     $followerId = Util::getArrayKey($_POST, "followerId");
     $followingId = Util::getArrayKey($_POST, "followingId");
 
     
     $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
     $socialGraphDao->addFollower($followerId,$followingId);
-    $html = array("code" => 200 , "message" => "success");
+
+    $userDao = new \com\indigloo\sc\dao\User();
+    $followingDBRow = $userDao->getOnLoginId($followingId);
+    $followingName = $followingDBRow['name'];
+
+
+    $message = sprintf(" success! You are now following %s ",$followingName);
+    $html = array("code" => 200 , "message" => $message);
     $html = json_encode($html); 
     echo $html;
 ?>
