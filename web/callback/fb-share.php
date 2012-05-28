@@ -1,7 +1,7 @@
 <?php
-	include 'sc-app.inc';
+    include 'sc-app.inc';
     include(APP_WEB_DIR . '/inc/header.inc');
-	//do nothing
+    //do nothing
 ?>
 
 <!doctype html>
