@@ -1,69 +1,47 @@
-22 May 2012
+28 May 2012
+--------------
+
+@todo 
+
+pfff tool scheck to lint php codebase
+URL tampering => should we include checksum everywhere?
+URL tampering => we should not error out on bad params or URL
+BUffered vs unbuffered queries with mysql
+mysql innodb tuning 
+our filters - should apply type (e.g. int) based cast
+filter - cannot be empty
+Do we want to store form escaped data - e.g. single quote to &#039;
+Spinx - better indexes - index filtering
+put sphinx mysql connector IP and port in config file.  
+Redis server :- play with it
 insert one screen in workflow after login -> Dashboard/3mik Home page choice
 placeholder image on site/go-static and automatic pages
 Nice feedback from ajax scripts
+Reload ajax action that was disrupted by login screen
+Automatic versioning of css and js files
 
-
-
-
-21 may 2012
-- How does sc_denorm_user update impact other tables and fields ? e.g. sc_login and sc_user
-- can we allow users to change email? should we update email in sc_user ? I do not think so..
-- Better idea is to make email box editable when we do not have email data readonly vs. writable box.
-- about me is missing.... 
++ How does sc_denorm_user update impact other tables and fields ? e.g. sc_login and sc_user
+  can we allow users to change email? should we update email in sc_user ? I do not think so..
+  Better idea is to make email box editable when we do not have email data readonly vs. writable box.
 - URL/Blog :- add HTTP automatically!
-- default image instead of xeyes!
-- User policies - account merge? email change? user name change? Nick name policies?
-- Google/Yahoo
-
-
-15 May 2012
-
- 
-- UI fixing
-  - group: Alphabetical push buttons instead of Alpha bar that we have right now.
-  - When no results : Suggest things to user 
-    + Ask for email when items become available
-    + Random items from site? 
-  + User dashboard should be visible after user login - Right now nav toolbar is not prominent
-  + After login - Take user to another page instead of Home page 
-  + Help link
-  + supercow button should be visible after admin login 
-  + Profile page changes :- Capture additional details like website 
-    email /link/About you/Picture
-    User pub page - side strip :- show synopsis 
-        - Like groups / # of posts / Follow button
-        - when joined date 
-        - Likes/ comments/ Followers         
-        - website / Blog link 
-
-  + Browsing options - Top sites/Popular?
-  + Like/Save :- nice icons
-  + email harvesting
- 
-
-
-
-
-@todo
-=========
-All UNIQ Key errors: check in UI via Ajax before hitting DB
-Add caching headers to old S3 images
-SQL injection : look @ all queries again please!
-Login with google + yahoo as well
-Favorite - clicking on remove :- reload/refresh the page
+- group: Alphabetical push buttons instead of Alpha bar that we have right now.
+- When no results : Suggest things to user 
+- After login - Take user to another page instead of Home page 
+- Help content
+- supercow button should be visible after admin login 
+- Browsing options -  sites browsing 
++ All UNIQ Key errors: check in UI via Ajax before hitting DB
++ Add caching headers to old S3 images
 
 Fix user dashboard
- - following/followers
- - Need to fix the profile page : Ask for more data
  - Help content on user dahsboard pages
- - Add denorm_user 
+ - following/followers
+ - favorite - clicking on remove :- reload/refresh the page
 
 + Monitor App
 
 monitor - Post widget actions - feature/unfeature
 Supercow button on item details page
-Separate user and monitor widgets
 Pagination on monitor app/user dashboard
 
 @later
@@ -71,28 +49,17 @@ Pagination on monitor app/user dashboard
 sitemap - automatically generate every week
 Better sharing with friends and social networks
 json_enocde and json_deocde error checks everywhere with json_error_last
-file upload - more than 256 chars in name ??
-
+file upload - more than 256 chars in name ?
 Async processes - registration /reset password mails , thumbnail creation
-Error page display fix - new page maybe?
 Capture use activity
-UI fixes
 Redis for session and async job processing
 Interest based browsing?
 Mix photos with group browsing?
 Sphinx delta indexing
-Add SSL support for login page - Not now
-
-@research
-=========
-fix issue with sphinx query.log rotation - need to watch on server
-Tampered URLs => what to do? Not found looks like better solution
-     => what kind of URL tampering can be done?
-     => what to do in each situation? 
-Redis
-Sphinx searchd not starting on debian machines
-Sphix logs not rotating?
+Add SSL support for login page?
 create ICU resource bundles with php-intl
+Send tokens used for Sphinx queries
+
 
 @debatable
 ============
@@ -123,7 +90,18 @@ Form protection by inserting unique tokens  - PRG or DejaVu' pattern to avoid fo
 
 make sure that all pUrl and qUrl are not processed by our form hander - we need raw urls
 Fix navigation for cancel button everywhere.
+Login with google 
 
+Fix user dashboard
+ - Need to fix the profile page : Ask for more data
+ - Add denorm_user 
 
+error page - stop encoding the messages
+SQL injection : look @ all queries again please!
 
+Sphinx searchd not starting on debian machines
+ fixed: changed init.d boot script to be compatible with insserv
+        you have to add the right run levels in LSB headers
+Sphix logs not rotating?
+ fixed:Need to send SIGUSR1 signal to searchd
 

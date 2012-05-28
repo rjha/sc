@@ -1,6 +1,25 @@
 bum - Bootup Manager - Graphical  - To improve startup time 
 rcconf - tool to set init.d daemons start/stop on boot
+
 #git graphical interfaces
 $gitg
 $gitk
+
+
+#security
+sqlmap
+nmap
+
+
+#installed from source
+pfff toolset 
+sphinx 
+redis kv server
+
+#installed from tarballs
+sublime text
+jdk7
+netbeans (never install again)
+komodo edit
+
 

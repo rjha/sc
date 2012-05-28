@@ -1,0 +1,6 @@
+
+To prevent xss, htmlspecial chars may not be enough- people suggest using htmlentities
+Also converting values before storing them in DB is a bad idea. We should not convert 
+at the time of storing, rather at the time of display.
+
+

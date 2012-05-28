@@ -1185,7 +1185,7 @@ DELIMITER ;
 
 --
 -- 23 may
--- @next push
+-- 
 --
 
 alter table sc_facebook modify column facebook_id varchar(64) not null ;
@@ -1218,6 +1218,6 @@ CREATE TRIGGER trg_google_user_cp  BEFORE INSERT ON sc_google_user
     END //
 DELIMITER ;
 
-
-
-
+--
+-- @next push
+--

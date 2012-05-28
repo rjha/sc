@@ -1,0 +1,23 @@
+
+# never trust input from anyone
++ Queries with bind parameters are Ok.
++ Big debate is when not using bind parameters and forming SQL by concatenating strings
+
+
+# The way to do it is use settype on passed parameters
+
+where we expect numbers - cast to int or float using settype(x,type) functions
+This will ensure that parameters like 123'abc are converted to 123
+abcd - when you expect a number is converted  to 0
+For strings :- use $mysqli real_escape_string($input)
+DB specific function is better than home cooked escaping
+
+
+Another technique for numbers is to "quote" numbers within SQL
+However we should use settype
+
+Our UI filters :- 
++ tools - sqlmap, sqlbrute
+
+ 
+
