@@ -282,8 +282,7 @@ namespace com\indigloo\sc\html {
         }
 
         static function getAdminWidget($postDBRow,$options) {
-            //@todo login check 
-           
+            
             $html = NULL ;
             $view = self::getWidgetView($postDBRow);
 

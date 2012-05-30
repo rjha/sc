@@ -26,6 +26,11 @@ namespace com\indigloo\sc\util{
             return $dsx;
         }
 
+        /**
+         * @imp encode should be a monotonically increasing function of x
+         * the map used to do encoding should preserve the order of digits
+         *
+         */
         static function encode($x) {
 
             if(!is_numeric($x)) {
