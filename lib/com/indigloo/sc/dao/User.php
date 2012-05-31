@@ -2,10 +2,10 @@
 
 namespace com\indigloo\sc\dao {
 
-    
+
     use \com\indigloo\Util as Util ;
     use \com\indigloo\sc\mysql as mysql;
-     
+
     class User {
 
         function getOnEmail($email) {
@@ -16,8 +16,8 @@ namespace com\indigloo\sc\dao {
         /*
          * function to return sc_denorm_data on user.login_id
          * There is a need to maintain common data or the data that can be changed
-         * via a form on our website in a common table. since we accept data from 
-         * different user sources like 3mik, facebook, twitter etc., the common 
+         * via a form on our website in a common table. since we accept data from
+         * different user sources like 3mik, facebook, twitter etc., the common
          * lookup parameter for us is login_id created by us and not the email of the user.
          *
          */
@@ -25,20 +25,19 @@ namespace com\indigloo\sc\dao {
             $row = mysql\User::getOnLoginId($loginId);
             return $row ;
         }
-        
+
         function update($loginId,$firstName,$lastName,$nickName,$email,
                                 $website,$blog,$location,$age,$photoUrl,$aboutMe) {
 
-            $code = mysql\User::update($loginId,$firstName,$lastName,$nickName,$email,
+            mysql\User::update($loginId,$firstName,$lastName,$nickName,$email,
                                 $website,$blog,$location,$age,$photoUrl,$aboutMe);
 
-            return $code ;
+
         }
 
         function addFeedback($feedback) {
-            $code = mysql\User::addFeedback($feedback);
-            return $code ;
-        }       
+            mysql\User::addFeedback($feedback);
+        }
 
         function getLatest($limit,$filters=array()) {
             $rows = mysql\User::getLatest($limit,$filters);

@@ -1,5 +1,5 @@
 #!/usr/bin/php
-<?php 
+<?php
 
     include('sc-app.inc');
     include(APP_CLASS_LOADER);
@@ -26,7 +26,7 @@
     }
 
     function process_groups($mysqli) {
-        //process groups 
+        //process groups
         $sql = " select post_id from sc_site_tracker where group_flag = 0 order by id desc limit 50";
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
         $groupDao = new \com\indigloo\sc\dao\Group();
@@ -39,14 +39,14 @@
 
     function process_reset_password($mysqli) {
         $sql = " select email,token from sc_reset_password where flag = 0 order by id limit 10";
-        $map = array(); 
+        $map = array();
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
         $mailDao = new \com\indigloo\sc\dao\Mail();
 
         foreach($rows as $row) {
             $email = $row['email'];
             if(!in_array($email,$map)){
-                $mailDao->processResetPassword($row['email'], $row['token']);
+                $mailDao->processResetPassword($row['name'],$row['email'], $row['token']);
                 array_push($map,$email);
             }
         }

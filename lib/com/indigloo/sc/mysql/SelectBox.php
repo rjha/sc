@@ -6,10 +6,8 @@ namespace com\indigloo\sc\mysql {
 
     class SelectBox {
         
-        const MODULE_NAME = 'com\indigloo\sc\mysql\List';
-        
         static function get($name) {
-            
+
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input
@@ -19,9 +17,9 @@ namespace com\indigloo\sc\mysql {
             $sql = sprintf($sql,$name);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows ;
-            
+
         }
-        
+
     }
 
 }

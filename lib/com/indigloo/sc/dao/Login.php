@@ -14,20 +14,20 @@ namespace com\indigloo\sc\dao {
 
         function create($firstName,$lastName,$email,$password){
             $provider = \com\indigloo\sc\auth\Login::MIK ;
-            
+
             if(Util::tryEmpty($firstName) || Util::tryEmpty($lastName)) {
-                throw new DBException("User name is missing!",1);
+                throw new UIException(array("User name is missing!"));
             }
-            
+
             $userName = $firstName. ' '.$lastName ;
             mysql\Login::create($provider,$userName,$firstName,$lastName,$email,$password);
-            
+
         }
 
         function getTotalCount($filters=array()) {
             $row = mysql\Login::getTotalCount($filters);
             return $row['count'] ;
-        } 
+        }
 
         function getLatest($limit) {
             $rows = mysql\Login::getLatest($limit);

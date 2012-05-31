@@ -5,19 +5,17 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
-    
+
     use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException;
-    
-    
+
+
     class Google {
-        
-        const MODULE_NAME = 'com\indigloo\sc\mysql\Google';
 
         static function getOnId($googleId) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-             
+
             //sanitize input
             $googleId = $mysqli->real_escape_string($googleId);
             if(strlen($googleId) > 64 ) {
@@ -39,34 +37,34 @@ namespace com\indigloo\sc\mysql {
          * The data manipulated via our web forms is always stored in sc_denorm_table
          * sc_google_user is for first time creation only.
          * We should never update sc_google_user via our web forms.
-         *  
-         * 
+         *
+         *
          */
         static function create($googleId,$email,$name,$firstName,$lastName,$photo,$provider){
-            
+
              try {
                 $sql1 = "insert into sc_login (provider,name,created_on) values(:provider,:name,now()) " ;
                 $flag = true ;
-                
+
                 $dbh =  PDOWrapper::getHandle();
                 //Tx start
                 $dbh->beginTransaction();
-                
+
                 $stmt = $dbh->prepare($sql1);
                 $stmt->bindParam(":name", $name);
                 $stmt->bindParam(":provider", $provider);
                 $flag = $stmt->execute();
-                
+
                 if(!$flag){
                     $dbh->rollBack();
                     $dbh = null;
-                    $message = sprintf("DB PDO Error : code is  %s",$stmt->errorCode());
-                    trigger_error($message,E_USER_ERROR);
+                    $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
+                    throw new DBException($message);
                 }
-                
+
                 $loginId = $dbh->lastInsertId();
                 settype($loginId, "integer");
-                
+
                 $sql2 = " insert into sc_google_user(google_id,email,name,first_name,last_name," ;
                 $sql2 .= " photo,login_id,created_on) " ;
                 $sql2 .= " values(?,?,?,?,?,?,?,now()) ";
@@ -79,32 +77,30 @@ namespace com\indigloo\sc\mysql {
                 $stmt->bindParam(5, $lastName);
                 $stmt->bindParam(6, $photo);
                 $stmt->bindParam(7, $loginId);
-                
+
                 $flag = $stmt->execute();
-                
+
                 if(!$flag){
                     $dbh->rollBack();
                     $dbh = null;
                     $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
-                    trigger_error($message,E_USER_ERROR);
+                    throw new DBException($message);
                 }
-                
+
                 //Tx end
                 $dbh->commit();
                 $dbh = null;
-                
+
                 return $loginId;
-                
+
             }catch (PDOException $e) {
                 $dbh->rollBack();
                 $dbh = null;
-                Logger::getInstance()->error($e->getMessage());
-                $errorCode = $e->getCode();
-                $message = sprintf("Database error code %d",$errorCode);
-                throw new DBException($message,$errorCode);
-                
+                $message = sprintf("PDO error :: code %d message %s ",$e->getCode(),$e->getMessage());
+                throw new DBException($message);
+
             }
-           
+
         }
 
     }

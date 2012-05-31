@@ -3,7 +3,7 @@
     //sc/user/account/reset-password.php
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
-    
+
     use com\indigloo\Util as Util;
     use com\indigloo\Url as Url;
     use com\indigloo\Constants as Constants;
@@ -25,24 +25,25 @@
         $ftoken = Util::getMD5GUID();
         $femail = Util::encrypt($email);
         $gWeb = \com\indigloo\core\Web::getInstance();
-        $gWeb->store("change.password.email",$femail);        
-        $gWeb->store("change.password.token",$ftoken);        
+        $gWeb->store("change.password.email",$femail);
+        $gWeb->store("change.password.token",$ftoken);
 
         $title = $email;
         $qUrl = "/user/account/login-now.php";
-        $fUrl = Url::current(); 
+        $fUrl = Url::current();
         $submitUrl = "/user/account/form/change-password.php" ;
 
         include(APP_WEB_DIR . '/user/account/inc/password-form.inc');
-        
 
-    } catch(DBException $dbex) {
+
+    } catch(DBException $ex) {
         $gWeb = \com\indigloo\core\Web::getInstance();
-        $message = $dbex->getMessage();
+        //$message = $ex->getMessage();
+        $message = " Database error happened during reset password!";
         $fvalues = array('email' => $email);
         $gWeb->store(Constants::STICKY_MAP, $fvalues);
         $gWeb->store(Constants::FORM_MESSAGES,array($message));
         header("Location: /user/account/mail-password.php");
     }
 
-?>  
+?>

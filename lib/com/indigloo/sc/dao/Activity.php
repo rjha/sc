@@ -2,7 +2,12 @@
 
 namespace com\indigloo\sc\dao {
 
-    class activities {
+    /**
+     * @todo wrap \redisent\RedisException  in our DBException
+     * our UI does not know about redis (and does not care)
+     * 
+     */
+    class Activity {
 
         function addFollower($followerId,$followerName,$followingId,$followingName) {
 
@@ -17,7 +22,7 @@ namespace com\indigloo\sc\dao {
             $listVO->verb = "following" ;
             $strListVO = json_encode($listVO);
 
-            $redis = new redisent\Redis('redis://localhost');
+            $redis = new \redisent\Redis('redis://localhost');
             //Add to global activities list
             $redis->lpush('sc:global:activities',$strListVO);
             $redis->ltrim('sc:global:activities',0,1000);
@@ -69,7 +74,7 @@ namespace com\indigloo\sc\dao {
             $listVO->verb = $action;
             $strListVO = json_encode($listVO);
 
-            $redis = new redisent\Redis('redis://localhost');
+            $redis = new \redisent\Redis('redis://localhost');
             //Add to global activities list
             $redis->lpush('sc:global:activities',$strListVO);
             $redis->ltrim('sc:global:activities',0,1000);
@@ -93,7 +98,7 @@ namespace com\indigloo\sc\dao {
             $listVO->verb = 'post';
 
             $strListVO = json_encode($listVO);
-            $redis = new redisent\Redis('redis://localhost');
+            $redis = new \redisent\Redis('redis://localhost');
             //Add to global activities list
             $redis->lpush('sc:global:activities',$strListVO);
             $redis->ltrim('sc:global:activities',0,1000);
@@ -115,7 +120,7 @@ namespace com\indigloo\sc\dao {
 
             $strListVO = json_encode($listVO);
 
-            $redis = new redisent\Redis('redis://localhost');
+            $redis = new \redisent\Redis('redis://localhost');
             //Add to global activities list
             $redis->lpush('sc:global:activities',$strListVO);
             $redis->ltrim('sc:global:activities',0,1000);

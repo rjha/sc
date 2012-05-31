@@ -2,33 +2,30 @@
 
 namespace com\indigloo\sc\dao {
 
-    
+
     use \com\indigloo\Util as Util ;
     use \com\indigloo\sc\mysql as mysql;
-    
+
     class Bookmark {
 
         function add($loginId,$itemId,$action) {
             $row = mysql\Bookmark::find($loginId,$itemId,$action);
             $count = $row['count'] ;
-            $code = 0 ;
+
             if($count == 0 ) {
                 //actually insert
-                $code = mysql\Bookmark::add($loginId,$itemId,$action);
-                return $code ;
-            }
+                mysql\Bookmark::add($loginId,$itemId,$action);
 
-            return $code ;
+            }
+            
         }
 
         function delete($bookmarkId) {
-            $code = mysql\Bookmark::delete($bookmarkId);
-            return $code ;
+            mysql\Bookmark::delete($bookmarkId);
         }
 
         function unfavorite($loginId,$itemId) {
-            $code = mysql\Bookmark::unfavorite($loginId,$itemId);
-            return $code ;
+            mysql\Bookmark::unfavorite($loginId,$itemId);
         }
 
         function getTotal($filters=array()) {
@@ -40,7 +37,7 @@ namespace com\indigloo\sc\dao {
             $rows = mysql\Bookmark::getLatest($limit,$filters);
             return $rows ;
         }
-        
+
         function getPaged($paginator,$filters) {
             $limit = $paginator->getPageSize();
             if($paginator->isHome()){

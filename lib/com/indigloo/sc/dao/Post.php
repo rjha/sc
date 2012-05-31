@@ -2,12 +2,12 @@
 
 namespace com\indigloo\sc\dao {
 
-    
+
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\mysql as mysql;
     use \com\indigloo\Logger as Logger;
-    
+
     class Post {
 
         const FEATURE_POST = 1 ;
@@ -20,8 +20,8 @@ namespace com\indigloo\sc\dao {
 
         /**
          * @error if links json is empty or spaces in DB column
-         * @error if links json evaluates to NULL by json_decode 
-         * @error if links json is valid but not an array 
+         * @error if links json evaluates to NULL by json_decode
+         * @error if links json is valid but not an array
          * @return an array of strings (links)
          *
          */
@@ -33,7 +33,7 @@ namespace com\indigloo\sc\dao {
 
             if(!Util::tryEmpty($json)) {
                 $links = json_decode($json);
-            } 
+            }
 
             if(is_null($links) || !is_array($links)) {
                 $message = sprintf("Post %d has Bad json [ %s ] ",$postId,$json);
@@ -58,7 +58,7 @@ namespace com\indigloo\sc\dao {
             $rows = mysql\Post::getOnSearchIds($strIds);
             return $rows ;
         }
-        
+
         function getRandom($limit) {
             $rows = mysql\Post::getRandom($limit);
             return $rows ;
@@ -88,7 +88,7 @@ namespace com\indigloo\sc\dao {
             $rows = mysql\Post::getLatest($limit,$filters);
             return $rows ;
         }
-        
+
         function getTotalCount($filters=array()) {
             $row = mysql\Post::getTotalCount($filters);
             return $row['count'] ;
@@ -101,7 +101,7 @@ namespace com\indigloo\sc\dao {
                         $imagesJson,
                         $groupSlug,
                         $categoryCode) {
-            
+
             $itemId = mysql\Post::create(
                                 $title,
                                 $description,
@@ -110,11 +110,11 @@ namespace com\indigloo\sc\dao {
                                 $imagesJson,
                                 $groupSlug,
                                 $categoryCode);
-            
+
             return $itemId ;
         }
-        
-        
+
+
         function update($postId,
                         $title,
                         $description,
@@ -122,9 +122,9 @@ namespace com\indigloo\sc\dao {
                         $imagesJson,
                         $groupSlug,
                         $categoryCode) {
-            
+
             $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
-            $code = mysql\Post::update($postId,
+            mysql\Post::update($postId,
                                $title,
                                $description,
                                $linksJson,
@@ -132,13 +132,13 @@ namespace com\indigloo\sc\dao {
                                $loginId,
                                $groupSlug,
                                $categoryCode);
-            return $code ;
+
         }
 
         function delete($postId){
             $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
-            $code = mysql\Post::delete($postId,$loginId);
-            return $code ;
+            mysql\Post::delete($postId,$loginId);
+
         }
 
         function doAdminAction($postId,$action){
@@ -146,16 +146,15 @@ namespace com\indigloo\sc\dao {
 
             switch($action) {
                 case self::FEATURE_POST :
-                    $code = mysql\Post::setFeature($loginId,$postId,1);
+                    mysql\Post::setFeature($loginId,$postId,1);
                     break;
                 case self::UNFEATURE_POST :
-                    $code = mysql\Post::setFeature($loginId,$postId,0);
+                    mysql\Post::setFeature($loginId,$postId,0);
                     break;
                 default:
                     break;
             }
-
-            return $code ;
+            
         }
 
 

@@ -6,14 +6,12 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Logger as Logger ;
-    
+
     class Site {
-        
-        const MODULE_NAME = 'com\indigloo\sc\mysql\Site';
 
         static function getOnPostId($postId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            
+
             //sanitize input
             settype($postId,"integer");
 
@@ -34,7 +32,7 @@ namespace com\indigloo\sc\mysql {
 
             $sql = " select p.*,l.name as user_name from sc_post_site ps, sc_post p, sc_login l " ;
             $sql .= " where l.id = p.login_id and p.id = ps.post_id and ps.site_id = %d " ;
-            $sql .= " order by ps.post_id desc limit %d " ; 
+            $sql .= " order by ps.post_id desc limit %d " ;
             $sql = sprintf($sql,$siteId,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
@@ -48,12 +46,12 @@ namespace com\indigloo\sc\mysql {
             settype($siteId,"integer");
 
             $sql = " select count(ps.id)  as count from sc_post_site ps, sc_post p " ;
-            $sql .= " where p.id = ps.post_id and ps.site_id = %d " ; 
+            $sql .= " where p.id = ps.post_id and ps.site_id = %d " ;
             $sql = sprintf($sql,$siteId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
- 
+
         static function getOnHash($hash) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -80,13 +78,11 @@ namespace com\indigloo\sc\mysql {
         }
 
         static function create($hash,$host,$canonicalUrl){
-            
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
 
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             $lastInsertId = NULL;
 
             $sql = " insert into sc_site_master(hash,host,canonical_url,created_on) values(?,?,?,now()) " ;
-            $code = MySQL\Connection::ACK_OK;
             $stmt = $mysqli->prepare($sql);
 
             if ($stmt) {
@@ -94,13 +90,13 @@ namespace com\indigloo\sc\mysql {
                 $stmt->execute();
 
                 if ($mysqli->affected_rows != 1) {
-                    $code = MySQL\Error::handle(self::MODULE_NAME, $stmt);
+                    MySQL\Error::handle($stmt);
                 }
 
                 $stmt->close();
 
             } else {
-                $code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
+                MySQL\Error::handle($mysqli);
             }
 
             $lastInsertId = MySQL\Connection::getInstance()->getLastInsertId();
@@ -109,7 +105,6 @@ namespace com\indigloo\sc\mysql {
 
         static function deleteTmpPSData($postId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $code = MySQL\Connection::ACK_OK ;
 
             $sql = " delete from sc_tmp_ps where post_id = ? " ;
             $stmt = $mysqli->prepare($sql);
@@ -118,20 +113,18 @@ namespace com\indigloo\sc\mysql {
                 $stmt->bind_param("i",$postId) ;
                 $stmt->execute();
                 $stmt->close();
-                
+
             } else {
-                $code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
+                MySQL\Error::handle($mysqli);
             }
-            
-            return $code ;
+
         }
 
         static function addTmpPSData($postId,$siteId){
-            
+
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             $sql = " insert into sc_tmp_ps(post_id,site_id,created_on) values(?,?,now()) " ;
-            $code = MySQL\Connection::ACK_OK;
             $stmt = $mysqli->prepare($sql);
 
             if ($stmt) {
@@ -139,15 +132,15 @@ namespace com\indigloo\sc\mysql {
                 $stmt->execute();
 
                 if ($mysqli->affected_rows != 1) {
-                    $code = MySQL\Error::handle(self::MODULE_NAME, $stmt);
+                    MySQL\Error::handle($stmt);
                 }
 
                 $stmt->close();
 
             } else {
-                $code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
+                MySQL\Error::handle($mysqli);
             }
-            
+
             return ;
         }
 
@@ -158,8 +151,8 @@ namespace com\indigloo\sc\mysql {
          delete rows in sc_site_post table where post_id =<in.post_id>
          do not fire delete if version = 1 (new post)
          insert new rows using SC_TMP_PS table where post_id = <in.post_id>
-         update sc_site_tracker set flag = 1 where version = <in.version> and post_id = <in.post_id> 
-         commit 
+         update sc_site_tracker set flag = 1 where version = <in.version> and post_id = <in.post_id>
+         commit
          rollback on error
          */
 
@@ -171,7 +164,7 @@ namespace com\indigloo\sc\mysql {
             $flag = $stmt->execute();
 
             if(!$flag) {
-                $code = MySQL\Error::handle(self::MODULE_NAME, $stmt);
+                MySQL\Error::handle($stmt);
             }
 
             $stmt->close();
