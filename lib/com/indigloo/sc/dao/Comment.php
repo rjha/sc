@@ -1,7 +1,7 @@
 <?php
 
 namespace com\indigloo\sc\dao {
-    
+
     use \com\indigloo\Util as Util ;
     use \com\indigloo\sc\mysql as mysql;
     use \com\indigloo\sc\util\PseudoId ;
@@ -49,12 +49,14 @@ namespace com\indigloo\sc\dao {
 
         }
 
-        function create($loginId,$name,$postId,$title, $comment) {
+        function create($loginId,$name,$postId,$title,$comment) {
             mysql\Comment::create($postId, $comment, $loginId);
-            //push to activities
+            /*
             $activityDao = new \com\indigloo\sc\dao\Activity();
             $itemId = PseudoId::encode($postId);
             $activityDao->addComment($loginId, $name, $itemId, $title);
+             * 
+             */
 
         }
 

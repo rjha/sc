@@ -27,11 +27,11 @@ if (!window.JSON) {
                     return "[" + sOutput.substr(0, sOutput.length - 1) + "]";
                 }
 
-                if (vContent.toString !== Object.prototype.toString) { 
-                    return "\"" + vContent.toString().replace(/"/g, "\\$&") + "\""; 
+                if (vContent.toString !== Object.prototype.toString) {
+                    return "\"" + vContent.toString().replace(/"/g, "\\$&") + "\"";
                 }
-                for (var sProp in vContent) { 
-                    sOutput += "\"" + sProp.replace(/"/g, "\\$&") + "\":" + this.stringify(vContent[sProp]) + ","; 
+                for (var sProp in vContent) {
+                    sOutput += "\"" + sProp.replace(/"/g, "\\$&") + "\":" + this.stringify(vContent[sProp]) + ",";
                 }
                 return "{" + sOutput.substr(0, sOutput.length - 1) + "}";
           }
@@ -64,15 +64,15 @@ webgloo.sc.home = {
                 itemSelector : '.tile'
             });
         });
-        
+
         //show options on hover
         $('.tile .options').hide();
         $('.tile').mouseenter(function() { $(this).find('.options').toggle(); });
-        $('.tile').mouseleave(function() { $(this).find('.options').toggle(); }); 
+        $('.tile').mouseleave(function() { $(this).find('.options').toggle(); });
 
         //Add item toolbar actions
         webgloo.sc.item.addActions();
-        
+
     },
     addSmallTiles : function() {
         var $container = $('#tiles');
@@ -95,12 +95,12 @@ webgloo.sc.home = {
 
 /* +simple popup object */
 webgloo.sc.SimplePopup = {
-    init : function() { 
-        $(document).bind('keydown', function(e) { 
+    init : function() {
+        $(document).bind('keydown', function(e) {
             if (e.keyCode == 27) {
                 webgloo.sc.SimplePopup.close();
             }
-        }); 
+        });
 
         $("a#simple-popup-close").click(function(event) {
             event.preventDefault();
@@ -111,7 +111,7 @@ webgloo.sc.SimplePopup = {
         this.addContent('');
         $("#simple-popup").hide();
     },
-    
+
     addContent : function(content) {
         this.removeSpinner();
         $("#simple-popup #content").html('');
@@ -163,8 +163,8 @@ webgloo.sc.SimplePopup = {
         this.addSpinner();
 
         options.keepOpen = options.keepOpen || true ;
-        options.type =  options.type || "POST" ; 
-        options.dataType = options.dataType || "text" ; 
+        options.type =  options.type || "POST" ;
+        options.dataType = options.dataType || "text" ;
 
         //ajax call start
         $.ajax({
@@ -239,12 +239,12 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
         }) ;
-  
+
         $("a.favorite-post-link").click(function(event){
             event.preventDefault();
             var dataObj = {}
             dataObj.itemId  = $(this).attr("id");
-            dataObj.action = "FAVORITE" ;
+            dataObj.action = "SAVE" ;
             var targetUrl = "/qa/ajax/bookmark.php";
             //open popup
             webgloo.sc.SimplePopup.init();
@@ -261,7 +261,7 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
         }) ;
-    
+
         $("a.follow-user-link").click(function(event){
             event.preventDefault();
             var dataObj = {}
@@ -271,7 +271,7 @@ webgloo.sc.item = {
             //u1 -> u2
             dataObj.followerId  = ids[0] ;
             dataObj.followingId = ids[1];
-            
+
             var targetUrl = "/qa/ajax/social-graph.php";
             //open popup
             webgloo.sc.SimplePopup.init();
@@ -283,12 +283,12 @@ webgloo.sc.item = {
 webgloo.sc.groups = {
     addPanelEvents : function() {
         $("#add-group-btn").click(function(event) {
-            event.preventDefault(); 
+            event.preventDefault();
             var group = jQuery.trim($("#group-box").val());
             if( group == '' ) {return ; }
             //split on commas
             var tokens = group.split(",");
-            for (var i = 0; i < tokens.length; i++) { 
+            for (var i = 0; i < tokens.length; i++) {
                var token = jQuery.trim(tokens[i]);
                if(token == '') continue ;
                 var node = ' <li> <input type="checkbox" name="g[]" checked ="checked" value="' + token + '"/>' + token + '</li> ' ;
@@ -312,7 +312,7 @@ webgloo.sc.groups = {
 
     },
     addCloudBox : function() {
-        $(".fancy-box").fancybox({ 
+        $(".fancy-box").fancybox({
             'type':'iframe',
             'width' : '75%',
             'height' : '75%'
@@ -357,51 +357,51 @@ webgloo.media = {
         $("#add-link").live("click", function(event){
             event.preventDefault();
             var link = jQuery.trim($("#link-box").val());
-            if( link == '' ) 
+            if( link == '' )
                 return ;
-            else 
+            else
                 webgloo.media.addLink(link);
         }) ;
 
         //capture ENTER on link box
-        $("#link-box").keydown(function(event) { 
+        $("#link-box").keydown(function(event) {
             //donot submit form
-            if(event.which == 13) { 
-                event.preventDefault(); 
+            if(event.which == 13) {
+                event.preventDefault();
                 var link = jQuery.trim($("#link-box").val());
-                if( link == '' ) 
+                if( link == '' )
                     return ;
                 else
                     webgloo.media.addLink(link);
             }
 
-        }); 
-        
+        });
+
         $("a.remove-link").live("click", function(event){
-            event.preventDefault(); 
+            event.preventDefault();
             webgloo.media.removeLink($(this));
         }) ;
 
         $("a.remove-image").live("click", function(event){
-            event.preventDefault(); 
+            event.preventDefault();
             webgloo.media.removeImage($(this));
         }) ;
-        
+
         $('#web-form1').submit(function() {
             webgloo.media.populateHidden();
             return true;
         });
-        
+
     },
     imagePreviewDIV : '<div class="stackImage" id="image-{id}"><img src="{srcImage}" class="thumbnail-1" alt="{originalName}" width="{width}" height="{height}"/> '
         + '<div> <a class="remove-image" id="{id}" href="">Remove</a> </div> </div>',
-    
+
     linkPreviewDIV : '<div class="previewLink"> {link} &nbsp; <a class="remove-link" href="{link}"> Remove</a> </div> ' ,
-    
+
     populateHidden : function () {
-    
+
         frm = document.forms["web-form1"];
-        
+
         if(jQuery.inArray("image",webgloo.media.mode) != -1) {
             var images = new Array() ;
 
@@ -420,17 +420,17 @@ webgloo.media = {
             $("div#link-data").find('a').each(function(index) {
                 links.push($(this).attr("href"));
             });
-            
+
             //Anything in the box?
             var linkInBox = jQuery.trim($("#link-box").val());
             if( linkInBox != '') {
                links.push(linkInBox);
-            } 
+            }
 
             var strLinks = JSON.stringify(links);
             frm.links_json.value = strLinks ;
         }
-        
+
     },
     addLink : function(linkData) {
         var buffer = webgloo.media.linkPreviewDIV.supplant({"link" : linkData});
@@ -448,7 +448,7 @@ webgloo.media = {
         $("#image-"+id).remove();
     },
     addImage : function(mediaVO) {
-        //console.log(mediaVO); 
+        //console.log(mediaVO);
         webgloo.media.images[mediaVO.id] = mediaVO ;
         if(mediaVO.store == 's3'){
             mediaVO.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
@@ -458,7 +458,7 @@ webgloo.media = {
 
         var buffer = webgloo.media.imagePreviewDIV.supplant(mediaVO);
         $("div#image-data").append(buffer);
-    
+
     }
 }
 
@@ -467,7 +467,7 @@ webgloo.addDebug = function(message) {
     $("#js-debug").append(message);
     $("#js-debug").append("<br>");
     console.log(message);
-  
+
 };
 
 webgloo.clearDebug = function(message) {

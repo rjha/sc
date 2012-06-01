@@ -6,19 +6,19 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
 
-    class Bookmark {
+    class Activity {
 
-        static function find($loginId,$itemId,$action) {
+        static function find($subjectId,$objectId,$verb) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input
-            settype($loginId,"integer");
-            settype($itemId,"integer");
-            settype($action,"integer");
+            settype($subjectId,"integer");
+            settype($objectId,"integer");
+            settype($verb,"integer");
 
-            $sql = " select count(id) as count from sc_user_bookmark " ;
-            $sql .= " where login_id = %d and item_id = %d and action = %d ";
-            $sql = sprintf($sql,$loginId,$itemId,$action);
+            $sql = " select count(id) as count from sc_activity " ;
+            $sql .= " where subject_id = %d and object_id = %d and verb = %d ";
+            $sql = sprintf($sql,$loginId,$itemId,$verb);
 
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
@@ -30,11 +30,11 @@ namespace com\indigloo\sc\mysql {
             //sanitize input
             settype($limit,"integer");
 
-            $sql = " select q.* , l.name as user_name from sc_post q, sc_user_bookmark b, sc_login l " ;
+            $sql = " select q.* , l.name as user_name from sc_post q, sc_activity a, sc_login l " ;
 
             $q = new MySQL\Query($mysqli);
-            $q->setAlias("com\indigloo\sc\model\Bookmark","b");
-            $q->addCondition("q.pseudo_id = b.item_id");
+            $q->setAlias("com\indigloo\sc\model\Activity","a");
+            $q->addCondition("q.pseudo_id = a.object_id");
             $q->addCondition("q.login_id = l.id");
             $q->filter($filters);
             $sql .= $q->get();
@@ -47,7 +47,7 @@ namespace com\indigloo\sc\mysql {
 
         static function getTotal($filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " select count(id) as count from sc_user_bookmark";
+            $sql = " select count(id) as count from sc_activity";
 
             $q = new MySQL\Query($mysqli);
             $q->filter($filters);
@@ -65,16 +65,16 @@ namespace com\indigloo\sc\mysql {
             settype($limit,"integer");
             $direction = $mysqli->real_escape_string($direction);
 
-            $sql = " select q.* , l.name as user_name from sc_post q, sc_user_bookmark b, sc_login l " ;
+            $sql = " select q.* , l.name as user_name from sc_post q, sc_activity a, sc_login l " ;
 
             $q = new MySQL\Query($mysqli);
-            $q->setAlias("com\indigloo\sc\model\Bookmark","b");
-            $q->addCondition("q.pseudo_id = b.item_id");
+            $q->setAlias("com\indigloo\sc\model\Activity","a");
+            $q->addCondition("q.pseudo_id = a.object_id ");
             $q->addCondition("q.login_id = l.id");
             $q->filter($filters);
             $sql .= $q->get();
 
-            $sql .= $q->getPagination($start,$direction,"b.id",$limit);
+            $sql .= $q->getPagination($start,$direction,"a.id",$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
 
             //reverse rows for 'before' direction
@@ -86,33 +86,51 @@ namespace com\indigloo\sc\mysql {
             return $rows;
         }
 
-        static function getOnLoginId($loginId,$action) {
+        static function getOnLoginId($subjectId,$verb) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input
-            settype($loginId,"integer");
-            settype($action,"integer");
+            settype($subjectId,"integer");
+            settype($verb,"integer");
 
             $sql = " select q.* , l.name as user_name " ;
-            $sql .= " from sc_post q, sc_user_bookmark b, sc_login l " ;
-            $sql .= " where q.pseudo_id = b.item_id and q.login_id = l.id ";
-            $sql .= " and b.login_id = %d and b.action = %d limit 20 ";
+            $sql .= " from sc_post q, sc_activity a , sc_login l " ;
+            $sql .= " where q.pseudo_id = a.object_id and q.login_id = l.id ";
+            $sql .= " and a.subject_id = %d and a.verb = %d limit 20 ";
 
-            $sql = sprintf($sql,$loginId,$action);
-
+            $sql = sprintf($sql,$loginId,$verb);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
 
-        static function add($loginId,$itemId,$action) {
+        static function addPostBookmark(
+                $ownerId,
+                $subjectId,
+                $subject,
+                $objectId,
+                $objectType,
+                $title,
+                $verb,
+                $verbDesc){
+
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " insert into sc_user_bookmark(login_id,item_id,action,created_on) " ;
-            $sql .= " values(?,?,?,now()) ";
+            $sql = " insert into sc_activity(owner_id,subject_id,subject,object_id, " ;
+            $sql .= " object, object_title, verb, verb_desc, created_on) " ;
+            $sql .= " values(?,?,?,?,?,?,?,?,now()) ";
 
             $stmt = $mysqli->prepare($sql);
 
             if ($stmt) {
-                $stmt->bind_param("iii", $loginId, $itemId,$action);
+                $stmt->bind_param("iisissis",
+                        $ownerId,
+                        $subjectId,
+                        $subject,
+                        $objectId,
+                        $objectType,
+                        $title,
+                        $verb,
+                        $verbDesc);
+
                 $stmt->execute();
 
                 if ($mysqli->affected_rows != 1) {
@@ -125,14 +143,14 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function delete($bookmarkId) {
+        static function delete($activityId) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "delete from sc_user_bookmark where id = ? " ;
+            $sql = "delete from ac_activity where id = ? " ;
             $stmt = $mysqli->prepare($sql);
 
             if ($stmt) {
-                $stmt->bind_param("i",$bookmarkId) ;
+                $stmt->bind_param("i",$activityId) ;
                 $stmt->execute();
                 $stmt->close();
 
@@ -142,15 +160,14 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function unfavorite($loginId,$itemId) {
-            //remove a save(favorite)- code 2
+        static function remove($subjectId,$objectId,$verb) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "delete from sc_user_bookmark where login_id = ? and item_id = ? and action = 2 " ;
+            $sql = "delete from sc_activity where subject_id = ? and object_id = ? and verb = ? " ;
             $stmt = $mysqli->prepare($sql);
 
             if ($stmt) {
-                $stmt->bind_param("ii",$loginId,$itemId) ;
+                $stmt->bind_param("iii",$subjectId,$objectId,$verb) ;
                 $stmt->execute();
                 $stmt->close();
 

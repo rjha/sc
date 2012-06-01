@@ -14,19 +14,27 @@
         echo $html;
         exit;
     }
-    
-    $followerId = Util::getArrayKey($_POST, "followerId");
-    $followingId = Util::getArrayKey($_POST, "followingId");
 
+    $followerId = Util::tryArrayKey($_POST, "followerId");
+    $followingId = Util::tryArrayKey($_POST, "followingId");
 
-    $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
-    $socialGraphDao->addFollower($followerId,$followingId);
+    if(empty($followerId) || empty($followingId)) {
+        $message = array("code" => 500 , "message" => "Bad input: missing follower or following id!");
+        $html = json_encode($message);
+        echo $html;
+        exit;
+    }
 
     $userDao = new \com\indigloo\sc\dao\User();
     $followingDBRow = $userDao->getOnLoginId($followingId);
     $followingName = $followingDBRow['name'];
 
+    $followerDBRow = $userDao->getOnLoginId($followerId);
+    $followerName = $followerDBRow['name'];
 
+    $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
+    $socialGraphDao->addFollower($followerId,$followerName,$followingId,$followingName);
+    
     $message = sprintf(" success! You are now following %s ",$followingName);
     $html = array("code" => 200 , "message" => $message);
     $html = json_encode($html);

@@ -2,130 +2,67 @@
 
 namespace com\indigloo\sc\dao {
 
-    /**
-     * @todo wrap \redisent\RedisException  in our DBException
-     * our UI does not know about redis (and does not care)
-     * 
-     */
+
+    use \com\indigloo\Util as Util ;
+    use \com\indigloo\sc\mysql as mysql;
+    use \com\indigloo\sc\ui\Constants as UIConstants ;
+
     class Activity {
 
-        function addFollower($followerId,$followerName,$followingId,$followingName) {
+        function addPostBookmark($ownerId,$loginId,$name,$itemId,$title,$verb,$verbDesc) {
+            $row = mysql\Activity::find($loginId,$itemId,$verb);
+            $count = $row['count'] ;
 
-            //f1->f2 (f1 is following f2)
+            if($count == 0 ) {
+                //actually insert
+                // find item title from itemId
 
-            $listVO = new \stdClass ;
-            $listVO->followerId = $followerId ;
-            $listVO->followingId = $followingId ;
-
-            $listVO->subject = $followerName ;
-            $listVO->object = $followingName ;
-            $listVO->verb = "following" ;
-            $strListVO = json_encode($listVO);
-
-            $redis = new \redisent\Redis('redis://localhost');
-            //Add to global activities list
-            $redis->lpush('sc:global:activities',$strListVO);
-            $redis->ltrim('sc:global:activities',0,1000);
-
-            //Add to f1's following set
-            $key = sprintf("sc:user:%s:following",$followerId);
-            $redis->sadd($key,$followingId);
-
-            //Add to f1's activities
-            $key = sprintf("sc:user:%s:activities",$followerId);
-            $redis->lpush($key,$strListVO);
-
-
-            //Add to f2's followers set
-            $key = sprintf("sc:user:%s:followers",$followingId);
-            $redis->sadd($key,$followerId);
-
-            //Add to f2's activities
-            $key = sprintf("sc:user:%s:activities",$followingId);
-            $redis->lpush($key,$strListVO);
-
-            //no need to fan-out?
-            $redis->quit();
-
-        }
-
-        function fanOut($redis,$loginId,$value) {
-            //fan-out to followers
-            $key = sprintf("sc:user:%s:followers",$loginId);
-            $followers = $redis->smembers($key);
-
-            foreach($followers as $followerId) {
-                //push to follower's activities
-                $key = sprintf("sc:user:%s:activities",$followerId);
-                $redis->lpush($key,$value);
-
+                mysql\Activity::addPostBookmark($ownerId,$loginId,$name,$itemId,"post",$title,$verb,$verbDesc);
             }
-        }
-
-        function addBookmark($loginId,$name,$itemId,$title,$action) {
-            // Add to global activities
-
-            $listVO = new \stdClass ;
-            $listVO->loginId = $loginId ;
-            $listVO->itemId = $itemId ;
-
-            $listVO->subject = $name ;
-            $listVO->object = $title ;
-            $listVO->verb = $action;
-            $strListVO = json_encode($listVO);
-
-            $redis = new \redisent\Redis('redis://localhost');
-            //Add to global activities list
-            $redis->lpush('sc:global:activities',$strListVO);
-            $redis->ltrim('sc:global:activities',0,1000);
-
-            //Add to post activities
-            $postKey = sprintf("sc:post:%s:activities",$itemId);
-            $redis->lpush($postKey,$strListVO);
-            $this->fanOut($redis,$loginId, $strListVO);
-            $redis->quit();
 
         }
 
-        function addPost($loginId,$name,$itemId,$title) {
-            // Add to global activities
-            $listVO = new \stdClass ;
-
-            $listVO->loginId = $loginId ;
-            $listVO->itemId = $itemId ;
-            $listVO->subject = $name ;
-            $listVO->object = $title ;
-            $listVO->verb = 'post';
-
-            $strListVO = json_encode($listVO);
-            $redis = new \redisent\Redis('redis://localhost');
-            //Add to global activities list
-            $redis->lpush('sc:global:activities',$strListVO);
-            $redis->ltrim('sc:global:activities',0,1000);
-
-            $this->fanOut($redis,$loginId, $strListVO);
-            $redis->quit();
-
+        function like($ownerId,$loginId,$name,$itemId,$title) {
+            $verb = \com\indigloo\sc\model\Activity::LIKE_VERB ;
+            $this->addPostBookmark($ownerId,$loginId,$name,$itemId,$title,$verb, "liked");
         }
 
-        function addComment($loginId,$name,$itemId,$title) {
+        function favorite($ownerId,$loginId,$name,$itemId,$title) {
+             $verb = \com\indigloo\sc\model\Activity::FAVORITE_VERB ;
+             $this->addPostBookmark($ownerId,$loginId,$name,$itemId,$title,$verb, "saved");
+        }
 
-            $listVO = new \stdClass ;
-            $listVO->loginId = $loginId ;
-            $listVO->itemId = $itemId ;
+        function unfavorite($loginId,$itemId) {
+            $verb = \com\indigloo\sc\model\Activity::FAVORITE_VERB ;
+            mysql\Activity::remove($loginId,$itemId,$verb);
+        }
 
-            $listVO->subject = $name ;
-            $listVO->object = $title ;
-            $listVO->verb = 'comment';
+        function delete($activityId) {
+            mysql\Activity::delete($activityId);
+        }
 
-            $strListVO = json_encode($listVO);
+        function getTotal($filters=array()) {
+            $row = mysql\Activity::getTotal($filters);
+            return $row['count'];
+        }
 
-            $redis = new \redisent\Redis('redis://localhost');
-            //Add to global activities list
-            $redis->lpush('sc:global:activities',$strListVO);
-            $redis->ltrim('sc:global:activities',0,1000);
-            $this->fanOut($redis,$loginId, $strListVO);
-            $redis->quit();
+        function getLatest($limit,$filters) {
+            $rows = mysql\Activity::getLatest($limit,$filters);
+            return $rows ;
+        }
+
+        function getPaged($paginator,$filters) {
+            $limit = $paginator->getPageSize();
+            if($paginator->isHome()){
+                return $this->getLatest($limit,$filters);
+            } else {
+
+                $params = $paginator->getDBParams();
+                $start = $params['start'];
+                $direction = $params['direction'];
+                $rows = mysql\Activity::getPaged($start,$direction,$limit,$filters);
+                return $rows ;
+            }
         }
 
     }

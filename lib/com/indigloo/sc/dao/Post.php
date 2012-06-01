@@ -2,7 +2,6 @@
 
 namespace com\indigloo\sc\dao {
 
-
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\mysql as mysql;
@@ -97,6 +96,7 @@ namespace com\indigloo\sc\dao {
         function create($title,
                         $description,
                         $loginId,
+                        $name,
                         $linksJson,
                         $imagesJson,
                         $groupSlug,
@@ -110,7 +110,7 @@ namespace com\indigloo\sc\dao {
                                 $imagesJson,
                                 $groupSlug,
                                 $categoryCode);
-
+            
             return $itemId ;
         }
 
@@ -154,7 +154,7 @@ namespace com\indigloo\sc\dao {
                 default:
                     break;
             }
-            
+
         }
 
 

@@ -6,6 +6,7 @@
     use \com\indigloo\Util as Util;
     use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\sc\util\PseudoId ;
+    use \com\indigloo\sc\ui\Constants as UIConstants ;
 
     set_error_handler('webgloo_ajax_error_handler');
 
@@ -17,39 +18,47 @@
         exit;
     }
 
-    
     //parameters
-    $loginId = Login::getLoginIdInSession();
+    $login = Login::getLoginInSession();
+    $loginId = $login->id ;
+    $name = $login->name ;
+
     $itemId = Util::getArrayKey($_POST, "itemId");
-    $action = Util::getArrayKey($_POST, "action");
+    //action from ajax post can be
+    // 1. LIKE 2. SAVE 3. REMOVE
+    $action = Util::tryArrayKey($_POST, "action");
 
-    $map = array();
-    $map["LIKE"] = 1 ;
-    $map["FAVORITE"] = 2 ;
-    $map["REMOVE"] = 32 ;
+    if(empty($action) || empty($itemId)) {
+        $message = array("code" => 500 , "message" => "Bad input: missing item or action!");
+        $html = json_encode($message);
+        echo $html;
+        exit;
+    }
 
-    $code = $map[$action];
+    $activityDao = new \com\indigloo\sc\dao\Activity();
+    $postDao = new \com\indigloo\sc\dao\Post();
+    $postId = PseudoId::decode($itemId);
+    $postDBRow = $postDao->getOnId($postId);
+    $title = $postDBRow['title'];
+    $ownerId = $postDBRow['login_id'];
 
-    $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
-
-    switch($code) {
-        case 1:
-        case 2:
-            $bookmarkDao->add($loginId,$itemId,$code);
+    switch($action) {
+        case UIConstants::LIKE_POST:
+            $activityDao->like($ownerId,$loginId,$name,$itemId,$title);
+            break ;
+        case UIConstants::SAVE_POST:
+            $activityDao->favorite($ownerId,$loginId,name,$itemId,$title);
             break;
-        case 32 :
-             $bookmarkDao->unfavorite($loginId,$itemId);
+        case UIConstants::REMOVE_POST :
+             $activityDao->unfavorite($loginId,$itemId);
              break ;
         default :
             break;
     }
 
-    $postDao = new \com\indigloo\sc\dao\Post();
-    $postId = PseudoId::decode($itemId);
-    $postDBRow = $postDao->getOnId($postId);
-    $postName = $postDBRow['title'];
 
-    $message = sprintf(" %s action for item %s is success!",$action,$postName);
+
+    $message = sprintf(" %s action for item %s is success!",$action,$title);
     $html = array("code" => 200 , "message" => $message);
     $html = json_encode($html);
     echo $html;

@@ -47,6 +47,7 @@
             $itemId = $postDao->create($title,
                                 $fvalues['description'],
                                 $gSessionLogin->id,
+                                $gSessionLogin->name,
                                 $_POST['links_json'],
                                 $_POST['images_json'],
                                 $group_slug,
