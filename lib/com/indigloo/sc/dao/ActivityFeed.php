@@ -147,6 +147,14 @@ namespace com\indigloo\sc\dao {
             }
         }
 
+        function getGlobal() {
+            $redis = new \redisent\Redis('redis://localhost');
+            $feeds = $redis->lrange("sc:global:activities",0,100);
+            $redis->quit();
+            return $feeds;
+
+        }
+
     }
 
 }
