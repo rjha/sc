@@ -58,7 +58,7 @@
 
 
 
-    $message = sprintf(" %s action for item %s is success!",$action,$title);
+    $message = sprintf(" %s for item %s is success!",$action,$title);
     $html = array("code" => 200 , "message" => $message);
     $html = json_encode($html);
     echo $html;

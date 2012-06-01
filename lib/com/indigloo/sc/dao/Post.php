@@ -9,9 +9,6 @@ namespace com\indigloo\sc\dao {
 
     class Post {
 
-        const FEATURE_POST = 1 ;
-        const UNFEATURE_POST = 2 ;
-
         function getOnId($postId) {
             $row = mysql\Post::getOnId($postId);
             return $row ;
@@ -115,7 +112,7 @@ namespace com\indigloo\sc\dao {
             $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
             $verb = \com\indigloo\sc\Constants::POST_VERB ;
             $feedDao->addPost($loginId, $name, $itemId, $title, $verb);
-            
+
             return $itemId ;
         }
 
@@ -148,17 +145,10 @@ namespace com\indigloo\sc\dao {
 
         function doAdminAction($postId,$action){
             $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
-
-            switch($action) {
-                case self::FEATURE_POST :
-                    mysql\Post::setFeature($loginId,$postId,1);
-                    break;
-                case self::UNFEATURE_POST :
-                    mysql\Post::setFeature($loginId,$postId,0);
-                    break;
-                default:
-                    break;
-            }
+            //action => feature value map
+            $map = array(\com\indigloo\sc\Constants::FEATURE_POST => 1 ,
+                        \com\indigloo\sc\Constants::UNFEATURE_POST => 0 );
+            mysql\Post::setFeature($loginId,$postId,$map[$action]);
 
         }
 

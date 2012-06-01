@@ -21,6 +21,9 @@
             const SAVE_POST = "SAVE" ;
             const REMOVE_POST = "REMOVE";
 
+            const FEATURE_POST = "ADD" ;
+            const UNFEATURE_POST  = "REMOVE";
+
         }
 }
 ?>

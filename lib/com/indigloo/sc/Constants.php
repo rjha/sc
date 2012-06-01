@@ -1,7 +1,11 @@
 <?php
     namespace com\indigloo\sc {
-        
+
         class Constants {
+
+            //Post Actions
+            const FEATURE_POST = 1 ;
+            const UNFEATURE_POST = 2 ;
 
             //Activity feed verbs
             const LIKE_VERB = 1 ;

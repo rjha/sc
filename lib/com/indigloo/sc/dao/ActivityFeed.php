@@ -75,6 +75,9 @@ namespace com\indigloo\sc\dao {
             $redis->lpush($postKey,$strFeedVO);
             //Add to subject's followers stream
             $this->fanOut($redis,$loginId, $strFeedVO);
+            //Add to owners's feed
+            $key = sprintf("sc:user:%s:activities",$ownerId);
+            $redis->lpush($key,$strFeedVO);
             //@todo add to email queue
             //$redis->lpush("sc:global:email",$strFeedVO);
             $redis->quit();
@@ -121,6 +124,9 @@ namespace com\indigloo\sc\dao {
             //Add to global activities list
             $redis->lpush('sc:global:activities',$strFeedVO);
             $redis->ltrim('sc:global:activities',0,1000);
+             //Add to post activities
+            $postKey = sprintf("sc:post:%s:activities",$itemId);
+            $redis->lpush($postKey,$strFeedVO);
             //send to my followers
             $this->fanOut($redis,$loginId, $strFeedVO);
             //@todo add to email queue

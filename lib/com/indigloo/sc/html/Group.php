@@ -5,11 +5,11 @@ namespace com\indigloo\sc\html {
     use com\indigloo\Template as Template;
     use com\indigloo\Util as Util ;
     use com\indigloo\util\StringUtil as StringUtil ;
-    
+
     class Group {
 
         static function getCloud($groups) {
-            $html = NULL ;
+            
             $view = new \stdClass;
             $view->groups = $groups ;
 
@@ -42,6 +42,6 @@ namespace com\indigloo\sc\html {
 
         }
 
-    } 
+    }
 }
 ?>

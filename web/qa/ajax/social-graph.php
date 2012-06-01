@@ -34,8 +34,8 @@
 
     $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
     $socialGraphDao->addFollower($followerId,$followerName,$followingId,$followingName);
-    
-    $message = sprintf(" success! You are now following %s ",$followingName);
+
+    $message = sprintf("You are now following %s ",$followingName);
     $html = array("code" => 200 , "message" => $message);
     $html = json_encode($html);
     echo $html;
