@@ -8,7 +8,7 @@ namespace com\indigloo\sc\mysql {
 
     class SocialGraph {
 
-        static function checkFollower($followerId, $followingId) {
+        static function find($followerId, $followingId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input

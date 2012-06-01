@@ -35,7 +35,7 @@
         exit;
     }
 
-    $activityDao = new \com\indigloo\sc\dao\Activity();
+    $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
     $postDao = new \com\indigloo\sc\dao\Post();
     $postId = PseudoId::decode($itemId);
     $postDBRow = $postDao->getOnId($postId);
@@ -44,13 +44,13 @@
 
     switch($action) {
         case UIConstants::LIKE_POST:
-            $activityDao->like($ownerId,$loginId,$name,$itemId,$title);
+            $bookmarkDao->like($ownerId,$loginId,$name,$itemId,$title);
             break ;
         case UIConstants::SAVE_POST:
-            $activityDao->favorite($ownerId,$loginId,name,$itemId,$title);
+            $bookmarkDao->favorite($ownerId,$loginId,name,$itemId,$title);
             break;
         case UIConstants::REMOVE_POST :
-             $activityDao->unfavorite($loginId,$itemId);
+             $bookmarkDao->unfavorite($loginId,$itemId);
              break ;
         default :
             break;

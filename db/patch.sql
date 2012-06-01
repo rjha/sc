@@ -1,9 +1,9 @@
 
---	
--- category data  
+--
+-- category data
 --
 
-	
+
 insert into sc_list(name,ui_order,code,display) values('CATEGORY',1, 'BABY', 'Baby/Kids');
 insert into sc_list(name,ui_order,code,display) values('CATEGORY',2, 'BOOK', 'Books');
 insert into sc_list(name,ui_order,code,display) values('CATEGORY',3, 'CLOTH', 'Clothes');
@@ -27,13 +27,13 @@ CREATE TRIGGER trg_answer_title BEFORE INSERT ON sc_answer
 	DECLARE p_title  varchar(128) ;
 	SELECT title into p_title from sc_question where id = NEW.question_id ;
 	set NEW.title = p_title ;
-	
+
     END;//
 delimiter ;
 
 --
 -- switch engine to InnoDB
--- 
+--
 
 --
 -- 27 Feb 2012
@@ -61,8 +61,8 @@ alter table sc_answer add column login_id int ;
 --
 -- update sc_user (login_id vs email)
 -- 1 | jha.rajeev@gmail.com
--- 
--- 
+--
+--
 
 update sc_user set login_id = 1 where email = 'jha.rajeev@gmail.com';
 update sc_question set login_id = 1 where user_email = 'jha.rajeev@gmail.com';
@@ -72,14 +72,14 @@ update sc_answer set login_id = 1 where user_email = 'jha.rajeev@gmail.com';
 -- verify first
 -- repeat above for multiple users
 -- drop user_email
--- 
+--
 
 alter table sc_question drop column user_email ;
 alter table sc_answer drop column user_email ;
 
 --
--- twitter user 
--- 
+-- twitter user
+--
 
 drop table if exists sc_twitter;
 create table sc_twitter(
@@ -98,8 +98,8 @@ create table sc_twitter(
 alter table  sc_twitter add constraint UNIQUE uniq_id (twitter_id);
 
 --
--- facebook user 
--- 
+-- facebook user
+--
 
 drop table if exists sc_facebook;
 create table sc_facebook(
@@ -129,12 +129,12 @@ create table sc_feedback(
 	created_on TIMESTAMP  default '0000-00-00 00:00:00',
     updated_on TIMESTAMP   default '0000-00-00 00:00:00',
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
- 
 
- 
+
+
 --
 -- Patch to convert tables to utf-8
--- 
+--
 alter database scdb character set utf8 collate utf8_general_ci ;
 
 alter table sc_question convert to character set utf8 collate utf8_general_ci ;
@@ -147,9 +147,9 @@ alter table sc_twitter convert to character set utf8 collate utf8_general_ci ;
 alter table sc_facebook convert to character set utf8 collate utf8_general_ci ;
 alter table sc_feedback convert to character set utf8 collate utf8_general_ci ;
 
--- 
--- recreate the trigger 
--- 
+--
+-- recreate the trigger
+--
 alter table sc_question drop column category_code;
 
 alter table sc_question add column is_active int default 1 ;
@@ -158,8 +158,8 @@ alter table sc_answer add column is_active int default 1 ;
 
 
 --
--- 03 March 2012 - DB change patch 
--- 
+-- 03 March 2012 - DB change patch
+--
 
 drop table sc_list ;
 alter table sc_question drop column user_name ;
@@ -181,7 +181,7 @@ create table sc_post_archive(
     created_on timestamp default '0000-00-00 00:00:00',
 	updated_on timestamp default '0000-00-00 00:00:00' ,
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
-    
+
 drop table if exists sc_comment_archive;
 create table sc_comment_archive(
 	id int(11) NOT NULL auto_increment,
@@ -192,8 +192,8 @@ create table sc_comment_archive(
     created_on timestamp default '0000-00-00 00:00:00',
 	updated_on timestamp default '0000-00-00 00:00:00' ,
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
-    
-   
+
+
 
 DROP TRIGGER IF EXISTS trg_mik_user_name;
 
@@ -214,7 +214,7 @@ CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_question
     BEGIN
         insert into sc_post_archive(title,description,location,tags,login_id,links_json,images_json)
         select q.title,q.description,q.location,q.tags,q.login_id,q.links_json,q.images_json
-        from sc_question q where q.id = OLD.id ; 
+        from sc_question q where q.id = OLD.id ;
     END;//
 delimiter ;
 
@@ -226,7 +226,7 @@ CREATE TRIGGER trg_comment_archive  BEFORE DELETE ON sc_answer
     FOR EACH ROW
     BEGIN
         insert into sc_comment_archive (login_id,question_id,title,answer)
-        select a.login_id,a.question_id,a.title,a.answer from sc_answer a where a.id = OLD.id ; 
+        select a.login_id,a.question_id,a.title,a.answer from sc_answer a where a.id = OLD.id ;
     END;//
 delimiter ;
 
@@ -245,7 +245,7 @@ alter table sc_media add column thumbnail varchar(64) ;
 --
 -- drop column sc_question.category_code from server DB
 --
- 
+
 alter table sc_question add column group_slug varchar(64);
 
 --
@@ -253,7 +253,7 @@ alter table sc_question add column group_slug varchar(64);
 --
 
 
-   
+
 drop table if exists sc_user_group;
 create table sc_user_group(
 	id int(11) NOT NULL auto_increment,
@@ -265,8 +265,8 @@ create table sc_user_group(
 
 
 alter table sc_user_group add constraint UNIQUE(login_id,token);
-    
-   
+
+
 
 
 
@@ -280,10 +280,10 @@ BEGIN
 
     --
     -- split slug on comma and push in sc_user_group
-    --  
+    --
 
     SET remainder = slug;
-    
+
     WHILE CHAR_LENGTH(remainder) > 0 AND cur_position > 0 DO
         --
         -- delimiter is space
@@ -295,12 +295,12 @@ BEGIN
             SET cur_string = LEFT(remainder, cur_position - 1);
         END IF;
         IF TRIM(cur_string) != '' THEN
-            -- 
-            -- 
+            --
+            --
             insert ignore into sc_user_group(login_id,token,created_on) values(login_id,cur_string,now());
         END IF;
         SET remainder = SUBSTRING(remainder, cur_position + 1);
-    END WHILE;  
+    END WHILE;
 
 
 END;
@@ -344,10 +344,10 @@ delimiter ;
 --
 -- @13 mar 2012
 --
--- @todo 
+-- @todo
 -- 14 Mar 2012
 -- 15 Mar 2012
--- 
+--
 
 alter table sc_question add column is_feature int default 0 ;
 --
@@ -377,7 +377,7 @@ CREATE TRIGGER trg_comment_title BEFORE INSERT ON sc_comment
 	DECLARE p_title  varchar(128) ;
 	SELECT title into p_title from sc_post where id = NEW.post_id ;
 	set NEW.title = p_title ;
-	
+
     END;//
 delimiter ;
 
@@ -390,7 +390,7 @@ CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
     BEGIN
         insert into sc_post_archive(title,description,location,tags,login_id,links_json,images_json)
         select q.title,q.description,q.location,q.tags,q.login_id,q.links_json,q.images_json
-        from sc_post  q where q.id = OLD.id ; 
+        from sc_post  q where q.id = OLD.id ;
     END;//
 delimiter ;
 
@@ -402,7 +402,7 @@ CREATE TRIGGER trg_comment_archive  BEFORE DELETE ON sc_comment
     FOR EACH ROW
     BEGIN
         insert into sc_comment_archive (login_id,post_id,title,description)
-        select a.login_id,a.post_id,a.title,a.description from sc_comment a where a.id = OLD.id ; 
+        select a.login_id,a.post_id,a.title,a.description from sc_comment a where a.id = OLD.id ;
     END;//
 delimiter ;
 
@@ -446,7 +446,7 @@ alter table sc_post modify column description varchar(512);
 --
 -- @todo now run the pseudo0id update DB script now
 -- @todo verify on server
--- 
+--
 
 --
 -- 17 March 2012
@@ -459,9 +459,9 @@ alter table sc_post drop column tags ;
 
 --
 -- 17 March
--- 
+--
 
-   
+
 drop table if exists sc_feature_group;
 create table sc_feature_group(
 	id int(11) NOT NULL ,
@@ -475,7 +475,7 @@ insert into sc_feature_group(id,slug) values(1,'');
 
 --
 -- 17 March B
--- 
+--
 
 alter table sc_post_archive drop column location ;
 alter table sc_post_archive drop column tags ;
@@ -491,7 +491,7 @@ CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
     BEGIN
         insert into sc_post_archive(title,description,login_id,links_json,images_json,group_slug,pseudo_id)
         select q.title,q.description,q.login_id,q.links_json,q.images_json,q.group_slug,q.pseudo_id
-        from sc_post  q where q.id = OLD.id ; 
+        from sc_post  q where q.id = OLD.id ;
     END;//
 delimiter ;
 
@@ -548,7 +548,7 @@ CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
                 q.pseudo_id,
                 q.cat_code,
                 q.created_on
-        from sc_post  q where q.id = OLD.id ; 
+        from sc_post  q where q.id = OLD.id ;
     END;//
 delimiter ;
 
@@ -615,18 +615,18 @@ alter table sc_twitter modify column twitter_id varchar(64);
 update sc_list set ui_order = 11 where code = 'TRAVEL';
 insert into sc_list(name,ui_order,code,display) values('CATEGORY',10, 'RELIGION', 'Religion/Festivals');
 
--- 
+--
 -- 28 mar 2012
 --
 
--- 
+--
 -- caution - never modify/touch the auto increment PK
--- 
+--
  alter table sc_post modify column pseudo_id varchar(32) ;
 
  --
  -- 30 mar 2012
- -- 
+ --
 
  alter table sc_post_archive  modify column description varchar(512) ;
 
@@ -643,22 +643,22 @@ create table sc_site_tracker(
 	id int NOT NULL auto_increment,
 	post_id int NOT NULL ,
     version int not null,
-    flag int default 0, 
+    flag int default 0,
 	created_on TIMESTAMP  default '0000-00-00 00:00:00',
     updated_on TIMESTAMP   default '0000-00-00 00:00:00',
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
 --
--- populate site_tracker table 
--- 
+-- populate site_tracker table
+--
 
 insert into sc_site_tracker (post_id,created_on,version,flag) select id,created_on,version, 0 from sc_post ;
 
 
--- 
--- Adjust triggers 
--- 
+--
+-- Adjust triggers
+--
 
 DROP TRIGGER IF EXISTS trg_user_group;
 DROP TRIGGER IF EXISTS trg_user_group2;
@@ -677,11 +677,11 @@ CREATE TRIGGER trg_post_add  AFTER  INSERT ON sc_post
         SET slug = NEW.group_slug ;
         SET login_id = NEW.login_id ;
         call fn_user_group(login_id,slug);
-        
+
         --
         -- Add entry in site tracker
-        -- 
-        insert into sc_site_tracker(post_id,flag,version,created_on) 
+        --
+        insert into sc_site_tracker(post_id,flag,version,created_on)
         values (NEW.ID,0,NEW.version,NEW.created_on);
 
 
@@ -701,7 +701,7 @@ CREATE TRIGGER trg_post_edit  AFTER  update ON sc_post
         SET login_id = NEW.login_id ;
         call fn_user_group(login_id,slug);
 
-        update sc_site_tracker set flag=0, version=NEW.version, updated_on= now() 
+        update sc_site_tracker set flag=0, version=NEW.version, updated_on= now()
         where post_id = NEW.id ;
     END;//
 delimiter ;
@@ -733,12 +733,12 @@ CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
                 q.pseudo_id,
                 q.cat_code,
                 q.created_on
-        from sc_post  q where q.id = OLD.id ; 
+        from sc_post  q where q.id = OLD.id ;
     END; //
 delimiter ;
 
 
--- 
+--
 -- Add new tables
 --
 
@@ -780,7 +780,7 @@ create table sc_tmp_ps (
 
 delimiter //
 DROP PROCEDURE IF EXISTS UPDATE_SITE_TRACKER //
-CREATE PROCEDURE UPDATE_SITE_TRACKER (IN v_post_id int, IN v_version int) 
+CREATE PROCEDURE UPDATE_SITE_TRACKER (IN v_post_id int, IN v_version int)
 BEGIN
     DECLARE EXIT HANDLER for SQLEXCEPTION
     BEGIN
@@ -795,13 +795,13 @@ BEGIN
     START TRANSACTION;
 
     delete from sc_post_site where post_id = v_post_id ;
-    insert into sc_post_site(post_id,site_id,created_on)  
+    insert into sc_post_site(post_id,site_id,created_on)
         select post_id,site_id,now() from sc_tmp_ps where post_id = v_post_id ;
     --
-    -- set tracker flag 
-    -- 
+    -- set tracker flag
+    --
     update sc_site_tracker set flag = 1 where post_id = v_post_id and version = v_version ;
-    COMMIT; 
+    COMMIT;
 
 END;//
 delimiter ;
@@ -814,9 +814,9 @@ delimiter ;
 
 
 --
--- 1) Add group master table 
--- 
-   
+-- 1) Add group master table
+--
+
 drop table if exists sc_group_master;
 create table sc_group_master(
 	id int(11) NOT NULL auto_increment,
@@ -833,15 +833,15 @@ alter table sc_group_master add constraint UNIQUE(token);
 -- @todo run cron scripts before dropping table
 -- make sure site processing is not pending
 -- 2) Add new flags to site tracker
--- 
+--
 
 drop table if exists sc_site_tracker;
 create table sc_site_tracker(
 	id int NOT NULL auto_increment,
 	post_id int NOT NULL ,
     version int not null,
-    site_flag int default 0, 
-    group_flag int default 0, 
+    site_flag int default 0,
+    group_flag int default 0,
 	created_on TIMESTAMP  default '0000-00-00 00:00:00',
     updated_on TIMESTAMP   default '0000-00-00 00:00:00',
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -854,8 +854,8 @@ create table sc_site_tracker(
 DROP PROCEDURE IF EXISTS fn_user_group ;
 
 --
--- 4) change trigger on post add 
--- 
+-- 4) change trigger on post add
+--
 
 DROP TRIGGER IF EXISTS trg_post_add ;
 delimiter //
@@ -864,8 +864,8 @@ CREATE TRIGGER trg_post_add  AFTER  INSERT ON sc_post
     BEGIN
         --
         -- Add entry in site tracker
-        -- 
-        insert into sc_site_tracker(post_id,site_flag,group_flag,version,created_on) 
+        --
+        insert into sc_site_tracker(post_id,site_flag,group_flag,version,created_on)
             values (NEW.ID,0,0,NEW.version,NEW.created_on);
 
 
@@ -874,7 +874,7 @@ delimiter ;
 
 --
 -- 5) change trigger on post edit
--- 
+--
 
 DROP TRIGGER IF EXISTS trg_post_edit ;
 delimiter //
@@ -882,22 +882,22 @@ CREATE TRIGGER trg_post_edit  AFTER  update ON sc_post
     FOR EACH ROW
     BEGIN
         --
-        -- reset flags for offline processing 
+        -- reset flags for offline processing
         --
-        update sc_site_tracker set site_flag = 0, group_flag = 0, version = NEW.version, updated_on= now() 
+        update sc_site_tracker set site_flag = 0, group_flag = 0, version = NEW.version, updated_on= now()
             where post_id = NEW.id ;
     END;//
 delimiter ;
 
 
 --
--- 6)use new site_flag  
--- 
+-- 6)use new site_flag
+--
 
 
 delimiter //
 DROP PROCEDURE IF EXISTS UPDATE_SITE_TRACKER //
-CREATE PROCEDURE UPDATE_SITE_TRACKER (IN v_post_id int, IN v_version int) 
+CREATE PROCEDURE UPDATE_SITE_TRACKER (IN v_post_id int, IN v_version int)
 BEGIN
     DECLARE EXIT HANDLER for SQLEXCEPTION
     BEGIN
@@ -912,13 +912,13 @@ BEGIN
     START TRANSACTION;
 
     delete from sc_post_site where post_id = v_post_id ;
-    insert into sc_post_site(post_id,site_id,created_on)  
+    insert into sc_post_site(post_id,site_id,created_on)
     select post_id,site_id,now() from sc_tmp_ps where post_id = v_post_id ;
     --
-    -- set site tracker flag 
-    -- 
+    -- set site tracker flag
+    --
     update sc_site_tracker set site_flag = 1 where post_id = v_post_id and version = v_version ;
-    COMMIT; 
+    COMMIT;
 
 END;//
 delimiter ;
@@ -928,7 +928,7 @@ delimiter ;
 -- populate sc_site_tracker / No need to process sites
 --
 
-insert into sc_site_tracker (post_id,created_on,version,site_flag,group_flag) 
+insert into sc_site_tracker (post_id,created_on,version,site_flag,group_flag)
     select id,created_on,version,1,0 from sc_post ;
 
 
@@ -945,7 +945,7 @@ create table sc_reset_password(
 	name varchar(64) not null ,
 	email varchar(64) not null ,
 	token varchar(64) not null ,
-    flag int default 0, 
+    flag int default 0,
 	created_on TIMESTAMP  default '0000-00-00 00:00:00',
 	expired_on TIMESTAMP  default '0000-00-00 00:00:00',
     updated_on TIMESTAMP   default '0000-00-00 00:00:00',
@@ -961,7 +961,7 @@ create table sc_php_session(
 
 --
 -- 04 May 2012
--- 
+--
 
 drop table if exists sc_user_bookmark;
 create table sc_user_bookmark(
@@ -976,7 +976,7 @@ create table sc_user_bookmark(
 
 --
 -- u1->u2 , u1 is following u2, u2 has follower u1
--- 
+--
 drop table if exists sc_follow;
 create table sc_follow(
 	id int NOT NULL auto_increment,
@@ -1005,7 +1005,7 @@ update sc_user_group set name = token where name is NULL;
 --
 -- 13 May 2012
 -- Added thumbnail_name column to sc_media
--- 
+--
 alter table sc_media add column thumbnail_name varchar(256);
 
 --
@@ -1038,7 +1038,7 @@ CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
                 q.pseudo_id,
                 q.cat_code,
                 q.created_on
-        from sc_post  q where q.id = OLD.id ; 
+        from sc_post  q where q.id = OLD.id ;
         delete from sc_comment where post_id = OLD.id;
     END //
 DELIMITER ;
@@ -1051,13 +1051,13 @@ DELIMITER ;
 -- move orphan comments to archive
 
 --
--- change name column width 
--- 
+-- change name column width
+--
 alter table sc_facebook modify name varchar(64);
 alter table sc_twitter modify name varchar(64);
 
 
--- 
+--
 --
 -- Add denorm_user table
 --
@@ -1084,21 +1084,21 @@ create table sc_denorm_user(
 
 --
 -- load data from sc_user, sc_facebook and sc_twitter tables
--- 
+--
 
-insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,created_on) 
+insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,created_on)
 select u.login_id,u.user_name,u.first_name,u.last_name,u.email, '3mik', now() from sc_user u ;
 
-insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,website,created_on) 
+insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,website,created_on)
 select u.login_id,u.name,u.first_name,u.last_name,u.email, 'facebook', u.link, now() from sc_facebook u ;
 
-insert into sc_denorm_user(login_id,name,nick_name,provider,photo_url,location,created_on) 
+insert into sc_denorm_user(login_id,name,nick_name,provider,photo_url,location,created_on)
 select u.login_id,u.name,u.screen_name,'twitter',u.profile_image,u.location, now() from sc_twitter u ;
 
 
--- 
+--
 -- Add triggers to push data to sc_denorm_table on login creation
--- 
+--
 
 
 DROP TRIGGER IF EXISTS trg_mik_user_cp;
@@ -1107,8 +1107,8 @@ DELIMITER //
 CREATE TRIGGER trg_mik_user_cp  BEFORE INSERT ON sc_user
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,created_on) 
-        values(NEW.login_id,NEW.user_name,NEW.first_name,NEW.last_name,NEW.email, '3mik', now()); 
+        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,created_on)
+        values(NEW.login_id,NEW.user_name,NEW.first_name,NEW.last_name,NEW.email, '3mik', now());
 
     END //
 DELIMITER ;
@@ -1120,7 +1120,7 @@ DELIMITER //
 CREATE TRIGGER trg_fb_user_cp  BEFORE INSERT ON sc_facebook
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,website,created_on) 
+        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,website,created_on)
         values(NEW.login_id,NEW.name,NEW.first_name,NEW.last_name,NEW.email, 'facebook', NEW.link, now()) ;
     END //
 DELIMITER ;
@@ -1132,7 +1132,7 @@ DELIMITER //
 CREATE TRIGGER trg_twitter_user_cp  BEFORE INSERT ON sc_twitter
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,nick_name,provider,photo_url,location,created_on) 
+        insert into sc_denorm_user(login_id,name,nick_name,provider,photo_url,location,created_on)
         values(NEW.login_id,NEW.name,NEW.screen_name,'twitter',NEW.profile_image,NEW.location, now()) ;
     END //
 DELIMITER ;
@@ -1141,7 +1141,7 @@ DELIMITER ;
 
 --
 -- 20 May 2012
--- 
+--
 
 DROP TRIGGER IF Exists trg_mik_user_name ;
 
@@ -1159,9 +1159,9 @@ DELIMITER ;
  alter table sc_denorm_user  add column age int;
 
 
--- 
+--
 -- 22 may 2012
--- 
+--
 
 
 DROP TRIGGER IF Exists trg_mik_user_name ;
@@ -1170,10 +1170,10 @@ DELIMITER //
  CREATE TRIGGER trg_mik_user_name AFTER UPDATE ON sc_denorm_user
     FOR EACH ROW
     BEGIN
-        -- 
+        --
         -- nickname takes precedence over name
         --
-        IF (NEW.nick_name is NULL || NEW.nick_name = "" ) THEN 
+        IF (NEW.nick_name is NULL || NEW.nick_name = "" ) THEN
             update sc_login set name = NEW.name where id = NEW.login_id ;
         ELSE
             update sc_login set name = NEW.nick_name where id = NEW.login_id ;
@@ -1185,7 +1185,7 @@ DELIMITER ;
 
 --
 -- 23 may
--- 
+--
 --
 
 alter table sc_facebook modify column facebook_id varchar(64) not null ;
@@ -1213,11 +1213,33 @@ DELIMITER //
 CREATE TRIGGER trg_google_user_cp  BEFORE INSERT ON sc_google_user
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,photo_url,created_on) 
+        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,photo_url,created_on)
         values(NEW.login_id,NEW.name,NEW.first_name,NEW.last_name,NEW.email, 'google', NEW.photo,now()) ;
     END //
 DELIMITER ;
 
 --
 -- @next push
+-- 01 june 2012
 --
+--
+
+-- Transfer data from sc_user_bookmark => sc_bookmark first
+-- DROP TABLE IF EXISTS  sc_user_bookmark ;
+--
+
+DROP TABLE IF EXISTS  sc_bookmark ;
+CREATE TABLE  sc_bookmark (
+   id  int NOT NULL AUTO_INCREMENT,
+   owner_id  int NOT NULL,
+   subject varchar(32),
+   subject_id int not null,
+   object varchar(16) not null ,
+   object_id int not null,
+   object_title varchar(128),
+   verb int not null,
+   verb_desc varchar(16),
+   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY ( id )) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+

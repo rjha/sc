@@ -17,10 +17,11 @@
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
         try{
             $fhandler = new Form\Handler('web-form-1', $_POST);
+
             $fhandler->addRule('comment', 'Comment', array('required' => 1));
             $fhandler->addRule('post_id', 'post id', array('required' => 1));
+            $fhandler->addRule('owner_id', 'owner id', array('required' => 1));
             $fhandler->addRule('post_title', 'post title', array('required' => 1));
-
             $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
 
             $fvalues = $fhandler->getValues();
@@ -36,6 +37,7 @@
             $commentDao = new com\indigloo\sc\dao\Comment();
             $commentDao->create($gSessionLogin->id,
                                         $gSessionLogin->name,
+                                        $fvalues['owner_id'],
                                         $fvalues['post_id'],
                                         $fvalues['post_title'],
                                         $fvalues['comment']);

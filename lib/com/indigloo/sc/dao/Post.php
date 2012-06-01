@@ -110,6 +110,11 @@ namespace com\indigloo\sc\dao {
                                 $imagesJson,
                                 $groupSlug,
                                 $categoryCode);
+
+            //Add to feed
+            $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
+            $verb = \com\indigloo\sc\Constants::POST_VERB ;
+            $feedDao->addPost($loginId, $name, $itemId, $title, $verb);
             
             return $itemId ;
         }

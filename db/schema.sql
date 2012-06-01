@@ -27,7 +27,7 @@ CREATE TRIGGER trg_comment_archive  BEFORE DELETE ON sc_comment
     FOR EACH ROW
     BEGIN
         insert into sc_comment_archive (login_id,post_id,title,description)
-        select a.login_id,a.post_id,a.title,a.description from sc_comment a where a.id = OLD.id ; 
+        select a.login_id,a.post_id,a.title,a.description from sc_comment a where a.id = OLD.id ;
     END //
 
 DELIMITER ;
@@ -69,7 +69,7 @@ DELIMITER //
 CREATE TRIGGER trg_fb_user_cp  BEFORE INSERT ON sc_facebook
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,website,created_on) 
+        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,website,created_on)
         values(NEW.login_id,NEW.name,NEW.first_name,NEW.last_name,NEW.email, 'facebook', NEW.link, now()) ;
     END //
 DELIMITER ;
@@ -167,7 +167,7 @@ CREATE TABLE  sc_php_session  (
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( session_id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
- 
+
 
 DROP TABLE IF EXISTS  sc_post ;
 CREATE TABLE  sc_post  (
@@ -211,7 +211,7 @@ CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
                 q.pseudo_id,
                 q.cat_code,
                 q.created_on
-        from sc_post  q where q.id = OLD.id ; 
+        from sc_post  q where q.id = OLD.id ;
         delete from sc_comment where post_id = OLD.id;
     END //
 DELIMITER ;
@@ -220,7 +220,7 @@ DELIMITER //
  CREATE TRIGGER trg_post_add  AFTER  INSERT ON sc_post
  FOR EACH ROW
     BEGIN
-        insert into sc_site_tracker(post_id,site_flag,group_flag,version,created_on) 
+        insert into sc_site_tracker(post_id,site_flag,group_flag,version,created_on)
             values (NEW.ID,0,0,NEW.version,NEW.created_on);
 
     END //
@@ -230,7 +230,7 @@ DELIMITER //
  CREATE  TRIGGER trg_post_edit  AFTER  update ON sc_post
     FOR EACH ROW
     BEGIN
-        update sc_site_tracker set site_flag = 0, group_flag = 0, version = NEW.version, updated_on= now() 
+        update sc_site_tracker set site_flag = 0, group_flag = 0, version = NEW.version, updated_on= now()
             where post_id = NEW.id ;
     END  //
 DELIMITER ;
@@ -255,7 +255,7 @@ CREATE TABLE  sc_post_archive  (
    cat_code  varchar(16) ,
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
- 
+
 
 DROP TABLE IF EXISTS  sc_post_site ;
 CREATE TABLE  sc_post_site  (
@@ -266,7 +266,7 @@ CREATE TABLE  sc_post_site  (
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
- 
+
 
 DROP TABLE IF EXISTS  sc_reset_password ;
 CREATE TABLE  sc_reset_password  (
@@ -333,13 +333,13 @@ CREATE TABLE  sc_twitter  (
   PRIMARY KEY ( id ),
   UNIQUE KEY  uniq_id  ( twitter_id )
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
- 
+
 
 DELIMITER //
 CREATE TRIGGER trg_twitter_user_cp  BEFORE INSERT ON sc_twitter
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,nick_name,provider,photo_url,location,created_on) 
+        insert into sc_denorm_user(login_id,name,nick_name,provider,photo_url,location,created_on)
         values(NEW.login_id,NEW.name,NEW.screen_name,'twitter',NEW.profile_image,NEW.location, now()) ;
     END //
 DELIMITER ;
@@ -371,23 +371,11 @@ DELIMITER //
 CREATE TRIGGER trg_mik_user_cp  BEFORE INSERT ON sc_user
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,created_on) 
-        values(NEW.login_id,NEW.user_name,NEW.first_name,NEW.last_name,NEW.email, '3mik', now()); 
+        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,created_on)
+        values(NEW.login_id,NEW.user_name,NEW.first_name,NEW.last_name,NEW.email, '3mik', now());
 
     END //
 DELIMITER ;
-
-DROP TABLE IF EXISTS  sc_user_bookmark ;
-CREATE TABLE  sc_user_bookmark  (
-   id  int(11) NOT NULL AUTO_INCREMENT,
-   item_id  int(11) NOT NULL,
-   login_id  int(11) NOT NULL,
-   action  int(11) NOT NULL,
-   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id )
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
- 
 
 DROP TABLE IF EXISTS  sc_user_group ;
 CREATE TABLE  sc_user_group  (
@@ -400,9 +388,9 @@ CREATE TABLE  sc_user_group  (
   PRIMARY KEY ( id ),
   UNIQUE KEY  login_id  ( login_id , token )
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
- 
 
-DROP PROCEDURE IF EXISTS  UPDATE_SITE_TRACKER  
+
+DROP PROCEDURE IF EXISTS  UPDATE_SITE_TRACKER
 DELIMITER //
 CREATE PROCEDURE  UPDATE_SITE_TRACKER (IN v_post_id int, IN v_version int)
 BEGIN
@@ -419,13 +407,13 @@ BEGIN
     START TRANSACTION;
 
     delete from sc_post_site where post_id = v_post_id ;
-    insert into sc_post_site(post_id,site_id,created_on)  
+    insert into sc_post_site(post_id,site_id,created_on)
     select post_id,site_id,now() from sc_tmp_ps where post_id = v_post_id ;
-    
-    
-    
+
+
+
     update sc_site_tracker set site_flag = 1 where post_id = v_post_id and version = v_version ;
-    COMMIT; 
+    COMMIT;
 
 END //
 DELIMITER ;
@@ -462,10 +450,10 @@ DELIMITER //
  CREATE TRIGGER trg_mik_user_name AFTER UPDATE ON sc_denorm_user
     FOR EACH ROW
     BEGIN
-        -- 
+        --
         -- nickname takes precedence over name
         --
-        IF (NEW.nick_name is NULL || NEW.nick_name = "" ) THEN 
+        IF (NEW.nick_name is NULL || NEW.nick_name = "" ) THEN
             update sc_login set name = NEW.name where id = NEW.login_id ;
         ELSE
             update sc_login set name = NEW.nick_name where id = NEW.login_id ;
@@ -497,8 +485,24 @@ DELIMITER //
 CREATE TRIGGER trg_google_user_cp  BEFORE INSERT ON sc_google_user
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,photo_url,created_on) 
+        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,photo_url,created_on)
         values(NEW.login_id,NEW.name,NEW.first_name,NEW.last_name,NEW.email, 'google', NEW.photo,now()) ;
     END //
 DELIMITER ;
 
+
+
+DROP TABLE IF EXISTS  sc_bookmark ;
+CREATE TABLE  sc_bookmark (
+   id  int NOT NULL AUTO_INCREMENT,
+   owner_id  int NOT NULL,
+   subject varchar(32),
+   subject_id int not null,
+   object varchar(16) not null ,
+   object_id int not null,
+   object_title varchar(128),
+   verb int not null,
+   verb_desc varchar(16),
+   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY ( id )) ENGINE=InnoDB  DEFAULT CHARSET=utf8;

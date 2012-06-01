@@ -50,12 +50,12 @@
             break ;
     }
 
-    $activityDao = new \com\indigloo\sc\dao\Activity();
+    $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
 
     //add login_id and code filters
-    $model = new \com\indigloo\sc\model\Activity();
+    $model = new \com\indigloo\sc\model\Bookmark();
     $filters = array();
-    
+
     //filter-1
     $filter = new Filter($model);
     $filter->add($model::SUBJECT_ID_COLUMN,Filter::EQ,$loginId);
@@ -67,10 +67,10 @@
     array_push($filters,$filter);
 
 
-    $total = $activityDao->getTotal($filters);
+    $total = $bookmarkDao->getTotal($filters);
     $pageSize = Config::getInstance()->get_value("user.page.items");
     $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
-    $postDBRows = $activityDao->getPaged($paginator,$filters);
+    $postDBRows = $bookmarkDao->getPaged($paginator,$filters);
     $pageBaseUrl = "/user/dashboard/bookmark.php";
 
 ?>

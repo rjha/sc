@@ -33,6 +33,7 @@
             <button class="btn" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Add Comment</span></button>
         </div>
 
+       <input type="hidden" name="owner_id" value="<?php echo $postDBRow['login_id']; ?>" />
        <input type="hidden" name="post_id" value="<?php echo $postDBRow['id']; ?>" />
        <input type="hidden" name="post_title" value="<?php echo $postDBRow['title']; ?>" />
        <input type="hidden" name="fUrl" value="<?php echo $_SERVER['REQUEST_URI']; ?>" />

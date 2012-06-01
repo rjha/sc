@@ -8,15 +8,19 @@ namespace com\indigloo\sc\dao {
 
     class SocialGraph {
 
-        function addFollower($followerId,$followingId) {
-            $row = mysql\SocialGraph::checkFollower($followerId,$followingId);
+        function addFollower($followerId,$followerName,$followingId,$followingName) {
+            $row = mysql\SocialGraph::find($followerId,$followingId);
             $count = $row['count'] ;
 
             if($count == 0 ) {
                 //actually insert
                 mysql\SocialGraph::addFollower($followerId,$followingId);
+                //Add to feed
+                $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
+                $verb = \com\indigloo\sc\Constants::FOLLOWING_VERB ;
+                $feedDao->addFollower($followerId, $followerName, $followingId, $followingName, $verb);
             }
-            
+
         }
 
     }
