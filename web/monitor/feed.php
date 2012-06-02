@@ -56,8 +56,8 @@
                 <div class="span9">
 
                         <?php
-                           foreach($feeds as $feed)
-                            echo \com\indigloo\sc\html\ActivityFeed::get($feed);
+                            $feedHtml = new \com\indigloo\sc\html\ActivityFeed($feeds);
+                            $feedHtml->render();
                         ?>
 
                 </div>

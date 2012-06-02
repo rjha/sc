@@ -9,6 +9,9 @@ namespace com\indigloo\sc\dao {
      * @todo - add to email queue also
      *
      */
+
+    use \com\indigloo\sc\Constants as AppConstants ;
+
     class ActivityFeed {
 
         function addFollower($followerId,$followerName,$followingId,$followingName,$verb) {
@@ -17,7 +20,7 @@ namespace com\indigloo\sc\dao {
 
             $feedVO = new \stdClass ;
 
-            $feedVO->type ="feed:follow";
+            $feedVO->type = AppConstants::FOLLOW_FEED ;
             $feedVO->followerId = $followerId ;
             $feedVO->followingId = $followingId ;
             $feedVO->followerName = $followerName ;
@@ -55,7 +58,7 @@ namespace com\indigloo\sc\dao {
         function addBookmark($ownerId,$loginId,$name,$itemId,$title,$verb) {
 
             $feedVO = new \stdClass ;
-            $feedVO->type = "feed:bookmark";
+            $feedVO->type = AppConstants::BOOKMARK_FEED ;
             $feedVO->ownerId = $ownerId;
             $feedVO->subject = $name ;
             $feedVO->subjectId = $loginId ;
@@ -87,7 +90,7 @@ namespace com\indigloo\sc\dao {
         function addPost($loginId,$name,$itemId,$title,$verb) {
             // Add to global activities
             $feedVO = new \stdClass ;
-            $feedVO->type = "feed:post" ;
+            $feedVO->type =  AppConstants::POST_FEED ;
             $feedVO->subject = $name ;
             $feedVO->subjectId = $loginId ;
             $feedVO->object = "post";
@@ -110,7 +113,7 @@ namespace com\indigloo\sc\dao {
         function addComment($ownerId,$loginId,$name,$itemId,$title,$verb) {
 
             $feedVO = new \stdClass ;
-            $feedVO->type = "feed:comment" ;
+            $feedVO->type = AppConstants::COMMENT_FEED ;
             $feedVO->ownerId = $ownerId;
             $feedVO->subject = $name ;
             $feedVO->subjectId = $loginId ;

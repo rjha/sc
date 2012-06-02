@@ -14,6 +14,12 @@
             const COMMENT_VERB = 4 ;
             const POST_VERB = 5 ;
 
+            //Activity feed types
+            const FOLLOW_FEED = "feed:follow" ;
+            const BOOKMARK_FEED = "feed:bookmark" ;
+            const POST_FEED = "feed:post" ;
+            const COMMENT_FEED = "feed:comment" ;
+
         }
 }
 ?>

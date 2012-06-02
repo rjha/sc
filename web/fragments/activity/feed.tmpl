@@ -1,0 +1,16 @@
+<table class="table table-striped">
+
+  <tbody>
+    ~foreach($view->rows as $row){~
+    <tr>
+      <td>
+            <a href="~~$row['subjectUrl']~">~~$row['subject']~</a>
+            ~~$row['verb']~
+            <a href="~~$row['objectUrl']~">~~$row['object']~</a>
+    </td>
+    </tr>
+
+
+    ~}~
+  </tbody>
+</table>
