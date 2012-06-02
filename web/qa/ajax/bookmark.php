@@ -47,7 +47,7 @@
             $bookmarkDao->like($ownerId,$loginId,$name,$itemId,$title);
             break ;
         case UIConstants::SAVE_POST:
-            $bookmarkDao->favorite($ownerId,$loginId,name,$itemId,$title);
+            $bookmarkDao->favorite($ownerId,$loginId,$name,$itemId,$title);
             break;
         case UIConstants::REMOVE_POST :
              $bookmarkDao->unfavorite($loginId,$itemId);
@@ -55,9 +55,7 @@
         default :
             break;
     }
-
-
-
+    
     $message = sprintf(" %s for item %s is success!",$action,$title);
     $html = array("code" => 200 , "message" => $message);
     $html = json_encode($html);
