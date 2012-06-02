@@ -18,7 +18,7 @@ namespace com\indigloo\sc\mysql {
 
             $sql = " select count(id) as count from sc_bookmark " ;
             $sql .= " where subject_id = %d and object_id = %d and verb = %d ";
-            $sql = sprintf($sql,$loginId,$itemId,$verb);
+            $sql = sprintf($sql,$subjectId,$objectId,$verb);
 
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
@@ -98,7 +98,7 @@ namespace com\indigloo\sc\mysql {
             $sql .= " where q.pseudo_id = a.object_id and q.login_id = l.id ";
             $sql .= " and a.subject_id = %d and a.verb = %d limit 20 ";
 
-            $sql = sprintf($sql,$loginId,$verb);
+            $sql = sprintf($sql,$subjectId,$verb);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }

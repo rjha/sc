@@ -12,19 +12,7 @@ namespace com\indigloo\sc\html {
     class ActivityFeed {
 
         static function get($feed) {
-            $html = NULL ;
-            $view = new \stdClass;
-            $template = '/fragments/activity/feed.tmpl' ;
-
-            $view->comment = $commentDBRow['description'];
-            $view->createdOn = Util::formatDBTime($commentDBRow['created_on']);
-            $view->userName = $commentDBRow['user_name'] ;
-            $view->loginId = $commentDBRow['login_id'];
-            $view->pubUserId = PseudoId::encode($view->loginId);
-
-            $html = Template::render($template,$view);
-
-            return $html ;
+             return $feed ;
 
         }
 
