@@ -1,16 +1,17 @@
-<table class="table table-striped">
 
-  <tbody>
+<div class="feeds">
     ~foreach($view->rows as $row){~
-    <tr>
-      <td>
-            <a href="~~$row['subjectUrl']~">~~$row['subject']~</a>
-            ~~$row['verb']~
-            <a href="~~$row['objectUrl']~">~~$row['object']~</a>
-    </td>
-    </tr>
+        <div class="item">
+            <div class="title">
+                <i class="icon-asterisk"> </i>&nbsp;<a href="~~$row['subjectUrl']~">~~$row['subject']~</a>
+                <span class="verb"> ~~$row['verb']~ </span>
+                <a href="~~$row['objectUrl']~">~~$row['object']~</a>
+            </div>
+            <div class="body">
 
+            </div>
+
+        </div>
 
     ~}~
-  </tbody>
-</table>
+</div>
