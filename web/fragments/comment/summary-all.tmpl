@@ -1,0 +1,8 @@
+~foreach($view->records as $record) {~
+<div class="widget">
+    <span class="b"><a href="/pub/user/~~$record['pubUserId']~">~~$record['userName']~</a></span>
+    &nbsp;/&nbsp;<span class="b">~~$record['createdOn']~</span>
+    <br/>
+   ~~$record['comment']~
+</div>
+~}~

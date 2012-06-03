@@ -8,50 +8,69 @@ namespace com\indigloo\sc\html {
     use com\indigloo\Url as Url ;
     use \com\indigloo\sc\util\PseudoId as PseudoId;
     use \com\indigloo\sc\ui\Constants as UIConstants ;
-    
+
     class Comment {
 
-        static function getSummary($commentDBRow) {
+        static function renderAll($rows) {
+            $html = NULL ;
+            $view = new \stdClass;
+            $template = '/fragments/comment/summary-all.tmpl' ;
+            $view->records = array();
+
+            foreach($rows as $row) {
+                $record = array();
+                $record['comment'] = $row['description'];
+                $record['createdOn'] = Util::formatDBTime($row['created_on']);
+                $record['userName'] = $row['user_name'] ;
+                $record['loginId'] = $row['login_id'];
+                $record['pubUserId'] = PseudoId::encode($row['login_id']);
+                $view->records[] = $record ;
+            }
+
+            $html = Template::render($template,$view);
+            echo $html ;
+        }
+
+        static function getSummary($row) {
             $html = NULL ;
             $view = new \stdClass;
             $template = '/fragments/comment/summary.tmpl' ;
-            
-            $view->comment = $commentDBRow['description'];
-            $view->createdOn = Util::formatDBTime($commentDBRow['created_on']);
-            $view->userName = $commentDBRow['user_name'] ;
-            $view->loginId = $commentDBRow['login_id'];
+
+            $view->comment = $row['description'];
+            $view->createdOn = Util::formatDBTime($row['created_on']);
+            $view->userName = $row['user_name'] ;
+            $view->loginId = $row['login_id'];
             $view->pubUserId = PseudoId::encode($view->loginId);
-            
+
             $html = Template::render($template,$view);
-            
             return $html ;
 
         }
 
-        static function getWidget($commentDBRow,$options=NULL) {
-           
+        static function getWidget($row,$options=NULL) {
+
             $html = NULL ;
             $view = new \stdClass;
             $template = '/fragments/comment/text.tmpl' ;
-            
+
             if(is_null($options)) {
                 $options = ~UIConstants::COMMENT_ALL ;
             }
-            
-            $view->id = $commentDBRow['id'];
 
-            $view->title = $commentDBRow['title'];
-            $view->postId = $commentDBRow['post_id'];
+            $view->id = $row['id'];
+
+            $view->title = $row['title'];
+            $view->postId = $row['post_id'];
             $view->itemId = PseudoId::encode($view->postId);
 
-            $view->comment = $commentDBRow['description'];
-            $view->createdOn = Util::formatDBTime($commentDBRow['created_on']);
+            $view->comment = $row['description'];
+            $view->createdOn = Util::formatDBTime($row['created_on']);
             $view->showUser = false ;
 
             if($options & UIConstants::COMMENT_USER) {
-                $view->loginId = $commentDBRow['login_id'];
+                $view->loginId = $row['login_id'];
                 $view->pubUserId = PseudoId::encode($view->loginId);
-                $view->userName = $commentDBRow['user_name'] ;
+                $view->userName = $row['user_name'] ;
                 $view->showUser = true ;
             }
 
@@ -63,9 +82,9 @@ namespace com\indigloo\sc\html {
             $html = Template::render($template,$view);
             return $html ;
         }
-        
+
     }
-    
+
 }
 
 ?>

@@ -9,7 +9,7 @@
             <a id="~~$view->itemId~" class="favorite-post-link" href="">
                 <i class="icon-bookmark"></i>&nbsp;Favorite</a> &nbsp;
             ~}~
-            
+
             ~if($view->hasRemove){~
             <a id="~~$view->itemId~" class ="remove-post-link" href="">
                 <i class="icon-remove"></i>&nbsp;Remove</a> &nbsp;
@@ -17,20 +17,20 @@
 
         </div>
     </div>
-    <div class="photo">         
+    <div class="photo">
         <a href="/item/~~$view->itemId~">
             <img src="~~$view->srcImage~" title="~~$view->originalName~"  alt="~~$view->originalName~"/>
-        </a> 
+        </a>
     </div>
-    
+
     <div class="description">
         <p> ~~$view->description~ </p>
     </div>
-       
+
     <div>
         <span class="b"> <a href="~~$view->userPageURI~">~~$view->userName~</a> </span>
     </div>
-    
+
     ~if($view->hasGroups) {~
     <div class="groups">
     Groups:
@@ -42,8 +42,8 @@
     </div>
     ~}~
 
-    
+
 </div>
 
 
-   
+
