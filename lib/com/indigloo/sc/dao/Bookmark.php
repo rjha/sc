@@ -14,10 +14,9 @@ namespace com\indigloo\sc\dao {
             $count = $row['count'] ;
 
             if($count == 0 ) {
-
                 //actually insert
                 mysql\Bookmark::add($ownerId,$loginId,$name,$itemId,"post",$title,$verb);
-                //Add to site feed
+                //Add to activity feed
                 $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
                 $feedDao->addBookmark($ownerId, $loginId, $name, $itemId, $title, $verb);
 

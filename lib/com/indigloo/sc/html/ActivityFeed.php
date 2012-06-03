@@ -36,6 +36,12 @@ namespace com\indigloo\sc\html {
         }
 
         function render() {
+            //feed can be NULL for error cases
+            if(empty($this->feed) || !is_array($this->feed)) {
+                echo "error retrieving activity feed!" ;
+                return ;
+            }
+
             $html = '' ;
             $rows = array();
 
