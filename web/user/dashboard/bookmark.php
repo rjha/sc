@@ -9,14 +9,14 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login;
 
+    use \com\indigloo\sc\Constants as AppConstants ;
     use \com\indigloo\sc\ui\Constants as UIConstants ;
+
     use \com\indigloo\ui\Filter as Filter;
 
     $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
-    $code = Url::tryQueryParam("code");
-    $code = is_null($code) ? 1 : $code ;
 
     if (is_null($loginId)) {
         trigger_error("Error : NULL or invalid login_id", E_USER_ERROR);
@@ -30,25 +30,10 @@
     }
 
     $tileOptions = ~UIConstants::TILE_ALL ;
-    $pageTitle = "your %s on 3mik" ;
-    $activeTab = NULL ;
+    $pageTitle = "your favorites on 3mik" ;
+    $tileOptions = UIConstants::TILE_REMOVE ;
+    $activeTab = 'saves' ;
 
-    // LIKE - 1
-    // SAVE - 2
-    switch($code){
-        case 1:
-            $tileOptions = UIConstants::TILE_SAVE ;
-            $pageTitle = sprintf($pageTitle, " likes") ;
-            $activeTab = 'likes' ;
-            break;
-        case 2:
-            $tileOptions = UIConstants::TILE_REMOVE ;
-            $pageTitle = sprintf($pageTitle," favorites") ;
-            $activeTab = 'saves' ;
-            break;
-        default:
-            break ;
-    }
 
     $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
 
@@ -63,9 +48,8 @@
 
     //filter-2
     $filter = new Filter($model);
-    $filter->add($model::VERB_COLUMN,Filter::EQ,$code);
+    $filter->add($model::VERB_COLUMN,Filter::EQ,AppConstants::FAVORITE_VERB);
     array_push($filters,$filter);
-
 
     $total = $bookmarkDao->getTotal($filters);
     $pageSize = Config::getInstance()->get_value("user.page.items");
@@ -94,12 +78,22 @@
             /* column width = css width + margin */
             $(document).ready(function(){
                 webgloo.sc.home.addTiles();
+
             });
         </script>
 
     </head>
 
      <body class="">
+
+        <div id="block-spinner"> </div>
+        <div id="simple-popup">
+            <div id="content"> </div>
+            <div class="panel-footer">
+                <div class="floatr">press Esc or&nbsp;<a id="simple-popup-close" href="">close&nbsp;<i class="icon-remove"></i></a> </div>
+            </div>
+        </div> <!-- simple popup -->
+        
         <div class="container mh800">
             <div class="row">
                 <div class="span12">
@@ -140,7 +134,7 @@
                         ?>
 
                     </div><!-- tiles -->
-                    <hr>
+                    <div class="hr"> </div>
                     <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
 
                 </div>

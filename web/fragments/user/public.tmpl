@@ -1,14 +1,22 @@
-    <h3>~~$view->data['name']~</h3>
+
     <div class="widget">
         <div class="photo"> <img src="~~$view->data['photo_url']~" alt ="~~$view->data['name']~" /> </div>
     </div>
-    <div class="well"> 
-            ~~$view->data['about_me']~ 
+    <h3>~~$view->data['name']~</h3>
+    <div class="description">
+            ~~$view->data['about_me']~
     </div>
-    <ul class="unstyled">
-    ~foreach($view->columns as $key){ ~
-        <li> ~~$view->labels[$key]~ </li>
-        <li> ~~$view->data[$key]~ </li>
-    ~}~
-    
-    </ul>
+    <div class="hr"> </div>
+    <div class="mt20">
+        <ul class="unstyled">
+        ~foreach($view->columns as $key){ ~
+            <li> ~~$view->labels[$key]~ </li>
+            <li> ~~$view->data[$key]~ </li>
+        ~}~
+
+        </ul>
+    </div>
+    <div class="hr"> </div>
+    <div class="mt20">
+        ~~$view->feedHtml~
+    </div>

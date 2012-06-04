@@ -36,10 +36,16 @@ namespace com\indigloo\sc\html {
         }
 
         function render() {
+            $html = $this->getHtml();
+            echo $html ;
+
+        }
+
+        function getHtml() {
             //feed can be NULL for error cases
-            if(empty($this->feed) || !is_array($this->feed)) {
-                echo "error retrieving activity feed!" ;
-                return ;
+            if(empty($this->feeds) || !is_array($this->feeds)) {
+                $html =  "error retrieving activity feed!" ;
+                return $html;
             }
 
             $html = '' ;
@@ -100,9 +106,11 @@ namespace com\indigloo\sc\html {
             $view->rows = $rows ;
             $template = '/fragments/activity/feed.tmpl' ;
             $html = Template::render($template,$view);
-            echo $html ;
+            return $html ;
 
         }
+
+
 
     }
 

@@ -58,7 +58,7 @@ namespace com\indigloo\sc\dao {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
                 Logger::getInstance()->error($message);
                 $this->logIt($strFeedVO);
-            } 
+            }
 
         }
 
@@ -97,7 +97,7 @@ namespace com\indigloo\sc\dao {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
                 Logger::getInstance()->error($message);
                 $this->logIt($strFeedVO);
-            } 
+            }
 
         }
 
@@ -127,7 +127,7 @@ namespace com\indigloo\sc\dao {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
                 Logger::getInstance()->error($message);
                 $this->logIt($strFeedVO);
-            } 
+            }
 
         }
 
@@ -162,7 +162,7 @@ namespace com\indigloo\sc\dao {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
                 Logger::getInstance()->error($message);
                 $this->logIt($strFeedVO);
-            } 
+            }
         }
 
         function fanOut($redis,$loginId,$value) {
@@ -184,6 +184,24 @@ namespace com\indigloo\sc\dao {
             try{
                 $redis = new \redisent\Redis('redis://localhost');
                 $feeds = $redis->lrange("sc:global:activities",0,100);
+
+            } catch(\Exception $ex) {
+                $message = sprintf("Redis Exception %s ",$ex->getMessage());
+                Logger::getInstance()->error($message);
+            }
+
+            $redis->quit();
+            return $feeds;
+
+        }
+
+         function getUser($loginId) {
+            $feeds = NULL ;
+
+            try{
+                $redis = new \redisent\Redis('redis://localhost');
+                $key = sprintf("sc:user:%s:activities",$loginId);
+                $feeds = $redis->lrange($key,0,50);
                 $redis->quit();
             } catch(\Exception $ex) {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());

@@ -8,7 +8,7 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login;
-     
+
     //$qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
@@ -16,7 +16,7 @@
     if (is_null($loginId)) {
         trigger_error("Error : NULL or invalid login_id", E_USER_ERROR);
     }
-    
+
     $userDao = new \com\indigloo\sc\dao\User();
     $userDBRow = $userDao->getOnLoginId($loginId);
 
@@ -24,6 +24,7 @@
         trigger_error("No user exists with this login_id", E_USER_ERROR);
     }
 
+    $activeTab = 'profile' ;
 ?>
 
 
@@ -41,7 +42,7 @@
 
         <script>
             $(document).ready(function(){
-                
+
             });
 
         </script>
@@ -53,7 +54,7 @@
             <div class="row">
                 <div class="span12">
                 <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div> 
+                </div>
 
             </div>
 
@@ -62,9 +63,9 @@
                 <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
                 </div>
             </div>
-             <div class="row">
+            <div class="row">
                 <div class="span12">
-                     <?php $activeTab = 'profile' ; include('inc/menu.inc'); ?>
+                     <?php  include('inc/setting-menu.inc'); ?>
                 </div>
             </div>
 
@@ -76,7 +77,7 @@
                 </div>
             </div> <!-- row -->
         </div> <!-- container -->
-     
+
 
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

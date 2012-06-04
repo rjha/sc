@@ -131,14 +131,19 @@ webgloo.sc.SimplePopup = {
 
     },
     processJson : function(response,options) {
-        console.log(options.keepOpen);
+        console.log("keepOpen option :: " + options.keepOpen);
+        console.log("reload option :: " + options.reload);
+
         switch(response.code) {
             case 200 :
                 //success
-                if(options.keepOpen)
+                if(options.keepOpen){
                     this.addContent(response.message);
-                else
-                    this.close();
+                }
+                if(options.reload){
+                    window.location.reload(true);
+                }
+                
                 break;
 
             case 401:
@@ -162,9 +167,10 @@ webgloo.sc.SimplePopup = {
         //show spinner
         this.addSpinner();
 
-        options.keepOpen = options.keepOpen || true ;
-        options.type =  options.type || "POST" ;
-        options.dataType = options.dataType || "text" ;
+        options.keepOpen = (typeof options.keepOpen === "undefined") ? true : options.keepOpen;
+        options.reload = (typeof options.reload === "undefined") ? true : options.reload;
+        options.type = (typeof options.type === "undefined") ? "POST" :  options.type ;
+        options.dataType = (typeof options.dataType === "undefined") ? "text" :  options.dataType ;
 
         //ajax call start
         $.ajax({
@@ -259,7 +265,12 @@ webgloo.sc.item = {
             var targetUrl = "/qa/ajax/bookmark.php";
             //open popup
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj,{
+                "dataType" : "json",
+                "reload" : true,
+                "keepOpen" : false});
+            //reload page
+
         }) ;
 
         $("a.follow-user-link").click(function(event){

@@ -78,7 +78,7 @@ namespace com\indigloo\sc\html {
 
         }
 
-        static function getPublicInfo($userDBRow) {
+        static function getPublic($userDBRow,$feeds) {
 
             $html = NULL ;
             $view = new \stdClass;
@@ -89,9 +89,9 @@ namespace com\indigloo\sc\html {
             //what properties are actually set in DB
             $columns = array();
             // labels for properties
-            $labels = array('website' => ' <span class="badge badge-warning"> Website </span> ' ,
-                            'blog' => '<b> Blog </b> ' ,
-                            'location' => '<b> Location </b> ');
+            $labels = array('website' => '<span class="faded-text"> Website </span>' ,
+                            'blog' => '<span class="faded-text"> Blog </span> ' ,
+                            'location' => '<span class="faded-text"> Location </span> ');
 
             foreach($labels as $key => $label ) {
                 //for label key, the row in DB is set
@@ -106,7 +106,7 @@ namespace com\indigloo\sc\html {
                         $data[$key] = $value ;
                 }
             }
-            
+
             $data['name'] = (empty($userDBRow['nick_name'])) ? $userDBRow['name'] : $userDBRow['nick_name'] ;
             $data['about_me'] = $userDBRow['about_me'];
             $data['photo_url'] = $userDBRow['photo_url'];
@@ -115,17 +115,15 @@ namespace com\indigloo\sc\html {
                 $data['photo_url'] = '/css/images/twitter-icon.png' ;
             }
 
-            if(empty($data['about_me'])) {
-                $data['about_me']= '01101110 01101111 00100000 01100001 01100010'.
-                                    ' 01101111 01110101 01110100 01011111 01101101 01100101' ;
-                $data['about_me']= '<div class="binary">'.$data['about_me'].'</div>';
-
-            }
-
             $view->createdOn = Util::formatDBTime($userDBRow['created_on']);
             $view->columns = $columns;
             $view->data = $data;
             $view->labels = $labels ;
+
+            //feeds html
+            $feedObj = new \com\indigloo\sc\html\ActivityFeed($feeds);
+            $feedHtml = $feedObj->getHtml();
+            $view->feedHtml = empty($feedHtml) ? '' : $feedHtml ;
 
             $html = Template::render($template,$view);
             return $html ;

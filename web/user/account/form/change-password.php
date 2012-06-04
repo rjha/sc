@@ -24,7 +24,7 @@
             $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
 
             $fvalues = $fhandler->getValues();
-            
+
             $qUrl = $fvalues['qUrl'];
             $fUrl = $fvalues['fUrl'];
             $gWeb = \com\indigloo\core\Web::getInstance();
@@ -55,6 +55,7 @@
             WebglooUser::changePassword('sc_user',$userDBRow['login_id'],$email,$password) ;
 
             //success
+            $gWeb->store(Constants::FORM_MESSAGES, array("password changed successfully!"));
             header("Location: " . $qUrl);
             exit(1);
 

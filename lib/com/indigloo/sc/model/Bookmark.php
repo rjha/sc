@@ -7,14 +7,14 @@ namespace com\indigloo\sc\model {
 
          const SUBJECT_ID_COLUMN = 1;
          const VERB_COLUMN = 2;
-         
+
          function __construct() {
 
          }
 
          public function getColumns() {
              //UI to table columns mapping
-             $columns = array(self::SUBJECT_ID_COLUMN => "subject_id", self::VERB => 'verb');
+             $columns = array(self::SUBJECT_ID_COLUMN => "subject_id", self::VERB_COLUMN => 'verb');
              return $columns;
          }
 
