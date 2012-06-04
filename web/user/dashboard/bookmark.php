@@ -32,8 +32,6 @@
     $tileOptions = ~UIConstants::TILE_ALL ;
     $pageTitle = "your favorites on 3mik" ;
     $tileOptions = UIConstants::TILE_REMOVE ;
-    $activeTab = 'saves' ;
-
 
     $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
 
@@ -56,6 +54,9 @@
     $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
     $postDBRows = $bookmarkDao->getPaged($paginator,$filters);
     $pageBaseUrl = "/user/dashboard/bookmark.php";
+
+     $activeTab = 'saves' ;
+
 
 ?>
 <!DOCTYPE html>
@@ -84,7 +85,7 @@
 
     </head>
 
-     <body class="">
+     <body>
 
         <div id="block-spinner"> </div>
         <div id="simple-popup">
@@ -93,8 +94,8 @@
                 <div class="floatr">press Esc or&nbsp;<a id="simple-popup-close" href="">close&nbsp;<i class="icon-remove"></i></a> </div>
             </div>
         </div> <!-- simple popup -->
-        
-        <div class="container mh800">
+
+        <div class="container">
             <div class="row">
                 <div class="span12">
                     <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
@@ -113,24 +114,26 @@
                 </div>
             </div>
 
-
             <div class="row">
                 <div class="span9">
 
-                    <div id="tiles">
+                    <div id="tiles" class="mh600">
                         <?php
                             $startId = NULL;
                             $endId = NULL ;
                             if(sizeof($postDBRows) > 0 ) {
                                 $startId = $postDBRows[0]['id'] ;
                                 $endId =   $postDBRows[sizeof($postDBRows)-1]['id'] ;
+                                foreach($postDBRows as $postDBRow) {
+                                    $html = \com\indigloo\sc\html\Post::getTile($postDBRow,$tileOptions);
+                                    echo $html ;
+
+                                }
+                            } else {
+                                $message = "No results found " ;
+                                echo \com\indigloo\sc\html\NoResult::get($message);
                             }
 
-                            foreach($postDBRows as $postDBRow) {
-                                $html = \com\indigloo\sc\html\Post::getTile($postDBRow,$tileOptions);
-                                echo $html ;
-
-                            }
                         ?>
 
                     </div><!-- tiles -->

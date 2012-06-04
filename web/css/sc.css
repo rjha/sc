@@ -444,9 +444,8 @@
         margin :0px;
     }
 
-    .mh800 {
-        min-height:800px;
-    }
+    .mh800 { min-height:800px;}
+    .mh600 { min-height: 600px;}
 
     .author{
         padding: 7px 0px 7px 0px ;
@@ -779,6 +778,14 @@
         color :#8c7e7e ;
     }
 
+    .noresults {
+        width: 640px;
+        margin: 0 auto;
+        padding: 30px 0;
+        color: #AAA;
+        font-size: 2.9em;
+    }
+    
     /* last section - override bootstrap css */
     .hero-unit {
         padding:30px;

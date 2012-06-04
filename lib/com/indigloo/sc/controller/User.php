@@ -14,9 +14,12 @@ namespace com\indigloo\sc\controller{
 
         function process($params,$options) {
 
-            if(is_null($params) || empty($params))
-                trigger_error("Required params is null or empty", E_USER_ERROR);
-
+            if(is_null($params) || empty($params)){
+                $controller = new \com\indigloo\sc\controller\Http400();
+                $controller->process();
+                exit;
+            }
+            
             $pubUserId = Util::getArrayKey($params,"login_id");
             $loginId = PseudoId::decode($pubUserId);
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
@@ -52,7 +55,7 @@ namespace com\indigloo\sc\controller{
             $postDBRows = $postDao->getPaged($paginator,$filters);
 
             $template = APP_WEB_DIR. '/view/user/pub.php';
-            
+
             //page variables
             $pageBaseUrl = "/pub/user/".$pubUserId ;
             $pageTitle = SeoData::getHomePageTitle();

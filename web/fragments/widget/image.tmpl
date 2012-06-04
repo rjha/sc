@@ -1,15 +1,15 @@
 <div class="widget">
-    
+
     <div class="row">
         <div class="span7">
 
             <div class="photo">
-                <a href="/item/~~$view->itemId~"> <img src="~~$view->srcImage~" class="alignleft" width="~~$view->width~" height="~~$view->height~" title="~~$view->originalName~"  alt="~~$view->originalName~"/> </a> 
+                <a href="/item/~~$view->itemId~"> <img src="~~$view->srcImage~" class="alignleft" width="~~$view->width~" height="~~$view->height~" title="~~$view->originalName~"  alt="~~$view->originalName~"/> </a>
 
             </div>
-            <p>
-                ~~$view->description~
-            </p>
+            <p> ~~$view->description~ </p>
+            <p> <span class="b">~~$view->createdOn~ </span> </p>
+            
             <div class="options">
                  <div class="links">
                     ~if($view->hasEdit){~
@@ -24,15 +24,9 @@
 
         </div> <!-- span7-->
         <div class="span2">
-
-            <div class="author p10">
-                <div class="meta">
-                    <span class="b">~~$view->createdOn~ </span>
-                </div>  
-            </div>
-            
+            &nbsp;
         </div> <!-- span2-->
-        
+
     </div> <!-- row -->
-    
+
 </div>

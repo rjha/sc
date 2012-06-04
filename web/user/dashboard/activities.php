@@ -27,7 +27,7 @@
 
     $activityDao = new \com\indigloo\sc\dao\ActivityFeed() ;
     $feeds = $activityDao->getUser($loginId);
-
+    $activeTab = 'activities' ;
 ?>
 
 
@@ -61,18 +61,19 @@
             </div>
             <div class="row">
                 <div class="span12">
-                     <?php $activeTab = 'activities' ; include('inc/menu.inc'); ?>
+                     <?php  include('inc/menu.inc'); ?>
                 </div>
             </div>
 
             <div class="row">
-                <div class="span9">
-                        <?php
-                            $feedObj = new \com\indigloo\sc\html\ActivityFeed($feeds);
-                            $html = $feedObj->getHtml();
-                            echo $html ;
+                <div class="span9 mh600">
+                    <?php
 
-                        ?>
+                        $feedObj = new \com\indigloo\sc\html\ActivityFeed($feeds);
+                        $html = $feedObj->getHtml();
+                        echo $html ;
+
+                    ?>
 
 
                 </div>

@@ -7,14 +7,17 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\ui\Pagination as Pagination ;
     use \com\indigloo\sc\html\Seo as SeoData ;
-    
+
     class Group {
 
         function process($params,$options) {
 
-            if(is_null($params) || empty($params))
-                trigger_error("Required params is null or empty", E_USER_ERROR);
-
+            if(is_null($params) || empty($params)){
+                $controller = new \com\indigloo\sc\controller\Http400();
+                $controller->process();
+                exit;
+            }
+            
             $slug = Util::getArrayKey($params,"name");
             //break hyphenated tokens into normal words for sphinx
             //$token = \com\indigloo\util\StringUtil::convertKeyToName($slug);
@@ -42,8 +45,11 @@ namespace com\indigloo\sc\controller{
                 $postDao = new \com\indigloo\sc\dao\Post();
                 $postDBRows = $postDao->getOnSearchIds($ids) ;
 
+
+
             } else {
-                $pageHeader = "$groupName - No Results" ;
+
+                $pageHeader = "No results found for group $groupName" ;
                 $template = APP_WEB_DIR. '/view/notiles.php';
             }
 

@@ -48,7 +48,7 @@
 
                 <div class="span12">
 
-                    <div id="tiles">
+                    <div id="tiles" class="mh600">
                         <!-- user profile tile -->
                         <div class="tile">
                             <?php echo \com\indigloo\sc\html\User::getPublic($userDBRow,$userFeeds); ?>
@@ -60,13 +60,16 @@
                             if(sizeof($postDBRows) > 0 ) {
                                 $startId = $postDBRows[0]['id'] ;
                                 $endId =   $postDBRows[sizeof($postDBRows)-1]['id'] ;
+                                foreach($postDBRows as $postDBRow) {
+                                    $html = \com\indigloo\sc\html\Post::getTile($postDBRow);
+                                    echo $html ;
+
+                                }
+                            }else {
+                                $message = "No results found " ;
+                                echo \com\indigloo\sc\html\NoResult::get($message);
                             }
 
-                            foreach($postDBRows as $postDBRow) {
-                                $html = \com\indigloo\sc\html\Post::getTile($postDBRow);
-                                echo $html ;
-
-                            }
                         ?>
 
                     </div><!-- tiles -->

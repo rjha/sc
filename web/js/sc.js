@@ -143,7 +143,7 @@ webgloo.sc.SimplePopup = {
                 if(options.reload){
                     window.location.reload(true);
                 }
-                
+
                 break;
 
             case 401:
@@ -168,7 +168,7 @@ webgloo.sc.SimplePopup = {
         this.addSpinner();
 
         options.keepOpen = (typeof options.keepOpen === "undefined") ? true : options.keepOpen;
-        options.reload = (typeof options.reload === "undefined") ? true : options.reload;
+        options.reload = (typeof options.reload === "undefined") ? false : options.reload;
         options.type = (typeof options.type === "undefined") ? "POST" :  options.type ;
         options.dataType = (typeof options.dataType === "undefined") ? "text" :  options.dataType ;
 

@@ -7,12 +7,12 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\ui\Pagination as Pagination ;
     use \com\indigloo\sc\html\Seo as SeoData ;
-  
-    
+
+
     class Search {
-        
+
         function process($params,$options) {
-            
+
             $token = Url::tryQueryParam("gt");
             if(is_null($token)) {
                 header("Location: / ");
@@ -22,9 +22,9 @@ namespace com\indigloo\sc\controller{
             $total = $sphinx->getPostsCount($token);
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
             $pageSize = 50;
-            $paginator = new Pagination($qparams,$total,$pageSize); 
+            $paginator = new Pagination($qparams,$total,$pageSize);
 
-            $ids = $sphinx->getPagedPosts($token,$paginator);            
+            $ids = $sphinx->getPagedPosts($token,$paginator);
             $sphinx->close();
 
             $template =  NULL ;
@@ -39,7 +39,7 @@ namespace com\indigloo\sc\controller{
                 $postDBRows = $postDao->getOnSearchIds($ids) ;
 
             } else {
-                $pageHeader = "$token - No Results" ;
+                $pageHeader = "No results found for $token" ;
                 $template = APP_WEB_DIR. '/view/notiles.php';
 
             }
@@ -48,7 +48,7 @@ namespace com\indigloo\sc\controller{
             $metaKeywords = SeoData::getMetaKeywords($token);
             $metaDescription = SeoData::getMetaDescription($token);
 
-            include($template); 
+            include($template);
         }
     }
 }

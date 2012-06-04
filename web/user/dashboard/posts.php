@@ -8,9 +8,9 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login;
-    
-    use \com\indigloo\ui\Filter as Filter; 
-    
+
+    use \com\indigloo\ui\Filter as Filter;
+
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
 
@@ -24,7 +24,7 @@
     if (empty($userDBRow)) {
         trigger_error("No user record found for given login_id", E_USER_ERROR);
     }
-    
+
     $postDao = new \com\indigloo\sc\dao\Post();
     $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
 
@@ -35,14 +35,15 @@
     $filter = new Filter($model);
     $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
     array_push($filters,$filter);
-     
+
     $postDBRows = array();
     $total = $postDao->getTotalCount($filters);
 
     $pageSize = Config::getInstance()->get_value("user.page.items");
     $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
     $postDBRows = $postDao->getPaged($paginator,$filters);
-    
+
+    $activeTab = 'posts' ;
 ?>
 
 
@@ -57,21 +58,21 @@
         <link rel="stylesheet" type="text/css" href="/css/sc.css">
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        
+
         <script>
             $(document).ready(function(){
                 //show options on widget hover
                 $('.widget .options').hide();
-                $('.widget').mouseenter(function() { 
-                    $(this).find('.options').toggle(); 
+                $('.widget').mouseenter(function() {
+                    $(this).find('.options').toggle();
                     $(this).css("background-color", "#F0FFFF");
                 });
-                $('.widget').mouseleave(function() { 
-                    $(this).find('.options').toggle(); 
+                $('.widget').mouseleave(function() {
+                    $(this).find('.options').toggle();
                     $(this).css("background-color", "#FFFFFF");
-                }); 
+                });
             });
-            
+
         </script>
 
     </head>
@@ -81,7 +82,7 @@
             <div class="row">
                 <div class="span12">
                 <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div> 
+                </div>
 
             </div>
 
@@ -92,25 +93,28 @@
             </div>
             <div class="row">
                 <div class="span12">
-                     <?php $activeTab = 'posts' ; include('inc/menu.inc'); ?>
+                     <?php  include('inc/menu.inc'); ?>
                 </div>
             </div>
 
             <div class="row">
-                <div class="span9">
-                        <?php
-                            $startId = NULL;
-                            $endId = NULL;
-                            if (sizeof($postDBRows) > 0) {
-                                $startId = $postDBRows[0]['id'];
-                                $endId = $postDBRows[sizeof($postDBRows) - 1]['id'];
-                            }
-
+                <div class="span9 mh600">
+                    <?php
+                        $startId = NULL;
+                        $endId = NULL;
+                        if (sizeof($postDBRows) > 0) {
+                            $startId = $postDBRows[0]['id'];
+                            $endId = $postDBRows[sizeof($postDBRows) - 1]['id'];
                             foreach ($postDBRows as $postDBRow) {
                                 echo \com\indigloo\sc\html\Post::getWidget($postDBRow);
                             }
-                        ?>
-                   
+                        } else {
+                            $message = "No posts found " ;
+                            echo \com\indigloo\sc\html\NoResult::get($message);
+                        }
+
+                    ?>
+
                 </div>
                 <div class="span3">
                 </div>
