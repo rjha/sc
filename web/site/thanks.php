@@ -6,8 +6,10 @@
     //pull one random image
     $postDao = new \com\indigloo\sc\dao\Post();
     $rows = $postDao->getRandom(5);
-    $tileHtml = \com\indigloo\sc\html\Post::getTile($rows[2]);
-
+    $tileHtml = '' ;
+    if(sizeof($rows) > 0 ) {
+        $tileHtml = \com\indigloo\sc\html\Post::getTile($rows[0]);
+    }
 
 ?>
 
@@ -30,7 +32,7 @@
             <div class="row">
                 <div class="span12 mh600">
                     <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                    
+
                     <div class="span3 offset2">
                         <?php echo $tileHtml ; ?>
                     </div>
