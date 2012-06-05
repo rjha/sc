@@ -4,13 +4,14 @@ namespace com\indigloo\sc\dao {
 
     /**
      * @todo - add to email queue also
+     * @todo - pipelining / redis perf tuning.
      *
      */
 
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\Constants as AppConstants ;
-    use \redisent\RedisException as RedisException ;
+    use  \com\indigloo\sc\util\Redis as Redis ;
 
     class ActivityFeed {
 
@@ -21,16 +22,16 @@ namespace com\indigloo\sc\dao {
             $feedVO = new \stdClass ;
 
             $feedVO->type = AppConstants::FOLLOW_FEED ;
-            $feedVO->followerId = $followerId ;
-            $feedVO->followingId = $followingId ;
+            $feedVO->subjectId = $followerId ;
+            $feedVO->objectId = $followingId ;
 
-            $feedVO->followerName = $followerName ;
-            $feedVO->followingName = $followingName ;
+            $feedVO->subject = $followerName ;
+            $feedVO->object = $followingName ;
             $feedVO->verb = $verb ;
             $strFeedVO = json_encode($feedVO);
 
             try {
-                $redis = new \redisent\Redis('redis://localhost');
+                $redis = Redis::getInstance()->connection();
                 //Add to global activities list
                 $redis->lpush('sc:global:activities',$strFeedVO);
                 $redis->ltrim('sc:global:activities',0,1000);
@@ -52,7 +53,7 @@ namespace com\indigloo\sc\dao {
                 $redis->lpush($key,$strFeedVO);
 
                 //no need to fan-out?
-                $redis->quit();
+
 
             } catch(\Exception $ex) {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
@@ -76,7 +77,7 @@ namespace com\indigloo\sc\dao {
             $strFeedVO = json_encode($feedVO);
 
             try{
-                $redis = new \redisent\Redis('redis://localhost');
+                $redis = Redis::getInstance()->connection();
                 //Add to global activities list
                 $redis->lpush('sc:global:activities',$strFeedVO);
                 $redis->ltrim('sc:global:activities',0,1000);
@@ -91,7 +92,7 @@ namespace com\indigloo\sc\dao {
                 $redis->lpush($key,$strFeedVO);
                 //@todo add to email queue
                 //$redis->lpush("sc:global:email",$strFeedVO);
-                $redis->quit();
+
 
             } catch(\Exception $ex) {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
@@ -114,14 +115,13 @@ namespace com\indigloo\sc\dao {
             $strFeedVO = json_encode($feedVO);
 
             try{
-                $redis = new \redisent\Redis('redis://localhost');
+                $redis = Redis::getInstance()->connection();
 
                 //Add to global activities list
                 $redis->lpush('sc:global:activities',$strFeedVO);
                 $redis->ltrim('sc:global:activities',0,1000);
                 // send to my followers
                 $this->fanOut($redis,$loginId, $strFeedVO);
-                $redis->quit();
 
             } catch(\Exception $ex) {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
@@ -146,7 +146,7 @@ namespace com\indigloo\sc\dao {
 
             try {
 
-                $redis = new \redisent\Redis('redis://localhost');
+                $redis = Redis::getInstance()->connection();
                 //Add to global activities list
                 $redis->lpush('sc:global:activities',$strFeedVO);
                 $redis->ltrim('sc:global:activities',0,1000);
@@ -156,7 +156,7 @@ namespace com\indigloo\sc\dao {
                 //send to my followers
                 $this->fanOut($redis,$loginId, $strFeedVO);
                 //@todo add to email queue
-                $redis->quit();
+
 
             } catch(\Exception $ex) {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
@@ -178,38 +178,39 @@ namespace com\indigloo\sc\dao {
             }
         }
 
-        function getGlobal() {
-            $feeds = NULL ;
+        function getList($key,$limit) {
+            $feedDataObj = NULL ;
 
             try{
-                $redis = new \redisent\Redis('redis://localhost');
-                $feeds = $redis->lrange("sc:global:activities",0,100);
+                $redis = Redis::getInstance()->connection();
+                $feeds = $redis->lrange($key,0,$limit);
+                //redis can return nil or empty array
+                if(empty($feeds)) {
+                    $feeds = array() ;
+                }
+
+                $feedDataObj = new \stdClass ;
+                $feedDataObj->feeds = $feeds ;
+                $feedDataObj->type = "list" ;
+
 
             } catch(\Exception $ex) {
+                $feedDataObj = new \stdClass;
+                $feedDataObj->error = "Error retrieving activity feed!" ;
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
                 Logger::getInstance()->error($message);
             }
 
-            $redis->quit();
-            return $feeds;
-
+            return $feedDataObj;
         }
 
-         function getUser($loginId) {
-            $feeds = NULL ;
+        function getGlobal() {
+            return $this->getList("sc:global:activities", 100) ;
+        }
 
-            try{
-                $redis = new \redisent\Redis('redis://localhost');
-                $key = sprintf("sc:user:%s:activities",$loginId);
-                $feeds = $redis->lrange($key,0,50);
-                $redis->quit();
-            } catch(\Exception $ex) {
-                $message = sprintf("Redis Exception %s ",$ex->getMessage());
-                Logger::getInstance()->error($message);
-            }
-
-            return $feeds;
-
+        function getUser($loginId) {
+            $key = sprintf("sc:user:%s:activities",$loginId);
+            return $this->getList($key, 50) ;
         }
 
         function logIt($strFeedVO) {

@@ -51,7 +51,7 @@
                     <div id="tiles" class="mh600">
                         <!-- user profile tile -->
                         <div class="tile">
-                            <?php echo \com\indigloo\sc\html\User::getPublic($userDBRow,$userFeeds); ?>
+                            <?php echo \com\indigloo\sc\html\User::getPublic($userDBRow,$feedDataObj); ?>
                         </div>
 
                         <?php

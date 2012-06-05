@@ -78,7 +78,7 @@ namespace com\indigloo\sc\html {
 
         }
 
-        static function getPublic($userDBRow,$feeds) {
+        static function getPublic($userDBRow,$feedDataObj) {
 
             $html = NULL ;
             $view = new \stdClass;
@@ -121,8 +121,8 @@ namespace com\indigloo\sc\html {
             $view->labels = $labels ;
 
             //feeds html
-            $feedObj = new \com\indigloo\sc\html\ActivityFeed($feeds);
-            $feedHtml = $feedObj->getHtml();
+            $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+            $feedHtml = $htmlObj->getHtml($feedDataObj);
             $view->feedHtml = empty($feedHtml) ? '' : $feedHtml ;
 
             $html = Template::render($template,$view);

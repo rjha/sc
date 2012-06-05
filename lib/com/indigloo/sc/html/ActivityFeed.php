@@ -10,11 +10,10 @@ namespace com\indigloo\sc\html {
 
     class ActivityFeed {
 
-        private $feeds ;
         private $map ;
 
-        function __construct($feeds) {
-            $this->feeds = $feeds ;
+        function __construct() {
+
             $this->map = array(AppConstants::COMMENT_VERB => 'commented on',
                 AppConstants::FAVORITE_VERB => 'saved',
                 AppConstants::FOLLOWING_VERB => 'is following',
@@ -35,24 +34,32 @@ namespace com\indigloo\sc\html {
             return $flag ;
         }
 
-        function render() {
-            $html = $this->getHtml();
-            echo $html ;
+        function getHtml($feedDataObj) {
 
-        }
-
-        function getHtml() {
-            //feed can be NULL for error cases
-            if(empty($this->feeds) || !is_array($this->feeds)) {
-                $html =  "error retrieving activity feed!" ;
+            //dataObj is NULL or empty for error case
+            if(empty($feedDataObj)) {
+                $html =  "Error retrieving activity data!" ;
                 return $html;
             }
 
+            if(!property_exists($feedDataObj, "feeds")) {
+                $html =  "Malformed feed object : missing feeds!" ;
+                return $html;
+            }
+
+            if(property_exists($feedDataObj, "error")) {
+                $html = $feedDataObj->error ;
+                return $html ;
+            }
+
+
+            //dataObj->feeds is always an array
             $html = '' ;
+            //placeholder for transformed feeds
             $rows = array();
 
             $index = 0 ;
-            foreach($this->feeds as $feed) {
+            foreach($feedDataObj->feeds as $feed) {
                 $index++ ;
                 //create object out of string
                 $feedObj = json_decode($feed);

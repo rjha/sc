@@ -11,7 +11,7 @@
 
     //$qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
-    $feeds = $feedDao->getGlobal();
+    $feedDataObj = $feedDao->getGlobal();
 
 ?>
 
@@ -56,8 +56,8 @@
                 <div class="span9">
 
                         <?php
-                            $feedObj = new \com\indigloo\sc\html\ActivityFeed($feeds);
-                            $html = $feedObj->getHtml();
+                            $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+                            $html = $htmlObj->getHtml($feedDataObj);
                             echo $html ;
 
                         ?>

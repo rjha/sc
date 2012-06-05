@@ -19,7 +19,7 @@ namespace com\indigloo\sc\controller{
                 $controller->process();
                 exit;
             }
-            
+
             $pubUserId = Util::getArrayKey($params,"login_id");
             $loginId = PseudoId::decode($pubUserId);
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
@@ -37,7 +37,7 @@ namespace com\indigloo\sc\controller{
             //meta data about user - #groups/#posts/#comments/#followers etc.
             // user feeds
             $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
-            $userFeeds = $activityDao->getUser($loginId);
+            $feedDataObj = $activityDao->getUser($loginId);
 
             $postDao = new \com\indigloo\sc\dao\Post() ;
 

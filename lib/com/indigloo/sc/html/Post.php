@@ -109,7 +109,6 @@ namespace com\indigloo\sc\html {
 
             $voptions = array("abbreviate" => true ,"group" => true);
             $view = self::createPostView($postDBRow,$voptions);
-
             $template = ($view->hasImage) ?
                 '/fragments/tile/image.tmpl' : '/fragments/tile/text.tmpl' ;
 
@@ -137,7 +136,7 @@ namespace com\indigloo\sc\html {
             $html = NULL ;
             $voptions = array("image" => false, "group" => true);
             $view = self::createPostView($postDBRow,$voptions) ;
-           
+
             if(!$view->hasGroups) return '' ;
             $template = '/fragments/post/group.tmpl' ;
             $html = Template::render($template,$view);
@@ -185,7 +184,7 @@ namespace com\indigloo\sc\html {
 
         }
 
-        private static function createPostView($row,$voptions=NULL) {
+        static function createPostView($row,$voptions=NULL) {
 
             $voptions = empty($voptions) ? array() : $voptions ;
 
@@ -202,7 +201,7 @@ namespace com\indigloo\sc\html {
                 $options[$key] = $value ;
             }
 
-            $imagesJson = $row['images_json'];
+            $imagesJson = $row["images_json"];
             $images = json_decode($imagesJson);
 
             $view = new \stdClass;
