@@ -1,38 +1,53 @@
 
-xDebug
-=======
-Windows - You can download xDebug DLL from xdebug.org. On linux machines you can just do
-aptitude install php5-xdebug
+xdebug install
+------------------
+Windows - You can download xDebug DLL from xdebug.org.
+On linux machines you can just do
+$sudo aptitude install php5-xdebug
 
-configuration :- on linux machine look for /etc/php5/conf.d/xdebug.ini
+The xdebug.ini file is in /etc/php5/cgi/conf.d or /etc/php5/fpm/conf.d folder.
+On Ubuntu (and debian) PHP is compiled to load .ini files from conf.d dir
+You can verify this by looking at output of phpinfo().
 
+1. Download xdebug from xdebug.org. To know whether your php is thread safe or not
+look @ phpinfo() output
 
-1. Download xdebug from xdebug.org , our PHP is thread safe (look @ phpinfo() output)
-And add the following lines to PHP.ini
-======================================
-;
-;rjha added for xdebug
-;
-zend_extension_ts="F:/sw/php5.2.12/ext/php_xdebug-2.0.5-5.2.dll"
-xdebug.remote_enable=On
+xdebug.ini
+---------------------------------------------
+zend_extension=/usr/lib/php5/20090626/xdebug.so
+xdebug.trace_output_dir=/home/rjha/web
+xdebug.collect_includes=1
+xdebug.show_mem_delta=1
+xdebug.profile_enable=0
+xdebug.remote_enable=0
+xdebug.auto_trace=0
+
+if auto trace is off then you have to add it manually.
+
+Enable following for debugging purposes. Do not turn them On by default as they
+slow things down.
+
 xdebug.remote_host=localhost
 xdebug.remote_port=9000
 xdebug.remote_handler=dbgp
 
 
-2. To trace a script , wrap the script in xdebug calls. Like for index.php page
-====================
+Manually trace a script with xdebug
+------------------------------------
 
-$_SERVER['HTTP_HOST'] = 'www.test1.com';
-$_SERVER['REQUEST_URI'] = '/' ;
-ini_set('xdebug.show_mem_delta' , 'On');
-xdebug_start_trace('f:/index.trace');
+wrap the script in xdebug calls. Like for index.php page
 
-//rest of script ...
 
- xdebug_stop_trace();
+xdebug_start_trace('/home/rjha/web/index.trace');
 
-This will produce index.trace file. With execution time/memory and memory delta columns.
+//original index.php script
+
+xdebug_stop_trace();
+
+
+This will produce an index.trace file with execution time/memory and memory delta columns.
+
+
 
 
 3. Using xdebug with netbeans
@@ -226,7 +241,7 @@ http://www.yolinux.com/TUTORIALS/WebServerBenchmarking.html
  for our case we want ttl=0, we can restart PHP when we redeploy the code
  we do not do GC
  Let me cache each page used in opcode cache.
- 
+
  rjha@indigloo-beta:/etc/php5/conf.d$ pstree -p
  init(1) cron(2335)
         getty(2380)
@@ -238,11 +253,11 @@ http://www.yolinux.com/TUTORIALS/WebServerBenchmarking.html
         ?               --php-cgi(6723)
         ?               --php-cgi(6724)
         ?               --php-cgi(6725)
-        
- our php-cgi processes are running under one group. 
- 
+
+ our php-cgi processes are running under one group.
+
  xcache.stat=Off # in production
- 
+
 
 
 
