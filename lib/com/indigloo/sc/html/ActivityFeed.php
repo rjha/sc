@@ -52,7 +52,6 @@ namespace com\indigloo\sc\html {
                 return $html ;
             }
 
-
             //dataObj->feeds is always an array
             $html = '' ;
             //placeholder for transformed feeds
@@ -70,14 +69,14 @@ namespace com\indigloo\sc\html {
                 $record = array();
 
                 if(strcmp(trim($feedObj->type), AppConstants::FOLLOW_FEED) == 0 ) {
-                    $keys = array('followerName','followingName','followerId','followingId');
+                    $keys = array("subject","subjectId","object","objectId");
                     $flag = $this->checkKeys($feedObj,$keys);
                     if($flag){
-                        $record['subject'] = $feedObj->followerName ;
-                        $record['object'] = $feedObj->followingName ;
-                        $pubId = PseudoId::encode($feedObj->followerId);
+                        $record['subject'] = $feedObj->subject ;
+                        $record['object'] = $feedObj->object ;
+                        $pubId = PseudoId::encode($feedObj->subjectId);
                         $record['subjectUrl'] = sprintf("/pub/user/%s",$pubId);
-                        $pubId = PseudoId::encode($feedObj->followingId);
+                        $pubId = PseudoId::encode($feedObj->objectId);
                         $record['objectUrl'] = sprintf("/pub/user/%s",$pubId);
                     }
 
@@ -87,7 +86,7 @@ namespace com\indigloo\sc\html {
                         || (strcmp(trim($feedObj->type), AppConstants::POST_FEED) == 0)
                         || (strcmp(trim($feedObj->type), AppConstants::COMMENT_FEED) == 0)) {
 
-                    $keys = array('subject','title','objectId');
+                    $keys = array("subject","subjectId","title","objectId");
                     $flag = $this->checkKeys($feedObj,$keys);
                     if($flag){
                         $record['subject'] = $feedObj->subject;

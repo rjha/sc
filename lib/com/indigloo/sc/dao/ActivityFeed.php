@@ -52,9 +52,6 @@ namespace com\indigloo\sc\dao {
                 $key = sprintf("sc:user:%s:activities",$followingId);
                 $redis->lpush($key,$strFeedVO);
 
-                //no need to fan-out?
-
-
             } catch(\Exception $ex) {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
                 Logger::getInstance()->error($message);
