@@ -29,12 +29,8 @@ namespace com\indigloo\sc\controller{
             $postDBRows = $categoryDao->getPaged($paginator,$code);
             $catName = $categoryDao->getName($code);
 
-            if(sizeof($postDBRows) > 0 ) {
-                $pageHeader = $catName;
-            }else {
-                $pageHeader = 'No Results for '.$catName;
-            }
-
+            $pageHeader = $catName;
+            
             $pageBaseUrl = "/category/$categoryId";
             $pageTitle = SeoData::getPageTitle($catName);
             $metaKeywords = SeoData::getMetaKeywords($catName);

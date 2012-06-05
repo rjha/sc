@@ -11,7 +11,8 @@ namespace com\indigloo\sc\mysql {
 
         static function getIdNameMap(){
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "select ui_order as id, display as name from sc_list where name = 'CATEGORY' order by ui_order" ;
+            $sql = "select fixed_id as id, display as name from sc_list " ;
+            $sql .= " where name = 'CATEGORY' order by ui_order" ;
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
@@ -23,7 +24,7 @@ namespace com\indigloo\sc\mysql {
             //sanitize input
             settype($categoryId,"integer");
 
-            $sql = "select code from sc_list where name = 'CATEGORY' and ui_order = ".$categoryId ;
+            $sql = "select code from sc_list where name = 'CATEGORY' and fixed_id = ".$categoryId ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 

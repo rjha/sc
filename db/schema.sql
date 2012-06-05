@@ -121,6 +121,7 @@ CREATE TABLE  sc_group_master  (
 DROP TABLE IF EXISTS  sc_list ;
 CREATE TABLE  sc_list  (
    id  int(11) NOT NULL AUTO_INCREMENT,
+   fixed_id int,
    name  varchar(16) NOT NULL,
    code  varchar(16) NOT NULL,
    display  varchar(32) NOT NULL,
