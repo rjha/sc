@@ -91,6 +91,7 @@ namespace com\indigloo\sc\dao {
 
                 $key1 = sprintf("sc:post:%s:activities",$itemId);
                 $key2 = sprintf("sc:user:%s:activities",$ownerId);
+                $key3 = sprintf("sc:user:%s:activities",$loginId);
 
                 $redis->pipeline()
                         ->lpush("sc:global:queue",$strFeedVO)
@@ -98,6 +99,7 @@ namespace com\indigloo\sc\dao {
                         ->ltrim('sc:global:activities',0,1000)
                         ->lpush($key1,$strFeedVO)
                         ->lpush($key2,$strFeedVO)
+                        ->lpush($key3,$strFeedVO)
                         ->uncork();
 
                 $this->fanOut($redis,$loginId, $strFeedVO);
@@ -133,13 +135,13 @@ namespace com\indigloo\sc\dao {
                 $feedVO->jobId = $jobId ;
                 $strFeedVO = json_encode($feedVO);
 
-                $key = sprintf("sc:user:%s:activities",$loginId);
+                $key1 = sprintf("sc:user:%s:activities",$loginId);
 
                 $redis->pipeline()
                     ->lpush("sc:global:queue",$strFeedVO)
                     ->lpush('sc:global:activities',$strFeedVO)
                     ->ltrim('sc:global:activities',0,1000)
-                    ->lpush($key,$strFeedVO)
+                    ->lpush($key1,$strFeedVO)
                     ->uncork();
 
                 // send to poster's followers
@@ -154,7 +156,7 @@ namespace com\indigloo\sc\dao {
 
         }
 
-        function addComment($ownerId,$loginId,$name,$itemId,$title,$image,$verb) {
+        function addComment($ownerId,$loginId,$name,$itemId,$title,$content,$image,$verb) {
 
             $feedVO = new \stdClass ;
             $feedVO->type = AppConstants::COMMENT_FEED ;
@@ -164,6 +166,7 @@ namespace com\indigloo\sc\dao {
             $feedVO->object = "post" ;
             $feedVO->objectId = $itemId ;
             $feedVO->title = $title ;
+            $feedVO->content = $content;
             $feedVO->verb = $verb;
 
             $feedVO->srcImage = $image->source ;
@@ -177,9 +180,10 @@ namespace com\indigloo\sc\dao {
                 $jobId = $redis->incr("sc:global:nextJobId");
                 $feedVO->jobId = $jobId ;
                 $strFeedVO = json_encode($feedVO);
-                
+
                 $key1 = sprintf("sc:post:%s:activities",$itemId);
                 $key2 = sprintf("sc:user:%s:activities",$ownerId);
+                $key3 = sprintf("sc:user:%s:activities",$loginId);
 
                 $redis->pipeline()
                     ->lpush("sc:global:queue",$strFeedVO)
@@ -187,6 +191,7 @@ namespace com\indigloo\sc\dao {
                     ->ltrim('sc:global:activities',0,1000)
                     ->lpush($key1,$strFeedVO)
                     ->lpush($key2,$strFeedVO)
+                    ->lpush($key3,$strFeedVO)
                     ->uncork();
 
                 //send to poster's followers
