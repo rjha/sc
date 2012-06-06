@@ -3,8 +3,9 @@
 namespace com\indigloo\sc\dao {
 
     /**
-     * @todo - add to email queue also
-     * @todo - pipelining / redis perf tuning.
+     * ActivityFeed class uses redisent library as redis client
+     * @see https://github.com/jdp/redisent
+     *
      *
      */
 
@@ -28,39 +29,45 @@ namespace com\indigloo\sc\dao {
             $feedVO->subject = $followerName ;
             $feedVO->object = $followingName ;
             $feedVO->verb = $verb ;
-            $strFeedVO = json_encode($feedVO);
 
             try {
                 $redis = Redis::getInstance()->connection();
-                //Add to global activities list
-                $redis->lpush('sc:global:activities',$strFeedVO);
-                $redis->ltrim('sc:global:activities',0,1000);
 
-                //Add to f1's following set
-                $key = sprintf("sc:user:%s:following",$followerId);
-                $redis->sadd($key,$followingId);
+                // get global job queueId
+                $jobId = $redis->incr("sc:global:nextJobId");
+                $feedVO->jobId = $jobId ;
+                $strFeedVO = json_encode($feedVO);
 
-                //Add to f1's activities
-                $key = sprintf("sc:user:%s:activities",$followerId);
-                $redis->lpush($key,$strFeedVO);
+                $key1 = sprintf("sc:user:%s:following",$followerId);
+                $key2 = sprintf("sc:user:%s:activities",$followerId);
+                $key3 = sprintf("sc:user:%s:followers",$followingId);
+                $key4 = sprintf("sc:user:%s:activities",$followingId);
 
-                //Add to f2's followers set
-                $key = sprintf("sc:user:%s:followers",$followingId);
-                $redis->sadd($key,$followerId);
+                // Add to global job queue
+                // Add to global activities, trim to 1000
+                // Add to followers and following sets
+                // Add to follower and following activities
+                $redis->pipeline()
+                        ->lpush("sc:global:queue",$strFeedVO)
+                        ->lpush('sc:global:activities',$strFeedVO)
+                        ->ltrim('sc:global:activities',0,1000)
+                        ->sadd($key1,$followingId)
+                        ->lpush($key2,$strFeedVO)
+                        ->sadd($key3,$followerId)
+                        ->lpush($key4,$strFeedVO)
+                        ->uncork();
 
-                //Add to f2's activities
-                $key = sprintf("sc:user:%s:activities",$followingId);
-                $redis->lpush($key,$strFeedVO);
 
             } catch(\Exception $ex) {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
                 Logger::getInstance()->error($message);
+                $strFeedVO = json_encode($feedVO);
                 $this->logIt($strFeedVO);
             }
 
         }
 
-        function addBookmark($ownerId,$loginId,$name,$itemId,$title,$verb) {
+        function addBookmark($ownerId,$loginId,$name,$itemId,$title,$image,$verb) {
 
             $feedVO = new \stdClass ;
             $feedVO->type = AppConstants::BOOKMARK_FEED ;
@@ -71,36 +78,42 @@ namespace com\indigloo\sc\dao {
             $feedVO->objectId = $itemId ;
             $feedVO->title = $title ;
             $feedVO->verb = $verb;
-            $strFeedVO = json_encode($feedVO);
+            $feedVO->srcImage = $image->source ;
+            $feedVO->nameImage = $image->name ;
 
             try{
                 $redis = Redis::getInstance()->connection();
-                //Add to global activities list
-                $redis->lpush('sc:global:activities',$strFeedVO);
-                $redis->ltrim('sc:global:activities',0,1000);
 
-                //Add to post activities
-                $postKey = sprintf("sc:post:%s:activities",$itemId);
-                $redis->lpush($postKey,$strFeedVO);
-                //Add to subject's followers stream
+                // get global job queueId
+                $jobId = $redis->incr("sc:global:nextJobId");
+                $feedVO->jobId = $jobId ;
+                $strFeedVO = json_encode($feedVO);
+
+                $key1 = sprintf("sc:post:%s:activities",$itemId);
+                $key2 = sprintf("sc:user:%s:activities",$ownerId);
+
+                $redis->pipeline()
+                        ->lpush("sc:global:queue",$strFeedVO)
+                        ->lpush('sc:global:activities',$strFeedVO)
+                        ->ltrim('sc:global:activities',0,1000)
+                        ->lpush($key1,$strFeedVO)
+                        ->lpush($key2,$strFeedVO)
+                        ->uncork();
+
                 $this->fanOut($redis,$loginId, $strFeedVO);
-                //Add to owners's feed
-                $key = sprintf("sc:user:%s:activities",$ownerId);
-                $redis->lpush($key,$strFeedVO);
-                //@todo add to email queue
-                //$redis->lpush("sc:global:email",$strFeedVO);
 
 
             } catch(\Exception $ex) {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
                 Logger::getInstance()->error($message);
+                $strFeedVO = json_encode($feedVO);
                 $this->logIt($strFeedVO);
             }
 
         }
 
-        function addPost($loginId,$name,$itemId,$title,$verb) {
-            // Add to global activities
+        function addPost($loginId,$name,$itemId,$title,$image,$verb) {
+
             $feedVO = new \stdClass ;
             $feedVO->type =  AppConstants::POST_FEED ;
             $feedVO->subject = $name ;
@@ -109,26 +122,39 @@ namespace com\indigloo\sc\dao {
             $feedVO->objectId = $itemId ;
             $feedVO->title = $title ;
             $feedVO->verb = $verb ;
-            $strFeedVO = json_encode($feedVO);
+            $feedVO->srcImage = $image->source ;
+            $feedVO->nameImage = $image->name ;
 
             try{
                 $redis = Redis::getInstance()->connection();
 
-                //Add to global activities list
-                $redis->lpush('sc:global:activities',$strFeedVO);
-                $redis->ltrim('sc:global:activities',0,1000);
-                // send to my followers
+                // get global job queueId
+                $jobId = $redis->incr("sc:global:nextJobId");
+                $feedVO->jobId = $jobId ;
+                $strFeedVO = json_encode($feedVO);
+
+                $key = sprintf("sc:user:%s:activities",$loginId);
+
+                $redis->pipeline()
+                    ->lpush("sc:global:queue",$strFeedVO)
+                    ->lpush('sc:global:activities',$strFeedVO)
+                    ->ltrim('sc:global:activities',0,1000)
+                    ->lpush($key,$strFeedVO)
+                    ->uncork();
+
+                // send to poster's followers
                 $this->fanOut($redis,$loginId, $strFeedVO);
 
             } catch(\Exception $ex) {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
                 Logger::getInstance()->error($message);
+                $strFeedVO = json_encode($feedVO);
                 $this->logIt($strFeedVO);
             }
 
         }
 
-        function addComment($ownerId,$loginId,$name,$itemId,$title,$verb) {
+        function addComment($ownerId,$loginId,$name,$itemId,$title,$image,$verb) {
 
             $feedVO = new \stdClass ;
             $feedVO->type = AppConstants::COMMENT_FEED ;
@@ -139,25 +165,37 @@ namespace com\indigloo\sc\dao {
             $feedVO->objectId = $itemId ;
             $feedVO->title = $title ;
             $feedVO->verb = $verb;
-            $strFeedVO = json_encode($feedVO);
+
+            $feedVO->srcImage = $image->source ;
+            $feedVO->nameImage = $image->name ;
 
             try {
 
                 $redis = Redis::getInstance()->connection();
-                //Add to global activities list
-                $redis->lpush('sc:global:activities',$strFeedVO);
-                $redis->ltrim('sc:global:activities',0,1000);
-                 //Add to post activities
-                $postKey = sprintf("sc:post:%s:activities",$itemId);
-                $redis->lpush($postKey,$strFeedVO);
-                //send to my followers
-                $this->fanOut($redis,$loginId, $strFeedVO);
-                //@todo add to email queue
 
+                // get global job queueId
+                $jobId = $redis->incr("sc:global:nextJobId");
+                $feedVO->jobId = $jobId ;
+                $strFeedVO = json_encode($feedVO);
+                
+                $key1 = sprintf("sc:post:%s:activities",$itemId);
+                $key2 = sprintf("sc:user:%s:activities",$ownerId);
+
+                $redis->pipeline()
+                    ->lpush("sc:global:queue",$strFeedVO)
+                    ->lpush('sc:global:activities',$strFeedVO)
+                    ->ltrim('sc:global:activities',0,1000)
+                    ->lpush($key1,$strFeedVO)
+                    ->lpush($key2,$strFeedVO)
+                    ->uncork();
+
+                //send to poster's followers
+                $this->fanOut($redis,$loginId, $strFeedVO);
 
             } catch(\Exception $ex) {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
                 Logger::getInstance()->error($message);
+                $strFeedVO = json_encode($feedVO);
                 $this->logIt($strFeedVO);
             }
         }

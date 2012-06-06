@@ -55,7 +55,9 @@ namespace com\indigloo\sc\dao {
             $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
             $verb = \com\indigloo\sc\Constants::COMMENT_VERB ;
             $itemId = PseudoId::encode($postId);
-            $feedDao->addComment($ownerId, $loginId, $name, $itemId, $title, $verb);
+            $postDao = new \com\indigloo\sc\dao\Post();
+            $image = $postDao->getImageOnId($postId);
+            $feedDao->addComment($ownerId,$loginId,$name,$itemId,$title,$image,$verb);
 
         }
 

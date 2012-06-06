@@ -14,6 +14,32 @@ namespace com\indigloo\sc\dao {
             return $row ;
         }
 
+        function getImageOnId($postId){
+             $row = mysql\Post::getOnId($postId);
+             $imagesJson = $row['images_json'];
+             return $this->getImageOnJson($imagesJson);
+        }
+
+        function getImageOnJson($imagesJson) {
+            $images = json_decode($imagesJson);
+            $view = new \stdClass ;
+
+            if( (!empty($images)) && (sizeof($images) > 0)) {
+            $image = $images[0] ;
+            $view->name =
+                (property_exists($image,'thumbnailName')) ?  $image->thumbnailName : $image->originalName ;
+            $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? 'http://' : '/' ;
+            $fileName = (property_exists($image,'thumbnail')) ? $image->thumbnail : $image->storeName ;
+            $view->source = $prefix.$image->bucket.'/'.$fileName;
+
+            } else {
+                $view->name = 'placeholder' ;
+                $view->source = '/css/images/twitter-icon.png' ;
+            }
+
+            return $view ;
+        }
+
         /**
          * @error if links json is empty or spaces in DB column
          * @error if links json evaluates to NULL by json_decode
@@ -111,7 +137,8 @@ namespace com\indigloo\sc\dao {
             //Add to feed
             $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
             $verb = \com\indigloo\sc\Constants::POST_VERB ;
-            $feedDao->addPost($loginId, $name, $itemId, $title, $verb);
+            $image = $this->getImageOnJson($imagesJson);
+            $feedDao->addPost($loginId, $name, $itemId, $title,$image,$verb);
 
             return $itemId ;
         }

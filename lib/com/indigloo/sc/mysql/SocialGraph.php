@@ -23,7 +23,6 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
-
         static function addFollower($followerId, $followingId) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();

@@ -19,6 +19,7 @@ namespace com\indigloo\sc\dao {
                 $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
                 $verb = \com\indigloo\sc\Constants::FOLLOWING_VERB ;
                 $feedDao->addFollower($followerId, $followerName, $followingId, $followingName, $verb);
+
             }
 
         }
