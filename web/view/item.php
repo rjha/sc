@@ -164,7 +164,13 @@
                         echo \com\indigloo\sc\html\Post::getGroups($postDBRow) ;
                         //Action toolbar
                         echo \com\indigloo\sc\html\Post::getToolbar($itemId,$loginId,$postDBRow['login_id']) ;
-                    ?>
+                        //inject activity tile
+                        $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
+                        $feedDataObj = $activityDao->getPost($itemId,10);
+                        $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+                        $html = $htmlObj->getPostTile($feedDataObj);
+                        echo $html ;
+                     ?>
 
 
               </div>

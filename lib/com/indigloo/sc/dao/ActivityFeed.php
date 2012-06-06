@@ -244,13 +244,19 @@ namespace com\indigloo\sc\dao {
             return $feedDataObj;
         }
 
-        function getGlobal() {
-            return $this->getList("sc:global:activities", 100) ;
+        function getGlobal($limit=100) {
+            return $this->getList("sc:global:activities", $limit) ;
         }
 
-        function getUser($loginId) {
+        function getUser($loginId,$limit=50) {
             $key = sprintf("sc:user:%s:activities",$loginId);
-            return $this->getList($key, 50) ;
+            return $this->getList($key,$limit) ;
+        }
+
+
+        function getPost($itemId,$limit=10) {
+            $key = sprintf("sc:post:%s:activities",$itemId);
+            return $this->getList($key,$limit) ;
         }
 
         function logIt($strFeedVO) {

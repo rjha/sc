@@ -29,7 +29,7 @@
                 webgloo.sc.home.addNavGroups();
             });
 
-            
+
         </script>
 
     </head>
@@ -56,8 +56,18 @@
                     <div id="tiles">
                         <?php include(APP_WEB_DIR . '/inc/home-tile.inc'); ?>
                         <?php
-
+                            $count = 0 ;
                             foreach($this->homeDBRows as $postDBRow) {
+                                $count++ ;
+                                if($count == 3) {
+                                    //inject activity tile
+                                    $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
+                                    $feedDataObj = $activityDao->getGlobal(10);
+                                    $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+                                    $html = $htmlObj->getHomeTile($feedDataObj);
+                                    echo $html ;
+                                }
+
                                 $html = \com\indigloo\sc\html\Post::getTile($postDBRow);
                                 echo $html ;
 

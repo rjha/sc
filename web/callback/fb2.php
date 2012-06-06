@@ -36,6 +36,7 @@
     if(empty($code) && empty($error)) {
         //new state token
         $stoken = Util::getMD5GUID();
+        $gWeb = \com\indigloo\core\Web::getInstance();
         $gWeb->store("mik_state_token",$stoken);
 
         $fbDialogUrl = "http://www.facebook.com/dialog/oauth?client_id=" .$fbAppId;

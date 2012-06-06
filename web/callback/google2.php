@@ -34,6 +34,7 @@
     if(empty($code) && empty($error)) {
         //new state token
         $stoken = Util::getMD5GUID();
+        $gWeb = \com\indigloo\core\Web::getInstance();
         $gWeb->store("mik_state_token",$stoken);
 
         $googleAuthUrl  = "https://accounts.google.com/o/oauth2/auth?scope=" ;

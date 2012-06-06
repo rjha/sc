@@ -67,6 +67,7 @@
 
             <div class="row">
                 <div class="span9 mh600">
+                    <div class="feeds">
                     <?php
 
                         $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
@@ -74,8 +75,8 @@
                         echo $html ;
 
                     ?>
-
-
+                    </div>
+                   
                 </div>
                 <div class="span3">
                 </div>

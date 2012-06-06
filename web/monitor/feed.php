@@ -54,14 +54,15 @@
 
             <div class="row">
                 <div class="span9">
-
+                    <div class="feeds">
                         <?php
                             $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
                             $html = $htmlObj->getHtml($feedDataObj);
                             echo $html ;
 
                         ?>
-
+                    </div> <!-- feeds -->
+                    
                 </div>
                 <div class="span3"> </div>
             </div>

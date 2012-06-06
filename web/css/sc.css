@@ -747,11 +747,11 @@
         overflow:hidden;
     }
 
-    .binary {
-        background:black;
-        color:white;
-        font-weight:bold;
+    .faded-text {
+        color :#8c7e7e ;
     }
+
+    /* + Activity feeds */
 
     .feeds {
         font-size : 13px;
@@ -764,18 +764,26 @@
 
     .feeds .item {
         padding-bottom: 10px;
+        width: 100%;
+        clear: both;
     }
 
     .feeds .item .title {
         font-weight: bold;
+        line-height:18px;
+    }
+
+    .feeds .item .photo {
+        /* padding: 10px; */
+    }
+
+    .feeds .item .message {
+        color: #8c7e7e ;
+        font-size: 12px;
     }
 
     .feeds .item .verb {
-        color: #AD9C9C ;
-    }
-
-    .faded-text {
-        color :#8c7e7e ;
+        /* color: #AD9C9C ; */
     }
 
     .noresults {
