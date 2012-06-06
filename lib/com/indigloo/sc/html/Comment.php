@@ -8,6 +8,7 @@ namespace com\indigloo\sc\html {
     use com\indigloo\Url as Url ;
     use \com\indigloo\sc\util\PseudoId as PseudoId;
     use \com\indigloo\sc\ui\Constants as UIConstants ;
+    use \com\indigloo\sc\Constants as AppConstants ;
 
     class Comment {
 
@@ -20,7 +21,7 @@ namespace com\indigloo\sc\html {
             foreach($rows as $row) {
                 $record = array();
                 $record['comment'] = $row['description'];
-                $record['createdOn'] = Util::formatDBTime($row['created_on']);
+                $record['createdOn'] = Util::formatDBTime($row['created_on'],AppConstants::TIME_MDY);
                 $record['userName'] = $row['user_name'] ;
                 $record['loginId'] = $row['login_id'];
                 $record['pubUserId'] = PseudoId::encode($row['login_id']);
@@ -37,7 +38,7 @@ namespace com\indigloo\sc\html {
             $template = '/fragments/comment/summary.tmpl' ;
 
             $view->comment = $row['description'];
-            $view->createdOn = Util::formatDBTime($row['created_on']);
+            $view->createdOn = Util::formatDBTime($row['created_on'], AppConstants::TIME_MDY);
             $view->userName = $row['user_name'] ;
             $view->loginId = $row['login_id'];
             $view->pubUserId = PseudoId::encode($view->loginId);
@@ -64,7 +65,7 @@ namespace com\indigloo\sc\html {
             $view->itemId = PseudoId::encode($view->postId);
 
             $view->comment = $row['description'];
-            $view->createdOn = Util::formatDBTime($row['created_on']);
+            $view->createdOn = Util::formatDBTime($row['created_on'],AppConstants::TIME_MDYHM);
             $view->showUser = false ;
 
             if($options & UIConstants::COMMENT_USER) {

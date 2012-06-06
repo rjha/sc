@@ -10,6 +10,7 @@ namespace com\indigloo\sc\html {
 
     use \com\indigloo\sc\util\PseudoId as PseudoId;
     use \com\indigloo\sc\ui\Constants as UIConstants ;
+    use \com\indigloo\sc\Constants as AppConstants ;
 
     class Post {
 
@@ -214,7 +215,7 @@ namespace com\indigloo\sc\html {
                     Util::abbreviate($row["description"],160) : $row['description'] ;
 
             $view->userName = $row['user_name'];
-            $view->createdOn = Util::formatDBTime($row['created_on']);
+            $view->createdOn = Util::formatDBTime($row['created_on'], AppConstants::TIME_MDYHM);
             $view->pubUserId = PseudoId::encode($row['login_id']);
             $view->userPageURI = "/pub/user/".$view->pubUserId;
 

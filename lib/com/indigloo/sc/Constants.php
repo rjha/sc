@@ -20,6 +20,10 @@
             const POST_FEED = "feed:post" ;
             const COMMENT_FEED = "feed:comment" ;
 
+            //@see http://in2.php.net/strftime
+            const TIME_MDYHM = "%b %e %Y, %R" ;
+            const TIME_MDY = "%b %e, %Y" ;
+
         }
 }
 ?>
