@@ -21,8 +21,8 @@ namespace com\indigloo\sc\util {
             $this->connx = new \redisent\Redis($dsn,$timeout);
         }
 
-        static function getInstance() {
-            if (self::$instance == NULL) {
+        static function getInstance($flag=true) {
+            if (is_null(self::$instance) && $flag) {
                 self::$instance = new \com\indigloo\sc\util\Redis();
             }
 
@@ -34,7 +34,10 @@ namespace com\indigloo\sc\util {
         }
 
         public function close() {
-            $this->connx->quit();
+            if(!is_null($this->connx)) {
+                $this->connx->quit();
+            }
+            
             self::$instance == NULL;
         }
 

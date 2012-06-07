@@ -9,9 +9,13 @@
     $gWeb = \com\indigloo\core\Web::getInstance();
     $gWeb->end();
 
-    //close redis connx.
-    $redis = \com\indigloo\sc\util\Redis::getInstance() ;
-    $redis->close();
+    // close redis connx.
+    // do not create a new connx.
+    $redis = \com\indigloo\sc\util\Redis::getInstance(false) ;
+    if(!is_null($redis)) {
+        $redis->close();
+    }
+    
 ?>
 
 <!-- google analytics -->
