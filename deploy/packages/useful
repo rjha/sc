@@ -1,3 +1,4 @@
+#tools
 bum - Bootup Manager - Graphical  - To improve startup time 
 rcconf - tool to set init.d daemons start/stop on boot
 
@@ -14,7 +15,7 @@ nmap
 #installed from source
 pfff toolset 
 sphinx 
-redis kv server
+redis server
 
 #installed from tarballs
 sublime text
@@ -22,4 +23,14 @@ jdk7
 netbeans (never install again)
 komodo edit
 
+
+#pear 
+$sudo aptitude install php-pear
+#phpmd
+
+$ pear channel-discover pear.phpmd.org
+$ pear channel-discover pear.pdepend.org
+$ pear install phpmd/PHP_PMD
+
+(do not use --alldeps)
 
