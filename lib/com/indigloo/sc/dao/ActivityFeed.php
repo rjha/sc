@@ -48,7 +48,7 @@ namespace com\indigloo\sc\dao {
                 // Add to followers and following sets
                 // Add to follower and following activities
                 $redis->pipeline()
-                        ->lpush("sc:global:queue",$strFeedVO)
+                        ->lpush("sc:global:queue:new",$strFeedVO)
                         ->lpush('sc:global:activities',$strFeedVO)
                         ->ltrim('sc:global:activities',0,1000)
                         ->sadd($key1,$followingId)
@@ -84,7 +84,10 @@ namespace com\indigloo\sc\dao {
             try{
                 $redis = Redis::getInstance()->connection();
 
-                // get global job queueId
+                // Add bookmarks to global activities,
+                // global event queue, post activities,
+                // user activities and owner activities
+
                 $jobId = $redis->incr("sc:global:nextJobId");
                 $feedVO->jobId = $jobId ;
                 $strFeedVO = json_encode($feedVO);
@@ -94,7 +97,7 @@ namespace com\indigloo\sc\dao {
                 $key3 = sprintf("sc:user:%s:activities",$loginId);
 
                 $redis->pipeline()
-                        ->lpush("sc:global:queue",$strFeedVO)
+                        ->lpush("sc:global:queue:new",$strFeedVO)
                         ->lpush('sc:global:activities',$strFeedVO)
                         ->ltrim('sc:global:activities',0,1000)
                         ->lpush($key1,$strFeedVO)
@@ -130,15 +133,12 @@ namespace com\indigloo\sc\dao {
             try{
                 $redis = Redis::getInstance()->connection();
 
-                // get global job queueId
-                $jobId = $redis->incr("sc:global:nextJobId");
-                $feedVO->jobId = $jobId ;
                 $strFeedVO = json_encode($feedVO);
-
                 $key1 = sprintf("sc:user:%s:activities",$loginId);
 
+                // Add to user's activities and global activities
+                // do not add post events to global job queue.
                 $redis->pipeline()
-                    ->lpush("sc:global:queue",$strFeedVO)
                     ->lpush('sc:global:activities',$strFeedVO)
                     ->ltrim('sc:global:activities',0,1000)
                     ->lpush($key1,$strFeedVO)
@@ -181,12 +181,13 @@ namespace com\indigloo\sc\dao {
                 $feedVO->jobId = $jobId ;
                 $strFeedVO = json_encode($feedVO);
 
+                // do not add comments to post feeds
                 //$key1 = sprintf("sc:post:%s:activities",$itemId);
                 $key2 = sprintf("sc:user:%s:activities",$ownerId);
                 $key3 = sprintf("sc:user:%s:activities",$loginId);
 
                 $redis->pipeline()
-                    ->lpush("sc:global:queue",$strFeedVO)
+                    ->lpush("sc:global:queue:new",$strFeedVO)
                     ->lpush('sc:global:activities',$strFeedVO)
                     ->ltrim('sc:global:activities',0,1000)
                     ->lpush($key2,$strFeedVO)
