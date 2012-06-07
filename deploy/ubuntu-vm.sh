@@ -19,17 +19,15 @@ mkdir -p /var/www/vhosts/mint.3mik.com
 ln -nfs $MYHOME/code/github/sc/web /var/www/vhosts/mint.3mik.com/htdocs
 cp sc/sc-app.inc /var/www/apps/.
 
-#copy php-fpm pool and ini files
-cp /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.conf.orig
-cp nginx/www.conf /etc/php5/fpm/pool.d/.
 #make backup of original conf files
-cp /etc/php5/fpm/php.ini /etc/php5/fpm/php.ini.orig
 cp /etc/php5/cgi/php.ini /etc/php5/cgi/php.ini.orig
 cp /etc/php5/cli/php.ini /etc/php5/cli/php.ini.orig
 #copy our file
-cp nginx/php.ini /etc/php5/fpm/. 
 cp nginx/php.ini /etc/php5/cgi/. 
 cp nginx/php.ini /etc/php5/cli/. 
+
+# copy php-fastcgi upstart script on Ubuntu
+cp nginx/php-fastcgi.upstart /etc/init/php-fastcgi.conf 
 
 #create symlinks in web area
 mkdir -p $MYHOME/web/log

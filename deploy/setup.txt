@@ -1,0 +1,156 @@
+
+How to setup 3mik stack
+----------------------------------
+
+
+1) Get VMWARE to install VMs. VMs would allow you to play and experiment without touching your own machine.
+    windows - Just download and install vmware player http://www.vmware.com/products/player
+    Mac - VMWARE Fusion
+    
+2)
+Get a linux VM - For a desktop either install 
+    * LMDE (Linux Mint Debian Edition)
+    * Ubuntu Natty 
+
+   You can pick our own distro if you can manage your own stuff and not cry for help.
+   Do a Vanilla (plain) install (Just select all defaults)
+
+3) Install  git on your machine
+    open a terminal and type:-
+    $sudo aptitude install git-core git git-man
+
+4) Git setup
+ ------------------------------------
+
+A) first do a bit of reading if you are not familiar with Git.
+    https://help.github.com/articles/set-up-git
+    https://help.github.com/articles/generating-ssh-keys
+    https://help.github.com/articles/fork-a-repo
+    http://git-scm.com/book
+
+    You can also read the online git book to understand git work flows and how is it different from 
+    other centralized SCM you may have used in past
+
+
+B) create an account on Github
+   https://github.com/ 
+
+C) send your username to Rajeev Jha to be added to our private repo.
+D) Fork our private repository hosted here:- 
+    https://github.com/rjha/sc
+    @see article #3 above.
+
+E) clone this forked repository (the one with your name and __not_the_one__ above in step D)
+like:
+    + first create a folder to hold code. Better to follow standard layout
+    + $ mkdir -p $HOME/code/github
+    + $ cd $HOME/code/github
+    + setup your github account to use SSH keys like explained in article #2 above.
+    + git clone <your forked repo link> 
+        imp : take the link that starts with git and uses SSH and do not take the one with https://
+    + Verify that $HOME/code/github/sc indeed contains code and you have files.
+
+F) Do not push anything to repo. Do whatever on your own machine. issue fetch, pull etc. 
+G) setup my (main) repository as upstream  
+    $ cd $HOME/code/github/sc
+    $ git remote add upstream git@github.com:rjha/sc.git
+    $ git fetch upstream master
+    $ git pull upstream master
+
+H) To get changes from one of upstream branches
+    create a local branch to receive it
+    $git branch redis
+    switch to this branch
+    $git checkout redis
+    pull changes from upstream redis branch here
+    $git fetch upstream redis
+    $git pull upstream redis
+
+Read the git book to know how to switch between branches etc.
+Now you are ready to receive changes from my repostitory.
+
+
+5) set packages required for development
+--------------------------------------------
+
+$cd $HOME/code/github/sc/deploy/packages
+$ sudo aptitude --simulate install $(< wheezy.add.aptitude)
+$sudo aptitude install $(< wheezy.add.aptitude)
+
+The only interaction is to provide root password for mysql.
+provide any password you like. save the mysql root password for later use.
+
+6)cd $HOME/code/github/sc/deploy
+open ubuntu-vm.sh script
+set your home dir path on top
+save and quit file.
+
+$chmod +x ./ubuntu-vm.sh
+$sudo ./ubuntu-vm.sh
+
+
+run the ubuntu-vm.sh script as root to create the development layout. 
+on Ubuntu machine, the script will complain about missing php-fpm directory.
+If there are any other complaints then the script is failing and script should be fixed first.
+
+
+7) Add mint.3mik.com as host 
+$sudo vim /etc/hosts
+Add an entry for mint.3mik.com 127.0.0.1
+
+
+8) Check :: Verify PHP install and layout
+Now open a browser and type :-
+http://mint.3mik.com/echo.php
+
+@imp: This should show your path and loaded modules etc.  
+If things work then we are ready to move onto next step, else we need to fix things here first.
+
+
+9) create mysql database and load data from server.
+@see $HOME/code/github/sc/deploy/mysql/mysql.install
+
+10)install and configure sphinx. create sphix indexes.
+@see $HOME/code/github/sc/deploy/sphinx/sphinx.install
+
+
+11) Get a copy of latest sc-app.inc and sc_config.ini file (Ask Rajeev Jha) 
+
+These files can vary for different branches as well!
+
+checklist local sc_config.ini file
+    - change mysql user password
+    - change log and other location  
+    - change file.store to local
+    - change session.backend to mysql (or redis)
+    - sensitive information (like sendgrid password, FB App Id etc. is removed)
+
+
+copy the files to 
+$sudo cp <file> /var/www/apps/.
+
+12) Reboot your machine.
+
+Now http://mint.3mik.com should show you local copy of 3mik site.
+
+13) install cron scripts
+@wip
+14) install logrotate script
+@wip
+15) install redis server
+@wip
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

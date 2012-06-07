@@ -4,6 +4,7 @@ byobu
 bzip2						
 ca-certificates					
 chkconfig					
+rcconf
 curl						
 diffstat					
 diffutils					
@@ -47,3 +48,4 @@ tofrodos
 dnsutils                    
 links                       
 g++
+redis-server

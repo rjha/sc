@@ -1,6 +1,21 @@
-
 #install package g++ required for sphinx compile
 $sudo aptitude install g++
+
+#Download latest stable sphinx source code 
+http://sphinxsearch.com/downloads/release/
+Get the "source tarball" with .tar.gz suffix.
+
+$create a directory to compile this source code
+$mkdir -p $HOME/nuke
+move sphinx source tarball to this folder.
+$mv <sphinx source tarball> $HOME/nuke/.
+
+untar sphinx source tarball
+$cd $HOME/nuke
+$tar -zxvf <sphinx source tarball>
+This will untar the contents into a sphinx-<version-no> directory.
+cd to sphinx-<version.no> directory
+
 
 #compile and build sphinx
 ./configure --prefix=/usr/local/sphinx
@@ -27,6 +42,6 @@ $sudo chkconfig | grep searchd
 sudo service searchd start
 sudo service searchd stop
 
-install searchd cron job
+#install searchd cron job
 
 
