@@ -181,7 +181,7 @@ namespace com\indigloo\sc\dao {
                 $feedVO->jobId = $jobId ;
                 $strFeedVO = json_encode($feedVO);
 
-                $key1 = sprintf("sc:post:%s:activities",$itemId);
+                //$key1 = sprintf("sc:post:%s:activities",$itemId);
                 $key2 = sprintf("sc:user:%s:activities",$ownerId);
                 $key3 = sprintf("sc:user:%s:activities",$loginId);
 
@@ -189,7 +189,6 @@ namespace com\indigloo\sc\dao {
                     ->lpush("sc:global:queue",$strFeedVO)
                     ->lpush('sc:global:activities',$strFeedVO)
                     ->ltrim('sc:global:activities',0,1000)
-                    ->lpush($key1,$strFeedVO)
                     ->lpush($key2,$strFeedVO)
                     ->lpush($key3,$strFeedVO)
                     ->uncork();

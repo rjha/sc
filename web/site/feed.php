@@ -1,17 +1,15 @@
 <?php
 
-    //sc/monitor/feed.php
+    //sc/site/feed.php
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
-    include(APP_WEB_DIR . '/inc/role/admin.inc');
 
     use \com\indigloo\Util as Util;
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
 
-    //$qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
-    $feedDataObj = $feedDao->getGlobal();
+    $feedDataObj = $feedDao->getGlobal(100);
 
 ?>
 
@@ -36,21 +34,18 @@
         <div class="container">
             <div class="row">
                 <div class="span12">
-                <?php include(APP_WEB_DIR . '/monitor/inc/toolbar.inc'); ?>
+                <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
                 </div>
 
             </div>
 
             <div class="row">
                 <div class="span12">
-                <?php include(APP_WEB_DIR. '/monitor/inc/banner.inc'); ?>
+                <?php include(APP_WEB_DIR. '/inc/banner.inc'); ?>
+                <?php include(APP_WEB_DIR. '/inc/browser.inc'); ?>
                 </div>
             </div>
-            <div class="row">
-                <div class="span12">
-                <?php $activeTab = 'feeds'; include('inc/menu.inc'); ?>
-                </div>
-            </div>
+
 
             <div class="row">
                 <div class="span9">

@@ -1,18 +1,21 @@
 
 <div class="item">
     <div class="title">
-        &nbsp;<a href="~~$view['subjectUrl']~">~~$view['subject']~</a>
+        <a href="~~$view['subjectUrl']~">~~$view['subject']~</a>
         <span class="verb"> ~~$view['verb']~ </span>
         <a href="~~$view['objectUrl']~">~~$view['object']~</a>
     </div>
 
     <div class="photo">
-        <img class="alignleft" src="~~$view['srcImage']~" width="40" height="40" />
+         <a href="~~$view['objectUrl']~">
+            <img class="alignleft" src="~~$view['srcImage']~" width="40" height="40" />
+        </a>
+ 
     </div>
     <div class="message">
         ~~$view['content']~
     </div>
-   
+
 
 </div>
 <div class="clear"> </div>

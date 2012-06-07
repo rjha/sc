@@ -30,16 +30,17 @@ namespace com\indigloo\sc\html {
                 return $html;
             }
 
-            if(!property_exists($feedDataObj, "feeds")) {
-                $html =  "Malformed feed object : missing feeds!" ;
-                return $html;
-            }
-
-            if(property_exists($feedDataObj, "error")) {
+            if(!empty($feedDataObj) && (property_exists($feedDataObj, "error"))) {
                 $html = $feedDataObj->error ;
                 return $html ;
             }
 
+            // this should never happen
+            if(!property_exists($feedDataObj, "feeds")) {
+                $html =  "Malformed feed object : missing feeds!" ;
+                return $html;
+            }
+            
             foreach($feedDataObj->feeds as $feed) {
 
                 //create object out of string
