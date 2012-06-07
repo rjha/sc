@@ -43,7 +43,9 @@ namespace com\indigloo\sc\mysql {
          *
          */
         static function create($facebookId,$name,$firstName,$lastName,$link,$gender,$email,$provider){
-
+            
+             $dbh = NULL ;
+             
              try {
                 $sql1 = "insert into sc_login (provider,name,created_on) values(:provider,:name,now()) " ;
                 $flag = true ;

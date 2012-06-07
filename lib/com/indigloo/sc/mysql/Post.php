@@ -250,6 +250,8 @@ namespace com\indigloo\sc\mysql {
                                $categoryCode) {
 
 
+            $dbh = NULL ;
+            
             try {
                 $sql1 = " insert into sc_post(title,description,login_id,links_json, " ;
                 $sql1 .= "images_json,group_slug,cat_code,created_on) ";
