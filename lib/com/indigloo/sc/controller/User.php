@@ -37,7 +37,7 @@ namespace com\indigloo\sc\controller{
             //meta data about user - #groups/#posts/#comments/#followers etc.
             // user feeds
             $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
-            $feedDataObj = $activityDao->getUser($loginId);
+            $feedDataObj = $activityDao->getUser($loginId,10);
 
             $postDao = new \com\indigloo\sc\dao\Post() ;
 

@@ -11,7 +11,7 @@ redis.dsn="localhost:6379"
 redis.timeout=4
 
 
-db patch - Add new sc_bookmark table and run script
+db patch - Add new sc_bookmark table and run db-to-redis script
 compile redis 2.6 on server. Add redis init scripts.
 cron script changes - use APP_LIB_PATH in scripts now
     (new defined constants instead of superglobal constants)
@@ -64,11 +64,17 @@ Activity - Add time also
 Activity - change follower and following Id to :- subjectId and objectId etc.
 Activity - feed should not show duplicates.
 
+
 redis - compile as 32 bit application to save key space.
 redis - use 2.6 RC instead of 2.2 or 2.4?
 redis - test deployment on ubuntu natty machine.
+
+Data for activities
+@imp:
 script for sc_user_bookmark => sc_bookmrk data transfer
-sc_bookmark / sc_social_graph => load data into redis
+sc_bookmark  => load data into redis sets
+sc_follow  => load data into redis sets
+
 
 
 Automatic versioning of css and js files
