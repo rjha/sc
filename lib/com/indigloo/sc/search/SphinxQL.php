@@ -84,7 +84,10 @@ namespace com\indigloo\sc\search {
 
             $sql = " select id from %s where match('%s') limit 0,1" ;
             $sql = sprintf($sql,$index,$token);
+            //@imp: we need to fire dummy query
+            // to retrieve stats from sphinx.
             $rows = MySQL\Helper::fetchRows($this->connx,$sql);
+            
             // get meta data about this token
             $sql = " show meta " ;
             $stats = MySQL\Helper::fetchRows($this->connx,$sql);
