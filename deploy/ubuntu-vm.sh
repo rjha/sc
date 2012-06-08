@@ -34,14 +34,14 @@ mkdir -p $MYHOME/web/log
 mkdir -p $MYHOME/web/upload
 chown -R www-data:www-data  $MYHOME/web
 
-#create symlink for log and upload
-ln -nfs $MYHOME/web/log /var/www/log
-ln -nfs $MYHOME/web/upload /var/www/upload
-
 ln -nfs $MYHOME/code/github/webgloo/web/3p $MYHOME/code/github/sc/web/3p
 ln -nfs $MYHOME/web/upload $MYHOME/code/github/sc/web/media
 mkdir $MYHOME/code/github/sc/web/compiled
 chown -R www-data:www-data  $MYHOME/code/github/sc/web/compiled
+
+#create symlink for log and upload
+ln -nfs $MYHOME/web/log /var/www/log
+ln -nfs $MYHOME/web/upload /var/www/upload
 
 #copy gitignore
 cp github/gitignore $MYHOME/code/github/sc/.gitignore

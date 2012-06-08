@@ -41,6 +41,10 @@ ln -nfs $MYHOME/web/upload $MYHOME/code/github/sc/web/media
 mkdir $MYHOME/code/github/sc/web/compiled
 chown -R www-data:www-data  $MYHOME/code/github/sc/web/compiled
 
+#create symlink for log and upload
+ln -nfs $MYHOME/web/log /var/www/log
+ln -nfs $MYHOME/web/upload /var/www/upload
+
 #copy gitignore
 cp github/gitignore $MYHOME/code/github/sc/.gitignore
 
