@@ -66,6 +66,22 @@ H) To get changes from one of upstream branches
     $git fetch upstream redis
     $git pull upstream redis
 
+I) install webgloo public repository
+---------------------------------------
+This is a public repository, install it at the same level as sc repository.
+Like if your home directory is /home/foo (i.e. $HOME)
+Then /home/foo/code/github/sc is where sc repository is installed.
+To install webgloo repository
+
+$cd $HOME/code/github
+$git clone git://github.com/rjha/webgloo.git
+
+Now you should have
+ /home/foo/code/github
+    |_ sc/
+    |_ webgloo/
+
+
 Read the git book to know how to switch between branches etc.
 Now you are ready to receive changes from my repostitory.
 
@@ -74,8 +90,8 @@ Now you are ready to receive changes from my repostitory.
 --------------------------------------------
 
 $cd $HOME/code/github/sc/deploy/packages
-$ sudo aptitude --simulate install $(< wheezy.add.aptitude)
-$sudo aptitude install $(< wheezy.add.aptitude)
+$ sudo aptitude --simulate install $(< wheezy.add.packages)
+$sudo aptitude install $(< wheezy.add.packages)
 
 The only interaction is to provide root password for mysql.
 provide any password you like. save the mysql root password for later use.
@@ -98,6 +114,7 @@ If there are any other complaints then the script is failing and script should b
 $sudo vim /etc/hosts
 Add an entry for mint.3mik.com 127.0.0.1
 
+8)
 
 8) Check :: Verify PHP install and layout
 Now open a browser and type :-

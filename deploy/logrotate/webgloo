@@ -1,4 +1,4 @@
-/home/rjha/web/log/*.log {
+/var/www/log/*.log {
 	size 2M
 	weekly	
 	missingok
