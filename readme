@@ -1,23 +1,39 @@
+
+
+
+
+
 Deployment of redis branch
- - new sc_config.ini
+----------- x--------------------------
+0) compile redis 2.6 on server. Add redis init scripts.
+
+1)
  - new sc-app.inc file (+redisent lib path)
+    + copy from deploy area
+    + change vhost path
 
+ 2) new sc_config.ini
 sc_config.ini changes :-
-bad.feed.log="/home/rjha/web/log/bad-feed.log"
-mysql.sphinx.port=9306
-[redis]
-redis.dsn="localhost:6379"
-;timeout in seconds
-redis.timeout=4
+    [system log]
+    bad.feed.log="/home/rjha/web/log/bad-feed.log"
+    [mysql]
+    mysql.sphinx.port=9306
+    [redis]
+    redis.dsn="localhost:6379"
+    ;timeout in seconds
+    redis.timeout=4
 
+3)
+db patch - Add new sc_bookmark table and sc_list table changes
+@see patch.sql file also
+Run db-to-redis to populate.
 
-db patch - Add new sc_bookmark table and run script
-compile redis 2.6 on server. Add redis init scripts.
+4)
 cron script changes - use APP_LIB_PATH in scripts now
     (new defined constants instead of superglobal constants)
+install new cron scripts.
 
-
-
+----------x----------------------
 
 For PHP tools
 https://github.com/sebastianbergmann
@@ -56,13 +72,21 @@ $phpmd lib/com/indigloo/sc/mysql text codesize,unusedcode,naming,design
 
 04 June 2012
 ---------------------------------
-Add activities to home page
-Activity - Add data for users and add to email queue also
-Activity - distinguish no result (empty array() ) vs. error case (redis not up)
-Activities - Add comment snippet (64 chars) and post stamp tile to activity feeds
-Activity - Add time also
-Activity - change follower and following Id to :- subjectId and objectId etc.
-Activity - feed should not show duplicates.
+
+Activity - Add Unix timestamp also.
+Activity - feed should not show duplicates
+Activity - concept of followers of a post.
+    + if you create/ comment /like /save a post :- you automatically become 
+    + follower of a post
+    + Next comment/like /save would trigger a notice to you.
+
+
+Activity - Notification preferences
+Dashboard - followers page.
+
+Mails =>
+    sc:global:queue:new 
+
 
 redis - compile as 32 bit application to save key space.
 redis - use 2.6 RC instead of 2.2 or 2.4?
