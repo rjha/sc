@@ -1,0 +1,22 @@
+# compile a 32-bit binary
+sudo aptitude install  libc6-dev-i386
+
+
+1. sudo aptitude install redis-server
+This will install the debian redis-server package with init scripts and all.
+#stop redis server
+$sudo service redis-server stop
+
+2) compile redis tarball
+
+3) 
+    + copy redis-version/src/redis-cli , redis-benchmark and redis-server to /usr/bin
+    + copy deploy/redis/redis.conf to /etc/redis/redis.conf
+4)
+    add following vm param at the end of  /etc/sysctl.conf
+    you may also want to adjust vm.swappiness
+vm.overcommit_memory = 1
+5) REBOOT
+6) $sudo service redis-server start 
+
+

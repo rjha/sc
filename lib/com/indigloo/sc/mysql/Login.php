@@ -46,6 +46,8 @@ namespace com\indigloo\sc\mysql {
          */
         static function create($provider,$userName,$firstName,$lastName,$email,$password){
 
+            $dbh = NULL ;
+            
             try {
 
                 //canonical form of email

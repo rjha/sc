@@ -191,7 +191,9 @@ namespace com\indigloo\sc\mysql {
             $sqlm1 = "insert ignore into sc_group_master(token,name,cat_code,created_on) values('%s','%s','%s',now()) ";
             $sqlm2 = "insert ignore into sc_user_group(login_id,token,name,created_on) values('%d','%s', '%s', now()) ";
             $sqlm3 = "update sc_site_tracker set group_flag = 1 where post_id = %d and version = %d " ;
-
+            
+            $dbh = NULL ;
+            
             try {
                 $dbh =  PDOWrapper::getHandle();
                 //Tx start
