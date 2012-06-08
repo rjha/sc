@@ -9,12 +9,12 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
 
     class User {
-        
+
         /**
          *
          * @param gSessionLogin $login data stored in session
          * @param userDBRow - DB row for this login_id from sc_denorm_user table
-         * 
+         *
          */
         static function getProfile($gSessionLogin,$userDBRow) {
             if(is_null($gSessionLogin)) {
@@ -29,7 +29,7 @@ namespace com\indigloo\sc\html {
             $html = NULL ;
             $view = new \stdClass;
             $template = '/fragments/user/profile/private.tmpl' ;
-            
+
             $view->name = $userDBRow['name'];
             $view->createdOn = Util::formatDBTime($userDBRow['created_on']);
             $view->email = $userDBRow['email'];
@@ -54,9 +54,9 @@ namespace com\indigloo\sc\html {
 
 
             $params = array('q' => urlencode(Url::current()));
-            $view->passwordUrl = Url::createUrl("/user/account/change-password.php",$params); 
-            $view->editUrl = Url::createUrl("/user/account/edit.php",$params); 
-            
+            $view->passwordUrl = Url::createUrl("/user/account/change-password.php",$params);
+            $view->editUrl = Url::createUrl("/user/account/edit.php",$params);
+
             $html = Template::render($template,$view);
             return $html ;
 
@@ -78,7 +78,7 @@ namespace com\indigloo\sc\html {
 
         }
 
-        static function getPublicInfo($userDBRow) {
+        static function getPublic($userDBRow,$feedDataObj) {
 
             $html = NULL ;
             $view = new \stdClass;
@@ -89,9 +89,9 @@ namespace com\indigloo\sc\html {
             //what properties are actually set in DB
             $columns = array();
             // labels for properties
-            $labels = array('website' => ' <span class="badge badge-warning"> Website </span> ' ,
-                            'blog' => '<b> Blog </b> ' ,
-                            'location' => '<b> Location </b> ');
+            $labels = array('website' => '<span class="faded-text"> Website </span>' ,
+                            'blog' => '<span class="faded-text"> Blog </span> ' ,
+                            'location' => '<span class="faded-text"> Location </span> ');
 
             foreach($labels as $key => $label ) {
                 //for label key, the row in DB is set
@@ -104,9 +104,8 @@ namespace com\indigloo\sc\html {
                         $data[$key] = '<a href="'.$value.'" target="_blank">'.$value.'</a>' ;
                     else
                         $data[$key] = $value ;
-                }     
+                }
             }
-            
 
             $data['name'] = (empty($userDBRow['nick_name'])) ? $userDBRow['name'] : $userDBRow['nick_name'] ;
             $data['about_me'] = $userDBRow['about_me'];
@@ -116,17 +115,15 @@ namespace com\indigloo\sc\html {
                 $data['photo_url'] = '/css/images/twitter-icon.png' ;
             }
 
-            if(empty($data['about_me'])) {
-                $data['about_me']= '01101110 01101111 00100000 01100001 01100010'.
-                                    ' 01101111 01110101 01110100 01011111 01101101 01100101' ;
-                $data['about_me']= '<div class="binary">'.$data['about_me'].'</div>'; 
-                
-            }
-
             $view->createdOn = Util::formatDBTime($userDBRow['created_on']);
             $view->columns = $columns;
             $view->data = $data;
             $view->labels = $labels ;
+
+            //feeds html
+            $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+            $feedHtml = $htmlObj->getHtml($feedDataObj);
+            $view->feedHtml = empty($feedHtml) ? '' : $feedHtml ;
 
             $html = Template::render($template,$view);
             return $html ;
@@ -141,9 +138,9 @@ namespace com\indigloo\sc\html {
             $html = Template::render($template,$view);
             return $html ;
         }
-        
+
     }
-    
+
 }
 
 ?>

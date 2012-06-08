@@ -2,24 +2,24 @@
 
 namespace com\indigloo\sc\dao {
 
-    
     use \com\indigloo\Util as Util ;
     use \com\indigloo\sc\mysql as mysql;
-    
+    use \com\indigloo\sc\util\PseudoId ;
+
     class Comment {
 
         function getOnPostId($postId) {
             $rows = mysql\Comment::getOnPostId($postId);
             return $rows ;
         }
-        
+
         function getOnId($commentId) {
             $rows = mysql\Comment::getOnId($commentId);
             return $rows ;
         }
 
         function getPaged($paginator,$filters=array()) {
- 
+
             $limit = $paginator->getPageSize();
             if($paginator->isHome()){
                 return $this->getLatest($limit,$filters);
@@ -37,7 +37,7 @@ namespace com\indigloo\sc\dao {
             $rows = mysql\Comment::getLatest($limit,$filters);
             return $rows ;
         }
-        
+
         function getTotalCount($filters=array()) {
             $row = mysql\Comment::getTotalCount($filters);
             return $row['count'] ;
@@ -45,19 +45,27 @@ namespace com\indigloo\sc\dao {
 
         function update($commentId,$comment) {
             $loginId = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
-            $code = mysql\Comment::update($commentId,$comment,$loginId) ;
-            return $code ;
+            mysql\Comment::update($commentId,$comment,$loginId) ;
+
         }
-            
-        function create($postId, $comment,$loginId) {
-            $code = mysql\Comment::create($postId, $comment, $loginId);
-            return $code ;
+
+        function create($loginId,$name,$ownerId,$postId,$title,$comment) {
+            mysql\Comment::create($postId, $comment, $loginId);
+            //Add to feed
+            $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
+            $verb = \com\indigloo\sc\Constants::COMMENT_VERB ;
+            $itemId = PseudoId::encode($postId);
+            $postDao = new \com\indigloo\sc\dao\Post();
+            $image = $postDao->getImageOnId($postId);
+            $content = substr($comment,0,64);
+            $feedDao->addComment($ownerId,$loginId,$name,$itemId,$title,$content,$image,$verb);
+
         }
 
         function delete($commentId){
             $loginId = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
-            $code = mysql\Comment::delete($commentId,$loginId);
-            return $code ;
+            mysql\Comment::delete($commentId,$loginId);
+
         }
 
     }

@@ -6,7 +6,7 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\sc\mysql as mysql;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\util\StringUtil as StringUtil ;
-    
+
     class Group {
 
         function getLatest($limit,$filters=array()) {
@@ -39,7 +39,7 @@ namespace com\indigloo\sc\dao {
             }
 
         }
-       
+
         function getUserGroups($limit,$filters=array()) {
             $rows = mysql\Group::getUserGroups($limit,$filters);
             return $rows ;
@@ -79,8 +79,8 @@ namespace com\indigloo\sc\dao {
 
         function setFeatureSlug($slug) {
             $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
-            $code = mysql\Group::setFeatureSlug($loginId,$slug);
-            return $code ;
+            mysql\Group::setFeatureSlug($loginId,$slug);
+             
         }
 
         function slugToGroups($slug){
@@ -98,7 +98,7 @@ namespace com\indigloo\sc\dao {
         }
 
         /*
-         * @param $dbSlug space separated group token stored in DB 
+         * @param $dbSlug space separated group token stored in DB
          *
          */
         function slugToNamesArray($dbslug) {
@@ -116,7 +116,7 @@ namespace com\indigloo\sc\dao {
         }
 
         /*
-         * @param $dbSlug space separated group token stored in DB 
+         * @param $dbSlug space separated group token stored in DB
          *
          */
 
@@ -128,9 +128,9 @@ namespace com\indigloo\sc\dao {
             }
             return $group_names;
         }
-        
 
-        /* 
+
+        /*
          * we first convert all (new) names to array of slugs. we take this array
          * and implode on space to make slugs to be stored in DB (we need to implode on space to
          * index the field via sphinx.
@@ -170,7 +170,7 @@ namespace com\indigloo\sc\dao {
             mysql\Group::process($postId,$loginId,$version,$catCode,$group_slug);
 
         }
-        
+
     }
 }
 ?>

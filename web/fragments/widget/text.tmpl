@@ -1,9 +1,18 @@
 <div class="widget">
-   
+
     <div class="row">
-        <div class="span7">
-            <p> ~~$view->description~  &nbsp; <a href="/item/~~$view->itemId~">more...</a> </p>
-           
+        <div class="span9">
+            <p>
+                <i class="icon-asterisk"></i>&nbsp;
+                ~~$view->description~
+                <br/>
+                <span class="ml20">
+                    ~~$view->createdOn~
+                    &nbsp; <a href="/item/~~$view->itemId~">more...</a>
+                </span>
+
+            </p>
+
             <div class="options">
                 <div class="links">
                      ~if($view->hasEdit){~
@@ -15,18 +24,10 @@
                     ~}~
                 </div>
             </div>
-        </div> <!-- span7 -->
-        <div class="span2">
-            <div class="author p10">
-                <div class="meta">
-                    <span class="b">~~$view->createdOn~</span>
-                </div>  
-                
-            </div>
-            
-        </div> <!-- span2 -->
+        </div> <!-- span9 -->
+
     </div> <!-- row -->
-    
+
 
 </div>
 

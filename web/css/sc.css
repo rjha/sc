@@ -1,16 +1,16 @@
-    
+
     /* Global resets */
-    
+
     html, html#nojs {
         height: 100%;
     }
-    
+
     html#js {
         height: 100%;
     }
-    
+
     body {
-        font-size: 13px;    
+        font-size: 13px;
         font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif ;
         min-height: 100%;
         margin: 0;
@@ -18,118 +18,119 @@
         position: relative;
         background-color:white  ;
     }
-    
+
     .dark-body{
         background-color:#E9E9E9;
     }
-    
+
     a {
         color: #2288cc;
         text-decoration:none;
     }
-    
+
     a img {
         border: 0;
     }
-    
+
     a:hover {text-decoration:underline;}
-    
-    
+
+
     form {
         margin: 0;
         padding: 0;
     }
-    
+
     h1, h2, h3, h4, h5, h6 {
         font-weight: normal;
         margin: 0 0 1em;
         padding: 0;
     }
-    
+
     input, select, textarea {
         font-family: inherit;
         font-size: inherit;
         /* margin: 0; */
     }
-    
+
     p {
         margin: 0 0 1em 0;
         padding: 0;
     }
-    
-    
+
+
     /* + Common classes */
-    
+
     .error {
-        color: #ff0000; 
+        color: #ff0000;
     }
-    
+
     .no-border {
         border: 0 !important;
     }
-    
+
     div.hr {
         font-size: 1px;
         height: 1px;
         line-height: 1px;
-        background: #a1a1a1;
+        /* background: #a1a1a1; */
+        background : #ededed ;
     }
-    
+
     .clear {clear:both;}
     .floatl {float:left;}
     .floatr {float:right;}
-    
+
     .color-red {color:#f80813;}
     .red-label {color:red;}
     .color-green {color:#88cc44;}
-    
+
     /* gray is #D3D3D3 and grey is #808080 */
-    
+
     .grey {color:#808080;}
-    
+
     .w200 {width:200px; }
     .f13 {font-size :13px;}
     .mt20 {margin-top :20px; }
     .mt10 {margin-top :10px; }
-    
+
     .ml20 {margin-left :20px; }
     .ml40 {margin-left :40px; }
-    
+
     .b {font-weight : bold ;}
     .gray {color : gray; }
     .pt10 {padding-top:10px;}
     .p10 {padding:10px;}
     .p20 {padding:20px;}
-    
+
     .bbd5 {
         border-bottom : 1px solid #E9E9E9 ;
     }
     .thick-dashed-border {
         border-bottom : 2px dashed black ;
     }
-    
+
     #header {
         padding: 10px;
         color:#FFF;
     }
-    
+
     #header h3 {
         color: #FFFFFF;
         font-size:36px;
     }
-    
+
     #header h3 a {
         color: #FFFFFF ;
         text-decoration : none;
     }
-    
+
     #content {
         padding-top:10px;
         min-height : 600px;
     }
-    
+
     /* + Footer */
-    
+
     #footer {
         padding:16px 0 6px;
         font-family: Arial, Helvetica, sans-serif;
@@ -139,20 +140,20 @@
         text-align:center;
         line-height:18px;
     }
-    
+
     /* + custom web forms stuff */
-    
+
     div #form-wrapper {
         margin-left: 20px;
     }
-    
+
     .form-table {
         padding:10px;
         margin-top : 20px;
         margin-bottom: 20px;
         font-size:13px;
     }
-    
+
     .form-table  input{
         word-spacing: 1px;
         line-height: 1.8em;
@@ -161,9 +162,9 @@
         width: 400px;
         height: 22px;
         padding-top:4px;
-    
+
     }
-    
+
     .form-table  textarea{
         word-spacing: 1px;
         line-height: 1.8em;
@@ -173,8 +174,8 @@
         height :310px;
         padding-top:10px
     }
-    
-    
+
+
     .form-table .w200{width: 200px; }
     .form-table .w280{width: 280px; }
     .form-table .w500{width: 500px; }
@@ -184,20 +185,20 @@
     .form-table .h130{ height: 130px;}
     .form-table .h280{ height: 280px;}
     .form-table .h430{ height: 430px;}
-    
-    
+
+
     div .form-error {
         margin-bottom: 10px;
         margin-top: 10px;
         color : red ;
     }
-    
+
     div .form-message {
         margin-bottom: 10px;
         margin-top: 10px;
         color : green ;
     }
-    
+
     div .error label {
         width: 500px;
         text-align: left;
@@ -205,23 +206,23 @@
         margin-left: 10px;
         color:red ;
     }
-     
+
     /* +widgets */
-    
+
     .widget {
         margin-top:10px;
         margin-bottom: 10px;
         width: 100%;
         clear: both;
     }
-    
+
      .widget .options {
         display:none ;
         margin:0px;
         padding:0px;
         height:40px;
         width:100%;
-        
+
     }
 
     .widget .options .links {
@@ -233,38 +234,38 @@
     .widget .options .links a {
         color : #777;
     }
-    
+
     .widget .photo {
         padding: 10px;
-        
+
     }
-    
+
     /* Any photo inside a widget can only go till 90%  */
     .widget img {
         max-width : 90% ;
     }
-    
+
     .widget .photo img {
         max-width:90%;
         border:6px solid #d5d5d5;
-        
+
     }
-    
+
     img.alignright {float:right; margin:0 0 1em 1em}
     img.alignleft {float:left; margin:0 1em 1em 0}
     img.aligncenter {display: block; margin-left: auto; margin-right: auto}
-    
+
     .video .alignright {float:right; margin:0 0 1em 1em}
     .video .alignleft {float:left; margin:0 1em 1em 0}
     .video .aligncenter {display: block; margin-left: auto; margin-right: auto}
-    
+
     .widget a{
         text-decoration: none;
     }
-    .widget a:hover { 
-        text-decoration:underline; 
+    .widget a:hover {
+        text-decoration:underline;
     }
-    
+
     .widget p{
         margin-bottom: 5px;
         text-align :justify ;
@@ -272,33 +273,33 @@
         /* word-wrap: break-word; */
         /* text-indent :20px; */
     }
-    
-    
+
+
     /* +fancybox stuff */
     .fancybox-container {
         display: none ;
     }
-    
+
     .fancybox-container input {
         width:400px;
     }
-    
-    
+
+
     /* + link and image previews */
-    
+
     .hide-me {
         display:none ;
     }
-    
+
     div#link-container {
-           
+
         background-color:#f0fff0;
         width:460px;
         margin-bottom :20px;
         padding:20px;
-        
+
     }
-    
+
     div#link-container input{
         word-spacing: 1px;
         line-height: 1.8em;
@@ -308,8 +309,8 @@
         height: 24px;
         padding-top:4px;
     }
-    
-    
+
+
     .black-button {
         background-color:black;
         color:#FFFFFF !important;
@@ -319,26 +320,26 @@
         font-weight: bold;
         cursor: pointer;
     }
-    
+
     div#image-container{
            margin-bottom:10px;
            padding:10px;
            background-color:#f0fff0;
            width:480px;
     }
-    
+
     #form-wrapper #divstatus{
            padding:5px;
     }
-    
+
     #link-data {
         margin-top:20px;
     }
-    
+
     #media-data {
         width: 580px;
     }
-    
+
     div .stackImage{
        position :relative ;
        float : left;
@@ -348,12 +349,12 @@
        border:1px solid #DDD ;
        margin :2px;
     }
-        
+
     .thumbnail-1 {
         width: auto;
         height: auto;
-        max-width: 180px; 
-        max-height: 135px; 
+        max-width: 180px;
+        max-height: 135px;
         margin-bottom : 5px;
     }
 
@@ -361,24 +362,24 @@
         padding:5px;
         width:500px;
     }
-    
+
     .highlight {
         padding:10px;
         background-color:#FFF1A8;
     }
-    
-   
+
+
     #site-search{
         margin-top:5px;
         height:20px;
         width:280px;
     }
-    
+
     /* + homepage tiles */
     div #tiles{
         /* background-color:#E9E9E9; */
     }
-    
+
     .tile {
         width:210px;
         margin:2px;
@@ -417,13 +418,13 @@
     .tile .photo {
         padding:3px;
     }
-    
+
     .tile .photo img {
         max-width:190px;
         /* border:5px solid #d5d5d5; */
         margin :0px;
     }
-    
+
     /* smaller tile */
 
     .stamp {
@@ -437,24 +438,23 @@
     .stamp .photo {
         padding:3px;
     }
-    
+
     .stamp .photo img {
         max-width:100px;
         margin :0px;
     }
 
-    .mh800 {
-        min-height:800px;
-    }
+    .mh800 { min-height:800px;}
+    .mh600 { min-height: 600px;}
 
     .author{
         padding: 7px 0px 7px 0px ;
         font-size : 12px;
     }
-    .author img { 
-        float:left; 
+    .author img {
+        float:left;
         padding:0px 10px 0px 0px;
-    }   
+    }
 
     .author .meta {
         padding:0px;
@@ -478,7 +478,7 @@
         width:22px;
 
     }
-        
+
     #feedback{
         position:fixed;
         top:200px;
@@ -492,13 +492,13 @@
     .social-buttons a {
          color: white ;
     }
-    
-    
+
+
     #mik-login-wrapper {
         padding:20px;
         border-right:1px solid black;
     }
-        
+
     .group-panel {
         width:620px;
         height:auto;
@@ -507,7 +507,7 @@
         margin-bottom :10px;
         margin-top :10px;
 
-    } 
+    }
 
     .group-panel .wrapper {
         padding:0px;
@@ -558,7 +558,7 @@
         font-size:14px;
         line-height:18px;
     }
- 
+
     .item-groups .label {
         font-weight: bold ;
         font-size:18px;
@@ -566,7 +566,7 @@
     }
 
     .block{
-        border-bottom : 1px solid #E8E7E3; 
+        border-bottom : 1px solid #E8E7E3;
     }
 
     .block h3{
@@ -643,8 +643,8 @@
         font-size: 15px;
     }
 
-    #home-tile h1 { 
-        margin : 0px 0px 0px 20px; 
+    #home-tile h1 {
+        margin : 0px 0px 0px 20px;
     }
 
     #gallery {
@@ -657,7 +657,7 @@
     #gallery img {
         padding:5px;
         background: white;
-        border: 1px solid #BBB; 
+        border: 1px solid #BBB;
     }
 
     .item-link {
@@ -666,7 +666,7 @@
 
     .item-link a:hover {
        text-decoration:none ;
-    } 
+    }
 
     .item-link .big {
         color: black;
@@ -685,7 +685,7 @@
         margin:4px;
         cursor: pointer;
 
-      
+
     }
 
     .card1 {
@@ -695,7 +695,7 @@
         background-color: #E7EBEE;
         font-size: 13.5px;
         font-weight: bold;
- 
+
     }
 
     .card2 {
@@ -747,12 +747,59 @@
         overflow:hidden;
     }
 
-    .binary {
-        background:black;
-        color:white;
-        font-weight:bold;
+    .faded-text {
+        color :#8c7e7e ;
     }
 
+    /* + Activity feeds */
+
+    .feeds {
+        font-size : 13px;
+        padding: 0px 0px 0px 10px;
+    }
+
+    .feeds a {
+        color : #4183C4 ;
+    }
+
+    .feeds .item {
+        padding-bottom: 10px;
+        width: 100%;
+        clear: both;
+    }
+
+    .feeds .item .title {
+        font-weight: bold;
+        line-height:18px;
+        font-family: arial;
+        font-size:12px;
+    }
+
+    .feeds .item .photo {
+        /* padding: 10px; */
+    }
+
+    .feeds .item img {
+        padding:5px;
+    }
+
+    .feeds .item .message {
+        color: #8c7e7e ;
+        font-size: 12px;
+    }
+
+    .feeds .item .verb {
+        /* color: #AD9C9C ; */
+    }
+
+    .noresults {
+        width: 640px;
+        margin: 0 auto;
+        padding: 30px 0;
+        color: #AAA;
+        font-size: 2.9em;
+        line-height:32px;
+    }
 
     /* last section - override bootstrap css */
     .hero-unit {
@@ -767,4 +814,4 @@
     .table th, .table td {
         border-top : none ;
     }
-  
+

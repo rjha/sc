@@ -6,7 +6,11 @@ we know our RAM usage and we would like no swapping
 
     First  Test local deployment
     Any new config variable  or changes to sc-app.inc?
+    + copy latest sc-app.inc (verify path and vhost name)
+    + sc_config.ini - are there any changes?
+
     DB patching : do any necessary DB patching 
+    + Run db scripts
     pull new code
     Backup database
     run any DB scripts

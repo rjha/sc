@@ -2,33 +2,50 @@
 
 namespace com\indigloo\sc\dao {
 
-    
+
     use \com\indigloo\Util as Util ;
     use \com\indigloo\sc\mysql as mysql;
-    
+    use \com\indigloo\sc\ui\Constants as UIConstants ;
+    use \com\indigloo\sc\util\PseudoId ;
+
     class Bookmark {
 
-        function add($loginId,$itemId,$action) {
-            $row = mysql\Bookmark::find($loginId,$itemId,$action);
+        function add($ownerId,$loginId,$name,$itemId,$title,$verb) {
+            $row = mysql\Bookmark::find($loginId,$itemId,$verb);
             $count = $row['count'] ;
-            $code = 0 ;
+
             if($count == 0 ) {
+                // get image from item.
+                $postDao = new \com\indigloo\sc\dao\Post();
+                $postId = PseudoId::decode($itemId);
+                $image = $postDao->getImageOnId($postId);
                 //actually insert
-                $code = mysql\Bookmark::add($loginId,$itemId,$action);
-                return $code ;
+                mysql\Bookmark::add($ownerId,$loginId,$name,$itemId,"post",$title,$verb);
+                //Add to activity feed
+                $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
+                $feedDao->addBookmark($ownerId,$loginId,$name,$itemId,$title,$image,$verb);
+
             }
 
-            return $code ;
         }
 
-        function delete($bookmarkId) {
-            $code = mysql\Bookmark::delete($bookmarkId);
-            return $code ;
+        function like($ownerId,$loginId,$name,$itemId,$title) {
+            $verb = \com\indigloo\sc\Constants::LIKE_VERB ;
+            $this->add($ownerId,$loginId,$name,$itemId,$title,$verb);
+        }
+
+        function favorite($ownerId,$loginId,$name,$itemId,$title) {
+             $verb = \com\indigloo\sc\Constants::FAVORITE_VERB ;
+             $this->add($ownerId,$loginId,$name,$itemId,$title,$verb);
         }
 
         function unfavorite($loginId,$itemId) {
-            $code = mysql\Bookmark::unfavorite($loginId,$itemId);
-            return $code ;
+            $verb = \com\indigloo\sc\Constants::FAVORITE_VERB ;
+            mysql\Bookmark::remove($loginId,$itemId,$verb);
+        }
+
+        function delete($bookmarkId) {
+            mysql\Bookmark::delete($bookmarkId);
         }
 
         function getTotal($filters=array()) {
@@ -40,7 +57,7 @@ namespace com\indigloo\sc\dao {
             $rows = mysql\Bookmark::getLatest($limit,$filters);
             return $rows ;
         }
-        
+
         function getPaged($paginator,$filters) {
             $limit = $paginator->getPageSize();
             if($paginator->isHome()){

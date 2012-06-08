@@ -1,51 +1,115 @@
-28 May 2012
---------------
+Deployment of redis branch
+ - new sc_config.ini
+ - new sc-app.inc file (+redisent lib path)
 
-@todo 
+sc_config.ini changes :-
+bad.feed.log="/home/rjha/web/log/bad-feed.log"
+mysql.sphinx.port=9306
+[redis]
+redis.dsn="localhost:6379"
+;timeout in seconds
+redis.timeout=4
 
-pfff tool scheck to lint php codebase
-URL tampering => should we include checksum everywhere?
-URL tampering => we should not error out on bad params or URL
-BUffered vs unbuffered queries with mysql
-mysql innodb tuning 
+
+db patch - Add new sc_bookmark table and run db-to-redis script
+compile redis 2.6 on server. Add redis init scripts.
+cron script changes - use APP_LIB_PATH in scripts now
+    (new defined constants instead of superglobal constants)
+
+
+
+
+For PHP tools
+https://github.com/sebastianbergmann
+
+/*
+ static function find($subjectId,$objectId,$verb) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            settype($subjectId,"integer");
+            settype($objectId,"integer");
+            settype($verb,"integer");
+
+            $sql = " select count(id) as count from sc_bookmark " ;
+            $sql .= " where subject_id = %d and object_id = %d and verb = %d ";
+            $sql = sprintf($sql,$loginId,$itemId,$verb);
+
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+*/
+
+#phpcs is freaking verbose and not at all useful
+# php -l : only for uninitialized variables etc
+# pfff/scheck : does not detect as well
+# How about hiphop's static analysis?
+# rips - code is object oriented and not supported
+
+phpmd rocks!
+
+use the first one to detect errors, use the second one with design to get design advices as well.
+
+$phpmd lib/com/indigloo/sc/mysql text codesize,unusedcode,naming,design
+
+
+
+04 June 2012
+---------------------------------
+Add activities to home page
+Activity - Add data for users and add to email queue also
+Activity - distinguish no result (empty array() ) vs. error case (redis not up)
+Activities - Add comment snippet (64 chars) and post stamp tile to activity feeds
+Activity - Add time also
+Activity - change follower and following Id to :- subjectId and objectId etc.
+Activity - feed should not show duplicates.
+
+
+redis - compile as 32 bit application to save key space.
+redis - use 2.6 RC instead of 2.2 or 2.4?
+redis - test deployment on ubuntu natty machine.
+
+Data for activities
+@imp:
+script for sc_user_bookmark => sc_bookmrk data transfer
+sc_bookmark  => load data into redis sets
+sc_follow  => load data into redis sets
+
+
+
+Automatic versioning of css and js files
+pagination for redis.io List (LPUSH so slot 0 has latest item)
+test webgloo.ui.pagination class
+error checks :- simulated DBExceptions and real ones
+Move all constants to sc\Constants file. e.g. FEATURE_POST
+Add pub_id (or pseudo_id) column to for users and whatever uses pseudo_id
+
+
+
+
 our filters - should apply type (e.g. int) based cast
 filter - cannot be empty
+
 Do we want to store form escaped data - e.g. single quote to &#039;
-Spinx - better indexes - index filtering
-put sphinx mysql connector IP and port in config file.  
-Redis server :- play with it
-insert one screen in workflow after login -> Dashboard/3mik Home page choice
+Spinx - better indexes - filter on index
 placeholder image on site/go-static and automatic pages
 Nice feedback from ajax scripts
-Reload ajax action that was disrupted by login screen
-Automatic versioning of css and js files
 
-+ How does sc_denorm_user update impact other tables and fields ? e.g. sc_login and sc_user
-  can we allow users to change email? should we update email in sc_user ? I do not think so..
-  Better idea is to make email box editable when we do not have email data readonly vs. writable box.
-- URL/Blog :- add HTTP automatically!
-- group: Alphabetical push buttons instead of Alpha bar that we have right now.
-- When no results : Suggest things to user 
-- After login - Take user to another page instead of Home page 
-- Help content
-- supercow button should be visible after admin login 
-- Browsing options -  sites browsing 
+Reload ajax action that was disrupted by login screen
+group: Alphabetical push buttons instead of Alpha bar that we have right now.
+Help content
+supercow button for admins
+Capture additional data for sites / Items
 + All UNIQ Key errors: check in UI via Ajax before hitting DB
 + Add caching headers to old S3 images
 
-Fix user dashboard
- - Help content on user dahsboard pages
- - following/followers
- - favorite - clicking on remove :- reload/refresh the page
-
-+ Monitor App
-
-monitor - Post widget actions - feature/unfeature
-Supercow button on item details page
+User dashboard - followers/following page.
 Pagination on monitor app/user dashboard
 
+
 @later
-=========
+-------------------------
+mysql innodb tuning
 sitemap - automatically generate every week
 Better sharing with friends and social networks
 json_enocde and json_deocde error checks everywhere with json_error_last
@@ -59,15 +123,14 @@ Sphinx delta indexing
 Add SSL support for login page?
 create ICU resource bundles with php-intl
 Send tokens used for Sphinx queries
+remove $_SERVER from everywhere
+    - it should be possible to run our scripts using cli SAPI also
 
 
-@debatable
-============
-Fix DB Errors - throw MySQLException from lower layers
 
 
 @done
-=====
+------------------------
 sphinx query.log as email attachment
 shut off Nginx/PHP version  advertising
 URL like http://www.3mik.com/group/beta.php should return nginx 404
@@ -80,7 +143,7 @@ Edit page - user groups - open in cards instead of as cloud
 fix DB filter creation - model on hibernate
 Better log errors when site URL are bad like: UNKNOWN_URL_PATTERN
 Url.php @line78
-Fix fancybox related errors in nginx 
+Fix fancybox related errors in nginx
 Faceboo router => should detect scripts ending in .php => important!
 fix bug in random groups :- include Navigation
 All ajax scripts should be protected by login
@@ -90,11 +153,11 @@ Form protection by inserting unique tokens  - PRG or DejaVu' pattern to avoid fo
 
 make sure that all pUrl and qUrl are not processed by our form hander - we need raw urls
 Fix navigation for cancel button everywhere.
-Login with google 
+Login with google
 
 Fix user dashboard
  - Need to fix the profile page : Ask for more data
- - Add denorm_user 
+ - Add denorm_user
 
 error page - stop encoding the messages
 SQL injection : look @ all queries again please!
@@ -105,3 +168,15 @@ Sphinx searchd not starting on debian machines
 Sphix logs not rotating?
  fixed:Need to send SIGUSR1 signal to searchd
 
+
+Template functions :- do not call in a loop (file open/close every time)
+    It should be faster to put the loop inside template file itself.
+    problem : we need to call different templates based on  text/image data.
+    That will not work with moving everything inside a template.
+
+MYSQL error handling : cleanup / throwing exceptions / do not trigger errors
+    => we may want to handle some DB Exceptions
+    => remove DBExceptions from UI code.
+
+URL tampering => we should not error out on bad params or URL
+put sphinx mysql connector IP and port in config file.

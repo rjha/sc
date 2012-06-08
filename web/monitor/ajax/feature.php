@@ -1,34 +1,41 @@
-<?php 
-    header('Content-type: application/json'); 
+<?php
+    header('Content-type: application/json');
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
-    
+
     use \com\indigloo\Util as Util;
     use \com\indigloo\sc\auth\Login as Login;
-    
+    use \com\indigloo\sc\ui\Constants as UIConstants ;
+
     set_error_handler('webgloo_ajax_error_handler');
 
-    //Admin login is required 
+    //Admin login is required
     if(!Login::isAdmin()) {
         $message = array("code" => 401 , "message" => "Authentication failure! Admin credentials missing.");
-        $html = json_encode($message); 
+        $html = json_encode($message);
         echo $html;
         exit;
     }
 
-    //parameters
-    $loginId = Login::getLoginIdInSession();
+
     $postId = Util::getArrayKey($_POST, "postId");
+    //Action from UI is ADD | REMOVE
+    // see com\indigloo\sc\ui\Constants file
     $action = Util::getArrayKey($_POST, "action");
 
     $postDao = new \com\indigloo\sc\dao\Post();
-    $map = array();
-    $map["ADD"] = $postDao::FEATURE_POST ;
-    $map["REMOVE"] =  $postDao::UNFEATURE_POST;
-    $action2 = $map[$action];
-    $postDao->doAdminAction($postId,$action2);
-
+    switch($action) {
+        case UIConstants::FEATURE_POST :
+            $postDao->doAdminAction($postId, \com\indigloo\sc\Constants::FEATURE_POST);
+            break ;
+        case UIConstants::UNFEATURE_POST :
+            $postDao->doAdminAction($postId,\com\indigloo\sc\Constants::UNFEATURE_POST);
+            break ;
+        default:
+            trigger_error("Unknown UI action", E_USER_ERROR);
+    }
+    
     $html = array("code" => 200 , "message" => "success");
-    $html = json_encode($html); 
+    $html = json_encode($html);
     echo $html;
 ?>

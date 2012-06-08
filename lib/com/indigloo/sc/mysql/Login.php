@@ -7,11 +7,9 @@ namespace com\indigloo\sc\mysql {
 
     use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException;
-    
+
 
     class Login {
-
-        const MODULE_NAME = 'com\indigloo\sc\mysql\Login';
 
         static function getOnId($loginId){
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -33,7 +31,7 @@ namespace com\indigloo\sc\mysql {
             settype($limit, "integer");
             $sql = " select * from sc_login order by id desc limit %d ";
             $sql = sprintf($sql,$limit);
-            
+
             $rows = MySQL\Helper::fetchRows($mysqli,$sql);
             return $rows ;
 
@@ -45,8 +43,10 @@ namespace com\indigloo\sc\mysql {
          * sc_user
          * sc_denorm_user (via a trigger)
          *
-         */ 
+         */
         static function create($provider,$userName,$firstName,$lastName,$email,$password){
+
+            $dbh = NULL ;
             
             try {
 
@@ -56,40 +56,36 @@ namespace com\indigloo\sc\mysql {
 
                 $sql1 = "insert into sc_login (provider,name,created_on) values(:provider,:name,now()) " ;
                 $flag = true ;
-                
+
                 $dbh =  PDOWrapper::getHandle();
                 //Tx start
                 $dbh->beginTransaction();
-                
+
                 $stmt = $dbh->prepare($sql1);
                 $stmt->bindParam(":name", $userName);
                 $stmt->bindParam(":provider", $provider);
                 $flag = $stmt->execute();
-                
+
                 if(!$flag){
                     $dbh->rollBack();
                     $dbh = null;
-                    $message = sprintf("DB PDO Error : code is  %s",$stmt->errorCode());
-                    trigger_error($message,E_USER_ERROR);
+                    $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
+                    throw new DBException($message);
                 }
-                
+
                 $loginId = $dbh->lastInsertId();
                 settype($loginId, "integer");
-                $dbCode = \com\indigloo\auth\User::create('sc_user',
+                
+                //@throws DBException
+                \com\indigloo\auth\User::create('sc_user',
                                 $firstName,
                                 $lastName,
                                 $userName,
                                 $email,
                                 $password,
                                 $loginId);
-                
-                if($dbCode > 0 ) {
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("Database error code %d",$dbCode);
-                    throw new DBException($message,$dbCode);
-                }
-                
+
+
                 //Tx end
                 $dbh->commit();
                 $dbh = null;
@@ -97,13 +93,11 @@ namespace com\indigloo\sc\mysql {
             }catch (PDOException $e) {
                 $dbh->rollBack();
                 $dbh = null;
-                Logger::getInstance()->error($e->getMessage());
-                $errorCode = $e->getCode();
-                $message = sprintf("Database error code %d",$errorCode);
-                throw new DBException($message,$errorCode);
-                
+                $message = sprintf("PDO error :: code %d message %s ",$e->getCode(),$e->getMessage());
+                throw new DBException($message);
+
             }
-            
+
         }
 
         static function getTotalCount($filters) {

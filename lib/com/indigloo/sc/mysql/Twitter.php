@@ -5,14 +5,12 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
-    
+
     use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException;
-    
-    
+
+
     class Twitter {
-        
-        const MODULE_NAME = 'com\indigloo\sc\mysql\Twitter';
 
         static function getOnTwitterId($twitterId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -31,6 +29,8 @@ namespace com\indigloo\sc\mysql {
 
         static function create($twitterId,$name,$screenName,$location,$image,$provider){
 
+            $dbh = NULL ;
+            
             try {
                 $sql1 = "insert into sc_login (provider,name,created_on) values(:provider,:name,now()) " ;
                 $flag = true ;
@@ -47,8 +47,8 @@ namespace com\indigloo\sc\mysql {
                 if(!$flag){
                     $dbh->rollBack();
                     $dbh = null;
-                    $message = sprintf("DB PDO Error : code is  %s",$stmt->errorCode());
-                    trigger_error($message,E_USER_ERROR);
+                    $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
+                    throw new DBException($message);
                 }
 
                 $loginId = $dbh->lastInsertId();
@@ -72,7 +72,7 @@ namespace com\indigloo\sc\mysql {
                     $dbh->rollBack();
                     $dbh = null;
                     $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
-                    trigger_error($message,E_USER_ERROR);
+                    throw new DBException($message);
                 }
 
                 //Tx end
@@ -84,10 +84,8 @@ namespace com\indigloo\sc\mysql {
             }catch (PDOException $e) {
                 $dbh->rollBack();
                 $dbh = null;
-                Logger::getInstance()->error($e->getMessage());
-                $errorCode = $e->getCode();
-                $message = sprintf("Database error code %d",$errorCode);
-                throw new DBException($message,$errorCode);
+                $message = sprintf("PDO error :: code %d message %s ",$e->getCode(),$e->getMessage());
+                throw new DBException($message);
 
             }
 

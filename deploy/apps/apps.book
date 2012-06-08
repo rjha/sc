@@ -1,0 +1,25 @@
+
+
+#netbeans conf
+netbeans_default_options="-J-client -J-Xss2m -J-Xms128m -J-Xmx256m -J-XX:PermSize=64m -J-Dsun.java2d.noddraw=true -J-XX:+UseConcMarkSweepGC -J-XX:+CMSClassUnloadingEnabled -J-Dsun.zip.disableMemoryMapping=true --laf com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"
+
+
+
+#install netbeans scanOnDemand plugin
+
+Run the IDE,
+go to Tools | Plugins
+choose Settings and verify "Latest Development Plugins" update center is there.
+if not, add it, the URL is: http://deadlock.netbeans.org/hudson/job/nbms-and-javadoc/lastStableBuild/artifact/nbbuild/nbms/updates.xml.gz
+Watch out! From the moment you add it you'll start receiving notifications for yet not stable updates, so you may want to check new updates carefully before installing.
+click the "Reload Catalog" button,
+search for "Scan On Demand",
+install module.
+
+
+#install phpmd
+#install phploc
+
+
+
+

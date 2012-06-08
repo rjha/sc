@@ -1,10 +1,10 @@
 <?php
     //sc/qa/comment/form/delete.php
-    
+
     include 'sc-app.inc';
     include(APP_WEB_DIR . '/inc/header.inc');
     include(APP_WEB_DIR . '/inc/role/user.inc');
-    
+
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
@@ -13,11 +13,11 @@
     use \com\indigloo\exception\UIException as UIException;
     use \com\indigloo\exception\DBException as DBException;
     use \com\indigloo\sc\util\PseudoId;
-    
+
     if (isset($_POST['delete']) && ($_POST['delete'] == 'Delete')) {
 
         try{
-        
+
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('comment_id', 'comment_id', array('required' => 1));
 
@@ -38,26 +38,14 @@
             }
 
             $commentDao = new com\indigloo\sc\dao\Comment();
-            $code = $commentDao->delete($fvalues['comment_id']);
-
-            if($code != 0 ) {
-                $message = "DB Error : code %d ";
-                $message = sprintf($message,$code);
-                throw new DBException($message,$code);
-            }
+            $commentDao->delete($fvalues['comment_id']);
 
             //success
             header("Location: " . $qUrl);
-            
+
             } catch(UIException $ex) {
                 $gWeb->store(Constants::STICKY_MAP, $fvalues);
                 $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
-                header("Location: " . $fUrl);
-                exit(1);
-            } catch(DBException $dbex) {
-                $message = $dbex->getMessage();
-                $gWeb->store(Constants::STICKY_MAP, $fvalues);
-                $gWeb->store(Constants::FORM_ERRORS,array($message));
                 header("Location: " . $fUrl);
                 exit(1);
             }

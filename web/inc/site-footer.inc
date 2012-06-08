@@ -1,13 +1,21 @@
 
 <div id="footer">
     Copyright  © 2011-2012 ,3mik india private ltd.  </div>
-    
+
 </div>
 
 <?php
-    //close resources
+    //free resources
     $gWeb = \com\indigloo\core\Web::getInstance();
     $gWeb->end();
+
+    // close redis connx.
+    // do not create a new connx.
+    $redis = \com\indigloo\sc\util\Redis::getInstance(false) ;
+    if(!is_null($redis)) {
+        $redis->close();
+    }
+    
 ?>
 
 <!-- google analytics -->

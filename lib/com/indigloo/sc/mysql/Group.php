@@ -6,18 +6,16 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Constants as Constants ;
-    
+
     use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException;
-    
+
     class Group {
         
-        const MODULE_NAME = 'com\indigloo\sc\mysql\Group';
-
         static function getLatest($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
-            //sanitize input 
+            //sanitize input
             settype($limit,"integer");
 
             $sql = "select g.* from sc_group_master g " ;
@@ -28,7 +26,7 @@ namespace com\indigloo\sc\mysql {
             $condition = $q->get();
 
             $sql .= $condition;
-            $sql .= " order by g.id desc LIMIT %d " ; 
+            $sql .= " order by g.id desc LIMIT %d " ;
             $sql = sprintf($sql,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
@@ -37,8 +35,8 @@ namespace com\indigloo\sc\mysql {
 
         static function getPaged($start,$direction,$limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            
-            //sanitize input 
+
+            //sanitize input
             settype($start,"integer");
             settype($limit,"integer");
             $direction = $mysqli->real_escape_string($direction);
@@ -53,14 +51,14 @@ namespace com\indigloo\sc\mysql {
             $sql .= $q->getPagination($start,$direction,"g.id",$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-            
+
             //reverse rows for 'before' direction
             if($direction == 'before') {
                 $results = array_reverse($rows) ;
                 return $results ;
             }
-            
-            return $rows;   
+
+            return $rows;
 
         }
 
@@ -78,11 +76,11 @@ namespace com\indigloo\sc\mysql {
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
-       
+
         static function getRandom($limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
-            //sanitize input 
+            //sanitize input
             settype($limit,"integer");
 
             $sql = " SELECT g.*  FROM sc_group_master g where " ;
@@ -108,7 +106,7 @@ namespace com\indigloo\sc\mysql {
             $q->filter($filters);
 
             $sql .= $q->get();
-            $sql .= " order by ug.id LIMIT %d " ; 
+            $sql .= " order by ug.id LIMIT %d " ;
             $sql = sprintf($sql,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
@@ -119,11 +117,11 @@ namespace com\indigloo\sc\mysql {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "select ug.* from sc_user_group ug" ;
 
-            //sanitize input 
+            //sanitize input
             settype($start,"integer");
             settype($limit,"integer");
             $direction = $mysqli->real_escape_string($direction);
-            
+
             $q = new MySQL\Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Group","ug");
             $q->filter($filters);
@@ -132,14 +130,14 @@ namespace com\indigloo\sc\mysql {
             $sql .= $q->getPagination($start,$direction,"ug.id",$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-            
+
             //reverse rows for 'before' direction
             if($direction == 'before') {
                 $results = array_reverse($rows) ;
                 return $results ;
             }
-            
-            return $rows;   
+
+            return $rows;
 
         }
 
@@ -172,15 +170,13 @@ namespace com\indigloo\sc\mysql {
 
             $sql = "update sc_feature_group set slug = '%s' where id = 1 ";
             $sql = sprintf($sql,$slug);
-
-            $code = MySQL\Connection::ACK_OK;
             MySQL\Helper::executeSQL($mysqli,$sql);
-            return $code ;
+
         }
 
         static function getFeatureSlug() {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "select slug from sc_feature_group where id = 1 " ; 
+            $sql = "select slug from sc_feature_group where id = 1 " ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
@@ -195,7 +191,9 @@ namespace com\indigloo\sc\mysql {
             $sqlm1 = "insert ignore into sc_group_master(token,name,cat_code,created_on) values('%s','%s','%s',now()) ";
             $sqlm2 = "insert ignore into sc_user_group(login_id,token,name,created_on) values('%d','%s', '%s', now()) ";
             $sqlm3 = "update sc_site_tracker set group_flag = 1 where post_id = %d and version = %d " ;
-
+            
+            $dbh = NULL ;
+            
             try {
                 $dbh =  PDOWrapper::getHandle();
                 //Tx start
@@ -222,7 +220,9 @@ namespace com\indigloo\sc\mysql {
                 $dbh = null;
             } catch (PDOException $e) {
                 $dbh->rollBack();
-                trigger_error($e->getMessage(),E_USER_ERROR);
+                $dbh = null;
+                $message = sprintf("PDO error :: code %d message %s ",$e->getCode(),$e->getMessage());
+                throw new DBException($message);
             }
 
         }

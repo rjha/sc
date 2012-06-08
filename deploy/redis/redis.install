@@ -1,0 +1,59 @@
+
+# install 32 bit support for libc6
+$sudo aptitude install  libc6-dev-i386
+
+#install old redis server packaged with ubuntu
+$sudo aptitude install redis-server
+This will install the debian redis-server package with init scripts and config files.
+
+#stop old redis server
+$sudo service redis-server stop
+
+# get the latest redis tarball
+# Download redis-2.6 RC4
+go to http://redis.io/download
+and download the latest redis 2.6 tarball
+
+#compile latest redis tarball as 32 bt binaries
+
+$ mkdir -p  $HOME/nuke
+$ cd $HOME/nuke
+$ cp <redis-tarball> $HOME/nuke/.
+$ cd $HOME/nuke
+$ tar -zxvf <redis-tarball>
+This will create a new redis-2.6 directory..
+$ cd <redis-2.6 dir> 
+$ sudo make 32bit
+we want  32 bit compile as our server RAM is small and it produces compact packages.
+$ sudo make test
+
+verify that all tests pass and that you have 3 binaries in 
+$HOME/nuke/<redis-2.6-dir>/src 
+redis-cli
+redis-server
+redis-benchmark
+
+# copy compiled binaries to /usr/bin area overwriting the old binaries 
+#
+$sudo cp $HOME/nuke/<redis-2.6-dir>/src/redis-cli /usr/bin/.
+$sudo cp $HOME/nuke/<redis-2.6-dir>/src/redis-server /usr/bin/.
+$sudo cp $HOME/nuke/<redis-2.6-dir>/src/redis-benchmark /usr/bin/.
+
+
+# copy latest redis.conf file
+$sudo cp $HOME/deploy/redis/redis.conf /etc/redis/.
+
+# add following vm param at the end of  /etc/sysctl.conf
+#    you may also want to adjust vm.swappiness
+vm.overcommit_memory = 1
+5) REBOOT
+6) After reboot verify that you have redis runnig
+
+$redis-cli
+> keys *
+> quit
+
+
+
+
+

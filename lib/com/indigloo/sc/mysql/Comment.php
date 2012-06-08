@@ -5,14 +5,12 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
-    
+
     class Comment {
-        
-        const MODULE_NAME = 'com\indigloo\sc\mysql\Comment';
 
         static function getOnPostId($postId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            //sanitize input 
+            //sanitize input
             settype($postId,"integer");
 
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
@@ -22,23 +20,23 @@ namespace com\indigloo\sc\mysql {
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
-        
+
         static function getOnId($commentId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
-            //sanitize input 
+            //sanitize input
             settype($commentId,"integer");
-            
+
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l ";
             $sql .= " where l.id = a.login_id and a.id = %d " ;
             $sql = sprintf($sql,$commentId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
-        
+
         static function getLatest($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            //sanitize input 
+            //sanitize input
             settype($limit,"integer");
             $sql = " select a.*,l.name as user_name from sc_comment a,sc_login l " ;
 
@@ -54,9 +52,9 @@ namespace com\indigloo\sc\mysql {
             $sql = sprintf($sql,$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
-        
+
         }
-        
+
         static function getTotalCount($filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = " select count(id) as count from sc_comment ";
@@ -73,7 +71,7 @@ namespace com\indigloo\sc\mysql {
         static function getPaged($start,$direction,$limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
-            //sanitize input 
+            //sanitize input
             settype($start,"integer");
             settype($limit,"integer");
             $direction = $mysqli->real_escape_string($direction);
@@ -92,16 +90,16 @@ namespace com\indigloo\sc\mysql {
             if(Config::getInstance()->is_debug()) {
                 Logger::getInstance()->debug("sql => $sql \n");
             }
-            
+
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-            
+
             //reverse rows for 'before' direction
             if($direction == 'before') {
                 $results = array_reverse($rows) ;
                 return $results ;
             }
-            
-            return $rows;   
+
+            return $rows;
 
         }
 
@@ -111,48 +109,42 @@ namespace com\indigloo\sc\mysql {
             $sql = " insert into sc_comment(post_id,description,login_id, created_on) " ;
             $sql .= " values(?,?,?,now()) ";
 
-            $code = MySQL\Connection::ACK_OK;
             $stmt = $mysqli->prepare($sql);
-            
+
             if ($stmt) {
                 $stmt->bind_param("isi",$postId,$comment,$loginId);
                 $stmt->execute();
 
                 if ($mysqli->affected_rows != 1) {
-                    $code = MySQL\Error::handle(self::MODULE_NAME, $stmt);
+                    MySQL\Error::handle($stmt);
                 }
                 $stmt->close();
             } else {
-                $code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
+                MySQL\Error::handle($mysqli);
             }
-            
-            return $code ;
+
         }
-        
+
         static function update($commentId,$comment,$loginId) {
-            
-            $code = MySQL\Connection::ACK_OK ;
+
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "update sc_comment set description = ?, updated_on = now() where id = ? and login_id = ?" ;
-            
+
             $stmt = $mysqli->prepare($sql);
-            
+
             if ($stmt) {
                 $stmt->bind_param("sii",$comment,$commentId,$loginId) ;
                 $stmt->execute();
                 $stmt->close();
-                
+
             } else {
-                $code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
+                MySQL\Error::handle($mysqli);
             }
-            
-            return $code ;
-            
+
         }
 
         static function delete($commentId,$loginId) {
 
-            $code = MySQL\Connection::ACK_OK ;
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "delete from sc_comment where id = ? and login_id = ?" ;
 
@@ -162,12 +154,11 @@ namespace com\indigloo\sc\mysql {
                 $stmt->bind_param("ii",$commentId,$loginId) ;
                 $stmt->execute();
                 $stmt->close();
-                
+
             } else {
-                $code = MySQL\Error::handle(self::MODULE_NAME, $mysqli);
+                MySQL\Error::handle($mysqli);
             }
             
-            return $code ;
         }
     }
 }

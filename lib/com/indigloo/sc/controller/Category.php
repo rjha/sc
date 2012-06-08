@@ -8,9 +8,9 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\Constants as Constants;
     use \com\indigloo\ui\Pagination as Pagination;
     use \com\indigloo\sc\html\Seo as SeoData ;
-    
+
     class Category {
-        
+
         function process($params,$options) {
             $categoryId = Util::getArrayKey($params,'category_id');
             $categoryDao = new \com\indigloo\sc\dao\Category();
@@ -25,18 +25,13 @@ namespace com\indigloo\sc\controller{
             $total = $categoryDao->getTotalCount($code);
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
             $pageSize = 50;
-            $paginator = new Pagination($qparams,$total,$pageSize); 
+            $paginator = new Pagination($qparams,$total,$pageSize);
             $postDBRows = $categoryDao->getPaged($paginator,$code);
             $catName = $categoryDao->getName($code);
 
-            if(sizeof($postDBRows) > 0 ) {
-                $pageHeader = $catName;
-            }else {
-                $pageHeader = 'No Results for '.$catName;
-            }
-
+            $pageHeader = $catName;
+            
             $pageBaseUrl = "/category/$categoryId";
-
             $pageTitle = SeoData::getPageTitle($catName);
             $metaKeywords = SeoData::getMetaKeywords($catName);
             $metaDescription = SeoData::getMetaDescription($catName);

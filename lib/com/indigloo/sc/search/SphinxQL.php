@@ -6,7 +6,7 @@ namespace com\indigloo\sc\search {
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\mysql as MySQL;
-    
+
     class SphinxQL {
 
         private $connx ;
@@ -15,7 +15,10 @@ namespace com\indigloo\sc\search {
             //create connection
             $user = Config::getInstance()->get_value("mysql.user");
             $password = Config::getInstance()->get_value("mysql.password");
-            $connx = new \mysqli("127.0.0.1",$user,$password,"",9306);
+            $host = Config::getInstance()->get_value("mysql.host");
+            $port = Config::getInstance()->get_value("mysql.sphinx.port");
+
+            $connx = new \mysqli($host,$user,$password,"",$port);
             if ($connx->connect_errno) {
                 trigger_error($connx->connect_error, E_USER_ERROR);
                 exit ;
@@ -24,9 +27,9 @@ namespace com\indigloo\sc\search {
         }
 
         function escape($token) {
-            $from = array ( '\\', '(',')','|','-','!','@','~','"','&', '/', '^', '$', '=', "'", 
+            $from = array ( '\\', '(',')','|','-','!','@','~','"','&', '/', '^', '$', '=', "'",
                 "\x00", "\n", "\r", "\x1a" );
-            $to   = array ( '\\\\', '\\\(','\\\)','\\\|','\\\-','\\\!','\\\@','\\\~','\\\"', '\\\&', '\\\/', 
+            $to   = array ( '\\\\', '\\\(','\\\)','\\\|','\\\-','\\\!','\\\@','\\\~','\\\"', '\\\&', '\\\/',
                  '\\\^', '\\\$', '\\\=', "\\'", "\\x00", "\\n", "\\r", "\\x1a" );
             return str_replace ($from, $to, $token);
         }
@@ -34,7 +37,7 @@ namespace com\indigloo\sc\search {
         function close() {
             $this->connx->close();
         }
-          
+
         function getGroupsCount($token) {
             $count = $this->getDocumentsCount('groups',$token);
             return $count ;
@@ -53,7 +56,7 @@ namespace com\indigloo\sc\search {
             $ids = $this->getDocuments('groups',$token,$offset,$limit);
             return $ids;
         }
- 
+
         function getPostsCount($token) {
             $count = $this->getDocumentsCount('posts',$token);
             return $count ;
@@ -77,11 +80,14 @@ namespace com\indigloo\sc\search {
             if(Util::tryEmpty($token)) { return 0 ; }
             Util::isEmpty('index',$index);
             //escape token
-            $token = $this->escape($token); 
+            $token = $this->escape($token);
 
             $sql = " select id from %s where match('%s') limit 0,1" ;
             $sql = sprintf($sql,$index,$token);
+            //@imp: we need to fire dummy query
+            // to retrieve stats from sphinx.
             $rows = MySQL\Helper::fetchRows($this->connx,$sql);
+            
             // get meta data about this token
             $sql = " show meta " ;
             $stats = MySQL\Helper::fetchRows($this->connx,$sql);
@@ -97,12 +103,12 @@ namespace com\indigloo\sc\search {
         }
 
         function getDocuments($index,$token,$offset,$limit) {
-            if(Util::tryEmpty($token)) { return array() ; } 
+            if(Util::tryEmpty($token)) { return array() ; }
             Util::isEmpty('index',$index);
             //get paginator params
             //escape token
-            $token = $this->escape($token); 
-            
+            $token = $this->escape($token);
+
             $sql = " select id from %s where match('%s') limit %d,%d" ;
             $sql = sprintf($sql,$index,$token,$offset,$limit);
 
@@ -113,7 +119,7 @@ namespace com\indigloo\sc\search {
                 array_push($ids,$row['id']);
             }
 
-            return $ids ; 
+            return $ids ;
         }
 
     }

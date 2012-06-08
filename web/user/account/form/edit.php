@@ -1,6 +1,6 @@
 <?php
     //sc/user/account/form/edit.php
-    
+
     include 'sc-app.inc';
     include(APP_WEB_DIR . '/inc/header.inc');
     include(APP_WEB_DIR . '/inc/role/user.inc');
@@ -21,10 +21,8 @@
 
             $fhandler->addRule('qUrl', 'qUrl', array('required' => 1, 'rawData' =>1));
             $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
-            
-            $fvalues = $fhandler->getValues();
-            $ferrors = $fhandler->getErrors();
 
+            $fvalues = $fhandler->getValues();
             $qUrl = $fvalues['qUrl'];
             $fUrl = $fvalues['fUrl'];
 
@@ -34,8 +32,8 @@
 
             $loginId = Login::getLoginIdInSession();
             $userDao = new \com\indigloo\sc\dao\User();
-            $code = $userDao->update($loginId,
-                $fvalues['first_name'], 
+            $userDao->update($loginId,
+                $fvalues['first_name'],
                 $fvalues['last_name'],
                 $fvalues['nick_name'],
                 $fvalues['email'],
@@ -46,24 +44,13 @@
                 $fvalues['photo_url'],
                 $fvalues['about_me']) ;
 
-            if($code != 0 ) {
-                $message = "DB Error : code %d ";
-                $message = sprintf($message,$code);
-                throw new DBException($message,$code);
-            }
-            
+
             //success
             header("Location: ".$qUrl);
 
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
-            header("Location: " . $fUrl);
-            exit(1);
-        } catch(DBException $dbex) {
-            $message = $dbex->getMessage();
-            $gWeb->store(Constants::STICKY_MAP, $fvalues);
-            $gWeb->store(Constants::FORM_ERRORS,array($message));
             header("Location: " . $fUrl);
             exit(1);
         }

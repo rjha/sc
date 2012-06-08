@@ -8,14 +8,17 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\html\Seo as SeoData ;
     use \com\indigloo\ui\Filter as Filter;
-  
-    
+
+
     class User {
-        
+
         function process($params,$options) {
-            
-            if(is_null($params) || empty($params))
-                trigger_error("Required params is null or empty", E_USER_ERROR);
+
+            if(is_null($params) || empty($params)){
+                $controller = new \com\indigloo\sc\controller\Http400();
+                $controller->process();
+                exit;
+            }
 
             $pubUserId = Util::getArrayKey($params,"login_id");
             $loginId = PseudoId::decode($pubUserId);
@@ -31,12 +34,16 @@ namespace com\indigloo\sc\controller{
                 exit;
             }
 
+            //meta data about user - #groups/#posts/#comments/#followers etc.
+            // user feeds
+            $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
+            $feedDataObj = $activityDao->getUser($loginId,10);
 
             $postDao = new \com\indigloo\sc\dao\Post() ;
 
             //create filter
             $model = new \com\indigloo\sc\model\Post();
-            $filters= array();
+            $filters = array();
             $filter = new Filter($model);
             $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
             array_push($filters,$filter);
@@ -44,19 +51,18 @@ namespace com\indigloo\sc\controller{
             $total = $postDao->getTotalCount($filters);
 
             $pageSize = Config::getInstance()->get_value("user.page.items");
-            $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);    
+            $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
             $postDBRows = $postDao->getPaged($paginator,$filters);
 
             $template = APP_WEB_DIR. '/view/user/pub.php';
 
             //page variables
             $pageBaseUrl = "/pub/user/".$pubUserId ;
-
             $pageTitle = SeoData::getHomePageTitle();
             $metaKeywords = SeoData::getHomeMetaKeywords();
             $metaDescription = SeoData::getHomeMetaDescription();
 
-            include($template); 
+            include($template);
 
         }
     }

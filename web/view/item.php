@@ -3,7 +3,7 @@
 
     <head>
         <title> <?php echo $pageTitle; ?> - 3mik.com </title>
-         
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="keywords" content="<?php echo $metaKeywords; ?>">
@@ -32,36 +32,36 @@
 
         <link rel="stylesheet" type="text/css" href="/css/sc.css">
         <script type="text/javascript" src="/js/sc.js"></script>
-            
-        <script type="text/javascript">   
 
-            $(document).ready(function(){   
+        <script type="text/javascript">
+
+            $(document).ready(function(){
 
                 webgloo.sc.item.openShareWindow = function(title,url) {
-                 
+
                     var popupWidth = 500 ;
                     var popupHeight = 375 ;
                     var xPosition=($(window).width()-popupWidth)/2;
                     var yPosition=($(window).height()-popupHeight)/2;
 
-                    var popupOptions = "width=" + popupWidth + 
-                            ",height=" + popupHeight + 
-                            ",left=" + xPosition + 
-                            ",top=" + yPosition + 
+                    var popupOptions = "width=" + popupWidth +
+                            ",height=" + popupHeight +
+                            ",left=" + xPosition +
+                            ",top=" + yPosition +
                             "menubar=no,toolbar=no,resizable=yes,scrollbars=yes";
 
                     window.open(url,title,popupOptions);
 
-                } ;       
+                } ;
 
                 $("#web-form1").validate({
-                    errorLabelContainer: $("#web-form1 div.error") 
+                    errorLabelContainer: $("#web-form1 div.error")
                 });
 
                 webgloo.sc.home.addNavGroups();
                 webgloo.sc.home.addSmallTiles();
                 webgloo.sc.item.addActions();
-                
+
                 $("a.gallery").fancybox();
 
                 $("#share-facebook").click(function(event) {
@@ -76,12 +76,12 @@
                         return ;
                     }
 
-                    var fbUrl = "http://www.facebook.com/dialog/feed?app_id=" + itemObj.appId + 
-                        "&display=popup" + 
-                        "&redirect_uri=" + itemObj.callback + 
-                        "&picture=" + itemObj.picture + 
-                        "&link=" + itemObj.link + 
-                        "&name=" + itemObj.name + 
+                    var fbUrl = "http://www.facebook.com/dialog/feed?app_id=" + itemObj.appId +
+                        "&display=popup" +
+                        "&redirect_uri=" + itemObj.callback +
+                        "&picture=" + itemObj.picture +
+                        "&link=" + itemObj.link +
+                        "&name=" + itemObj.name +
                         "&description=" + itemObj.description ;
 
                     webgloo.sc.item.openShareWindow("Share on Facebook", fbUrl);
@@ -102,25 +102,25 @@
 
                     var googleUrl = "https://plus.google.com/share?url=" + itemObj.netLink ;
                     webgloo.sc.item.openShareWindow("Share on Google+", googleUrl);
-                    
-                    
+
+
                 });
-                
+
             });
         </script>
-       
+
     </head>
 
      <body>
-    
+
         <div class="container mh800">
             <div class="row">
                 <div class="span12">
                     <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div> 
-                
+                </div>
+
             </div>
-            
+
             <div class="row">
                 <div class="span12">
                     <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
@@ -129,23 +129,22 @@
             </div>
             <div class="row">
                 <div class="span12">
-                    <div class="page-header"> 
+                    <div class="page-header">
                         <h2> <?php echo $pageTitle; ?>  </h2>
                     </div>
                 </div>
             </div>
-    
-            
+
+
             <div class="row">
                 <div class="span8">
-                    <?php 
-                        echo \com\indigloo\sc\html\Post::getGallery($images) ; 
-                        echo \com\indigloo\sc\html\Post::getLinks($links,$siteDBRow) ; 
-                        echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ; 
-                        foreach($commentDBRows as $commentDBRow) {
-                            echo \com\indigloo\sc\html\Comment::getSummary($commentDBRow) ;
-                        }
-                        include(APP_WEB_DIR.'/qa/inc/comment.inc') ; 
+                    <?php
+                        echo \com\indigloo\sc\html\Post::getGallery($images) ;
+                        echo \com\indigloo\sc\html\Post::getLinks($links,$siteDBRow) ;
+                        echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ;
+
+                        \com\indigloo\sc\html\Comment::renderAll($commentDBRows);
+                        include(APP_WEB_DIR.'/qa/inc/comment.inc') ;
                     ?>
 
                      <div id="item-tiles">
@@ -161,18 +160,27 @@
                 </div>
 
                 <div class="span4">
-                    <?php 
-                        echo \com\indigloo\sc\html\Post::getGroups($postDBRow) ; 
+                    <?php
+                        echo \com\indigloo\sc\html\Post::getGroups($postDBRow) ;
                         //Action toolbar
-                        echo \com\indigloo\sc\html\Post::getToolbar($itemId,$loginId,$postDBRow['login_id']) ; 
+                        echo \com\indigloo\sc\html\Post::getToolbar($itemId,$loginId,$postDBRow['login_id']) ;
                     ?>
-                   
+                    <div class="feeds">
+                    <?php
+                        //inject activity tile
+                        $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
+                        $feedDataObj = $activityDao->getPost($itemId,10);
+                        $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+                        $html = $htmlObj->getPostTile($feedDataObj);
+                        echo $html ;
+                     ?>
+                    </div> <!-- feeds -->
 
               </div>
             </div> <!-- row -->
 
         </div> <!-- container -->
-    
+
     <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
     </div>

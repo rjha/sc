@@ -7,19 +7,21 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\ui\Pagination as Pagination ;
     use \com\indigloo\sc\html\Seo as SeoData ;
-  
-    
-    class Group {
-        
-        function process($params,$options) {
-            
-            if(is_null($params) || empty($params))
-                trigger_error("Required params is null or empty", E_USER_ERROR);
 
+    class Group {
+
+        function process($params,$options) {
+
+            if(is_null($params) || empty($params)){
+                $controller = new \com\indigloo\sc\controller\Http400();
+                $controller->process();
+                exit;
+            }
+            
             $slug = Util::getArrayKey($params,"name");
             //break hyphenated tokens into normal words for sphinx
             //$token = \com\indigloo\util\StringUtil::convertKeyToName($slug);
-            // group index settings - no prefix,charset_type sbcs, ignore_chars U+002D 
+            // group index settings - no prefix,charset_type sbcs, ignore_chars U+002D
             $token = $slug;
 
             //get match on group slug
@@ -27,9 +29,9 @@ namespace com\indigloo\sc\controller{
             $total = $sphinx->getGroupsCount($token);
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
             $pageSize = 50;
-            $paginator = new Pagination($qparams,$total,$pageSize); 
+            $paginator = new Pagination($qparams,$total,$pageSize);
 
-            $ids = $sphinx->getPagedGroups($token,$paginator);   
+            $ids = $sphinx->getPagedGroups($token,$paginator);
             $sphinx->close();
 
             $template =  NULL ;
@@ -43,8 +45,11 @@ namespace com\indigloo\sc\controller{
                 $postDao = new \com\indigloo\sc\dao\Post();
                 $postDBRows = $postDao->getOnSearchIds($ids) ;
 
+
+
             } else {
-                $pageHeader = "$groupName - No Results" ;
+
+                $pageHeader = "No results found for group $groupName" ;
                 $template = APP_WEB_DIR. '/view/notiles.php';
             }
 
@@ -52,7 +57,7 @@ namespace com\indigloo\sc\controller{
             $metaKeywords = SeoData::getMetaKeywords($groupName);
             $metaDescription = SeoData::getMetaDescription($groupName);
 
-            include($template); 
+            include($template);
         }
     }
 }

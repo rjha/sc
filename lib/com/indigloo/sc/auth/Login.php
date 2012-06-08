@@ -1,12 +1,12 @@
 <?php
 
 namespace com\indigloo\sc\auth {
-    
+
     use \com\indigloo\Util as Util;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\auth\User as WebglooUser ;
-    
+
     class Login {
 
         const NAME = "SC_USER_NAME";
@@ -19,9 +19,9 @@ namespace com\indigloo\sc\auth {
         const FACEBOOK = "facebook" ;
         const TWITTER = "twitter" ;
         const GOOGLE = "google" ;
-         
+
         static function startMikSession() {
-            
+
             if (isset($_SESSION) && isset($_SESSION[WebglooUser::USER_TOKEN])) {
                 $mikUser = $_SESSION[WebglooUser::USER_DATA];
 
@@ -34,7 +34,7 @@ namespace com\indigloo\sc\auth {
                 // and denorm columns like name etc. can be stale in sc_user
                 $loginId = $mikUser['login_id'];
                 $userDao = new \com\indigloo\sc\dao\User();
-                $userDBRow = $userDao->getOnLoginId($loginId); 
+                $userDBRow = $userDao->getOnLoginId($loginId);
 
                 $_SESSION[self::NAME] = $userDBRow['name'];
                 $_SESSION[self::LOGIN_ID] = $loginId;
@@ -44,13 +44,13 @@ namespace com\indigloo\sc\auth {
             } else {
                 trigger_error("No 3mik user data found in session", E_USER_ERROR);
             }
-    
+
         }
 
-        
-        static function startOAuth2Session($loginId,$name,$provider) {
+
+        static function startOAuth2Session($loginId,$provider) {
             $userDao = new \com\indigloo\sc\dao\User();
-            $userDBRow = $userDao->getOnLoginId($loginId); 
+            $userDBRow = $userDao->getOnLoginId($loginId);
 
             //fetch name from sc_denorm_user table
             $_SESSION[self::LOGIN_ID] = $loginId;
@@ -60,7 +60,7 @@ namespace com\indigloo\sc\auth {
         }
 
         static function getLoginInSession() {
-            
+
             if (isset($_SESSION) && isset($_SESSION[self::TOKEN])) {
                 $login = new \com\indigloo\sc\auth\view\Login();
 
@@ -68,30 +68,30 @@ namespace com\indigloo\sc\auth {
                 $login->provider = $_SESSION[self::PROVIDER] ;
                 $login->id = $_SESSION[self::LOGIN_ID] ;
                 return $login ;
-                
+
             } else {
                 trigger_error('logon session does not exists', E_USER_ERROR);
             }
-            
+
         }
 
         static function tryLoginInSession() {
-            
+
             if (isset($_SESSION) && isset($_SESSION[self::TOKEN])) {
                 $login = new \com\indigloo\sc\auth\view\Login();
                 $login->name = $_SESSION[self::NAME] ;
                 $login->provider = $_SESSION[self::PROVIDER] ;
                 $login->id = $_SESSION[self::LOGIN_ID] ;
                 return $login ;
-                
+
             } else {
                 return NULL;
             }
-            
+
         }
 
         static function tryLoginIdInSession() {
-            $loginId = NULL ; 
+            $loginId = NULL ;
 
             if (isset($_SESSION) && isset($_SESSION[self::TOKEN]) && isset($_SESSION[self::LOGIN_ID]) ) {
                 $loginId = $_SESSION[self::LOGIN_ID] ;
@@ -100,7 +100,7 @@ namespace com\indigloo\sc\auth {
         }
 
         static function getLoginIdInSession() {
-            $loginId = NULL ; 
+            $loginId = NULL ;
             if (isset($_SESSION) && isset($_SESSION[self::TOKEN]) && isset($_SESSION[self::LOGIN_ID]) ) {
                 $loginId = $_SESSION[self::LOGIN_ID] ;
             } else{
@@ -108,7 +108,7 @@ namespace com\indigloo\sc\auth {
             }
 
             return $loginId ;
-            
+
         }
 
         static function isOwner($loginId) {
@@ -117,20 +117,20 @@ namespace com\indigloo\sc\auth {
             if(Util::tryEmpty($loginId)){
                 return false ;
             }
-            
+
             $flag = false ;
 
-            if (isset($_SESSION) 
-                && isset($_SESSION[self::TOKEN]) 
+            if (isset($_SESSION)
+                && isset($_SESSION[self::TOKEN])
                 && isset($_SESSION[self::LOGIN_ID])
                 && ($_SESSION[self::LOGIN_ID] == $loginId)) {
 
                 $flag = true ;
             }
-            
+
             return $flag ;
         }
-        
+
         static function isAdmin(){
             $flag = false ;
             if (isset($_SESSION) && isset($_SESSION[WebglooUser::USER_TOKEN])) {

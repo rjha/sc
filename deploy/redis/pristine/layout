@@ -1,0 +1,38 @@
+# we can use debian package layout for redis compiled from source.
+# we can use debian init.d script to start|stop the server.
+# To do so install | uninstall the redis-server package.
+# Just go ahead and substitute the binaries from redis src/ folder
+# 
+
+rjha@natty64:~$ dpkg -L redis-server
+/.
+/etc
+/etc/redis
+/etc/redis/redis.conf
+/etc/logrotate.d
+/etc/logrotate.d/redis-server
+/etc/bash_completion.d
+/etc/bash_completion.d/redis-cli
+/etc/init.d
+/etc/init.d/redis-server
+/var
+/var/log
+/var/log/redis
+/var/lib
+/var/lib/redis
+/usr
+/usr/share
+/usr/share/doc
+/usr/share/doc/redis-server
+/usr/share/doc/redis-server/copyright
+/usr/share/doc/redis-server/changelog.Debian.gz
+/usr/share/man
+/usr/share/man/man1
+/usr/share/man/man1/redis-server.1.gz
+/usr/share/man/man1/redis-benchmark.1.gz
+/usr/share/man/man1/redis-cli.1.gz
+/usr/bin
+/usr/bin/redis-cli
+/usr/bin/redis-benchmark
+/usr/bin/redis-server
+
