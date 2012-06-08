@@ -19,7 +19,11 @@ namespace com\indigloo\sc\dao {
         function addFollower($followerId,$followerName,$followingId,$followingName,$verb) {
 
             //f1->f2 (f1 is following f2)
-
+            if($followerId == $followingId) {
+                //do not chase your own shadows!
+                return ;
+            }
+            
             $feedVO = new \stdClass ;
 
             $feedVO->type = AppConstants::FOLLOW_FEED ;
@@ -43,14 +47,17 @@ namespace com\indigloo\sc\dao {
                 $key3 = sprintf("sc:user:%s:followers",$followingId);
                 $key4 = sprintf("sc:user:%s:activities",$followingId);
 
-                // Add to global job queue
+                // Add jobId to global:queue:new list
+                // Add feed(job) to sc:global:jobs hash - jobId field
                 // Add to global activities, trim to 1000
                 // Add to followers and following sets
                 // Add to follower and following activities
+                
                 $redis->pipeline()
-                        ->lpush("sc:global:queue:new",$strFeedVO)
-                        ->lpush('sc:global:activities',$strFeedVO)
-                        ->ltrim('sc:global:activities',0,1000)
+                        ->lpush("sc:global:queue:new",$jobId)
+                        ->hset("sc:global:jobs",$jobId,$strFeedVO)
+                        ->lpush("sc:global:activities",$strFeedVO)
+                        ->ltrim("sc:global:activities",0,1000)
                         ->sadd($key1,$followingId)
                         ->lpush($key2,$strFeedVO)
                         ->sadd($key3,$followerId)
@@ -84,29 +91,38 @@ namespace com\indigloo\sc\dao {
             try{
                 $redis = Redis::getInstance()->connection();
 
-                // Add bookmarks to global activities,
-                // global event queue, post activities,
-                // user activities and owner activities
-
+                // Add jobId to global:queue:new list
+                // Add feed(job) to sc:global:jobs hash - jobId field
+                // Add bookmark to global activities, trim to 1000
+                // Add to post activities.
+                // Add this subject to post subscribers list 
+                // owner is already a subscriber.
+                // All followers of subject and all post subscribers 
+                // will be notified.
+                
                 $jobId = $redis->incr("sc:global:nextJobId");
                 $feedVO->jobId = $jobId ;
                 $strFeedVO = json_encode($feedVO);
 
                 $key1 = sprintf("sc:post:%s:activities",$itemId);
-                $key2 = sprintf("sc:user:%s:activities",$ownerId);
-                $key3 = sprintf("sc:user:%s:activities",$loginId);
-
+                $key2 = sprintf("sc:post:%s:subscribers",$itemId);
+                
                 $redis->pipeline()
-                        ->lpush("sc:global:queue:new",$strFeedVO)
-                        ->lpush('sc:global:activities',$strFeedVO)
-                        ->ltrim('sc:global:activities',0,1000)
+                        ->lpush("sc:global:queue:new",$jobId)
+                        ->hset("sc:global:jobs",$jobId,$strFeedVO)
+                        ->lpush("sc:global:activities",$strFeedVO)
+                        ->ltrim("sc:global:activities",0,1000)
                         ->lpush($key1,$strFeedVO)
-                        ->lpush($key2,$strFeedVO)
-                        ->lpush($key3,$strFeedVO)
+                        ->sadd($key2,$loginId)
                         ->uncork();
 
-                $this->fanOut($redis,$loginId, $strFeedVO);
-
+                //fanout to followers of the guy who liked it!
+                $this->fanoutOnSubject($redis,$loginId, $strFeedVO);
+                //fanout to people who subscribed to this post!
+                // that would mean post creator 
+                // and anyone who commented or bookmarked the item
+                $this->fanoutOnPost($redis,$itemId, $strFeedVO);
+                
 
             } catch(\Exception $ex) {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
@@ -132,20 +148,31 @@ namespace com\indigloo\sc\dao {
 
             try{
                 $redis = Redis::getInstance()->connection();
-
+                $jobId = $redis->incr("sc:global:nextJobId");
+                $feedVO->jobId = $jobId ;
                 $strFeedVO = json_encode($feedVO);
+                
                 $key1 = sprintf("sc:user:%s:activities",$loginId);
-
-                // Add to user's activities and global activities
-                // do not add post events to global job queue.
+                $key2 = sprintf("sc:post:%s:subscribers",$itemId);
+                
+                
+                // Add jobId to global:queue:new list
+                // Add feed(job) to sc:global:jobs hash - jobId field
+                // Add to  global activities, trim to 1000
+                // Add to creator activities
+                // Add creator to post subscriber list
+                
                 $redis->pipeline()
-                    ->lpush('sc:global:activities',$strFeedVO)
-                    ->ltrim('sc:global:activities',0,1000)
+                    ->lpush("sc:global:queue:new",$jobId)
+                    ->hset("sc:global:jobs",$jobId,$strFeedVO)
+                    ->lpush("sc:global:activities",$strFeedVO)
+                    ->ltrim("sc:global:activities",0,1000)
                     ->lpush($key1,$strFeedVO)
+                    ->sadd($key2,$loginId)
                     ->uncork();
 
-                // send to poster's followers
-                $this->fanOut($redis,$loginId, $strFeedVO);
+                // send to post creator followers
+                $this->fanoutOnSubject($redis,$loginId, $strFeedVO);
 
             } catch(\Exception $ex) {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
@@ -181,22 +208,28 @@ namespace com\indigloo\sc\dao {
                 $feedVO->jobId = $jobId ;
                 $strFeedVO = json_encode($feedVO);
 
-                // do not add comments to post feeds
-                //$key1 = sprintf("sc:post:%s:activities",$itemId);
-                $key2 = sprintf("sc:user:%s:activities",$ownerId);
-                $key3 = sprintf("sc:user:%s:activities",$loginId);
-
+                // Add jobId to global:queue:new list
+                // Add feed(job) to sc:global:jobs hash - jobId field
+                // Add to  global activities, trim to 1000
+                // The guy commenting on post becomes a subscriber to post
+                // @imp: Do not add comment to post:itemId:activities
+                // as we show comment separately from DB right now.
+                
+                $key1 = sprintf("sc:post:%s:subscribers",$itemId); 
+               
                 $redis->pipeline()
-                    ->lpush("sc:global:queue:new",$strFeedVO)
-                    ->lpush('sc:global:activities',$strFeedVO)
-                    ->ltrim('sc:global:activities',0,1000)
-                    ->lpush($key2,$strFeedVO)
-                    ->lpush($key3,$strFeedVO)
+                    ->lpush("sc:global:queue:new",$jobId)
+                    ->hset("sc:global:jobs",$jobId,$strFeedVO)
+                    ->lpush("sc:global:activities",$strFeedVO)
+                    ->ltrim("sc:global:activities",0,1000)
+                    ->sadd($key1,$loginId)
                     ->uncork();
 
                 //send to poster's followers
-                $this->fanOut($redis,$loginId, $strFeedVO);
-
+                $this->fanoutOnSubject($redis,$loginId, $strFeedVO);
+                // send to post subscribers
+                $this->fanoutOnPost($redis,$loginId, $strFeedVO);
+                
             } catch(\Exception $ex) {
                 $message = sprintf("Redis Exception %s ",$ex->getMessage());
                 Logger::getInstance()->error($message);
@@ -205,7 +238,7 @@ namespace com\indigloo\sc\dao {
             }
         }
 
-        function fanOut($redis,$loginId,$value) {
+        function fanoutOnSubject($redis,$loginId,$value) {
             //fan-out to followers
             $key = sprintf("sc:user:%s:followers",$loginId);
             $followers = $redis->smembers($key);
@@ -217,7 +250,20 @@ namespace com\indigloo\sc\dao {
 
             }
         }
+        
+        function fanoutOnPost($redis,$itemId,$value) {
+            //fan-out to followers
+            $key = sprintf("sc:post:%s:subscribers",$itemId);
+            $followers = $redis->smembers($key);
 
+            foreach($followers as $followerId) {
+                //push to follower's activities
+                $key = sprintf("sc:user:%s:activities",$followerId);
+                $redis->lpush($key,$value);
+
+            }
+        }
+        
         function getList($key,$limit) {
             $feedDataObj = NULL ;
 
