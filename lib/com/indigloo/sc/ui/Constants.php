@@ -23,6 +23,10 @@
 
             const FEATURE_POST = "ADD" ;
             const UNFEATURE_POST  = "REMOVE";
+            
+            const FOLLOW_USER = "FOLLOW" ;
+            const UNFOLLOW_USER = "UNFOLLOW" ;
+            
 
         }
 }

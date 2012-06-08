@@ -2,10 +2,10 @@
 
 
 $requestURI = $_SERVER['REQUEST_URI'] ;
-$pos = strpos($originalURI, '?');
+$pos = strpos($requestURI, '?');
 //remove the part after ? from Url
 if($pos !== false) {
-    $requestURI = substr($originalURI,0,$pos);
+    $requestURI = substr($requestURI,0,$pos);
 }
 
 //Active tab depends on rquest URI

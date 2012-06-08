@@ -73,7 +73,37 @@ namespace com\indigloo\sc\dao {
             }
 
         }
+        
+         function removeFollower($followerId,$followingId) {
 
+            //f1->f2 (f1 is no longer following f2)
+            if($followerId == $followingId) {
+                return ;
+            }
+            
+            try {
+                $redis = Redis::getInstance()->connection();
+
+                $key1 = sprintf("sc:user:%s:following",$followerId);
+                $key2 = sprintf("sc:user:%s:followers",$followingId);
+                
+                // remove $followerId from $followingId's followers set
+                // remove $followingId from $followerId's following set
+                $redis->pipeline()
+                        ->srem($key1,$followingId)
+                        ->srem($key2,$followerId)
+                        ->uncork();
+
+
+            } catch(\Exception $ex) {
+                $message = sprintf("Redis Exception %s ",$ex->getMessage());
+                Logger::getInstance()->error($message);
+                $strFeedVO = json_encode($feedVO);
+                $this->logIt($strFeedVO);
+            }
+
+        }
+        
         function addBookmark($ownerId,$loginId,$name,$itemId,$title,$image,$verb) {
 
             $feedVO = new \stdClass ;

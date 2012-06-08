@@ -220,7 +220,7 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
         }) ;
 
-        //feature posts
+        //unfeature posts
         $("a.unfeature-post-link").click(function(event){
             event.preventDefault();
             var dataObj = {}
@@ -282,12 +282,40 @@ webgloo.sc.item = {
             //u1 -> u2
             dataObj.followerId  = ids[0] ;
             dataObj.followingId = ids[1];
-
+            dataObj.action = "FOLLOW" ;
+            
             var targetUrl = "/qa/ajax/social-graph.php";
             //open popup
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
         }) ;
+        
+        $("a.unfollow-user-link").click(function(event){
+            
+            event.preventDefault();
+            var dataObj = {}
+            var id = $(this).attr("id");
+            //parse id to get follower and following
+            var ids = id.split('|');
+            //u1 -> u2
+            dataObj.followerId  = ids[0] ;
+            dataObj.followingId = ids[1];
+            dataObj.action = "UNFOLLOW" ;
+            
+            var targetUrl = "/qa/ajax/social-graph.php";
+            //open popup
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.post(targetUrl,dataObj,
+                {
+                    "dataType" : "json",
+                    "reload" : true,
+                    "keepOpen" : false
+                }
+            );
+            
+             
+        }) ;
+        
     }
 }
 

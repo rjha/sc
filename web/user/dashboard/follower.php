@@ -8,9 +8,8 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login;
-
-    use \com\indigloo\ui\Filter as Filter;
-    //$qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    
+    
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
 
@@ -26,7 +25,7 @@
     }
 
     $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
-    $followings = $socialGraphDao->getFollowing($loginId);
+    $followers = $socialGraphDao->getFollowers($loginId);
     
     
 ?>
@@ -86,17 +85,17 @@
             <div class="row">
                 <div class="span2">
                     <ul class="nav nav-pills nav-stacked">
-                        <li class="active">
+                        <li class="">
                             <a href="/user/dashboard/following.php">Following</a>
                         </li>
-                         <li class="">
+                         <li class="active">
                             <a href="/user/dashboard/follower.php">Followers</a>
                         </li>
                         
                     </ul>
                 </div>
                 <div class="span7 mh600">
-                    <?php echo \com\indigloo\sc\html\SocialGraph::getFollowingHtml($loginId,$followings); ?>  
+                    <?php echo \com\indigloo\sc\html\SocialGraph::getFollowerHtml($loginId,$followers); ?>  
                 </div>
           
             </div>

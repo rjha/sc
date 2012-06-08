@@ -29,7 +29,7 @@
     $action = Util::tryArrayKey($_POST, "action");
 
     if(empty($action) || empty($itemId)) {
-        $message = array("code" => 500 , "message" => "Bad input: missing item or action!");
+        $message = array("code" => 500 , "message" => "Bad input: missing required parameters.");
         $html = json_encode($message);
         echo $html;
         exit;

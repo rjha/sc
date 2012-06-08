@@ -2,10 +2,11 @@
 
 
 $requestURI = $_SERVER['REQUEST_URI'] ;
-$pos = strpos($originalURI, '?');
+$pos = strpos($requestURI, '?');
+
 //remove the part after ? from Url
 if($pos !== false) {
-    $requestURI = substr($originalURI,0,$pos);
+    $requestURI = substr($requestURI,0,$pos);
 }
 
 //Active tab depends on rquest URI
@@ -14,6 +15,7 @@ $tabURIMap  = array(
                 "/user/dashboard/bookmark.php" => "bookmark",
                 "/user/dashboard/comments.php" => "comment",
                 "/user/dashboard/following.php" => "following",
+                "/user/dashboard/follower.php" => "following",
                 "/user/dashboard/posts.php" => "post",);
     
 $tabs = array('post','comment','activity','bookmark', 'following');

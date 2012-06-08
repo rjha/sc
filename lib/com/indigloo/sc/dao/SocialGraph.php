@@ -8,7 +8,7 @@ namespace com\indigloo\sc\dao {
 
     class SocialGraph {
 
-        function addFollower($followerId,$followerName,$followingId,$followingName) {
+        function follow($followerId,$followerName,$followingId,$followingName) {
             $row = mysql\SocialGraph::find($followerId,$followingId);
             $count = $row['count'] ;
 
@@ -22,6 +22,24 @@ namespace com\indigloo\sc\dao {
 
             }
 
+        }
+        
+        function unfollow($followerId,$followingId) {
+            mysql\SocialGraph::removeFollower($followerId,$followingId);
+            //remove from following/follower sets.
+            $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
+            $feedDao->removeFollower($followerId,$followingId);
+
+        }
+        
+        function getFollowing($loginId) {
+            $rows = mysql\SocialGraph::getFollowing($loginId);
+            return $rows ;
+        }
+        
+        function getFollowers($loginId) {
+            $rows = mysql\SocialGraph::getFollowers($loginId);
+            return $rows ;
         }
 
     }
