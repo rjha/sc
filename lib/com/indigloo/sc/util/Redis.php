@@ -7,10 +7,12 @@ namespace com\indigloo\sc\util {
 
     class Redis {
 
+         
         static private $instance = NULL;
         private $connx;
 
         private function __construct() {
+            $this->connx = NULL ;
             $this->init();
         }
 
@@ -19,6 +21,7 @@ namespace com\indigloo\sc\util {
             $dsn = "redis://".$dsn ;
             $timeout = Config::getInstance()->get_value("redis.timeout");
             $this->connx = new \redisent\Redis($dsn,$timeout);
+            
         }
 
         static function getInstance($flag=true) {
