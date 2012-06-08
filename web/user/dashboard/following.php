@@ -1,5 +1,5 @@
 <?php
-    //sc/user/dashboard/posts.php
+    //sc/user/dashboard/following.php
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
     include(APP_WEB_DIR . '/inc/role/user.inc');
@@ -10,7 +10,7 @@
     use \com\indigloo\sc\auth\Login as Login;
 
     use \com\indigloo\ui\Filter as Filter;
-
+    //$qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
 
@@ -25,23 +25,9 @@
         trigger_error("No user record found for given login_id", E_USER_ERROR);
     }
 
-    $postDao = new \com\indigloo\sc\dao\Post();
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-
-    //filters
-    $filters = array();
-    //Always add login_id filter for user dashboard
-    $model = new \com\indigloo\sc\model\Post();
-    $filter = new Filter($model);
-    $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
-    array_push($filters,$filter);
-
-    $postDBRows = array();
-    $total = $postDao->getTotalCount($filters);
-
-    $pageSize = Config::getInstance()->get_value("user.page.items");
-    $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
-    $postDBRows = $postDao->getPaged($paginator,$filters);
+    $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
+    $followers = $socialGraphDao->getFollowers($loginId);
+    $followings = $socialGraphDao->getFollowing($loginId);
     
 ?>
 
@@ -57,22 +43,6 @@
         <link rel="stylesheet" type="text/css" href="/css/sc.css">
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-
-        <script>
-            $(document).ready(function(){
-                //show options on widget hover
-                $('.widget .options').hide();
-                $('.widget').mouseenter(function() {
-                    $(this).find('.options').toggle();
-                    $(this).css("background-color", "#F0FFFF");
-                });
-                $('.widget').mouseleave(function() {
-                    $(this).find('.options').toggle();
-                    $(this).css("background-color", "#FFFFFF");
-                });
-            });
-
-        </script>
 
     </head>
 
@@ -98,28 +68,22 @@
 
             <div class="row">
                 <div class="span9 mh600">
+                    <div class="feeds">
                     <?php
-                        $startId = NULL;
-                        $endId = NULL;
-                        if (sizeof($postDBRows) > 0) {
-                            $startId = $postDBRows[0]['id'];
-                            $endId = $postDBRows[sizeof($postDBRows) - 1]['id'];
-                            foreach ($postDBRows as $postDBRow) {
-                                echo \com\indigloo\sc\html\Post::getWidget($postDBRow);
-                            }
-                        } else {
-                            $message = "No posts found " ;
-                            echo \com\indigloo\sc\html\NoResult::get($message);
-                        }
+
+                        print_r($followers);
+                        echo "<hr>";
+                        print_r($followings);
+                        
 
                     ?>
-
+                    </div>
+                   
                 </div>
                 <div class="span3">
                 </div>
             </div>
         </div> <!-- container -->
-        <?php $paginator->render('/user/dashboard/posts.php', $startId, $endId); ?>
 
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
@@ -127,6 +91,3 @@
 
     </body>
 </html>
-
-
-

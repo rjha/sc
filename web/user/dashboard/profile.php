@@ -23,8 +23,7 @@
     if (empty($userDBRow)) {
         trigger_error("No user exists with this login_id", E_USER_ERROR);
     }
-
-    $activeTab = 'profile' ;
+    
 ?>
 
 
@@ -70,7 +69,7 @@
             </div>
 
             <div class="row">
-                <div class=span9">
+                <div class="span9 mh600">
                 <?php echo \com\indigloo\sc\html\User::getProfile($gSessionLogin,$userDBRow) ; ?>
                 </div>
                 <div class="span3">

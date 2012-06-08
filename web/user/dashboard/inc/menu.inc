@@ -1,6 +1,24 @@
 <?php
 
-$tabs = array('posts','comments','activities','saves');
+
+$requestURI = $_SERVER['REQUEST_URI'] ;
+$pos = strpos($originalURI, '?');
+//remove the part after ? from Url
+if($pos !== false) {
+    $requestURI = substr($originalURI,0,$pos);
+}
+
+//Active tab depends on rquest URI
+$tabURIMap  = array(
+                "/user/dashboard/activities.php" => "activity",
+                "/user/dashboard/bookmark.php" => "bookmark",
+                "/user/dashboard/comments.php" => "comment",
+                "/user/dashboard/following.php" => "following",
+                "/user/dashboard/posts.php" => "post",);
+    
+$tabs = array('post','comment','activity','bookmark', 'following');
+$activeTab = $tabURIMap[$requestURI];
+ 
 $activeData = array();
 foreach($tabs as $tab) {
     if($tab == $activeTab )
@@ -12,8 +30,10 @@ foreach($tabs as $tab) {
 ?>
 
 <ul class="nav nav-tabs">
-   <li class="<?php echo $activeData['posts']; ?>"> <a href="/user/dashboard/posts.php">Posts</a></li>
-   <li class="<?php echo $activeData['comments']; ?>"> <a href="/user/dashboard/comments.php">Comments</a></li>
-   <li class="<?php echo $activeData['activities']; ?>"> <a href="/user/dashboard/activities.php">Activities</a></li>
-   <li class="<?php echo $activeData['saves']; ?>"> <a href="/user/dashboard/bookmark.php">Favorites</a></li>
+   <li class="<?php echo $activeData['post']; ?>"> <a href="/user/dashboard/posts.php">Posts</a></li>
+   <li class="<?php echo $activeData['comment']; ?>"> <a href="/user/dashboard/comments.php">Comments</a></li>
+   <li class="<?php echo $activeData['activity']; ?>"> <a href="/user/dashboard/activities.php">Activities</a></li>
+   <li class="<?php echo $activeData['bookmark']; ?>"> <a href="/user/dashboard/bookmark.php">Favorites</a></li>
+   <li class="<?php echo $activeData['following']; ?>"> <a href="/user/dashboard/following.php">Following</a></li>
+   
 </ul>

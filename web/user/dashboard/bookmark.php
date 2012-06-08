@@ -55,8 +55,6 @@
     $postDBRows = $bookmarkDao->getPaged($paginator,$filters);
     $pageBaseUrl = "/user/dashboard/bookmark.php";
 
-     $activeTab = 'saves' ;
-
 
 ?>
 <!DOCTYPE html>

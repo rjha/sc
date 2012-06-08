@@ -1,5 +1,5 @@
 <?php
-    //sc/user/dashboard/comments.php
+    //sc/user/dashboard/activities.php
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
     include(APP_WEB_DIR . '/inc/role/user.inc');
@@ -27,7 +27,7 @@
 
     $activityDao = new \com\indigloo\sc\dao\ActivityFeed() ;
     $feedDataObj = $activityDao->getUser($loginId);
-    $activeTab = 'activities' ;
+    
 ?>
 
 

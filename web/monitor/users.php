@@ -64,7 +64,7 @@
             </div>
             <div class="row">
                 <div class="span12">
-                <?php $activeTab = 'users'; include('inc/menu.inc'); ?>
+                <?php include('inc/menu.inc'); ?>
                 </div>
             </div>
 

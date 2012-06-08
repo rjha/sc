@@ -38,8 +38,7 @@
     $pageSize = Config::getInstance()->get_value("user.page.items");
     $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
     $commentDBRows = $commentDao->getPaged($paginator,$filters);
-    $activeTab = 'comments' ;
-
+   
 ?>
 
 
