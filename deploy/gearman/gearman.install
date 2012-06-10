@@ -1,0 +1,72 @@
+#install gearman
+0.33 tarball has some issues :- libmysql is not built - take 0.34
+
+#pre-requisites for Ubuntu 11.04
+---------------------------------
+
+libboost-dev
+libboost-program-options-dev
+libboost-thread-dev
+libevent-dev
+uuid-dev
+libsqlite3-dev
+
+#building
+
+$./configure --prefix=/usr/local --with-libsqlite3
+verify that sqlite and mysql support is baked in before doing make.
+$sudo make
+$sudo make test - hangs for 0.33
+$sudo make install
+
+This would mean gearmand is installed in /usr/local/bin
+#create log folder for gearmand
+$sudo mkdir -p /usr/local/var/log
+
+#gearman unbale to find libgearman
+Add an entry in /etc/ld.so.conf (most likely the entry is already there in /etc/ld.so.conf.d directory) 
+$sudo ldconfig will load new LIB path
+$gearman
+
+#start gearmand with sqlite queue
+$sudo gearmand  --verbose=DEBUG  --libsqlite3-db="./bobo" -q libsqlite3
+
+#start gearmand with sqlite queue as a daemon
+$sudo gearmand  -d --verbose=DEBUG  --libsqlite3-db="./bobo" -q libsqlite3
+
+#install gearman extension
+download pecl gearman extension from http://pecl.php.net/package/gearman
+untar and compile
+$phpize
+This requires php5-dev packages (we have that in the list)
+$./configure 
+$make 
+$make install
+
+#enable gearman extension
+Just add a gearman.ini file in /etc/php5/conf.d directory
+rjha@natty64:/usr/lib/php5/20090626$ cat /etc/php5/conf.d/gearman.ini 
+extension=/usr/lib/php5/20090626/gearman.so
+
+#restart php services and verify that gearman extension is loaded
+
+#install gearman manager package from github
+#https://github.com/brianlmoon/GearmanManager
+
+pre-requisites are already baked into Ubuntu php5 package
+
+    + POSIX extension
+    + Process Control extension
+
+we can verify that in phpinfo() output 
+    @beta:~$ php -m | grep posix
+    posix
+    rjha@beta:~$ php -m | grep pcntl
+    pcntl
+
+
+
+
+
+
+

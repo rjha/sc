@@ -34,3 +34,8 @@ $ pear install phpmd/PHP_PMD
 
 (do not use --alldeps)
 
+
+
+#sqlite browser
+sudo aptitude install  sqlitebrowser
+
