@@ -16,7 +16,7 @@ $tabURIMap  = array(
                 "/user/dashboard/comments.php" => "comment",
                 "/user/dashboard/following.php" => "following",
                 "/user/dashboard/follower.php" => "following",
-                "/user/dashboard/posts.php" => "post",);
+                "/user/dashboard/posts.php" => "post");
     
 $tabs = array('post','comment','activity','bookmark', 'following');
 $activeTab = $tabURIMap[$requestURI];

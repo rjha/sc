@@ -15,7 +15,7 @@ $tabURIMap  = array(
                 "/monitor/feed.php" => "activities",
                 "/monitor/users.php" => "users",
                 "/monitor/groups.php" => "groups",
-                "/monitor/feedback.php" => "feedback",);
+                "/monitor/feedback.php" => "feedback");
     
 $tabs = array('posts','comments', 'activities', 'users', 'groups','feedback');
 $activeTab = $tabURIMap[$requestURI];

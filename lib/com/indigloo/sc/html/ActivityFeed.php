@@ -3,6 +3,7 @@
 namespace com\indigloo\sc\html {
 
     use com\indigloo\Template as Template;
+    use \com\indigloo\sc\Constants as AppConstants;
 
     class ActivityFeed {
 
@@ -17,28 +18,62 @@ namespace com\indigloo\sc\html {
         }
 
         function getPostTile($feedDataObj) {
-            $content = $this->getHtml($feedDataObj);
-            return $content ;
+            $html = '' ;
+            
+            $error = $this->errorCheck($feedDataObj);
+            if(!is_null($error)) {
+                return $error ;
+            }
+            
+            foreach($feedDataObj->feeds as $feed) {
+
+                //create object out of string
+                $feedObj = json_decode($feed);
+                if(!property_exists($feedObj, 'type')) {
+                    trigger_error("feed is missing type information", E_USER_ERROR);
+                }
+
+                $feedObj->type = trim($feedObj->type);
+                
+                //ignore comments for a post
+                if($feedObj->type != AppConstants::COMMENT_FEED) {
+                    //get basic feed processor
+                    $processor = new feed\ItemProcessor();
+                    $options = array();
+                    $html .= $processor->process($feedObj,$options);
+                }
+                
+            }
+
+            return $html ;
+        }
+        
+        function errorCheck($feedDataObj) {
+            $error = NULL ;
+            //dataObj is NULL or empty for error case
+            if(empty($feedDataObj)) {
+                $error =  "Error retrieving activity data!" ;
+                return $error;
+            }
+
+            if(!empty($feedDataObj) && (property_exists($feedDataObj, "error"))) {
+                $error = $feedDataObj->error ;
+                return $error ;
+            }
+
+            // this should never happen
+            if(!property_exists($feedDataObj, "feeds")) {
+                $error =  "Malformed feed object : missing feeds!" ;
+                return $error;
+            }
         }
 
         function getHtml($feedDataObj) {
 
             $html = '' ;
-            //dataObj is NULL or empty for error case
-            if(empty($feedDataObj)) {
-                $html =  "Error retrieving activity data!" ;
-                return $html;
-            }
-
-            if(!empty($feedDataObj) && (property_exists($feedDataObj, "error"))) {
-                $html = $feedDataObj->error ;
-                return $html ;
-            }
-
-            // this should never happen
-            if(!property_exists($feedDataObj, "feeds")) {
-                $html =  "Malformed feed object : missing feeds!" ;
-                return $html;
+            $error = $this->errorCheck($feedDataObj);
+            if(!is_null($error)) {
+                return $error ;
             }
             
             foreach($feedDataObj->feeds as $feed) {
@@ -52,8 +87,7 @@ namespace com\indigloo\sc\html {
                 $feedObj->type = trim($feedObj->type);
                 //get feed processor
                 $processor = feed\ProcessorFactory::get($feedObj->type);
-                $options = array();
-                $html .= $processor->process($feedObj,$options);
+                $html .= $processor->process($feedObj);
 
             }
 

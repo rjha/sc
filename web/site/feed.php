@@ -9,7 +9,7 @@
     use \com\indigloo\Configuration as Config;
 
     $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
-    $feedDataObj = $feedDao->getGlobal(100);
+    $feedDataObj = $feedDao->getGlobalFeeds(100);
 
 ?>
 

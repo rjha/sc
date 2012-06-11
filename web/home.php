@@ -62,7 +62,7 @@
                                 if($count == 3) {
                                     //inject activity tile
                                     $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
-                                    $feedDataObj = $activityDao->getGlobal(10);
+                                    $feedDataObj = $activityDao->getGlobalFeeds(10);
                                     $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
                                     $html = $htmlObj->getHomeTile($feedDataObj);
                                     echo $html ;

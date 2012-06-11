@@ -26,7 +26,7 @@
     }
 
     $activityDao = new \com\indigloo\sc\dao\ActivityFeed() ;
-    $feedDataObj = $activityDao->getUser($loginId);
+    $feedDataObj = $activityDao->getUserFeeds($loginId,50);
     
 ?>
 

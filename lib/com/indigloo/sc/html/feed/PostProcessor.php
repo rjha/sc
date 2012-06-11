@@ -8,7 +8,11 @@ namespace com\indigloo\sc\html\feed {
 
     class PostProcessor extends Processor{
 
-        function process($feedObj,$options) {
+        function __construct() {
+            parent::__construct();
+        }
+        
+        function process($feedObj) {
             $html = '' ;
             $keys = array("subject","subjectId","title","objectId");
             $flag = $this->checkKeys($feedObj,$keys);
@@ -25,6 +29,14 @@ namespace com\indigloo\sc\html\feed {
                 $view['verb'] = $this->getVerb($feedObj->verb);
 
                 $template = '/fragments/feed/image/post.tmpl' ;
+                
+                 //extra processing for posts.
+                if(strcmp($feedObj->type,AppConstants::COMMENT_FEED) == 0 ) {
+                    $template = '/fragments/feed/image/comment.tmpl' ;
+                    if(property_exists($feedObj, 'content')) {
+                        $view['content'] = $feedObj->content ;
+                    }
+                }
                 
                 //extra processing for comments.
                 if(strcmp($feedObj->type,AppConstants::COMMENT_FEED) == 0 ) {

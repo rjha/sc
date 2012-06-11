@@ -18,7 +18,7 @@ namespace com\indigloo\sc\html\feed {
                 AppConstants::POST_VERB => "posted");
         }
 
-        function process($feedObj,$options) {
+        function process($feedObj) {
             $html = '' ;
             $keys = array("subject","subjectId","object","objectId");
             $flag = $this->checkKeys($feedObj,$keys);

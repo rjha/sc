@@ -142,9 +142,8 @@
                         echo \com\indigloo\sc\html\Post::getGallery($images) ;
                         echo \com\indigloo\sc\html\Post::getLinks($links,$siteDBRow) ;
                         echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ;
-
-                        \com\indigloo\sc\html\Comment::renderAll($commentDBRows);
                         include(APP_WEB_DIR.'/qa/inc/comment.inc') ;
+                        \com\indigloo\sc\html\Comment::renderAll($commentDBRows);
                     ?>
 
                      <div id="item-tiles">
@@ -165,14 +164,15 @@
                         //Action toolbar
                         echo \com\indigloo\sc\html\Post::getToolbar($itemId,$loginId,$postDBRow['login_id']) ;
                     ?>
-                    <div class="feeds">
+                    <div class="feeds mt20">
                     <?php
                         //inject activity tile
                         $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
-                        $feedDataObj = $activityDao->getPost($itemId,10);
+                        $feedDataObj = $activityDao->getPostFeeds($itemId,10);
                         $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
                         $html = $htmlObj->getPostTile($feedDataObj);
                         echo $html ;
+                        
                      ?>
                     </div> <!-- feeds -->
 
