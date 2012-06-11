@@ -8,7 +8,6 @@
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\exception\UIException as UIException;
-    use \com\indigloo\exception\DBException as DBException;
     use \com\indigloo\sc\auth\Login as Login ;
 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {

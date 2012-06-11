@@ -14,7 +14,6 @@
 
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\exception\UIException as UIException;
-    use com\indigloo\exception\DBException as DBException;
 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
         try{

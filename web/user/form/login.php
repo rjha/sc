@@ -8,7 +8,6 @@
     use com\indigloo\ui\form as Form;
     use com\indigloo\Constants as Constants ;
     use \com\indigloo\exception\UIException as UIException;
-    use com\indigloo\exception\DBException as DBException;
 
     if (isset($_POST['login']) && ($_POST['login'] == 'Login')) {
         try{

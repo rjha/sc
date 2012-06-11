@@ -11,7 +11,6 @@
     use \com\indigloo\Url as Url ;
 
     use \com\indigloo\exception\UIException as UIException;
-    use \com\indigloo\exception\DBException as DBException;
     use \com\indigloo\sc\util\PseudoId;
 
     if (isset($_POST['delete']) && ($_POST['delete'] == 'Delete')) {

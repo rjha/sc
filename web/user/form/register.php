@@ -56,6 +56,20 @@
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
             header("Location: " . $fUrl);
             exit(1);
+        } catch(DBException $ex) {
+            $gWeb->store(Constants::STICKY_MAP, $fvalues);
+            // @imp: this is mysql error code 
+            // @todo need to define this as a constant
+            if($ex->getCode() == 1062 ) {
+                $message = sprintf("Email %s is already registered with us.", $fvalues['email']);
+            } else {
+                $message = $ex->getMessage();
+            }
+
+            $gWeb->store(Constants::FORM_ERRORS,array($message));
+            header("Location: " . $fUrl);
+            exit(1);
+
         }
 
     }

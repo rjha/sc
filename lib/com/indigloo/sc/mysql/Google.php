@@ -98,8 +98,7 @@ namespace com\indigloo\sc\mysql {
             }catch (PDOException $e) {
                 $dbh->rollBack();
                 $dbh = null;
-                $message = sprintf("PDO error :: code %d message %s ",$e->getCode(),$e->getMessage());
-                throw new DBException($message);
+                throw new DBException($e->getMessage(),$e->getCode());
 
             }
 
