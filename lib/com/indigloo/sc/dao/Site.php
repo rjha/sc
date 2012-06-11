@@ -141,8 +141,8 @@ namespace com\indigloo\sc\dao {
                     case 'page' :
                     case 'people': 
                         $fbId = Util::getArrayKey($params, "id");
+                        $page["hash"] = empty($fbId) ? NULL : "FB".$fbId ;
                         $page["canonicalUrl"] = $url ;
-                        $page["hash"] = "FB".$fbId ;
                         $page["url"] = $url ;
                         $page["host"] = "www.facebook.com" ;
                         break;
@@ -151,7 +151,7 @@ namespace com\indigloo\sc\dao {
                         $token = Util::getArrayKey($params, "token");
                         $page["canonicalUrl"] = $url ;
                         $fbId =  Graph::getIdOnName($token) ;
-                        $page["hash"] = "FB".$fbId;
+                        $page["hash"] = empty($fbId) ? NULL : "FB".$fbId;
                         $page["url"] = $url ;
                         $page["host"] = "www.facebook.com" ;
                         break;
@@ -164,7 +164,7 @@ namespace com\indigloo\sc\dao {
                         
                         //get object URL
                         $page["canonicalUrl"] = Graph::getLinkOnId($fbId);
-                        $page["hash"] = "FB".$fbId ;
+                        $page["hash"] = empty($fbId) ? NULL : "FB".$fbId ;
                         $page["url"] = $url ;
                         $page["host"] = "www.facebook.com" ;
                         break ;
