@@ -30,7 +30,9 @@
     $html = $templates['html'];
     $subject = " what people searched on 3mik today";
     $from = Config::getInstance()->get_value("default.mail.address");
+    $fromName = Config::getInstance()->get_value("default.mail.name");
+
     $tos = array("jha.rajeev@gmail.com", "sri_saurabh2000@yahoo.com");
-    \com\indigloo\mail\SendGrid::sendViaWeb($tos,$from,$subject,$text,$html);
+    \com\indigloo\mail\SendGrid::sendViaWeb($tos,$from,$fromName,$subject,$text,$html);
 
 ?>

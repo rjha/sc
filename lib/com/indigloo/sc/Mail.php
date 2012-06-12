@@ -12,8 +12,10 @@ namespace com\indigloo\sc {
             $html = $templates['html'];
             $subject = Config::getInstance()->get_value("reset.password.subject");
             $from = Config::getInstance()->get_value("default.mail.address");
+            $fromName = Config::getInstance()->get_value("default.mail.name");
+
             $tos = array($email);
-            \com\indigloo\mail\SendGrid::sendViaWeb($tos,$from,$subject,$text,$html);
+            \com\indigloo\mail\SendGrid::sendViaWeb($tos,$from,$fromName,$subject,$text,$html);
         }
 
         static function sendActivityMail($name,$email,$feedText,$feedHtml) {
@@ -28,10 +30,12 @@ namespace com\indigloo\sc {
 
             $subject = Util::abbreviate("3mik.com - ".$feedText,100);
             $subject .= "..." ;
-            
+
             $from = Config::getInstance()->get_value("default.mail.address");
+            $fromName = Config::getInstance()->get_value("default.mail.name");
+
             $tos = array($email);
-            \com\indigloo\mail\SendGrid::sendViaWeb($tos,$from,$subject,$text,$html);
+            \com\indigloo\mail\SendGrid::sendViaWeb($tos,$from,$fromName,$subject,$text,$html);
         }
 
     }
