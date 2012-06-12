@@ -1,6 +1,7 @@
 <?php
 
 define("APP_LIB_PATH", 
+            "/home/rjha/code/github/webgloo/lib/ext/sendgrid-php,". 
             "/home/rjha/code/github/webgloo/lib/ext,". 
             "/home/rjha/code/github/webgloo/lib,". 
             "/home/rjha/code/github/sc/lib") ;

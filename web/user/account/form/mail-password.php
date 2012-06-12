@@ -3,8 +3,7 @@
 
     include 'sc-app.inc';
     include(APP_WEB_DIR . '/inc/header.inc');
-    require_once(WEBGLOO_LIB_ROOT. '/ext/sendgrid-php/SendGrid_loader.php');
-
+    
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;

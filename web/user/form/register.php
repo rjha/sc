@@ -4,7 +4,6 @@
     include 'sc-app.inc';
     include(APP_WEB_DIR . '/inc/header.inc');
     include(WEBGLOO_LIB_ROOT . '/ext/recaptchalib.php');
-    require_once(WEBGLOO_LIB_ROOT. '/ext/sendgrid-php/SendGrid_loader.php');
 
     use com\indigloo\ui\form as Form;
     use com\indigloo\Constants as Constants ;
@@ -12,6 +11,7 @@
     use com\indigloo\exception\DBException as DBException;
 
     if (isset($_POST['register']) && ($_POST['register'] == 'Register')) {
+        
         try{
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('first_name', 'First Name', array('required' => 1, 'maxlength' => 32));
@@ -58,7 +58,7 @@
             exit(1);
         } catch(DBException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
-            // @imp: this is mysql error code 
+            // @imp: this is mysql error code
             // @todo need to define this as a constant
             if($ex->getCode() == 1062 ) {
                 $message = sprintf("Email %s is already registered with us.", $fvalues['email']);

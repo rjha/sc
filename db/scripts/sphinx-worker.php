@@ -1,11 +1,9 @@
 #!/usr/bin/php
-<?php 
+<?php
 
     include('sc-app.inc');
     include(APP_CLASS_LOADER);
     include(WEBGLOO_LIB_ROOT . '/com/indigloo/error.inc');
-    require_once(WEBGLOO_LIB_ROOT. '/ext/sendgrid-php/SendGrid_loader.php');
-
 
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Logger as Logger;
@@ -26,7 +24,7 @@
         }
     }
     //mail these tokens
-    
+
     $templates = \com\indigloo\sc\html\Mail::getSearchTokens($tokens);
     $text = $templates['text'];
     $html = $templates['html'];
