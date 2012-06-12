@@ -49,6 +49,7 @@
             </div>
         </div> <!-- simple popup -->
     </div> <!-- span7 -->
+
     <div class="span5">
         <div class="row">
             <div class="span3"> 
