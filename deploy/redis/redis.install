@@ -33,17 +33,31 @@ $ sudo make 32bit
 we want  32 bit compile as our server RAM is small and it produces compact packages.
 $ sudo make test
 
-verify that all tests pass and that you have 3 binaries in 
+verify that all tests pass and that you have 5 binaries in 
 $HOME/nuke/<redis-2.6-dir>/src 
 redis-cli
 redis-server
 redis-benchmark
+redis-check-aof 
+redis-check-dump
+
+# to strip binaries of debug symbols
+
+The redis makefile supplies -O2 switch but not the -s switch to gcc.
+The binaries we compiled also include the debug symbols. To strip the 
+binaries of debug symbols, we can do 
+
+$strip --strip-all <binary-name>
+
+This should result in a size reduction.
 
 # copy compiled binaries to /usr/bin area overwriting the old binaries 
 #
 $sudo cp $HOME/nuke/<redis-2.6-dir>/src/redis-cli /usr/bin/.
 $sudo cp $HOME/nuke/<redis-2.6-dir>/src/redis-server /usr/bin/.
 $sudo cp $HOME/nuke/<redis-2.6-dir>/src/redis-benchmark /usr/bin/.
+$sudo cp $HOME/nuke/<redis-2.6-dir>/src/redis-check-aof /usr/bin/.
+$sudo cp $HOME/nuke/<redis-2.6-dir>/src/redis-check-dump /usr/bin/.
 
 
 # copy latest redis.conf file
