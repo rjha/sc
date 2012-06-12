@@ -19,12 +19,12 @@ namespace com\indigloo\sc\html {
 
         function getPostTile($feedDataObj) {
             $html = '' ;
-            
+
             $error = $this->errorCheck($feedDataObj);
             if(!is_null($error)) {
                 return $error ;
             }
-            
+
             foreach($feedDataObj->feeds as $feed) {
 
                 //create object out of string
@@ -34,7 +34,7 @@ namespace com\indigloo\sc\html {
                 }
 
                 $feedObj->type = trim($feedObj->type);
-                
+
                 //ignore comments for a post
                 if($feedObj->type != AppConstants::COMMENT_FEED) {
                     //get basic feed processor
@@ -42,12 +42,12 @@ namespace com\indigloo\sc\html {
                     $options = array();
                     $html .= $processor->process($feedObj,$options);
                 }
-                
+
             }
 
             return $html ;
         }
-        
+
         function errorCheck($feedDataObj) {
             $error = NULL ;
             //dataObj is NULL or empty for error case
@@ -75,7 +75,7 @@ namespace com\indigloo\sc\html {
             if(!is_null($error)) {
                 return $error ;
             }
-            
+
             foreach($feedDataObj->feeds as $feed) {
 
                 //create object out of string
@@ -85,8 +85,11 @@ namespace com\indigloo\sc\html {
                 }
 
                 $feedObj->type = trim($feedObj->type);
-                //get feed processor
-                $processor = feed\ProcessorFactory::get($feedObj->type);
+                $processor = new feed\PostProcessor();
+                if($feedObj->type == AppConstants::FOLLOW_FEED) {
+                    $processor = new feed\GraphProcessor();
+                }
+
                 $html .= $processor->process($feedObj);
 
             }

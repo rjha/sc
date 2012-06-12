@@ -17,31 +17,7 @@ namespace com\indigloo\sc\html\feed {
                 AppConstants::LIKE_VERB => 'likes',
                 AppConstants::POST_VERB => "posted");
         }
-
-        function process($feedObj) {
-            $html = '' ;
-            $keys = array("subject","subjectId","object","objectId");
-            $flag = $this->checkKeys($feedObj,$keys);
-            $view = array();
-
-            if($flag){
-                $view['subject'] = $feedObj->subject ;
-                $view['object'] = $feedObj->object ;
-                $pubId = PseudoId::encode($feedObj->subjectId);
-                $view['subjectUrl'] = sprintf("/pub/user/%s",$pubId);
-                $pubId = PseudoId::encode($feedObj->objectId);
-                $view['objectUrl'] = sprintf("/pub/user/%s",$pubId);
-                $view['verb'] = $this->getVerb($feedObj->verb);
-
-                $template = '/fragments/feed/vanilla.tmpl' ;
-                $html = Template::render($template,$view);
-
-            }
-
-            return $html ;
-
-        }
-
+        
         function getVerb($verb) {
             return $this->map[$verb];
         }
