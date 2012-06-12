@@ -3,8 +3,9 @@
 namespace com\indigloo\sc\dao {
 
 
-    use com\indigloo\Util as Util ;
-    use com\indigloo\sc\mysql as mysql;
+    use \com\indigloo\Util as Util ;
+    use \com\indigloo\sc\mysql as mysql;
+    use \com\indigloo\exception\UIException as UIException;
 
     class Mail {
 
