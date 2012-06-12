@@ -35,10 +35,6 @@ namespace com\indigloo\sc\dao {
 
         }
 
-        function addFeedback($feedback) {
-            mysql\User::addFeedback($feedback);
-        }
-
         function getLatest($limit,$filters=array()) {
             $rows = mysql\User::getLatest($limit,$filters);
             return $rows ;

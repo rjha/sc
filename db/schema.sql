@@ -87,7 +87,10 @@ CREATE TABLE  sc_feature_group  (
 DROP TABLE IF EXISTS  sc_feedback ;
 CREATE TABLE  sc_feedback  (
    id  int(11) NOT NULL AUTO_INCREMENT,
-   feedback  mediumtext NOT NULL,
+   name varchar(64),
+   email varchar(64),
+   phone varchar(32),
+   feedback  varchar(512) NOT NULL,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )

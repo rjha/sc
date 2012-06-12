@@ -1,5 +1,5 @@
 <?php
-    //sc/share/form/feedback.php
+    //sc/site/form/contact.php
 
     include 'sc-app.inc';
     include(APP_WEB_DIR . '/inc/header.inc');
@@ -15,7 +15,9 @@
 
             $gWeb = \com\indigloo\core\Web::getInstance();
             $fhandler = new Form\Handler('web-form-1', $_POST);
-            $fhandler->addRule('feedback', 'Feedback', array('required' => 1));
+            $fhandler->addRule('comment', 'Comment', array('required' => 1, 'maxlength' => 512));
+            $fhandler->addRule('name', 'Name', array('required' => 1, 'maxlength' => 64));
+            $fhandler->addRule('email', 'Email', array('required' => 1, 'maxlength' => 64));
             $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
 
             //check security token
@@ -28,11 +30,14 @@
                 throw new UIException($fhandler->getErrors(),1);
             }
 
-            $userDao = new com\indigloo\sc\dao\User();
-            $userDao->addFeedback($fvalues['feedback']);
+            $feedbackDao = new com\indigloo\sc\dao\Feedback();
+            $feedbackDao->add($fvalues['name'],
+                                $fvalues['email'],
+                                $fvalues['phone'],
+                                $fvalues['comment']);
 
             //success - always go back to feedback form
-            $gWeb->store(Constants::FORM_MESSAGES,array('Thanks for your feedback.'));
+            $gWeb->store(Constants::FORM_MESSAGES,array('Thanks for your input.'));
             header("Location: ".$fUrl);
 
         } catch(UIException $ex) {

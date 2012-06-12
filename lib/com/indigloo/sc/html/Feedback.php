@@ -12,6 +12,10 @@ namespace com\indigloo\sc\html {
             $view = new \stdClass;
             $template = '/fragments/monitor/feedback.tmpl' ;
             $view->description = $row['feedback'];
+            $view->name = $row['name'] ;
+            $view->phone = $row['phone'] ;
+            $view->email = $row['email'] ;
+
             $html = Template::render($template,$view);
             return $html ;
         }

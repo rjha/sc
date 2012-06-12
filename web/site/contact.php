@@ -1,6 +1,6 @@
 <?php
 
-    //sc/share/feedback.php
+    //sc/site/contact.php
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
         
@@ -18,15 +18,6 @@
     $qUrl = is_null($qUrl) ? '/' : $qUrl ;
     $fUrl = Url::current();
 
-    $loginId = NULL ;
-    $userName = '';
-
-    $gSessionLogin = Login::tryLoginInSession();
-    if(!is_null($gSessionLogin)) {
-        $loginId = $gSessionLogin->id ;
-        $userName = $gSessionLogin->name ;
-    }
-
     //add security token to form
     $formToken = Util::getBase36GUID();
     $gWeb->store("form.token",$formToken);
@@ -37,7 +28,7 @@
 <html>
 
        <head>
-        <title> 3mik.com - share your feedback</title>
+        <title> 3mik.com - contact us </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
          
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
@@ -46,6 +37,7 @@
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
+        <script type="text/javascript" src="/js/sc.js"></script>
          
         <script type="text/javascript">
        
@@ -54,6 +46,9 @@
                 $("#web-form1").validate({
                        errorLabelContainer: $("#web-form1 div.error") 
                 });
+
+                webgloo.sc.util.addTextCounter("#comment", "#comment_counter");
+
             });
             
         </script>
@@ -82,17 +77,34 @@
                     
                     
                     <div class="page-header">
-                        <h2> We appreciate your feedback </h2>
+                        <h2> Contact Us </h2>
                     </div>
                     
                     <?php FormMessage::render(); ?>
                     
-                    <form  id="web-form1"  name="web-form1" action="/share/form/feedback.php" enctype="multipart/form-data"  method="POST">
+                    <form  id="web-form1"  name="web-form1" action="/site/form/contact.php" enctype="multipart/form-data"  method="POST">
                         <table class="form-table">
+                             <tr>
+                                <td> <label>Name*</label>
+                                <input type="text" name="name" class="required" maxlength="64" value="<?php echo $sticky->get('name'); ?>" />
+                                </td>
+                            </tr>
+                             <tr>
+                                <td> <label>Email* </label>
+                                <input type="text" name="email" class="required" maxlength="64" value="<?php echo $sticky->get('email'); ?>" />
+                                </td>
+                            </tr>
+                             <tr>
+                                <td> <label>phone</label>
+                                <input type="text" name="phone" maxlength="32" value="<?php echo $sticky->get('phone'); ?>" />
+                                </td>
+                            </tr>
                             <tr>
                                 <td>
-                                    <label>Feedback</label>
-                                    <textarea  name="feedback" style="width:600px" class="required h130 " cols="50" rows="4" ><?php echo $sticky->get('feedback'); ?></textarea>
+                                    <label>Comments* (max 512 chars)</label>
+                                    <textarea  id="comment" name="comment" maxlength="512" class="required h130 w500" cols="50" rows="4" ><?php echo $sticky->get('comment'); ?></textarea>
+                                    <br>
+                                   <span id="comment_counter"></span> 
                                 </td>
                             </tr>
                             
@@ -115,6 +127,10 @@
                 
                 <div class="span4">
                     <!-- sidebar -->
+                    <div class="noresults">
+                        our email is <br>
+                        support@3mik.com
+                    </div>
                 </div>
             
             </div>

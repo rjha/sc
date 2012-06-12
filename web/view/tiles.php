@@ -66,7 +66,7 @@
                     </div><!-- tiles -->
 
                     <div id="feedback" class="vertical">
-                        <a href="/share/feedback.php">
+                        <a href="/site/contact.php">
                             <br>
                             F e e d b a c k
                         </a>

@@ -25,7 +25,7 @@ namespace com\indigloo\sc\util {
         }
 
         static function getInstance($flag=true) {
-            if (is_null(self::$instance) && $flag) {
+            if ($flag && is_null(self::$instance)) {
                 self::$instance = new \com\indigloo\sc\util\Redis();
             }
 

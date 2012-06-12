@@ -24,7 +24,7 @@
 <html>
 
     <head>
-        <title> 3mik.com - feedback posted by users  </title>
+        <title> 3mik.com - feedback by users  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
@@ -72,7 +72,7 @@
 
             <div class="row">
                 <div class="span9">
-                    
+                    <div class="feeds">
                         <?php
                             $startId = NULL ;
                             $endId = NULL ;
@@ -86,6 +86,7 @@
                                 echo \com\indigloo\sc\html\Feedback::get($feedbackDBRow);
                             }
                         ?>
+                    </div>
                    
                 </div>
                 <div class="span3"> </div>

@@ -36,6 +36,11 @@ namespace com\indigloo\sc\dao {
             return $rows ;
         }
         
+        function add($name,$email,$phone,$comment) {
+            mysql\Feedback::add($name,$email,$phone,$comment);
+        }
+
+        
     }
 
 }

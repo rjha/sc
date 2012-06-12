@@ -52,6 +52,28 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        static function add($name,$email,$phone,$comment) {
+            
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "insert into sc_feedback(name,email,phone,feedback,created_on) values(?,?,?,?,now()) " ;
+
+            $stmt = $mysqli->prepare($sql);
+            if($stmt) {
+                $stmt->bind_param("ssss",$name,$email,$phone,$comment);
+                $stmt->execute();
+
+                if ($mysqli->affected_rows != 1) {
+                    MySQL\Error::handle($stmt);
+                }
+
+                $stmt->close();
+
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
+
+        }
+
     }
 }
 ?>

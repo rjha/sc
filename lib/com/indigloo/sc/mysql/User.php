@@ -93,27 +93,6 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function addFeedback($feedback) {
-            
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "insert into sc_feedback(feedback,created_on) values(?,now()) " ;
-
-            $stmt = $mysqli->prepare($sql);
-            if($stmt) {
-                $stmt->bind_param("s",$feedback);
-                $stmt->execute();
-
-                if ($mysqli->affected_rows != 1) {
-                    MySQL\Error::handle($stmt);
-                }
-
-                $stmt->close();
-
-            } else {
-                MySQL\Error::handle($mysqli);
-            }
-
-        }
     }
 }
 ?>

@@ -37,7 +37,7 @@
                 </ul>
               </li> <!-- location -->
               <li> <a id="nav-group-open" href="">Popular Groups</a> </li>
-              <li> <a href="">Contact</a> </li>
+              <li> <a href="/site/contact.php">Contact</a> </li>
              </ul>
             </div>
         </div>
