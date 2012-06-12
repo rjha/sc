@@ -9,6 +9,7 @@
     use \com\indigloo\sc\ui\Constants as UIConstants ;
 
     set_error_handler('webgloo_ajax_error_handler');
+    $message = NULL ;
 
     //use login is required for bookmarking
     if(!Login::hasSession()) {
@@ -45,18 +46,20 @@
     switch($action) {
         case UIConstants::LIKE_POST:
             $bookmarkDao->like($ownerId,$loginId,$name,$itemId,$title);
+            $message = sprintf("Like for item %s is success.",$title);
             break ;
         case UIConstants::SAVE_POST:
             $bookmarkDao->favorite($ownerId,$loginId,$name,$itemId,$title);
+            $message = sprintf("Item %s is added to your favorite list.",$title);
             break;
         case UIConstants::REMOVE_POST :
              $bookmarkDao->unfavorite($loginId,$itemId);
+             $message = sprintf("Item %s was removed from your favorite list.",$title);
              break ;
         default :
             break;
     }
     
-    $message = sprintf(" %s for item %s is success!",$action,$title);
     $html = array("code" => 200 , "message" => $message);
     $html = json_encode($html);
     echo $html;

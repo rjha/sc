@@ -109,7 +109,7 @@
             });
         </script>
 
-        <!-- Place this render call where appropriate -->
+        <!-- g+1 async js -->
         <script type="text/javascript">
           (function() {
             var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
