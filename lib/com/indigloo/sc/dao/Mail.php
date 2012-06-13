@@ -31,7 +31,12 @@ namespace com\indigloo\sc\dao {
             mysql\Mail::addResetPassword($name,$email,$token);
 
             //now send an email
-            \com\indigloo\sc\Mail::sendResetPassword($name,$email,$token);
+            $code = \com\indigloo\sc\Mail::sendResetPassword($name,$email,$token);
+            if($code > 0 ) {
+                $message = "There was an error sending mail. Please try again after 20 minutes.";
+                throw new UIException(array($message));
+            }
+
             //update flag in DB
             mysql\Mail::flipResetPassword($email);
 
@@ -39,8 +44,12 @@ namespace com\indigloo\sc\dao {
 
         function processResetPassword($name,$email,$token) {
             //now send an email
-            \com\indigloo\sc\Mail::sendResetPassword($name,$email,$token);
-            //update flag in DB
+            $code = \com\indigloo\sc\Mail::sendResetPassword($name,$email,$token);
+            if($code > 0 ) {
+                $message = "There was an error sending mail. Please try again after 20 minutes.";
+                throw new UIException(array($message));
+            }
+
             mysql\Mail::flipResetPassword($email);
         }
 
