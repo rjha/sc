@@ -13,11 +13,19 @@ namespace com\indigloo\sc\html\feed {
             parent::__construct();
         }
 
-        function process($feedObj) {
+        function process($feedObj,$templates=array()) {
             $html = '' ;
             $keys = array("subject","subjectId","title","objectId");
             $flag = $this->checkKeys($feedObj,$keys);
             $view = array();
+
+            if(empty($templates)) {
+                $templates = array(
+                    AppConstants::BOOKMARK_FEED => "/fragments/feed/image/post.tmpl",
+                    AppConstants::COMMENT_FEED => "/fragments/feed/image/comment.tmpl",
+                    AppConstants::POST_FEED => "/fragments/feed/image/post.tmpl",
+                    AppConstants::FOLLOW_FEED => NULL);
+            }
 
             if($flag){
                 $view['subject'] = $feedObj->subject;
@@ -28,20 +36,15 @@ namespace com\indigloo\sc\html\feed {
                 $view['srcImage'] = $feedObj->srcImage ;
                 $view['nameImage'] = $feedObj->nameImage ;
                 $view['verb'] = $this->getVerb($feedObj->verb);
-
-                $template = '/fragments/feed/image/post.tmpl' ;
-
-                 //extra processing for posts.
-                if(strcmp($feedObj->type,AppConstants::COMMENT_FEED) == 0 ) {
-                    $template = '/fragments/feed/image/comment.tmpl' ;
-                    if(property_exists($feedObj, 'content')) {
-                        $view['content'] = $feedObj->content ;
-                    }
+                
+                if(isset($templates[$feedObj->type])) {
+                    $template = $templates[$feedObj->type];
+                } else {
+                    trigger_error("invalid feed template", E_USER_ERROR);
                 }
 
                 //extra processing for comments.
                 if(strcmp($feedObj->type,AppConstants::COMMENT_FEED) == 0 ) {
-                    $template = '/fragments/feed/image/comment.tmpl' ;
                     if(property_exists($feedObj, 'content')) {
                         $view['content'] = $feedObj->content ;
                     }

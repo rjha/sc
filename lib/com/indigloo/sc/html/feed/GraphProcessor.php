@@ -13,11 +13,15 @@ namespace com\indigloo\sc\html\feed {
             parent::__construct();
         }
 
-        function process($feedObj) {
+        function process($feedObj,$templates=array()) {
             $html = '' ;
             $keys = array("subject","subjectId","object","objectId");
             $flag = $this->checkKeys($feedObj,$keys);
             $view = array();
+
+            if(empty($templates)) {
+                $templates = array(AppConstants::FOLLOW_FEED => "/fragments/feed/vanilla.tmpl");
+            }
 
             if($flag){
                 $view['subject'] = $feedObj->subject ;
@@ -28,9 +32,13 @@ namespace com\indigloo\sc\html\feed {
                 $view['objectUrl'] = sprintf("%s/pub/user/%s",Url::wwwBase(),$pubId);
                 $view['verb'] = $this->getVerb($feedObj->verb);
 
-                $template = '/fragments/feed/vanilla.tmpl' ;
-                $html = Template::render($template,$view);
+                if(isset($templates[$feedObj->type])) {
+                    $template = $templates[$feedObj->type];
+                } else {
+                    trigger_error("invalid feed template", E_USER_ERROR);
+                }
 
+                $html = Template::render($template,$view);
             }
 
             return $html ;

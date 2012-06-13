@@ -57,7 +57,7 @@ namespace com\indigloo\sc\dao {
             $itemId = PseudoId::encode($postId);
             $postDao = new \com\indigloo\sc\dao\Post();
             $image = $postDao->getImageOnId($postId);
-            $content = substr($comment,0,64);
+            $content = Util::abbreviate($comment,100);
             $feedDao->addComment($ownerId,$loginId,$name,$itemId,$title,$content,$image,$verb);
 
         }

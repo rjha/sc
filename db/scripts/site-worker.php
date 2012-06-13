@@ -107,6 +107,12 @@
         $processor2 = new \com\indigloo\sc\html\feed\GraphProcessor();
         $processor3 = new \com\indigloo\sc\html\feed\TextProcessor();
 
+        $templates = array(
+                    AppConstants::BOOKMARK_FEED => "/fragments/feed/email/post.tmpl",
+                    AppConstants::COMMENT_FEED => "/fragments/feed/email/comment.tmpl",
+                    AppConstants::POST_FEED => "/fragments/feed/email/post.tmpl",
+                    AppConstants::FOLLOW_FEED => "/fragments/feed/email/vanilla.tmpl");
+
         $mapHtmlProcessor = array(AppConstants::FOLLOW_FEED => $processor2,
                                 AppConstants::COMMENT_FEED => $processor1,
                                 AppConstants::BOOKMARK_FEED => $processor1,
@@ -142,8 +148,10 @@
 
             if($ownerId != null && ($ownerId != $jobObj->subjectId)) {
                 //send mail to owner.
+                // html content of mail
                 $processor = $mapHtmlProcessor[$jobObj->type];
-                $feedHtml = $processor->process($jobObj);
+                $feedHtml = $processor->process($jobObj,$templates);
+                //text content of mail.
                 $processor = $mapTextProcessor[$jobObj->type];
                 $feedText = $processor->process($jobObj);
                 send_activity_mail($mysqli,$ownerId,$feedText,$feedHtml);
@@ -156,6 +164,7 @@
         }
     }
 
+    //@todo - started@
     //this script is locked via site-worker.sh shell script
     $mysqli = MySQL\Connection::getInstance()->getHandle();
     process_sites($mysqli);
@@ -172,5 +181,5 @@
     send_notifications($mysqli,$redis);
     $mysqli->close();
     $redis->quit();
-
+    //total time
    ?>

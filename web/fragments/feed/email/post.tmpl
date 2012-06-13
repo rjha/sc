@@ -1,0 +1,13 @@
+
+<!-- email templates should use inline styling -->
+<div style="font-weight: bold;line-height:18px;font-family: arial;font-size:12px;">
+    <a href="~~$view['subjectUrl']~">~~$view['subject']~</a>
+    &nbsp;<b> ~~$view['verb']~ </b>&nbsp;
+    <a href="~~$view['objectUrl']~">~~$view['object']~</a>
+</div>
+
+<div style="padding:20px;margin-top:20px">
+    <img style="width:auto;height:auto;max-width:400px;max-height:300px;padding:6px;"
+        src="~~$view['srcImage']~" alt="image of ~~$view['object']~" title="~~$view['object']~"/>
+</div>
+
