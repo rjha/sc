@@ -41,18 +41,7 @@ namespace com\indigloo\sc\dao {
             mysql\Mail::flipResetPassword($email);
 
         }
-
-        function processResetPassword($name,$email,$token) {
-            //now send an email
-            $code = \com\indigloo\sc\Mail::sendResetPassword($name,$email,$token);
-            if($code > 0 ) {
-                $message = "There was an error sending mail. Please try again after 20 minutes.";
-                throw new UIException(array($message));
-            }
-
-            mysql\Mail::flipResetPassword($email);
-        }
-
+        
     }
 
 }

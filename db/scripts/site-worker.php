@@ -18,6 +18,7 @@
         //process sites
         $sql = " select post_id from sc_site_tracker where site_flag = 0 order by id desc limit 50";
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+        //halt for error.
         $siteDao = new \com\indigloo\sc\dao\Site();
 
         foreach($rows as $row) {
@@ -40,15 +41,21 @@
     }
 
     function process_reset_password($mysqli) {
-        $sql = " select email,token from sc_reset_password where flag = 0 order by id limit 10";
+        $sql = " select email,token from sc_reset_password where flag = 0 order by id limit 50";
         $map = array();
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-        $mailDao = new \com\indigloo\sc\dao\Mail();
 
         foreach($rows as $row) {
             $email = $row['email'];
             if(!in_array($email,$map)){
-                $mailDao->processResetPassword($row['name'],$row['email'], $row['token']);
+                //send mail
+                $code = \com\indigloo\sc\Mail::sendResetPassword($row['name'],$row['email'], $row['token']);
+                if($code > 0 ) {
+                    $message = "Error in sending mail. site worker aborting!";
+                    throw new Exception($message);
+                }
+                //set db flag to 1.
+                \com\indigloo\sc\mysql\Mail::flipResetPassword($email);
                 array_push($map,$email);
             }
         }
@@ -75,7 +82,11 @@
 
         if(!empty($email)) {
             // send text and html to email + name.
-            \com\indigloo\sc\Mail::sendActivityMail($name,$email,$feedText,$feedHtml);
+            $code = \com\indigloo\sc\Mail::sendActivityMail($name,$email,$feedText,$feedHtml);
+            if($code > 0 ) {
+                $message = "Error in sending mail. site worker aborting!";
+                throw new Exception($message);
+            }
         }
 
     }
@@ -145,20 +156,21 @@
         }
     }
 
-
     //this script is locked via site-worker.sh shell script
     $mysqli = MySQL\Connection::getInstance()->getHandle();
-    // process_sites($mysqli);
-    //sleep(1);
-    // process_groups($mysqli);
-    //sleep(1);
-    // process_reset_password($mysqli);
-    //sleep(1);
-    // remove_stale_sessions();
-    //sleep(1);
-    //initialize redis connx.
+    process_sites($mysqli);
+    sleep(1);
+    process_groups($mysqli);
+    sleep(1);
+    process_reset_password($mysqli);
+    sleep(1);
+    remove_stale_sessions();
+    sleep(1);
 
+    //initialize redis connx.
     $redis = \com\indigloo\sc\util\Redis::getInstance()->connection();
     send_notifications($mysqli,$redis);
+    $mysqli->close();
+    $redis->quit();
 
    ?>
