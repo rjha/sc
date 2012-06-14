@@ -20,7 +20,7 @@ namespace com\indigloo\sc\controller{
                 $controller->process();
                 exit;
             }
-            
+
             $itemId = Util::getArrayKey($params,"item_id");
 
             if($itemId < 1200) {
@@ -70,8 +70,8 @@ namespace com\indigloo\sc\controller{
             //do not urlencode - as we use this value as canonical url
             $itemObj->link = $itemObj->host."/item/".$itemId ;
             $itemObj->netLink = $itemObj->netHost."/item/".$itemId ;
-            $itemObj->name = urlencode($postDBRow['title']);
-            $itemObj->description = urlencode($postDBRow['description']) ;
+            $itemObj->name = $postDBRow['title'];
+            $itemObj->description = $postDBRow['description'] ;
             $strItemObj = json_encode($itemObj);
             //make the json string form safe
             $strItemObj = Util::formSafeJson($strItemObj);

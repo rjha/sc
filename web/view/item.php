@@ -18,8 +18,8 @@
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
 
         <!-- opengraph curry -->
-        <meta property="og:title" content="<?php echo $itemObj->name; ?>"/>
-        <meta property="og:image" content="<?php echo $itemObj->picture; ?>"/>
+        <meta property="og:title" content="<?php echo $itemObj->name ?>"/>
+        <meta property="og:image" content="<?php echo $itemObj->picture ?>"/>
         <meta property="og:description" content="<?php echo $itemObj->description; ?>"/>
 
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
@@ -78,11 +78,11 @@
 
                     var fbUrl = "http://www.facebook.com/dialog/feed?app_id=" + itemObj.appId +
                         "&display=popup" +
-                        "&redirect_uri=" + itemObj.callback +
+                        "&redirect_uri=" + encodeURIComponent(itemObj.callback) +
                         "&picture=" + itemObj.picture +
-                        "&link=" + itemObj.link +
-                        "&name=" + itemObj.name +
-                        "&description=" + itemObj.description ;
+                        "&link=" + encodeURIComponent(itemObj.link) +
+                        "&name=" + encodeURIComponent(itemObj.name) +
+                        "&description=" + encodeURIComponent(itemObj.description) ;
 
                     webgloo.sc.item.openShareWindow("Share on Facebook", fbUrl);
 
@@ -100,7 +100,7 @@
                         return ;
                     }
 
-                    var googleUrl = "https://plus.google.com/share?url=" + itemObj.netLink ;
+                    var googleUrl = "https://plus.google.com/share?url=" + encodeURIComponent(itemObj.netLink) ;
                     webgloo.sc.item.openShareWindow("Share on Google+", googleUrl);
 
 
@@ -182,7 +182,7 @@
                         $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
                         $html = $htmlObj->getPostTile($feedDataObj);
                         echo $html ;
-                        
+
                      ?>
                     </div> <!-- feeds -->
 
