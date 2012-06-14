@@ -98,6 +98,18 @@
                 ->uncork();
     }
 
+    function get_pflag($pDataObj, $type) {
+        $flag = false ;
+        if($type ==  AppConstants::FOLLOW_FEED )
+            $flag = $pDataObj->follow ;
+        if($type ==  AppConstants::COMMENT_FEED )
+            $flag = $pDataObj->comment ;
+        if($type ==  AppConstants::BOOKMARK_FEED )
+            $flag = $pDataObj->bookmark ;
+
+        return $flag ;
+    }
+
     function send_notifications($mysqli,$redis) {
 
         // get  new jobIds
@@ -146,7 +158,12 @@
                     $ownerId = NULL ;
             }
 
-            if($ownerId != null && ($ownerId != $jobObj->subjectId)) {
+            //get preferences on ownerId
+            $preferenceDao = new \com\indigloo\sc\dao\Preference();
+            $pDataObj = $preferenceDao->get($ownerId);
+            $pflag = get_pflag($pDataObj,$jobObj->type);
+            
+            if($ownerId != null && $pflag && ($ownerId != $jobObj->subjectId)) {
                 //send mail to owner.
                 // html content of mail
                 $processor = $mapHtmlProcessor[$jobObj->type];

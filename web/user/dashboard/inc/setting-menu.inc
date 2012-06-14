@@ -4,7 +4,7 @@
 $tabUrlMap  = array(
                 "/user/dashboard/profile.php" => "profile",
                 "/user/account/change-password.php" => "password",
-                "/user/dashboard/mais.php" => "mails",);
+                "/user/dashboard/mails.php" => "mails");
 
 $tabCss = \com\indigloo\sc\ui\Tabs::getActiveTabClass($tabUrlMap,"active");
 
