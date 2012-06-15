@@ -18,6 +18,16 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
+        static function getTile($message) {
+            $html = NULL ;
+            $view = new \stdClass;
+            $template = '/fragments/ui/tile/noresult.tmpl' ;
+            $view->message = $message ;
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
     }
 
 }

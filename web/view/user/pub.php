@@ -66,8 +66,9 @@
 
                                 }
                             }else {
-                                $message = "No results found " ;
-                                echo \com\indigloo\sc\html\NoResult::get($message);
+                                $message = "No Posts" ;
+                                echo \com\indigloo\sc\html\NoResult::getTile($message);
+
                             }
 
                         ?>

@@ -19,12 +19,8 @@ namespace com\indigloo\sc\html\feed {
 
             if($flag){
                 $view['subject'] = $feedObj->subject ;
-                $title = $feedObj->title ;
-                if($feedObj->type == AppConstants::FOLLOW_FEED) {
-                    $title = $feedObj->object ;
-                }
-                
-                $view['object'] = $feedObj->title ;
+                $title = ($feedObj->type == AppConstants::FOLLOW_FEED) ? $feedObj->object : $feedObj->title ;
+                $view['object'] = $title ;
                 $view['verb'] = $this->getVerb($feedObj->verb);
 
                 $template = '/fragments/feed/text/vanilla.tmpl' ;
