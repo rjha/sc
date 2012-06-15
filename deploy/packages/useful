@@ -34,6 +34,8 @@ $ pear install phpmd/PHP_PMD
 
 (do not use --alldeps)
 
+#phploc
+http://github.com/sebastianbergmann/phploc
 
 
 #sqlite browser

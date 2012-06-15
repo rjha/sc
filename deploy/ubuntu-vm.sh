@@ -27,7 +27,7 @@ cp nginx/php.ini /etc/php5/cgi/.
 cp nginx/php.ini /etc/php5/cli/. 
 
 # copy php-fastcgi upstart script on Ubuntu
-cp nginx/php-fastcgi.upstart /etc/init/php-fastcgi.conf 
+# cp nginx/php-fastcgi.upstart /etc/init/php-fastcgi.conf 
 
 #create symlinks in web area
 mkdir -p $MYHOME/web/log

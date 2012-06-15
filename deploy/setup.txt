@@ -89,25 +89,30 @@ Now you are ready to receive changes from my repostitory.
 5) set packages required for development
 --------------------------------------------
 
-$cd $HOME/code/github/sc/deploy/packages
-$ sudo aptitude --simulate install $(< wheezy.add.packages)
-$sudo aptitude install $(< wheezy.add.packages)
+please look in $HOME/code/github/sc/deploy/packages folder.
+follow the instructions in aptitude.bulk.install file.
+The filename will depend on your type of install, e.g.
+for installation on a desktop - use wheezy.desktop.packages file, like
+
+$ sudo aptitude --simulate install $(< wheezy.desktop.packages)
+$sudo aptitude install $(< wheezy.desktop.packages)
 
 The only interaction is to provide root password for mysql.
 provide any password you like. save the mysql root password for later use.
 
+
 6)cd $HOME/code/github/sc/deploy
 open ubuntu-vm.sh script
-set your home dir path on top
+@imp: set your home dir path on top
 save and quit file.
 
 $chmod +x ./ubuntu-vm.sh
 $sudo ./ubuntu-vm.sh
 
-
 run the ubuntu-vm.sh script as root to create the development layout. 
-on Ubuntu machine, the script will complain about missing php-fpm directory.
-If there are any other complaints then the script is failing and script should be fixed first.
+
+@imp: If there are any other complaints then the script is failing and script should be fixed first.
+moving ahead will only cause agony.
 
 
 7) Add mint.3mik.com as host 
@@ -158,16 +163,3 @@ Now http://mint.3mik.com should show you local copy of 3mik site.
 @wip
  
 
-
-
-
-
-
-
-
-
-
-
-
-
- 

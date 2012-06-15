@@ -4,32 +4,54 @@ we know our RAM usage and we would like no swapping
 
 #server deployment procedure
 
-    First  Test local deployment
+    + Test local deployment
+    + Any new software or package required for this change?
     Any new config variable  or changes to sc-app.inc?
     + copy latest sc-app.inc (verify path and vhost name)
-    + sc_config.ini - are there any changes?
+    + sc_config.ini - Add any changes.
+        - verify log path names
+        - verify session store
+        - verify username/password  
 
+    + Backup database - always please!
     DB patching : do any necessary DB patching 
     + Run db scripts
-    pull new code
-    Backup database
-    run any DB scripts
-    Any changes to site worker Run cron script? run cron script from cli.
-    Test site deployment
-
-    fancybox css - IE section - make sure the image paths are absolute.
+    + pull new code
+        run any DB scripts
+    + Changes to site worker or other cron scripts? 
+    + Test site deployment
 
 
-#Test
- + login 
- + registration
- + FB registration
- + Twitter registration
- + Post create 
- + Group process(site-worker.sh)
- +3mik registration (success + error) 
- + Test $pdo->exec errors : I suspect they do not throw errors - Group Process has to be redone now!
+# Essential Tests
+------------------
+ + login should work for all providers 
+    - 3mik login
+    - FB login
+    - Google login
+    - Twitter login
 
+ + Password change should work
+    - settings | password
+
+ + New 3mik registration should work.
+ + Post create should work
+ + Post edit should work
+    - try adding images
+    - try removing images.
+
+ + Item page should work
+ + comment on a post should work
+ + Like/Favorite should work
+ + Sharing on Facebook/Google should work
+ + User public profile should work.
+ + Site search should work
+ + Clicking a group name should work
+ + Editor's pick should work
+ + Random picks should work
+ + Group Browsing should work
+
+ + contact page should work.
+ + Activities should be updated.
 
 
 

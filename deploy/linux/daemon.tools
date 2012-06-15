@@ -1,0 +1,48 @@
+
+what tools are available to make a daemon out of any script on UNIX?
+
+http://stackoverflow.com/questions/2036654/run-php-script-as-daemon-process
+http://stackoverflow.com/questions/525247/how-do-i-daemonize-an-arbitrary-script-in-unix
+
+
+
+
+* nohup
+* screen
+* init script :- standard debian init script -:- No possible w/o support from program.
+* python supervisord - http://supervisord.org/
+* daemon tools by D. Bernstein http://cr.yp.to/daemontools.html 
+* write your own program using posix and process control libraries 
+ - PHP power programming example.
+* daemonize package http://software.clapper.org/daemonize/ 
+* nanoserv http://nanoserv.si.kz/
+* system_dameon pear package
+    - http://pear.php.net/package/System_Daemon
+
+* http://libslack.org/daemon/
+* Fat controller
+    http://fat-controller.sourceforge.net/
+* DJB tcp server/client http://cr.yp.to/ucspi-tcp.html
+* php daemon :- https://github.com/kakserpom/phpdaemon 
+* python daemon : http://pypi.python.org/pypi/python-daemon/
+* HipHop - compile as C++ and then run the C++ code as daemon?
+    - One process to serve them all.
+
+
+Polling configurations
+
+    1) web script -> push to redis or data store <- long running process polling
+    2) web script -> push to a broker
+        broker <- registered a worker
+        web script -> broker -> send to registered worker.
+        Now worker should be running and that means a daemonized worker.
+            
+    3) web script -> push to a TCP server -> TCP server launch a program.
+
+
+* pure async pattern with node.js 
+    http://stackoverflow.com/questions/4441798/how-to-use-redis-publish-subscribe-with-nodejs-to-notify-clients-when-data-value
+    web script -> contact node.js -> event listener that does job.
+
+    
+ 
