@@ -152,8 +152,8 @@
                         echo \com\indigloo\sc\html\Post::getGallery($images) ;
                         echo \com\indigloo\sc\html\Post::getLinks($links,$siteDBRow) ;
                         echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ;
-                        include(APP_WEB_DIR.'/qa/inc/comment.inc') ;
                         \com\indigloo\sc\html\Comment::renderAll($commentDBRows);
+                        include(APP_WEB_DIR.'/qa/inc/comment.inc') ;
                     ?>
 
                      <div id="item-tiles">
