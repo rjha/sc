@@ -1,17 +1,16 @@
 
-To create a new user on server
-
-$sudo adduser <user name>
-
-
-To reset password for a user
+#To create a new user on server
+$sudo adduser rjha
+#To reset password for a user
 
 $sudo passwd <username>
 
 You also have to allow the user in sshd. AllowUsers add with a space like
-AllowUsers user1 user2
+#vim /etc/ssh/sshd_config
 
-And then restart the SSH daemon
+port 22001 (from 22)
+Add as last line in sshd_config (we do not want someone to try logins)
+AllowUsers rjha
 
-$sudo vi sshd_config
-$sudo /etc/init.d/ssh restart
+#restart the SSH daemon
+$sudo service ssh restart

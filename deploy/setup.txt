@@ -119,8 +119,6 @@ moving ahead will only cause agony.
 $sudo vim /etc/hosts
 Add an entry for mint.3mik.com 127.0.0.1
 
-8)
-
 8) Check :: Verify PHP install and layout
 Now open a browser and type :-
 http://mint.3mik.com/echo.php

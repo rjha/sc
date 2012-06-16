@@ -9,14 +9,14 @@ rm /etc/nginx/sites-enabled/default
 #copy our files
 cp nginx/nginx.conf /etc/nginx/.
 cp nginx/fastcgi_params /etc/nginx/fastcgi_params
-cp nginx/mint.3mik.com /etc/nginx/sites-enabled/.
+cp nginx/www.3mik.com /etc/nginx/sites-enabled/.
 
-#create /var/www/apps and /var/www/htdocs and /var/www/vhosts/mint.3mik.com
+#create /var/www/apps and /var/www/htdocs and /var/www/vhosts/www.3mik.com
 mkdir -p /var/www/apps
 mkdir -p /var/www/htdocs
-mkdir -p /var/www/vhosts/mint.3mik.com
+mkdir -p /var/www/vhosts/www.3mik.com
 #make symlink to github dir
-ln -nfs $MYHOME/code/github/sc/web /var/www/vhosts/mint.3mik.com/htdocs
+ln -nfs $MYHOME/code/github/sc/web /var/www/vhosts/www.3mik.com/htdocs
 cp sc/sc-app.inc /var/www/apps/.
 
 #copy php-fpm pool and ini files
@@ -49,7 +49,7 @@ ln -nfs $MYHOME/web/upload /var/www/upload
 cp github/gitignore $MYHOME/code/github/sc/.gitignore
 
 echo " ***********************  Pending Tasks ***************** "
-echo " 1. Add mint.3mik.com entry in /etc/hosts file "
+echo " 1. Add nginx vhost entry in /etc/hosts file "
 echo " 2. create mysql database and load latest data from server "
 echo " 3. install and configure sphinx. create sphinx indexes."
 echo " 4. get a copy of latest sc-app.inc file "

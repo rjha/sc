@@ -1,4 +1,4 @@
-
++ Make sure that my.cnf settings are right.
 + First create a database. open a command prompt and type
 $mysql -u root -p
 <type your mysql root password>
@@ -24,6 +24,7 @@ There load this file into database like,
 $ mysql -u root -Dscdb < scdb.latest.sql 
 
 Now you have the database installed. Now you need to change your mysql username and password in sc_config.ini file.
+
 
 
 

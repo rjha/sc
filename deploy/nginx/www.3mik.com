@@ -1,7 +1,7 @@
 server {
 	listen 80;
 	server_name   mint.3mik.com ;
-	root /var/www/vhosts/mint.3mik.com/htdocs  ;
+	root /var/www/vhosts/www.3mik.com/htdocs  ;
 	index index.php index.html ;
 
 	server_name_in_redirect  off;

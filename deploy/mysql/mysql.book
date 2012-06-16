@@ -1,126 +1,123 @@
 
---
--- change password for server
---
+#my.cnf changes
+-----------------
 
-create database webgloodb;
+we make some changes to default my.cnf file. This is done to ensure that 
 
-grant all privileges on webgloodb.* to
-'gloo'@'localhost' identified by 'osje8L'
-with grant option ;
-
-
-grant all privileges on webgloodb.* to
-'gloo'@'%' identified by 'osje8L'
-with grant option ;
+1) we are working with utf-8 (Also make sure to create DB etc. with default utf-8 charset.)
+2) bind-address is right (private IP or 127.0.0.1)
+   bind-address private IP would mean creating a local and remote user.
+3) Tx isolation level for innodb. 
+4) logging for slow queries. 
 
 
+---------------x--------------------
 
---
--- show triggers on a table, [show triggers] will show *all* triggers
---
+
+[client]
+default-character-set=utf8
+
+[mysqld]
+default-time-zone='+00:00'
+default-character-set=utf8
+collation-server = utf8_general_ci
+init-connect='SET NAMES utf8'
+character-set-server = utf8
+skip-character-set-client-handshake
+
+user        = mysql
+socket      = /var/run/mysqld/mysqld.sock
+port        = 3306
+basedir     = /usr
+datadir     = /var/lib/mysql
+tmpdir      = /tmp
+skip-external-locking
+transaction-isolation=READ-COMMITTED
+
+bind-address=<private IP>
+
+log_slow_queries    = /var/log/mysql/mysql-slow.log
+long_query_time = 2
+
+[mysqldump]
+default-character-set=utf8
+quick
+quote-names
+max_allowed_packet  = 16M
+
+[mysql]
+default-character-set=utf8
+
+------------------x----------------------
+
+
+
+# create database
+create database mydb  character set utf8 collate utf8_general_ci ;
+grant all privileges on mydb.* to 'user'@'host' identified by 'password' with grant option ;
+
+for private IP - create a user that can connect from 
+    - localhost
+    - this private IP
+    - from another node private IP
+
+
+#show triggers on a table, [show triggers] will show *all* triggers
 show triggers LIKE '%block%'\G
 show triggers LIKE '%trg_new_org_menu%'\G
 
---
--- finding constraints on a table like UNIQUE constraints
---
+#finding constraints on a table like UNIQUE constraints
+select * from information_schema.table_constraints where table_schema =schema() and table_name  = 'gloo_ml_menu' ;
 
-select * from information_schema.table_constraints
-where table_schema =schema()
-and table_name  = 'gloo_ml_menu' ;
-
---
--- Dropping a UNIQUE constraint
---
+#Dropping a UNIQUE constraint
 alter table gloo_ca_login drop index login ;
 
---
--- Add a UNIQUE constraint with name
---
-
+#Add a UNIQUE constraint with name
 alter table  gloo_ca_login add constraint UNIQUE uniq_ca_login (org_id,login);
 
--- show indexes on a table 
-
+#show indexes on a table 
 show index from news_post ;
 
--- Add an index
-
+#Add an index
 alter table news_post add index media_index (s_media_id);
 
--- dropping an index 
-
+#dropping an index 
 alter table news_post drop index [index_name]
 
 
---
--- show all  procedures/triggers for current schema
---
+#show all  procedures/triggers for current schema
 
-select routine_name from information_schema.routines where routine_schema
-= schema() ;
+select routine_name from information_schema.routines where routine_schema = schema() ;
+select trigger_name from information_schema.triggers where trigger_schema = schema();
 
-select trigger_name from information_schema.triggers
-where trigger_schema = schema();
-
-
---
--- Loading data from data dump (To Duplicate server database)
---
-
-At times we may want to create schema first and then load data from an existing database.
-This can happen lets say when we want to change table column or add more constraints
-or want to add additional procedures etc.
-
-First we need to create only Tables (Enabling trigger would mean we would create additional
-data that is already part of the dump. Like adding home menu on ORG create via a trigger is
-not required because data dump already has whatever menus are required for organization.
+# Error 1172 
+# At times you first want to create a schema and then load data into it (vs. a full dump)
+Error 1172 can happen because the triggers are again fired on table and you try to again create data 
+that is already part of the dump. It is advisable to use full dumps always.
+Another solution is to load dump w/o enabling triggers. (remove triggers from your schema definition)
+You need to run proc/triggers scripts as  MYSQL root.
 
 
-A. Create the tables only (using svn/db/webgloo-db.sql script)
-B. Load data from dump (using data-dump.sh script)
-C. Enable triggers and procedures after loadinig the data.
-((using svn/db/webgloo-db.sql script)
-
-
-Error 1172 - Happened because we were trying to create some data that was already loaded
-and the solution is to load dump w/o enabling triggers.
-
-Triggers/procedures should be enabled after loading the dump data. Please be aware of the
-fact that you need to run proc/triggers scripts as  MYSQL root.
-
-
- mysql -u root -p < create-db.sql
- mysql -u gloo -Dwebgloo250710 -p < webgloo-tables.sql
- mysql -u gloo -Dwebgloo250710 -p < webgloodb.data.25072010.sql
- mysql -u root -Dwebgloo250710 -p < webgloo-proc.sql
-
-
-rjha@indigloo1:~/db$ cat ./data-dump.sh
+# data-dump.sh
 
 x=`date +%d%m%Y`
 mysqldump  --no-create-info --complete-insert --skip-extended-insert
 --skip-triggers -u root -p webgloo250710 > webgloodb.data.$x.sql
 
 
-rjha@indigloo1:~/db$ cat full-dump.sh
+#full-dump.sh
 
 x=`date +%d%m%Y`
 mysqldump  --complete-insert --add-drop-table   --triggers  --routines
 -u root -p webgloo250710 > webgloodb.full.$x.sql
 
-
-rjha@indigloo1:~/db$ cat schema-dump.sh
+#schema-dump.sh
 
 x=`date +%d%m%Y`
 mysqldump --no-data --add-drop-table --triggers --routines
 -u root -p webgloo250710  > webgloodb.schema.$x.sql
 
-
-
-MYSQL JDBC UTF-8 char insert issue
-===================================
+# MYSQL JDBC UTF-8 char insert issue
 
 The local windows mysql DB was created as UTF-8 DB. Now we loaded/created these tables using a
 script dumped from server DB. server DB was installed with default charset (latin1)
@@ -142,7 +139,6 @@ You have to do this for all problematic tables.
 mysql> alter table gloo_auto_post  convert to character set utf8 collate utf8_general_ci ;
 
 One more related error (when altering tables to utf-8 is following:
-
 mysql> alter table gloo_page  convert to character set utf8 collate utf8_general_ci ;
 ERROR 1071 (42000): Specified key was too long; max key length is 1000 bytes
 
@@ -152,90 +148,8 @@ Now when we switch to utf8 we need (512 char x3 bytes/char = 1536 bytes) and tha
 
 mysql> alter table gloo_page modify column seo_key varchar(256);
 
-alter table gloo_page modify column seo_key varchar(256);
-alter table gloo_page modify column page_name varchar(256);
-
-alter table gloo_auto_post  convert to character set utf8 collate utf8_general_ci ;
-alter table gloo_page  convert to character set utf8 collate utf8_general_ci ;
-
-
---
--- MySQL performance
--- 
-
-On Ubuntu - The mysql conf file is in /etc/mysql/my.cnf
-
-+ make sure you have following line under [mysqld]
-skip-innodb
-
-1) How to log slow queries?
-2) 
-
-
-tuning primer script
-=====================
-latest script has some bug (the one inside localo/misc has this bug fixed)
-This script produces color output that looks garbled with less
-one idea is to start $script
-run the script and view captured output using $more
-
-Suggestions from script and changes my.cnf
-
-A)
-Perhaps you should increase your tmp_table_size and/or max_heap_table_size
-to reduce the number of disk-based temporary tables
-
-Current max_heap_table_size = 16 M
-Current tmp_table_size = 16 M
-
-B)
-You are using less than 10% of your configured max_connections.
-Lowering max_connections could help to avoid an over-allocation of memory
-See "MEMORY USAGE" section to make sure you are not over-allocating
-
-Current max_connections = 151
-Current threads_connected = 1
-Historic max_used_connections = 2
-
-
-C)
-
-Max Memory Ever Allocated : 37 M
-Configured Max Per-thread Buffers : 405 M (151x2.7)
-Configured Max Global Buffers : 32 M
-
-Max Memory Limit :- is 437M
-
-D)
-
-Your query_cache_size seems to be too high.
-Perhaps you can use these resources elsewhere
-
-
-mysqltuner.pl script
-=====================
-$wget mysqltuner.pl
-
-Table cache hit rate is high (increase table_cache)
-Total buffers: 48.0M global + 2.7M per thread (151 max threads)
-change max_connections
-
-
-General recommendations:
-    Run OPTIMIZE TABLE to defragment tables for better performance
-    MySQL started within last 24 hours - recommendations may be inaccurate
-    Reduce your overall MySQL memory footprint for system stability
-    Enable the slow query log to troubleshoot bad queries
-    Increase table_cache gradually to avoid file descriptor limits
-Variables to adjust:
-  *** MySQL's maximum memory usage is dangerously high ***
-  *** Add RAM before increasing MySQL buffer variables ***
-    table_cache (> 64)
-    
-
-
-Recommended
-==========
+#recommended
+----------------------
 
 key_buffer_size=64M
 table_cache=256
@@ -247,9 +161,8 @@ max_connections=32
 thread_cache_size=16
 
 
-How to calculate max_connections
-==================================
-
+#calculate max_connections
+-----------------------------------
 
 mysql> show variables like '%BUFFER%';
 +-------------------------+----------+
@@ -292,19 +205,18 @@ read_rnd_buffer_size    0,262144
 
 
  
-Internal Temporary Tables
-==========================
+#internal temporary tables
+--------------------------------
 In some cases, the server creates internal temporary tables while processing queries.
 This may be required for GROUP BY and DISTINCT etc. Now to see whether a SQL query will 
 use internal temporary tables, use EXPLAIN PLAN
 
 Q. when do we use in-memory temporary table and when do we use on disk temporary tables?
-
 Tables with BLOB and TEXT columns will use on disk temporary tables.
 
 
-Explain Plan
-=============
+#explain plan
+-------------
 
 
 +precede a select statement with explain [extended] keyword
@@ -349,8 +261,8 @@ mysql> explain extended select post.*, media.bucket, media.id as media_id,
 
 
 
-Mysql slow queries log
-========================
+#slow queries log
+------------------
 
 on Ubuntu machines, go to /etc/mysql/my.cnf file and turn on following 2 options under [mysqld] section
 (Query not using indexes - Better use explain plan ..)
@@ -369,10 +281,8 @@ rjha@indigloo-beta:~/mysql$ mysqldumpslow *.* | less
 
 
 
-Maosx pre-packaged MySQL
-=========================
-
-
+#Maosx pre-packaged MySQL
+--------------------------
 
 Macosx bundled mysql is installed in /usr/local/mysql
 Macosx install uses mysql defaults and there is no my.cnf as such
@@ -390,7 +300,8 @@ we have checked in macosx my.cnf in misc/ folder (there are some changes)
 mysql  Ver 14.14 Distrib 5.5.15, for osx10.6 (i386) using readline 5.1
 
 
-#How to see mysql connection ID (for questions like who is holding Tx etc.) 
+# how to see mysql connection ID (for questions like who is holding Tx etc.) 
+------------------------------------
 The connection_id is kept in general query log
 Also, we can log them to a DB table if we so wish
 
@@ -414,7 +325,9 @@ super_priv columns
 
 
 
-#PDO will not throw exceptions by default, you have to turn on the right PDO ATTRiBUTES 
+#PDO exceptions by default
+---------------------------
+PDO will not throw exceptions by default, you have to turn on the right PDO ATTRiBUTES 
 
 
 

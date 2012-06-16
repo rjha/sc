@@ -32,26 +32,42 @@ we know our RAM usage and we would like no swapping
 
  + Password change should work
     - settings | password
-
  + New 3mik registration should work.
+
+
  + Post create should work
  + Post edit should work
     - try adding images
     - try removing images.
 
+
  + Item page should work
+ + explore 3mik link should work.
+ + clicking a thumbnail on item page should work.
  + comment on a post should work
  + Like/Favorite should work
  + Sharing on Facebook/Google should work
+
+
+
  + User public profile should work.
  + Site search should work
  + Clicking a group name should work
  + Editor's pick should work
  + Random picks should work
  + Group Browsing should work
+ + categories navigation should work
+ + location navigation should work.
+ + Popular groups should work.
+
+
+ + Home - pagination should work.
+ + Home - feedback link should work.
 
  + contact page should work.
  + Activities should be updated.
+ + Sphinx indexing is working for new posts.
+ + follow/unfollow should work
 
 
 

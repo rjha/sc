@@ -1,3 +1,4 @@
+# first do a $sudo aptitude update ; $sudo aptitude safe-upgrade
 #to simulate the install (to check what is available etc.)
  sudo aptitude --simulate install $(< filename)
 #Actual install
