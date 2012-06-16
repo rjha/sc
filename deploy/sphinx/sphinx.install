@@ -1,3 +1,24 @@
+
+
+Using package
+------------------
+For ubuntu 12.04 onwards or systems including 2.0 sphinx
+install from package.
+$sudo aptitude install sphinxsearch
+
+#change sphinx to start on boot
+sudo vim /etc/default/sphinxsearc
+#change sphinx config file.
+$ sudo cp ~/code/github/sc/deploy/sphinx/sphinx.conf  /etc/sphinxsearch/.
+#remove default cron.d daily file
+sudo rm /etc/cron.d/sphinxsearch 
+
+install our own cron scripts.
+
+
+Using source
+-------------
+
 #install package g++ required for sphinx compile
 $sudo aptitude install g++
 
@@ -27,6 +48,7 @@ cd /usr/local/sphinx
 sudo cp deploy/sphinx/sphinx.conf etc/.
 #build indexes
 sudo bin/indexer --all 
+
 
 #copy init.d service
 install searchd 

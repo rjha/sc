@@ -149,15 +149,28 @@ checklist local sc_config.ini file
 copy the files to 
 $sudo cp <file> /var/www/apps/.
 
+12) Install redis
+@see deploy/redis/redis.install
+
+
+13) install logrotate script
+copy deploy/logrotate/webgloo  
+$ sudo cp webgloo.3mik /etc/logrotate.d/webgloo
+$ sudo logrotate --force /etc/logrotate.d/webgloo 
+
+14) install cron scripts
+$mkdir -p $HOME/cron
+$copy site-worker.sh and site-worker.php file
+$chmod +x site-worker.sh
+$chmod +x site-worker.php
+
+$sudo crontab -l
+$sudo crontab -e
+
+
+
 12) Reboot your machine.
 
 Now http://mint.3mik.com should show you local copy of 3mik site.
 
-13) install cron scripts
-@wip
-14) install logrotate script
-@wip
-15) install redis server
-@wip
- 
 

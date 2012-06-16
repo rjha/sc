@@ -1,0 +1,17 @@
+
+$ to see the cron tab entries loaded by root
+$sudo crontab -l
+$to add new entries
+ $sudo crontab -e
+
+
+what we are using
+-----------------
+
+# m h  dom mon dow   command
+49  * * * * /usr/local/sphinx/bin/indexer --quiet --all --rotate >> /usr/local/sphinx/var/log/cron.log 2>&1
+*/11 * * * * /home/rjha/cron/site-worker.sh >> /home/rjha/web/log/cron.log 2>&1
+
+
+indexer path would be different if you are using sphinx from package.
+log path shoudl be /var/www/log.

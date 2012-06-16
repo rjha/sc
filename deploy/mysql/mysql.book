@@ -11,7 +11,29 @@ we make some changes to default my.cnf file. This is done to ensure that
 4) logging for slow queries. 
 
 
----------------x--------------------
+-----------x mysql 5.5 ------------
+ # default-character-set is deprecated now (the server won't start)
+ # slow-query-log=1
+ # slow-query-log-file=filename
+
+AppArmor policy like for Ubnutu 12.04 is screwed. 
+inside /etc/apparmor.d/usr.sbin.mysqld
+change /var/run/mysqld/mysql.pid w,
+and /var/run/mysqld/mysql.sock w,
+To
+  /run/mysqld/mysqld.pid w,
+  /run/mysqld/mysqld.sock w,
+
+To disable apparmor policies for mysql
+ $sudo aa-disable /usr/sbin/mysqld
+To enforce again 
+ $sudo aa-enforce /usr/sbin/mysqld
+
+These utilities are part of apparmor-utils package.
+
+
+
+---------------x mysql 5.1 --------------------
 
 
 [client]
@@ -19,9 +41,8 @@ default-character-set=utf8
 
 [mysqld]
 default-time-zone='+00:00'
-default-character-set=utf8
-collation-server = utf8_general_ci
 init-connect='SET NAMES utf8'
+collation-server = utf8_general_ci
 character-set-server = utf8
 skip-character-set-client-handshake
 
@@ -50,6 +71,8 @@ default-character-set=utf8
 
 ------------------x----------------------
 
+# how to test a my.cnf file for errors.
+$sudo mysqld --defaults-file=my.cnf --verbose --help > ~/help
 
 
 # create database
@@ -330,5 +353,55 @@ super_priv columns
 PDO will not throw exceptions by default, you have to turn on the right PDO ATTRiBUTES 
 
 
+
+working with utf-8 character set
+----------------------------------
+
+#check your character set and collation.
+
+select database and issue.
+mysql> show variables like '%char%';
+mysql> show variables like '%colla%';
+
+#show character set and collation of tables
+
+mysql> show table status from <dbname>
+mysql> show create table <tablename>
+
+# create database and table with right charset and collation
+create database scdb  character set utf8 collate utf8_general_ci ;
+
+drop table if exists sc_feedback;
+create table sc_feedback(
+	id int(11) NOT NULL auto_increment,
+	created_on TIMESTAMP  default '0000-00-00 00:00:00',
+	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+ 
+
+#change character set and collation of an existing DB and table
+alter database scdb character set utf8 collate utf8_general_ci ;
+alter table sc_question convert to character set utf8 collate utf8_general_ci ;
+
+#my.cnf settings
+
+[mysql]
+[client]
+[mysqldump]
+ sections we have to add
+default-character-set=utf8
+
+[mysqld] section
+
+default-character-set=utf8 @imp: deprecated in mysql 5.5 - server won;t start.
+collation-server = utf8_general_ci @imp: should use utf8_unicode_ci if you need non-english sorting 
+init-connect='SET NAMES utf8'
+character-set-server = utf8
+skip-character-set-client-handshake
+
+
+# change user password
+-----------------------
+mysql> update user set password = password("osje8L") where user = "gloo" and host = "localhost" ;
+mysql> flush privileges;
 
 
