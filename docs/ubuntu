@@ -1,5 +1,0 @@
-
-To list all files that were installed by a package
-$dpkg -L <packagename>
-
-
