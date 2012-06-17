@@ -20,10 +20,9 @@
        <title> Thanks for visiting 3mik </title>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="/css/sc.css">
-
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
 
     </head>
 

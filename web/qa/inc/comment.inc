@@ -1,4 +1,5 @@
 <style type="text/css">
+     /* @bad comment form - inline css */
     .form-table {
         margin-bottom : 0px;
     }

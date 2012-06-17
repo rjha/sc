@@ -12,9 +12,8 @@
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
         <script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
 
-        <link rel="stylesheet" type="text/css" href="/css/sc.css">
-        <script type="text/javascript" src="/js/sc.js"></script>
-        
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?> 
         
         <script type="text/javascript">
             $(document).ready(function(){
