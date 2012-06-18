@@ -14,4 +14,11 @@ what we are using
 
 
 indexer path would be different if you are using sphinx from package.
-log path shoudl be /var/www/log.
+log path should be /var/www/log.
+
+
+On Ubuntu 12.04 LTS
+# m h  dom mon dow   command
+49  * * * * /usr/bin/indexer --quiet --all --rotate >> /var/log/sphinxsearch/cron.log 2>&1
+*/17 * * * * /home/rjha/cron/site-worker.sh >> /var/www/log/cron.log 2>&1
+

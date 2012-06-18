@@ -398,6 +398,9 @@ init-connect='SET NAMES utf8'
 character-set-server = utf8
 skip-character-set-client-handshake
 
+# How to test my.cnf settings ?
+
+$sudo mysqld --defaults-file=/etc/mysql/my.cnf --verbose --help > ~/help
 
 # change user password
 -----------------------

@@ -169,7 +169,7 @@ $sudo crontab -e
 
 
 
-12) Reboot your machine.
+15) Reboot your machine.
 
 Now http://mint.3mik.com should show you local copy of 3mik site.
 

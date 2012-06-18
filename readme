@@ -1,23 +1,39 @@
-Deployment of redis branch
- - new sc_config.ini
- - new sc-app.inc file (+redisent lib path)
-
-sc_config.ini changes :-
-bad.feed.log="/home/rjha/web/log/bad-feed.log"
-mysql.sphinx.port=9306
-[redis]
-redis.dsn="localhost:6379"
-;timeout in seconds
-redis.timeout=4
-
-
-db patch - Add new sc_bookmark table and run db-to-redis script
-compile redis 2.6 on server. Add redis init scripts.
-cron script changes - use APP_LIB_PATH in scripts now
-    (new defined constants instead of superglobal constants)
+15 June, 2012
+---------------
+_BUG_
+mail reset - should only work for 3mik source
+change password - should only work for 3mik source
+No check for very long URL
+Activities should have paging..
+limit on comment chars.
 
 
 
+
+13 June, 2012
+---------------
++ Add follow button to user public profile.
++ Play with Gearman / offline jobs etc.
++ sendgrid API web error handling.
++ The classes using our sendgrid mail wrapper should do error handing of codes 
++ change sphinx cron job to run every 1/2 hour instead of 15 mins.
++ fix site-worker cron script / run every 15 mins.
++ change sendgrid password
+  #sendgrid#3mik#94
+ Have to be changed on server at the same time.
+
++ clean reset password table please!
++ need to break site worker into smaller chunks
+ - mail reset should run within 20 mins.
++ send mail on registration 
++ instead of mail reset password : make a general Queue!
+ 
+
+
+
+
+07 june, 2012
+---------------
 
 For PHP tools
 https://github.com/sebastianbergmann
@@ -49,7 +65,6 @@ https://github.com/sebastianbergmann
 phpmd rocks!
 
 use the first one to detect errors, use the second one with design to get design advices as well.
-
 $phpmd lib/com/indigloo/sc/mysql text codesize,unusedcode,naming,design
 
 
@@ -63,6 +78,9 @@ Activities - Add comment snippet (64 chars) and post stamp tile to activity feed
 Activity - Add time also
 Activity - change follower and following Id to :- subjectId and objectId etc.
 Activity - feed should not show duplicates.
+Activity - post interest group :- people who are interested in one post
+    => like : you comment on a post and someone likes it.
+    => No comment : comment only.
 
 
 redis - compile as 32 bit application to save key space.

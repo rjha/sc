@@ -2,9 +2,49 @@
 vm.swappiness set to 20 in /etc/sysctl.conf file
 we know our RAM usage and we would like no swapping
 
-#server deployment procedure
+# New server deployment checklist
+-------------------------------------
 
-    + Test local deployment
+0. Save a snapshot of existing deployment?
+    - code snapshot
+    - DB snapshot
+    - config files :
+         my.cnf /redis.conf/sphinx.conf/php.ini / sc-app.inc/ sc_config.ini
+1. Nginx - Any configuration changes for vHost or main file?
+2. MySQL - Any my.cnf changes? 
+3. MySQL - DB backup done?
+4. MySQL - DB patching done?  
+5. MySQL - check mysql host/password/db name in sc_config.ini
+6. Sphinx - check sphinx.conf for connection string and index definitions.
+7. Sphinx - check port and DSN in sc_config.ini
+8. Sphinx - create indexes - reindex
+9. Redis - check redis.conf for settings
+10. Redis - check DSN in sc_config.ini
+11. CRON - install our cron jobs.
+12. logrotate - install our logrotate script
+13. Xcache
+14. New code from github
+ 
+
+
+RAM Calculation
+-----------------
+    NGINX   - 16M+   0.5
+    PHP-FPM - 192M+  6.0
+    MYSQL   - 256M   8.0 
+    REDIS   - 128M+  4.0 
+    SPHINX - 32M     1.0 
+    OS - 192M        6.0 
+----------------------
+    32x25.5 = 816 MB+
+---------------------
+
+
+
+# New code on server
+------------------------
+
+    + Test local deployment first
     + Any new software or package required for this change?
     Any new config variable  or changes to sc-app.inc?
     + copy latest sc-app.inc (verify path and vhost name)
