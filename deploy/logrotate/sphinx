@@ -1,37 +1,5 @@
-/var/www/log/sc-app.log {
-	size 2M
-	weekly	
-	missingok
-	rotate 3
-	compress
-	delaycompress
-	notifempty
-	create 640 www-data www-data
-}
 
-/var/www/log/php-cgi.log {
-	size 2M
-	weekly	
-	missingok
-	rotate 3
-	compress
-	delaycompress
-	notifempty
-	create 640 www-data www-data
-}
-
-/var/www/log/cron.log {
-	size 2M
-	weekly	
-	missingok
-	rotate 3
-	compress
-	delaycompress
-	notifempty
-	create 640 www-data www-data
-}
-
-#
+# sphinx logrotate is needed if you installed sphinx from source.
 # @see http://sphinxsearch.com/bugs/view.php?id=221
 # @see http://sphinxsearch.com/wiki/doku.php?id=tips_and_tricks
 # 
