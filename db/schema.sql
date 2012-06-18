@@ -193,6 +193,7 @@ CREATE TABLE  sc_post  (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+DELIMITER //
 CREATE TRIGGER trg_post_archive  BEFORE DELETE ON sc_post
     FOR EACH ROW
     BEGIN
@@ -238,10 +239,6 @@ DELIMITER //
             where post_id = NEW.id ;
     END  //
 DELIMITER ;
-
-DELIMITER //
-
-
 
 DROP TABLE IF EXISTS  sc_post_archive ;
 CREATE TABLE  sc_post_archive  (
@@ -394,7 +391,8 @@ CREATE TABLE  sc_user_group  (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
-DROP PROCEDURE IF EXISTS  UPDATE_SITE_TRACKER
+DROP PROCEDURE IF EXISTS  UPDATE_SITE_TRACKER ;
+
 DELIMITER //
 CREATE PROCEDURE  UPDATE_SITE_TRACKER (IN v_post_id int, IN v_version int)
 BEGIN
