@@ -78,7 +78,7 @@ namespace com\indigloo\sc\html {
 
         }
 
-        static function getPublic($userDBRow,$feedDataObj) {
+        static function getPublic($userDBRow,$feedDataObj,$total) {
 
             $html = NULL ;
             $view = new \stdClass;
@@ -115,6 +115,12 @@ namespace com\indigloo\sc\html {
                 $data['photo_url'] = '/css/images/twitter-icon.png' ;
             }
 
+            if($total > 0 ) {
+                array_push($columns,"num_posts");
+                $data["num_posts"] = $total ;
+                $labels["num_posts"] = '<span class="faded-text"> posts </b> </span>' ;
+            }
+
             $view->createdOn = Util::formatDBTime($userDBRow['created_on']);
             $view->columns = $columns;
             $view->data = $data;
@@ -124,6 +130,7 @@ namespace com\indigloo\sc\html {
             $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
             $feedHtml = $htmlObj->getHtml($feedDataObj);
             $view->feedHtml = empty($feedHtml) ? '' : $feedHtml ;
+            $view->total = $total ;
 
             $html = Template::render($template,$view);
             return $html ;
