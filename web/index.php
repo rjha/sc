@@ -38,10 +38,11 @@
 
     } else {
         $controllerName = $route["action"];
-        //add query part
-        if(!is_null($qpart)){
-            $route["params"]["q"] = $qpart ;
-        }
+        //add path and query 
+        $options = array();
+        $options["path"] = $requestURI ;
+        $options["query"] = $qpart;
+        $route["options"] = $options ;
 
         if(Config::getInstance()->is_debug()) {
             $message = sprintf("controller %s :: path is %s  ", $controllerName, $requestURI);
