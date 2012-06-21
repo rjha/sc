@@ -1,7 +1,7 @@
 
 <div id="gallery">
     ~foreach($view->records as $record) {~
-            <a class="gallery" rel ="group1" title="~~$record['title']~" href="~~$record['source']~" > <img src="~~$record['thumbnail']~" alt="~~$record['tname']~" width="~~$record['width']~" height="~~$record['height']~"/></a>
+            <a class="gallery" rel ="group1" title="~~$record['title']~" href="~~$record['source']~" > <img src="~~$record['thumbnail']~" alt="~~$record['title']~" width="~~$record['width']~" height="~~$record['height']~"/></a>
     ~}~
 </div>
 

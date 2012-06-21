@@ -70,7 +70,11 @@ namespace com\indigloo\sc\controller{
             //do not urlencode - as we use this value as canonical url
             $itemObj->link = $itemObj->host."/item/".$itemId ;
             $itemObj->netLink = $itemObj->netHost."/item/".$itemId ;
-            $itemObj->name = $postDBRow['title'];
+            // title in DB is 128 chars long.
+            // here on page we want to use a 70 char title.
+            // also used in item images alt text
+            $itemObj->title = Util::abbreviate($postDBRow['title'],70);
+
             $itemObj->description = $postDBRow['description'] ;
             $strItemObj = json_encode($itemObj);
             //make the json string form safe
@@ -137,8 +141,7 @@ namespace com\indigloo\sc\controller{
             $loginUrl = "/user/login.php?q=".$_SERVER['REQUEST_URI'];
             $formErrors = FormMessage::render();
 
-
-            $pageTitle = Util::abbreviate($postDBRow['title'],70);
+            $pageTitle = $itemObj->title;
             $metaDescription = Util::abbreviate($postDBRow['description'],160);
             $metaKeywords = SeoData::getMetaKeywords($group_names);
             $pageUrl = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];

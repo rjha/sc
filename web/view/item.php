@@ -2,7 +2,7 @@
 <html>
 
     <head>
-        <title> <?php echo $pageTitle; ?> - 3mik.com </title>
+        <title> <?php echo $itemObj->title; ?> - 3mik.com </title>
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
 
         <!-- opengraph curry -->
-        <meta property="og:title" content="<?php echo $itemObj->name ?>"/>
+        <meta property="og:title" content="<?php echo $itemObj->title ?>"/>
         <meta property="og:image" content="<?php echo $itemObj->picture ?>"/>
         <meta property="og:description" content="<?php echo $itemObj->description; ?>"/>
 
@@ -81,7 +81,7 @@
                         "&redirect_uri=" + encodeURIComponent(itemObj.callback) +
                         "&picture=" + itemObj.picture +
                         "&link=" + encodeURIComponent(itemObj.link) +
-                        "&name=" + encodeURIComponent(itemObj.name) +
+                        "&name=" + encodeURIComponent(itemObj.title) +
                         "&description=" + encodeURIComponent(itemObj.description) ;
 
                     webgloo.sc.item.openShareWindow("Share on Facebook", fbUrl);
@@ -140,7 +140,7 @@
             <div class="row">
                 <div class="span12">
                     <div class="page-header">
-                        <h2> <?php echo $pageTitle; ?>  </h2>
+                        <h2> <?php echo $itemObj->title; ?>  </h2>
                     </div>
                 </div>
             </div>
@@ -149,7 +149,7 @@
             <div class="row">
                 <div class="span8">
                     <?php
-                        echo \com\indigloo\sc\html\Post::getGallery($images) ;
+                        echo \com\indigloo\sc\html\Post::getGallery($itemObj->title,$images) ;
                         echo \com\indigloo\sc\html\Post::getLinks($links,$siteDBRow) ;
                         echo \com\indigloo\sc\html\Post::getDetail($postDBRow) ;
                         \com\indigloo\sc\html\Comment::renderAll($commentDBRows);

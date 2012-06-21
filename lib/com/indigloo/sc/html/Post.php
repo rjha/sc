@@ -14,7 +14,7 @@ namespace com\indigloo\sc\html {
 
     class Post {
 
-        static function getGallery($images) {
+        static function getGallery($title,$images) {
             if(sizeof($images) == 0 ) { return '' ; }
 
             $view = new \stdClass;
@@ -33,7 +33,8 @@ namespace com\indigloo\sc\html {
 
                 $record['source'] = $prefix.$image->bucket.'/'.$image->storeName ;
                 $record['thumbnail'] = $timage;
-                $record['title'] = $image->originalName;
+                $record['title'] = $title;
+                $record['originalName'] = $image->originalName;
                 $record['tname'] = $tname;
 
                 $newxy = Util::foldXY($image->width,$image->height,190,140);
@@ -210,6 +211,10 @@ namespace com\indigloo\sc\html {
             $view->hasImage = false ;
             $view->hasGroups = false ;
             $view->id = $row['id'];
+            // title in DB is 128 chars long.
+            // here on page we want to use a 70 char title.
+            // also used in item images alt text
+            $view->title = Util::abbreviate($row['title'],70);
             $view->itemId = PseudoId::encode($view->id);
             $view->description = ($options["abbreviate"]) ?
                     Util::abbreviate($row["description"],160) : $row['description'] ;
