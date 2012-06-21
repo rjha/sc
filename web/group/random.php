@@ -10,18 +10,11 @@
     $groups = $groupDao->getRandom(50);
 
     $title = "Random groups";
+
+    $hasPagination = false ;
     $hasNavigation = true ;
+    $hasAlpha = false ;
 
     include(APP_WEB_DIR.'/group/inc/body.inc');
 
 ?>
-       </div> <!-- container -->
-        <div id="ft">
-            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
-        </div>
-
-    </body>
-</html>
-
-
-

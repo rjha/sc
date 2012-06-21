@@ -29,18 +29,10 @@
 
     $pageBaseUrl = "/group/all.php" ;
     $title = "All groups";
+
+    $hasPagination = true ;
     $hasNavigation = true ;
+    $hasAlpha = false ;
 
     include(APP_WEB_DIR.'/group/inc/body.inc');
-
 ?>
-   </div> <!-- container -->
-   <hr>
-    <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
-    <div id="ft">
-        <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
-    </div>
-
-    </body>
-</html>
-

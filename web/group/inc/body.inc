@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -75,6 +74,17 @@
                         ?> 
 
                 </div>
+                <?php if($hasAlpha) { include("inc/alpha.inc");  } ?>
 
             </div>
-         
+        </div> <!-- container -->
+    <div class="hr"> </div>
+    <?php if($hasPagination) { $paginator->render($pageBaseUrl,$startId,$endId); } ?>
+    <div id="ft">
+        <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
+    </div>
+
+    </body>
+</html>
+
+     
