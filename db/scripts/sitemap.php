@@ -37,43 +37,64 @@
         write_on_disk('sitemap.xml',$xmlString);
     }
 
-    function create_groups($mysqli) {
-        //get 5000 latest groups
+    function create_groups_map($mysqli) {
         $xml = '<?xml version="1.0" encoding="UTF-8"?> ' ;
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">  </urlset>' ;
         $xmlDoc  = new SimpleXMLElement($xml);
 
-        $sql = "select g.token from sc_group_master g order by g.id desc limit 5000 ";
-        $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+        //get 5000 latest groups
+        $lastId = 0 ;
+        for($page = 1 ; $page <= 50 ; $page++ ){
+            if($page == 1 ) {
+                $rows = \com\indigloo\sc\mysql\Group::getLatest(100,array());
+            }else {
+                $start = $lastId ;
+                $direction = 'after' ;
+                $rows = \com\indigloo\sc\mysql\Group::getPaged($start,$direction,100,array());
+            }
 
-        foreach($rows as $row) {
-            $loc = "http://www.3mik.com/group/%s";
-            $loc = sprintf($loc,$row['token']);
-            $urlNode = $xmlDoc->addChild('url');
-            $urlNode->addChild('loc',$loc);
-            $urlNode->addChild('lastmod',date('Y-m-d'));
+            foreach($rows as $row) {
+                $loc = "http://www.3mik.com/group/%s";
+                $loc = sprintf($loc,$row['token']);
+                $urlNode = $xmlDoc->addChild('url');
+                $urlNode->addChild('loc',$loc);
+                //last modified date is max(created_on,updated_on)
+                
+
+                $urlNode->addChild('lastmod',date('Y-m-d'));
+                $lastId = $row['id'];
+            }
+
         }
 
         $xmlString = $xmlDoc->asXML(); 
-        //write to file
         write_on_disk('sitemap_groups.xml',$xmlString);
     }
 
-    function create_items($mysqli) {
-        //get 5000 latest items
+    function create_items_map($mysqli) {
         $xml = '<?xml version="1.0" encoding="UTF-8"?> ' ;
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">  </urlset>' ;
         $xmlDoc  = new SimpleXMLElement($xml);
 
-        $sql = "select p.pseudo_id from sc_post p order by p.id desc limit 5000 ";
-        $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+        //get 5000 latest items
+        $lastId = 0 ;
+        for($page = 1 ; $page <= 50 ; $page++ ){
+            if($page == 1 ) {
+                $rows = \com\indigloo\sc\mysql\Post::getLatest(100,array());
+            }else {
+                $start = $lastId ;
+                $direction = 'after' ;
+                $rows = \com\indigloo\sc\mysql\Post::getPaged($start,$direction,100,array());
+            }
 
-        foreach($rows as $row) {
-            $loc = "http://www.3mik.com/item/%s";
-            $loc = sprintf($loc,$row['pseudo_id']);
-            $urlNode = $xmlDoc->addChild('url');
-            $urlNode->addChild('loc',$loc);
-            $urlNode->addChild('lastmod',date('Y-m-d'));
+            foreach($rows as $row) {
+                $loc = "http://www.3mik.com/item/%s";
+                $loc = sprintf($loc,$row['pseudo_id']);
+                $urlNode = $xmlDoc->addChild('url');
+                $urlNode->addChild('loc',$loc);
+                $urlNode->addChild('lastmod',date('Y-m-d'));
+                $lastId = $row['id'];
+            }
         }
 
         $xmlString = $xmlDoc->asXML(); 
@@ -85,8 +106,9 @@
     $mysqli = MySQL\Connection::getInstance()->getHandle();
     create_index();
     sleep(2);
-    create_groups($mysqli);
+    create_groups_map($mysqli);
     sleep(2);
-    create_items($mysqli);
+    create_items_map($mysqli);
+    $mysqli->close();
 
    ?>
