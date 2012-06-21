@@ -1,155 +1,78 @@
-15 June, 2012
+@bugs
 ---------------
-_BUG_
 mail reset - should only work for 3mik source
 change password - should only work for 3mik source
-No check for very long URL
-Activities should have paging..
-limit on comment chars.
+No check for very long URL on item post.
+User profile page - should show count of post.
+Comment Box should inform about max chars - 512
+Add follow button to user public profile.
 
 
 
 
-13 June, 2012
----------------
-+ Add follow button to user public profile.
+@todo
+-----------
 + Play with Gearman / offline jobs etc.
-+ sendgrid API web error handling.
-+ The classes using our sendgrid mail wrapper should do error handing of codes 
-+ change sphinx cron job to run every 1/2 hour instead of 15 mins.
-+ fix site-worker cron script / run every 15 mins.
 + change sendgrid password
   #sendgrid#3mik#94
- Have to be changed on server at the same time.
-
-+ clean reset password table please!
-+ need to break site worker into smaller chunks
- - mail reset should run within 20 mins.
++ clean reset password table in site worker script
 + send mail on registration 
-+ instead of mail reset password : make a general Queue!
- 
++ instead of mail reset password : make a general queue!
++ Better job queue.
++ Activity - Add time also
++ Activity - have a look again at the design - Right now one user can hogg the channel.
++ sphinx query.log analysis
++ redis - use test and stable - databases.
++ Activities should have paging.
++ test webgloo.ui.pagination class
++ Move all constants to sc\Constants file. e.g. FEATURE_POST
++ Add pub_id (or pseudo_id) column to for users and whatever uses pseudo_id
++ ui filters - should apply type (e.g. int) based cast
++ ui filter - cannot be empty
 
-
-
-
-07 june, 2012
----------------
-
-For PHP tools
-https://github.com/sebastianbergmann
-
-/*
- static function find($subjectId,$objectId,$verb) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-
-            //sanitize input
-            settype($subjectId,"integer");
-            settype($objectId,"integer");
-            settype($verb,"integer");
-
-            $sql = " select count(id) as count from sc_bookmark " ;
-            $sql .= " where subject_id = %d and object_id = %d and verb = %d ";
-            $sql = sprintf($sql,$loginId,$itemId,$verb);
-
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-        }
-*/
-
-#phpcs is freaking verbose and not at all useful
-# php -l : only for uninitialized variables etc
-# pfff/scheck : does not detect as well
-# How about hiphop's static analysis?
-# rips - code is object oriented and not supported
-
-phpmd rocks!
-
-use the first one to detect errors, use the second one with design to get design advices as well.
-$phpmd lib/com/indigloo/sc/mysql text codesize,unusedcode,naming,design
-
-
-
-04 June 2012
----------------------------------
-Add activities to home page
-Activity - Add data for users and add to email queue also
-Activity - distinguish no result (empty array() ) vs. error case (redis not up)
-Activities - Add comment snippet (64 chars) and post stamp tile to activity feeds
-Activity - Add time also
-Activity - change follower and following Id to :- subjectId and objectId etc.
-Activity - feed should not show duplicates.
-Activity - post interest group :- people who are interested in one post
-    => like : you comment on a post and someone likes it.
-    => No comment : comment only.
-
-
-redis - compile as 32 bit application to save key space.
-redis - use 2.6 RC instead of 2.2 or 2.4?
-redis - test deployment on ubuntu natty machine.
-
-Data for activities
-@imp:
-script for sc_user_bookmark => sc_bookmrk data transfer
-sc_bookmark  => load data into redis sets
-sc_follow  => load data into redis sets
-
-
-
-Automatic versioning of css and js files
-pagination for redis.io List (LPUSH so slot 0 has latest item)
-test webgloo.ui.pagination class
-error checks :- simulated DBExceptions and real ones
-Move all constants to sc\Constants file. e.g. FEATURE_POST
-Add pub_id (or pseudo_id) column to for users and whatever uses pseudo_id
-
-
-
-
-our filters - should apply type (e.g. int) based cast
-filter - cannot be empty
-
-Do we want to store form escaped data - e.g. single quote to &#039;
-Spinx - better indexes - filter on index
-placeholder image on site/go-static and automatic pages
-Nice feedback from ajax scripts
-
-Reload ajax action that was disrupted by login screen
-group: Alphabetical push buttons instead of Alpha bar that we have right now.
-Help content
-supercow button for admins
-Capture additional data for sites / Items
-+ All UNIQ Key errors: check in UI via Ajax before hitting DB
-+ Add caching headers to old S3 images
-
-User dashboard - followers/following page.
-Pagination on monitor app/user dashboard
++ Do we want to store form escaped data - e.g. single quote to &#039;
++ Spinx - better indexes - filter on index
++ Nice feedback from ajax scripts
++ Reload ajax action that was disrupted by login screen
++ group: Alphabetical push buttons instead of Alpha bar that we have right now.
++ Help content
++ supercow button for admins
++ capture additional data for sites / Items
++ add caching headers to old S3 images
++ pagination on monitor app/user dashboard
++ use redis for storing user sessions?
 
 
 @later
 -------------------------
 mysql innodb tuning
-sitemap - automatically generate every week
 Better sharing with friends and social networks
 json_enocde and json_deocde error checks everywhere with json_error_last
 file upload - more than 256 chars in name ?
-Async processes - registration /reset password mails , thumbnail creation
-Capture use activity
-Redis for session and async job processing
-Interest based browsing?
-Mix photos with group browsing?
-Sphinx delta indexing
-Add SSL support for login page?
+interest based browsing?
+mix photos with group browsing?
+add SSL support for login page?
 create ICU resource bundles with php-intl
-Send tokens used for Sphinx queries
+send tokens used for Sphinx queries
 remove $_SERVER from everywhere
     - it should be possible to run our scripts using cli SAPI also
+sphinx delta indexing
+async job processing
 
 
+@undecided
+All UNIQ Key errors: check in UI via Ajax before hitting DB
 
 
 @done
-------------------------
-sphinx query.log as email attachment
+-----------------------------
+use redis for activities
+capture use activity
+sitemap - new sitemap posted.
+User dashboard - followers/following page.
+Automatic versioning of css and js files
+redis - compile as 32 bit application ? NO
+redis - use 2.6 RC instead of 2.2 or 2.4? YES
 shut off Nginx/PHP version  advertising
 URL like http://www.3mik.com/group/beta.php should return nginx 404
 PHP : No input file found exception
@@ -198,3 +121,7 @@ MYSQL error handling : cleanup / throwing exceptions / do not trigger errors
 
 URL tampering => we should not error out on bad params or URL
 put sphinx mysql connector IP and port in config file.
+
+Error handling in Sendgrid mail web API wrapper 
+
+

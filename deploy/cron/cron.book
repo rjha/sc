@@ -44,6 +44,16 @@ Run once a day, "0 0 * * *".
 @hourly
 Run once an hour, "0 * * * *".
 
+To change crontab editor
+------------------------------
+A. sudo update-alternatives --config editor
+B. sudo select-editor
+C. Add 
+EDITOR=vim 
+export EDITOR
+to your .bashrc
+
+B worked for sudo, A works for normal user account.
 
 
 
