@@ -39,7 +39,7 @@
         $uploader->process($prefix,"qqfile");
         
     } else {
-        trigger_error("what is this?", E_USER_ERROR); 
+        trigger_error("file upload is unable to determine pipe", E_USER_ERROR); 
     }
 
     //first - process the errors
