@@ -38,19 +38,8 @@
     $pageBaseUrl = "/group/user/all.php" ;
     $title = sprintf("%s's groups",$login->name);
     $hasNavigation = false ;
+    include(APP_WEB_DIR."/view/group/folder.php");
 
-    include(APP_WEB_DIR.'/group/inc/body.inc');
-
-
-    
 
 ?>
-   </div> <!-- container -->
-   <hr>
-    <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
-    <div id="ft">
-        <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
-    </div>
-
-    </body>
-</html>
+  
