@@ -1,6 +1,13 @@
 <?php
 
     /*
+     * v1. 22 June 2012
+     *
+     * what this script does?
+     *
+     * This script allows you to modify  headers for existing sc_media objects in Amazon S3
+     * This script can be used to alter caching headers or mime types.
+     *
      * @issue with sdk-1.5.7 : the script will complain about bad SSL certificate,
      * whether you use in-built cert  (true) or use one from your system (false)
      *
@@ -10,7 +17,7 @@
      * 552 $scheme = $this->use_ssl ? 'https://' : 'http://';
      * 553 $scheme =  'http://';
      * 
-     * $sudo php s3-add-cache.php >> s3.log 2>&1
+     * $sudo php s3-add-headers.php >> s3.log 2>&1
      * and then you can tail the log file.
      *
      * 1)
@@ -37,6 +44,7 @@
     include(WEBGLOO_LIB_ROOT . '/com/indigloo/error.inc');
 
     use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\mysql as MySQL ;
 
     error_reporting(-1);
     set_error_handler("offline_error_handler");
@@ -45,27 +53,33 @@
     //no buffer for command line.
     ob_end_flush();
 
-    function print_headers($s3,$bucket,$name) {
+    function print_object_headers($s3,$bucket,$name) {
         $response = $s3->get_object_headers($bucket, $name);
         print_r($response);
     }
 
-    function add_caching_headers($s3,$bucket,$name,$itemId) {
+    function add_object_headers($s3,$bucket,$name,$rowId,$mime) {
         $source = array("bucket" => $bucket, "filename" => $name);
         $dest = array("bucket" => $bucket, "filename" => $name);
 
         //caching headers
         $offset = 3600*24*365;
         $expiresOn = gmdate('D, d M Y H:i:s \G\M\T', time() + $offset);
-        $headers = array('Expires' => $expiresOn, 'Cache-Control' => 'public, max-age=31536000');
+
+        $headers = array();
+        $headers["Expires"] = $expiresOn ;
+        $headers["Cache-Control"] =  "public, max-age=31536000" ;
+        $headers["Content-Type"] =  $mime ;
+
         $meta = array('acl' => AmazonS3::ACL_PUBLIC, 'headers' => $headers);
 
         $response = $s3->copy_object($source,$dest,$meta);
         if($response->isOk()){
-            printf("copy :: %d :: http://%s/%s \n",$itemId,$bucket,$name);
+            printf("s3 object copy :: %d :: http://%s/%s  done \n",$rowId,$bucket,$name);
 
         }else {
-            printf("Error :: copy :: %s \n",$name);
+            printf("Error :: s3 object copy :: %d :: http://%s/%s  \n",$rowId,$bucket,$name);
+            exit ;
         }
     }
 
@@ -91,19 +105,48 @@
 
     }
 
-    //get image paths from DB
+    // + start 
+
     $mysqli = \com\indigloo\mysql\Connection::getInstance()->getHandle();
-    for($page = 1 ; $page <= 40; $page++) {
-        $offset = (($page-1) * 50) ;
-        $sql = "select id, bucket,stored_name,created_on  from sc_media where created_on < '2012-03-21' order by id limit %d,50";
-        $sql = sprintf($sql,$offset);
-        $rows = \com\indigloo\mysql\Helper::fetchRows($mysqli,$sql);
+
+    $sql = "select count(id) as total from sc_media " ;
+    $row = MySQL\Helper::fetchRow($mysqli, $sql);
+    $total = $row["total"] ;
+    $pageSize = 50 ;
+    $pages = ceil($total / $pageSize);
+    $count = 0 ;
+
+    //while($count  <= $pages ){
+    while($count  <= 1 ){
+        $start =  ($count * $pageSize ) + 1 ;
+        $end = $start + ($pageSize - 1 ) ;
+
+        $sql = " select * from sc_media where  id <= 173 and id >= 171 ";
+        //$sql = " select * from sc_media where  (id <= {end}) and (id >= {start} ) ";
+        //$sql = str_replace(array("{end}", "{start}"),array( 0 => $end, 1=> $start),$sql);
+        $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+        printf("processing media rows between %d and %d \n",$start,$end);
 
         foreach($rows as $row) {
-            $name = $row["stored_name"];
-            add_caching_headers($s3,$bucket,$name,$row['id']);
+            $s3name = $row["stored_name"];
+            $name = $row["original_name"];
+            $rowId = $row["id"];
+
+            // get mime from name.
+            $mime = \com\indigloo\Util::getMimeFromName($name);
+            if(empty($mime)) {
+                //report it
+                printf("Bad mime type for media id %d \n" ,$rowId);
+                $mime = "application/octet-stream" ;
+            }
+
+            add_object_headers($s3,$bucket,$s3name,$rowId,$mime);
             sleep(1);
         }
+
+
+        $count++ ;
     }
+
 
 ?>
