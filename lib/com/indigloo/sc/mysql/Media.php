@@ -48,13 +48,13 @@ namespace com\indigloo\sc\mysql {
             $mediaId = NULL ;
 
             $sql = " insert into sc_media(bucket,original_name, stored_name, " ;
-            $sql .= " size,mime, original_height, original_width,created_on,store,thumbnail) ";
-            $sql .= " values(?,?,?,?,?,?,?,now(),?,?) ";
+            $sql .= " size,mime, original_height, original_width,created_on,store,thumbnail,thumbnail_name) ";
+            $sql .= " values(?,?,?,?,?,?,?,now(),?,?,?) ";
 
             $stmt = $mysqli->prepare($sql);
 
             if ($stmt) {
-                $stmt->bind_param("sssisiiss",
+                $stmt->bind_param("sssisiisss",
                         $mediaVO->bucket,
                         $mediaVO->originalName,
                         $mediaVO->storeName,
@@ -63,7 +63,8 @@ namespace com\indigloo\sc\mysql {
                         $mediaVO->height,
                         $mediaVO->width,
                         $mediaVO->store,
-                        $mediaVO->thumbnail);
+                        $mediaVO->thumbnail,
+                        $mediaVO->thumbnailName);
 
 
                 $stmt->execute();
