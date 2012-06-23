@@ -1219,7 +1219,6 @@ CREATE TRIGGER trg_google_user_cp  BEFORE INSERT ON sc_google_user
 DELIMITER ;
 
 --
--- @next push
 -- 01 june 2012
 --
 --
@@ -1300,4 +1299,12 @@ CREATE TABLE  sc_preference (
   PRIMARY KEY ( id )) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 alter table  sc_preference add constraint UNIQUE uniq_login (login_id);
+
+
+
+
+--
+-- @next push
+--
+
 

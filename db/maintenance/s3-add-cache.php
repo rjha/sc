@@ -109,7 +109,7 @@
 
     $mysqli = \com\indigloo\mysql\Connection::getInstance()->getHandle();
 
-    $sql = "select count(id) as total from sc_media " ;
+    $sql = "select max(id) as total from sc_media " ;
     $row = MySQL\Helper::fetchRow($mysqli, $sql);
     $total = $row["total"] ;
     $pageSize = 50 ;
