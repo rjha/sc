@@ -116,14 +116,12 @@
     $pages = ceil($total / $pageSize);
     $count = 0 ;
 
-    //while($count  <= $pages ){
-    while($count  <= 1 ){
+    while($count  <= $pages ){
         $start =  ($count * $pageSize ) + 1 ;
         $end = $start + ($pageSize - 1 ) ;
 
-        $sql = " select * from sc_media where  id <= 173 and id >= 171 ";
-        //$sql = " select * from sc_media where  (id <= {end}) and (id >= {start} ) ";
-        //$sql = str_replace(array("{end}", "{start}"),array( 0 => $end, 1=> $start),$sql);
+        $sql = " select * from sc_media where  (id <= {end}) and (id >= {start} ) ";
+        $sql = str_replace(array("{end}", "{start}"),array( 0 => $end, 1=> $start),$sql);
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
         printf("processing media rows between %d and %d \n",$start,$end);
 
