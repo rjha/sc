@@ -12,7 +12,7 @@ namespace com\indigloo\sc\html\feed {
         function __construct() {
 
             $this->map = array(AppConstants::COMMENT_VERB => 'commented on',
-                AppConstants::FAVORITE_VERB => 'saved',
+                AppConstants::FAVORITE_VERB => 'added to favorites',
                 AppConstants::FOLLOWING_VERB => 'is following',
                 AppConstants::LIKE_VERB => 'likes',
                 AppConstants::POST_VERB => "posted");

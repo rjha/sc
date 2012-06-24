@@ -50,11 +50,11 @@
             break ;
         case UIConstants::SAVE_POST:
             $bookmarkDao->favorite($ownerId,$loginId,$name,$itemId,$title);
-            $message = sprintf("Item %s is added to your favorite list.",$title);
+            $message = sprintf("Item %s added to favorites",$title);
             break;
         case UIConstants::REMOVE_POST :
              $bookmarkDao->unfavorite($loginId,$itemId);
-             $message = sprintf("Item %s was removed from your favorite list.",$title);
+             $message = sprintf("Item %s removed from favorites",$title);
              break ;
         default :
             break;
