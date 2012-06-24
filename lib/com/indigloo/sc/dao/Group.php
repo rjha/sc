@@ -40,8 +40,8 @@ namespace com\indigloo\sc\dao {
 
         }
 
-        function getUserGroups($limit,$filters=array()) {
-            $rows = mysql\Group::getUserGroups($limit,$filters);
+        function getLatestUserGroups($limit,$filters=array()) {
+            $rows = mysql\Group::getLatestUserGroups($limit,$filters);
             return $rows ;
         }
 
@@ -49,7 +49,7 @@ namespace com\indigloo\sc\dao {
             $limit = $paginator->getPageSize();
 
             if($paginator->isHome()){
-                return $this->getUserGroups($limit,$filters);
+                return $this->getLatestUserGroups($limit,$filters);
             } else {
 
                 $params = $paginator->getDBParams();

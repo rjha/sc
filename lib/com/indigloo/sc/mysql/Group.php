@@ -93,7 +93,7 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function getUserGroups($limit,$filters) {
+        static function getLatestUserGroups($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input
@@ -106,7 +106,7 @@ namespace com\indigloo\sc\mysql {
             $q->filter($filters);
 
             $sql .= $q->get();
-            $sql .= " order by ug.id LIMIT %d " ;
+            $sql .= " order by ug.id desc LIMIT %d " ;
             $sql = sprintf($sql,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
