@@ -8,6 +8,8 @@ namespace com\indigloo\sc\html {
     use com\indigloo\Url as Url ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
 
+    use \com\indigloo\sc\auth\Login as Login ;
+
     class User {
 
         /**
@@ -117,8 +119,8 @@ namespace com\indigloo\sc\html {
 
             if($total > 0 ) {
                 array_push($columns,"num_posts");
-                $data["num_posts"] = $total ;
-                $labels["num_posts"] = '<span class="faded-text"> posts </b> </span>' ;
+                $data["num_posts"] = "" ;
+                $labels["num_posts"] = '<span class="faded-text"> '.$total.' posts </b> </span>' ;
             }
 
             $view->createdOn = Util::formatDBTime($userDBRow['created_on']);
@@ -131,6 +133,12 @@ namespace com\indigloo\sc\html {
             $feedHtml = $htmlObj->getHtml($feedDataObj);
             $view->feedHtml = empty($feedHtml) ? '' : $feedHtml ;
             $view->total = $total ;
+
+            $view->followingId = $userDBRow["login_id"];
+            $encodedId = PseudoId::encode($view->followingId);
+            $view->publicUrl = "/pub/user/".$encodedId ;
+            //userId in session is follower
+            $view->followerId = Login::tryLoginIdInSession();
 
             $html = Template::render($template,$view);
             return $html ;

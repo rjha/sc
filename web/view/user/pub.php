@@ -21,6 +21,7 @@
             $(document).ready(function(){
                 webgloo.sc.home.addTiles();
                 webgloo.sc.home.addNavGroups();
+                webgloo.sc.item.addActions();
             });
         </script>
 
