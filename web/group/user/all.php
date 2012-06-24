@@ -2,6 +2,7 @@
 
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
+    include(APP_WEB_DIR . '/inc/role/user.inc');
 
     use \com\indigloo\Url as Url ;
     use \com\indigloo\ui\Pagination as Pagination;
