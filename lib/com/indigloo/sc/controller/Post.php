@@ -73,11 +73,11 @@ namespace com\indigloo\sc\controller{
             // title in DB is 128 chars long.
             // here on page we want to use a 70 char title.
             // also used in item images alt text
+            // item description should be 160 chars.
             $itemObj->title = Util::abbreviate($postDBRow['title'],70);
-
-            $itemObj->description = $postDBRow['description'] ;
+            $itemObj->description = Util::abbreviate($postDBRow['description'],160);
             $strItemObj = json_encode($itemObj);
-            //make the json string form safe
+            //make the item json string form safe
             $strItemObj = Util::formSafeJson($strItemObj);
 
 
