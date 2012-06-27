@@ -1,7 +1,11 @@
 <?php
-$params = array('q' => urlencode(\com\indigloo\Url::current()));
+// not logged in - so share/ask click should take you back to share/ask
+// after login is done.
+
+$params = array();
 $shareUrl = \com\indigloo\Url::createUrl('/share/new.php',$params);
 $askUrl = \com\indigloo\Url::createUrl('/qa/new.php',$params);
+
 ?>
 
 <div id="header">
@@ -20,7 +24,7 @@ $askUrl = \com\indigloo\Url::createUrl('/qa/new.php',$params);
                         <li class="divider-vertical"></li>
                     </ul> <!-- links -->
                 </div>
-                <div class="pull-left"> 
+                <div class="pull-left">
                     <form method="GET" action="/search/site">
                         <input id="site-search" name="gt" type="text" class="search-query" placeholder="Search">
                     </form>
