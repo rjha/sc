@@ -192,16 +192,22 @@ webgloo.sc.SimplePopup = {
 
             case 401:
                 // authentication failure
-                // redirect to login page with resume payload
-                qUrl = encodeURIComponent(window.location.href);
+                // redirect to login page with pending session action
+
                 // @imp  dataObj.params should be an object containing simple
                 // key value pairs. Params keys or values can again be objects
                 // but it is better to avoid that complexity.
                 // on the other end, this params object will be passed as it is to
                 // PHP http_build_query method.
 
-                g_ajax_post_data =  encodeBase64(JSON.stringify(dataObj));
-                gotoUrl = '/user/login.php?g_ajax_post=1&q='+qUrl + '&g_ajax_post_data=' + g_ajax_post_data;
+                dataObj.qUrl = window.location.href;
+                dataObj.method = "POST";
+
+                g_action_data =  encodeBase64(JSON.stringify(dataObj));
+                //encode for use in URL query string
+                qUrl = encodeURIComponent(window.location.href);
+                gotoUrl = '/user/login.php?q='+qUrl + '&g_session_action=' + g_action_data;
+
                 window.location.replace(gotoUrl);
                 break;
             case 500:
@@ -229,7 +235,7 @@ webgloo.sc.SimplePopup = {
             url: dataObj.endPoint,
             type: options.type ,
             dataType: options.dataType,
-            data : dataObj.params,
+            data :  dataObj.params,
             timeout: 9000,
             processData:true,
             //js errors callback
@@ -264,25 +270,31 @@ webgloo.sc.item = {
         //feature posts
         $("a.feature-post-link").click(function(event){
             event.preventDefault();
-            var dataObj = {}
-            dataObj.postId  = $(this).attr("id");
-            dataObj.action = "ADD" ;
-            var targetUrl = "/monitor/ajax/feature.php";
+
+            var dataObj = {} ;
+            dataObj.params = {} ;
+            dataObj.params.postId  = $(this).attr("id");
+            dataObj.params.action = "ADD" ;
+            dataObj.endPoint = "/monitor/ajax/feature.php";
+
             //open popup
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
+            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json"});
         }) ;
 
         //unfeature posts
         $("a.unfeature-post-link").click(function(event){
             event.preventDefault();
-            var dataObj = {}
-            dataObj.postId  = $(this).attr("id");
-            dataObj.action = "REMOVE" ;
-            var targetUrl = "/monitor/ajax/feature.php";
+
+            var dataObj = {} ;
+            dataObj.params = {} ;
+            dataObj.params.postId  = $(this).attr("id");
+            dataObj.params.action = "REMOVE" ;
+            dataObj.endPoint = "/monitor/ajax/feature.php";
+
             //open popup
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
+            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json"});
         }) ;
 
     },
@@ -290,14 +302,16 @@ webgloo.sc.item = {
         //add like & save callbacks
         $("a.like-post-link").click(function(event){
             event.preventDefault();
-            var dataObj = {}
-            dataObj.itemId  = $(this).attr("id");
-            dataObj.action = "LIKE" ;
-            var targetUrl = "/qa/ajax/bookmark.php";
+
+            var dataObj = {} ;
+            dataObj.params = {} ;
+            dataObj.params.itemId  = $(this).attr("id");
+            dataObj.params.action = "LIKE" ;
+            dataObj.endPoint = "/qa/ajax/bookmark.php";
 
             //open popup
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
+            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json"});
         }) ;
 
         $("a.favorite-post-link").click(function(event){
@@ -308,21 +322,25 @@ webgloo.sc.item = {
             dataObj.params.itemId  = $(this).attr("id");
             dataObj.params.action = "SAVE" ;
             dataObj.endPoint = "/qa/ajax/bookmark.php";
-            
+
             //open popup
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json"});
         }) ;
+
         //unfavorite
         $("a.remove-post-link").click(function(event){
             event.preventDefault();
-            var dataObj = {}
-            dataObj.itemId  = $(this).attr("id");
-            dataObj.action = "REMOVE" ;
-            var targetUrl = "/qa/ajax/bookmark.php";
+
+            var dataObj = {} ;
+            dataObj.params = {} ;
+            dataObj.params.itemId  = $(this).attr("id");
+            dataObj.params.action = "REMOVE" ;
+            dataObj.endPoint = "/qa/ajax/bookmark.php";
+
             //open popup
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj,{
+            webgloo.sc.SimplePopup.post(dataObj,{
                 "dataType" : "json",
                 "reload" : true,
                 "keepOpen" : false});
@@ -332,37 +350,43 @@ webgloo.sc.item = {
 
         $("a.follow-user-link").click(function(event){
             event.preventDefault();
-            var dataObj = {}
+
             var id = $(this).attr("id");
             //parse id to get follower and following
             var ids = id.split('|');
             //u1 -> u2
-            dataObj.followerId  = ids[0] ;
-            dataObj.followingId = ids[1];
-            dataObj.action = "FOLLOW" ;
 
-            var targetUrl = "/qa/ajax/social-graph.php";
+            var dataObj = {} ;
+            dataObj.params = {} ;
+            dataObj.params.followerId  = ids[0] ;
+            dataObj.params.followingId  = ids[1] ;
+            dataObj.params.action = "FOLLOW" ;
+            dataObj.endPoint = "/qa/ajax/social-graph.php";
+
             //open popup
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
+            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json"});
         }) ;
 
         $("a.unfollow-user-link").click(function(event){
 
             event.preventDefault();
-            var dataObj = {}
+
             var id = $(this).attr("id");
             //parse id to get follower and following
             var ids = id.split('|');
             //u1 -> u2
-            dataObj.followerId  = ids[0] ;
-            dataObj.followingId = ids[1];
-            dataObj.action = "UNFOLLOW" ;
 
-            var targetUrl = "/qa/ajax/social-graph.php";
+            var dataObj = {} ;
+            dataObj.params = {} ;
+            dataObj.params.followerId  = ids[0] ;
+            dataObj.params.followingId  = ids[1] ;
+            dataObj.params.action = "UNFOLLOW" ;
+            dataObj.endPoint = "/qa/ajax/social-graph.php";
+
             //open popup
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj,
+            webgloo.sc.SimplePopup.post(dataObj,
                 {
                     "dataType" : "json",
                     "reload" : true,

@@ -5,8 +5,6 @@
 
     use \com\indigloo\Util as Util;
     use \com\indigloo\sc\auth\Login as Login;
-    use \com\indigloo\sc\util\PseudoId ;
-    use \com\indigloo\sc\ui\Constants as UIConstants ;
 
     set_error_handler('webgloo_ajax_error_handler');
     $message = NULL ;
@@ -19,48 +17,18 @@
         exit;
     }
 
-    //parameters
+    // params
+    //@todo - pass parameters w/o any processing to command.
+    $params = new \stdClass;
     $login = Login::getLoginInSession();
-    $loginId = $login->id ;
-    $name = $login->name ;
+    $params->loginId = $login->id ;
+    $params->name = $login->name ;
 
-    $itemId = Util::getArrayKey($_POST, "itemId");
-    //action from ajax post can be
-    // 1. LIKE 2. SAVE 3. REMOVE
-    $action = Util::tryArrayKey($_POST, "action");
+    $params->action = Util::tryArrayKey($_POST, "action");
+    $params->itemId = Util::getArrayKey($_POST, "itemId");
 
-    if(empty($action) || empty($itemId)) {
-        $message = array("code" => 500 , "message" => "Bad input: missing required parameters.");
-        $html = json_encode($message);
-        echo $html;
-        exit;
-    }
-
-    $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
-    $postDao = new \com\indigloo\sc\dao\Post();
-    $postId = PseudoId::decode($itemId);
-    $postDBRow = $postDao->getOnId($postId);
-    $title = $postDBRow['title'];
-    $ownerId = $postDBRow['login_id'];
-
-    switch($action) {
-        case UIConstants::LIKE_POST:
-            $bookmarkDao->like($ownerId,$loginId,$name,$itemId,$title);
-            $message = sprintf("Like for item %s is success.",$title);
-            break ;
-        case UIConstants::SAVE_POST:
-            $bookmarkDao->favorite($ownerId,$loginId,$name,$itemId,$title);
-            $message = sprintf("Item %s added to favorites",$title);
-            break;
-        case UIConstants::REMOVE_POST :
-             $bookmarkDao->unfavorite($loginId,$itemId);
-             $message = sprintf("Item %s removed from favorites",$title);
-             break ;
-        default :
-            break;
-    }
-    
-    $html = array("code" => 200 , "message" => $message);
-    $html = json_encode($html);
+    $command = new \com\indigloo\sc\command\Bookmark();
+    $response = $command->execute($params);
+    $html = json_encode($response);
     echo $html;
 ?>

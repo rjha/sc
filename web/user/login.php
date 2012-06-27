@@ -9,6 +9,7 @@
     use com\indigloo\Configuration as Config;
     use com\indigloo\ui\form\Message as FormMessage;
 
+     $gWeb = \com\indigloo\core\Web::getInstance();
     //do we already have a login?
     if(\com\indigloo\sc\auth\Login::hasSession()) {
         header("Location: / ");
@@ -19,18 +20,16 @@
     $qUrl = is_null($qUrl) ? '/' : $qUrl ;
     $qUrl = urldecode($qUrl);
 
-    // should login do an ajax post again?
-    $gAjaxPost = Url::tryQueryParam("g_ajax_post");
-    $gAjaxPost = (!is_null($gAjaxPost) && ($gAjaxPost == 1)) ? 1 : 0 ;
-    $gAjaxPostData = ($gAjaxPost == 1 ) ? Url::tryQueryParam("g_ajax_post_data") : "" ;
+    // should login do some action?
+    $gSessionAction = Url::tryQueryParam("g_session_action");
+    if(!empty($gSessionAction)) {
+        $gWeb->store("global.session.action",$gSessionAction);
+    }
 
     $fUrl = urldecode(Url::current());
-
-
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     $stoken = Util::getMD5GUID();
 
-    $gWeb = \com\indigloo\core\Web::getInstance();
     $gWeb->store("mik_state_token",$stoken);
 
     //Facebook OAuth2
@@ -116,7 +115,7 @@
                    <h3> You can login with 3mik account </h3>
                         <a href="/user/register.php"> Register for a new 3mik account</a> (Free and takes just 30 seconds!)
 
-                        <form id="web-form1"  name="web-form1" action="/user/form/login.php" enctype="multipart/form-data"  method="POST">
+                        <form id="web-form1"  name="web-form1" action="/user/form/login.php" method="POST">
                             <div class="error">    </div>
 
                             <table class="form-table">
@@ -148,8 +147,6 @@
 
                         <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
-                        <input type="hidden" name="g_ajax_post" value="<?php echo $gAjaxPost; ?>" />
-                        <input type="hidden" name="g_ajax_post_data" value="<?php echo $gAjaxPostData; ?>" />
 
                     </form>
                    </div>

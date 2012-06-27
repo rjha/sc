@@ -2,10 +2,12 @@
 
 namespace com\indigloo\sc\auth {
 
+    use \com\indigloo\Url as Url;
     use \com\indigloo\Util as Util;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\auth\User as WebglooUser ;
+    use \com\indigloo\exception\UIException as UIException;
 
     class Login {
 
@@ -25,38 +27,83 @@ namespace com\indigloo\sc\auth {
             if (isset($_SESSION) && isset($_SESSION[WebglooUser::USER_TOKEN])) {
                 $mikUser = $_SESSION[WebglooUser::USER_DATA];
 
-                if(empty($mikUser) || empty($mikUser['login_id'])) {
-                    trigger_error("Missing user data in 3mik session", E_USER_ERROR);
+                if(empty($mikUser) || empty($mikUser["login_id"])) {
+                    throw new UIException("Missing user data in 3mik session");
                 }
 
-                // get denorm data on login from $userDao
-                // the data in sc_user is for first time creation only
-                // and denorm columns like name etc. can be stale in sc_user
-                $loginId = $mikUser['login_id'];
-                $userDao = new \com\indigloo\sc\dao\User();
-                $userDBRow = $userDao->getOnLoginId($loginId);
-
-                $_SESSION[self::NAME] = $userDBRow['name'];
-                $_SESSION[self::LOGIN_ID] = $loginId;
-                $_SESSION[self::PROVIDER] = self::MIK;
-                $_SESSION[self::TOKEN] = Util::getBase36GUID();
+                $loginId = $mikUser["login_id"];
+                self::startSession($loginId, self::MIK);
 
             } else {
-                trigger_error("No 3mik user data found in session", E_USER_ERROR);
+                throw new UIException("No 3mik user found in session");
             }
 
         }
 
-
         static function startOAuth2Session($loginId,$provider) {
+           self::startSession($loginId, $provider);
+        }
+
+        private static function completeSessionAction($loginId,$name,$provider) {
+
+            $gWeb = \com\indigloo\core\Web::getInstance();
+            $gSessionAction = $gWeb->find("global.session.action");
+
+            if(empty($gSessionAction)) {
+                return ;
+            }
+
+            // base64_decode action
+            $action = base64_decode($gSessionAction);
+
+            if($action === FALSE) { return ; }
+
+            //json_decode session action
+            $actionObj = json_decode($action);
+            $endPoint = $actionObj->endPoint ;
+            $params = $actionObj->params ;
+
+            //inject loginId, name and provider
+            $params->loginId = $loginId;
+            $params->name = $name ;
+            $params->provider = $provider ;
+
+            //Facade for session action endpoint
+            $facade = new \com\indigloo\sc\command\Facade();
+            $response = $facade->execute($endPoint, $params);
+
+            if($response["code"] != 200) {
+                //error happened
+                $logMessage = sprintf("Error completing session action [[%s]]",$action) ;
+                Logger::getInstance()->error($logMessage);
+            }
+
+            // encode for use in url query.
+            $qUrl = urlencode($actionObj->qUrl);
+            $message = $response["message"] ;
+            // go to session action page
+            $gotoUrl = "/site/go-session-action.php?q=".$qUrl."&g_message=".base64_encode($message);
+            header("Location: ".$gotoUrl);
+            exit ;
+
+        }
+
+        private static function startSession($loginId,$provider) {
+
+            // get denorm data on login from $userDao
+            // the data in sc_user is for first time creation only
+            // and denorm columns like name etc. can be stale in sc_user
             $userDao = new \com\indigloo\sc\dao\User();
             $userDBRow = $userDao->getOnLoginId($loginId);
 
-            //fetch name from sc_denorm_user table
             $_SESSION[self::LOGIN_ID] = $loginId;
-            $_SESSION[self::NAME] = $userDBRow['name'];
+            $_SESSION[self::NAME] = $userDBRow["name"];
             $_SESSION[self::PROVIDER] = $provider;
             $_SESSION[self::TOKEN] = Util::getBase36GUID();
+
+            // complete any pending session action.
+            self::completeSessionAction($loginId,$userDBRow["name"],$provider);
+
         }
 
         static function getLoginInSession() {
@@ -70,7 +117,7 @@ namespace com\indigloo\sc\auth {
                 return $login ;
 
             } else {
-                trigger_error('logon session does not exists', E_USER_ERROR);
+                throw new UIException("user session does not exists!");
             }
 
         }
@@ -104,7 +151,7 @@ namespace com\indigloo\sc\auth {
             if (isset($_SESSION) && isset($_SESSION[self::TOKEN]) && isset($_SESSION[self::LOGIN_ID]) ) {
                 $loginId = $_SESSION[self::LOGIN_ID] ;
             } else{
-                trigger_error("No Login ID found in session" , E_USER_ERROR);
+                throw new UIException("No login found in session!");
             }
 
             return $loginId ;
