@@ -74,12 +74,11 @@
 
         //get acces token
         $url = "https://accounts.google.com/o/oauth2/token" ;
-        $post = curl_init();
-
-        curl_setopt($post, CURLOPT_URL, $url);
-        curl_setopt($post, CURLOPT_POST, count($params));
+        $post = curl_init($url);
+        curl_setopt($post, CURLOPT_POST, true);
         curl_setopt($post, CURLOPT_POSTFIELDS, $fields);
-        curl_setopt($post, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($post, CURLOPT_HEADER, false);
+        curl_setopt($post, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($post);
         curl_close($post);
