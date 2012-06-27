@@ -17,11 +17,19 @@
     //qUrl and fUrl
     $qUrl = Url::tryQueryParam("q");
     $qUrl = is_null($qUrl) ? '/' : $qUrl ;
-    $fUrl = Url::current();
+    $qUrl = urldecode($qUrl);
+
+    // should login do an ajax post again?
+    $gAjaxPost = Url::tryQueryParam("g_ajax_post");
+    $gAjaxPost = (!is_null($gAjaxPost) && ($gAjaxPost == 1)) ? 1 : 0 ;
+    $gAjaxPostData = ($gAjaxPost == 1 ) ? Url::tryQueryParam("g_ajax_post_data") : "" ;
+
+    $fUrl = urldecode(Url::current());
+
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     $stoken = Util::getMD5GUID();
-    
+
     $gWeb = \com\indigloo\core\Web::getInstance();
     $gWeb->store("mik_state_token",$stoken);
 
@@ -63,7 +71,7 @@
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
         <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
 
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
 
         <script type="text/javascript">
             $(document).ready(function(){
@@ -140,6 +148,8 @@
 
                         <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
+                        <input type="hidden" name="g_ajax_post" value="<?php echo $gAjaxPost; ?>" />
+                        <input type="hidden" name="g_ajax_post_data" value="<?php echo $gAjaxPostData; ?>" />
 
                     </form>
                    </div>

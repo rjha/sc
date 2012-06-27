@@ -18,7 +18,7 @@ String.prototype.supplant = function (o) {
 if (!window.JSON) {
     console.log("Old browser using imitation of native JSON object");
     window.JSON = {
-        parse: function (sJSON) { return eval("(" + sJSON + ")"); },
+        parse: function (sJSON) {return eval("(" + sJSON + ")");},
         stringify: function (vContent) {
             if (vContent instanceof Object) {
                 var sOutput = "";
@@ -39,6 +39,50 @@ if (!window.JSON) {
         }
   };
 }
+
+/*
+ * base64 encoding in javascript *
+ * @see http://my.opera.com/Lex1/blog/fast-base64-encoding-and-test-results
+ * @see https://github.com/operasoftware/
+ *
+ */
+function encodeBase64(str){
+	var chr1, chr2, chr3, rez = '', arr = [], i = 0, j = 0, code = 0;
+	var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='.split('');
+
+	while(code = str.charCodeAt(j++)){
+		if(code < 128){
+			arr[arr.length] = code;
+		}
+		else if(code < 2048){
+			arr[arr.length] = 192 | (code >> 6);
+			arr[arr.length] = 128 | (code & 63);
+		}
+		else if(code < 65536){
+			arr[arr.length] = 224 | (code >> 12);
+			arr[arr.length] = 128 | ((code >> 6) & 63);
+			arr[arr.length] = 128 | (code & 63);
+		}
+		else{
+			arr[arr.length] = 240 | (code >> 18);
+			arr[arr.length] = 128 | ((code >> 12) & 63);
+			arr[arr.length] = 128 | ((code >> 6) & 63);
+			arr[arr.length] = 128 | (code & 63);
+		}
+	};
+
+	while(i < arr.length){
+		chr1 = arr[i++];
+		chr2 = arr[i++];
+		chr3 = arr[i++];
+
+		rez += chars[chr1 >> 2];
+		rez += chars[((chr1 & 3) << 4) | (chr2 >> 4)];
+		rez += chars[chr2 === undefined ? 64 : ((chr2 & 15) << 2) | (chr3 >> 6)];
+		rez += chars[chr3 === undefined ? 64 : chr3 & 63];
+	};
+	return rez;
+};
 
 
 /* + namepsaces */
@@ -67,8 +111,8 @@ webgloo.sc.home = {
 
         //show options on hover
         $('.tile .options').hide();
-        $('.tile').mouseenter(function() { $(this).find('.options').toggle(); });
-        $('.tile').mouseleave(function() { $(this).find('.options').toggle(); });
+        $('.tile').mouseenter(function() {$(this).find('.options').toggle();});
+        $('.tile').mouseleave(function() {$(this).find('.options').toggle();});
 
         //Add item toolbar actions
         webgloo.sc.item.addActions();
@@ -130,7 +174,7 @@ webgloo.sc.SimplePopup = {
         $("#block-spinner").hide();
 
     },
-    processJson : function(response,options) {
+    processJson : function(response,options,dataObj) {
         console.log("keepOpen option :: " + options.keepOpen);
         console.log("reload option :: " + options.reload);
 
@@ -147,9 +191,17 @@ webgloo.sc.SimplePopup = {
                 break;
 
             case 401:
-                //redirect to login page
-                qUrl = window.location.href;
-                gotoUrl = '/user/login.php?q='+qUrl;
+                // authentication failure
+                // redirect to login page with resume payload
+                qUrl = encodeURIComponent(window.location.href);
+                // @imp  dataObj.params should be an object containing simple
+                // key value pairs. Params keys or values can again be objects
+                // but it is better to avoid that complexity.
+                // on the other end, this params object will be passed as it is to
+                // PHP http_build_query method.
+
+                g_ajax_post_data =  encodeBase64(JSON.stringify(dataObj));
+                gotoUrl = '/user/login.php?g_ajax_post=1&q='+qUrl + '&g_ajax_post_data=' + g_ajax_post_data;
                 window.location.replace(gotoUrl);
                 break;
             case 500:
@@ -161,7 +213,7 @@ webgloo.sc.SimplePopup = {
                 break;
         }
     },
-    post:function (targetUrl,dataObj,options) {
+    post:function (dataObj,options) {
 
         //@todo deal with undefined or NULL options
         //show spinner
@@ -174,11 +226,12 @@ webgloo.sc.SimplePopup = {
 
         //ajax call start
         $.ajax({
-            url: targetUrl,
+            url: dataObj.endPoint,
             type: options.type ,
             dataType: options.dataType,
-            data : dataObj,
+            data : dataObj.params,
             timeout: 9000,
+            processData:true,
             //js errors callback
             error: function(XMLHttpRequest, response){
                 //remove spinner
@@ -190,7 +243,7 @@ webgloo.sc.SimplePopup = {
                 webgloo.sc.SimplePopup.removeSpinner();
                 switch(options.dataType) {
                     case 'json' :
-                        webgloo.sc.SimplePopup.processJson(response,options);
+                        webgloo.sc.SimplePopup.processJson(response,options,dataObj);
                         break;
                      default:
                         webgloo.sc.SimplePopup.addContent(response);
@@ -241,6 +294,7 @@ webgloo.sc.item = {
             dataObj.itemId  = $(this).attr("id");
             dataObj.action = "LIKE" ;
             var targetUrl = "/qa/ajax/bookmark.php";
+
             //open popup
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
@@ -248,13 +302,16 @@ webgloo.sc.item = {
 
         $("a.favorite-post-link").click(function(event){
             event.preventDefault();
-            var dataObj = {}
-            dataObj.itemId  = $(this).attr("id");
-            dataObj.action = "SAVE" ;
-            var targetUrl = "/qa/ajax/bookmark.php";
+
+            var dataObj = {} ;
+            dataObj.params = {} ;
+            dataObj.params.itemId  = $(this).attr("id");
+            dataObj.params.action = "SAVE" ;
+            dataObj.endPoint = "/qa/ajax/bookmark.php";
+            
             //open popup
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
+            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json"});
         }) ;
         //unfavorite
         $("a.remove-post-link").click(function(event){
@@ -283,15 +340,15 @@ webgloo.sc.item = {
             dataObj.followerId  = ids[0] ;
             dataObj.followingId = ids[1];
             dataObj.action = "FOLLOW" ;
-            
+
             var targetUrl = "/qa/ajax/social-graph.php";
             //open popup
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.post(targetUrl,dataObj,{"dataType" : "json"});
         }) ;
-        
+
         $("a.unfollow-user-link").click(function(event){
-            
+
             event.preventDefault();
             var dataObj = {}
             var id = $(this).attr("id");
@@ -301,7 +358,7 @@ webgloo.sc.item = {
             dataObj.followerId  = ids[0] ;
             dataObj.followingId = ids[1];
             dataObj.action = "UNFOLLOW" ;
-            
+
             var targetUrl = "/qa/ajax/social-graph.php";
             //open popup
             webgloo.sc.SimplePopup.init();
@@ -312,10 +369,10 @@ webgloo.sc.item = {
                     "keepOpen" : false
                 }
             );
-            
-             
+
+
         }) ;
-        
+
     }
 }
 
@@ -324,7 +381,7 @@ webgloo.sc.groups = {
         $("#add-group-btn").click(function(event) {
             event.preventDefault();
             var group = jQuery.trim($("#group-box").val());
-            if( group == '' ) {return ; }
+            if( group == '' ) {return ;}
             //split on commas
             var tokens = group.split(",");
             for (var i = 0; i < tokens.length; i++) {

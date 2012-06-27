@@ -9,6 +9,38 @@
     use com\indigloo\Constants as Constants ;
     use \com\indigloo\exception\UIException as UIException;
 
+    function ajax_post_it($qUrl,$payload){
+        //base64_decode payload
+        $payload = base64_decode($payload);
+
+        if($payload === FALSE) { return ; }
+        //json_decode payload
+        $payloadObj = json_decode($payload);
+        $endPoint = $payloadObj->endPoint ;
+        $paramsObj = $payloadObj->params ;
+        // create POST ready parameters now
+        $data = http_build_query($paramsObj);
+        $keys = get_object_vars($paramsObj);
+
+        // POST params data to endpoint
+        // @imp we have no knowledge of what params do
+        $post = curl_init();
+        curl_setopt($post, CURLOPT_URL, $endPoint);
+        curl_setopt($post, CURLOPT_POST, sizeof($keys));
+        curl_setopt($post, CURLOPT_POSTFIELDS, $data );
+        curl_setopt($post, CURLOPT_RETURNTRANSFER, 1);
+
+        $response = curl_exec($post);
+        //@todo parse response
+        curl_close($post);
+
+        //go to interim page
+        $gotoUrl = "/site/go-message.php?q=".$qUrl."&message=".base64_encode("test message!");
+        header("Location: ".$gotoUrl);
+        exit ;
+
+    }
+
     if (isset($_POST['login']) && ($_POST['login'] == 'Login')) {
         try{
             $fhandler = new Form\Handler('web-form-1', $_POST);
@@ -39,8 +71,19 @@
             }
 
             //success set our own session variables
-            \com\indigloo\sc\auth\Login::startMikSession();
+            //@debug
+            //\com\indigloo\sc\auth\Login::startMikSession();
+
+            // session started.
+            // resume what was interrupted by login requirement
+            // g_ajax_post?
+            $gAjaxPost = $fvalues["g_ajax_post"];
+            if($gAjaxPost == 1 && isset($fvalues["g_ajax_post_data"])) {
+                ajax_post_it($qUrl,$fvalues["g_ajax_post_data"]);
+            }
+
             header("Location: ".$qUrl);
+            exit ;
 
         }catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
