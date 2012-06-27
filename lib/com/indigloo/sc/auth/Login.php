@@ -45,6 +45,8 @@ namespace com\indigloo\sc\auth {
         }
 
         private static function completeSessionAction($loginId,$name,$provider) {
+            set_error_handler("gobble_error_handler");
+            set_exception_handler("gobble_exception_handler");
 
             $gWeb = \com\indigloo\core\Web::getInstance();
             $gSessionAction = $gWeb->find("global.session.action");
@@ -74,7 +76,7 @@ namespace com\indigloo\sc\auth {
 
             if($response["code"] != 200) {
                 //error happened
-                $logMessage = sprintf("Error completing session action [[%s]]",$action) ;
+                $logMessage = sprintf("Error completing session action [%s]",$action) ;
                 Logger::getInstance()->error($logMessage);
             }
 
@@ -83,6 +85,10 @@ namespace com\indigloo\sc\auth {
             $message = $response["message"] ;
             // go to session action page
             $gotoUrl = "/site/go-session-action.php?q=".$qUrl."&g_message=".base64_encode($message);
+
+            restore_error_handler();
+            restore_exception_handler();
+
             header("Location: ".$gotoUrl);
             exit ;
 
