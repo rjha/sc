@@ -568,7 +568,6 @@ webgloo.media = {
         $("#image-"+id).remove();
     },
     addImage : function(mediaVO) {
-        //console.log(mediaVO);
         webgloo.media.images[mediaVO.id] = mediaVO ;
         if(mediaVO.store == 's3'){
             mediaVO.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
