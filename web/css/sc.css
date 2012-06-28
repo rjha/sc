@@ -350,6 +350,30 @@
        margin :2px;
     }
 
+    .stackImage .options {
+        position:absolute ;
+        overflow:hidden ;
+        z-index:100;
+        display:none ;
+        background-color:white;
+        margin:0px;
+        padding:0px;
+        height:30px;
+        width:90%;
+        text-align:center;
+
+    }
+
+    .stackImage .options .links {
+        padding : 5px 5px 10px 30px;
+        font-size:13px;
+        line-height:18px;
+    }
+
+    .stackImage .options a {
+        color : #777;
+    }
+
     .thumbnail-1 {
         width: auto;
         height: auto;

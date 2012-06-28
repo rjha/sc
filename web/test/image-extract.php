@@ -26,45 +26,79 @@
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/js/sc.js"></script>
         <style>
-
             .yellow { background: yellow ; }
-            .green { background: whiteSmoke ; }
-
-
+            .whiteSmoke { background: whiteSmoke ; }
         </style>
 
         <script type="text/javascript">
 
-            var imagePreviewDiv = '<div class="stackImage" >' 
-                + ' <img src="{srcImage}" class="thumbnail-1" />  </div>' ;
+            webgloo.sc.ImageSelector = {
 
-            function addImage(image) {
-                console.log(image);
-                var buffer = imagePreviewDiv.supplant({"srcImage" : image } );
-                console.log(buffer);
-                $("div#image-data").append(buffer);
+                buffer : [],
 
+                imagePreviewDiv : '<div id="image-{id}" class="stackImage" >' +
+                    '<div class="options"> <a id="{id}" class="btn btn-mini select-image" href="">Add +</a></div> ' +
+                    ' <img src="{srcImage}" class="thumbnail-1" />  </div>' ,
+
+                imageSelectedDiv : '<div> <i class="icon-ok"> </i> </div>' ,
+
+                addImage : function(id,image) {
+                    var buffer = this.imagePreviewDiv.supplant({"srcImage":image, "id":id } );
+                    $("div#image-data").append(buffer);
+                },
+                attachEvents : function() {
+                    $('.stackImage .options').hide();
+                    $('.stackImage').live("mouseenter",function() {
+                        $(this).find('.options').toggle();
+                    });
+                    $('.stackImage').live("mouseleave", function() {
+                        $(this).find('.options').toggle();
+                    });
+
+                    $('.select-image').live("click", function(event) {
+                        event.preventDefault();
+                        var id = $(this).attr("id");
+                        var imageId = "#image-" +id ;
+                        $(imageId).find('.options').toggle();
+                        $(imageId).addClass("whiteSmoke");
+
+
+                    });
+
+                    /*
+
+                    $(".stackImage").live("click",function(event) { 
+                        event.preventDefault();
+                        var id = $(this).attr("id");
+                        var imageId = "#" +id ;
+                        alert(imageId);
+                        $(imageId).append(this.imageSelectedDiv);
+
+                    });
+
+                    $(".stackImage").live("mouseenter",function() {
+                        $(this).addClass("whiteSmoke");
+                    });
+
+                    $(".stackImage").live("mouseleave",function() {
+                        $(this).removeClass("whiteSmoke");
+                    }); */
+
+                },
+                
+                load: function(images) {
+                    for(i = 0 ; i < images.length ; i++) {
+                        this.addImage(i,images[i]);
+                    }
+                }
+    
             }
 
+
             $(document).ready(function(){
-                $(".stackImage").live("click",function(event) { 
-                    event.preventDefault();
-                    alert("click");
-                    $(this).addClass("green");
-
-                });
-
-                $(".stackImage").live("mouseenter",function() {
-                    $(this).addClass("yellow");
-
-                });
-
-                $(".stackImage").live("mouseleave",function() {
-                    $(this).removeClass("yellow");
-                
-                });
 
                 var strResponseObj = '<?php echo $strResponse; ?>' ;
+
                 try{
                     responseObj = JSON.parse(strResponseObj) ;
                     console.log(responseObj.title);
@@ -74,12 +108,12 @@
                     //image is an array
                     var images = responseObj.images ;
                     console.log(images);
-                    for(i = 0 ; i < images.length ; i++) {
-                        addImage(images[i]);
-                    }
+                    webgloo.sc.ImageSelector.attachEvents();
+                    webgloo.sc.ImageSelector.load(images);
 
                 } catch(ex) {
                     console.log("Error parsing response object json");
+                    console.log(ex.message);
                 }
 
             });
