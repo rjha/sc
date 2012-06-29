@@ -396,7 +396,7 @@
         overflow:hidden ;
         z-index:100;
         display:none ;
-        background-color:white;
+        background-color: #F7F7F7;
         margin:0px;
         padding:0px;
         top:0px;
@@ -412,7 +412,7 @@
     }
 
     .tile .options .links a {
-        color : #777;
+        color : #2B2B2B;
     }
 
     .tile .photo {
