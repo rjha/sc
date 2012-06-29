@@ -1,3 +1,38 @@
+
+@style
+----------
+Home page tile options :- change background color using 
+http://0to255.com/
+
+Fix error in feed - PseudoId - should throw exception??
+Error in individual feed should be ignored!
+
+
+move error handler inside a class now.
+\com\indigloo\error\ErrorHandler
+    - default
+    - offline
+    - gobble
+
+ExceptionHandler
+    - default
+    - offline
+    - gobble
+
+Add default error and exception handler into inc/header.inc
+//How to set object methods as error handler.
+$error_handler = new Raven_ErrorHandler($client);
+set_error_handler(array($error_handler, 'handleError'));
+set_exception_handler(array($error_handler, 'handleException'));
+
+
+remove session related header files
+user/logout page - it just needs session_start() there - why the heck are we including 
+inc/session.inc and is that not wrong when using mysql sessions?
+check that out!
+
+
+
 @bugs
 ---------------
 mail reset - should only work for 3mik source
