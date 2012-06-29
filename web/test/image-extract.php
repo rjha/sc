@@ -26,63 +26,93 @@
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/js/sc.js"></script>
         <style>
-            .yellow { background: yellow ; }
-            .whiteSmoke { background: whiteSmoke ; }
+            /* override default stack image padding */
+            div .stackImage { padding: 1px; }
         </style>
 
         <script type="text/javascript">
 
             webgloo.sc.ImageSelector = {
 
-                buffer : [],
+                list : {},
 
-                imagePreviewDiv : '<div id="image-{id}" class="stackImage" >' +
-                    '<div class="options"> <a id="{id}" class="btn btn-mini select-image" href="">Add +</a></div> ' +
-                    ' <img src="{srcImage}" class="thumbnail-1" />  </div>' ,
+                imageDiv : '<div id="image-{id}" class="stackImage" >' 
+                    + '<div class="options"> <div class="links"> </div> </div>' 
+                    + '<img src="{srcImage}" class="thumbnail-1" />  </div>' ,
 
-                imageSelectedDiv : '<div> <i class="icon-ok"> </i> </div>' ,
+                addLink : '<a id="{id}" class="btn btn-mini btn-inverse add-image" href="">Select</a>' ,
+                removeLink : '<a id="{id}" class="btn btn-mini btn-danger remove-image" href="">Remove</a>' ,
 
                 addImage : function(id,image) {
-                    var buffer = this.imagePreviewDiv.supplant({"srcImage":image, "id":id } );
+                    var buffer = this.imageDiv.supplant({"srcImage":image, "id":id } );
                     $("div#image-data").append(buffer);
+                    this.list[id] = { "id":id, "link": image} ;
                 },
                 attachEvents : function() {
+
                     $('.stackImage .options').hide();
+
                     $('.stackImage').live("mouseenter",function() {
-                        $(this).find('.options').toggle();
+                        //will get image-1, image-2 etc.
+                        var imageId = $(this).attr("id");
+                        //will split into image and 1 
+                        var ids = imageId.split('-'); 
+                        var realId = ids[1] ;
+                        imageObj = webgloo.sc.ImageSelector.list[realId] ;
+                        
+                        //if this image is selected?
+                        if(imageObj.selected) {
+                            //show remove button in options area.
+                            var buffer = webgloo.sc.ImageSelector.removeLink.supplant({"id":realId } );
+                            $(this).find(".options .links").html(buffer);
+
+                        } else {
+                            //show Add+ button in options area.
+                            var buffer = webgloo.sc.ImageSelector.addLink.supplant({"id": realId } );
+                            $(this).find(".options .links").html(buffer);
+
+                        }
+
+                        $(this).find(".options").show();
                     });
+
                     $('.stackImage').live("mouseleave", function() {
-                        $(this).find('.options').toggle();
+                        $(this).find(".options").hide();
                     });
 
-                    $('.select-image').live("click", function(event) {
+                    $('.add-image').live("click", function(event) {
                         event.preventDefault();
-                        var id = $(this).attr("id");
-                        var imageId = "#image-" +id ;
-                        $(imageId).find('.options').toggle();
-                        $(imageId).addClass("whiteSmoke");
+                        var realId = $(this).attr("id");
+                        var imageId = "#image-" + realId ;
+
+                        imageObj = webgloo.sc.ImageSelector.list[realId] ;
+                        //change selected state for imageObj 
+                        imageObj.selected = true ;
+                        webgloo.sc.ImageSelector.list.realId = imageObj ;
+
+                        //change display
+                        $(imageId).addClass("clicked-tile");
+                        $(imageId).find('.options').hide();
 
 
                     });
 
-                    /*
-
-                    $(".stackImage").live("click",function(event) { 
+                    $('.remove-image').live("click", function(event) {
                         event.preventDefault();
-                        var id = $(this).attr("id");
-                        var imageId = "#" +id ;
-                        alert(imageId);
-                        $(imageId).append(this.imageSelectedDiv);
+                        var realId = $(this).attr("id");
+                        var imageId = "#image-" + realId ;
 
-                    });
+                        imageObj = webgloo.sc.ImageSelector.list[realId] ;
+                        //change selected state for imageObj 
+                        imageObj.selected = false ;
+                        webgloo.sc.ImageSelector.list.realId = imageObj ;
 
-                    $(".stackImage").live("mouseenter",function() {
-                        $(this).addClass("whiteSmoke");
-                    });
+                        //change display
+                        $(imageId).removeClass("clicked-tile");
+                        $(imageId).find('.options').hide();
 
-                    $(".stackImage").live("mouseleave",function() {
-                        $(this).removeClass("whiteSmoke");
-                    }); */
+
+                     });
 
                 },
                 

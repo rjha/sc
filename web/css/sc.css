@@ -354,26 +354,28 @@
         position:absolute ;
         overflow:hidden ;
         z-index:100;
-        display:none ;
-        background-color:white;
+        display:none ; 
+        /* background-color: white; */
+        /* @see http://0to255.com/ to get matching color */
+        background-color: #F7F7F7;
         margin:0px;
-        padding:0px;
-        height:30px;
-        width:90%;
-        text-align:center;
-
+        padding:0px 0px 0px 0px;
+        height:36px;
+        width:100%;
     }
 
     .stackImage .options .links {
-        padding : 5px 5px 10px 30px;
-        font-size:13px;
-        line-height:18px;
+        padding : 5px 5px 5px 60px;
+        font-size:11px;
+        line-height:16px;
     }
 
-    .stackImage .options a {
-        color : #777;
+    .stackImage .options .links a {
+        color : white;
     }
 
+    .clicked-tile { background-color: #D5D5D5; }
+    
     .thumbnail-1 {
         width: auto;
         height: auto;
