@@ -42,15 +42,43 @@ User profile page - should show count of post.
 Comment Box should inform about max chars - 512
 Add follow button to user public profile.
 
+cannot share this item on Google+/Facebook.
+http://www.3mik.com/item/205102
 
+
+@today
+---------
+json_encode is not safe for \r \n and other json control characters.
+we should remove such control characters from our description.
+Also the order of calling util::formSafeJson should be
+
+$string
+first call formSafeJson (str_replace in form.description string)
+and then json_encode.
+wherever we are using json_encode - we should take care.
+
+
+user profile - add follow button
+user profile - facebook page/ twitter data?
+extract images from a URL
+
+www.3mik.com/item/258537
+
+
+
+@next deploy
+--------------
 
 
 @todo
 -----------
++ move css files together - defer loading of javascript...
++ diagnostic scripts to detect malformed json etc. in DB?
 + Play with Gearman / offline jobs etc.
 + change sendgrid password
   #sendgrid#3mik#94
 + clean reset password table in site worker script
++ do not remove user sessions from 3mik.com
 + send mail on registration 
 + instead of mail reset password : make a general queue!
 + Better job queue.
@@ -59,6 +87,7 @@ Add follow button to user public profile.
 + sphinx query.log analysis
 + redis - use test and stable - databases.
 + Activities should have paging.
++ Activities - avoid inundation from same user - club entries.
 + test webgloo.ui.pagination class
 + Move all constants to sc\Constants file. e.g. FEATURE_POST
 + Add pub_id (or pseudo_id) column to for users and whatever uses pseudo_id
@@ -66,14 +95,14 @@ Add follow button to user public profile.
 + ui filter - cannot be empty
 
 + Do we want to store form escaped data - e.g. single quote to &#039;
-+ Spinx - better indexes - filter on index
++ spinx - better indexes - filter on index
++ sphinx - delta indexing
 + Nice feedback from ajax scripts
 + Reload ajax action that was disrupted by login screen
 + group: Alphabetical push buttons instead of Alpha bar that we have right now.
 + Help content
 + supercow button for admins
 + capture additional data for sites / Items
-+ add caching headers to old S3 images
 + pagination on monitor app/user dashboard
 + use redis for storing user sessions?
 
@@ -158,5 +187,7 @@ URL tampering => we should not error out on bad params or URL
 put sphinx mysql connector IP and port in config file.
 
 Error handling in Sendgrid mail web API wrapper 
++ Amazon s3 backup strategy.
++ add caching headers to old S3 images
 
 

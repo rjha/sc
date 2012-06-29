@@ -1,5 +1,10 @@
 To amend last commit message
+(only if you have not pushed the changes.
+ @imp: Donot do this if you have already pushed the change.)
 git commit --amend -m "new_message"
+or for long commit messages
+git commit --amend 
+
 
 To unstage a commit
 git reset HEAD
