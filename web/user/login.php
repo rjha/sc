@@ -66,11 +66,11 @@
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="/3p/zocial/css/zocial.css">
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
         <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
 
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
 
         <script type="text/javascript">
             $(document).ready(function(){

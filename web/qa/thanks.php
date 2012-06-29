@@ -19,9 +19,9 @@
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
 
         <script>
             window.setTimeout(function() {window.location.href = '<?php echo $qUrl; ?>'; }, 5000); 
