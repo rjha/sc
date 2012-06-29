@@ -45,6 +45,8 @@ namespace com\indigloo\sc\auth {
         }
 
         private static function completeSessionAction($loginId,$name,$provider) {
+            $_SESSION["gobble.error"] = 0 ;
+            //@todo - on error return from this method
             set_error_handler("gobble_error_handler");
             set_exception_handler("gobble_exception_handler");
 
@@ -65,14 +67,27 @@ namespace com\indigloo\sc\auth {
             $endPoint = $actionObj->endPoint ;
             $params = $actionObj->params ;
 
-            //inject loginId, name and provider
+            // see if one of the parameters has value {loginId}
+            // update this parameter value to actual loginId
+            $keys = get_object_vars($params);
+            //@todo - change param to params
+            foreach($keys as $key) {
+                if($param->$key == "{loginId}") {
+                    $param->$key = $loginId ;
+                }
+            }
+
+            //inject loginId, name and provider into params
             $params->loginId = $loginId;
             $params->name = $name ;
             $params->provider = $provider ;
 
             //Facade for session action endpoint
             $facade = new \com\indigloo\sc\command\Facade();
-            $response = $facade->execute($endPoint, $params);
+            if($_SESSION["gobble.error"] == 0 ) {
+                $response = $facade->execute($endPoint, $params);
+                $message = $response["message"] ;
+            }
 
             if($response["code"] != 200) {
                 //error happened
@@ -82,7 +97,10 @@ namespace com\indigloo\sc\auth {
 
             // encode for use in url query.
             $qUrl = urlencode($actionObj->qUrl);
-            $message = $response["message"] ;
+            if($_SESSION["gobble.error"] == 1 ) {
+                $message = "gobble handler caught something fishy!" ;
+            }
+
             // go to session action page
             $gotoUrl = "/site/go-session-action.php?q=".$qUrl."&g_message=".base64_encode($message);
 

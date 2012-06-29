@@ -138,7 +138,8 @@ namespace com\indigloo\sc\html {
             $encodedId = PseudoId::encode($view->followingId);
             $view->publicUrl = "/pub/user/".$encodedId ;
             //userId in session is follower
-            $view->followerId = Login::tryLoginIdInSession();
+            $loginId = Login::tryLoginIdInSession();
+            $view->followerId = (empty($loginId)) ? "{loginId}" : $loginId ;
 
             $html = Template::render($template,$view);
             return $html ;
