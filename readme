@@ -1,4 +1,3 @@
-
 @style
 ----------
 Home page tile options :- change background color using 
@@ -7,6 +6,7 @@ http://0to255.com/
 Fix error in feed - PseudoId - should throw exception??
 Error in individual feed should be ignored!
 
+Redesign the webgloo error handler 
 
 move error handler inside a class now.
 \com\indigloo\error\ErrorHandler
@@ -30,8 +30,6 @@ remove session related header files
 user/logout page - it just needs session_start() there - why the heck are we including 
 inc/session.inc and is that not wrong when using mysql sessions?
 check that out!
-
-
 
 @bugs
 ---------------
@@ -64,10 +62,23 @@ extract images from a URL
 
 www.3mik.com/item/258537
 
+json_encode is not safe for \r \n and other json control characters.
+we should remove such control characters from our description.
+Also the order of calling util::formSafeJson should be
+
+$string
+first call formSafeJson (str_replace in form.description string)
+and then json_encode.
+wherever we are using json_encode - we should take care.
 
 
-@next deploy
---------------
+user profile - add follow button
+user profile - facebook page/ twitter data?
+extract images from a URL
+
+www.3mik.com/item/258537
+
+
 
 
 @todo
