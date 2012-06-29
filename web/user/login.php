@@ -18,7 +18,7 @@
     //qUrl and fUrl
     $qUrl = Url::tryQueryParam("q");
     $qUrl = is_null($qUrl) ? '/' : $qUrl ;
-    $qUrl = urldecode($qUrl);
+    //$qUrl = urldecode($qUrl);
 
     // should login do some action?
     $gSessionAction = Url::tryQueryParam("g_session_action");
@@ -26,7 +26,7 @@
         $gWeb->store("global.session.action",$gSessionAction);
     }
 
-    $fUrl = urldecode(Url::current());
+    $fUrl = Url::current();
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     $stoken = Util::getMD5GUID();
 
