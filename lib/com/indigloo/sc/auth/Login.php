@@ -45,71 +45,74 @@ namespace com\indigloo\sc\auth {
         }
 
         private static function completeSessionAction($loginId,$name,$provider) {
-            $_SESSION["gobble.error"] = 0 ;
-            //@todo - on error return from this method
+
             set_error_handler("gobble_error_handler");
-            set_exception_handler("gobble_exception_handler");
 
-            $gWeb = \com\indigloo\core\Web::getInstance();
-            $gSessionAction = $gWeb->find("global.session.action");
+            $qUrl = NULL ;
+            $message = NULL ;
+            $gotoUrl = NULL ;
 
-            if(empty($gSessionAction)) {
-                return ;
-            }
+            try{ 
+                $gWeb = \com\indigloo\core\Web::getInstance();
+                $gSessionAction = $gWeb->find("global.session.action");
 
-            // base64_decode action
-            $action = base64_decode($gSessionAction);
-
-            if($action === FALSE) { return ; }
-
-            //json_decode session action
-            $actionObj = json_decode($action);
-            $endPoint = $actionObj->endPoint ;
-            $params = $actionObj->params ;
-
-            // see if one of the parameters has value {loginId}
-            // update this parameter value to actual loginId
-            $keys = get_object_vars($params);
-            //@todo - change param to params
-            foreach($keys as $key) {
-                if($param->$key == "{loginId}") {
-                    $param->$key = $loginId ;
+                if(empty($gSessionAction)) {
+                    return ;
                 }
-            }
 
-            //inject loginId, name and provider into params
-            $params->loginId = $loginId;
-            $params->name = $name ;
-            $params->provider = $provider ;
+                // base64_decode action
+                $action = base64_decode($gSessionAction);
+                Logger::getInstance()->info($action);
 
-            //Facade for session action endpoint
-            $facade = new \com\indigloo\sc\command\Facade();
-            if($_SESSION["gobble.error"] == 0 ) {
+                if($action === FALSE) { return ; }
+
+                //json_decode session action
+                $actionObj = json_decode($action);
+                $endPoint = $actionObj->endPoint ;
+                $params = $actionObj->params ;
+                //Logger::getInstance()->dump($params);
+                // encode for use in url query.
+                $qUrl = urlencode($actionObj->qUrl);
+
+                // see if one of the parameters has value {loginId}
+                // update this parameter value to actual loginId
+                $keys = get_object_vars($params);
+                Logger::getInstance()->dump($keys);
+                //@todo - change param to params
+                // associated array of name value pairs
+                // undefines properties are returned as NULL
+                foreach($keys as $name => $value) {
+                    Logger::getInstance()->info("prop::".$name);
+                    if($params->{$name} == "{loginId}") {
+                        $params->{$name} = $loginId ;
+                    }
+                }
+
+                //inject loginId, name and provider into params
+                $params->loginId = $loginId;
+                $params->name = $name ;
+                $params->provider = $provider ;
+
+                //Facade for session action endpoint
+                $facade = new \com\indigloo\sc\command\Facade();
                 $response = $facade->execute($endPoint, $params);
                 $message = $response["message"] ;
-            }
 
-            if($response["code"] != 200) {
-                //error happened
-                $logMessage = sprintf("Error completing session action [%s]",$action) ;
-                Logger::getInstance()->error($logMessage);
-            }
+                if($response["code"] != 200) {
+                    //error happened
+                    $message = sprintf("error: session action response code : %d",$response["code"]);
+                    throw new Exception($message) ;
+                }
 
-            // encode for use in url query.
-            $qUrl = urlencode($actionObj->qUrl);
-            if($_SESSION["gobble.error"] == 1 ) {
-                $message = "gobble handler caught something fishy!" ;
-            }
+                // go to session action page
+                $gotoUrl = "/site/go-session-action.php?q=".$qUrl."&g_message=".base64_encode($message);
+                header("Location: ".$gotoUrl);
 
-            // go to session action page
-            $gotoUrl = "/site/go-session-action.php?q=".$qUrl."&g_message=".base64_encode($message);
+            } catch(\Exception $ex) {
+                Logger::getInstance()->error("inside catch block :: " .$ex->getMessage());
+            }
 
             restore_error_handler();
-            restore_exception_handler();
-
-            header("Location: ".$gotoUrl);
-            exit ;
-
         }
 
         private static function startSession($loginId,$provider) {
