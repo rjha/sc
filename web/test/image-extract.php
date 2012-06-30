@@ -24,19 +24,16 @@
 
                 imageDiv : '<div id="image-{id}" class="stackImage" >' 
                     + '<div class="options"> <div class="links"> </div> </div>' 
-                    + '<img src="{srcImage}" class="thumbnail-1" />  </div>' ,
+                    + '<img src="{srcImage}" class="thumbnail-1" /> </div>' ,
 
-                addLink : '<a id="{id}" class="btn btn-mini add-image" href="">Select</a>' ,
-                removeLink : '<a id="{id}" class="btn btn-mini btn-warning remove-image" href="">Remove</a>' ,
+                addLink : '<a id="{id}" class="btn btn-inverse btn-mini add-image" href="">Select</a>' ,
+                removeLink : '<i class="icon-ok"></i>&nbsp;&nbsp;'  
+                    + '<a id="{id}" class="btn btn-inverse btn-mini remove-image" href="">Remove</a>' ,
 
-                addImage : function(id,image) {
-                    var buffer = this.imageDiv.supplant({"srcImage":image, "id":id } );
-                    $("div#image-data").append(buffer);
-                    this.list[id] = { "id":id, "link": image} ;
-                },
                 attachEvents : function() {
 
                     $('.stackImage .options').hide();
+                    $('#stack').hide();
 
                     $("#fetch-link").live("click", function(event){
                         event.preventDefault();
@@ -56,10 +53,7 @@
                         if( link == '' )
                             return ;
                         else
-                            //fetch and add images using link value.
-                            console.log(link);
                             webgloo.sc.ImageSelector.fetch(link);
-
                         }
 
                     });
@@ -72,24 +66,28 @@
                         var realId = ids[1] ;
                         imageObj = webgloo.sc.ImageSelector.list[realId] ;
                         
-                        //if this image is selected?
-                        if(imageObj.selected) {
-                            //show remove button in options area.
-                            var buffer = webgloo.sc.ImageSelector.removeLink.supplant({"id":realId } );
-                            $(this).find(".options .links").html(buffer);
-
-                        } else {
-                            //show Add+ button in options area.
+                        if(!imageObj.selected) {
+                            // show select button 
                             var buffer = webgloo.sc.ImageSelector.addLink.supplant({"id": realId } );
                             $(this).find(".options .links").html(buffer);
-
-                        }
+                        } 
 
                         $(this).find(".options").show();
                     });
 
                     $('.stackImage').live("mouseleave", function() {
-                        $(this).find(".options").hide();
+                        //will get image-1, image-2 etc.
+                        var imageId = $(this).attr("id");
+                        //will split into image and 1 
+                        var ids = imageId.split('-'); 
+                        var realId = ids[1] ;
+                        imageObj = webgloo.sc.ImageSelector.list[realId] ;
+                        
+                        //if this image is selected?
+                        if(!imageObj.selected) {
+                            $(this).find(".options").hide();
+                        }
+
                     });
 
                     $('.add-image').live("click", function(event) {
@@ -102,10 +100,9 @@
                         imageObj.selected = true ;
                         webgloo.sc.ImageSelector.list.realId = imageObj ;
 
-                        //change display
-                        $(imageId).addClass("clicked-tile");
-                        $(imageId).find('.options').hide();
-
+                        // change display
+                        var buffer = webgloo.sc.ImageSelector.removeLink.supplant({"id":realId } );
+                        $(imageId).find(".options .links").html(buffer);
 
                     });
 
@@ -118,43 +115,49 @@
                         //change selected state for imageObj 
                         imageObj.selected = false ;
                         webgloo.sc.ImageSelector.list.realId = imageObj ;
-
-                        //change display
-                        $(imageId).removeClass("clicked-tile");
                         $(imageId).find('.options').hide();
-
-
                      });
-
-                    
 
                 },
                 
+                addImage : function(id,image) {
+                    var buffer = this.imageDiv.supplant({"srcImage":image, "id":id } );
+                    //logo, small icons etc. are first images in a page
+                    // what we are interested in will only come later.
+                    $("div#stack .images").prepend(buffer);
+                    this.list[id] = { "id":id, "link": image} ;
+                },
+
                 addSpinner : function() {
                     var content = '<img src="/css/images/ajax_loader.gif" alt="loading ..." />' ;
                     this.showMessage(content);
-
                 },
+
                 removeSpinner: function() {
                     this.showMessage('');
                 },
+
                 showMessage : function(message) {
                     $("#ajax-message").html('');
                     $("#ajax-message").html(message);
-
                 },
+
                 processResponse : function(response) {
-                    console.log(response.title);
+
                     images = response.images ;
                     for(i = 0 ; i < images.length ; i++) {
                         this.addImage(i,images[i]);
                     }
 
+                    $("#stack").fadeIn("slow");
+
                 },
 
                 fetch : function(target) {
-                    console.log("target = " + target);
                     webgloo.sc.ImageSelector.addSpinner();
+                    $("#stack").fadeOut("slow");
+                    $("#stack .images").html('');
+
                     endPoint = "/qa/ajax/extract-image.php" ;
                     params = {} ;
                     params.target = target ;
@@ -176,7 +179,8 @@
                         // server script errors are also reported inside 
                         // ajax success callback
                         success: function(response){
-                            console.log(response);
+                            //@debug
+                            //console.log(response);
                             webgloo.sc.ImageSelector.removeSpinner();
                             switch(response.code) {
                                 case 401 :
@@ -229,11 +233,21 @@
                             </tr>
 
                         </table>
-                        <div class="hr"> </div>
-                        <h3> Message </h3>
-                        <div id="ajax-message"> </div>
-                        <div class="hr"> </div>
-                        <div id="image-data"> </div>
+                        <div id="ajax-message" class="ml20 p20"> </div>
+                        <div id="stack"> 
+                            <div class="message p20">
+                            some very long message some very long message some very long message 
+                            some very long message some very long message some very long message 
+                            some very long message some very long message some very long message 
+                            some very long message some very long message some very long message 
+                            some very long message some very long message some very long message 
+                            some very long message 
+                            </div>
+                            <div class="images p10">
+
+                            </div>
+
+                        </div>
                     </div>
                     <div class="span3"> 
                         Row 2

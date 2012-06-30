@@ -371,10 +371,13 @@
     }
 
     .stackImage .options .links a {
-        color : black;
+        color : white;
     }
 
-    .clicked-tile { background-color: #D5D5D5; }
+    .clicked-tile { 
+        /* background-color: #D5D5D5;  */
+        background-color: #eeeeee ;
+    }
     
     .thumbnail-1 {
         width: auto;

@@ -9,6 +9,7 @@
 
     set_error_handler('webgloo_ajax_error_handler');
     $message = NULL ;
+    sleep(5);
 
     //use login is required for bookmarking
     /*
