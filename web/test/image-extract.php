@@ -14,6 +14,7 @@
         <style>
             /* override default stack image padding */
             div .stackImage { padding: 1px; }
+            .form-table { margin-bottom : 5px; }
         </style>
 
         <script type="text/javascript">
@@ -34,6 +35,7 @@
 
                     $('.stackImage .options').hide();
                     $('#stack').hide();
+                    $('#next-message').hide();
 
                     $("#fetch-link").live("click", function(event){
                         event.preventDefault();
@@ -56,6 +58,16 @@
                             webgloo.sc.ImageSelector.fetch(link);
                         }
 
+                    });
+                    
+                    $('#web-form1').submit(function() {
+                        var count = webgloo.sc.ImageSelector.populateHidden();
+                        if(count > 0 ) {
+                            return true ;
+                        } else {
+                            webgloo.sc.ImageSelector.showMessage("No image selected",{"css":"color-red"});
+                            return false;
+                        }
                     });
 
                     $('.stackImage').live("mouseenter",function() {
@@ -125,21 +137,26 @@
                     //logo, small icons etc. are first images in a page
                     // what we are interested in will only come later.
                     $("div#stack .images").prepend(buffer);
-                    this.list[id] = { "id":id, "link": image} ;
+                    this.list[id] = { "id":id, "link": image, "selected" : false} ;
                 },
 
                 addSpinner : function() {
                     var content = '<img src="/css/images/ajax_loader.gif" alt="loading ..." />' ;
-                    this.showMessage(content);
+                    this.showMessage(content,{});
                 },
 
                 removeSpinner: function() {
-                    this.showMessage('');
+                    this.showMessage('',{});
                 },
 
-                showMessage : function(message) {
+                showMessage : function(message,options) {
+                    options.css = (typeof options.css === "undefined") ? '' : options.css;
                     $("#ajax-message").html('');
                     $("#ajax-message").html(message);
+                    if( options.css != '') {
+                        $("#ajax-message").addClass(options.css);
+                    }
+
                 },
 
                 processResponse : function(response) {
@@ -150,7 +167,38 @@
                     }
 
                     $("#stack").fadeIn("slow");
+                    $("#next-message").fadeIn("slow");
 
+                },
+
+                populateHidden : function() {
+                    frm = document.forms["web-form1"];
+                    //@debug
+                    console.log(webgloo.sc.ImageSelector.list);
+                    var links = new Array() ;
+
+                    $("#stack .images").find('.stackImage').each(function(index) {
+                        var imageId = $(this).attr("id");
+                        //will split into image and 1 
+                        var ids = imageId.split('-'); 
+                        var realId = ids[1] ;
+                        var imageObj = webgloo.sc.ImageSelector.list[realId] ;
+                        //
+                        //@debug
+                        console.log("Examining" + imageObj.link);
+
+                        if(imageObj.selected) {
+                            links.push(imageObj.link) ;
+                            //@debug
+                            console.log("Added" + imageObj.link);
+                        }
+
+
+                    });
+
+                    var strLinks = JSON.stringify(links);
+                    frm.images_json.value = strLinks ;
+                    return links.length ;
                 },
 
                 fetch : function(target) {
@@ -171,9 +219,10 @@
                         processData:true,
                         //js errors callback
                         error: function(XMLHttpRequest, response){
-                            console.log(response);
+                            //@debug
+                            //console.log(response);
                             webgloo.sc.ImageSelector.removeSpinner();
-                            webgloo.sc.ImageSelector.showMessage(response);
+                            webgloo.sc.ImageSelector.showMessage(response, {"css":"color-red"});
                         },
 
                         // server script errors are also reported inside 
@@ -184,13 +233,13 @@
                             webgloo.sc.ImageSelector.removeSpinner();
                             switch(response.code) {
                                 case 401 :
-                                    webgloo.sc.ImageSelector.showMessage(response.message);
+                                    webgloo.sc.ImageSelector.showMessage(response.message,{"css":"color-red"});
                                     break ;
                                 case 200 :
                                     webgloo.sc.ImageSelector.processResponse(response);
                                     break ;
                                 default:
-                                    webgloo.sc.ImageSelector.showMessage(response.message);
+                                    webgloo.sc.ImageSelector.showMessage(response.message,{"css":"color-red"});
                                     break ;
                             }
                         }
@@ -223,32 +272,39 @@
             <div class="span12">
                 <div class="row">
                     <div class="span9"> 
-                        <table class="form-table">
-                            <tr>
+                        <div class="row">
+                            <div class="span6">
+                                <table class="form-table">
+                                <tr>
                                 <td>
                                     <label>Type URL and click fetch ( or press Enter ) </label>
                                     <input id="link-box" name="link" value="" />
+                                    <br/>
                                     <button id="fetch-link" type="button" class="btn" value="Fetch">Fetch</button> 
                                 </td>
-                            </tr>
+                                </tr>
+                                </table>
+                                <div id="ajax-message" class="ml20 p10"> </div>
+                            </div> <!-- 1:span6 -->
 
-                        </table>
-                        <div id="ajax-message" class="ml20 p20"> </div>
-                        <div id="stack"> 
-                            <div class="message p20">
-                            some very long message some very long message some very long message 
-                            some very long message some very long message some very long message 
-                            some very long message some very long message some very long message 
-                            some very long message some very long message some very long message 
-                            some very long message some very long message some very long message 
-                            some very long message 
-                            </div>
-                            <div class="images p10">
+                            <div class="span3">
+                                <div id="next-message" class="p20 alert">
+                                    <p> Please select the images below and click on Next button. </p>
+                                    <form  id="web-form1"  name="web-form1" action="/qa/external/form/next.php"  method="POST">
+                                        <button id="next-button" class="btn" type="submit" name="next" value="Next" onclick="this.setAttribute('value','Next');" ><span>Next&nbsp;&raquo;</span></button> 
 
-                            </div>
-
-                        </div>
-                    </div>
+                                        <input type="hidden" name="images_json" />
+                                    </form>
+                                </div>
+                            </div> <!-- 1:span3 -->
+                        </div> <!-- row:1 -->
+                        <div class="row">
+                            <div class="hr"> </div>
+                            <div id="stack"> 
+                                <div class="images p10"> </div>
+                            </div> <!-- stack -->
+                        </div> <!-- row:2 -->
+                    </div> <!-- span9 -->
                     <div class="span3"> 
                         Row 2
                     </div>
