@@ -371,7 +371,7 @@
     }
 
     .stackImage .options .links a {
-        color : white;
+        color : black;
     }
 
     .clicked-tile { background-color: #D5D5D5; }
