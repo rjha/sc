@@ -79,7 +79,7 @@ namespace com\indigloo\sc\dao {
                     || empty($page["hash"]) 
                     || empty($page["host"])) {
 
-                    $message = "URL_PROC_ERROR :: [%s] of post [%d] is missing required data" ;
+                    $message = "URL_PROC_ERROR :: [%s] of post [%d] is missing required data \n\n" ;
                     $message = sprintf($message,$link,$postId);
                     Logger::getInstance()->error($message);
 
