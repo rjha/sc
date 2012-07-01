@@ -829,6 +829,34 @@
         font-weight: normal;
     }
 
+    .stackImage .options {  	
+        position:absolute ;
+        overflow:hidden ;
+        z-index:100;
+        display:none ; 
+        /* background-color: white; */
+        /* @see http://0to255.com/ to get matching color */
+        background-color: #F7F7F7;
+        margin:0px;
+        padding:0px 0px 0px 0px;
+        height:36px;
+        width:100%;
+    }
+
+    .stackImage .options .links {
+        padding : 5px 5px 5px 60px;
+        font-size:11px;
+        line-height:16px;
+    }
+
+    .stackImage .options .links a {
+        color : white;
+    }
+
+    .clicked-tile { 
+        background-color: #eeeeee ;
+    }
+
     /* last section - override bootstrap css */
     .hero-unit {
         padding:30px;
