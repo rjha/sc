@@ -11,7 +11,6 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\Constants as AppConstants ;
 
-    set_error_handler('offline_error_handler');
     set_exception_handler('offline_exception_handler');
 
     function process_sites($mysqli) {

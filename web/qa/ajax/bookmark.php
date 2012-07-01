@@ -6,7 +6,7 @@
     use \com\indigloo\Util as Util;
     use \com\indigloo\sc\auth\Login as Login;
 
-    set_error_handler('webgloo_ajax_error_handler');
+    set_exception_handler('webgloo_ajax_exception_handler');
     $message = NULL ;
 
     //use login is required for bookmarking

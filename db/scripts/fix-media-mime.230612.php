@@ -9,7 +9,7 @@
        
     //report all PHP errors
     error_reporting(-1);
-    set_error_handler('offline_error_handler');
+    set_exception_handler('offline_exception_handler');
 
     /*
      * v1. 23 june 2012

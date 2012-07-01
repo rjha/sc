@@ -46,11 +46,10 @@ namespace com\indigloo\sc\auth {
 
         private static function completeSessionAction($loginId,$name,$provider) {
 
-            set_error_handler("gobble_error_handler");
-
             $qUrl = NULL ;
             $message = NULL ;
             $gotoUrl = NULL ;
+            $action = NULL ;
 
             try{ 
                 $gWeb = \com\indigloo\core\Web::getInstance();
@@ -62,29 +61,31 @@ namespace com\indigloo\sc\auth {
 
                 // base64_decode action
                 $action = base64_decode($gSessionAction);
-                Logger::getInstance()->info($action);
-
                 if($action === FALSE) { return ; }
 
                 //json_decode session action
                 $actionObj = json_decode($action);
                 $endPoint = $actionObj->endPoint ;
                 $params = $actionObj->params ;
-                //Logger::getInstance()->dump($params);
+
                 // encode for use in url query.
                 $qUrl = urlencode($actionObj->qUrl);
 
-                // see if one of the parameters has value {loginId}
-                // update this parameter value to actual loginId
-                $keys = get_object_vars($params);
-                Logger::getInstance()->dump($keys);
-                //@todo - change param to params
+                $variables = get_object_vars($params);
                 // associated array of name value pairs
                 // undefines properties are returned as NULL
-                foreach($keys as $name => $value) {
-                    Logger::getInstance()->info("prop::".$name);
-                    if($params->{$name} == "{loginId}") {
-                        $params->{$name} = $loginId ;
+                //
+                // @warning: the foreach value reference is maintained 
+                // after the loop. This is truly brain damaged of PHP
+                // so do not be too cute here and do not user $name => $value
+                // as that conflicts with function argumnet "name"
+                //
+                // see if one of the parameters has "value" {loginId}
+                // update this parameter value to actual loginId
+
+                foreach($variables as $prop => $value) {
+                    if($params->{$prop} == "{loginId}") {
+                        $params->{$prop} = $loginId ;
                     }
                 }
 
@@ -100,7 +101,7 @@ namespace com\indigloo\sc\auth {
 
                 if($response["code"] != 200) {
                     //error happened
-                    $message = sprintf("error: session action response code : %d",$response["code"]);
+                    $message = sprintf("session action response code : %d",$response["code"]);
                     throw new Exception($message) ;
                 }
 
@@ -109,10 +110,10 @@ namespace com\indigloo\sc\auth {
                 header("Location: ".$gotoUrl);
 
             } catch(\Exception $ex) {
-                Logger::getInstance()->error("inside catch block :: " .$ex->getMessage());
+                $message = sprintf("session action %s failed \n ",$action);
+                Logger::getInstance()->error($ex->getMessage());
             }
 
-            restore_error_handler();
         }
 
         private static function startSession($loginId,$provider) {

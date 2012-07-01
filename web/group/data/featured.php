@@ -5,7 +5,7 @@
     //public data
     //do not put user role check here
 
-    set_error_handler('webgloo_ajax_error_handler');
+    set_exception_handler('webgloo_ajax_exception_handler');
 
     $groupDao = new \com\indigloo\sc\dao\Group();
     $feature_slug = $groupDao->getFeatureSlug();

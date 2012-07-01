@@ -9,7 +9,7 @@
        
     //report all PHP errors
     error_reporting(-1);
-    set_error_handler('offline_error_handler');
+    set_exception_handler('offline_exception_handler');
 
     //pre-req : add thumbnail_name varchar(256)
     // alter table sc_media add column thumbnail_name varchar(256);

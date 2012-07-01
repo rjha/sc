@@ -47,7 +47,6 @@
     use \com\indigloo\mysql as MySQL ;
 
     error_reporting(-1);
-    set_error_handler("offline_error_handler");
     set_exception_handler("offline_exception_handler");
 
     //no buffer for command line.
