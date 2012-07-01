@@ -1,18 +1,24 @@
 <table class="table table-striped">
   <thead>
     <tr>
+      <th>&nbsp;</th>
       <th>Name</th>
       <th>Email</th>
-      <th>Source</th>
+      <th>Website</th>
+      <th>Blog</th>
+      <th>Location</th>
       <th>createdOn</th>
     </tr>
   </thead>
   <tbody>
     ~foreach($view->rows as $row){~
     <tr>
+      <td>~~$row['provider']~</td>
       <td>~~$row['name']~</td>
       <td>~~$row['email']~</td>
-      <td>~~$row['provider']~</td>
+      <td>~~$row['website']~</td>
+      <td>~~$row['blog']~</td>
+      <td>~~$row['location']~</td>
       <td>~~$row['created_on']~</td>
     </tr>
     

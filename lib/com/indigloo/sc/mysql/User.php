@@ -50,12 +50,35 @@ namespace com\indigloo\sc\mysql {
             //sanitize input
             settype($limit,"integer");
 
-            $sql = " select * from sc_denorm_user " ;
-            $sql .= " order by id desc LIMIT %d " ;
+            $sql = " select * from sc_denorm_user order by id desc LIMIT %d " ;
             $sql = sprintf($sql,$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
+        }
+
+        //@todo - use filters
+        static function getPaged($start,$direction,$limit,$filters) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            settype($start,"integer");
+            settype($limit,"integer");
+            $direction = $mysqli->real_escape_string($direction);
+
+            $sql = " select u.* from sc_denorm_user u " ;
+
+            $q = new MySQL\Query($mysqli);
+            $sql .= $q->getPagination($start,$direction,"u.id",$limit);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+
+            //reverse rows for 'before' direction
+            if($direction == 'before') {
+                $results = array_reverse($rows) ;
+                return $results ;
+            }
+
+            return $rows;
         }
 
         static function getTotal($filters) {
