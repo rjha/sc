@@ -132,7 +132,7 @@ webgloo.sc.home = {
             event.preventDefault();
             $targetUrl= "/group/data/featured.php";
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.load($targetUrl,{});
+            webgloo.sc.SimplePopup.load($targetUrl);
         });
     }
 }
@@ -259,9 +259,16 @@ webgloo.sc.SimplePopup = {
             }
         }); //ajax call end
     },
-    load: function(targetUrl,options) {
-        var dataObj = {};
-        this.post(targetUrl,dataObj,options);
+    load: function(targetUrl) {
+        
+            var dataObj = {} ;
+            dataObj.endPoint = targetUrl ;
+            dataObj.params = {} ;
+            webgloo.sc.SimplePopup.post(dataObj,{
+                "dataType" : "text",
+                "reload" : false,
+                "keepOpen" : true});
+
     }
 }
 

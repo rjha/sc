@@ -3,17 +3,14 @@
    <div class="options">
         <div class="links">
              ~if($view->hasLike){~
-            <a id="~~$view->itemId~" class ="like-post-link" href="">
-                <i class="icon-asterisk"></i>&nbsp;Like</a> &nbsp;
+            <a id="~~$view->itemId~" class ="btn btn-mini like-post-link" href="">Like</a> &nbsp;
             ~}~
             ~if($view->hasSave){~
-            <a id="~~$view->itemId~" class="favorite-post-link" href="">
-                <i class="icon-bookmark"></i>&nbsp;Favorite</a> &nbsp;
+            <a id="~~$view->itemId~" class="btn btn-mini favorite-post-link" href="">Favorite</a> &nbsp;
             ~}~
             
             ~if($view->hasRemove){~
-            <a id="~~$view->itemId~" class ="remove-post-link" href="">
-                <i class="icon-remove"></i>&nbsp;Remove</a> &nbsp;
+            <a id="~~$view->itemId~" class ="btn btn-mini remove-post-link" href="">Remove</a> &nbsp;
             ~}~
         </div>
     </div>

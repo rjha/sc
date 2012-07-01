@@ -8,6 +8,7 @@
     use \com\indigloo\Configuration as Config;
        
     error_reporting(-1);
+    set_exception_handler('offline_exception_handler');
 
     $iter = 40;
     $count = 0 ;

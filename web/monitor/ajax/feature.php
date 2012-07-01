@@ -7,7 +7,7 @@
     use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\sc\ui\Constants as UIConstants ;
 
-    set_error_handler('webgloo_ajax_error_handler');
+    set_exception_handler('webgloo_ajax_exception_handler');
 
     //Admin login is required
     if(!Login::isAdmin()) {

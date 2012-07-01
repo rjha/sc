@@ -9,11 +9,11 @@
        <meta name="description" content="<?php echo $metaDescription;  ?>">
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
         <script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
 
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?> 
 
         <script type="text/javascript">

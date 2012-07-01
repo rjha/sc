@@ -29,8 +29,20 @@ namespace com\indigloo\sc\html {
             }
 
             $html = NULL ;
-            $view = new \stdClass;
             $template = '/fragments/user/profile/private.tmpl' ;
+
+            $view = self::createUserView($userDBRow);
+            $params = array('q' => urlencode(Url::current()));
+            $view->passwordUrl = Url::createUrl("/user/account/change-password.php",$params);
+            $view->editUrl = Url::createUrl("/user/account/edit.php",$params);
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+        static function createUserView($userDBRow) {
+            $view = new \stdClass;
 
             $view->name = $userDBRow['name'];
             $view->createdOn = Util::formatDBTime($userDBRow['created_on']);
@@ -51,17 +63,8 @@ namespace com\indigloo\sc\html {
             $view->nickName = $userDBRow['nick_name'];
             $view->age = $userDBRow['age'];
             $view->aboutMe = $userDBRow['about_me'];
-            //@todo
-            //$view->gender = $userDBRow['gender'];
 
-
-            $params = array('q' => urlencode(Url::current()));
-            $view->passwordUrl = Url::createUrl("/user/account/change-password.php",$params);
-            $view->editUrl = Url::createUrl("/user/account/edit.php",$params);
-
-            $html = Template::render($template,$view);
-            return $html ;
-
+            return $view ;
         }
 
         static function getPhoto($name,$photoUrl) {

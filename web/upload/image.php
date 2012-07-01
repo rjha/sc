@@ -5,7 +5,7 @@
     include(APP_WEB_DIR . '/inc/header.inc');
     require_once(WEBGLOO_LIB_ROOT. '/ext/S3.php');
 
-    set_error_handler('webgloo_ajax_error_handler');
+    set_exception_handler('webgloo_ajax_exception_handler');
     
     use \com\indigloo\Util as Util;
     use \com\indigloo\sc\auth\Login as Login ;

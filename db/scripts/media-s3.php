@@ -10,6 +10,7 @@
     use \com\indigloo\media\FilePipe as FilePipe;
        
     error_reporting(-1);
+    set_exception_handler('offline_exception_handler');
 
     $prefix = sprintf("%s/",date('Y/m/d')) ;
     $pipe = new \com\indigloo\media\FilePipe();

@@ -2,7 +2,7 @@
 
 namespace com\indigloo\sc\command {
 
-    use \com\indigloo\sc\Logger as Logger ;
+    use \com\indigloo\Logger as Logger ;
 
     class Facade {
         private $map ;
@@ -40,7 +40,6 @@ namespace com\indigloo\sc\command {
 
             $response = $command->execute($params);
             return $response ;
-
         }
     }
 }

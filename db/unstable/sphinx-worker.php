@@ -9,7 +9,6 @@
     use \com\indigloo\Logger as Logger;
     use \com\indigloo\Configuration as Config;
 
-    set_error_handler('offline_error_handler');
     set_exception_handler('offline_exception_handler');
 
     $lines = file('/home/rjha/cron/query.log');

@@ -35,14 +35,30 @@ namespace com\indigloo\sc\dao {
 
         }
 
+        function getTotal($filters=array()) {
+            $row = mysql\User::getTotal($filters);
+            return $row["count"] ;
+        }
+
         function getLatest($limit,$filters=array()) {
             $rows = mysql\User::getLatest($limit,$filters);
             return $rows ;
         }
 
-        function getTotal($filters=array()) {
-            $row = mysql\User::getTotal($filters);
-            return $row['count'] ;
+        function getPaged($paginator,$filters=array()) {
+
+            $limit = $paginator->getPageSize();
+
+            if($paginator->isHome()){
+                return $this->getLatest($limit,$filters);
+
+            } else {
+                $params = $paginator->getDBParams();
+                $start = $params["start"];
+                $direction = $params["direction"];
+                $rows = mysql\User::getPaged($start,$direction,$limit,$filters);
+                return $rows ;
+            }
         }
 
     }

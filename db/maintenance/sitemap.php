@@ -6,7 +6,7 @@
     include(WEBGLOO_LIB_ROOT . '/com/indigloo/error.inc');
 
     use \com\indigloo\mysql as MySQL;
-    set_error_handler('offline_error_handler');
+    set_exception_handler('offline_exception_handler');
 
     function write_on_disk($fileName,$content) {
         $fp = fopen($fileName, 'w');

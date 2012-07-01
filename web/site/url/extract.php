@@ -3,7 +3,7 @@
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
 
-    set_error_handler('webgloo_ajax_error_handler');
+    set_exception_handler('webgloo_ajax_exception_handler');
 
     use \com\indigloo\text\UrlParser as UrlParser;
 
