@@ -1,12 +1,21 @@
-To amend last commit message
+get a file from another branch
+--------------------------------------------
+$git checkout <branchname> <path>
+should do it. You need to commit to merge the changes.
+
+
+
+amend last commit message
+-------------------------
+do not do this if you have already pushed to others.
 git commit --amend -m "new_message"
 
 To unstage a commit
 git reset HEAD
 
 
-To list all remote branches
-============================
+list all remote branches
+--------------------------
 $git fetch origin 
 $git branch -a
 lists all branches, local as well as remote
@@ -14,29 +23,38 @@ lists all branches, local as well as remote
 or you can do a 
 $git ls-remote
 
-Q) How to remove stale remote branch reference from local index?
-(see below)
 
 Branch Basics
+--------------
 http://git-scm.com/book/en/Git-Branching-Remote-Branches
 + create a local branch
 git branch xyz
 git checkout xyz
-To see your local branches
+
+Tracking branch
+---------------
+To create a local branch for origin/xyzworld  branch (pushed by someone else)
+ git checkout -b myxyz origin/xyzworld
+ Now myxyz points to origin/xyzworld branch
+ How to push from local myxyz -> origin xyzworld branch
+ This is a tracking branch so any push from myxyz -> goes to origin/xyzworld 
+
++ To see your local branches
 git branch (the one you are working on will be starred)
 
++ To delete a local branch
 git branch -d xyz
-git branch --merged
-git branch --no-merged
 
-How to merge local branch changes into local master?
++ How to merge local branch changes into local master?
  switch to local master branch
  git checkout master
  Do a merge
  git merge xyz
 
-How to push your branch to origin server?
++ How to push your branch to origin server?
     git push origin xyz
+when you local branch name is different from origin branch name 
+(e.g. say for local tracking branches)
     git push origin xyz:xyzworld
     
 
@@ -45,12 +63,6 @@ How do my collaborators get it?
  git merge origin/xyzworld
 
  (This will merge in the default working branch - so beware!)
-
-To create a local branch for origin/xyzworld  branch (pushed by someone else)
- git checkout -b myxyz origin/xyzworld
- Now myxyz points to origin/xyzworld branch
- How to push from local myxyz -> origin xyzworld branch
- This is a tracking branch so any push from myxyz -> goes to origin/xyzworld 
 
 Delete local branch
  - git branch -d myxyz
@@ -62,32 +74,35 @@ git push origin :xyzworld
 How to see changes between two branches?
 $git diff --name-status master..<branch>
 
-Tracking Branches
-=================
-$git fetch -p
+remove stale remote branch reference from local index?
+------------------------------------------------------
 
-This should remove all local branches that are remotely delete.
-
-+ To delete a remote tracking branch
- $git branch -rd origin/test-x
-
-
-Pruning unwanted(stale) branches
-* Do not use prune*  
-
-$git branch -r
-shows remote branches
+$git branch -r shows remote branches
 $git branch shows my local branches
 $git branch -a shows both
+
+
+
+First thing to try is fetch with -p
+$git fetch -p
+This should remove all local branches that do not exist on origin.
+verify by issuing $git branch -a
+
+Pruning unwanted(stale) branches
+* Do not use prune unnecessarily*  
 
 Use $git remote show origin to see what branches are stale
 Then prune using
 $git remote prune -n origin (for dry run)
 $git remote prune origin (actual thing)
-
 verify by issuing $git branch -a
 
+
++ To delete a remote tracking branch
+ $git branch -rd origin/test-x
  
 
-
+show logs after a certain date
+----------------------------
 git log --after=2012-05-07 --pretty=oneline > logs 
+
