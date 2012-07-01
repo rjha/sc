@@ -11,14 +11,10 @@
     <div class="hr"> </div>
     
     <div>
-        ~if(empty($view->followerId)) {~
-            <a href="/user/login.php?q=~~$view->publicUrl~">login</a> to follow this user.
-        ~ } else { ~
         <div class="pt10">
             <a href="" id="~~$view->followerId~|~~$view->followingId~" class="btn btn-primary follow-user-link">Follow</a>
             <br/>
         </div>
-        ~ } ~
         <div class="mt20">
             <ul class="unstyled">
             ~foreach($view->columns as $key){ ~
