@@ -801,6 +801,34 @@
         line-height:32px;
     }
 
+    #overlay-header{
+        background: none repeat scroll 0 0 rgba(255, 255, 255, 0.95);
+        border-bottom: 1px solid black;
+        box-shadow: 0 1px 15px #9C9C9C;
+        display: none;
+        font-size: 20px;
+        font-weight: bold;
+        left: 0;
+        opacity: 0;
+        padding: 5px 10% 10px;
+        position: fixed;
+        top: 0;
+        width: 80%;
+        z-index: 250;
+        /*
+        text-align:center ;
+        opacity : 1 ;
+        display :block ;
+        */
+    }
+
+    .close-overlay {
+        color: #999999;
+        cursor: pointer;
+        font-size: 10px;
+        font-weight: normal;
+    }
+
     /* last section - override bootstrap css */
     .hero-unit {
         padding:30px;
