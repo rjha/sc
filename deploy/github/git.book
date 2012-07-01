@@ -73,6 +73,11 @@ git push origin :xyzworld
 
 How to see changes between two branches?
 $git diff --name-status master..<branch>
+This shows all the files that are different in two branches
+To see actual changes just use $git diff branch1..branch2
+To see number of changed lines
+git diff  --stat --color master..image-extractor
+
 
 remove stale remote branch reference from local index?
 ------------------------------------------------------
