@@ -150,6 +150,11 @@ namespace com\indigloo\sc\html {
         }
 
         static function getTable($rows) {
+            //Add user profile to rows
+            for($i = 0 ; $i < count($rows); $i++) {
+                $rows[$i]["pubUrl"]  = "/pub/user/".PseudoId::encode($rows[$i]["login_id"]);
+            }
+
             $html = NULL ;
             $template = '/fragments/user/table.tmpl' ;
             $view = new \stdClass;
