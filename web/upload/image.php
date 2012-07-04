@@ -8,6 +8,7 @@
     set_exception_handler('webgloo_ajax_exception_handler');
     
     use \com\indigloo\Util as Util;
+    use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login ;
 
 
@@ -22,21 +23,28 @@
     $uploader =  NULL ; 
     $prefix = sprintf("%s/",date('Y/m/d')) ;
     
-    //special prefix - test machines 
-    if($_SERVER["HTTP_HOST"] == 'mint.3mik.com' || $_SERVER["HTTP_HOST"] == 'mbp13.3mik.com') {
+    // special prefix - DEV machines 
+    $typeOfNode = Config::getInstance()->get_value("node.type");
+    if(strcasecmp($typeOfNode, "DEVLOPMENT") == 0) {
         $prefix = 'test/'.$prefix ;
     }
         
-    if (isset($_GET['qqfile'])) {
+    if (isset($_GET["qqfile"])) {
         $pipe = new \com\indigloo\media\XhrPipe();
         $uploader = new com\indigloo\media\ImageUpload($pipe);
-        $uploader->process($prefix,$_GET['qqfile']);
+        $uploader->process($prefix,$_GET["qqfile"]);
         
-    } elseif (isset($_FILES['qqfile'])) {
+    } elseif (isset($_FILES["qqfile"])) {
 
         $pipe = new \com\indigloo\media\FormPipe();
         $uploader = new com\indigloo\media\ImageUpload($pipe);
         $uploader->process($prefix,"qqfile");
+        
+    } elseif(isset($_POST["qqUrl"])) {
+
+        $pipe = new \com\indigloo\media\UrlPipe();
+        $uploader = new com\indigloo\media\ImageUpload($pipe);
+        $uploader->process($prefix,$_POST["qqUrl"]);
         
     } else {
         trigger_error("file upload is unable to determine pipe", E_USER_ERROR); 
@@ -46,7 +54,7 @@
     $errors = $uploader->getErrors() ;
 
     if (sizeof($errors) > 0 ) {
-        $data = array('code' => 500, 'error' => $errors[0]);
+        $data = array("code" => 500, "error" => $errors[0]);
         echo json_encode($data);
     
     } else {
@@ -57,8 +65,8 @@
         $mediaId = $mediaDao->add($mediaVO);
         $mediaVO->id  = $mediaId;
           
-        $message = 'file upload done!';
-        $data = array('code' => 0, 'mediaVO' => $mediaVO, 'message' => $message,'success' => true);
+        $message = "file upload done!";
+        $data = array("code" => 200, "mediaVO" => $mediaVO, "message" => $message,"success" => true);
         echo json_encode($data);
     
     }
