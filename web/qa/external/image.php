@@ -2,6 +2,17 @@
 
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
+    include(APP_WEB_DIR . '/inc/role/user.inc');
+
+    use com\indigloo\Util;
+    use com\indigloo\Url;
+    use com\indigloo\ui\form\Sticky;
+    use com\indigloo\Constants as Constants;
+    use com\indigloo\ui\form\Message as FormMessage;
+
+    $fUrl = Url::current();
+    $qUrl = Url::tryQueryParam("q");
+    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
 
 
 ?>
@@ -10,16 +21,19 @@
 <html>
 
     <head>
-        <title> Image extractor test page</title>
+        <title> Upload images from a web page</title>
 
         <meta charset="utf-8">
 
-        <link rel="stylesheet" type="text/css" href="/css/sc.css">
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
 
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/js/sc.js"></script>
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?> 
+
         <style>
+            #fetch-link {width:80px; height:32px; margin-bottom:10px;}
+            #next-message { background:whiteSmoke ; }
             /* override default stack image padding */
             div .stackImage { padding: 1px; }
             .form-table { margin-bottom : 5px; }
@@ -33,6 +47,11 @@
                 images : [],
                 num_select : 0 ,
                 num_upload : 0 ,
+
+                extractEndpoint : "/qa/ajax/extract-image.php",
+                uploadEndpoint : "/upload/image.php" ,
+                nextEndpoint : "/qa/external/router.php" ,
+
                 imageDiv : '<div id="image-{id}" class="stackImage" >' 
                     + '<div class="options"> <div class="links"> </div> </div>' 
                     + '<img src="{srcImage}" class="thumbnail-1" /> </div>' ,
@@ -234,12 +253,13 @@
                     webgloo.sc.ImageSelector.num_upload = 0 ;
                     webgloo.sc.ImageSelector.bucket = {} ;
                     webgloo.sc.ImageSelector.images = [] ;
+                    webgloo.sc.ImageSelector.clearMessage();
 
                     webgloo.sc.ImageSelector.addSpinner();
                     $("#stack").fadeOut("slow");
                     $("#stack .images").html('');
 
-                    endPoint = "/qa/ajax/extract-image.php" ;
+                    endPoint = webgloo.sc.ImageSelector.extractEndpoint ;
                     params = {} ;
                     params.target = target ;
                     //ajax call start
@@ -312,7 +332,7 @@
                     var options = {"css":"color-red"} ;
                     var prefix = "image " + counter + " : " ;
 
-                    endPoint = "/upload/image.php" ;
+                    endPoint = webgloo.sc.ImageSelector.uploadEndpoint ;
                     params = {} ;
                     params.qqUrl = imageUrl ;
                     //ajax call start
@@ -361,46 +381,55 @@
 
     </head>
 
-     <body>
-        <div class="row">
-            <div class="span12">
-                <div class="page-header">
-                    <h2> Image extractor test page </h2>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
+                </div> 
+                
+            </div>
+            
+            <div class="row">
+                <div class="span12">
+                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="span12">
-                <div class="row">
-                    <div class="span9"> 
-                        <div class="row">
-                            <div class="span6">
-                                <table class="form-table">
+            
+            <div class="row">
+                <div class="span12">
+                    <h2> select images from a webpage  </h2>
+                    <div class="hr"> </div>
+                    <?php FormMessage::render(); ?>
+
+                    <div class="row">
+                        <div class="span7">
+                            <table class="form-table">
                                 <tr>
                                 <td>
-                                    <label>Type URL and click fetch ( or press Enter ) </label>
+                                    <label>Type webpage URL and click fetch ( or press Enter ) </label>
                                     <input id="link-box" name="link" value="" />
-                                    <br/>
                                     <button id="fetch-link" type="button" class="btn" value="Fetch">Fetch</button> 
                                 </td>
                                 </tr>
                                 </table>
                                 <div id="ajax-spinner" class="ml20 p10"> </div>
                                 <div id="ajax-message" class="ml20 p10"> </div>
-                            </div> <!-- 1:span6 -->
+                            </div> <!-- 1:span7 -->
 
-                            <div class="span3">
-                                <div id="next-message" class="p20 alert">
-                                    <p> Please select the images below and click on Next button. </p>
-                                    <!-- <button id="next-button" class="btn" type="button" name="next" value="Next" ><span>Next&nbsp;&raquo;</span></button>  -->
-                                    <form  id="web-form1"  name="web-form1" action="/qa/external/form/next.php"  method="POST">
-                                        <button id="next-button" class="btn" type="button" name="next" value="Next" onclick="this.setAttribute('value','Next');" ><span>Next&nbsp;&raquo;</span></button> 
+                            <div class="span5">
+                                <div id="next-message" class="p20">
+                                    <p> Place your mouse over an image to select it. Please click Next button after selecting images. </p>
+                                    <form  id="web-form1"  name="web-form1" action="/qa/external/router.php"  method="POST">
+                                        <button id="next-button" class="btn btn-inverse" type="button" name="next" value="Next" onclick="this.setAttribute('value','Next');" ><span>Next&nbsp;&rarr;</span></button> 
 
                                         <input type="hidden" name="images_json" />
+                                        <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                                        <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
                                     </form>
 
                                 </div>
-                            </div> <!-- 1:span3 -->
+                            </div> <!-- 1:span5 -->
                         </div> <!-- row:1 -->
                         <div class="row">
                             <div class="hr"> </div>
@@ -408,13 +437,17 @@
                                 <div class="images p10"> </div>
                             </div> <!-- stack -->
                         </div> <!-- row:2 -->
-                    </div> <!-- span9 -->
-                    <div class="span3"> 
-                        Row 2
-                    </div>
-                </div>
-            </div>
+                   
+                </div> <!-- span12 -->
+                
+            </div> <!-- row -->
+            
+        </div> <!-- container -->   
+                      
+        <div id="ft">
+            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
         </div>
 
     </body>
 </html>
+
