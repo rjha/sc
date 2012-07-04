@@ -25,7 +25,7 @@
     
     // special prefix - DEV machines 
     $typeOfNode = Config::getInstance()->get_value("node.type");
-    if(strcasecmp($typeOfNode, "DEVLOPMENT") == 0) {
+    if(strcasecmp($typeOfNode, "development") == 0) {
         $prefix = 'test/'.$prefix ;
     }
         
