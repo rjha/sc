@@ -111,6 +111,7 @@
                         <div class="row">
                             <div class="span9"><div id="image-uploader"> </div></div>
                         </div>
+                        <p> images will appear at the end of this form </p>
                         <table class="form-table">
                             <tr>
                                 <td> <label>Category</label>
