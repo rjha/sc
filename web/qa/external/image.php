@@ -21,7 +21,7 @@
 <html>
 
     <head>
-        <title> Upload images from a web page</title>
+        <title> Upload webpage images</title>
 
         <meta charset="utf-8">
 
@@ -36,6 +36,7 @@
             #next-message { background:whiteSmoke ; }
             /* override default stack image padding */
             div .stackImage { padding: 1px; }
+            /* override default form-table margin */
             .form-table { margin-bottom : 5px; }
         </style>
 
@@ -47,6 +48,7 @@
                 images : [],
                 num_select : 0 ,
                 num_upload : 0 ,
+                debug : false ,
 
                 extractEndpoint : "/qa/ajax/extract-image.php",
                 uploadEndpoint : "/upload/image.php" ,
@@ -56,9 +58,9 @@
                     + '<div class="options"> <div class="links"> </div> </div>' 
                     + '<img src="{srcImage}" class="thumbnail-1" /> </div>' ,
 
-                addLink : '<a id="{id}" class="btn btn-inverse btn-mini add-image" href="">Select</a>' ,
+                addLink : '<a id="{id}" class="btn btn-mini add-image" href="">Select</a>' ,
                 removeLink : '<i class="icon-ok"></i>&nbsp;&nbsp;'  
-                    + '<a id="{id}" class="btn btn-inverse btn-mini remove-image" href="">Remove</a>' ,
+                    + '<a id="{id}" class="btn btn-mini remove-image" href="">Remove</a>' ,
 
                 attachEvents : function() {
 
@@ -69,22 +71,24 @@
                     $("#fetch-link").live("click", function(event){
                         event.preventDefault();
                         var link = jQuery.trim($("#link-box").val());
-                        if( link == '' )
+                        if( link == '' ){
                             return ;
-                        else
+                        } else {
                             webgloo.sc.ImageSelector.fetch(link);
+                        }
                     }) ;
 
                     //capture ENTER on link box
                     $("#link-box").keydown(function(event) {
                         //donot submit form
                         if(event.which == 13) {
-                        event.preventDefault();
-                        var link = jQuery.trim($("#link-box").val());
-                        if( link == '' )
-                            return ;
-                        else
-                            webgloo.sc.ImageSelector.fetch(link);
+                            event.preventDefault();
+                            var link = jQuery.trim($("#link-box").val());
+                            if( link == '' ) {
+                                return ;
+                            } else{
+                                webgloo.sc.ImageSelector.fetch(link);
+                            }
                         }
 
                     });
@@ -96,8 +100,10 @@
                         webgloo.sc.ImageSelector.num_upload = 0  ;
                         var counter = 1 ;
 
-                        //@debug
-                        console.log(" selected :" + webgloo.sc.ImageSelector.num_select);
+                        if(webgloo.sc.ImageSelector.debug) {
+                            console.log("num_selected :: " + webgloo.sc.ImageSelector.num_select);
+                        }
+
                         if(webgloo.sc.ImageSelector.num_select == 0 ) {
                             webgloo.sc.ImageSelector.showMessage("Please select an image.",{"css":"color-red"});
                             return false;
@@ -113,7 +119,9 @@
 
                                 if(imageObj.selected) {
                                     webgloo.sc.ImageSelector.upload(counter,imageObj.srcImage);
-                                    console.log("upload : " + imageObj.srcImage);
+                                    if(webgloo.sc.ImageSelector.debug) {
+                                        console.log("upload image :: " + imageObj.srcImage);
+                                    }
                                     counter++ ;
                                 }
 
@@ -205,10 +213,6 @@
 
                 appendMessage : function(message,options) {
                     options.css = (typeof options.css === "undefined") ? '' : options.css;
-                    //@debug
-                    console.log("append message = " + message) ;
-                    console.log("options " + options) ;
-
                     $("#ajax-message").append("<div> " + message + "</div>");
                     if( options.css != '') {
                         $("#ajax-message").addClass(options.css);
@@ -222,10 +226,6 @@
 
                 showMessage : function(message,options) {
                     options.css = (typeof options.css === "undefined") ? '' : options.css;
-
-                    //@debug
-                    console.log("show message = " + message) ;
-                    console.log("options " + options) ;
 
                     $("#ajax-message").html('');
                     $("#ajax-message").html("<div> " + message + "</div>");
@@ -272,8 +272,6 @@
                         processData:true,
                         //js errors callback
                         error: function(XMLHttpRequest, response){
-                            //@debug
-                            //console.log(response);
                             webgloo.sc.ImageSelector.removeSpinner();
                             webgloo.sc.ImageSelector.showMessage(response, {"css":"color-red"});
                         },
@@ -281,9 +279,13 @@
                         // server script errors are also reported inside 
                         // ajax success callback
                         success: function(response){
-                            //@debug
-                            //console.log(response);
+                            if(webgloo.sc.ImageSelector.debug) {
+                                console.log("fetch : server response :: ") ;
+                                console.log(response);
+                            }
+
                             webgloo.sc.ImageSelector.removeSpinner();
+
                             switch(response.code) {
                                 case 401 :
                                     webgloo.sc.ImageSelector.showMessage(response.message,{"css":"color-red"});
@@ -351,9 +353,13 @@
                         // server script errors are also reported inside 
                         // ajax success callback
                         success: function(response){
-                            //@debug
-                            //console.log(response);
+                            if(webgloo.sc.ImageSelector.debug) {
+                                console.log("upload response for image :: " + imageUrl);
+                                console.log(response);
+                            }
+
                             webgloo.sc.ImageSelector.removeSpinner();
+
                             switch(response.code) {
                                 case 401 :
                                     webgloo.sc.ImageSelector.appendMessage(prefix + response.message,options);
@@ -374,6 +380,7 @@
             }
 
             $(document).ready(function(){
+                webgloo.sc.ImageSelector.debug= true ;
                 webgloo.sc.ImageSelector.attachEvents();
 
             });
@@ -398,7 +405,7 @@
             
             <div class="row">
                 <div class="span12">
-                    <h2> select images from a webpage  </h2>
+                    <h2> upload images from a webpage  </h2>
                     <div class="hr"> </div>
                     <?php FormMessage::render(); ?>
 
