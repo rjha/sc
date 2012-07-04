@@ -520,10 +520,15 @@ webgloo.media = {
         });
 
     },
-    imagePreviewDIV : '<div class="stackImage" id="image-{id}"><img src="{srcImage}" class="thumbnail-1" alt="{originalName}" width="{width}" height="{height}"/> '
+
+    imageDiv : '<div class="stackImage" id="image-{id}"> ' 
+        + ' <img src="{srcImage}" class="thumbnail-1" alt="{originalName}" width="{width}" height="{height}"/> '
         + '<div> <a class="remove-image" id="{id}" href="">Remove</a> </div> </div>',
 
-    linkPreviewDIV : '<div class="previewLink"> {link} &nbsp; <a class="remove-link" href="{link}"> Remove</a> </div> ' ,
+    imageDiv2 : '<div class="stackImage" id="image-{id}"><img src="{srcImage}" class="thumbnail-1" /> '
+        + '<div> <a class="remove-image" id="{id}" href="">Remove</a> </div> </div>',
+
+    linkPreviewDIV : '<div class="previewLink">{link}&nbsp;<a class="remove-link" href="{link}">Remove</a></div> ' ,
 
     populateHidden : function () {
 
@@ -576,14 +581,24 @@ webgloo.media = {
     },
     addImage : function(mediaVO) {
         webgloo.media.images[mediaVO.id] = mediaVO ;
-        if(mediaVO.store == 's3'){
-            mediaVO.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
-        } else {
-            mediaVO.srcImage = '/' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
+        switch(mediaVO.store) {
+            case "s3" :
+                mediaVO.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
+                var buffer = webgloo.media.imageDiv.supplant(mediaVO);
+                $("div#image-data").append(buffer);
+                break ;
+            case "local" :
+                mediaVO.srcImage = '/' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
+                var buffer = webgloo.media.imageDiv.supplant(mediaVO);
+                $("div#image-data").append(buffer);
+                break ;
+            case "external" :
+                var buffer = webgloo.media.imageDiv2.supplant(mediaVO);
+                $("div#image-data").append(buffer);
+                break ;
+            default:
+                break ;
         }
-
-        var buffer = webgloo.media.imagePreviewDIV.supplant(mediaVO);
-        $("div#image-data").append(buffer);
 
     }
 }
