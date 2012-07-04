@@ -97,6 +97,7 @@
 
                         //initialize
                         webgloo.sc.ImageSelector.clearMessage();
+                        webgloo.sc.ImageSelector.addSpinner();
                         webgloo.sc.ImageSelector.num_upload = 0  ;
                         var counter = 1 ;
 
@@ -310,6 +311,7 @@
                     webgloo.sc.ImageSelector.num_upload++ ;
 
                     if(counter == webgloo.sc.ImageSelector.num_select) {
+                        webgloo.sc.ImageSelector.removeSpinner();
                         //Actual upload?
                         if(webgloo.sc.ImageSelector.num_upload > 0 ) {
                             //stringify images
