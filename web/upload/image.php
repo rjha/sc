@@ -12,7 +12,7 @@
     use \com\indigloo\sc\auth\Login as Login ;
 
 
-    //use login is required for bookmarking
+    //use login is required for image upload 
     if(!Login::hasSession()) {
         $message = array("code" => 401 , "message" => "Authentication failure: You need to login!");
         $json = json_encode($message); 
