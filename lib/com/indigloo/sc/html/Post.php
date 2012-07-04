@@ -223,11 +223,9 @@ namespace com\indigloo\sc\html {
                 $image = $images[0] ;
                 $imgv = self::convertImageJsonObj($image);
                 $view->srcImage = $imgv["thumbnail"];
-                $newxy = Util::foldX($image->width,$image->height,$options["imageWidth"]);
+                $newxy = Util::foldX($imgv["width"],$imgv["height"],$options["imageWidth"]);
                 $view->width = $newxy["width"];
                 $view->height = $newxy["height"];
-
-
             }
 
             //process groups
