@@ -120,8 +120,8 @@ namespace com\indigloo\sc\dao {
             $feedVO->objectId = $itemId;
             $feedVO->title = $title;
             $feedVO->verb = $verb;
-            $feedVO->srcImage = $image->source;
-            $feedVO->nameImage = $image->name;
+            $feedVO->srcImage = $image["source"];
+            $feedVO->nameImage = $image["name"];
 
             try {
                 $redis = Redis::getInstance()->connection();
@@ -183,8 +183,8 @@ namespace com\indigloo\sc\dao {
             $feedVO->objectId = $itemId;
             $feedVO->title = $title;
             $feedVO->verb = $verb;
-            $feedVO->srcImage = $image->source;
-            $feedVO->nameImage = $image->name;
+            $feedVO->srcImage = $image["source"];
+            $feedVO->nameImage = $image["name"];
 
             try {
                 $redis = Redis::getInstance()->connection();
@@ -242,8 +242,8 @@ namespace com\indigloo\sc\dao {
             $feedVO->content = $content;
             $feedVO->verb = $verb;
 
-            $feedVO->srcImage = $image->source;
-            $feedVO->nameImage = $image->name;
+            $feedVO->srcImage = $image["source"];
+            $feedVO->nameImage = $image["name"];
 
             try {
 

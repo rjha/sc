@@ -22,24 +22,16 @@ namespace com\indigloo\sc\html {
 
             foreach($images as $image) {
                 $record = array();
-
-                //show thumbnail + original image
-                //@imp: if thumbnail is not available then fallback on original image
-                $tname = (property_exists($image,'thumbnailName')) ? $image->thumbnailName : $image->originalName ;
-
-                $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? 'http://' : '/' ;
-                $tfile = (property_exists($image,'thumbnail')) ? $image->thumbnail : $image->storeName ;
-                $timage = $prefix.$image->bucket.'/'.$tfile;
-
-                $record['source'] = $prefix.$image->bucket.'/'.$image->storeName ;
-                $record['thumbnail'] = $timage;
-                $record['title'] = $title;
-                $record['originalName'] = $image->originalName;
-                $record['tname'] = $tname;
+                $imgv = self::convertImageJsonObj($image);
+                $record["source"] = $imgv["source"];
+                $record["thumbnail"] = $imgv["thumbnail"];
+                $record["title"] = $title;
+                $record["originalName"] = $imgv["name"];
+                $record["tname"] = $imgv["tname"];
 
                 $newxy = Util::foldXY($image->width,$image->height,190,140);
-                $record['width'] = $newxy["width"];
-                $record['height'] = $newxy["height"];
+                $record["width"] = $newxy["width"];
+                $record["height"] = $newxy["height"];
 
                 $records[] = $record;
             }
@@ -226,20 +218,16 @@ namespace com\indigloo\sc\html {
 
             //process post image.
             if( (!empty($images)) && (sizeof($images) > 0) && $options["image"]) {
-                /* image stuff */
+                /* process image #1 */
                 $view->hasImage = true ;
                 $image = $images[0] ;
-                $view->bucket = $image->bucket;
-
-                $view->originalName =
-                    (property_exists($image,'thumbnailName')) ?  $image->thumbnailName : $image->originalName ;
-                $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? 'http://' : '/' ;
-                $fileName = (property_exists($image,'thumbnail')) ? $image->thumbnail : $image->storeName ;
-
-                $view->srcImage = $prefix.$image->bucket.'/'.$fileName;
+                $imgv = self::convertImageJsonObj($image);
+                $view->srcImage = $imgv["thumbnail"];
                 $newxy = Util::foldX($image->width,$image->height,$options["imageWidth"]);
                 $view->width = $newxy["width"];
                 $view->height = $newxy["height"];
+
+
             }
 
             //process groups
@@ -265,6 +253,52 @@ namespace com\indigloo\sc\html {
             }
 
             return $view ;
+        }
+
+        static function getTileImage($json) {
+            $images = json_decode($json);
+            $imgv = array();
+
+            if( (!empty($images)) && (sizeof($images) > 0)) {
+                //work with image #1
+                $image = $images[0] ;
+                $imgv = self::convertImageJsonObj($image);
+
+            } else {
+                $imgv["name"] = "placeholder" ;
+                $imgv["source"] = "/css/images/twitter-icon.png" ;
+            }
+
+            return $imgv ;
+        }
+
+        static function convertImageJsonObj($jsonObj) {
+            $view = array();
+            //external images have no name
+            if(strcmp($jsonObj->store,"external") == 0 ) {
+                $view["name"] = "image-".$jsonObj->id ;
+                $view["tname"] = "image-".$jsonObj->id ;
+                $view["source"] = $jsonObj->srcImage ;
+                $view["thumbnail"] = $jsonObj->srcImage ;
+                $view["width"] = 190;
+                $view["height"] = 140;
+                return $view ;
+            }
+
+            if((strcmp($jsonObj->store,"s3") == 0 ) || (strcmp($jsonObj->store,"local") == 0)) {
+                $view["name"] = $jsonObj->originalName ;
+                //@imp: if thumbnail is not available then fallback on original image
+                $view["tname"] = (property_exists($jsonObj,"thumbnailName")) ?  $jsonObj->thumbnailName : $jsonObj->originalName ;
+                $prefix = ($jsonObj->store == 's3') ? 'http://' : '/' ;
+                $fileName = (property_exists($jsonObj,'thumbnail')) ? $jsonObj->thumbnail : $jsonObj->storeName ;
+
+                $view["source"] = $prefix.$jsonObj->bucket.'/'.$jsonObj->storeName;
+                $view["thumbnail"] = $prefix.$jsonObj->bucket.'/'.$fileName ;
+                $view["width"] = $jsonObj->width ;
+                $view["height"] = $jsonObj->height;
+                return $view ;
+            }
+
         }
 
     }
