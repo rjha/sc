@@ -180,7 +180,6 @@
         }
     }
 
-    //@todo - started@
     //this script is locked via site-worker.sh shell script
     $mysqli = MySQL\Connection::getInstance()->getHandle();
     process_sites($mysqli);
@@ -188,8 +187,6 @@
     process_groups($mysqli);
     sleep(1);
     process_reset_password($mysqli);
-    sleep(1);
-    remove_stale_sessions();
     sleep(1);
 
     //initialize redis connx.
