@@ -1,3 +1,11 @@
+<?php
+
+    include ('sc-app.inc');
+    include(APP_WEB_DIR . '/inc/header.inc');
+
+
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -22,7 +30,7 @@
             webgloo.sc.ImageSelector = {
 
                 list : {},
-
+                images : [],
                 imageDiv : '<div id="image-{id}" class="stackImage" >' 
                     + '<div class="options"> <div class="links"> </div> </div>' 
                     + '<img src="{srcImage}" class="thumbnail-1" /> </div>' ,
@@ -60,6 +68,7 @@
 
                     });
                     
+                    /*
                     $('#web-form1').submit(function() {
                         var count = webgloo.sc.ImageSelector.populateHidden();
                         if(count > 0 ) {
@@ -68,7 +77,43 @@
                             webgloo.sc.ImageSelector.showMessage("No image selected",{"css":"color-red"});
                             return false;
                         }
+                    }); */
+                    
+                    $('#next-button').live("click",function() {
+                        var count  = 0 ;
+                        $("#stack .images").find('.stackImage').each(function(index) {
+                            var imageId = $(this).attr("id");
+                            //will split into image and 1 
+                            var ids = imageId.split('-'); 
+                            var realId = ids[1] ;
+                            var imageObj = webgloo.sc.ImageSelector.list[realId] ;
+                            
+
+                            if(imageObj.selected) {
+                                webgloo.sc.ImageSelector.upload(count+1,imageObj.srcImage);
+                                console.log("upload : " + imageObj.srcImage);
+                                count++ ;
+                            }
+
+                        });
+
+                        //@todo : fix : code will not wait for uploads
+                        // and print the array w/o waiting for uploads to be finished.
+                        if(count > 0 ) {
+                            //Go to next step
+                            // what have we collectec so far?
+                            console.log("inside next button: count > 0 ");
+                            var strImages =  JSON.stringify(webgloo.sc.ImageSelector.images);
+                            console.log(strImages);
+                            console.log("inside next button: images json printed ");
+                            return true ;
+                        } else {
+                            webgloo.sc.ImageSelector.showMessage("No image selected",{"css":"color-red"});
+                            return false;
+                        }
+
                     });
+
 
                     $('.stackImage').live("mouseenter",function() {
                         //will get image-1, image-2 etc.
@@ -137,7 +182,7 @@
                     //logo, small icons etc. are first images in a page
                     // what we are interested in will only come later.
                     $("div#stack .images").prepend(buffer);
-                    this.list[id] = { "id":id, "link": image, "selected" : false} ;
+                    this.list[id] = { "id":id, "srcImage": image, "selected" : false} ;
                 },
 
                 addSpinner : function() {
@@ -159,23 +204,13 @@
 
                 },
 
-                processResponse : function(response) {
-
-                    images = response.images ;
-                    for(i = 0 ; i < images.length ; i++) {
-                        this.addImage(i,images[i]);
-                    }
-
-                    $("#stack").fadeIn("slow");
-                    $("#next-message").fadeIn("slow");
-
-                },
-
+               
+                /*
                 populateHidden : function() {
                     frm = document.forms["web-form1"];
                     //@debug
                     console.log(webgloo.sc.ImageSelector.list);
-                    var links = new Array() ;
+                    var images = new Array() ;
 
                     $("#stack .images").find('.stackImage').each(function(index) {
                         var imageId = $(this).attr("id");
@@ -185,20 +220,32 @@
                         var imageObj = webgloo.sc.ImageSelector.list[realId] ;
                         //
                         //@debug
-                        console.log("Examining" + imageObj.link);
+                        console.log("Examining" + imageObj.srcImage);
 
                         if(imageObj.selected) {
-                            links.push(imageObj.link) ;
+                            imageObj.store = "external" ;
+                            images.push(imageObj); 
                             //@debug
-                            console.log("Added" + imageObj.link);
+                            console.log("Added" + imageObj.srcImage);
                         }
 
 
                     });
 
-                    var strLinks = JSON.stringify(links);
-                    frm.images_json.value = strLinks ;
-                    return links.length ;
+                    var strImagesJson = JSON.stringify(images);
+                    frm.images_json.value = strImagesJson ;
+                    return images.length ;
+                }, */
+
+                processUrlFetch : function(response) {
+                    images = response.images ;
+                    for(i = 0 ; i < images.length ; i++) {
+                        this.addImage(i,images[i]);
+                    }
+
+                    $("#stack").fadeIn("slow");
+                    $("#next-message").fadeIn("slow");
+
                 },
 
                 fetch : function(target) {
@@ -236,7 +283,7 @@
                                     webgloo.sc.ImageSelector.showMessage(response.message,{"css":"color-red"});
                                     break ;
                                 case 200 :
-                                    webgloo.sc.ImageSelector.processResponse(response);
+                                    webgloo.sc.ImageSelector.processUrlFetch(response);
                                     break ;
                                 default:
                                     webgloo.sc.ImageSelector.showMessage(response.message,{"css":"color-red"});
@@ -247,7 +294,64 @@
                     }); //ajax call end
 
 
-                } 
+                },
+
+                processImageUpload : function(response) {
+                    console.log("media VO received ");
+                    mediaVO = response.mediaVO ;
+                    console.log(mediaVO);
+                    //webgloo.sc.ImageSelector.images[mediaVO.id] = mediaVO ;
+                    webgloo.sc.ImageSelector.images.push(mediaVO);
+                    console.log("mediaVO added to images array");
+                    console.log(webgloo.sc.ImageSelector.images);
+                    console.log(" images array printed");
+
+                },
+
+                upload : function(count,imageUrl) {
+                    webgloo.sc.ImageSelector.images = new Array();
+                    webgloo.sc.ImageSelector.showMessage("uploading image # " + count, {});
+                    $("#stack .images").html('');
+
+                    endPoint = "/upload/image.php" ;
+                    params = {} ;
+                    params.qqUrl = imageUrl ;
+                    //ajax call start
+                    $.ajax({
+                        url: endPoint,
+                        type: "POST",
+                        dataType: "json",
+                        data :  params,
+                        timeout: 9000,
+                        processData:true,
+                        //js errors callback
+                        error: function(XMLHttpRequest, response){
+                            webgloo.sc.ImageSelector.showMessage(response, {"css":"color-red"});
+                        },
+
+                        // server script errors are also reported inside 
+                        // ajax success callback
+                        success: function(response){
+                            //@debug
+                            //console.log(response);
+                            webgloo.sc.ImageSelector.removeSpinner();
+                            switch(response.code) {
+                                case 401 :
+                                    webgloo.sc.ImageSelector.showMessage(response.message,{"css":"color-red"});
+                                    break ;
+                                case 200 :
+                                    webgloo.sc.ImageSelector.processImageUpload(response);
+                                    break ;
+                                default:
+                                    webgloo.sc.ImageSelector.showMessage(response.message,{"css":"color-red"});
+                                    break ;
+                            }
+                        }
+
+                    }); //ajax call end
+
+
+                }  
     
             }
 
@@ -290,11 +394,14 @@
                             <div class="span3">
                                 <div id="next-message" class="p20 alert">
                                     <p> Please select the images below and click on Next button. </p>
+                                    <button id="next-button" class="btn" type="button" name="next" value="Next" ><span>Next&nbsp;&raquo;</span></button> 
+                                    <!--
                                     <form  id="web-form1"  name="web-form1" action="/qa/external/form/next.php"  method="POST">
                                         <button id="next-button" class="btn" type="submit" name="next" value="Next" onclick="this.setAttribute('value','Next');" ><span>Next&nbsp;&raquo;</span></button> 
 
                                         <input type="hidden" name="images_json" />
-                                    </form>
+                                    </form> -->
+
                                 </div>
                             </div> <!-- 1:span3 -->
                         </div> <!-- row:1 -->
