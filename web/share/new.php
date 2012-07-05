@@ -78,6 +78,11 @@
             });
             
         </script>
+
+        <style>
+            #add-link {width:80px; height:32px; margin-bottom:10px;}
+            .form-table { margin-bottom : 5px; }
+        </style>
        
     </head>
 
