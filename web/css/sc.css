@@ -232,7 +232,7 @@
     }
 
     .widget .options .links a {
-        color : #777;
+        color : #232323;
     }
 
     .widget .photo {
@@ -770,9 +770,9 @@
 
     .feeds .item .title {
         font-weight: bold;
-        line-height:18px;
+        line-height:17px;
         font-family: arial;
-        font-size:12px;
+        font-size:11px;
     }
 
     .feeds .item .photo {
@@ -816,6 +816,7 @@
         width: 80%;
         z-index: 250;
         /*
+         * to turn On
         text-align:center ;
         opacity : 1 ;
         display :block ;
@@ -829,11 +830,11 @@
         font-weight: normal;
     }
 
-    .stackImage .options {  	
+    .stackImage .options {
         position:absolute ;
         overflow:hidden ;
         z-index:100;
-        display:none ; 
+        display:none ;
         /* background-color: white; */
         /* @see http://0to255.com/ to get matching color */
         background-color: #F7F7F7;
@@ -853,7 +854,7 @@
         color : black;
     }
 
-    .clicked-tile { 
+    .clicked-tile {
         background-color: #eeeeee ;
     }
 
