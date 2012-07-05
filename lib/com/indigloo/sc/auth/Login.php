@@ -51,7 +51,7 @@ namespace com\indigloo\sc\auth {
             $gotoUrl = NULL ;
             $action = NULL ;
 
-            try{ 
+            try{
                 $gWeb = \com\indigloo\core\Web::getInstance();
                 $gSessionAction = $gWeb->find("global.session.action");
 
@@ -75,8 +75,8 @@ namespace com\indigloo\sc\auth {
                 // associated array of name value pairs
                 // undefines properties are returned as NULL
                 //
-                // @warning: the foreach value reference is maintained 
-                // after the loop. This is truly brain damaged of PHP
+                // @warning: the foreach value reference is maintained
+                // after the loop. variable scope in PHP is at function level
                 // so do not be too cute here and do not user $name => $value
                 // as that conflicts with function argumnet "name"
                 //
