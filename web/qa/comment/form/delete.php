@@ -33,7 +33,7 @@
             $encodedId = PseudoId::encode($fvalues['comment_id']);
 
             if ($fhandler->hasErrors()) {
-                throw new UIException($fhandler->getErrors(),1);
+                throw new UIException($fhandler->getErrors());
             }
 
             $commentDao = new com\indigloo\sc\dao\Comment();

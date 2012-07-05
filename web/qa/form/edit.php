@@ -26,13 +26,13 @@
             $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
 
             $fvalues = $fhandler->getValues();
-            
+
             $qUrl = $fvalues['qUrl'];
             $fUrl = $fvalues['fUrl'];
             $gWeb = \com\indigloo\core\Web::getInstance();
 
             if ($fhandler->hasErrors()) {
-                throw new UIException($fhandler->getErrors(),1);
+                throw new UIException($fhandler->getErrors());
             }
 
             $groupDao = new \com\indigloo\sc\dao\Group();

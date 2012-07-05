@@ -27,7 +27,7 @@
             $fUrl = $fvalues['fUrl'];
 
             if ($fhandler->hasErrors()) {
-                throw new UIException($fhandler->getErrors(),1);
+                throw new UIException($fhandler->getErrors());
             }
 
             $feedbackDao = new com\indigloo\sc\dao\Feedback();

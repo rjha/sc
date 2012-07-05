@@ -11,7 +11,7 @@
     use com\indigloo\exception\DBException as DBException;
 
     if (isset($_POST['register']) && ($_POST['register'] == 'Register')) {
-        
+
         try{
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('first_name', 'First Name', array('required' => 1, 'maxlength' => 32));
@@ -37,7 +37,7 @@
             }
 
             if ($fhandler->hasErrors()) {
-                throw new UIException($fhandler->getErrors(),1);
+                throw new UIException($fhandler->getErrors());
             }
 
             //create a new login + user

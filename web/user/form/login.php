@@ -8,7 +8,7 @@
     use com\indigloo\ui\form as Form;
     use com\indigloo\Constants as Constants ;
     use \com\indigloo\exception\UIException as UIException;
-    
+
     if (isset($_POST['login']) && ($_POST['login'] == 'Login')) {
         try{
             $fhandler = new Form\Handler('web-form-1', $_POST);
@@ -25,7 +25,7 @@
             $fUrl = $fvalues['fUrl'];
 
             if ($fhandler->hasErrors()) {
-                throw new UIException($fhandler->getErrors(),1);
+                throw new UIException($fhandler->getErrors());
             }
 
             //canonical email - all lower case
@@ -35,7 +35,7 @@
 
             if ($flag < 0 ) {
                 $message = "Wrong login or password. Please try again!";
-                throw new UIException(array($message),1);
+                throw new UIException(array($message));
             }
 
             //success set our own session variables

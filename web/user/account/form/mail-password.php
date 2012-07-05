@@ -3,7 +3,7 @@
 
     include 'sc-app.inc';
     include(APP_WEB_DIR . '/inc/header.inc');
-    
+
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
@@ -21,7 +21,7 @@
             $gWeb = \com\indigloo\core\Web::getInstance();
 
             if ($fhandler->hasErrors()) {
-                throw new UIException($fhandler->getErrors(),1);
+                throw new UIException($fhandler->getErrors());
             }
 
             $userDao = new \com\indigloo\sc\dao\User();
@@ -29,7 +29,7 @@
 
             if(empty($user)) {
                 $message = "Error: We did not find any account with this email!";
-                throw new UIException(array($message),1);
+                throw new UIException(array($message));
             }
 
             $mailDao = new \com\indigloo\sc\dao\Mail();

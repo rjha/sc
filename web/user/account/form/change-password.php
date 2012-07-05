@@ -29,7 +29,7 @@
             $gWeb = \com\indigloo\core\Web::getInstance();
 
             if ($fhandler->hasErrors()) {
-                throw new UIException($fhandler->getErrors(),1);
+                throw new UIException($fhandler->getErrors());
             }
 
             //form token
@@ -37,7 +37,7 @@
             $session_token = $gWeb->find("change.password.token",true);
             if($fvalues['ftoken'] != $session_token) {
                 $message = "form token does not match the value stored in session";
-                throw new UIException(array($message),1);
+                throw new UIException(array($message));
             }
 
             //decrypt email

@@ -21,10 +21,10 @@
         $fUrl = $fvalues['fUrl'];
 
         if ($fhandler->hasErrors()) {
-            throw new UIException($fhandler->getErrors(),1);
+            throw new UIException($fhandler->getErrors());
         }
 
-        // route to new form page 
+        // route to new form page
         // put images_json in sticky
         $gWeb->store(Constants::STICKY_MAP, $fvalues);
         header("Location: "."/share/new.php");

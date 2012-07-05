@@ -26,7 +26,7 @@
             $fUrl = $fvalues['fUrl'];
 
             if ($fhandler->hasErrors()) {
-                throw new UIException($fhandler->getErrors(),1);
+                throw new UIException($fhandler->getErrors());
             }
 
             $loginId = Login::getLoginIdInSession();

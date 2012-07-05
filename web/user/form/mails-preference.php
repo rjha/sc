@@ -16,7 +16,7 @@
             $fvalues = $fhandler->getValues();
 
             if ($fhandler->hasErrors()) {
-                throw new UIException($fhandler->getErrors(),1);
+                throw new UIException($fhandler->getErrors());
             }
 
             $fUrl = $fvalues["fUrl"];
@@ -50,7 +50,7 @@
             $pDataObj = json_encode($pdata);
             $preferenceDao = new \com\indigloo\sc\dao\Preference();
             $preferenceDao->update($loginId,$pDataObj);
-            
+
 
             $gWeb->store(Constants::FORM_MESSAGES,array("Your settings have been updated."));
 
