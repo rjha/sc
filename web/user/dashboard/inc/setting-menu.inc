@@ -2,16 +2,12 @@
 
 //Active tab depends on rquest URI
 $tabUrlMap  = array(
-                "/user/dashboard/profile.php" => "profile",
-                "/user/account/change-password.php" => "password",
-                "/user/dashboard/mails.php" => "mails");
+                "/user/dashboard/profile.php" => "Profile",
+                "/user/dashboard/mails.php" => "Mails");
 
-$tabCss = \com\indigloo\sc\ui\Tabs::getActiveTabClass($tabUrlMap,"active");
+if(\com\indigloo\sc\auth\Login::hasMikLogin()) {
+   $tabUrlMap["/user/account/change-password.php"] =  "Password" ;
+}
+echo  \com\indigloo\sc\ui\Tabs::getHtml($tabUrlMap);
 
 ?>
-
-<ul class="nav nav-tabs">
-   <li class="<?php echo $tabCss['profile']; ?>"> <a href="/user/dashboard/profile.php">Profile</a></li>
-   <li class="<?php echo $tabCss['password']; ?>"> <a href="/user/account/change-password.php">Password</a></li>
-   <li class="<?php echo $tabCss['mails']; ?>"> <a href="/user/dashboard/mails.php">Mails</a></li>
-</ul>

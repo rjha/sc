@@ -228,6 +228,18 @@ namespace com\indigloo\sc\auth {
             return $flag ;
         }
 
+        static function hasMikLogin() {
+            $login = self::tryLoginInSession();
+            $flag = false ;
+            if(!empty($login)) {
+                if(strcmp($login->provider,self::MIK) == 0 ){
+                    $flag = true ;
+                }
+            }
+
+            return $flag ;
+        }
+
     }
 }
 ?>

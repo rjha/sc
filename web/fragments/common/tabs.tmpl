@@ -1,0 +1,6 @@
+ <ul class="nav nav-tabs">
+    ~foreach($view->records as $record) {~
+        <li class="~~$record["class"]~"> <a href="~~$record["url"]~">~~$record["name"]~</a> </li>
+    ~}~
+
+</ul>

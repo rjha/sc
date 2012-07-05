@@ -11,9 +11,13 @@
     use com\indigloo\Constants as Constants;
     use com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\sc\auth\Login as Login ;
+    use \com\indigloo\exception\UIException ;
 
     $gSessionLogin = Login::getLoginInSession();
     $loginId = $gSessionLogin->id ;
+    if(strcmp($gSessionLogin->provider,Login::MIK) != 0 ) {
+        throw new UIException("change password only works for 3mik logins!");
+    }
 
     $userDao = new \com\indigloo\sc\dao\User() ;
     $userDBRow = $userDao->getonLoginId($loginId);
@@ -43,7 +47,7 @@
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
         <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
@@ -84,7 +88,7 @@
 
              <div class="row">
                 <div class="span12">
-                     <?php $activeTab = 'password' ; include(APP_WEB_DIR.'/user/dashboard/inc/setting-menu.inc'); ?>
+                     <?php  include(APP_WEB_DIR.'/user/dashboard/inc/setting-menu.inc'); ?>
                 </div>
             </div>
 
