@@ -7,8 +7,8 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\html\Seo as SeoData ;
     use \com\indigloo\ui\Filter as Filter;
-  
-    
+
+
     class Home {
 
         private $ids ;
@@ -25,14 +25,14 @@ namespace com\indigloo\sc\controller{
                 array_push($this->ids,$item['id']);
             }
         }
-      
+
         function process($params,$options) {
             $gpage = Url::tryQueryParam("gpage");
             if(is_null($gpage) || ($gpage == '1')) {
                 $this->processHome($params,$options);
             } else {
                 $this->processNext($params,$options);
-            }  
+            }
         }
 
         function processNext($params,$options) {
@@ -41,7 +41,7 @@ namespace com\indigloo\sc\controller{
 
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
             $pageSize = Config::getInstance()->get_value("main.page.items");
-            $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);    
+            $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
 
             $postDBRows = $postDao->getPaged($paginator);
 
@@ -54,7 +54,7 @@ namespace com\indigloo\sc\controller{
 
             $file = APP_WEB_DIR. '/view/tiles-page.php' ;
             include ($file);
- 
+
 
         }
 
@@ -70,13 +70,13 @@ namespace com\indigloo\sc\controller{
             $filter->add($model::FEATURED,Filter::EQ,TRUE);
             array_push($filters,$filter);
 
-            $featureDBRows = $postDao->getPosts(25,$filters);
+            $featureDBRows = $postDao->getPosts(10,$filters);
             $postDBRows = array();
             $randomDBRows = array();
 
-            $latestDBRows = $postDao->getLatest(45);
+            $latestDBRows = $postDao->getLatest(20);
             //shortfall?
-            $short = 75 - (sizeof($featureDBRows) + sizeof($latestDBRows)) ;
+            $short = 37 - (sizeof($featureDBRows) + sizeof($latestDBRows)) ;
             if($short > 0 ) {
                 //pull random rows
                 $randomDBRows = $postDao->getRandom($short);
@@ -99,7 +99,7 @@ namespace com\indigloo\sc\controller{
                 $endId =   $latestDBRows[sizeof($latestDBRows)-1]['id'] ;
             }
 
-            
+
             $endId = base_convert($endId,10,36);
             $nparams = array('gpa' => $endId, 'gpage' => 2) ;
             $nextPageUrl = Url::addQueryParameters("/",$nparams);
@@ -110,7 +110,7 @@ namespace com\indigloo\sc\controller{
 
             $file = APP_WEB_DIR. '/home.php' ;
             include ($file);
- 
+
         }
 
     }
