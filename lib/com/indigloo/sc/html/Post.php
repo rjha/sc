@@ -52,8 +52,8 @@ namespace com\indigloo\sc\html {
             $view->hasSite = false;
 
             if(!empty($siteDBRow)) {
-                $view->siteId = $siteDBRow['id'];
-                $view->siteUrl = $siteDBRow['canonical_url'];
+                $view->siteId = $siteDBRow["id"];
+                $view->siteUrl = $siteDBRow["canonical_url"];
                 $view->hasSite = true ;
             }
 

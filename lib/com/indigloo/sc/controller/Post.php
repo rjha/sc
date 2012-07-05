@@ -46,8 +46,15 @@ namespace com\indigloo\sc\controller{
             $images = json_decode($imagesJson);
 
             $linksJson = $postDBRow['links_json'];
-            $links = json_decode($linksJson);
+            $dblinks = json_decode($linksJson);
 
+            $links = array();
+            foreach($dblinks as $link) {
+                $scheme = \parse_url($url,PHP_URL_SCHEME);
+                $link = empty($scheme) ? "http://".$link : $link ;
+                array_push($links,$link);
+            }
+            
             /* data for facebook share link */
             $itemObj = new \stdClass ;
             $itemObj->appId = Config::getInstance()->get_value("facebook.app.id");
