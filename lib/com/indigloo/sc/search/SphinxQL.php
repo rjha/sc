@@ -39,12 +39,12 @@ namespace com\indigloo\sc\search {
         }
 
         function getGroupsCount($token) {
-            $count = $this->getDocumentsCount('groups',$token);
+            $count = $this->getDocumentsCount("groups",$token);
             return $count ;
         }
 
         function getGroups($token,$offset,$limit) {
-            $ids = $this->getDocuments('groups',$token,$offset,$limit);
+            $ids = $this->getDocuments("groups",$token,$offset,$limit);
             return $ids;
         }
 
@@ -53,17 +53,17 @@ namespace com\indigloo\sc\search {
             $limit = $paginator->getPageSize();
             $offset = ($pageNo-1) * $limit ;
 
-            $ids = $this->getDocuments('groups',$token,$offset,$limit);
+            $ids = $this->getDocuments("groups",$token,$offset,$limit);
             return $ids;
         }
 
         function getPostsCount($token) {
-            $count = $this->getDocumentsCount('posts',$token);
+            $count = $this->getDocumentsCount("posts",$token);
             return $count ;
         }
 
         function getPosts($token,$offset,$limit) {
-            $ids = $this->getDocuments('posts',$token,$offset,$limit);
+            $ids = $this->getDocuments("posts",$token,$offset,$limit);
             return $ids;
         }
 
@@ -72,7 +72,7 @@ namespace com\indigloo\sc\search {
             $limit = $paginator->getPageSize();
             $offset = ($pageNo-1) * $limit ;
 
-            $ids = $this->getDocuments('posts',$token,$offset,$limit);
+            $ids = $this->getDocuments("posts",$token,$offset,$limit);
             return $ids;
         }
 
@@ -82,12 +82,13 @@ namespace com\indigloo\sc\search {
             //escape token
             $token = $this->escape($token);
 
-            $sql = " select id from %s where match('%s') limit 0,1" ;
+            $sql = " select id from %s where match('%s') order by created_on DESC limit 0,1 " ;
             $sql = sprintf($sql,$index,$token);
+
             //@imp: we need to fire dummy query
             // to retrieve stats from sphinx.
             $rows = MySQL\Helper::fetchRows($this->connx,$sql);
-            
+
             // get meta data about this token
             $sql = " show meta " ;
             $stats = MySQL\Helper::fetchRows($this->connx,$sql);
@@ -104,19 +105,20 @@ namespace com\indigloo\sc\search {
 
         function getDocuments($index,$token,$offset,$limit) {
             if(Util::tryEmpty($token)) { return array() ; }
-            Util::isEmpty('index',$index);
+            Util::isEmpty("index",$index);
             //get paginator params
             //escape token
             $token = $this->escape($token);
 
-            $sql = " select id from %s where match('%s') limit %d,%d" ;
-            $sql = sprintf($sql,$index,$token,$offset,$limit);
+            $sql = " select id from %s where match('%s') order by created_on desc " ;
+            $sql = sprintf($sql,$index,$token);
+            $sql .= sprintf(" limit %d,%d ",$offset,$limit) ;
 
             $rows = MySQL\Helper::fetchRows($this->connx,$sql);
             $ids = array();
 
             foreach($rows as $row){
-                array_push($ids,$row['id']);
+                array_push($ids,$row["id"]);
             }
 
             return $ids ;

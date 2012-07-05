@@ -10,74 +10,98 @@
     use \com\indigloo\sc\auth\Login as Login;
 
     use \com\indigloo\sc\ui\Constants as UIConstants;
-    use \com\indigloo\ui\Filter as Filter; 
-    
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    use \com\indigloo\ui\Pagination as Pagination ;
+    use \com\indigloo\ui\Filter as Filter;
+
+    //url decoded parameters
+    $qparams = Url::getQueryParams($_SERVER["REQUEST_URI"]);
     $options = UIConstants::WIDGET_ALL ;
-    
-    $postDao = new \com\indigloo\sc\dao\Post();
+
 
     //copy URL parameters
     $fparams = $qparams;
-    //now unset extra params
+    // unset extra ft params and search token param
     unset($fparams["ft"]);
+    unset($fparams["gt"]);
     //ft urls start with page 1
-    $fparams['gpage'] = 1 ;
+    $fparams["gpage"] = 1 ;
     //create filter Urls
     $ftBaseUrl = Url::createUrl("/monitor/index.php",$fparams);
     $ftFeaturedUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "featured"));
     $ft24hoursUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "24hours"));
-    $ft3daysUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "3days"));
 
     //search clear link
     $sparams = $qparams ;
     unset($sparams["gt"]);
     $clearSearchUrl = Url::createUrl("/monitor/index.php",$sparams);
 
-    
-    //filters
+
+    //post filters
     $filters = array();
     $model = new \com\indigloo\sc\model\Post();
     $ft = Url::tryQueryParam("ft");
-    $ftname = '';
-        
+    $ftname = "";
+    $gtoken = Util::tryArrayKey($qparams,"gt");
+    $itemId = NULL ;
+
+    if( (strlen($gtoken) > 5) && (strcmp(substr($gtoken,0,5), "item:") == 0)){
+        $ft = "item" ;
+        $itemId = substr($gtoken,5);
+        //reset search token
+        $gtoken = NULL ;
+    }
+
     if(!is_null($ft)) {
-       
         switch($ft){
-            case 'featured' :
+            case "featured" :
                 $filter = new Filter($model);
                 $filter->add($model::FEATURED,Filter::EQ,TRUE);
                 array_push($filters,$filter);
-                $ftname = 'Featured';
-                break;
-            case '24hours' :
+                $ftname = "Featured";
+                break ;
+            case "24hours" :
                 $filter = new Filter($model);
                 $filter->add($model::CREATED_ON,Filter::GT,"24 HOUR");
                 array_push($filters,$filter);
-                $ftname = 'Last 24 hour';
+                $ftname = "Last 24 hour";
                 break;
-            case '3days' :
+            case "item" :
                 $filter = new Filter($model);
-                $filter->add($model::CREATED_ON,Filter::GT,"3 DAY");
+                $filter->add($model::ITEM_ID,Filter::EQ,$itemId);
                 array_push($filters,$filter);
-                $ftname = 'Last 3 Days';
+                $ftname = "Item:".$itemId ;
                 break;
             default:
                 break;
         }
     }
 
-    $postDBRows = array();
-    $total = $postDao->getTotalCount($filters);
-    
-    $pageSize = Config::getInstance()->get_value("user.page.items");
-    $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
-    $postDBRows = $postDao->getPaged($paginator,$filters);
 
-    $gtoken = Util::tryArrayKey($qparams,"gt");
-    //webgloo Url qparams are urlencoded 
-    //we need to decode before passing to DB layer
-    $gtoken = urldecode($gtoken);
+    $postDBRows = array();
+    $postDao = new \com\indigloo\sc\dao\Post();
+    $pageSize = Config::getInstance()->get_value("user.page.items");
+
+    if(!empty($gtoken)) {
+        //@todo - add item:number token as well.
+        //get matching ids from sphinx
+        $sphinx = new \com\indigloo\sc\search\SphinxQL();
+        $total = $sphinx->getPostsCount($gtoken);
+        $paginator = new Pagination($qparams,$total,$pageSize);
+        $ids = $sphinx->getPagedPosts($gtoken,$paginator);
+        $sphinx->close();
+
+        if(sizeof($ids) > 0 ) {
+            $postDBRows = $postDao->getOnSearchIds($ids) ;
+        }
+
+    } else {
+
+        $total = $postDao->getTotalCount($filters);
+        $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
+        $postDBRows = $postDao->getPaged($paginator,$filters);
+        $gtoken = "" ;
+    }
+
 
 ?>
 
@@ -90,29 +114,29 @@
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?> 
-        
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
+
         <script>
             $(document).ready(function(){
                 //show options on widget hover
                 $('.widget .options').hide();
-                $('.widget').mouseenter(function() { 
-                    $(this).find('.options').toggle(); 
-                    $(this).css("background-color", "#F0FFFF");
+                $('.widget').mouseenter(function() {
+                    $(this).find('.options').toggle();
+                    $(this).css("background-color", "#F7F7F7");
                 });
-                $('.widget').mouseleave(function() { 
-                    $(this).find('.options').toggle(); 
+                $('.widget').mouseleave(function() {
+                    $(this).find('.options').toggle();
                     $(this).css("background-color", "#FFFFFF");
-                }); 
+                });
 
                 webgloo.sc.item.addAdminActions();
 
 
             });
-            
+
         </script>
 
     </head>
@@ -122,7 +146,7 @@
             <div class="row">
                 <div class="span12">
                 <?php include(APP_WEB_DIR . '/monitor/inc/toolbar.inc'); ?>
-                </div> 
+                </div>
 
             </div>
 
@@ -138,52 +162,52 @@
             </div>
 
             <div class="row">
-                <div class="span9">
-                        <div class="row">
-                           <div class="span5">
-                            <!-- <h3> <?php echo $ftname; ?> -  <?php echo $total ?> Posts </h3>  -->
+                <div class="span11">
+                    <div class="row">
+                        <div class="span5">
+
                             <form method="GET" action="<?php echo $clearSearchUrl; ?>">
-                            <input id="site-search" name="gt" type="text" class="search-query" placeholder="Quick Search"> &nbsp;<a href="<?php echo $clearSearchUrl; ?>">clear</a>
-                            <input type="hidden" name="ft" value="<?php echo $ft; ?>"/>
+                                <input id="site-search" name="gt" type="text" class="search-query" placeholder="Quick Search">
+                                <input type="hidden" name="ft" value="<?php echo $ft; ?>"/>
                             </form>
-                            
-                           </div>
-                            <div class="span4">
-                                <div class="btn-group">
-                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                        Filter&nbsp;Results
-                                        <span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="<?php echo $ftBaseUrl; ?>">All Posts</a></li>
-                                        <li><a href="<?php echo $ftFeaturedUrl; ?>">Featured Posts</a></li>
-                                        <li><a href="<?php echo $ft24hoursUrl; ?>">Last 24 Hours</a></li>
-                                        <li><a href="<?php echo $ft3daysUrl; ?>">Last 3 days</a></li>
-                                    </ul>
-                                </div> <!-- button group -->
-                               </div>
-                        </div> <!-- row -->
-                        <div class="p10">
-                            <span class="b"> filter </span> 
-                            <span class="color-red"><?php echo $gtoken; ?> / <?php echo $ftname; ?> </span>
-                            <span> <?php echo $total; ?> results
+
                         </div>
+
+                        <div class="span6">
+                            <span class="label label-warning"> Filter </span>
+                            &nbsp;
+                            <a href="<?php echo $ftFeaturedUrl; ?>">Featured</a>
+                            &nbsp;|&nbsp;
+                            <a href="<?php echo $ft24hoursUrl; ?>">Last 24 Hours</a>
+                            &nbsp;|&nbsp;
+                            <a href="/monitor/index.php">All Posts</a>
+
+                        </div>
+
+                    </div> <!-- row -->
+                    <div class="p20">
+                        <span class="color-red">
+                            Applied filters = <?php echo $gtoken; ?>  <?php echo $ftname; ?>
+                        </span>
+                        <span> | <?php echo $total; ?> results </span>
+                        <span> ( hint: item:itemno and + operator works in search box) </span>
+                    </div>
 
                         <?php
                             $startId = NULL;
                             $endId = NULL;
                             if (sizeof($postDBRows) > 0) {
-                                $startId = $postDBRows[0]['id'];
-                                $endId = $postDBRows[sizeof($postDBRows) - 1]['id'];
+                                $startId = $postDBRows[0]["id"];
+                                $endId = $postDBRows[sizeof($postDBRows) - 1]["id"];
                             }
 
                             foreach ($postDBRows as $postDBRow) {
                                 echo \com\indigloo\sc\html\Post::getAdminWidget($postDBRow,$options);
                             }
                         ?>
-                   
+
                 </div>
-                <div class="span3"> </div>
+                <div class="span1"> </div>
             </div>
         </div> <!-- container -->
         <?php $paginator->render('/monitor/index.php', $startId, $endId); ?>

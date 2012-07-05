@@ -1,6 +1,6 @@
 <?php
 namespace com\indigloo\sc\model {
-    
+
     use \com\indigloo\Util as Util ;
 
     class Post extends Table {
@@ -8,6 +8,7 @@ namespace com\indigloo\sc\model {
          const LOGIN_ID = 1;
          const FEATURED = 2 ;
          const CREATED_ON = 3 ;
+         const ITEM_ID = 4 ;
 
          function __construct() {
 
@@ -17,6 +18,7 @@ namespace com\indigloo\sc\model {
              //UI columnn - DB column mapping
              $columns = array(
                  self::LOGIN_ID => "login_id",
+                 self::ITEM_ID => "pseudo_id",
                  self::CREATED_ON => "created_on",
                  self::FEATURED => "is_feature");
 
@@ -43,7 +45,7 @@ namespace com\indigloo\sc\model {
              $sql = sprintf("%s %s %s ", $column,$condition,$value);
              return $sql ;
          }
-         
+
     }
 
 }
