@@ -17,7 +17,7 @@ namespace com\indigloo\sc\controller{
                 $controller->process();
                 exit;
             }
-            
+
             $slug = Util::getArrayKey($params,"name");
             //break hyphenated tokens into normal words for sphinx
             //$token = \com\indigloo\util\StringUtil::convertKeyToName($slug);
@@ -28,7 +28,7 @@ namespace com\indigloo\sc\controller{
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
             $total = $sphinx->getGroupsCount($token);
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-            $pageSize = 50;
+            $pageSize = Config::getInstance()->get_value("search.page.items");
             $paginator = new Pagination($qparams,$total,$pageSize);
 
             $ids = $sphinx->getPagedGroups($token,$paginator);

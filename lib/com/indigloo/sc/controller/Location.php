@@ -18,7 +18,7 @@ namespace com\indigloo\sc\controller{
                 $controller->process();
                 exit;
             }
-            
+
             // our router discards the query part from a URL so the
             // routing works with the query part as well (like /router/url?q1=x&q2=y
             $token = Util::getArrayKey($params,"location");
@@ -31,7 +31,7 @@ namespace com\indigloo\sc\controller{
             $total = $sphinx->getPostsCount($token);
 
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-            $pageSize = 50;
+            $pageSize = Config::getInstance()->get_value("search.page.items");
             $paginator = new Pagination($qparams,$total,$pageSize);
             $ids = $sphinx->getPagedPosts($token,$paginator);
             $sphinx->close();

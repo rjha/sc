@@ -24,13 +24,13 @@ namespace com\indigloo\sc\controller{
 
             $total = $categoryDao->getTotalCount($code);
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-            $pageSize = 50;
+            $pageSize = Config::getInstance()->get_value("search.page.items");
             $paginator = new Pagination($qparams,$total,$pageSize);
             $postDBRows = $categoryDao->getPaged($paginator,$code);
             $catName = $categoryDao->getName($code);
 
             $pageHeader = $catName;
-            
+
             $pageBaseUrl = "/category/$categoryId";
             $pageTitle = SeoData::getPageTitle($catName);
             $metaKeywords = SeoData::getMetaKeywords($catName);
