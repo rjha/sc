@@ -38,7 +38,7 @@
     $pageSize = Config::getInstance()->get_value("user.page.items");
     $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
     $commentDBRows = $commentDao->getPaged($paginator,$filters);
-   
+
 ?>
 
 
@@ -50,7 +50,7 @@
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
 
@@ -60,7 +60,7 @@
                 $('.widget .options').hide();
                 $('.widget').mouseenter(function() {
                     $(this).find('.options').toggle();
-                    $(this).css("background-color", "#F0FFFF");
+                    $(this).css("background-color", "#FEFDF1");
                 });
                 $('.widget').mouseleave(function() {
                     $(this).find('.options').toggle();

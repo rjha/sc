@@ -140,7 +140,8 @@ namespace com\indigloo\sc\html {
         static function getWidget($postDBRow,$options=NULL) {
 
             $html = NULL ;
-            $view = self::createPostView($postDBRow,NULL);
+            $voptions = array("abbreviate" => true , "imageWidth" => 100 );
+            $view = self::createPostView($postDBRow,$voptions);
 
             $template = ($view->hasImage) ? '/fragments/widget/image.tmpl' : '/fragments/widget/text.tmpl' ;
             if(is_null($options)) {
@@ -161,7 +162,8 @@ namespace com\indigloo\sc\html {
         static function getAdminWidget($postDBRow,$options=NULL) {
 
             $html = NULL ;
-            $view = self::createPostView($postDBRow,NULL);
+            $voptions = array("abbreviate" => true , "imageWidth" => 100 );
+            $view = self::createPostView($postDBRow,$voptions);
             if(is_null($options)) {
                 $options = UIConstants::WIDGET_ALL ;
             }

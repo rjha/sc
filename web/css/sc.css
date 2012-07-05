@@ -227,8 +227,10 @@
 
     .widget .options .links {
         padding : 5px 5px 10px 30px;
-        font-size:13px;
-        line-height:18px;
+        font-size:12px;
+        line-height:17px;
+        font-family:arial;
+        font-weight:bold ;
     }
 
     .widget .options .links a {

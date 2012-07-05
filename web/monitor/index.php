@@ -125,7 +125,7 @@
                 $('.widget .options').hide();
                 $('.widget').mouseenter(function() {
                     $(this).find('.options').toggle();
-                    $(this).css("background-color", "#F7F7F7");
+                    $(this).css("background-color", "#FEFDF1");
                 });
                 $('.widget').mouseleave(function() {
                     $(this).find('.options').toggle();
