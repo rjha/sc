@@ -158,8 +158,6 @@ namespace com\indigloo\sc\dao {
             mysql\Post::setFeature($loginId,$postId,$map[$action]);
 
         }
-
-
     }
 
 }
