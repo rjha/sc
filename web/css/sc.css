@@ -42,8 +42,8 @@
 
     h1, h2, h3, h4, h5, h6 {
         font-weight: normal;
-        margin: 0 0 1em;
-        padding: 0;
+        margin: 5px 0px 5px 0px;
+        padding: 0px;
     }
 
     input, select, textarea {
@@ -72,11 +72,31 @@
         font-size: 1px;
         height: 1px;
         line-height: 1px;
-        /* background: #a1a1a1; */
         background : #ededed ;
     }
 
-    .clear {clear:both;}
+    .clear {
+        clear:both;
+        margin-top:-1px;
+        height:1px;
+        overflow:hidden;
+    }
+
+    .faded-text { color :#8c7e7e ; }
+    .feed-text {
+        font-family: arial ;
+        font-size: 11px;
+        line-height:16px;
+    }
+    .comment-text{
+        font-family: Georgia, Arial, sans-serif;
+        font-size: 16px;
+        line-height: 24px;
+        text-align: left;
+        color: black;
+        word-wrap: break-word;
+    }
+
     .floatl {float:left;}
     .floatr {float:right;}
 
@@ -92,21 +112,23 @@
     .f13 {font-size :13px;}
     .mt20 {margin-top :20px; }
     .mt10 {margin-top :10px; }
-
+    .mb10 {margin-bottom :10px; }
+    .mb20 {margin-bottom :20px; }
     .ml20 {margin-left :20px; }
     .ml40 {margin-left :40px; }
-
-    .b {font-weight : bold ;}
-    .gray {color : gray; }
     .pt10 {padding-top:10px;}
     .p10 {padding:10px;}
     .p20 {padding:20px;}
+    .mh800 { min-height:800px;}
+    .mh600 { min-height: 600px;}
 
-    .bbd5 {
-        border-bottom : 1px solid #E9E9E9 ;
-    }
-    .thick-dashed-border {
-        border-bottom : 2px dashed black ;
+    .b {font-weight : bold ;}
+    .gray {color : gray; }
+
+    .separator1 {
+        border-bottom : 1px solid #e6e6e6 ;
+        padding-top: 7px;
+        padding-bottom: 7px;
     }
 
     #header {
@@ -149,8 +171,8 @@
 
     .form-table {
         padding:10px;
-        margin-top : 20px;
-        margin-bottom: 20px;
+        margin-top : 10px;
+        margin-bottom: 10px;
         font-size:13px;
     }
 
@@ -239,7 +261,6 @@
 
     .widget .photo {
         padding: 10px;
-
     }
 
     /* Any photo inside a widget can only go till 90%  */
@@ -249,9 +270,11 @@
 
     .widget .photo img {
         max-width:90%;
-        border:6px solid #d5d5d5;
-
+        border:2px solid #d5d5d5;
     }
+
+    .widget-bg { background-color: #FEFDF1 ;}
+    .widget-fg { background-color: #FFFFFF; }
 
     img.alignright {float:right; margin:0 0 1em 1em}
     img.alignleft {float:left; margin:0 1em 1em 0}
@@ -292,13 +315,13 @@
     .hide-me {
         display:none ;
     }
-
+    /*
     div#link-container {
 
         background-color:#f0fff0;
         width:460px;
-        margin-bottom :20px;
-        padding:20px;
+        margin-bottom :10px;
+        padding:10px;
 
     }
 
@@ -334,12 +357,15 @@
            padding:5px;
     }
 
-    #link-data {
-        margin-top:20px;
-    }
-
     #media-data {
         width: 580px;
+    }
+
+    */
+
+    #link-data {
+        margin-top:5px;
+        margin-bottom :5px;
     }
 
     div .stackImage{
@@ -446,8 +472,6 @@
         margin :0px;
     }
 
-    .mh800 { min-height:800px;}
-    .mh600 { min-height: 600px;}
 
     .author{
         padding: 7px 0px 7px 0px ;
@@ -724,6 +748,7 @@
         text-decoration: none;
     }
 
+    /*
     div .toolbar {
         background-color : white;
         border: 1px solid #DEDEDE ;
@@ -740,18 +765,8 @@
        border-right:1px solid #DEDEDE ;
        margin :1px;
        text-align:center;
-    }
+    } */
 
-    .clear {
-        clear:both;
-        margin-top:-1px;
-        height:1px;
-        overflow:hidden;
-    }
-
-    .faded-text {
-        color :#8c7e7e ;
-    }
 
     /* + Activity feeds */
 
@@ -860,7 +875,14 @@
         background-color: #eeeeee ;
     }
 
+    .gBtnUp {
+        width:80px; height:32px; margin-bottom:10px;
+    }
     /* last section - override bootstrap css */
+    .page-header {
+        padding-bottom: 7px;
+    }
+
     .hero-unit {
         padding:30px;
         margin-bottom:10px;

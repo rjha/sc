@@ -1,33 +1,26 @@
-<div class="widget">
+<div class="widget separator1">
+    <p>
+        <i class="icon-asterisk"></i>&nbsp;
+        ~~$view->description~
+        <br/>
+        <span class="ml20">
+            ~~$view->createdOn~
+            &nbsp; <a href="/item/~~$view->itemId~">more...</a>
+        </span>
 
-    <div class="row">
-        <div class="span9">
-            <p>
-                <i class="icon-asterisk"></i>&nbsp;
-                ~~$view->description~
-                <br/>
-                <span class="ml20">
-                    ~~$view->createdOn~
-                    &nbsp; <a href="/item/~~$view->itemId~">more...</a>
-                </span>
+    </p>
 
-            </p>
-
-            <div class="options">
-                <div class="links">
-                     ~if($view->hasEdit){~
-                        <a href="~~$view->editUrl~"><i class="icon-edit"></i>&nbsp;Edit</a>
-                    ~}~
-                    &nbsp;
-                    ~if($view->hasDelete){~
-                        <a href="~~$view->deleteUrl~"><i class="icon-remove"></i>&nbsp;Delete</a>
-                    ~}~
-                </div>
-            </div>
-        </div> <!-- span9 -->
-
-    </div> <!-- row -->
-
+    <div class="options">
+        <div class="links">
+                ~if($view->hasEdit){~
+                <a href="~~$view->editUrl~"><i class="icon-edit"></i>&nbsp;Edit</a>
+            ~}~
+            &nbsp;
+            ~if($view->hasDelete){~
+                <a href="~~$view->deleteUrl~"><i class="icon-remove"></i>&nbsp;Delete</a>
+            ~}~
+        </div>
+    </div>
 
 </div>
 
