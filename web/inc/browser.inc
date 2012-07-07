@@ -6,7 +6,7 @@
 
              <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    Categories 
+                    Categories
                     <b class="caret"></b>
                   </a>
                 <ul class="dropdown-menu">
@@ -23,7 +23,7 @@
 
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    Location 
+                    Location
                     <b class="caret"></b>
                   </a>
                 <ul class="dropdown-menu">
@@ -52,23 +52,17 @@
     </div> <!-- span7 -->
 
     <div class="span5">
-        <div class="row">
-            <div class="span3"> 
-                <div class="floatr">
-                 <b> connect &nbsp;</b> <a href="http://www.facebook.com/pages/3mik/332362053467901" target="_blank"><img src="/css/images/fb_logo.png" width="24" height="24" /></a>
+        <div style="float: right; padding-bottom: 15px;">
+            <span style="font-size: 16px; padding-right: 5px;">Follow us!</span>
+            <a href="http://twitter.com/3mikindia"><img src="/css/images/ico_twitter.png" width="32" height="32" style="vertical-align: middle; padding-left: 2px;" alt="Twitter"></a>
+            <a href="http://www.facebook.com/3mikindia"><img src="/css/images/ico_facebook.png" width="32" height="32" style="vertical-align: middle; padding-left: 2px;" alt="Facebook"></a>
+            <a href="http://plus.google.com/108668124722035129135"><img src="/css/images/ico_googleplus.png" width="32" height="32" style="vertical-align: middle; padding-left: 2px;" alt="Google+"></a>
+      </div>
 
-                <a href="https://twitter.com/#!/3mikindia" target="_blank"><img src="/css/images/twitter-bird-white-on-blue.png" width="24" height="24" /></a>
 
-                </div>
-            </div>
-            <div class="span1">
-                <!-- Place this tag where you want the +1 button to render -->
-                <g:plusone annotation="none"></g:plusone>
-            </div>
+    </div>
 
-        </div> <!-- social toolbar row -->
 
-    </div> <!-- span5 -->
 
 </div>
 
