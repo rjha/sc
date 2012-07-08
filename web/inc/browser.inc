@@ -51,18 +51,14 @@
         </div> <!-- simple popup -->
     </div> <!-- span7 -->
 
-    <div class="span5">
+    <div class="span4">
         <div style="float: right; padding-bottom: 15px;">
-            <span style="font-size: 16px; padding-right: 5px;">Follow us!</span>
+            <span style="font-size: 16px; padding-right: 5px;">&nbsp;</span>
             <a href="http://twitter.com/3mikindia"><img src="/css/images/ico_twitter.png" width="32" height="32" style="vertical-align: middle; padding-left: 2px;" alt="Twitter"></a>
             <a href="http://www.facebook.com/3mikindia"><img src="/css/images/ico_facebook.png" width="32" height="32" style="vertical-align: middle; padding-left: 2px;" alt="Facebook"></a>
             <a href="http://plus.google.com/108668124722035129135"><img src="/css/images/ico_googleplus.png" width="32" height="32" style="vertical-align: middle; padding-left: 2px;" alt="Google+"></a>
       </div>
 
-
-    </div>
-
-
-
-</div>
+    </div> <!-- span4 -->
+    <div class="span1"> </div>
 
