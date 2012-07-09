@@ -1,5 +1,6 @@
 #install gearman
 0.33 tarball has some issues :- libmysql is not built - take 0.34
+0.34 is not available - so first try with 0.32 (released on 12 April 2012)
 
 #pre-requisites for Ubuntu 11.04
 ---------------------------------
@@ -13,42 +14,128 @@ libsqlite3-dev
 
 #building
 
-$./configure --prefix=/usr/local --with-libsqlite3
-verify that sqlite and mysql support is baked in before doing make.
-$sudo make
-$sudo make test - hangs for 0.33
+$./configure --prefix=/usr/local --with-sqlite3 
+
+It would be a good idea to check config.log after this command. Looks for warnings and __NOT_FOUND__ errors. 
+The config.log should be clean of errors otherwise you will run into issues later.
+
+Problem with mysql Queue :-
+---------------------------------
+To bake in mysql queue support we have to use libdrizzle. Now the version of libdrizzle  packaged  with most of 
+distributions are pretty old whereas gearman expects the latest and the greatest version. To cut a long story short,
+it is easier to stay away from mysql queue right now and just use the sqlite queue.
+Donot install libdrizzle-dev from package on your system: because gearman would try to link to it and fail.
+
+To fix that problem - we need to install the latest libdrizzle from trunk.
+https://bugs.launchpad.net/gearmand/+bug/944277
+https://bugs.launchpad.net/gearmand/+bug/901370
+
+
+
+verify that sqlite support is baked in before doing make.
+
+   * Building with libsqlite3   yes
+   * Building with libpq        no
+   * Building with tokyocabinet no
+
+$make
+$sudo make test
 $sudo make install
+
+
+#strip gearman binaries of debug symbols
+
+$sudo strip --strip-all /usr/local/sbin/gearmand
+$sudo strip --strip-all /usr/local/bin/gear*
+
 
 This would mean gearmand is installed in /usr/local/bin
 #create log folder for gearmand
 $sudo mkdir -p /usr/local/var/log
 
+
+#gearmand and gearman should work.
+$sudo gearmand --version
+gearmand 0.32 - https://bugs.launchpad.net/gearmand
+$sudo gearmand --verbose=DEBUG
+^C
+
+$sudo gearman
+should print help message.
+
 #gearman unbale to find libgearman
-Add an entry in /etc/ld.so.conf (most likely the entry is already there in /etc/ld.so.conf.d directory) 
-$sudo ldconfig will load new LIB path
+
+$gearman 
+throws error that it cannot find libgearman.so (located in /usr/local/lib)
+First try doing $sudo ldconfig and see if that resolves the problem.
+    (most likely the the entry /usr/local/lib is already there in one of the files, e.g. libc.conf)
+if not then we have to add /usr/local/lib as an entry in a config file inside /etc/ld.so.conf.d folder
+file /etc/ld.so.conf just includes all config files from /etc/ld.so.conf.d
+
+To tell ldconfig about libgearman
+
+   + cd to /etc/ld.so.conf.d
+   + create a file gearman.conf with content
+        /usr/local/lib (on one line by itself) 
+   + $sudo ldconfig 
+
+This should load the new LIB path.
 $gearman
 
+should work now.
+
 #start gearmand with sqlite queue
-$sudo gearmand  --verbose=DEBUG  --libsqlite3-db="./bobo" -q libsqlite3
+gearmand --verbose=DEBUG --log-file=gearman.log --libsqlite3-db=./gearman_q -q libsqlite3
 
 #start gearmand with sqlite queue as a daemon
-$sudo gearmand  -d --verbose=DEBUG  --libsqlite3-db="./bobo" -q libsqlite3
+gearmand -d --verbose=DEBUG --log-file=gearman.log --libsqlite3-db=./gearman_q -q libsqlite3
 
-#install gearman extension
+
+
+#install gearman pecl extension
+
+problem with pecl extension version 1.0.2 + gearman manager
+https://bugs.php.net/bug.php?id=60764
+so we  have given up on gearman-manager + pecl manager unless this bug is fixed.
+
+
 download pecl gearman extension from http://pecl.php.net/package/gearman
 untar and compile
+
 $phpize
 This requires php5-dev packages (we have that in the list)
 $./configure 
 $make 
-$make install
+$sudo make install
+
+installing shared extensions:     /usr/lib/php5/20090626/
+$ ls -l /usr/lib/php5/20090626/gearman*
+-rwxr-xr-x 1 root root 295184 Jul  7 16:14 /usr/lib/php5/20090626/gearman.so
+
 
 #enable gearman extension
-Just add a gearman.ini file in /etc/php5/conf.d directory
-rjha@natty64:/usr/lib/php5/20090626$ cat /etc/php5/conf.d/gearman.ini 
+Add a gearman.ini file in /etc/php5/conf.d directory
+
+$ cat /etc/php5/conf.d/gearman.ini 
 extension=/usr/lib/php5/20090626/gearman.so
 
 #restart php services and verify that gearman extension is loaded
+@see output of phpinfo()
+
+
+verify your installation
+-----------------------
+start gearman in daemon mode
+    $sudo gearmand -d
+use gearman to simulate a "wc -l" worker
+    $gearman -w -f wc -- wc -l
+give work to "wc -l" worker via a simulated client
+    $gearman -f wc < ~/code/github/sc/deploy/gearman/gearman.install
+
+client should get back the # of lines in the file.
+
+
+
 
 #install gearman manager package from github
 #https://github.com/brianlmoon/GearmanManager
@@ -63,6 +150,38 @@ we can verify that in phpinfo() output
     posix
     rjha@beta:~$ php -m | grep pcntl
     pcntl
+
+$git clone git://github.com/brianlmoon/GearmanManager.git
+
++ Because of problem with pecl extension - we cannot use pecl manager (unless above bug is fixed)
++ so we try gearman manager with PEAR Net_Gearman package instead.
+
+This is an alpha package so you have to install from channel itself!
+$sudo pear install channel://pear.php.net/Net_Gearman-0.2.3
+
+After the installation of Net_Gearman package 
+ create a manager folder 
+ manager
+ |_ workers
+ |_ clients
+ |_ config.ini
+
+start pear-manager like
+(pecl-manager has issues : see bug above)
+$./pear-manager.php  -vvvv -h 127.0.0.1:4730 -c ./config.ini
+This will load the workers.
+
+@deploy/gearman/manager folder for example of worker and client
+verify that a client can send jobs and receive results.
+
+
+
+# start gearmand automatically on reboot.
+# gearmand as an upstart job
+
+
+# start gearman manager automatically on reboot.
+
 
 
 
