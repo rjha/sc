@@ -42,10 +42,12 @@
 
         <script type="text/javascript">
 
+
             webgloo.sc.ImageSelector = {
 
                 bucket : {},
                 images : [],
+                num_added : 0 ,
                 num_select : 0 ,
                 num_upload : 0 ,
                 debug : false ,
@@ -195,12 +197,21 @@
 
                 },
                 
-                addImage : function(id,image) {
-                    var buffer = this.imageDiv.supplant({"srcImage":image, "id":id } );
+                addImage : function(image) {
+
+                    var index = webgloo.sc.ImageSelector.num_added ;
+
+                    if(webgloo.sc.ImageSelector.debug) {
+                        console.log("Adding image : " + index + " : " + image);
+                    }
+
+                    var buffer = this.imageDiv.supplant({"srcImage":image, "id":index } );
                     //logo, small icons etc. are first images in a page
                     // what we are interested in will only come later.
                     $("div#stack .images").prepend(buffer);
-                    this.bucket[id] = { "id":id, "srcImage": image, "selected" : false} ;
+
+                    this.bucket[index] = { "id":index, "srcImage": image, "selected" : false} ;
+                    webgloo.sc.ImageSelector.num_added++ ;
                 },
 
                 addSpinner : function() {
@@ -240,7 +251,15 @@
                 processUrlFetch : function(response) {
                     images = response.images ;
                     for(i = 0 ; i < images.length ; i++) {
-                        this.addImage(i,images[i]);
+                        var img = new Image();
+                        img.onload = function() {
+                            console.log(this.src + " has width " + this.width);
+                            if((this.width > 400) && (this.height > 200 )) {
+                                webgloo.sc.ImageSelector.addImage(this.src);
+                            }
+                        }
+
+                        img.src = images[i] ;
                     }
 
                     $("#stack").fadeIn("slow");
@@ -250,6 +269,7 @@
 
                 fetch : function(target) {
                     //initialize
+                    webgloo.sc.ImageSelector.num_added = 0 ;
                     webgloo.sc.ImageSelector.num_select = 0 ;
                     webgloo.sc.ImageSelector.num_upload = 0 ;
                     webgloo.sc.ImageSelector.bucket = {} ;
@@ -386,6 +406,8 @@
                 webgloo.sc.ImageSelector.attachEvents();
 
             });
+
+
         </script>
 
     </head>
