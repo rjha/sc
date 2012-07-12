@@ -120,34 +120,40 @@ $sudo vim /etc/hosts
 Add an entry for mint.3mik.com 127.0.0.1
 
 8) Check :: Verify PHP install and layout
-Now open a browser and type :-
-http://mint.3mik.com/echo.php
+
+restart nginx and php5-fpm service
+open a browser and type :- http://mint.3mik.com/echo.php
 
 @imp: This should show your path and loaded modules etc.  
 If things work then we are ready to move onto next step, else we need to fix things here first.
 
 
 9) create mysql database and load data from server.
-@see $HOME/code/github/sc/deploy/mysql/mysql.install
+@see $HOME/code/github/sc/deploy/mysql/mysql.newdb.sql
+@ get a copy of database (ask rajeev jha)
+@Get a copy of latest sc-app.inc and sc_config.ini file (Ask Rajeev Jha) 
+	copy the files to 
+	$sudo cp <file> /var/www/apps/.
 
-10)install and configure sphinx. create sphix indexes.
-@see $HOME/code/github/sc/deploy/sphinx/sphinx.install
-
-
-11) Get a copy of latest sc-app.inc and sc_config.ini file (Ask Rajeev Jha) 
-
-These files can vary for different branches as well!
-
-checklist local sc_config.ini file
+Load database. 
+Make changes to sc_config.ini
+    - change node.name and node.type
+    - change send.error.mail setting (if required)
     - change mysql user password
-    - change log and other location  
-    - change file.store to local
+    - verify log location  
+    - @imp: change file.store to local
     - change session.backend to mysql (or redis)
+    - verify redis host and port
+    - verify sphinx port etc.
     - sensitive information (like sendgrid password, FB App Id etc. is removed)
 
+verify sc-app.inc
 
-copy the files to 
-$sudo cp <file> /var/www/apps/.
+Go to http://mint.3mik.com
+   - Now you should see the Homepage!
+
+11)install and configure sphinx. create sphix indexes.
+@see $HOME/code/github/sc/deploy/sphinx/sphinx.install
 
 12) Install redis
 @see deploy/redis/redis.install
