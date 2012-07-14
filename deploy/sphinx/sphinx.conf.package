@@ -6,9 +6,9 @@
 source mydb {
 	type			= mysql
 	sql_host		= localhost
-	sql_user		= gloo
-	sql_pass		= osje8L\#3mik
-	sql_db			= testdb
+	sql_user		= db_user
+	sql_pass		= db_password
+	sql_db			= db_name
 	sql_port		= 3306	
 }
 

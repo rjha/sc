@@ -31,3 +31,8 @@
 	create 640 www-data www-data
 }
 
+# do not rotate bad.url.log
+# do not rotate bad.feed.log
+# include sphinx if installed from source
+
+

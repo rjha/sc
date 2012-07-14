@@ -2,7 +2,7 @@
 $ to see the cron tab entries loaded by root
 $sudo crontab -l
 $to add new entries
- $sudo crontab -e
+$sudo crontab -e
 
 
 what we are using
