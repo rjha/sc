@@ -2022,6 +2022,7 @@ India Kitsch 37C Hindustan Road, Kolkata (Calcutta), India 700029 </p>
 </div>
 </div><!-- tiles -->
 </div> <!-- container -->
+    <div id="scroll-image" style="margin-left:800px; height:120px; width:160px;"> </div>
 
     <a id="next" href="page2.html">next page?</a>
 	
@@ -2046,9 +2047,11 @@ India Kitsch 37C Hindustan Road, Kolkata (Calcutta), India 700029 </p>
             	navSelector  	: "a#next:last",
                 nextSelector 	: "a#next:last",
                 itemSelector : ".tile",
-                loading: {
-                    finishedMsg: 'No more pages to load.',
-                    img: 'http://i.imgur.com/6RMhx.gif'
+                bufferPx : 100 ,
+                loading : { 
+                    selector : "#scroll-image",
+                    img : "/css/images/6RMhx.gif",
+                    finishedMsg : "<b> You have reached the end of this page </b>"
                 }
             }, 
             function( newElements ) {
