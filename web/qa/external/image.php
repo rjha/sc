@@ -248,17 +248,24 @@
 
                 },
 
+				loadImage : function(img) {
+					if((img.width > 400) && (img.height > 200 )) {
+						webgloo.sc.ImageSelector.addImage(img.src);
+					}
+
+				},
+				makeLoadImage : function(img) {
+					return function() {
+						webgloo.sc.ImageSelector.loadImage(img);
+					};
+				},
+
                 processUrlFetch : function(response) {
                     images = response.images ;
-                    for(i = 0 ; i < images.length ; i++) {
-                        var img = new Image();
-                        img.onload = function() {
-                            console.log(this.src + " has width " + this.width);
-                            if((this.width > 400) && (this.height > 200 )) {
-                                webgloo.sc.ImageSelector.addImage(this.src);
-                            }
-                        }
 
+                    for(i = 0 ; i < images.length ; i++) {
+						var img = new Image();
+						img.onload = webgloo.sc.ImageSelector.makeLoadImage(img) ;
                         img.src = images[i] ;
                     }
 
@@ -406,7 +413,6 @@
                 webgloo.sc.ImageSelector.attachEvents();
 
             });
-
 
         </script>
 
