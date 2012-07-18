@@ -53,12 +53,11 @@
             <div class="row">
                 <div class="span12">
                     <div id="tiles">
-                        <?php include(APP_WEB_DIR . '/inc/home-tile.inc'); ?>
                         <?php
                             $count = 0 ;
                             foreach($this->homeDBRows as $postDBRow) {
                                 $count++ ;
-                                if($count == 3) {
+                                if($count == 1) {
                                     //inject activity tile
                                     $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
                                     $feedDataObj = $activityDao->getGlobalFeeds(10);
@@ -79,13 +78,6 @@
                     <ul class="pager">
                         <li> <a href="<?php echo $nextPageUrl ?>">Next &rarr;</a></li>
                     </ul>
-
-                   <div id="feedback" class="vertical">
-                        <a href="/site/contact.php">
-                            <br>
-                            F e e d b a c k
-                        </a>
-                    </div>  <!-- feedback -->
 
                 </div>
             </div> <!-- row -->
