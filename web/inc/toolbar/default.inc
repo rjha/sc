@@ -80,7 +80,7 @@ $askUrl = \com\indigloo\Url::createUrl('/qa/new.php',$params);
 
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        More filters
+                        More
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
@@ -104,7 +104,7 @@ $askUrl = \com\indigloo\Url::createUrl('/qa/new.php',$params);
         </div>
 
     </div> <!-- row2 -->
-    
+
     <div class="row p10 mb20">
         <div class="span6 offset2">
         <span class="comment-text"> Discover and share with 3mik </span>

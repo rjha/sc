@@ -94,7 +94,7 @@
 
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        More filters
+                        More
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
