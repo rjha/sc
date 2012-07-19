@@ -104,7 +104,7 @@
 
             <div class="row">
                 <div class="span12">
-                    <div class="page-header"> <h2> Login Page </h2> </div>
+                    <div class="page-header"> &nbsp; </div>
                     <div class="p10"> <?php FormMessage::render(); ?> </div>
                 </div>
             </div> <!-- row -->
@@ -112,7 +112,7 @@
             <div class="row">
                 <div class="span7">
                   <div id="mik-login-wrapper">
-                   <h3> You can login with 3mik account </h3>
+                   <h3> Login with 3mik account </h3>
                         <a href="/user/register.php"> Register for a new 3mik account</a> (Free and takes just 30 seconds!)
 
                         <form id="web-form1"  name="web-form1" action="/user/form/login.php" method="POST">

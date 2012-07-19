@@ -130,22 +130,7 @@
         padding-top: 7px;
         padding-bottom: 7px;
     }
-
-    #header {
-        padding: 10px;
-        color:#FFF;
-    }
-
-    #header h3 {
-        color: #FFFFFF;
-        font-size:36px;
-    }
-
-    #header h3 a {
-        color: #FFFFFF ;
-        text-decoration : none;
-    }
-
+    
     #content {
         padding-top:10px;
         min-height : 600px;
@@ -315,53 +300,6 @@
     .hide-me {
         display:none ;
     }
-    /*
-    div#link-container {
-
-        background-color:#f0fff0;
-        width:460px;
-        margin-bottom :10px;
-        padding:10px;
-
-    }
-
-    div#link-container input{
-        word-spacing: 1px;
-        line-height: 1.8em;
-        color: #333;
-        border: 1px solid #bbb;
-        width: 330px;
-        height: 24px;
-        padding-top:4px;
-    }
-
-
-    .black-button {
-        background-color:black;
-        color:#FFFFFF !important;
-        text-align :center ;
-        border-radius:5px;
-        text-decoration:none;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    div#image-container{
-           margin-bottom:10px;
-           padding:10px;
-           background-color:#f0fff0;
-           width:480px;
-    }
-
-    #form-wrapper #divstatus{
-           padding:5px;
-    }
-
-    #media-data {
-        width: 580px;
-    }
-
-    */
 
     #link-data {
         margin-top:5px;
@@ -748,26 +686,6 @@
         text-decoration: none;
     }
 
-    /*
-    div .toolbar {
-        background-color : white;
-        border: 1px solid #DEDEDE ;
-        vertical-align:baseline;
-        width:165px;
-    }
-
-    div .toolbar-button{
-       position :relative ;
-       float : left;
-       padding:2px;
-       height:32px;
-       width:48px;
-       border-right:1px solid #DEDEDE ;
-       margin :1px;
-       text-align:center;
-    } */
-
-
     /* + Activity feeds */
 
     .feeds {
@@ -832,10 +750,10 @@
         top: 0;
         width: 80%;
         z-index: 250;
-        /*to turn On */
+        /*to turn On
         text-align:center ;
         opacity : 1 ;
-        display :block ;
+        display :block ; */
     }
 
     .close-overlay {
@@ -883,7 +801,22 @@
     }
 
     #site-toolbar a {
-        font-weight : bold ; 
+        font-weight : bold ;
+
+    }
+
+    #site-toolbar a.brand:hover {
+        text-decoration: none ;
+    }
+
+    #site-toolbar .toolbar-row1 {
+          background-color:#f7f7f7;
+    }
+
+    #site-toolbar .toolbar-row2 {
+          background-color:#f7f7f7;
+          border-bottom-left-radius:8px;
+          border-bottom-right-radius:8px;
     }
 
     /* last section - override bootstrap css */
