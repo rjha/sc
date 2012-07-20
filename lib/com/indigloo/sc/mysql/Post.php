@@ -125,7 +125,7 @@ namespace com\indigloo\sc\mysql {
             return $rows;
         }
 
-        static function getLatest($limit,$filters) {
+        static function getLatest($offset,$limit,$filters) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -142,7 +142,8 @@ namespace com\indigloo\sc\mysql {
             $condition = $q->get();
             $sql .= $condition;
 
-            $sql .= " order by q.id desc LIMIT ".$limit ;
+            $sql .= " order by q.id desc LIMIT %d,%d " ;
+            $sql = sprintf($sql,$offset,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
@@ -251,7 +252,7 @@ namespace com\indigloo\sc\mysql {
 
 
             $dbh = NULL ;
-            
+
             try {
                 $sql1 = " insert into sc_post(title,description,login_id,links_json, " ;
                 $sql1 .= "images_json,group_slug,cat_code,created_on) ";

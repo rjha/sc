@@ -19,64 +19,54 @@ namespace com\indigloo\sc\controller{
             $this->homeDBRows = array();
         }
 
-        function combine($item) {
-            if(!in_array($item['id'],$this->ids)) {
-                array_push($this->homeDBRows,$item);
-                array_push($this->ids,$item['id']);
+        function combine($row) {
+            if(!in_array($row['id'],$this->ids)) {
+                array_push($this->homeDBRows,$row);
+                array_push($this->ids,$row['id']);
             }
         }
 
         function process($params,$options) {
-            $gpage = Url::tryQueryParam("gpage");
-            if(is_null($gpage) || ($gpage == '1')) {
-                $this->processHome($params,$options);
+            $gpage = Util::tryArrayKey($params,"gpage");
+            $gpage = empty($gpage) ? "1" : $gpage ;
+            
+            if($gpage == "1") {
+                $this->loadHomeRows();
             } else {
-                $this->processNext($params,$options);
+                $this->loadNextRows($gpage);
             }
-        }
 
-        function processNext($params,$options) {
-            $postDao = new \com\indigloo\sc\dao\Post();
-            $total = $postDao->getTotalCount();
-
-            $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-            $pageSize = Config::getInstance()->get_value("main.page.items");
-            $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
-
-            $postDBRows = $postDao->getPaged($paginator);
-
-            $pageHeader = '';
-            $pageBaseUrl = '/' ;
-
+            //$this->homeDBRows have been loaded.
+            $nextPageUrl = "/home/page/".($gpage + 1) ;
             $pageTitle = SeoData::getHomePageTitle();
             $metaKeywords = SeoData::getHomeMetaKeywords();
             $metaDescription = SeoData::getHomeMetaDescription();
 
-            $file = APP_WEB_DIR. '/view/tiles-page.php' ;
+            $file = APP_WEB_DIR. '/home.php' ;
             include ($file);
 
 
         }
 
-        function processHome($params,$options) {
+
+        private function loadHomeRows() {
 
             $postDao = new \com\indigloo\sc\dao\Post();
-            $total = $postDao->getTotalCount();
+            $randomDBRows = array();
 
-            //feature filter
+            //10 featured posts
             $filters = array();
             $model = new \com\indigloo\sc\model\Post();
             $filter = new Filter($model);
             $filter->add($model::FEATURED,Filter::EQ,TRUE);
             array_push($filters,$filter);
-
             $featureDBRows = $postDao->getPosts(10,$filters);
-            $postDBRows = array();
-            $randomDBRows = array();
 
-            $latestDBRows = $postDao->getLatest(20);
-            //shortfall?
-            $short = 37 - (sizeof($featureDBRows) + sizeof($latestDBRows)) ;
+            //20 latest posts
+            $latestDBRows = $postDao->getLatest(0,20);
+            $pageSize = Config::getInstance()->get_value("main.page.items");
+            //rest are random rows.
+            $short = $pageSize - (sizeof($featureDBRows) + sizeof($latestDBRows)) ;
             if($short > 0 ) {
                 //pull random rows
                 $randomDBRows = $postDao->getRandom($short);
@@ -94,24 +84,19 @@ namespace com\indigloo\sc\controller{
                 $this->combine($latestDBRows[$i]);
             }
 
-            $endId = NULL ;
-            if(sizeof($latestDBRows) > 0 ) {
-                $endId =   $latestDBRows[sizeof($latestDBRows)-1]['id'] ;
-            }
-
-
-            $endId = base_convert($endId,10,36);
-            $nparams = array('gpa' => $endId, 'gpage' => 2) ;
-            $nextPageUrl = Url::addQueryParameters("/",$nparams);
-
-            $pageTitle = SeoData::getHomePageTitle();
-            $metaKeywords = SeoData::getHomeMetaKeywords();
-            $metaDescription = SeoData::getHomeMetaDescription();
-
-            $file = APP_WEB_DIR. '/home.php' ;
-            include ($file);
 
         }
+
+         function loadNextRows($gpage) {
+
+            $postDao = new \com\indigloo\sc\dao\Post();
+            $pageSize = Config::getInstance()->get_value("main.page.items");
+            $offset = ($pageSize*$gpage )  - 1 ;
+            $limit = $pageSize ;
+            $this->homeDBRows = $postDao->getLatest($offset,$limit);
+
+        }
+
 
     }
 }
