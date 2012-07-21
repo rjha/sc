@@ -29,7 +29,7 @@ namespace com\indigloo\sc\controller{
         function process($params,$options) {
             $gpage = Util::tryArrayKey($params,"gpage");
             $gpage = empty($gpage) ? "1" : $gpage ;
-            
+            if($gpage > 11) { return "" ; }
             if($gpage == "1") {
                 $this->loadHomeRows();
             } else {
