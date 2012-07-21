@@ -130,7 +130,7 @@
         padding-top: 7px;
         padding-bottom: 7px;
     }
-    
+
     #content {
         padding-top:10px;
         min-height : 600px;
@@ -817,6 +817,19 @@
           background-color:#f7f7f7;
           border-bottom-left-radius:8px;
           border-bottom-right-radius:8px;
+    }
+
+    /* paul iris infinite scroll plugin */
+    #infscr-loading{
+        text-align: center;
+        position: fixed;
+        left: 45%;
+        bottom: 40px;
+        width: 200px;
+        background: black;
+        opacity: 0.8;
+        color: white;
+        border-radius: 10px;
     }
 
     /* last section - override bootstrap css */

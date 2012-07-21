@@ -61,17 +61,15 @@
                         ?>
 
                     </div><!-- tiles -->
-                    <hr>
-                    <ul class="pager">
-                        <li> <a id="pager" href="<?php echo $nextPageUrl ?>">Next &rarr;</a></li>
-                    </ul>
-
 
                 </div>
             </div> <!-- row -->
 
-            <div id="scroll-image" style="margin-left:800px; height:120px; width:160px;"> </div>
+            <div id="scroll-loading"> </div>
+
         </div>  <!-- container -->
+
+        <nav id="pager"> <a href="<?php echo $nextPageUrl ?>">Next &rarr;</a> </nav>
 
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
@@ -82,34 +80,31 @@
 
         <script type="text/javascript">
             /* column width = css width + margin */
-            $(document).ready(function(){
+           $(function(){
                 var $container = $('#tiles');
 
                 $container.imagesLoaded(function(){
                     $container.masonry({
-                        itemSelector : '.tile'
+                        itemSelector : '.tile',
+                        isFitWidth: true
                     });
                 });
 
                 $container.infinitescroll(
                     {
-                        navSelector  	: "a#pager:last",
-                        nextSelector 	: "a#pager:last",
+                        navSelector  	: "#pager",
+                        nextSelector 	: "#pager a",
                         itemSelector : ".tile",
-                        bufferPx : 100 ,
-                        loading : {
-                            selector : "#scroll-image",
-                            img : "/css/images/6RMhx.gif",
-                            finishedMsg : "<b> You have reached the end of this page </b>"
-                        }
-                        /*
-                         *
-                         ,
 
-                        pathParse: function(path,page_num) {
-                            var opath = '<?php echo $nextPageUrl ?>'  ;
-                            return new Array(opath) ;
-                        } */
+                        //bufferPx : 100 ,
+                        loading : {
+                            selector : "#scroll-loading",
+                            img : "/css/images/6RMhx.gif",
+                            msgText: "<em>Please wait. Loading more items...</em>",
+                            finishedMsg : "<b> You have reached the end of this page </b>",
+                            speed: "slow"
+
+                        }
 
                     },
                     function( newElements ) {
@@ -117,10 +112,11 @@
                         var $newElems = $( newElements ).css({ opacity: 0 });
                         // ensure that images load before adding to masonry layout
                         $newElems.imagesLoaded(function(){
-                        // show elems now they're ready
-                        $newElems.animate({ opacity: 1 });
-                        $container.masonry( 'appended', $newElems, true );
+                            // show elems now they're ready
+                            $newElems.animate({ opacity: 1 });
+                            $container.masonry( 'appended', $newElems, true );
                         });
+                        $("#infscr-loading").fadeOut("slow");
                     }
                 );
 
