@@ -11,7 +11,7 @@
 
 ?>
 
-<div id="site-toolbar">
+<div id="site-toolbar" class="navbar">
 
     <div class="row toolbar-row1">
         <div class="span6">
@@ -104,7 +104,7 @@
                         <li><a href="/surprise/me">Surprise me!</a></li>
                     </ul>
                 </li> <!-- more -->
-                <li class="active"> <a href="<?php echo $shareUrl; ?>">Share</a></li>
+                <li class="active"> <a href="<?php echo $shareUrl; ?>">#&nbsp;Share</a></li>
                 </ul>
 
         </div>
@@ -122,7 +122,7 @@
     <div class="row p10 mb20">
         <div class="span6 offset2">
         <span class="comment-text"> Discover and share with 3mik </span>
-        &nbsp;<a href="/site/about.php">Learn more&nbsp;&raquo;</a>
+        &nbsp;<a class="btn nav-learn-more" href="/site/about.php">Learn more&nbsp;&raquo;</a>
 
         </div>
         <div style="float:right;padding-bottom:5px;">

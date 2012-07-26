@@ -335,11 +335,7 @@
     }
 
 
-    #site-search{
-        /* margin-top:5px; */
-        height:20px;
-        /* width:280px; */
-    }
+   
 
     /* + homepage tiles */
     div #tiles{
@@ -795,6 +791,13 @@
         width:80px; height:32px; margin-bottom:10px;
     }
 
+    /* +site toolbar */
+    #site-search{
+        /* margin-top:5px; */
+        height:20px;
+        /* width:280px; */
+    }
+
     #site-toolbar a {
         margin-top:10px;
 
@@ -802,21 +805,34 @@
 
     #site-toolbar a {
         font-weight : bold ;
-
+        /* color: white ; */
     }
 
     #site-toolbar a.brand:hover {
         text-decoration: none ;
     }
 
+    #site-toolbar .dropdown-menu a {
+        color : #333 ;
+        font-weight:normal;
+    }
+
+    #site-toolbar .dropdown-menu a:hover {
+        color : white ;
+    }
+
     #site-toolbar .toolbar-row1 {
-          background-color:#f7f7f7;
+          background-color:#222;
     }
 
     #site-toolbar .toolbar-row2 {
-          background-color:#f7f7f7;
-          border-bottom-left-radius:8px;
-          border-bottom-right-radius:8px;
+          background-color:#222;
+          border-bottom-left-radius:8px ;
+          border-bottom-right-radius:8px ;
+    }
+
+    #site-toolbar .nav-learn-more {
+        color:#333 ;
     }
 
     /* paul iris infinite scroll plugin */

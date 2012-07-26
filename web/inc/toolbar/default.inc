@@ -8,7 +8,8 @@ $askUrl = \com\indigloo\Url::createUrl('/qa/new.php',$params);
 
 ?>
 
-<div id="site-toolbar">
+
+<div id="site-toolbar" class="navbar">
 
     <div class="row toolbar-row1">
         <div class="span6">
@@ -90,7 +91,7 @@ $askUrl = \com\indigloo\Url::createUrl('/qa/new.php',$params);
                         <li><a href="/surprise/me">Surprise me!</a></li>
                     </ul>
                 </li> <!-- more -->
-                <li class="active"> <a href="<?php echo $shareUrl; ?>">Share</a></li>
+                <li class="active"> <a href="<?php echo $shareUrl; ?>">#&nbsp;Share</a></li>
                 </ul>
 
         </div>
@@ -108,7 +109,7 @@ $askUrl = \com\indigloo\Url::createUrl('/qa/new.php',$params);
     <div class="row p10 mb20">
         <div class="span6 offset2">
         <span class="comment-text"> Discover and share with 3mik </span>
-        &nbsp;<a href="/site/about.php">Learn more&nbsp;&raquo;</a>
+        &nbsp;<a class="nav-learn-more btn" href="/site/about.php">Learn more&nbsp;&raquo;</a>
 
         </div>
         <div style="float:right;padding-bottom:5px;">
