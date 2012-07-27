@@ -94,8 +94,8 @@
                         navSelector  	: "#pager",
                         nextSelector 	: "#pager a",
                         itemSelector : ".tile",
+                        bufferPx : 80,
 
-                        //bufferPx : 100 ,
                         loading : {
                             selector : "#scroll-loading",
                             img : "/css/images/6RMhx.gif",
@@ -107,24 +107,23 @@
 
                     },
                     function( newElements ) {
-                        var $newElems = $( newElements ).css({ opacity: 0 });
-                        $newElems.imagesLoaded(function(){
-                            $newElems.animate({ opacity: 1 });
-                            $container.masonry( 'appended', $newElems, true );
+                        
+                        $(newElements).imagesLoaded(function(){
+                            $container.masonry( 'appended', $(newElements));
                             $("#infscr-loading").fadeOut("slow");
-                        }); 
+                        });
+
                     }
                 );
 
-
-
                 //show options on hover
                 $('.tile .options').hide();
-                $('.tile').mouseenter(function() {$(this).find('.options').toggle();});
-                $('.tile').mouseleave(function() {$(this).find('.options').toggle();});
+                $('.tile').live("mouseenter", function() {$(this).find('.options').toggle();});
+                $('.tile').live("mouseleave", function() {$(this).find('.options').toggle();});
 
                 //Add item toolbar actions
                 webgloo.sc.item.addActions();
+                webgloo.sc.home.addNavGroups();
 
 
             });

@@ -29,10 +29,10 @@ namespace com\indigloo\sc\html {
                 $record["originalName"] = $imgv["name"];
                 $record["tname"] = $imgv["tname"];
 
-                $newxy = Util::foldXY($image->width,$image->height,190,140);
-                $record["width"] = $newxy["width"];
-                $record["height"] = $newxy["height"];
-
+                //for gallery - both height and width is fixed. 
+                $td = Util::foldXY($image->width,$image->height,190,140);
+                $record["twidth"] = $td["width"];
+                $record["theight"] = $td["height"];
                 $records[] = $record;
             }
 
@@ -83,11 +83,20 @@ namespace com\indigloo\sc\html {
 
         static function getSmallTile($postDBRow) {
             $html = NULL ;
+            $template = NULL ;
             $voptions = array("abbreviate" => true , "imageWidth" => 100 );
             $view = self::createPostView($postDBRow, $voptions);
 
-            $template = ($view->hasImage) ?
-                '/fragments/tile/small/image.tmpl' : '/fragments/tile/small/text.tmpl' ;
+            if($view->hasImage) {
+                //Add thumbnail width and height
+                $td = Util::foldX($view->width,$view->height,100);
+                $view->twidth = $td["width"];
+                $view->theight = $td["height"];
+                $template = '/fragments/tile/small/image.tmpl' ;
+
+            } else {
+                $template = '/fragments/tile/small/text.tmpl' ;
+            }
 
             $html = Template::render($template,$view);
             return $html ;
@@ -97,14 +106,26 @@ namespace com\indigloo\sc\html {
         static function getTile($postDBRow,$options=NULL) {
 
             $html = NULL ;
+            $template = NULL ;
+
             if(is_null($options)) {
                 $options = UIConstants::TILE_ALL & ~UIConstants::TILE_REMOVE ;
             }
 
             $voptions = array("abbreviate" => true ,"group" => true);
             $view = self::createPostView($postDBRow,$voptions);
-            $template = ($view->hasImage) ?
-                '/fragments/tile/image.tmpl' : '/fragments/tile/text.tmpl' ;
+            
+            if($view->hasImage) {
+                $template = '/fragments/tile/image.tmpl' ;
+                //Add thumbnail width and height
+                $td = Util::foldX($view->width,$view->height,190);
+                $view->twidth = $td["width"];
+                $view->theight = $td["height"];
+
+            } else {
+                $template = '/fragments/tile/text.tmpl' ;
+            }
+
 
             //set action flags
             $view->hasLike = $options & UIConstants::TILE_LIKE ;
@@ -225,9 +246,8 @@ namespace com\indigloo\sc\html {
                 $image = $images[0] ;
                 $imgv = self::convertImageJsonObj($image);
                 $view->srcImage = $imgv["thumbnail"];
-                $newxy = Util::foldX($imgv["width"],$imgv["height"],$options["imageWidth"]);
-                $view->width = $newxy["width"];
-                $view->height = $newxy["height"];
+                $view->height = $imgv["height"];
+                $view->width = $imgv["width"];
             }
 
             //process groups
@@ -267,6 +287,8 @@ namespace com\indigloo\sc\html {
             } else {
                 $imgv["name"] = "placeholder" ;
                 $imgv["source"] = "/css/images/twitter-icon.png" ;
+                $imgv["width"] = 48;
+                $imgv["height"] = 48;
             }
 
             return $imgv ;
@@ -274,30 +296,35 @@ namespace com\indigloo\sc\html {
 
         static function convertImageJsonObj($jsonObj) {
             $view = array();
-            //external images have no name
-            if(strcmp($jsonObj->store,"external") == 0 ) {
-                $view["name"] = "image-".$jsonObj->id ;
-                $view["tname"] = "image-".$jsonObj->id ;
-                $view["source"] = $jsonObj->srcImage ;
-                $view["thumbnail"] = $jsonObj->srcImage ;
-                $view["width"] = 190;
-                $view["height"] = 140;
-                return $view ;
-            }
 
             if((strcmp($jsonObj->store,"s3") == 0 ) || (strcmp($jsonObj->store,"local") == 0)) {
                 $view["name"] = $jsonObj->originalName ;
-                //@imp: if thumbnail is not available then fallback on original image
-                $view["tname"] = (property_exists($jsonObj,"thumbnailName")) ?  $jsonObj->thumbnailName : $jsonObj->originalName ;
                 $prefix = ($jsonObj->store == 's3') ? 'http://' : '/' ;
-                $fileName = (property_exists($jsonObj,'thumbnail')) ? $jsonObj->thumbnail : $jsonObj->storeName ;
+                $fileName = NULL ;
+
+                //@imp: if thumbnail is not available then fallback on original image
+                if(property_exists($jsonObj,"thumbnailName")) {
+                    $view["tname"] = $jsonObj->thumbnailName ;
+                    $fileName = $jsonObj->thumbnail ;
+
+                } else {
+                    $view["tname"] = $jsonObj->originalName ;
+                    $fileName = $jsonObj->storeName ;
+                }
 
                 $view["source"] = $prefix.$jsonObj->bucket.'/'.$jsonObj->storeName;
                 $view["thumbnail"] = $prefix.$jsonObj->bucket.'/'.$fileName ;
                 $view["width"] = $jsonObj->width ;
                 $view["height"] = $jsonObj->height;
-                return $view ;
+                //@todo add thumbnail width and height to image json data
+
+            } else {
+
+                $message = sprintf("Unknown image store %s ", $jsonObj->store);
+                trigger_error($message,E_USER_ERROR);
             }
+
+            return $view ;
 
         }
 
