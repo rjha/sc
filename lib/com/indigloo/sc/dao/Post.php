@@ -74,9 +74,10 @@ namespace com\indigloo\sc\dao {
 
         function getPaged($paginator,$filters=array()) {
             $limit = $paginator->getPageSize();
+            $offset = ($paginator->getPageNo() -1 )  * $limit;
 
             if($paginator->isHome()){
-                return $this->getLatest($limit,$filters);
+                return $this->getLatest($offset,$limit,$filters);
             } else {
 
                 $params = $paginator->getDBParams();

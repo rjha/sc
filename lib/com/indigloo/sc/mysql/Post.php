@@ -144,7 +144,7 @@ namespace com\indigloo\sc\mysql {
 
             $sql .= " order by q.id desc LIMIT %d,%d " ;
             $sql = sprintf($sql,$offset,$limit);
-
+            
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
@@ -186,10 +186,6 @@ namespace com\indigloo\sc\mysql {
 
             $sql .= $q->get();
             $sql .= $q->getPagination($start,$direction,"q.id",$limit);
-
-            if(Config::getInstance()->is_debug()) {
-                Logger::getInstance()->debug("sql => $sql \n");
-            }
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
 
