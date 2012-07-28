@@ -87,9 +87,6 @@ namespace com\indigloo\sc\controller{
 
             $file = APP_WEB_DIR. '/home.php' ;
             include ($file);
-
-
-
         }
 
         function loadNextPage($gpage) {
