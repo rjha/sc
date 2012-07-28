@@ -61,15 +61,16 @@
                         ?>
 
                     </div><!-- tiles -->
+                    <hr>
+                    <ul class="pager"> <li> <a href="<?php echo $nextPageUrl ?>">Next &rarr;</a> <li> </ul>
+                    <div id="scroll-loading"> </div>
 
                 </div>
             </div> <!-- row -->
 
-            <div id="scroll-loading"> </div>
 
         </div>  <!-- container -->
 
-        <nav id="pager"> <a href="<?php echo $nextPageUrl ?>">Next &rarr;</a> </nav>
 
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
@@ -80,7 +81,8 @@
 
         <script type="text/javascript">
             /* column width = css width + margin */
-           $(function(){
+            $(function(){
+
                 var $container = $('#tiles');
 
                 $container.imagesLoaded(function(){
@@ -91,10 +93,9 @@
 
                 $container.infinitescroll(
                     {
-                        navSelector  	: "#pager",
-                        nextSelector 	: "#pager a",
+                        navSelector  	: ".pager",
+                        nextSelector 	: ".pager a:last",
                         itemSelector : ".tile",
-                        bufferPx : 80,
 
                         loading : {
                             selector : "#scroll-loading",
@@ -107,14 +108,13 @@
 
                     },
                     function( newElements ) {
-                        
                         $(newElements).imagesLoaded(function(){
                             $container.masonry( 'appended', $(newElements));
                             $("#infscr-loading").fadeOut("slow");
                         });
 
                     }
-                );
+                ); 
 
                 //show options on hover
                 $('.tile .options').hide();

@@ -27,29 +27,17 @@ namespace com\indigloo\sc\controller{
         }
 
         function process($params,$options) {
-            $gpage = Util::tryArrayKey($params,"gpage");
+            $gpage = Url::tryQueryParam("gpage");
             $gpage = empty($gpage) ? "1" : $gpage ;
-            if($gpage > 11) { return "" ; }
             if($gpage == "1") {
-                $this->loadHomeRows();
+                $this->loadHomePage();
             } else {
-                $this->loadNextRows($gpage);
+                $this->loadNextPage($gpage);
             }
-
-            //$this->homeDBRows have been loaded.
-            $nextPageUrl = "/home/page/".($gpage + 1) ;
-            $pageTitle = SeoData::getHomePageTitle();
-            $metaKeywords = SeoData::getHomeMetaKeywords();
-            $metaDescription = SeoData::getHomeMetaDescription();
-
-            $file = APP_WEB_DIR. '/home.php' ;
-            include ($file);
-
 
         }
 
-
-        private function loadHomeRows() {
+        private function loadHomePage() {
 
             $postDao = new \com\indigloo\sc\dao\Post();
             $randomDBRows = array();
@@ -84,17 +72,46 @@ namespace com\indigloo\sc\controller{
                 $this->combine($latestDBRows[$i]);
             }
 
+            $endId = NULL ;
+            if(sizeof($latestDBRows) > 0 ) {
+                $endId =   $latestDBRows[sizeof($latestDBRows)-1]['id'] ;
+            }
+
+            $endId = base_convert($endId,10,36);
+            $nparams = array('gpa' => $endId, 'gpage' => 2) ;
+            $nextPageUrl = Url::addQueryParameters("/",$nparams);
+
+            $pageTitle = SeoData::getHomePageTitle();
+            $metaKeywords = SeoData::getHomeMetaKeywords();
+            $metaDescription = SeoData::getHomeMetaDescription();
+
+            $file = APP_WEB_DIR. '/home.php' ;
+            include ($file);
+
+
 
         }
 
-         function loadNextRows($gpage) {
+        function loadNextPage($gpage) {
 
             $postDao = new \com\indigloo\sc\dao\Post();
+            $total = $postDao->getTotalCount();
+            $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
             $pageSize = Config::getInstance()->get_value("main.page.items");
-            $offset = ($pageSize*$gpage )  - 1 ;
-            $limit = $pageSize ;
-            $this->homeDBRows = $postDao->getLatest($offset,$limit);
+            $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
 
+            $postDBRows = $postDao->getPaged($paginator);
+
+            $pageHeader = '';
+            $pageBaseUrl = '/' ;
+
+            $pageTitle = SeoData::getHomePageTitle();
+            $metaKeywords = SeoData::getHomeMetaKeywords();
+            $metaDescription = SeoData::getHomeMetaDescription();
+
+            $file = APP_WEB_DIR. '/view/tiles-page.php' ;
+            include ($file);
+            
         }
 
 
