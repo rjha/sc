@@ -44,7 +44,7 @@
                             $count = 0 ;
                             foreach($this->homeDBRows as $postDBRow) {
                                 $count++ ;
-                                if($gpage == 1 && $count == 4) {
+                                if($count == 4) {
                                     //inject activity tile
                                     $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
                                     $feedDataObj = $activityDao->getGlobalFeeds(10);
