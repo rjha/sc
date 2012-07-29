@@ -62,14 +62,14 @@
 
                     </div><!-- tiles -->
                     <hr>
-                    <ul class="pager"> <li> <a href="<?php echo $nextPageUrl ?>">Next &rarr;</a> <li> </ul>
-                    <div id="scroll-loading"> </div>
 
                 </div>
             </div> <!-- row -->
 
+            <div id="scroll-loading"> </div>
 
         </div>  <!-- container -->
+        <ul class="pager"> <li> <a href="<?php echo $nextPageUrl ?>">Next &rarr;</a> <li> </ul>
 
 
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
@@ -96,6 +96,7 @@
                         navSelector  	: ".pager",
                         nextSelector 	: ".pager a:last",
                         itemSelector : ".tile",
+                        bufferPx : 80,
 
                         loading : {
                             selector : "#scroll-loading",
