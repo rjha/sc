@@ -29,15 +29,15 @@ namespace com\indigloo\sc\command {
             switch($action) {
                 case UIConstants::LIKE_POST:
                     $bookmarkDao->like($ownerId,$loginId,$name,$itemId,$title);
-                    $message = sprintf("Like for item %s is success.",$title);
+                    $message = sprintf(" Success! Like for item %s done.",$title);
                     break ;
                 case UIConstants::SAVE_POST:
                     $bookmarkDao->favorite($ownerId,$loginId,$name,$itemId,$title);
-                    $message = sprintf("Item %s added to favorites",$title);
+                    $message = sprintf("Success! Item %s added to favorites",$title);
                     break;
                 case UIConstants::REMOVE_POST :
                     $bookmarkDao->unfavorite($loginId,$itemId);
-                    $message = sprintf("Item %s removed from favorites",$title);
+                    $message = sprintf("Success! Item %s removed from favorites",$title);
                     break ;
                 default :
                     break;

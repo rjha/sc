@@ -150,40 +150,74 @@ webgloo.sc.SimplePopup = {
             event.preventDefault();
             webgloo.sc.SimplePopup.close();
         });
+
+        /*
+        $("#popup-mask").click(function () {
+            webgloo.sc.SimplePopup.close();
+        }); */      
+
+       
+
     },
+   
     close : function() {
-        this.addContent('');
+        $("#simple-popup #content").html('');
         $("#simple-popup").hide();
+        $("#popup-mask").hide();
     },
 
     addContent : function(content) {
         this.removeSpinner();
         $("#simple-popup #content").html('');
         $("#simple-popup #content").html(content);
+
+        /* show mask */
+        var maskHeight = $(document).height();
+        var maskWidth = $(window).width();
+     
+        $("#popup-mask").css({'width':maskWidth,'height':maskHeight});
+        $("#popup-mask").show();
+
+        /* show popup */
         $("#simple-popup").show();
     },
+
     addSpinner : function() {
         this.close();
         $("#block-spinner").html('');
-        var content = '<img src="/css/images/ajax_loader.gif" alt="loading ..." />' ;
+        var content = '<img src="/css/images/6RMhx.gif" alt="loading ..." />' ;
         $("#block-spinner").html(content);
+
+        /* show mask */
+        var maskHeight = $(document).height();
+        var maskWidth = $(window).width();
+        $("#popup-mask").css({'width':maskWidth,'height':maskHeight});
+        $("#popup-mask").show();
+
+        /* show spinner */
         $("#block-spinner").show();
     },
+
     removeSpinner : function() {
         $("#block-spinner").html('');
+        $("#popup-mask").hide();
         $("#block-spinner").hide();
 
     },
+
     processJson : function(response,options,dataObj) {
-        console.log("keepOpen option :: " + options.keepOpen);
-        console.log("reload option :: " + options.reload);
 
         switch(response.code) {
             case 200 :
                 //success
-                if(options.keepOpen){
+                if(options.autoCloseInterval > 0 ) {
+                    window.setTimeout(this.close,options.autoCloseInterval);
+                }
+
+                if(options.visible){
                     this.addContent(response.message);
                 }
+
                 if(options.reload){
                     window.location.reload(true);
                 }
@@ -225,7 +259,8 @@ webgloo.sc.SimplePopup = {
         //show spinner
         this.addSpinner();
 
-        options.keepOpen = (typeof options.keepOpen === "undefined") ? true : options.keepOpen;
+        options.visible = (typeof options.visible === "undefined") ? true : options.visible;
+        options.autoCloseInterval = (typeof options.autoCloseInterval === "undefined") ? -1 :  options.autoCloseInterval ;
         options.reload = (typeof options.reload === "undefined") ? false : options.reload;
         options.type = (typeof options.type === "undefined") ? "POST" :  options.type ;
         options.dataType = (typeof options.dataType === "undefined") ? "text" :  options.dataType ;
@@ -267,7 +302,7 @@ webgloo.sc.SimplePopup = {
             webgloo.sc.SimplePopup.post(dataObj,{
                 "dataType" : "text",
                 "reload" : false,
-                "keepOpen" : true});
+                "visible" : true});
 
     }
 }
@@ -307,7 +342,7 @@ webgloo.sc.item = {
     },
     addActions : function() {
         //add like & save callbacks
-        $("a.like-post-link").click(function(event){
+        $("a.like-post-link").live("click",function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -318,10 +353,10 @@ webgloo.sc.item = {
 
             //open popup
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json"});
+            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
         }) ;
 
-        $("a.favorite-post-link").click(function(event){
+        $("a.favorite-post-link").live("click", function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -332,11 +367,11 @@ webgloo.sc.item = {
 
             //open popup
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json"});
+            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
         }) ;
 
         //unfavorite
-        $("a.remove-post-link").click(function(event){
+        $("a.remove-post-link").live("click",function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -350,12 +385,12 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.post(dataObj,{
                 "dataType" : "json",
                 "reload" : true,
-                "keepOpen" : false});
+                "visible" : false});
             //reload page
 
         }) ;
 
-        $("a.follow-user-link").click(function(event){
+        $("a.follow-user-link").live("click",function(event){
             event.preventDefault();
 
             var id = $(this).attr("id");
@@ -372,10 +407,10 @@ webgloo.sc.item = {
 
             //open popup
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json"});
+            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
         }) ;
 
-        $("a.unfollow-user-link").click(function(event){
+        $("a.unfollow-user-link").live("click",function(event){
 
             event.preventDefault();
 
@@ -397,7 +432,7 @@ webgloo.sc.item = {
                 {
                     "dataType" : "json",
                     "reload" : true,
-                    "keepOpen" : false
+                    "visible" : false
                 }
             );
 

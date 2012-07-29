@@ -3,7 +3,8 @@
 <div id="simple-popup">
     <div id="content"> </div>
     <div class="panel-footer">
-        <div class="floatr">press Esc or&nbsp;<a id="simple-popup-close" href="">close&nbsp;<i class="icon-remove"></i></a> </div>
+        <div class="floatr"><span class="feed-text"> Esc or </span>&nbsp;<a id="simple-popup-close" class="btn btn-primary" href="">close&nbsp;</a> </div>
     </div>
 </div> <!-- simple popup -->
+<div id="popup-mask"> </div>
 
