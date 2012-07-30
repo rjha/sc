@@ -1,7 +1,7 @@
 <?php
     $params = array('q' => urlencode(\com\indigloo\Url::current()));
     $shareUrl = \com\indigloo\Url::createUrl('/share/new.php',$params);
-    $askUrl = \com\indigloo\Url::createUrl('/qa/new.php',$params);
+    $externalPageUrl = \com\indigloo\Url::createUrl('/qa/external/image.php',$params);
     $monitorUrl = '' ;
     if(\com\indigloo\sc\auth\Login::isAdmin()) {
         $monitorUrl = '<li><a href="/monitor/index.php">Monitor App</a></li>';
@@ -149,17 +149,18 @@
 <div id="popup-mask"> </div>
 
 <div id="nav-share">
-    <a href="#">
+<a href="<?php echo $shareUrl ?>">
         <div class="stack">
-            <div class="header">Upload image</div>
-            <p> description 1 </p>
+            <div class="header">Upload from computer</div>
+            <p>&nbsp;</p>
         </div>
     </a>
-    <a href="#">
+    <a href="<?php echo $externalPageUrl ?>">
         <div class="stack">
-            <div class="header">From webpage</div>
-            <p> description 2 </p>
+            <div class="header">Share a webpage</div>
+            <p> select this option if you want to share images from a webpage </p>
         </div>
     </a>
 </div> <!-- share-popup for navigation -->
+
 

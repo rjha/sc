@@ -2,9 +2,6 @@
 // not logged in - so share/ask click should take you back to share/ask
 // after login is done.
 
-$params = array();
-$shareUrl = \com\indigloo\Url::createUrl('/share/new.php',$params);
-$askUrl = \com\indigloo\Url::createUrl('/qa/new.php',$params);
 
 ?>
 
@@ -136,16 +133,16 @@ $askUrl = \com\indigloo\Url::createUrl('/qa/new.php',$params);
 <div id="popup-mask"> </div>
 
 <div id="nav-share">
-    <a href="#">
+    <a href="/share/new.php">
         <div class="stack">
-            <div class="header">Upload image</div>
-            <p> description 1 </p>
+            <div class="header">Upload from computer</div>
+            <p>&nbsp;</p>
         </div>
     </a>
-    <a href="#">
+    <a href="/qa/external/image.php">
         <div class="stack">
-            <div class="header">From webpage</div>
-            <p> description 2 </p>
+            <div class="header">Share a webpage</div>
+            <p> select this option if you want to share images from a webpage </p>
         </div>
     </a>
 </div> <!-- share-popup for navigation -->
