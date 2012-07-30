@@ -87,11 +87,11 @@ $askUrl = \com\indigloo\Url::createUrl('/qa/new.php',$params);
                     <ul class="dropdown-menu">
                         <li><a href="/recent">New items</a></li>
                         <li><a href="/editor/picks">Editor's pick</a></li>
-                        <li><a id="nav-group-open" href="">Popular Groups</a></li>
+                        <li><a id="nav-open-group" href="">Popular Groups</a></li>
                         <li><a href="/surprise/me">Surprise me!</a></li>
                     </ul>
                 </li> <!-- more -->
-                <li class="active"> <a href="<?php echo $shareUrl; ?>">#&nbsp;Share</a></li>
+                <li class="active"> <a id="nav-open-share" href="">#&nbsp;Share</a></li>
                 </ul>
 
         </div>
@@ -121,6 +121,35 @@ $askUrl = \com\indigloo\Url::createUrl('/qa/new.php',$params);
 
     </div> <!-- row3 -->
 
-</div>
+</div> <!-- toolbar -->
+
+
+
+
+<div id="block-spinner"> </div>
+<div id="simple-popup">
+    <div id="content"> </div>
+    <div class="panel-footer">
+        <div class="floatr"><span class="feed-text"> Esc or </span>&nbsp;<a id="simple-popup-close" class="btn btn-primary" href="">close&nbsp;</a> </div>
+    </div>
+</div> <!-- simple popup -->
+<div id="popup-mask"> </div>
+
+<div id="nav-share">
+    <a href="#">
+        <div class="stack">
+            <div class="header">Upload image</div>
+            <p> description 1 </p>
+        </div>
+    </a>
+    <a href="#">
+        <div class="stack">
+            <div class="header">From webpage</div>
+            <p> description 2 </p>
+        </div>
+    </a>
+</div> <!-- share-popup for navigation -->
+
+
 
 

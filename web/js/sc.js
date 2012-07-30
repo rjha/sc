@@ -128,12 +128,21 @@ webgloo.sc.home = {
     },
     addNavGroups : function() {
         //group browser
-        $("a#nav-group-open").click(function(event) {
+        $("a#nav-open-group").click(function(event) {
             event.preventDefault();
             $targetUrl= "/group/data/featured.php";
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.load($targetUrl);
         });
+
+        $("a#nav-open-share").click(function(event) {
+            event.preventDefault();
+            //get content of nav-share
+            var content = $("#nav-share").html();
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.show(content);
+        });
+
     }
 }
 
@@ -151,13 +160,6 @@ webgloo.sc.SimplePopup = {
             webgloo.sc.SimplePopup.close();
         });
 
-        /*
-        $("#popup-mask").click(function () {
-            webgloo.sc.SimplePopup.close();
-        }); */      
-
-       
-
     },
    
     close : function() {
@@ -166,7 +168,7 @@ webgloo.sc.SimplePopup = {
         $("#popup-mask").hide();
     },
 
-    addContent : function(content) {
+    show : function(content) {
         this.removeSpinner();
         $("#simple-popup #content").html('');
         $("#simple-popup #content").html(content);
@@ -185,7 +187,7 @@ webgloo.sc.SimplePopup = {
     addSpinner : function() {
         this.close();
         $("#block-spinner").html('');
-        var content = '<img src="/css/images/6RMhx.gif" alt="loading ..." />' ;
+        var content = '<div> Please wait...</div> <div> <img src="/css/images/6RMhx.gif" alt="loading ..." /> </div>' ;
         $("#block-spinner").html(content);
 
         /* show mask */
@@ -215,7 +217,7 @@ webgloo.sc.SimplePopup = {
                 }
 
                 if(options.visible){
-                    this.addContent(response.message);
+                    this.show(response.message);
                 }
 
                 if(options.reload){
@@ -246,10 +248,10 @@ webgloo.sc.SimplePopup = {
                 break;
             case 500:
                 //error - keep open
-                this.addContent(response.message);
+                this.show(response.message);
                 break;
             default:
-                this.addContent(response.message);
+                this.show(response.message);
                 break;
         }
     },
@@ -277,7 +279,7 @@ webgloo.sc.SimplePopup = {
             error: function(XMLHttpRequest, response){
                 //remove spinner
                 webgloo.sc.SimplePopup.removeSpinner();
-                webgloo.sc.SimplePopup.addContent(response);
+                webgloo.sc.SimplePopup.show(response);
             },
             //server script errors are reported inside success callback
             success: function(response){
@@ -287,7 +289,7 @@ webgloo.sc.SimplePopup = {
                         webgloo.sc.SimplePopup.processJson(response,options,dataObj);
                         break;
                      default:
-                        webgloo.sc.SimplePopup.addContent(response);
+                        webgloo.sc.SimplePopup.show(response);
                         break;
                 }
 
