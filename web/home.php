@@ -19,7 +19,7 @@
 
     </head>
 
-     <body class="dark-body2">
+     <body>
         <div class="container">
             <div class="row">
                 <div class="span12">
