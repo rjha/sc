@@ -33,12 +33,15 @@
         <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?> 
 
         <style>
-            #fetch-link {width:80px; height:32px; margin-bottom:10px;}
-            #next-message { background:whiteSmoke ; }
+            #step1-container { margin-top:10px; padding:10px; }
+            #step2-container { margin-top:10px; padding:10px; border-left:1px solid #f7f7f7;}
+            #link-box {width:280px; }
+            #fetch-button {width:60px; height:28px; margin-bottom:10px;}
+            #next-button {width:60px; height:28px; margin-bottom:10px;}
+
+            #stack { margin-top:40px; }
             /* override default stack image padding */
             div .stackImage { padding: 1px; }
-            /* override default form-table margin */
-            .form-table { margin-bottom : 5px; }
         </style>
 
         <script type="text/javascript">
@@ -83,9 +86,10 @@
 
                     $('.stackImage .options').hide();
                     $('#stack').hide();
-                    $('#next-message').hide();
+                    //@debug
+                    $('#step2-container').hide();
 
-                    $("#fetch-link").live("click", function(event){
+                    $("#fetch-button").live("click", function(event){
                         event.preventDefault();
                         var link = jQuery.trim($("#link-box").val());
                         if( link == '' ){
@@ -114,8 +118,8 @@
 
                         //initialize
                         webgloo.sc.ImageSelector.clearMessage();
-                        webgloo.sc.ImageSelector.addSpinner();
                         webgloo.sc.ImageSelector.num_uploaded = 0  ;
+
                         var counter = 1 ;
 
                         if(webgloo.sc.ImageSelector.debug) {
@@ -215,12 +219,26 @@
              
 
                 addSpinner : function() {
-                    var buffer = '<img src="/css/images/ajax_loader.gif" alt="loading ..." />' ;
-                    $("#ajax-spinner").html(buffer);
+                    $("#block-spinner").html('');
+                    var content = '<div> Please wait...</div> ' 
+                        + '<div> <img src="/css/images/6RMhx.gif" alt="loading ..." /> </div>' ;
+                    $("#block-spinner").html(content);
+
+                    /* show mask */
+                    var maskHeight = $(document).height();
+                    var maskWidth = $(window).width();
+                    $("#popup-mask").css({'width':maskWidth,'height':maskHeight});
+                    $("#popup-mask").show();
+
+                    /* show spinner */
+                    $("#block-spinner").show();
+
                 },
 
                 removeSpinner: function() {
-                    $("#ajax-spinner").html('');
+                    $("#block-spinner").html('');
+                    $("#popup-mask").hide();
+                    $("#block-spinner").hide();
                 },
 
                 appendMessage : function(message,options) {
@@ -268,7 +286,7 @@
                     }
 
                     if(webgloo.sc.ImageSelector.num_added > 0 ) {
-                        $("#next-message").fadeIn("slow");
+                        $("#step2-container").fadeIn("slow");
                     }else {
                         var message = "Error: No suitable images found";
                         webgloo.sc.ImageSelector.showMessage(message, {"css":"color-red"});
@@ -308,7 +326,7 @@
                                 thisonerror();
                             }
 
-                            if((this.width > 400) && (this.height > 400 )) {
+                            if((this.width > 100) && (this.height > 100 )) {
                                 webgloo.sc.ImageSelector.addImage(this.src);
                             }
 
@@ -397,7 +415,6 @@
                     webgloo.sc.ImageSelector.num_uploaded++ ;
 
                     if(counter == webgloo.sc.ImageSelector.num_selected) {
-                        webgloo.sc.ImageSelector.removeSpinner();
                         //Actual upload?
                         if(webgloo.sc.ImageSelector.num_uploaded > 0 ) {
                             //stringify images
@@ -413,11 +430,11 @@
 
                 upload : function(counter,imageUrl) {
                     webgloo.sc.ImageSelector.images = new Array();
+
                     var message = " uploading image {upload}/{total} ... " ;
                     message = message.supplant({"upload":counter, "total":webgloo.sc.ImageSelector.num_selected});
-
                     webgloo.sc.ImageSelector.appendMessage(message,{});
-                    $("#stack .images").html('');
+                    //$("#stack .images").html('');
 
                     var options = {"css":"color-red"} ;
                     var prefix = "image " + counter + " : " ;
@@ -445,8 +462,6 @@
                                 console.log("upload response for image :: " + imageUrl);
                                 console.log(response);
                             }
-
-                            webgloo.sc.ImageSelector.removeSpinner();
 
                             switch(response.code) {
                                 case 401 :
@@ -478,67 +493,60 @@
     </head>
 
     <body>
-        <div class="container">
+        <div class="container mh600">
             <div class="row">
                 <div class="span12">
                     <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
                 </div> 
-                
             </div>
             
+            <div class="hr"> </div>
+            <?php FormMessage::render(); ?>
+
             <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
+                <div class="span6">
+                    <div id="step1-container">
+                        <span class="badge badge-warning">Step1</span>
+                        Type webpage URL and click fetch ( or press Enter ) 
+                        <br>
+                        <br>
+                        <input id="link-box" name="link" value="" />
+                        <button id="fetch-button" type="button" class="btn" value="Fetch">Fetch</button> 
+                    </div>
+                    
+                </div> <!-- span -->
+                <div class="span6">
+                    <div id="step2-container">
+                        <p>
+                            <span class="badge badge-warning">Step2</span>
+                            Place your mouse over an image to select it. 
+                            Please click Next button after selecting images.
+                        </p>
+                        <div style="margin-left:120px;">
+                            <button id="next-button" type="button" class="btn" value="next">Next&nbsp;</button> 
+                        </div>
+                        <form  id="web-form1"  name="web-form1" action="/qa/external/router.php"  method="POST">
+                            <input type="hidden" name="images_json" />
+                            <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                            <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
+                        </form>
+                    </div> <!-- step2-container -->
+
                 </div>
-            </div>
+
+            </div><!-- row:1 -->
             
+            <div class="hr"> </div>
+            <div id="ajax-message" class="ml20"> </div>
+
             <div class="row">
-                <div class="span12">
-                    <div class="hr"> </div>
-                    <?php FormMessage::render(); ?>
-
-                    <div class="row">
-                        <div class="span7">
-                            <table class="form-table">
-                                <tr>
-                                <td>
-                                    <label>Type webpage URL and click fetch ( or press Enter ) </label>
-                                    <input id="link-box" name="link" value="" />
-                                    <button id="fetch-link" type="button" class="btn" value="Fetch">Fetch</button> 
-                                </td>
-                                </tr>
-                                </table>
-                                <div id="ajax-spinner" class="ml20 p10"> </div>
-                                <div id="ajax-message" class="ml20 p10"> </div>
-                            </div> <!-- 1:span7 -->
-
-                            <div class="span5">
-                                <div id="next-message" class="p20">
-                                    <p> Place your mouse over an image to select it. Please click Next button after selecting images. </p>
-                                    <form  id="web-form1"  name="web-form1" action="/qa/external/router.php"  method="POST">
-                                        <button id="next-button" class="btn btn-inverse" type="button" name="next" value="Next" onclick="this.setAttribute('value','Next');" ><span>Next&nbsp;&rarr;</span></button> 
-
-                                        <input type="hidden" name="images_json" />
-                                        <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
-                                        <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
-                                    </form>
-
-                                </div>
-                            </div> <!-- 1:span5 -->
-                        </div> <!-- row:1 -->
-                        <div class="row">
-                            <div class="hr"> </div>
-                            <div id="stack"> 
-                                <div class="images p10"> </div>
-                            </div> <!-- stack -->
-                        </div> <!-- row:2 -->
-                   
-                </div> <!-- span12 -->
-                
-            </div> <!-- row -->
-            
+                <div id="stack"> 
+                    <div class="images p10"> </div>
+                </div>
+            </div> <!-- row:2 -->
+           
         </div> <!-- container -->   
-                      
+              
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
         </div>
