@@ -78,6 +78,9 @@ To see actual changes just use $git diff branch1..branch2
 To see number of changed lines
 git diff  --stat --color master..image-extractor
 
+#see diff of a file between two branches
+    git diff master:web/qa/external/image.php ml2:web/qa/external/image.php 
+
 
 remove stale remote branch reference from local index?
 ------------------------------------------------------
