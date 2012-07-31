@@ -21,7 +21,7 @@
 <html>
 
     <head>
-        <title> Upload webpage images</title>
+        <title> share a  webpage </title>
 
         <meta charset="utf-8">
 
@@ -29,6 +29,7 @@
         <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
 
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
         <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?> 
 
         <style>
@@ -47,9 +48,11 @@
 
                 bucket : {},
                 images : [],
+                num_total: 0 ,
                 num_added : 0 ,
-                num_select : 0 ,
-                num_upload : 0 ,
+                num_processed : 0 ,
+                num_selected : 0 ,
+                num_uploaded : 0 ,
                 debug : false ,
 
                 extractEndpoint : "/qa/ajax/extract-image.php",
@@ -63,6 +66,18 @@
                 addLink : '<a id="{id}" class="btn btn-mini add-image" href="">Select</a>' ,
                 removeLink : '<i class="icon-ok"></i>&nbsp;&nbsp;'  
                     + '<a id="{id}" class="btn btn-mini remove-image" href="">Remove</a>' ,
+
+                init:function() {
+                    //reset counters and buckets
+                    webgloo.sc.ImageSelector.num_total = 0 ;
+                    webgloo.sc.ImageSelector.num_added = 0 ;
+                    webgloo.sc.ImageSelector.num_processed = 0 ;
+                    webgloo.sc.ImageSelector.num_selected = 0 ;
+                    webgloo.sc.ImageSelector.num_uploaded = 0 ;
+                    webgloo.sc.ImageSelector.bucket = {} ;
+                    webgloo.sc.ImageSelector.images = [] ;
+                    webgloo.sc.ImageSelector.clearMessage();
+                },
 
                 attachEvents : function() {
 
@@ -100,14 +115,14 @@
                         //initialize
                         webgloo.sc.ImageSelector.clearMessage();
                         webgloo.sc.ImageSelector.addSpinner();
-                        webgloo.sc.ImageSelector.num_upload = 0  ;
+                        webgloo.sc.ImageSelector.num_uploaded = 0  ;
                         var counter = 1 ;
 
                         if(webgloo.sc.ImageSelector.debug) {
-                            console.log("num_selected :: " + webgloo.sc.ImageSelector.num_select);
+                            console.log("num_selected :: " + webgloo.sc.ImageSelector.num_selected);
                         }
 
-                        if(webgloo.sc.ImageSelector.num_select == 0 ) {
+                        if(webgloo.sc.ImageSelector.num_selected == 0 ) {
                             webgloo.sc.ImageSelector.showMessage("Please select an image.",{"css":"color-red"});
                             return false;
 
@@ -174,7 +189,7 @@
                         //change selected state for imageObj 
                         imageObj.selected = true ;
                         webgloo.sc.ImageSelector.bucket.realId = imageObj ;
-                        webgloo.sc.ImageSelector.num_select++ ;
+                        webgloo.sc.ImageSelector.num_selected++ ;
 
                         // change display
                         var buffer = webgloo.sc.ImageSelector.removeLink.supplant({"id":realId } );
@@ -191,28 +206,13 @@
                         //change selected state for imageObj 
                         imageObj.selected = false ;
                         webgloo.sc.ImageSelector.bucket.realId = imageObj ;
-                        webgloo.sc.ImageSelector.num_select-- ;
+                        webgloo.sc.ImageSelector.num_selected-- ;
                         $(imageId).find('.options').hide();
                      });
 
                 },
                 
-                addImage : function(image) {
-
-                    var index = webgloo.sc.ImageSelector.num_added ;
-
-                    if(webgloo.sc.ImageSelector.debug) {
-                        console.log("Adding image : " + index + " : " + image);
-                    }
-
-                    var buffer = this.imageDiv.supplant({"srcImage":image, "id":index } );
-                    //logo, small icons etc. are first images in a page
-                    // what we are interested in will only come later.
-                    $("div#stack .images").prepend(buffer);
-
-                    this.bucket[index] = { "id":index, "srcImage": image, "selected" : false} ;
-                    webgloo.sc.ImageSelector.num_added++ ;
-                },
+             
 
                 addSpinner : function() {
                     var buffer = '<img src="/css/images/ajax_loader.gif" alt="loading ..." />' ;
@@ -254,36 +254,95 @@
 					}
 
 				},
+
 				makeLoadImage : function(img) {
 					return function() {
 						webgloo.sc.ImageSelector.loadImage(img);
 					};
 				},
 
+                showNextButton : function() {
+
+                    if(webgloo.sc.ImageSelector.debug) {
+                        console.log("show_next_button with num_added= " + webgloo.sc.ImageSelector.num_added); 
+                    }
+
+                    if(webgloo.sc.ImageSelector.num_added > 0 ) {
+                        $("#next-message").fadeIn("slow");
+                    }else {
+                        var message = "Error: No suitable images found";
+                        webgloo.sc.ImageSelector.showMessage(message, {"css":"color-red"});
+                    }
+
+                },
+
+                addImage : function(image) {
+
+                    var index = webgloo.sc.ImageSelector.num_added ;
+
+                    if(webgloo.sc.ImageSelector.debug) {
+                        console.log("Adding image : " + index + " : " + image);
+                    }
+
+                    var buffer = this.imageDiv.supplant({"srcImage":image, "id":index } );
+                    //logo, small icons etc. are first images in a page
+                    // what we are interested in will only come later.
+                    $("div#stack .images").prepend(buffer);
+
+                    this.bucket[index] = { "id":index, "srcImage": image, "selected" : false} ;
+                    webgloo.sc.ImageSelector.num_added++ ;
+                },
+
                 processUrlFetch : function(response) {
                     images = response.images ;
+                    webgloo.sc.ImageSelector.num_total = images.length;
 
                     for(i = 0 ; i < images.length ; i++) {
 						var img = new Image();
-						img.onload = webgloo.sc.ImageSelector.makeLoadImage(img) ;
+                        
+                        // @warning closure inside a loop
+                        // do not use outer function variables.
+                        img.onload = function() {
+                            webgloo.sc.ImageSelector.num_processed++ ;
+                            if(this.width == 0 || this.height == 0 ) {
+                                thisonerror();
+                            }
+
+                            if((this.width > 400) && (this.height > 400 )) {
+                                webgloo.sc.ImageSelector.addImage(this.src);
+                            }
+
+                            if(webgloo.sc.ImageSelector.num_processed == webgloo.sc.ImageSelector.num_total) {
+                                webgloo.sc.ImageSelector.showNextButton();
+                            }
+                        }
+
+                        img.onerror = function() {
+                            webgloo.sc.ImageSelector.num_processed++ ;
+                            if(webgloo.sc.ImageSelector.num_processed == webgloo.sc.ImageSelector.num_total) {
+                                webgloo.sc.ImageSelector.showNextButton();
+                            }
+                        }
+
+                        img.onabort = function() {
+                            webgloo.sc.ImageSelector.num_processed++ ;
+                            if(webgloo.sc.ImageSelector.num_processed == webgloo.sc.ImageSelector.num_total) {
+                                webgloo.sc.ImageSelector.showNextButton();
+                            }
+                        }
+
                         img.src = images[i] ;
                     }
 
                     $("#stack").fadeIn("slow");
-                    $("#next-message").fadeIn("slow");
 
                 },
 
                 fetch : function(target) {
-                    //initialize
-                    webgloo.sc.ImageSelector.num_added = 0 ;
-                    webgloo.sc.ImageSelector.num_select = 0 ;
-                    webgloo.sc.ImageSelector.num_upload = 0 ;
-                    webgloo.sc.ImageSelector.bucket = {} ;
-                    webgloo.sc.ImageSelector.images = [] ;
-                    webgloo.sc.ImageSelector.clearMessage();
 
+                    webgloo.sc.ImageSelector.init();
                     webgloo.sc.ImageSelector.addSpinner();
+
                     $("#stack").fadeOut("slow");
                     $("#stack .images").html('');
 
@@ -308,7 +367,7 @@
                         // ajax success callback
                         success: function(response){
                             if(webgloo.sc.ImageSelector.debug) {
-                                console.log("fetch : server response :: ") ;
+                                console.log("server response for image fetch :: ") ;
                                 console.log(response);
                             }
 
@@ -335,12 +394,12 @@
                 processImageUpload : function(counter,response) {
                     mediaVO = response.mediaVO ;
                     webgloo.sc.ImageSelector.images.push(mediaVO);
-                    webgloo.sc.ImageSelector.num_upload++ ;
+                    webgloo.sc.ImageSelector.num_uploaded++ ;
 
-                    if(counter == webgloo.sc.ImageSelector.num_select) {
+                    if(counter == webgloo.sc.ImageSelector.num_selected) {
                         webgloo.sc.ImageSelector.removeSpinner();
                         //Actual upload?
-                        if(webgloo.sc.ImageSelector.num_upload > 0 ) {
+                        if(webgloo.sc.ImageSelector.num_uploaded > 0 ) {
                             //stringify images
                             var strImagesJson =  JSON.stringify(webgloo.sc.ImageSelector.images);
                             //bind to form
@@ -355,7 +414,7 @@
                 upload : function(counter,imageUrl) {
                     webgloo.sc.ImageSelector.images = new Array();
                     var message = " uploading image {upload}/{total} ... " ;
-                    message = message.supplant({"upload":counter, "total":webgloo.sc.ImageSelector.num_select});
+                    message = message.supplant({"upload":counter, "total":webgloo.sc.ImageSelector.num_selected});
 
                     webgloo.sc.ImageSelector.appendMessage(message,{});
                     $("#stack .images").html('');
@@ -435,7 +494,6 @@
             
             <div class="row">
                 <div class="span12">
-                    <h2> upload images from a webpage  </h2>
                     <div class="hr"> </div>
                     <?php FormMessage::render(); ?>
 
