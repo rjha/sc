@@ -122,7 +122,7 @@
     <div class="row p10 mb20">
         <div class="span6 offset2">
         <span class="comment-text"> Discover and share with 3mik </span>
-        &nbsp;<a class="btn nav-learn-more" href="/site/about.php">Learn more&nbsp;&raquo;</a>
+        &nbsp;<a class="nav-learn-more" href="/site/about.php"><span class="badge">Learn more&nbsp;&raquo;</span></a>
 
         </div>
         <div style="float:right;padding-bottom:5px;">
