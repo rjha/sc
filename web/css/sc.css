@@ -209,6 +209,8 @@
         margin-bottom: 10px;
         width: 100%;
         clear: both;
+        border-bottom:1px solid #f7f7f7 ;
+        float:left ;
     }
 
      .widget .options {
@@ -229,11 +231,11 @@
     }
 
     .widget .options .links a {
-        color : #232323;
+        color : #333;
     }
 
     .widget .photo {
-        padding: 10px;
+        padding: 13px;
     }
 
     /* Any photo inside a widget can only go till 90%  */
@@ -244,6 +246,7 @@
     .widget .photo img {
         max-width:90%;
         border:2px solid #d5d5d5;
+        position : relative ;
     }
 
     .widget-bg { background-color: #FEFDF1 ;}
