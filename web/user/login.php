@@ -91,7 +91,7 @@
         <div class="container mh800">
             <div class="row">
                 <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
+                    <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
                 </div>
             </div>
 
