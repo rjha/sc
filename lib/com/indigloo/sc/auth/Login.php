@@ -99,15 +99,16 @@ namespace com\indigloo\sc\auth {
                 $response = $facade->execute($endPoint, $params);
                 $message = $response["message"] ;
 
-                if($response["code"] != 200) {
-                    //error happened
+                if($response["code"] == 200) {
+                    // success
+                    // set overlay message
+                    $gWeb->store("global.overlay.message",$message);
+
+                } else {
                     $message = sprintf("session action response code : %d",$response["code"]);
                     throw new Exception($message) ;
                 }
 
-                // go to session action page
-                $gotoUrl = "/site/go-session-action.php?q=".$qUrl."&g_message=".base64_encode($message);
-                header("Location: ".$gotoUrl);
 
             } catch(\Exception $ex) {
                 $message = sprintf("session action %s failed \n ",$action);
