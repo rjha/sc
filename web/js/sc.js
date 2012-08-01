@@ -689,6 +689,7 @@ webgloo.sc.ImageSelector = {
     add_counter : 0 ,
     upload_counter : 0 ,
     debug : false ,
+    description: '' ,
 
     extractEndpoint : "/qa/ajax/extract-image.php",
     uploadEndpoint : "/upload/image.php" ,
@@ -768,7 +769,7 @@ webgloo.sc.ImageSelector = {
                 var message = tmpl.supplant({"total" : webgloo.sc.ImageSelector.num_selected}); 
                 webgloo.sc.ImageSelector.appendMessage(message,{});
 
-                var spinner = '<div> <img src="/css/images/ajax_loader.gif" alt="spinner"/></div>' ;
+                var spinner = '<div> <img src="/css/images/fb_loader.gif" alt="spinner"/></div>' ;
                 webgloo.sc.ImageSelector.appendMessage(spinner,{});
 
                 $("#stack .images").find('.stackImage').each(function(index) {
@@ -965,6 +966,7 @@ webgloo.sc.ImageSelector = {
     processUrlFetch : function(response) {
         images = response.images ;
         webgloo.sc.ImageSelector.num_total = images.length;
+        webgloo.sc.ImageSelector.description = response.description;
 
         var tmpl = "Total {total} images found" ;
         var message = tmpl.supplant({"total" : webgloo.sc.ImageSelector.num_total}) ;
@@ -1015,7 +1017,7 @@ webgloo.sc.ImageSelector = {
 
         webgloo.sc.ImageSelector.init();
         var message = "fetching images from webpage..." ;
-        var spinner = '<div> <img src="/css/images/ajax_loader.gif" alt="spinner"/></div>' ;
+        var spinner = '<div> <img src="/css/images/fb_loader.gif" alt="spinner"/></div>' ;
 
         webgloo.sc.ImageSelector.clearMessage();
         webgloo.sc.ImageSelector.appendMessage(message,{});
@@ -1109,6 +1111,7 @@ webgloo.sc.ImageSelector = {
                 //bind to form
                 frm = document.forms["web-form1"];
                 frm.images_json.value = strImagesJson ;
+                frm.description.value = webgloo.sc.ImageSelector.description ;
                 $('#web-form1').submit();
             }
 
