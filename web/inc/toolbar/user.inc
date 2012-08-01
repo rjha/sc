@@ -1,4 +1,6 @@
 <?php
+
+    $gWeb = \com\indigloo\core\Web::getInstance();
     $params = array('q' => urlencode(\com\indigloo\Url::current()));
     $shareUrl = \com\indigloo\Url::createUrl('/share/new.php',$params);
     $externalPageUrl = \com\indigloo\Url::createUrl('/qa/external/image.php',$params);
@@ -8,6 +10,10 @@
     }
 
     $pubUserId = \com\indigloo\sc\util\PseudoId::encode($gSessionLogin->id) ;
+
+    $gomInSession = $gWeb->find("global.overlay.message",true);
+    $goverlay = \com\indigloo\sc\html\Site::getOverlay($gomInSession);
+
 
 ?>
 
@@ -133,6 +139,9 @@
         </div> <!-- social buttons -->
 
     </div> <!-- row3 -->
+    <div class="row">
+        <?php if(!empty($goverlay)) { echo $goverlay ; } ?>
+    </div>
 
 </div> <!-- site toolbar -->
 
