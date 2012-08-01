@@ -164,7 +164,18 @@ namespace com\indigloo\sc\html {
             $voptions = array("abbreviate" => true , "imageWidth" => 100 );
             $view = self::createPostView($postDBRow,$voptions);
 
-            $template = ($view->hasImage) ? '/fragments/widget/image.tmpl' : '/fragments/widget/text.tmpl' ;
+            if($view->hasImage) {
+                $template = '/fragments/widget/image.tmpl' ;
+                //Add thumbnail width and height
+                $td = Util::foldX($view->width,$view->height,100);
+                $view->twidth = $td["width"];
+                $view->theight = $td["height"];
+
+            } else {
+                $template = '/fragments/widget/text.tmpl' ;
+            }
+
+
             if(is_null($options)) {
                 $options = UIConstants::WIDGET_EDIT | UIConstants::WIDGET_DELETE ;
             }
@@ -189,7 +200,17 @@ namespace com\indigloo\sc\html {
                 $options = UIConstants::WIDGET_ALL ;
             }
 
-            $template = ($view->hasImage) ? '/fragments/widget/admin/image.tmpl' : '/fragments/widget/admin/text.tmpl' ;
+             if($view->hasImage) {
+                $template = '/fragments/widget/admin/image.tmpl' ;
+                //Add thumbnail width and height
+                $td = Util::foldX($view->width,$view->height,100);
+                $view->twidth = $td["width"];
+                $view->theight = $td["height"];
+
+            } else {
+                $template = '/fragments/widget/admin/text.tmpl' ;
+            }
+
             $params = array('id' => $view->itemId, 'q' => Url::current());
             $view->editUrl = Url::createUrl('/qa/edit.php',$params);
             $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
@@ -245,7 +266,7 @@ namespace com\indigloo\sc\html {
                 $view->hasImage = true ;
                 $image = $images[0] ;
                 $imgv = self::convertImageJsonObj($image);
-                $view->srcImage = $imgv["thumbnail"];
+                $view->thumbnail = $imgv["thumbnail"];
                 $view->height = $imgv["height"];
                 $view->width = $imgv["width"];
             }
