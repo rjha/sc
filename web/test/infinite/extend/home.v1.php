@@ -244,8 +244,7 @@
 
                 //Add item toolbar actions
                 webgloo.sc.item.addActions();
-                webgloo.sc.home.addNavGroups();
-
+                webgloo.sc.toolbar.add();
 
             });
 

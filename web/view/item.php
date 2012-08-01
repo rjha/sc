@@ -58,7 +58,7 @@
                     errorLabelContainer: $("#web-form1 div.error")
                 });
 
-                webgloo.sc.home.addNavGroups();
+                webgloo.sc.toolbar.add();
                 webgloo.sc.home.addSmallTiles();
                 webgloo.sc.item.addActions();
 

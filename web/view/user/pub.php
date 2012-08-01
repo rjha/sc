@@ -20,7 +20,7 @@
             /* column width = css width + margin */
             $(document).ready(function(){
                 webgloo.sc.home.addTiles();
-                webgloo.sc.home.addNavGroups();
+                webgloo.sc.toolbar.add();
                 webgloo.sc.item.addActions();
             });
         </script>

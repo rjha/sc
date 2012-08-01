@@ -21,7 +21,7 @@
             /* column width = css width + margin */
             $(document).ready(function(){
                 webgloo.sc.home.addTiles();
-                webgloo.sc.home.addNavGroups();
+                webgloo.sc.toolbar.add();
             });
         </script>
 

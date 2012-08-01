@@ -23,7 +23,7 @@
         <script type="text/javascript">
             $(document).ready(function(){
                 webgloo.sc.home.addTiles();
-                webgloo.sc.home.addNavGroups();
+                webgloo.sc.toolbar.add();
            });
         </script>
         
