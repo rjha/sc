@@ -41,11 +41,12 @@ if (!window.JSON) {
 }
 
 /*
- * base64 encoding in javascript *
+ * Base64 encoding in javascript *
  * @see http://my.opera.com/Lex1/blog/fast-base64-encoding-and-test-results
  * @see https://github.com/operasoftware/
  *
  */
+
 function encodeBase64(str){
 	var chr1, chr2, chr3, rez = '', arr = [], i = 0, j = 0, code = 0;
 	var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='.split('');
@@ -84,7 +85,6 @@ function encodeBase64(str){
 	return rez;
 };
 
-
 /* + namepsaces */
 webgloo = window.webgloo || {};
 webgloo.sc = webgloo.sc || {};
@@ -98,6 +98,38 @@ webgloo.sc.util = {
             $(counterId).text(current + "/" + max);
         });
    }
+}
+
+webgloo.sc.toolbar = {
+    add : function() {
+        window.setTimeout(webgloo.sc.toolbar.closeOverlay,8000);
+        //group browser
+        $("a#nav-open-group").click(function(event) {
+            event.preventDefault();
+            $targetUrl= "/group/data/featured.php";
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.load($targetUrl);
+        });
+
+        //share popup
+        $("a#nav-open-share").click(function(event) {
+            event.preventDefault();
+            //get content of nav-share
+            var content = $("#nav-share").html();
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.show(content);
+        });
+
+        $("a#close-overlay").click(function(event) {
+            event.preventDefault();
+            $("#overlay-message").hide();
+        });
+    },
+
+    closeOverlay : function() {
+        $("#overlay-message").hide();
+    }
+
 }
 
 webgloo.sc.home = {
@@ -118,6 +150,7 @@ webgloo.sc.home = {
         webgloo.sc.item.addActions();
 
     },
+
     addSmallTiles : function() {
         var $container = $('#tiles');
         $container.imagesLoaded(function(){
@@ -126,24 +159,7 @@ webgloo.sc.home = {
             });
         });
     },
-    addNavGroups : function() {
-        //group browser
-        $("a#nav-open-group").click(function(event) {
-            event.preventDefault();
-            $targetUrl= "/group/data/featured.php";
-            webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.load($targetUrl);
-        });
 
-        $("a#nav-open-share").click(function(event) {
-            event.preventDefault();
-            //get content of nav-share
-            var content = $("#nav-share").html();
-            webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.show(content);
-        });
-
-    }
 }
 
 /* +simple popup object */
@@ -187,7 +203,8 @@ webgloo.sc.SimplePopup = {
     addSpinner : function() {
         this.close();
         $("#block-spinner").html('');
-        var content = '<div> Please wait...</div> <div> <img src="/css/images/6RMhx.gif" alt="loading ..." /> </div>' ;
+        var content = '<div> Please wait...</div> ' 
+            + '<div> <img src="/css/images/round_loader.gif" alt="loading ..." /> </div>' ;
         $("#block-spinner").html(content);
 
         /* show mask */
@@ -207,6 +224,12 @@ webgloo.sc.SimplePopup = {
 
     },
 
+    redirect : function () {
+        webgloo.sc.SimplePopup.removeSpinner();
+        webgloo.sc.SimplePopup.close();
+        window.location.replace(webgloo.sc.SimplePopup.gotoUrl);
+    },
+
     processJson : function(response,options,dataObj) {
 
         switch(response.code) {
@@ -224,7 +247,7 @@ webgloo.sc.SimplePopup = {
                     window.location.reload(true);
                 }
 
-                break;
+            break;
 
             case 401:
                 // authentication failure
@@ -242,19 +265,29 @@ webgloo.sc.SimplePopup = {
                 g_action_data =  encodeBase64(JSON.stringify(dataObj));
                 //encode for use in URL query string
                 qUrl = encodeURIComponent(window.location.href);
-                gotoUrl = '/user/login.php?q='+qUrl + '&g_session_action=' + g_action_data;
+                webgloo.sc.SimplePopup.gotoUrl = '/user/login.php?q=' 
+                    +qUrl + '&g_session_action=' + g_action_data; 
 
-                window.location.replace(gotoUrl);
-                break;
+                //change spinner message
+                var message = '<div> Redirecting to login page... </div> ' + 
+                    '<div> <img src="/css/images/round_loader.gif" alt="loader" /> </div>' ;
+
+                $("#block-spinner").html(message);
+                window.setTimeout(this.redirect,3000);
+
+            break;
+
             case 500:
                 //error - keep open
                 this.show(response.message);
-                break;
+            break;
+
             default:
                 this.show(response.message);
-                break;
+            break;
         }
     },
+
     post:function (dataObj,options) {
 
         //@todo deal with undefined or NULL options
@@ -278,24 +311,25 @@ webgloo.sc.SimplePopup = {
             //js errors callback
             error: function(XMLHttpRequest, response){
                 //remove spinner
-                webgloo.sc.SimplePopup.removeSpinner();
                 webgloo.sc.SimplePopup.show(response);
             },
+
             //server script errors are reported inside success callback
             success: function(response){
-                webgloo.sc.SimplePopup.removeSpinner();
                 switch(options.dataType) {
                     case 'json' :
                         webgloo.sc.SimplePopup.processJson(response,options,dataObj);
-                        break;
-                     default:
+                    break;
+
+                    default:
                         webgloo.sc.SimplePopup.show(response);
-                        break;
+                    break;
                 }
 
             }
         }); //ajax call end
     },
+
     load: function(targetUrl) {
         
             var dataObj = {} ;
@@ -342,6 +376,7 @@ webgloo.sc.item = {
         }) ;
 
     },
+
     addActions : function() {
         //add like & save callbacks
         $("a.like-post-link").live("click",function(event){
@@ -438,7 +473,6 @@ webgloo.sc.item = {
                 }
             );
 
-
         }) ;
 
     }
@@ -475,6 +509,7 @@ webgloo.sc.groups = {
         });
 
     },
+
     addCloudBox : function() {
         $(".fancy-box").fancybox({
             'type':'iframe',
@@ -485,14 +520,13 @@ webgloo.sc.groups = {
   }
 }
 
-
-
 /* + webgloo media object */
 
 webgloo.media = {
     images : {} ,
     debug : false,
     mode : ["image", "link"],
+
     init : function (mode) {
 
         //make a copy of mode array
@@ -516,6 +550,7 @@ webgloo.media = {
         }
 
     },
+
     attachEvents : function() {
 
         $("#add-link").live("click", function(event){
@@ -601,12 +636,14 @@ webgloo.media = {
         }
 
     },
+
     addLink : function(linkData) {
         var buffer = webgloo.media.linkPreviewDIV.supplant({"link" : linkData});
         $("#link-data").append(buffer);
         //clear out the box
         $("#link-box").val('');
     },
+
     removeLink : function(linkObj) {
         $(linkObj).parent().remove();
     },
@@ -616,23 +653,24 @@ webgloo.media = {
         var imageId = "#image-" +id ;
         $("#image-"+id).remove();
     },
+
     addImage : function(mediaVO) {
+
         webgloo.media.images[mediaVO.id] = mediaVO ;
         switch(mediaVO.store) {
+
             case "s3" :
                 mediaVO.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
                 var buffer = webgloo.media.imageDiv.supplant(mediaVO);
                 $("div#image-data").append(buffer);
                 break ;
+
             case "local" :
                 mediaVO.srcImage = '/' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
                 var buffer = webgloo.media.imageDiv.supplant(mediaVO);
                 $("div#image-data").append(buffer);
                 break ;
-            case "external" :
-                var buffer = webgloo.media.imageDiv2.supplant(mediaVO);
-                $("div#image-data").append(buffer);
-                break ;
+
             default:
                 break ;
         }
@@ -640,18 +678,15 @@ webgloo.media = {
     }
 }
 
-
-
-
 webgloo.sc.ImageSelector = {
 
     bucket : {},
     images : [],
     num_total: 0 ,
     num_added : 0 ,
-    add_counter : 0 ,
     num_selected : 0 ,
     num_uploaded : 0 ,
+    add_counter : 0 ,
     upload_counter : 0 ,
     debug : false ,
 
@@ -769,9 +804,11 @@ webgloo.sc.ImageSelector = {
                                     case 401 :
                                         webgloo.sc.ImageSelector.processUploadError(response.message);
                                     break ;
+
                                     case 200 :
                                         webgloo.sc.ImageSelector.processUpload(response);
                                     break ;
+
                                     default:
                                         webgloo.sc.ImageSelector.processUploadError(response.message);
                                     break ;
@@ -1015,9 +1052,11 @@ webgloo.sc.ImageSelector = {
                     case 401 :
                         webgloo.sc.ImageSelector.showError(response.message);
                         break ;
+
                     case 200 :
                         webgloo.sc.ImageSelector.processUrlFetch(response);
                         break ;
+
                     default:
                         webgloo.sc.ImageSelector.showError(response.message);
                         break ;
