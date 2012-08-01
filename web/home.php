@@ -75,7 +75,7 @@
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
         <script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
-        <script type="text/javascript" src="/3p/jquery/infinite/jquery.infinitescroll.js"> </script>
+        <script type="text/javascript" src="/3p/jquery/infinite/jquery.infinitescroll.hacked.js"> </script>
         <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
 
 
@@ -100,7 +100,7 @@
 
                         loading : {
                             selector : "#scroll-loading",
-                            img : "/css/images/6RMhx.gif",
+                            img : "/css/images/round_loader.gif",
                             msgText: "<em>Please wait. Loading more items...</em>",
                             finishedMsg : "<b> You have reached the end of this page </b>",
                             speed: "slow"
@@ -109,8 +109,11 @@
 
                     },
                     function( newElements ) {
-                        $(newElements).imagesLoaded(function(){
-                            $container.masonry( 'appended', $(newElements));
+                         // hide new items while they are loading
+                        var $newElems = $(newElements).css({ opacity: 0 });
+                        $newElems.imagesLoaded(function(){
+                            $newElems.css({ opacity: 1 });
+                            $container.masonry('appended', $newElems);
                             $("#infscr-loading").fadeOut("slow");
                         });
 
@@ -124,7 +127,7 @@
 
                 //Add item toolbar actions
                 webgloo.sc.item.addActions();
-                webgloo.sc.home.addNavGroups();
+                webgloo.sc.toolbar.add();
 
 
             });
