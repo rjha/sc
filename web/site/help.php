@@ -59,7 +59,12 @@
                                 <div class="accordion-inner">
                                     <div> <img src="/site/images/help/share-link.png" alt="share link" /> </div>
                                     <div class="p20 comment-text">
-                                To share items on 3mik, just click on the share link in toolbar. You can select to upload images from your computer or you can share images from a webpage. Sharing images directly from a webpage is convenient as it saves you the trouble of first downloading the images to your computer.  
+                                    To share items on 3mik, just click on the share link in toolbar at top of page. You can select to upload images from your computer or you can share images from a webpage. To upload images from your computer, click on Add images button in the next screen. Browse to the folder where you have stored your images. You can select multiple images.
+
+                                    <br>
+                                    <br>
+Share a webpage by entering a URL and selecting images that you wish to share. Enter a URL and click on Fetch. The page would show images, you can select the appropriate ones and click on "Next". You can select multiple images. Note that some images may not appear if they are not of a suitable size.  The submitted images will appear at the bottom of the form on next screen.
+
                                     </div>
                                 </div>
                             </div> 
@@ -72,7 +77,7 @@
                                 <div class="accordion-inner">
                                     <div> <img src="/site/images/help/item-edit-save.png" alt="item edit" /> </div>
                                     <div class="p20 comment-text">
-                                Please login into 3mik. You can go to the item page and click on the "Edit item" link. You can also click on your name in the toolbar and select Account  | Posts. There you can select a post to edit or delete it. 
+                                Editing an item requires login. Please login into 3mik. You can go to the item page and click on the "Edit item" link. You can also click on your name in the toolbar and select Account  | Posts. There you can select a post to edit or delete it. 
                                     </div>
                                     <div> <img src="/site/images/help/toolbar-account.png" alt="toolbar account" /> </div>
                                 </div>
@@ -123,14 +128,15 @@ sharing your items on Facebook and Google+.
 
                          <div class="accordion-group">
                             <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#question7">How can I signup for 3mik?</a>
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#question7">How can I create a 3mik account?</a>
                             </div>
                             <div id="question7" class="accordion-body collapse" style="height: 0px; ">
                                 <div class="accordion-inner">
                                     <div> <img src="/site/images/help/login-page.png" alt="login page" /> </div>
                                     <div class="p20 comment-text">
-                                Please click on the register link to create a 3mik account. You can also login using 
-                                Facebook, Google and Twitter accounts.
+                                        To create a 3mik account click on <a href="http://www.3mik.com/user/register.php">register</a>. Register link is also available in toolbar at the top of page.
+
+                                You can also login using an existing Facebook, Google or Twitter account.
                                      </div>
                                 </div>
                             </div> 
@@ -153,7 +159,7 @@ sharing your items on Facebook and Google+.
 
         <script type="text/javascript">
             $(function(){
-                $("#question2").collapse('show');
+                $("#question1").collapse('show');
                 webgloo.sc.toolbar.add();
 
             });
