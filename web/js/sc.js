@@ -134,22 +134,31 @@ webgloo.sc.toolbar = {
 
 webgloo.sc.home = {
     addTiles : function() {
+
+        $('.tile .options').hide();
+
         var $container = $('#tiles');
         $container.imagesLoaded(function(){
             $container.masonry({
                 itemSelector : '.tile',
                 gutterWidth : 10 
             });
-        });
 
-        //show options on hover
-        $('.tile .options').hide();
-        $('.tile').mouseenter(function() {$(this).find('.options').toggle();});
-        $('.tile').mouseleave(function() {$(this).find('.options').toggle();});
+            //show tile options only after images has been loaded by
+            //masonry layout. otherwise on mouse enter we see tile.option toolbar
+            //displayed at top of page 
+
+            webgloo.sc.home.addTileOptions();
+        });
 
         //Add item toolbar actions
         webgloo.sc.item.addActions();
 
+    },
+
+    addTileOptions : function () {
+        $('.tile').live("mouseenter", function() {$(this).find('.options').show();});
+        $('.tile').live("mouseleave", function() {$(this).find('.options').hide();});
     },
 
     addSmallTiles : function() {

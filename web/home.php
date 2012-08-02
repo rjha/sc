@@ -82,6 +82,14 @@
             /* column width = css width + margin */
             $(function(){
 
+                //show options on hover
+                $('.tile .options').hide();
+
+                function add_tile_options () {
+                    $('.tile').live("mouseenter", function() {$(this).find('.options').show();});
+                    $('.tile').live("mouseleave", function() {$(this).find('.options').hide();});
+                }
+
                 var $container = $('#tiles');
 
                 $container.imagesLoaded(function(){
@@ -89,6 +97,9 @@
                         itemSelector : '.tile',
                         gutterWidth  : 10
                     });
+
+                    add_tile_options();
+
                 });
 
                 $container.infinitescroll(
@@ -108,6 +119,7 @@
                         }
 
                     },
+
                     function( newElements ) {
                          // hide new items while they are loading
                         var $newElems = $(newElements).css({ opacity: 0 });
@@ -120,14 +132,11 @@
                     }
                 ); 
 
-                //show options on hover
-                $('.tile .options').hide();
-                $('.tile').live("mouseenter", function() {$(this).find('.options').toggle();});
-                $('.tile').live("mouseleave", function() {$(this).find('.options').toggle();});
 
                 //Add item toolbar actions
                 webgloo.sc.item.addActions();
                 webgloo.sc.toolbar.add();
+
 
 
             });
