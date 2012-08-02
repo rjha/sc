@@ -54,7 +54,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li> <a href="/site/contact.php">Contact</a> </li>
-                    <li> <a href="/site/about.php">Help</a> </li>
+                    <li> <a href="/site/help.php">Help</a> </li>
                     <li> <a href="#">Copyright</a> </li>
                 </ul>
             </li> <!-- About -->

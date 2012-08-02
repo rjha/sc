@@ -20,7 +20,7 @@
         <div class="container mh800">
             <div class="row">
                 <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
+                    <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
                 </div>
 
             </div>
@@ -39,7 +39,7 @@
                             <h1>Redirecting...</h1>
                         </div>
                         <div class="p20">
-                            <img src="/css/images/ajax_loader.gif" alt="ajax loader" />
+                            <img src="/css/images/fb_loader.gif" alt="ajax loader" />
                         </div>
                         <div class="page-header"> </div>
                         <div>

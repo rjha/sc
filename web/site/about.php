@@ -13,19 +13,7 @@
          
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
         <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
-
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?> 
-        
-        
-        <script type="text/javascript">
-            $(document).ready(function(){
-                webgloo.sc.home.addTiles();
-                webgloo.sc.toolbar.add();
-           });
-        </script>
+       
         
     </head>
 
@@ -103,6 +91,19 @@
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
         </div>
+
+        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
+        <script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?> 
+        
+        
+        <script type="text/javascript">
+            $(document).ready(function(){
+                webgloo.sc.toolbar.add();
+           });
+        </script>
 
     </body>
 </html>

@@ -20,8 +20,7 @@
         <div class="floatr">
             <ul class="nav nav-pills">
 
-            <li> <a href="/site/about.php">Help</a> </li>
-            <li> <a href="/site/contact.php">Contact</a> </li>
+            <li> <a href="/site/help.php">Help</a> </li>
             <li> <a href="/user/login.php">Login</a> </li>
             <li> <a href="/user/register.php">Register</a> </li>
 
@@ -32,7 +31,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li> <a href="/site/contact.php">Contact</a> </li>
-                    <li> <a href="/site/about.php">Help</a> </li>
+                    <li> <a href="/site/help.php">Help</a> </li>
                     <li> <a href="#">Copyright</a> </li>
                 </ul>
             </li>

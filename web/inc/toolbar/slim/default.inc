@@ -22,7 +22,7 @@
             <ul class="nav nav-pills">
                 <li> <a href="/">Home</a> </li>
                 <li class="active"> <a href="<?php echo $qUrl ?>">Back</a> </li>
-                <li> <a href="/site/about.php">Help</a> </li>
+                <li> <a href="/site/help.php">Help</a> </li>
                 <li class="divider-vertical"></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -31,7 +31,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li> <a href="/site/contact.php">Contact</a> </li>
-                        <li> <a href="/site/about.php">Help</a> </li>
+                        <li> <a href="/site/help.php">Help</a> </li>
                         <li> <a href="#">Copyright</a> </li>
                     </ul>
                 </li> <!-- About -->
