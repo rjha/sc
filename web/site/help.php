@@ -14,14 +14,6 @@
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
         <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
-        <style>
-            .accordion-inner img {
-                padding:10px;
-                border:6px solid #ccc ;
-            }       
-
-
-        </style>
 
     </head>
 

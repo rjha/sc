@@ -19,6 +19,8 @@
         background-color:white  ;
     }
 
+    .dark-body { background-color : #f6f6f6 ; }
+
     a { color: #2288cc; text-decoration:none; }
     a:hover { text-decoration:none ; }
     a img { border: 0; }
@@ -303,7 +305,8 @@
        padding:7px;
        height:160px;
        width:200px;
-       border:1px solid #DDD ;
+       /* border:1px solid #DDD ; */
+       box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4); 
        margin :2px;
     }
 
@@ -330,17 +333,16 @@
 
     /* + homepage tiles */
     div #tiles{
-        /* background-color:#E9E9E9; */
+
     }
 
     .tile {
-        width:210px;
-        margin:2px;
-        border:1px solid #DEDEDE ;
+        width:204px;
+        margin:4px 2px 4px 2px;
         float:left ;
-        padding:8px;
-        background-color: #fff;
-        border-radius :2px;
+        padding:8px; 
+        background-color: white;
+        box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4); 
         /* position:relative ; */
     }
 
@@ -370,11 +372,11 @@
 
     .tile .photo {
         padding:3px;
+        width:190px;
     }
 
     .tile .photo img {
         max-width:190px;
-        /* border:5px solid #d5d5d5; */
         margin :0px;
     }
 
@@ -386,6 +388,7 @@
         float:left ;
         padding:4px;
         background-color: #fff;
+        box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4); 
     }
 
     .stamp .photo {
@@ -567,7 +570,8 @@
     #gallery img {
         padding:5px;
         background: white;
-        border: 1px solid #BBB;
+        /* border: 1px solid #BBB; */
+        box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4); 
     }
 
     .item-link {
@@ -721,10 +725,8 @@
         /* width:280px; */
     }
 
-    #site-toolbar a {
-        margin-top:10px;
-
-    }
+    #site-toolbar { }
+    #site-toolbar a { margin-top:10px; }
 
     #site-toolbar a {
         font-weight : bold ;
@@ -885,6 +887,12 @@
         border-radius: 10px;
     }
 
+    .accordion-inner img {
+        border:1px solid #ddd ;
+        padding:8px;
+        background: #eee ;
+        box-shadow: 0 1px 7px rgba(34, 25, 25, 0.4); 
+    }     
     /* last section - override bootstrap css */
     .page-header {
         padding-bottom: 7px;

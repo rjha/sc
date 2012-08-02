@@ -16,7 +16,6 @@
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
         <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
 
-
     </head>
 
      <body>
@@ -87,7 +86,8 @@
 
                 $container.imagesLoaded(function(){
                     $container.masonry({
-                        itemSelector : '.tile'
+                        itemSelector : '.tile',
+                        gutterWidth  : 10
                     });
                 });
 

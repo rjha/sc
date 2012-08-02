@@ -137,7 +137,8 @@ webgloo.sc.home = {
         var $container = $('#tiles');
         $container.imagesLoaded(function(){
             $container.masonry({
-                itemSelector : '.tile'
+                itemSelector : '.tile',
+                gutterWidth : 10 
             });
         });
 
