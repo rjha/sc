@@ -21,7 +21,6 @@
 
     .dark-body { background-color : #f6f6f6 ; }
 
-    a { color: #2288cc; text-decoration:none; }
     a:hover { text-decoration:none ; }
     a img { border: 0; }
     form { margin: 0; padding: 0; }
@@ -831,7 +830,7 @@
     #simple-popup .stack .header {
         font-size:21px;
         text-align:center ;
-        color: #28C;
+        /* color: #28C; */
         padding:10px;
     }
 
