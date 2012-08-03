@@ -40,8 +40,8 @@ namespace com\indigloo\sc\html {
 
             $template = '/fragments/post/gallery.tmpl' ;
             $html = Template::render($template,$view);
-            return $html;
 
+            return $html;
         }
 
         static function getLinks($links,$siteDBRow) {

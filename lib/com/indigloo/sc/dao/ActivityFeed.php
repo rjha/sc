@@ -196,7 +196,6 @@ namespace com\indigloo\sc\dao {
                 $key2 = sprintf("sc:user:%s:feeds", $loginId);
                 $key3 = sprintf("sc:post:%s:subscribers", $itemId);
 
-
                 // Add jobId to global:queue:new list
                 // Add feed(job) to sc:global:jobs hash - jobId field
                 // Add to  global feeds, trim to 1000
