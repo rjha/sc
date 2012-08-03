@@ -120,7 +120,7 @@ namespace com\indigloo\sc\dao {
             $feedVO->objectId = $itemId;
             $feedVO->title = $title;
             $feedVO->verb = $verb;
-            $feedVO->srcImage = $image["source"];
+            $feedVO->srcImage = $image["thumbnail"];
             $feedVO->nameImage = $image["name"];
 
             try {
@@ -183,7 +183,7 @@ namespace com\indigloo\sc\dao {
             $feedVO->objectId = $itemId;
             $feedVO->title = $title;
             $feedVO->verb = $verb;
-            $feedVO->srcImage = $image["source"];
+            $feedVO->srcImage = $image["thumbnail"];
             $feedVO->nameImage = $image["name"];
 
             try {
@@ -242,7 +242,7 @@ namespace com\indigloo\sc\dao {
             $feedVO->content = $content;
             $feedVO->verb = $verb;
 
-            $feedVO->srcImage = $image["source"];
+            $feedVO->srcImage = $image["thumbnail"];
             $feedVO->nameImage = $image["name"];
 
             try {

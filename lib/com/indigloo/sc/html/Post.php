@@ -304,12 +304,19 @@ namespace com\indigloo\sc\html {
                 //work with image #1
                 $image = $images[0] ;
                 $imgv = self::convertImageJsonObj($image);
+                $td = Util::foldXY($image->width,$image->height,40,40);
+                $imgv["twidth"] = $td["width"];
+                $imgv["theight"] = $td["height"];
 
             } else {
                 $imgv["name"] = "placeholder" ;
+                $imgv["tname"] = "placeholder" ;
                 $imgv["source"] = "/css/images/twitter-icon.png" ;
+                $imgv["thumbnail"] = "/css/images/twitter-icon.png" ;
                 $imgv["width"] = 48;
                 $imgv["height"] = 48;
+                $imgv["twidth"] = 40;
+                $imgv["theight"] = 40;
             }
 
             return $imgv ;
