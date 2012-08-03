@@ -125,6 +125,7 @@
         min-height : 600px;
     }
 
+
     /* + Footer */
 
     #footer {
@@ -303,10 +304,10 @@
        float : left;
        padding:7px;
        height:160px;
-       width:200px;
+       width:190px;
        /* border:1px solid #DDD ; */
        box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4); 
-       margin :2px;
+       margin :4px;
     }
 
     .thumbnail-1 {
@@ -315,7 +316,14 @@
         max-width: 180px;
         max-height: 135px;
         margin-bottom : 5px;
+        padding:5px;
     }
+
+    div .stackImage .link { 
+        position:absolute ;
+        left :60px;
+        bottom : 3px ;
+    } 
 
     div .previewLink{
         padding:5px;

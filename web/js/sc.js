@@ -605,10 +605,10 @@ webgloo.media = {
 
     imageDiv : '<div class="stackImage" id="image-{id}"> ' 
         + ' <img src="{srcImage}" class="thumbnail-1" alt="{originalName}" width="{width}" height="{height}"/> '
-        + '<div> <a class="remove-image" id="{id}" href="">Remove</a> </div> </div>',
+        + '<div class="link"> <a class="remove-image" id="{id}" href="">Remove&nbsp;x</a> </div> </div>',
 
     imageDiv2 : '<div class="stackImage" id="image-{id}"><img src="{srcImage}" class="thumbnail-1" /> '
-        + '<div> <a class="remove-image" id="{id}" href="">Remove</a> </div> </div>',
+        + '<div class="link"> <a class="remove-image" id="{id}" href="">Remove&nbsp;x</a> </div> </div>',
 
     linkPreviewDIV : '<div class="previewLink">{link}&nbsp;<a class="remove-link" href="{link}">Remove</a></div> ' ,
 
