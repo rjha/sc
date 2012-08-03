@@ -19,7 +19,7 @@
         background-color:white  ;
     }
 
-    .dark-body { background-color : #f6f6f6 ; }
+    .dark-body { background : #f1f1f1 url(images/paper-bg2.jpg); }
 
     a:hover { text-decoration:none ; }
     a img { border: 0; }
@@ -332,7 +332,7 @@
 
     /* + homepage tiles */
     div #tiles{
-
+        background : url(images/wash-white-30.png); 
     }
 
     .tile {
@@ -341,7 +341,7 @@
         float:left ;
         padding:8px; 
         background-color: white;
-        box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4); 
+        box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4); 
         /* position:relative ; */
     }
 
@@ -379,6 +379,12 @@
         margin :0px;
     }
 
+    /*
+    .tile .feeds .item {
+        border-top :0px; 
+        border-bottom :0px; 
+    } */
+
     /* smaller tile */
 
     .stamp {
@@ -387,6 +393,7 @@
         float:left ;
         padding:4px;
         background-color: #fff;
+        /* bigger shadow because we have white backgorund on item page */
         box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4); 
     }
 
@@ -398,7 +405,6 @@
         max-width:100px;
         margin :0px;
     }
-
 
     .author{
         padding: 7px 0px 7px 0px ;
@@ -643,19 +649,24 @@
 
     .feeds a {
         color : #4183C4 ;
+        color: #0F6F9F ;
     }
 
     .feeds .item {
-        padding-bottom: 10px;
+        padding: 4px;
         width: 100%;
         clear: both;
+        margin-bottom:5px;
+        border-top: 1px solid #ccc ;
+    }
+
+    .feeds .item:first-child {
+        border-top :0px; 
     }
 
     .feeds .item .title {
-        font-weight: bold;
-        line-height:17px;
-        font-family: arial;
-        font-size:11px;
+        font-size:10px;
+        font-weight:bold;
     }
 
     .feeds .item .photo {
@@ -672,7 +683,7 @@
     }
 
     .feeds .item .verb {
-        /* color: #AD9C9C ; */
+        color : #777 ;
     }
 
     .noresults {
@@ -724,7 +735,7 @@
         /* width:280px; */
     }
 
-    #site-toolbar { }
+    #site-toolbar { z-index:1 ;}
     #site-toolbar a { margin-top:10px; }
 
     #site-toolbar a {
