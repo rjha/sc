@@ -27,7 +27,7 @@
 
     </head>
 
-     <body class="">
+     <body class="dark-body">
         <div class="container">
             <div class="row">
                 <div class="span12">
@@ -35,14 +35,6 @@
                 </div>
 
             </div>
-
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
-                    <?php include(APP_WEB_DIR . '/inc/browser.inc'); ?>
-                </div>
-            </div>
-
 
             <div class="row">
                 <div class="span12">
@@ -72,7 +64,7 @@
                     </div><!-- tiles -->
                     <hr>
                     <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
- 
+
                 </div>
             </div>
 

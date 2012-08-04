@@ -8,13 +8,13 @@
     use \com\indigloo\Util as Util;
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
-    
+
     $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $feedbackDao = new \com\indigloo\sc\dao\Feedback();
 
     $total = $feedbackDao->getTotalCount();
     $pageSize = 20;
-    $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);    
+    $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
     $feedbackDBRows = $feedbackDao->getPaged($paginator);
 
 ?>
@@ -28,24 +28,24 @@
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        
+
         <script>
             $(document).ready(function(){
                 //show options on widget hover
                 $('.widget .options').hide();
-                $('.widget').mouseenter(function() { 
-                    $(this).find('.options').toggle(); 
+                $('.widget').mouseenter(function() {
+                    $(this).find('.options').toggle();
                     $(this).css("background-color", "#F0FFFF");
                 });
-                $('.widget').mouseleave(function() { 
-                    $(this).find('.options').toggle(); 
+                $('.widget').mouseleave(function() {
+                    $(this).find('.options').toggle();
                     $(this).css("background-color", "#FFFFFF");
-                }); 
+                });
             });
-            
+
         </script>
 
     </head>
@@ -55,15 +55,10 @@
             <div class="row">
                 <div class="span12">
                 <?php include(APP_WEB_DIR . '/monitor/inc/toolbar.inc'); ?>
-                </div> 
-
-            </div>
-
-            <div class="row">
-                <div class="span12">
-                <?php include(APP_WEB_DIR. '/monitor/inc/banner.inc'); ?>
                 </div>
+
             </div>
+
             <div class="row">
                 <div class="span12">
                 <?php include('inc/menu.inc'); ?>
@@ -87,7 +82,7 @@
                             }
                         ?>
                     </div>
-                   
+
                 </div>
                 <div class="span3"> </div>
             </div>

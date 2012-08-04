@@ -33,15 +33,7 @@
                 </div>
 
             </div>
-
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
-                    <?php include(APP_WEB_DIR . '/inc/browser.inc'); ?>
-                </div>
-            </div>
-
-
+            
             <div class="row">
                 <div class="span12">
                     <div class="page-header">

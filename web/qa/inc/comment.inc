@@ -1,8 +1,9 @@
 <style type="text/css">
-     /* @bad comment form - inline css */
+     /* @todo comment form - inline css - move to sc.css */
     .form-table {
         margin-bottom : 0px;
     }
+
     .form-table textarea {
         width:500px;
         height:60px;

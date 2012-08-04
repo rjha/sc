@@ -27,7 +27,7 @@
 
     $activityDao = new \com\indigloo\sc\dao\ActivityFeed() ;
     $feedDataObj = $activityDao->getUserFeeds($loginId,50);
-    
+
 ?>
 
 
@@ -39,9 +39,17 @@
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
+
+        <script>
+            $(document).ready(function(){
+                webgloo.sc.toolbar.add();
+            });
+
+        </script>
 
     </head>
 
@@ -54,11 +62,6 @@
 
             </div>
 
-            <div class="row">
-                <div class="span12">
-                <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
-                </div>
-            </div>
             <div class="row">
                 <div class="span12">
                      <?php  include('inc/menu.inc'); ?>
@@ -76,7 +79,7 @@
 
                     ?>
                     </div>
-                   
+
                 </div>
                 <div class="span3">
                 </div>

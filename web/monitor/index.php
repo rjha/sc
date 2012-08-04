@@ -149,12 +149,7 @@
                 </div>
 
             </div>
-
-            <div class="row">
-                <div class="span12">
-                <?php include(APP_WEB_DIR. '/monitor/inc/banner.inc'); ?>
-                </div>
-            </div>
+ 
             <div class="row">
                 <div class="span12">
                 <?php include('inc/menu.inc'); ?>

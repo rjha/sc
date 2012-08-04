@@ -20,17 +20,17 @@
        <title> Thanks for visiting 3mik </title>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
 
     </head>
 
-    <body>
+    <body class="dark-body">
         <div class="container">
             <div class="row">
                 <div class="span12 mh600">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
+                    <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
 
                     <div class="span3 offset2">
                         <?php echo $tileHtml ; ?>

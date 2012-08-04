@@ -6,8 +6,8 @@
     use \com\indigloo\Url;
     $qUrl = Url::tryQueryParam("q");
     $qUrl = is_null($qUrl) ? '/' : $qUrl ;
-   
-?>  
+
+?>
 
 <!DOCTYPE html>
 <html>
@@ -17,14 +17,14 @@
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
 
         <script>
-            window.setTimeout(function() {window.location.href = '<?php echo $qUrl; ?>'; }, 5000); 
+            window.setTimeout(function() {window.location.href = '<?php echo $qUrl; ?>'; }, 5000);
         </script>
-         
+
     </head>
 
     <body>
@@ -32,33 +32,26 @@
             <div class="row">
                 <div class="span12">
                     <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
-                </div> 
-                
-            </div>
-            
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
                 </div>
+
             </div>
-            
             
             <div class="row">
                 <div class="span9">
-                    
-                    
+
+
                     <div class="page-header">
                         <h2> You do not have the required permissions. Redirecting... </h2>
                     </div>
 
                     <div class="p20">
                         <img src="/css/images/ajax_loader.gif" alt="ajax loader" />
-                    </div>      
-                    
+                    </div>
+
                     <div class="well">
                         <p class="help-text">
                            <a class="btn btn-primary" href="/">Home Page</a>
-                        </p>   
+                        </p>
                     </div>
 
                 </div>

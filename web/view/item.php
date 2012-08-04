@@ -16,7 +16,7 @@
 
         <link rel="canonical" href="<?php echo $itemObj->link; ?>">
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
 
         <!-- opengraph curry -->
         <meta property="og:title" content="<?php echo $itemObj->title ?>"/>
@@ -31,7 +31,7 @@
         <script type="text/javascript" src="/3p/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
         <script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
 
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
 
         <script type="text/javascript">
 
@@ -131,12 +131,6 @@
 
             </div>
 
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
-                    <?php include(APP_WEB_DIR . '/inc/browser.inc'); ?>
-                </div>
-            </div>
             <div class="row">
                 <div class="span12">
                     <div class="page-header">

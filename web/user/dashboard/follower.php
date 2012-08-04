@@ -8,8 +8,8 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login;
-    
-    
+
+
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
 
@@ -26,8 +26,8 @@
 
     $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
     $followers = $socialGraphDao->getFollowers($loginId);
-    
-    
+
+
 ?>
 
 
@@ -39,19 +39,20 @@
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
 
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
 
         <script type="text/javascript">
 
             $(document).ready(function(){
-                 webgloo.sc.item.addActions();
-                
+                webgloo.sc.toolbar.add();
+                webgloo.sc.item.addActions();
+
             }) ;
-            
+
 
         </script>
     </head>
@@ -64,7 +65,7 @@
                 <div class="floatr">press Esc or&nbsp;<a id="simple-popup-close" href="">close&nbsp;<i class="icon-remove"></i></a> </div>
             </div>
         </div> <!-- simple popup -->
-        
+
         <div class="container">
             <div class="row">
                 <div class="span12">
@@ -72,12 +73,7 @@
                 </div>
 
             </div>
-
-            <div class="row">
-                <div class="span12">
-                <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
-                </div>
-            </div>
+            
             <div class="row">
                 <div class="span12">
                      <?php  include('inc/menu.inc'); ?>
@@ -93,13 +89,13 @@
                          <li class="active">
                             <a href="/user/dashboard/follower.php">Followers</a>
                         </li>
-                        
+
                     </ul>
                 </div>
                 <div class="span7 mh600">
-                    <?php echo \com\indigloo\sc\html\SocialGraph::getFollowerHtml($loginId,$followers); ?>  
+                    <?php echo \com\indigloo\sc\html\SocialGraph::getFollowerHtml($loginId,$followers); ?>
                 </div>
-          
+
             </div>
         </div> <!-- container -->
 

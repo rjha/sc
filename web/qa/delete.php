@@ -30,9 +30,9 @@
         exit ;
     }
 
-?>  
+?>
 
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
 
        <head>
@@ -40,10 +40,10 @@
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-         
+
     </head>
 
     <body>
@@ -51,21 +51,14 @@
             <div class="row">
                 <div class="span12">
                     <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
-                </div> 
-                
-            </div>
-            
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
                 </div>
+
             </div>
-            
             
             <div class="row">
                 <div class="span9">
-                    
-                    
+
+
                     <div class="page-header">
                         <h2> Delete Post</h2>
                     </div>
@@ -74,7 +67,7 @@
                       <strong>Warning!</strong> There is no way to recover a deleted post.
                       Please make sure that you really want to delete this post.
                     </div>
-                    
+
                     <?php FormMessage::render(); ?>
                     <?php echo \com\indigloo\sc\html\Post::getWidget($postDBRow); ?>
 
@@ -83,13 +76,13 @@
                             <button class="btn btn-danger" type="submit" name="delete" value="Delete" onclick="this.setAttribute('value','Delete');">Delete</button>
                             <a href="<?php echo $qUrl; ?>"><button class="btn" type="button">Cancel</a></button></a>
                         </div>
-                        <input type="hidden" name="q" value="<?php echo $qUrl; ?>" /> 
+                        <input type="hidden" name="q" value="<?php echo $qUrl; ?>" />
                         <input type="hidden" name="post_id" value="<?php echo $postId; ?>" />
                         <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
 
                     </form>
-        
+
                 </div>
             </div>
         </div> <!-- container -->

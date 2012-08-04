@@ -23,7 +23,7 @@
     if (empty($userDBRow)) {
         trigger_error("No user exists with this login_id", E_USER_ERROR);
     }
-    
+
 ?>
 
 
@@ -35,13 +35,14 @@
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
 
         <script>
             $(document).ready(function(){
-
+                webgloo.sc.toolbar.add();
             });
 
         </script>
@@ -57,11 +58,6 @@
 
             </div>
 
-            <div class="row">
-                <div class="span12">
-                <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
-                </div>
-            </div>
             <div class="row">
                 <div class="span12">
                      <?php  include('inc/setting-menu.inc'); ?>

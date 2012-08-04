@@ -57,6 +57,7 @@
         <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
 
         <script>
             $(document).ready(function(){
@@ -66,10 +67,13 @@
                     $(this).find('.options').toggle();
                     $(this).css("background-color", "#f9f9f9");
                 });
+
                 $('.widget').mouseleave(function() {
                     $(this).find('.options').toggle();
                     $(this).css("background-color", "#FFFFFF");
                 });
+
+                 webgloo.sc.toolbar.add();
             });
 
         </script>
@@ -85,11 +89,6 @@
 
             </div>
 
-            <div class="row">
-                <div class="span12">
-                <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
-                </div>
-            </div>
             <div class="row">
                 <div class="span12">
                      <?php  include('inc/menu.inc'); ?>

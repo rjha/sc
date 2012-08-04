@@ -65,15 +65,16 @@
        <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
 
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
         <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
         <script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
 
         <script type="text/javascript">
             /* column width = css width + margin */
             $(document).ready(function(){
+                webgloo.sc.toolbar.add();
                 webgloo.sc.home.addTiles();
 
             });
@@ -82,14 +83,6 @@
     </head>
 
      <body>
-
-        <div id="block-spinner"> </div>
-        <div id="simple-popup">
-            <div id="content"> </div>
-            <div class="panel-footer">
-                <div class="floatr">press Esc or&nbsp;<a id="simple-popup-close" href="">close&nbsp;<i class="icon-remove"></i></a> </div>
-            </div>
-        </div> <!-- simple popup -->
 
         <div class="container">
             <div class="row">
@@ -101,17 +94,12 @@
 
             <div class="row">
                 <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
-                </div>
-            </div>
-            <div class="row">
-                <div class="span12">
                      <?php include('inc/menu.inc'); ?>
                 </div>
             </div>
 
             <div class="row">
-                <div class="span9">
+                <div class="span12 dark-body">
 
                     <div id="tiles" class="mh600">
                         <?php
@@ -137,7 +125,7 @@
                     <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
 
                 </div>
-                <div class="span3"> </div>
+
             </div>
 
         </div>  <!-- container -->
