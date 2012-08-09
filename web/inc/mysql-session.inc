@@ -18,11 +18,11 @@ ini_set('session.use_only_cookies',1);
 register_shutdown_function('session_write_close');
 session_start();
 
-/*
+
 if (isset($_COOKIE[session_name()])) {
     //@see gc.maxlifetime
     $lifetime = 180 ; //7days x24 HRx 60 min x 60 seconds
     setcookie(session_name(), session_id(), time() + $lifetime , "/");
-} */
+}
 
 ?>
