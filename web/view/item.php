@@ -17,6 +17,7 @@
         <link rel="canonical" href="<?php echo $itemObj->link; ?>">
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="/3p/fancybox/jquery.fancybox-1.3.4.css">
+        <link rel="stylesheet" type="text/css" href="/3p/zocial/css/zocial.css">
         <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
 
         <!-- opengraph curry -->
@@ -88,15 +89,19 @@
                 </div>
                 <div class="span3 wbg">
 
-                   <?php echo \com\indigloo\sc\html\Post::getGroups($postView); ?>
-
-                    <div class="section">
-                        <ul class="unstyled">
-                            <li> <i class="icon-share"></i>&nbsp;<a href="#" id="share-facebook">Share on Facebook</a> </li>
-                            <li> <i class="icon-share"></i>&nbsp;<a href="#" id="share-google">Share on Google+</a> </li>
-                        </ul>
-                    </div>
+                    <?php echo \com\indigloo\sc\html\Post::getGroups($postView); ?>
                     <?php echo \com\indigloo\sc\html\Post::getMoreLinks($postView); ?>
+                    
+                    <div class="section social-buttons">
+                        <div class="zocial facebook">
+                            <a href="#" id="share-facebook">share on facebook</a>
+                        </div>
+                        <div class="zocial googleplus">
+                               <a href="#" id="share-google">share on google+</a>
+                        </div>
+
+                    </div>
+
 
                 </div>
 
