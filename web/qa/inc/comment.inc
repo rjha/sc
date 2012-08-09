@@ -21,8 +21,8 @@
 
         </table>
 
-         <div class="form-actions2">
-            <button class="btn" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Add Comment</span></button>
+         <div>
+            <button class="btn" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Comment</span></button>
         </div>
 
        <input type="hidden" name="owner_id" value="<?php echo $postDBRow['login_id']; ?>" />
