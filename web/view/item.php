@@ -39,6 +39,13 @@
     </head>
 
     <body class="dark-body">
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+        fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        </script>
 
         <div class="container mh800">
             <div class="row">
@@ -57,10 +64,10 @@
                         $options = array();
                         $options["group"] = true ;
                         $postView = \com\indigloo\sc\html\Post::createPostView($postDBRow,$options);
-                        echo \com\indigloo\sc\html\Post::getHeader($postView);
+                        echo \com\indigloo\sc\html\Post::getHeader($postView,$loginIdInSession);
 
                         echo \com\indigloo\sc\html\Post::getFancybox($itemObj->title,$images);
-                        echo \com\indigloo\sc\html\Post::getDetail($postView,$links,$siteDBRow,$loginIdInSession);
+                        echo \com\indigloo\sc\html\Post::getDetail($postView,$links,$siteDBRow);
 
                         //inject activity tile
                         $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
@@ -89,9 +96,17 @@
                 </div>
                 <div class="span3 wbg">
 
+                    <div class="section1">
+                        <div class="fb-like p5" data-href="<?php echo $itemObj->netLink;?>" data-send="false" data-layout="button_count" data-width="220" data-show-faces="false"></div>
+
+                        <div class="p5">
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-via="3mikindia" data-count="none">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                        </div>
+                    </div> <!-- fb:like | tweet -->
+
                     <?php echo \com\indigloo\sc\html\Post::getGroups($postView); ?>
                     <?php echo \com\indigloo\sc\html\Post::getMoreLinks($postView); ?>
-                    
+
                     <div class="section social-buttons">
                         <div class="zocial facebook">
                             <a href="#" id="share-facebook">share on facebook</a>
