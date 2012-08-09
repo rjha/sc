@@ -49,7 +49,8 @@
 
 
             <div class="row">
-                <div class="span9" style="background-color:white">
+                <div class="span9 wbg">
+                    <div id="item-page">
                     <?php
 
                         $options = array();
@@ -65,25 +66,28 @@
                         $feedDataObj = $activityDao->getPostFeeds($itemId, 10);
                         $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
                         $feedHtml = $htmlObj->getPostTile($feedDataObj);
-                        echo \com\indigloo\sc\html\Post::getActivity($feedHtml);
+                        $commentHtml = \com\indigloo\sc\html\Comment::getFeedHtml($commentDBRows);
+                        echo \com\indigloo\sc\html\Post::getActivity($feedHtml,$commentHtml);
 
-                        \com\indigloo\sc\html\Comment::renderAll($commentDBRows);
                         include(APP_WEB_DIR . '/qa/inc/comment.inc');
 
-
                     ?>
-                    <h3> explore 3mik </h3>
-                    <div id="tiles">
-                        <?php
-                        foreach ($xrows as $xrow) {
-                            //echo \com\indigloo\sc\html\Post::getSmallTile($xrow);
-                        }
-                        ?>
-                    </div> <!-- tiles -->
+                    </div>
+                    <div class="section">
+                        <h3> Explore 3mik </h3>
+                        <div id="tiles">
+                            <?php
+                            foreach ($xrows as $xrow) {
+                                echo \com\indigloo\sc\html\Post::getSmallTile($xrow);
+                            }
+                            ?>
+                        </div> <!-- tiles -->
+                    </div>
 
 
                 </div>
-                <div class="span3" style="background-color:white;">
+                <div class="span3 wbg">
+
                    <?php echo \com\indigloo\sc\html\Post::getGroups($postView); ?>
 
                     <div class="section">

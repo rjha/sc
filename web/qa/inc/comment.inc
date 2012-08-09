@@ -1,16 +1,6 @@
-<style type="text/css">
-     /* @todo comment form - inline css - move to sc.css */
-    .form-table {
-        margin-bottom : 0px;
-    }
 
-    .form-table textarea {
-        width:500px;
-        height:60px;
-    }
-</style>
 <!-- include comment form -->
-<div id="comment-wrapper">
+<div class="section">
     <?php echo $formErrors; ?>
         <form id="web-form1"  name="web-form1" action="/qa/form/comment.php?q=/item/<?php echo $itemId; ?>" enctype="multipart/form-data"  method="POST">
 

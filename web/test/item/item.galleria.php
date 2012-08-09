@@ -71,7 +71,7 @@
                         $feedHtml = $htmlObj->getPostTile($feedDataObj);
                         echo \com\indigloo\sc\html\Post::getActivity($feedHtml);
 
-                        \com\indigloo\sc\html\Comment::renderAll($commentDBRows);
+                        echo \com\indigloo\sc\html\Comment::getFeedHtml($commentDBRows);
                         include(APP_WEB_DIR . '/qa/inc/comment.inc');
 
 

@@ -90,10 +90,11 @@ namespace com\indigloo\sc\html {
             return $html;
         }
 
-        static function getActivity($feedHtml) {
+        static function getActivity($feedHtml,$commentHtml) {
             if(empty($feedHtml)) { return "" ; }
             $view = new \stdClass;
             $view->feedHtml = $feedHtml;
+            $view->commentHtml = $commentHtml;
             $template = '/fragments/item/activity.tmpl' ;
             $html = Template::render($template,$view);
             return $html;

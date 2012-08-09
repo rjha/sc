@@ -68,7 +68,7 @@
     }
 
     .faded-text { color :#8c7e7e ; }
-    
+
     .feed-text {
         font-family: arial ;
         font-size: 11px;
@@ -539,6 +539,24 @@
     }
 
     /* +item page styles */
+
+    #item-page .feeds .item {
+        border-top : 0px ;
+    }
+
+    #item-page .form-table {
+        width:610px;
+    }
+
+    #item-page .form-table textarea {
+        width:100% ;
+        height:60px;
+    }
+
+    .wbg {
+        background-color : white ;
+    }
+
     .item .title {
         color: #222;
         font-size: 19px;
@@ -621,40 +639,6 @@
         padding:7px;
     }
 
-
-    /* item page groups */
-    /*
-    .item-groups {
-        color : #777 ;
-        font-size:14px;
-        line-height:18px;
-    }*/
-
-    /*
-    .item-groups .label {
-        font-weight: bold ;
-        font-size:18px;
-        line-height:18px;
-    }
-
-     .item-link {
-        margin-top:20px;
-    }
-
-    .item-link a:hover {
-       text-decoration:none ;
-    }
-
-    .item-link .big {
-        color: black;
-        font-size: 13px;
-        font-weight:bold;
-    }
-
-    #item-tiles {
-        margin-top:20px;
-    } */
-
     .block{
         border-bottom : 1px solid #E8E7E3;
     }
@@ -695,7 +679,6 @@
     #home-tile h1 {
         margin : 0px 0px 0px 20px;
     }
-
 
     .stack {
         width:210px;
@@ -753,10 +736,9 @@
     }
 
     .feeds .item {
-        padding: 4px;
         width: 100%;
         clear: both;
-        margin-bottom:5px;
+        padding-top:5px;
         border-top: 1px solid #ccc ;
     }
 
@@ -794,9 +776,6 @@
         font-size: 2.9em;
         line-height:32px;
     }
-
-
-
 
     .clicked-tile {
         background-color: #eeeeee ;
