@@ -56,6 +56,10 @@ namespace com\indigloo\sc\html {
             $mainImage = array_shift($images);
             $view->mainImage = self::convertImageJsonObj($mainImage);
 
+            $newd = Util::foldX($mainImage->width,$mainImage->height,550);
+            $view->mainImage["width"] = $newd["width"];
+            $view->mainImage["height"] = $newd["height"];
+
             $thumbnails = array();
 
             foreach($images as $image) {
@@ -73,7 +77,7 @@ namespace com\indigloo\sc\html {
                 $record["twidth"] = $td["width"];
                 $record["theight"] = $td["height"];
                 $thumbnails[] = $record;
-                $count++ ;
+
             }
 
             $view->thumbnails = $thumbnails ;
@@ -84,7 +88,21 @@ namespace com\indigloo\sc\html {
 
         }
 
-        static function getHeader($postView) {
+        static function getHeader($postView,$loginIdInSession) {
+
+            //toolbar stuff
+
+            $postView->followerId = $loginIdInSession;
+            $postView->followingId = $postView->loginId;
+
+            //edit item
+            $postView->isLoggedInUser = false ;
+            if(!is_null($loginIdInSession) && ($loginIdInSession == $postView->loginId)) {
+                $postView->isLoggedInUser = true ;
+                $params = array('id' => $itemId , 'q' => urlencode(Url::current()));
+                $postView->editUrl = Url::createUrl('/qa/edit.php',$params);
+            }
+
             $template = '/fragments/item/header.tmpl' ;
             $html = Template::render($template,$postView);
             return $html;
@@ -195,26 +213,13 @@ namespace com\indigloo\sc\html {
 
         }
 
-        static function getDetail($postView,$links,$siteDBRow,$loginIdInSession) {
+        static function getDetail($postView,$links,$siteDBRow) {
 
             $postView->links = $links ;
             if(!empty($siteDBRow)) {
                 $postView->siteId = $siteDBRow["id"];
                 $postView->siteUrl = $siteDBRow["canonical_url"];
                 $postView->hasSite = true ;
-            }
-
-            //toolbar stuff
-
-            $postView->followerId = $loginIdInSession;
-            $postView->followingId = $postView->loginId;
-
-            //edit item
-            $postView->isLoggedInUser = false ;
-            if(!is_null($loginIdInSession) && ($loginIdInSession == $postView->loginId)) {
-                $postView->isLoggedInUser = true ;
-                $params = array('id' => $itemId , 'q' => urlencode(Url::current()));
-                $postView->editUrl = Url::createUrl('/qa/edit.php',$params);
             }
 
             $html = NULL ;
