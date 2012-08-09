@@ -1,0 +1,31 @@
+
+<div id="gallery">
+    <div class="section">
+        <div class="main-image">
+            <a class="gallery" rel ="group1" href="~~$view->mainImage['source']~" >
+                <img src="~~$view->mainImage['source']~" alt="~~$view->title~" "/>
+            </a>
+        </div>
+    </div>
+
+    <div class="section">
+        &nbsp;
+        ~foreach($view->thumbnails as $image) {~
+            <div class="container">
+                <a class="gallery" rel ="group1" href="~~$image['source']~" >
+                    <img src="~~$image['thumbnail']~" alt="~~$view->title~" />
+                </a>
+            </div>
+        ~}~
+
+        <div class="clear"> </div>
+
+        <div class="zoom-info">
+            <i class="icon-zoom-in"> </i> click to view full size
+        </div>
+
+    </div>
+
+
+</div> <!-- gallery -->
+

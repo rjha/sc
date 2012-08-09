@@ -93,7 +93,7 @@ namespace com\indigloo\sc\controller{
 
             $gWeb = \com\indigloo\core\Web::getInstance();
             $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
-            $loginId = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
+            $loginIdInSession = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
 
             $xids = array();
             $xrows = array();

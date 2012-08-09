@@ -21,6 +21,7 @@
         <div class="floatr">
             <ul class="nav nav-pills">
                 <li> <a href="/">Home</a> </li>
+                <li> <a href="/user/login.php">Login</a> </li>
                 <li class="active"> <a href="<?php echo $qUrl ?>">Back</a> </li>
                 <li> <a href="/site/help.php">Help</a> </li>
                 <li class="divider-vertical"></li>
@@ -37,7 +38,7 @@
                 </li> <!-- About -->
             </ul>
         </div>
-        </div> <!-- span:4 -->
+        </div> <!-- span:6 -->
     </div> <!-- row1 -->
 
     <div class="row">

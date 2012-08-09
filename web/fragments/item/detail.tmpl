@@ -1,0 +1,14 @@
+<div class="item">
+    <div class="section">
+        <p>   ~~$view->description~ </p>
+        ~if(sizeof($view->links) > 0 ) {~
+            <ul>
+            ~foreach($view->links as $link){ ~
+                <li><a href="~~$link~" class="link" target="_blank">~~$link~</a></li>
+            ~}~
+            </ul>
+
+        ~}~
+    </div>
+
+</div>

@@ -1,0 +1,13 @@
+
+<div class="section">
+    <ul>
+        <li> <a class="header" target="_blank" href="~~$view->userPageURI~"> more items by ~~$view->userName~ </a> </li>
+    ~if($view->hasSite) {~
+        <li> <a class="header" target="_blank" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">more items from shop</a> </li>
+    ~}~
+    </ul>
+
+</div> <!-- section:more-links -->
+
+
+

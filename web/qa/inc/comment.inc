@@ -18,7 +18,7 @@
 
         <table class="form-table">
             <tr>
-            <?php if(is_null($loginId)) { ?>
+            <?php if(is_null($loginIdInSession)) { ?>
                 <td> please <a href="<?php echo $loginUrl ?>">login</a> to comment</td>
             <?php } ?>
 

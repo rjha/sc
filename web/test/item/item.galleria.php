@@ -16,7 +16,6 @@
 
         <link rel="canonical" href="<?php echo $itemObj->link; ?>">
         <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="/3p/fancybox/jquery.fancybox-1.3.4.css">
         <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
 
         <!-- opengraph curry -->
@@ -37,7 +36,7 @@
 
     </head>
 
-    <body class="dark-body">
+    <body>
 
         <div class="container mh800">
             <div class="row">
@@ -47,18 +46,23 @@
 
             </div>
 
-
             <div class="row">
-                <div class="span9" style="background-color:white">
+                <div class="span12">
                     <?php
-
                         $options = array();
                         $options["group"] = true ;
                         $postView = \com\indigloo\sc\html\Post::createPostView($postDBRow,$options);
                         echo \com\indigloo\sc\html\Post::getHeader($postView);
+                    ?>
 
-                        echo \com\indigloo\sc\html\Post::getFancybox($itemObj->title,$images);
-                        echo \com\indigloo\sc\html\Post::getDetail($postView,$links,$siteDBRow,$loginIdInSession);
+                </div>
+            </div>
+            <div class="row">
+                <div class="span9">
+                    <?php
+                        echo \com\indigloo\sc\html\Post::getGalleria($itemObj->title,$images);
+                        echo \com\indigloo\sc\html\Post::getDetail($postView,$links,$siteDBRow);
+                        echo \com\indigloo\sc\html\Post::getToolbar($loginIdInSession,$postDBRow['login_id'],$itemId);
 
                         //inject activity tile
                         $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
@@ -76,23 +80,15 @@
                     <div id="tiles">
                         <?php
                         foreach ($xrows as $xrow) {
-                            //echo \com\indigloo\sc\html\Post::getSmallTile($xrow);
+                            echo \com\indigloo\sc\html\Post::getSmallTile($xrow);
                         }
                         ?>
                     </div> <!-- tiles -->
 
 
                 </div>
-                <div class="span3" style="background-color:white;">
-                   <?php echo \com\indigloo\sc\html\Post::getGroups($postView); ?>
+                <div class="span3">
 
-                    <div class="section">
-                        <ul class="unstyled">
-                            <li> <i class="icon-share"></i>&nbsp;<a href="#" id="share-facebook">Share on Facebook</a> </li>
-                            <li> <i class="icon-share"></i>&nbsp;<a href="#" id="share-google">Share on Google+</a> </li>
-                        </ul>
-                    </div>
-                    <?php echo \com\indigloo\sc\html\Post::getMoreLinks($postView); ?>
 
                 </div>
 
@@ -111,7 +107,7 @@
         <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
         <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
         <script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
-        <script type="text/javascript" src="/3p/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+        <script src="/3p/jquery/galleria/galleria-1.2.7.min.js"></script>
 
     <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
 
@@ -120,15 +116,30 @@
         $(document).ready(function(){
 
             webgloo.sc.toolbar.add();
+            webgloo.sc.home.addSmallTiles();
             webgloo.sc.item.addActions();
 
-            $("a.gallery").fancybox();
+            Galleria.loadTheme('/3p/jquery/galleria/themes/classic/galleria.classic.min.js');
+            Galleria.run('#galleria', {
 
-            var $container = $('#tiles');
-            $container.imagesLoaded(function(){
-                $container.masonry({
-                    itemSelector : '.stamp'
-                });
+                extend: function(options) {
+
+
+                    // listen to when an image is shown
+                    this.bind('image', function(e) {
+                        // lets make galleria open a lightbox when clicking the main image:
+                        $(e.imageTarget).click(this.proxy(function() {
+                            this.openLightbox();
+                        }));
+                    });
+                }
+
+
+            });
+
+            $('#play').click(function() {
+                $('#galleria').data('galleria').play();
+
             });
 
             $("#web-form1").validate({
@@ -197,7 +208,6 @@
             });
 
         });
-
     </script>
 
 

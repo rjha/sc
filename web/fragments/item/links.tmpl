@@ -1,0 +1,19 @@
+<div class="item">
+    <div class="section">
+
+        <ul class="unstyled">
+            ~foreach($view->links as $link){ ~
+            <li><a href="~~$link~" class="faded" target="_blank">~~$link~ </a></li>
+
+            ~}~
+        </ul>
+
+
+        ~if($view->hasSite) {~
+            <a class="link" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">view more items from shop</a>
+        ~}~
+
+    </div>
+</div>
+
+

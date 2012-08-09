@@ -1,0 +1,9 @@
+
+<div id="galleria" style="width:640px; height:480px;">
+    ~foreach($view->records as $record) {~
+            <a href="~~$record['source']~" > <img src="~~$record['thumbnail']~" data-big="~~$record['source']~" alt="~~$view->title~"/></a>
+    ~}~
+</div>
+<div>
+    <a href="" id="play">slideshow</a>
+</div>
