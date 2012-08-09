@@ -40,10 +40,10 @@
             #ajax-message .normal {}
             #ajax-message .error { color:red ; }
 
-            #stack { margin-top:40px; }
+            #image-preview { margin-top:40px; }
 
             /* override default stack image padding */
-            div .stackImage { padding: 1px; }
+            #image-preview .container { padding: 1px; }
 
         </style>
 
@@ -101,8 +101,8 @@
             <div id="ajax-message" class="ml20"> </div>
 
             <div class="row">
-                <div id="stack">
-                    <div class="images p10"> </div>
+                <div id="image-preview" class="p20">
+
                 </div>
             </div> <!-- row:2 -->
 

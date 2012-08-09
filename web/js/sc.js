@@ -141,12 +141,12 @@ webgloo.sc.home = {
         $container.imagesLoaded(function(){
             $container.masonry({
                 itemSelector : '.tile',
-                gutterWidth : 10 
+                gutterWidth : 10
             });
 
             //show tile options only after images has been loaded by
             //masonry layout. otherwise on mouse enter we see tile.option toolbar
-            //displayed at top of page 
+            //displayed at top of page
 
             webgloo.sc.home.addTileOptions();
         });
@@ -187,7 +187,7 @@ webgloo.sc.SimplePopup = {
         });
 
     },
-   
+
     close : function() {
         $("#simple-popup #content").html('');
         $("#simple-popup").hide();
@@ -202,7 +202,7 @@ webgloo.sc.SimplePopup = {
         /* show mask */
         var maskHeight = $(document).height();
         var maskWidth = $(window).width();
-     
+
         $("#popup-mask").css({'width':maskWidth,'height':maskHeight});
         $("#popup-mask").show();
 
@@ -213,7 +213,7 @@ webgloo.sc.SimplePopup = {
     addSpinner : function() {
         this.close();
         $("#block-spinner").html('');
-        var content = '<div> Please wait...</div> ' 
+        var content = '<div> Please wait...</div> '
             + '<div> <img src="/css/images/round_loader.gif" alt="loading ..." /> </div>' ;
         $("#block-spinner").html(content);
 
@@ -275,11 +275,11 @@ webgloo.sc.SimplePopup = {
                 g_action_data =  encodeBase64(JSON.stringify(dataObj));
                 //encode for use in URL query string
                 qUrl = encodeURIComponent(window.location.href);
-                webgloo.sc.SimplePopup.gotoUrl = '/user/login.php?q=' 
-                    +qUrl + '&g_session_action=' + g_action_data; 
+                webgloo.sc.SimplePopup.gotoUrl = '/user/login.php?q='
+                    +qUrl + '&g_session_action=' + g_action_data;
 
                 //change spinner message
-                var message = '<div> Redirecting to login page... </div> ' + 
+                var message = '<div> Redirecting to login page... </div> ' +
                     '<div> <img src="/css/images/round_loader.gif" alt="loader" /> </div>' ;
 
                 $("#block-spinner").html(message);
@@ -341,7 +341,7 @@ webgloo.sc.SimplePopup = {
     },
 
     load: function(targetUrl) {
-        
+
             var dataObj = {} ;
             dataObj.endPoint = targetUrl ;
             dataObj.params = {} ;
@@ -603,12 +603,12 @@ webgloo.media = {
 
     },
 
-    imageDiv : '<div class="stackImage" id="image-{id}"> ' 
-        + ' <img src="{srcImage}" class="thumbnail-1" alt="{originalName}" width="{width}" height="{height}"/> '
-        + '<div class="link"> <a class="remove-image" id="{id}" href="">Remove&nbsp;x</a> </div> </div>',
+    imageDiv : '<div class="container" id="image-{id}"> '
+        + ' <img src="{srcImage}" alt="{originalName}" width="{width}" height="{height}"/> '
+        + '<div class="link"> <a class="remove-image" id="{id}" href="">Remove</a> </div> </div>',
 
-    imageDiv2 : '<div class="stackImage" id="image-{id}"><img src="{srcImage}" class="thumbnail-1" /> '
-        + '<div class="link"> <a class="remove-image" id="{id}" href="">Remove&nbsp;x</a> </div> </div>',
+    imageDiv2 : '<div class="container" id="image-{id}"><img src="{srcImage}" /> '
+        + '<div class="link"> <a class="remove-image" id="{id}" href="">Remove</a> </div> </div>',
 
     linkPreviewDIV : '<div class="previewLink">{link}&nbsp;<a class="remove-link" href="{link}">Remove</a></div> ' ,
 
@@ -619,7 +619,7 @@ webgloo.media = {
         if(jQuery.inArray("image",webgloo.media.mode) != -1) {
             var images = new Array() ;
 
-            $("div#image-data").find('a').each(function(index) {
+            $("div#image-preview").find('a').each(function(index) {
                  var imageId = $(this).attr("id");
                  images.push(webgloo.media.images[imageId]);
             });
@@ -631,7 +631,7 @@ webgloo.media = {
         if(jQuery.inArray("link",webgloo.media.mode) != -1) {
             var links = new Array() ;
 
-            $("div#link-data").find('a').each(function(index) {
+            $("div#link-preview").find('a').each(function(index) {
                 links.push($(this).attr("href"));
             });
 
@@ -649,7 +649,7 @@ webgloo.media = {
 
     addLink : function(linkData) {
         var buffer = webgloo.media.linkPreviewDIV.supplant({"link" : linkData});
-        $("#link-data").append(buffer);
+        $("#link-preview").append(buffer);
         //clear out the box
         $("#link-box").val('');
     },
@@ -672,13 +672,13 @@ webgloo.media = {
             case "s3" :
                 mediaVO.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
                 var buffer = webgloo.media.imageDiv.supplant(mediaVO);
-                $("div#image-data").append(buffer);
+                $("div#image-preview").append(buffer);
                 break ;
 
             case "local" :
                 mediaVO.srcImage = '/' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
                 var buffer = webgloo.media.imageDiv.supplant(mediaVO);
-                $("div#image-data").append(buffer);
+                $("div#image-preview").append(buffer);
                 break ;
 
             default:
@@ -705,12 +705,12 @@ webgloo.sc.ImageSelector = {
     uploadEndpoint : "/upload/image.php" ,
     nextEndpoint : "/qa/external/router.php" ,
 
-    imageDiv : '<div id="image-{id}" class="stackImage" >' 
-        + '<div class="options"> <div class="links"> </div> </div>' 
-        + '<img src="{srcImage}" class="thumbnail-1" /> </div>' ,
+    imageDiv : '<div id="image-{id}" class="container" >'
+        + '<div class="options"> <div class="links"> </div> </div>'
+        + '<img src="{srcImage}" /> </div>' ,
 
     addLink : '<a id="{id}" class="btn btn-mini add-image" href="">Select</a>' ,
-    removeLink : '<i class="icon-ok"></i>&nbsp;&nbsp;'  
+    removeLink : '<i class="icon-ok"></i>&nbsp;&nbsp;'
         + '<a id="{id}" class="btn btn-mini remove-image" href="">Remove</a>' ,
 
     init:function() {
@@ -728,8 +728,8 @@ webgloo.sc.ImageSelector = {
 
     attachEvents : function() {
 
-        $('.stackImage .options').hide();
-        $('#stack').hide();
+        $('#image-preview .container .options').hide();
+        $('#image-preview').hide();
         $('#step2-container').hide();
 
         $("#fetch-button").live("click", function(event){
@@ -756,7 +756,7 @@ webgloo.sc.ImageSelector = {
             }
 
         });
-        
+
         $('#next-button').live("click",function() {
 
             //initialize
@@ -776,19 +776,19 @@ webgloo.sc.ImageSelector = {
             } else {
 
                 var tmpl = "uploading {total} images " ;
-                var message = tmpl.supplant({"total" : webgloo.sc.ImageSelector.num_selected}); 
+                var message = tmpl.supplant({"total" : webgloo.sc.ImageSelector.num_selected});
                 webgloo.sc.ImageSelector.appendMessage(message,{});
 
                 var spinner = '<div> <img src="/css/images/fb_loader.gif" alt="spinner"/></div>' ;
                 webgloo.sc.ImageSelector.appendMessage(spinner,{});
 
-                $("#stack .images").find('.stackImage').each(function(index) {
+                $("#image-preview").find('.container').each(function(index) {
 
                     var imageId = $(this).attr("id") ,
-                    ids = imageId.split('-') , 
+                    ids = imageId.split('-') ,
                     realId = ids[1] ,
                     imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
-                    
+
 
                     if(imageObj.selected) {
 
@@ -838,31 +838,31 @@ webgloo.sc.ImageSelector = {
 
         });
 
-        $('.stackImage').live("mouseenter",function() {
+        $('#image-preview .container').live("mouseenter",function() {
             //will get image-1, image-2 etc.
             var imageId = $(this).attr("id");
-            //will split into image and 1 
-            var ids = imageId.split('-'); 
+            //will split into image and 1
+            var ids = imageId.split('-');
             var realId = ids[1] ;
             imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
-            
+
             if(!imageObj.selected) {
-                // show select button 
+                // show select button
                 var buffer = webgloo.sc.ImageSelector.addLink.supplant({"id": realId } );
                 $(this).find(".options .links").html(buffer);
-            } 
+            }
 
             $(this).find(".options").show();
         });
 
-        $('.stackImage').live("mouseleave", function() {
+        $('#image-preview .container').live("mouseleave", function() {
             //will get image-1, image-2 etc.
             var imageId = $(this).attr("id");
-            //will split into image and 1 
-            var ids = imageId.split('-'); 
+            //will split into image and 1
+            var ids = imageId.split('-');
             var realId = ids[1] ;
             imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
-            
+
             //if this image is selected?
             if(!imageObj.selected) {
                 $(this).find(".options").hide();
@@ -876,7 +876,7 @@ webgloo.sc.ImageSelector = {
             var imageId = "#image-" + realId ;
 
             imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
-            //change selected state for imageObj 
+            //change selected state for imageObj
             imageObj.selected = true ;
             webgloo.sc.ImageSelector.bucket.realId = imageObj ;
             webgloo.sc.ImageSelector.num_selected++ ;
@@ -893,7 +893,7 @@ webgloo.sc.ImageSelector = {
             var imageId = "#image-" + realId ;
 
             imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
-            //change selected state for imageObj 
+            //change selected state for imageObj
             imageObj.selected = false ;
             webgloo.sc.ImageSelector.bucket.realId = imageObj ;
             webgloo.sc.ImageSelector.num_selected-- ;
@@ -901,7 +901,7 @@ webgloo.sc.ImageSelector = {
          });
 
     },
-    
+
     appendMessage : function(message) {
         $("#ajax-message").append('<div class="normal"> ' + message + '</div>');
         $("#ajax-message").show();
@@ -944,7 +944,7 @@ webgloo.sc.ImageSelector = {
     showNextButton : function() {
 
         if(webgloo.sc.ImageSelector.debug) {
-            console.log("show_next_button with num_added= " + webgloo.sc.ImageSelector.num_added); 
+            console.log("show_next_button with num_added= " + webgloo.sc.ImageSelector.num_added);
         }
 
         if(webgloo.sc.ImageSelector.num_added > 0 ) {
@@ -967,7 +967,7 @@ webgloo.sc.ImageSelector = {
         var buffer = this.imageDiv.supplant({"srcImage":image, "id":index } );
         //logo, small icons etc. are first images in a page
         // what we are interested in will only come later.
-        $("div#stack .images").prepend(buffer);
+        $("#image-preview").prepend(buffer);
 
         this.bucket[index] = { "id":index, "srcImage": image, "selected" : false} ;
         webgloo.sc.ImageSelector.num_added++ ;
@@ -984,7 +984,7 @@ webgloo.sc.ImageSelector = {
 
         for(i = 0 ; i < images.length ; i++) {
             var img = new Image();
-            
+
             // @warning closure inside a loop
             // do not use outer function variables.
             img.onload = function() {
@@ -1019,7 +1019,7 @@ webgloo.sc.ImageSelector = {
             img.src = images[i] ;
         }
 
-        $("#stack").fadeIn("slow");
+        $("#image-preview").fadeIn("slow");
 
     },
 
@@ -1033,8 +1033,8 @@ webgloo.sc.ImageSelector = {
         webgloo.sc.ImageSelector.appendMessage(message,{});
         webgloo.sc.ImageSelector.appendMessage(spinner,{});
 
-        $("#stack").fadeOut("slow");
-        $("#stack .images").html('');
+        $("#image-preview").fadeOut("slow");
+        $("#image-preview").html('');
 
         endPoint = webgloo.sc.ImageSelector.extractEndpoint ;
         params = {} ;
@@ -1052,7 +1052,7 @@ webgloo.sc.ImageSelector = {
                 webgloo.sc.ImageSelector.showError(response);
             },
 
-            // server script errors are also reported inside 
+            // server script errors are also reported inside
             // ajax success callback
             success: function(response){
                 if(webgloo.sc.ImageSelector.debug) {

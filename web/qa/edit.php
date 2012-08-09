@@ -179,8 +179,8 @@
 
                         </table>
 
-                        <div id="link-data"> </div>
-                        <div id="image-data"> </div>
+                        <div id="link-preview"> </div>
+                        <div id="image-preview"> </div>
 
                         <input type="hidden" name="links_json" value='<?php echo $strLinksJson ; ?>' />
                         <input type="hidden" name="images_json" value='<?php echo $strImagesJson ; ?>' />

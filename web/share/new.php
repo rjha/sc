@@ -152,8 +152,8 @@
 
                         </table>
 
-                        <div id="link-data"> </div>
-                        <div id="image-data"> </div>
+                        <div id="link-preview"> </div>
+                        <div id="image-preview"> </div>
 
                         <!-- put json data in single quotes to avoid interpreting double quotes -->
                         <input type="hidden" name="links_json" value='<?php echo $strLinksJson ; ?>' />

@@ -294,12 +294,12 @@
         display:none ;
     }
 
-    #link-data {
+    #link-preview {
         margin-top:5px;
         margin-bottom :5px;
     }
 
-    div .stackImage{
+    #image-preview .container{
        position :relative ;
        float : left;
        padding:7px;
@@ -310,7 +310,7 @@
        margin :4px;
     }
 
-    .thumbnail-1 {
+     #image-preview .container img {
         width: auto;
         height: auto;
         max-width: 180px;
@@ -319,24 +319,42 @@
         padding:5px;
     }
 
-    div .stackImage .link {
+    #image-preview .container .link {
         position:absolute ;
         left :60px;
         bottom : 3px ;
     }
 
-    div .previewLink{
-        padding:5px;
-        width:500px;
+    #image-preview .container .link a{
+        font-size:10px;
+        line-height: 1.8 ;
+        color: #444 ;
+        text-decoration: underline ;
     }
 
-    .highlight {
-        padding:10px;
-        background-color:#FFF1A8;
+     #image-preview .container .options {
+        position:absolute ;
+        overflow:hidden ;
+        z-index:100;
+        display:none ;
+        /* background-color: white; */
+        /* @see http://0to255.com/ to get matching color */
+        background-color: #F7F7F7;
+        margin:0px;
+        padding:0px 0px 0px 0px;
+        height:36px;
+        width:100%;
     }
 
+     #image-preview .container .options .links {
+        padding : 5px 5px 5px 60px;
+        font-size:11px;
+        line-height:16px;
+    }
 
-
+     #image-preview .container .options .links a {
+        color : black;
+    }
 
     /* + homepage tiles */
     div #tiles{
@@ -519,17 +537,80 @@
         line-height:16px;
     }
 
+    .section {
+        min-height: 20px;
+        padding:15px 20px 15px 0px;
+        margin-bottom:10px;
+        margin-top:10px;
+        /* background-color: whiteSmoke; */
+        border-top:1px solid rgba(0,0,0,0.05);
+        /* border-bottom:1px solid rgba(0,0,0,0.05); */
+        /* border-radius: 4px; */
+        /* box-shadow: inset 0 1px 1px rgba(0,0,0,0.05); */
+    }
+
+    .section .wrapper {
+        margin-top: 10px;
+        margin-left: 20px;
+    }
+
+    .section .wrapper:last-child {
+
+    }
+
+    .section .stack {
+        border-left:1px solid #ccc ;
+        padding-left:10px;
+    }
+
+    .section .stack:first-child {
+        border-left:0px ;
+        padding-left:1px;
+    }
+
+    .section .stack .header{
+        color: #222;
+        color: #8c7e7e ;
+        font-size: 19px;
+        font-weight:bold;
+    }
+
+    .faded {
+        color: #8c7e7e ;
+    }
+
+
     /* item page groups */
+    /*
     .item-groups {
         color : #777 ;
         font-size:14px;
         line-height:18px;
-    }
+    }*/
 
+    /*
     .item-groups .label {
         font-weight: bold ;
         font-size:18px;
         line-height:18px;
+    }
+
+     .item-link {
+        margin-top:20px;
+    }
+
+    .item-link a:hover {
+       text-decoration:none ;
+    }
+
+    .item-link .big {
+        color: black;
+        font-size: 13px;
+        font-weight:bold;
+    } */
+
+    #item-tiles {
+        margin-top:20px;
     }
 
     .block{
@@ -578,31 +659,30 @@
         padding:0px;
         margin-bottom :10px;
         margin-top :10px;
+
+
     }
 
-    #gallery img {
-        padding:5px;
-        background: white;
+    #gallery .container {
+
+        width:210px;
+        height:160px;
+        margin:4px;
+        float :left ;
+        cursor: pointer;
+        vertical-align: baseline ;
+        background: #f7f7f7;
         /* border: 1px solid #BBB; */
         box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
     }
 
-    .item-link {
-        margin-top:20px;
-    }
-
-    .item-link a:hover {
-       text-decoration:none ;
-    }
-
-    .item-link .big {
-        color: black;
-        font-size: 13px;
-        font-weight:bold;
-    }
-
-    #item-tiles {
-        margin-top:20px;
+    #gallery .container img {
+        width: auto;
+        height: auto;
+        max-width: 200px;
+        max-height: 150px;
+        margin-bottom : 5px;
+        padding:5px;
     }
 
     .stack {
@@ -703,29 +783,8 @@
         line-height:32px;
     }
 
-    .stackImage .options {
-        position:absolute ;
-        overflow:hidden ;
-        z-index:100;
-        display:none ;
-        /* background-color: white; */
-        /* @see http://0to255.com/ to get matching color */
-        background-color: #F7F7F7;
-        margin:0px;
-        padding:0px 0px 0px 0px;
-        height:36px;
-        width:100%;
-    }
 
-    .stackImage .options .links {
-        padding : 5px 5px 5px 60px;
-        font-size:11px;
-        line-height:16px;
-    }
 
-    .stackImage .options .links a {
-        color : black;
-    }
 
     .clicked-tile {
         background-color: #eeeeee ;
