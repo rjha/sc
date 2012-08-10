@@ -25,23 +25,6 @@
     a img { border: 0; }
     form { margin: 0; padding: 0; }
 
-    h1, h2, h3, h4, h5, h6 {
-        font-weight: normal;
-        margin: 5px 0px 5px 0px;
-        padding: 0px;
-    }
-
-    input, select, textarea {
-        font-family: inherit;
-        font-size: inherit;
-        /* margin: 0; */
-    }
-
-    p {
-        margin: 0 0 1em 0;
-        padding: 0;
-    }
-
 
     /* + Common classes */
 
@@ -307,7 +290,6 @@
        padding:7px;
        height:160px;
        width:190px;
-       /* border:1px solid #DDD ; */
        box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
        margin :4px;
     }
@@ -339,7 +321,6 @@
         overflow:hidden ;
         z-index:100;
         display:none ;
-        /* background-color: white; */
         /* @see http://0to255.com/ to get matching color */
         background-color: #F7F7F7;
         margin:0px;
@@ -358,7 +339,7 @@
         color : black;
     }
 
-    /* + homepage tiles */
+    /* + Homepage tiles */
     div #tiles{
         background : url(images/wash-white-30.png);
     }
@@ -407,13 +388,7 @@
         margin :0px;
     }
 
-    /*
-    .tile .feeds .item {
-        border-top :0px;
-        border-bottom :0px;
-    } */
-
-    /* smaller tile */
+    /* smaller tile on item page */
 
     .stamp {
         width:110px;
@@ -421,8 +396,9 @@
         float:left ;
         padding:4px;
         background-color: #fff;
+        border:1px solid #eee ;
         /* bigger shadow because we have white backgorund on item page */
-        box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
+       /*  box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4); */
     }
 
     .stamp .photo {
@@ -434,25 +410,7 @@
         margin :0px;
     }
 
-    .author{
-        padding: 7px 0px 7px 0px ;
-        font-size : 12px;
-    }
-    .author img {
-        float:left;
-        padding:0px 10px 0px 0px;
-    }
-
-    .author .meta {
-        padding:0px;
-        margin:0px;
-    }
-
-    .beta {
-        vertical-align: sub ;
-        font-size:11px;
-    }
-
+    /* +vertical feedback link on pages */
     .vertical{
         width:1em;
         text-transform:uppercase;
@@ -577,8 +535,13 @@
         font-weight : bold ;
     }
 
-    .item .link{
-        
+    /* simulate blockquote style */
+    .item .quote {
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-left: 4px solid #eee;
+        padding-left: 20px;
+
     }
 
     .item .toolbar {
@@ -632,10 +595,6 @@
 
     #gallery .zoom-info {
         padding-top:10px;
-    }
-
-    #gallery .main-image {
-        /* text-align : center ; */
     }
 
     #gallery .main-image img{
@@ -759,7 +718,7 @@
     }
 
     .feeds .item .photo {
-        /* padding: 10px; */
+
     }
 
     .feeds .item img {
@@ -795,9 +754,7 @@
     /* +site toolbar and popups */
 
     #site-search{
-        /* margin-top:5px; */
-        height:20px;
-        /* width:280px; */
+       height:20px;
     }
 
     #site-toolbar { z-index:1 ;}
@@ -805,7 +762,6 @@
 
     #site-toolbar a {
         font-weight : bold ;
-        /* color: white ; */
     }
 
     #site-toolbar a.brand:hover {
@@ -834,10 +790,11 @@
     #site-toolbar .nav-learn-more {
         color:#333 ;
         vertical-align:text-bottom;
-        /* background:#FD9A0F ; */
+
     }
 
-      /* + simple popup */
+   /* + simple popup */
+
     #simple-popup {
         position: fixed;
         width: 600px;
@@ -965,6 +922,8 @@
         border-radius: 10px;
     }
 
+    /* bootstrap accordion image for site help */
+    
     .accordion-inner img {
         border:1px solid #ddd ;
         padding:8px;
