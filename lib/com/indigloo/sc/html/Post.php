@@ -132,7 +132,7 @@ namespace com\indigloo\sc\html {
                 $view->hasSite = true ;
             }
 
-            $template = '/fragments/item/link.tmpl' ;
+            $template = '/fragments/item/links.tmpl' ;
             $html = Template::render($template,$view);
             return $html;
         }
@@ -213,14 +213,9 @@ namespace com\indigloo\sc\html {
 
         }
 
-        static function getDetail($postView,$links,$siteDBRow) {
+        static function getDetail($postView,$links) {
 
             $postView->links = $links ;
-            if(!empty($siteDBRow)) {
-                $postView->siteId = $siteDBRow["id"];
-                $postView->siteUrl = $siteDBRow["canonical_url"];
-                $postView->hasSite = true ;
-            }
 
             $html = NULL ;
             $template = '/fragments/item/detail.tmpl' ;
@@ -237,8 +232,15 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        static function getMoreLinks($postView) {
+        static function getMoreLinks($postView,$siteDBRow) {
             $html = NULL ;
+
+            if(!empty($siteDBRow)) {
+                $postView->siteId = $siteDBRow["id"];
+                $postView->siteUrl = $siteDBRow["canonical_url"];
+                $postView->hasSite = true ;
+            }
+
             $template = '/fragments/item/more-links.tmpl' ;
             $html = Template::render($template,$postView);
             return $html ;
