@@ -97,7 +97,9 @@
             
             <div class="row">
                 <div class="span12">
-                    <div class="page-header"> &nbsp; </div>
+                    <div class="page-header"> 
+                        <a href="/user/register.php">Register for a new 3mik account</a>&nbsp;(&nbsp;Free and takes only 30 seconds! )
+                    </div>
                     <div class="p10"> <?php FormMessage::render(); ?> </div>
                 </div>
             </div> <!-- row -->
@@ -106,7 +108,6 @@
                 <div class="span7">
                   <div id="mik-login-wrapper">
                    <h3> Login with 3mik account </h3>
-                        <a href="/user/register.php"> Register for a new 3mik account</a> (Free and takes just 30 seconds!)
 
                         <form id="web-form1"  name="web-form1" action="/user/form/login.php" method="POST">
                             <div class="error">    </div>
@@ -144,27 +145,19 @@
                     </form>
                    </div>
 
-                </div> <!-- span51 -->
-                <div class="span4 social-buttons p20">
-                    <div class="row">
-                       <h3> - OR - </h3>
-                    </div> <!-- row1 -->
-                    <div class="row">
-                        <div class="zocial facebook mt10">
-                               <a href="<?php echo $fbDialogUrl; ?>">Login with Facebook</a>
-                        </div>
-                    </div> <!-- row2 -->
+                </div> <!-- span5 -->
 
-                    <div class="row">
-                        <div class="zocial google mt10">
-                            <a href="<?php echo $googleAuthUrl; ?>">Login with Google</a>&nbsp;&nbsp;
-                        </div>
-                    </div> <!-- row3 -->
-                     <div class="row">
-                        <div class="zocial twitter mt10">
-                            <a href="/user/twitter-login.php">Login with Twitter</a>&nbsp;
-                        </div>
-                    </div> <!-- row3 -->
+                <div class="span4 social-buttons p20">
+                    <h3> - OR - </h3>
+                    <div class="section1">
+                        <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Login with Facebook</a>
+                    </div>
+                    <div class="section">
+                        <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Login with Google</a>&nbsp;&nbsp;
+                    </div>
+                    <div class="section">
+                        <a class="zocial twitter" href="/user/twitter-login.php">Login with Twitter</a>&nbsp;
+                    </div>
 
                 </div> <!-- span4 -->
             </div> <!-- row -->
