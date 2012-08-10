@@ -214,7 +214,7 @@ webgloo.sc.SimplePopup = {
         this.close();
         $("#block-spinner").html('');
         var content = '<div> Please wait...</div> '
-            + '<div> <img src="/css/images/round_loader.gif" alt="loading ..." /> </div>' ;
+            + '<div> <img src="/css/asset/sc/round_loader.gif" alt="loading ..." /> </div>' ;
         $("#block-spinner").html(content);
 
         /* show mask */
@@ -280,7 +280,7 @@ webgloo.sc.SimplePopup = {
 
                 //change spinner message
                 var message = '<div> Redirecting to login page... </div> ' +
-                    '<div> <img src="/css/images/round_loader.gif" alt="loader" /> </div>' ;
+                    '<div> <img src="/css/asset/sc/round_loader.gif" alt="loader" /> </div>' ;
 
                 $("#block-spinner").html(message);
                 window.setTimeout(this.redirect,3000);
@@ -779,7 +779,7 @@ webgloo.sc.ImageSelector = {
                 var message = tmpl.supplant({"total" : webgloo.sc.ImageSelector.num_selected});
                 webgloo.sc.ImageSelector.appendMessage(message,{});
 
-                var spinner = '<div> <img src="/css/images/fb_loader.gif" alt="spinner"/></div>' ;
+                var spinner = '<div> <img src="/css/asset/sc/fb_loader.gif" alt="spinner"/></div>' ;
                 webgloo.sc.ImageSelector.appendMessage(spinner,{});
 
                 $("#image-preview").find('.container').each(function(index) {
@@ -1027,7 +1027,7 @@ webgloo.sc.ImageSelector = {
 
         webgloo.sc.ImageSelector.init();
         var message = "fetching images from webpage..." ;
-        var spinner = '<div> <img src="/css/images/fb_loader.gif" alt="spinner"/></div>' ;
+        var spinner = '<div> <img src="/css/asset/sc/fb_loader.gif" alt="spinner"/></div>' ;
 
         webgloo.sc.ImageSelector.clearMessage();
         webgloo.sc.ImageSelector.appendMessage(message,{});

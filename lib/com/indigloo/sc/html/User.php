@@ -50,7 +50,7 @@ namespace com\indigloo\sc\html {
             $view->aboutMe = $userDBRow['about_me'];
             $view->photoUrl = $userDBRow['photo_url'];
             if(empty($view->photoUrl)) {
-                $view->photoUrl = '/css/images/twitter-icon.png' ;
+                $view->photoUrl = '/css/asset/sc/twitter-icon.png' ;
             }
 
             $loginId = $userDBRow['login_id'];
@@ -75,7 +75,7 @@ namespace com\indigloo\sc\html {
             $view->name = $name;
             $view->photoUrl = $photoUrl;
             if(empty($view->photoUrl)) {
-                $view->photoUrl = '/css/images/twitter-icon.png' ;
+                $view->photoUrl = '/css/asset/sc/twitter-icon.png' ;
             }
 
             $html = Template::render($template,$view);
@@ -117,7 +117,7 @@ namespace com\indigloo\sc\html {
             $data['photo_url'] = $userDBRow['photo_url'];
 
             if(empty($data['photo_url'])) {
-                $data['photo_url'] = '/css/images/twitter-icon.png' ;
+                $data['photo_url'] = '/css/asset/sc/twitter-icon.png' ;
             }
 
             if($total > 0 ) {

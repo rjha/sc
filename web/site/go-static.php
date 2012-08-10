@@ -30,7 +30,7 @@
                         <div>
                             <blockquote class="pull-right">
                                 <span class="comment-text"> Redirecting. Just a moment please </span>
-                                <span> <img src="/css/images/fb_loader.gif" alt="ajax loader" /></span>
+                                <span> <img src="/css/asset/sc/fb_loader.gif" alt="ajax loader" /></span>
                                 <small>Click &quot;<?php echo $goText; ?>&quot; button if you do not want to wait.</small>
                             </blockquote>
                         </div>

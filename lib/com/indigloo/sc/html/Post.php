@@ -234,6 +234,7 @@ namespace com\indigloo\sc\html {
 
         static function getMoreLinks($postView,$siteDBRow) {
             $html = NULL ;
+            $postView->hasSite = false ;
 
             if(!empty($siteDBRow)) {
                 $postView->siteId = $siteDBRow["id"];
@@ -401,8 +402,8 @@ namespace com\indigloo\sc\html {
             } else {
                 $imgv["name"] = "placeholder" ;
                 $imgv["tname"] = "placeholder" ;
-                $imgv["source"] = "/css/images/twitter-icon.png" ;
-                $imgv["thumbnail"] = "/css/images/twitter-icon.png" ;
+                $imgv["source"] = "/css/asset/sc/twitter-icon.png" ;
+                $imgv["thumbnail"] = "/css/asset/sc/twitter-icon.png" ;
                 $imgv["width"] = 48;
                 $imgv["height"] = 48;
                 $imgv["twidth"] = 40;

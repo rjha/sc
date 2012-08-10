@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="p20">
-                        <img src="/css/images/fb_loader.gif" alt="ajax loader" />
+                        <img src="/css/asset/sc/fb_loader.gif" alt="ajax loader" />
                     </div>
 
                     <div class="well">

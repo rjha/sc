@@ -19,7 +19,7 @@
         background-color:white  ;
     }
 
-    .dark-body { background : #f1f1f1 url(images/paper-bg2.jpg); }
+    .dark-body { background : #f1f1f1 url(/css/asset/sc/paper-bg2.jpg); }
 
     a:hover { text-decoration:none ; }
     a img { border: 0; }
@@ -341,7 +341,7 @@
 
     /* + Homepage tiles */
     div #tiles{
-        background : url(images/wash-white-30.png);
+        background : url(/css/asset/sc/wash-white-30.png);
     }
 
     .tile {
@@ -447,7 +447,8 @@
 
     #mik-login-wrapper {
         padding:20px;
-        border-right:1px solid black;
+        /* border-right:1px solid black; */
+        box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
     }
 
     .group-panel {
@@ -541,6 +542,7 @@
         padding-bottom: 10px;
         border-left: 4px solid #eee;
         padding-left: 20px;
+        overflow: hidden ;
 
     }
 
@@ -757,6 +759,12 @@
        height:20px;
     }
 
+    /* beta next to brand */
+    .beta {
+        vertical-align: sub ;
+        font-size:11px;
+    }
+
     #site-toolbar { z-index:1 ;}
     #site-toolbar a { margin-top:10px; }
 
@@ -923,7 +931,7 @@
     }
 
     /* bootstrap accordion image for site help */
-    
+
     .accordion-inner img {
         border:1px solid #ddd ;
         padding:8px;

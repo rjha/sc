@@ -39,7 +39,7 @@
                 <!-- collage -->
                     <div>
                         <div class="photo">
-                            <img src="/css/images/about-collage.jpg" />
+                            <img src="/css/asset/sc/about-collage.jpg" />
 
                         </div>
 

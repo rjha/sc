@@ -103,7 +103,7 @@
 
                         loading : {
                             selector : "#scroll-loading",
-                            img : "/css/images/round_loader.gif",
+                            img : "/css/asset/sc/round_loader.gif",
                             msgText: "<em>Please wait. Loading more items...</em>",
                             finishedMsg : "<b> You have reached the end of this page </b>",
                             speed: "slow"
