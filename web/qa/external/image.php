@@ -32,7 +32,7 @@
         <style>
             /*@todo move page specific styles to css file */
             #step1-container { margin-top:10px; padding:10px; }
-            #step2-container { margin-top:10px; padding:10px; border-left:1px solid #f7f7f7;}
+            #step2-container { margin-top:10px; padding:10px; border-left:6px solid #eee;}
 
             #link-box {width:280px; }
             #fetch-button {width:60px; height:28px; margin-bottom:10px;}
@@ -59,7 +59,6 @@
                 </div>
             </div>
 
-            <div class="hr"> </div>
             <?php FormMessage::render(); ?>
 
             <div class="row">
@@ -97,8 +96,7 @@
 
             </div><!-- row:1 -->
 
-            <div class="hr"> </div>
-            <div id="ajax-message" class="ml20"> </div>
+            <div id="ajax-message" class="ml20 mt20"> </div>
 
             <div class="row">
                 <div id="image-preview" class="p20">
