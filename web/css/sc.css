@@ -577,8 +577,8 @@
         font-weight : bold ;
     }
 
-    .item .link {
-
+    .item .link{
+        
     }
 
     .item .toolbar {
@@ -971,6 +971,7 @@
         background: #eee ;
         box-shadow: 0 1px 7px rgba(34, 25, 25, 0.4);
     }
+
     /* last section - override bootstrap css */
     .page-header {
         padding-bottom: 7px;
@@ -989,3 +990,8 @@
         border-top : none ;
     }
 
+    /* last section: override zocial */
+    /* @see https://github.com/samcollins/css-social-buttons/issues/19 */
+    .zocial {
+        white-space: nowrap;
+    }

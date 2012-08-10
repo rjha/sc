@@ -31,6 +31,6 @@
        <input type="hidden" name="fUrl" value="<?php echo $_SERVER['REQUEST_URI']; ?>" />
 
     </form>
-    </div> <!-- comment wrapper -->
+    </div> <!-- section:comment -->
 
 
