@@ -61,7 +61,7 @@
                         echo \com\indigloo\sc\html\Post::getHeader($postView,$loginIdInSession);
 
                         echo \com\indigloo\sc\html\Post::getFancybox($itemObj->title,$images);
-                        echo \com\indigloo\sc\html\Post::getDetail($postView,$links,$siteDBRow);
+                        echo \com\indigloo\sc\html\Post::getDetail($postView,$links);
 
                         //inject activity tile
                         $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
@@ -76,14 +76,22 @@
                     ?>
                     </div>
                     <div class="section">
-                        <h3> Explore 3mik </h3>
-                        <div id="tiles">
-                            <?php
-                            foreach ($xrows as $xrow) {
-                                echo \com\indigloo\sc\html\Post::getSmallTile($xrow);
-                            }
-                            ?>
-                        </div> <!-- tiles -->
+
+                        <?php echo \com\indigloo\sc\html\Post::getMoreLinks($postView,$siteDBRow); ?>
+                        <div class="mt20">
+                            <blockquote>
+                                 <span class="faded-text"> Related items</span>
+                            </blockquote>
+
+
+                            <div id="tiles">
+                                <?php
+                                foreach ($xrows as $xrow) {
+                                    echo \com\indigloo\sc\html\Post::getSmallTile($xrow);
+                                }
+                                ?>
+                            </div> <!-- item:tiles -->
+                        </div>
                     </div>
 
 
@@ -91,7 +99,6 @@
                 <div class="span3 wbg">
 
                     <?php echo \com\indigloo\sc\html\Post::getGroups($postView); ?>
-                    <?php echo \com\indigloo\sc\html\Post::getMoreLinks($postView); ?>
 
                     <div class="section social-buttons">
                         <div class="pb10">

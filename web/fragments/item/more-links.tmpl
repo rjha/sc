@@ -1,13 +1,22 @@
 
-<div class="section">
-    <ul>
-        <li> <a class="faded-text" target="_blank" href="~~$view->userPageURI~">more items by ~~$view->userName~</a> </li>
-    ~if($view->hasSite) {~
-        <li> <a class="faded-text" target="_blank" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">more items from shop&nbsp;&rarr;</a> </li>
-    ~}~
-    </ul>
+<div class="item">
+    <div class="quote">
+        <a target="_blank" href="~~$view->userPageURI~">
+            <span class="faded-text"> see more items by user</span>
+            <br>
+            <span class="title">~~$view->userName~</span>
+         </a>
+    </div>
+    <div class="quote">
+        <a target="_blank" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">
+            <span class="faded-text"> see more items from shop</span>
+            <br>
+            <span class="title">~~$view->siteUrl~</span>
+         </a>
+    </div>
 
-</div> <!-- section:more-links -->
+    <div class="clear"> </div>
+</div>
 
 
 
