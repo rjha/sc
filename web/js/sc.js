@@ -1,7 +1,7 @@
 
 /* + useful methods */
 
-/* @see http://javascript.crockford.com/remedial.html for supplant */
+/* also see http://javascript.crockford.com/remedial.html for supplant */
 
 String.prototype.supplant = function (o) {
     return this.replace(/{([^{}]*)}/g,
@@ -13,7 +13,7 @@ String.prototype.supplant = function (o) {
 
 
 /* JSON support for old browsers */
-/* @see  https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/JSON  */
+/* also see  https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/JSON  */
 
 if (!window.JSON) {
     console.log("Old browser using imitation of native JSON object");
@@ -42,8 +42,8 @@ if (!window.JSON) {
 
 /*
  * Base64 encoding in javascript *
- * @see http://my.opera.com/Lex1/blog/fast-base64-encoding-and-test-results
- * @see https://github.com/operasoftware/
+ * also see http://my.opera.com/Lex1/blog/fast-base64-encoding-and-test-results
+ * also see https://github.com/operasoftware/
  *
  */
 
@@ -168,7 +168,7 @@ webgloo.sc.home = {
                 itemSelector : '.stamp'
             });
         });
-    },
+    }
 
 }
 
