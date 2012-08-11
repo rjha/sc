@@ -4,16 +4,7 @@
        <head>
         <title> <?php echo $title; ?> </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-
-        <script>
-            window.setTimeout(function() {window.location.href = '<?php echo $goUrl; ?>'; }, 5000);
-        </script>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
     </head>
 
@@ -52,6 +43,14 @@
 
             </div>
         </div> <!-- container -->
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+        <script>
+            webgloo.sc.toolbar.add();
+            window.setTimeout(function() {window.location.href = '<?php echo $goUrl; ?>'; }, 5000);
+        </script>
+
 
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

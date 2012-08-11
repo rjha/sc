@@ -11,9 +11,7 @@
     <head>
         <title> Help about 3mik </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
     </head>
 
@@ -26,7 +24,7 @@
             </div>
             <div class="row">
                 <div class="span11">
-                <div class="page-header"> <h2> Help about 3mik </h2> </div> 
+                <div class="page-header"> <h2> Help about 3mik </h2> </div>
                     <div class="accordion" id="accordion2">
                         <!-- items -->
                         <div class="accordion-group">
@@ -40,7 +38,7 @@
 
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                         </div> <!-- item:1 -->
 
                         <div class="accordion-group">
@@ -59,7 +57,7 @@ Share a webpage by entering a URL and selecting images that you wish to share. E
 
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                         </div> <!-- item:2 -->
                         <div class="accordion-group">
                             <div class="accordion-heading">
@@ -69,11 +67,11 @@ Share a webpage by entering a URL and selecting images that you wish to share. E
                                 <div class="accordion-inner">
                                     <div> <img src="/site/images/help/item-edit-save.png" alt="item edit" /> </div>
                                     <div class="p20 comment-text">
-                                Editing an item requires login. Please login into 3mik. You can go to the item page and click on the "Edit item" link. You can also click on your name in the toolbar and select Account  | Posts. There you can select a post to edit or delete it. 
+                                Editing an item requires login. Please login into 3mik. You can go to the item page and click on the "Edit item" link. You can also click on your name in the toolbar and select Account  | Posts. There you can select a post to edit or delete it.
                                     </div>
                                     <div> <img src="/site/images/help/toolbar-account.png" alt="toolbar account" /> </div>
                                 </div>
-                            </div> 
+                            </div>
                         </div> <!-- item:3 -->
                         <div class="accordion-group">
                             <div class="accordion-heading">
@@ -87,7 +85,7 @@ Share a webpage by entering a URL and selecting images that you wish to share. E
 sharing your items on Facebook and Google+.
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                         </div> <!-- item:4 -->
 
                         <div class="accordion-group">
@@ -98,10 +96,10 @@ sharing your items on Facebook and Google+.
                                 <div class="accordion-inner">
                                     <div> <img src="/site/images/help/item-save.png" alt="item save" /> </div>
                                     <div class="p20 comment-text">
-                                You can click the favorite button on an item on home page and search results. You can also favorite the item on item details page. All the items you favorite will appear on your account page.  
+                                You can click the favorite button on an item on home page and search results. You can also favorite the item on item details page. All the items you favorite will appear on your account page.
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                         </div> <!-- item:5 -->
 
                          <div class="accordion-group">
@@ -112,10 +110,10 @@ sharing your items on Facebook and Google+.
                                 <div class="accordion-inner">
                                     <div> <img src="/site/images/help/toolbar-account.png" alt="toolbar account" /> </div>
                                     <div class="p20 comment-text">
-                                    Please login into 3mik. The toolbar will show you a link with your name. Please click your name in toolbar and select Account. Your account page showing your posts, comments and followers will open. You can edit or delete your posts on your account page.  
+                                    Please login into 3mik. The toolbar will show you a link with your name. Please click your name in toolbar and select Account. Your account page showing your posts, comments and followers will open. You can edit or delete your posts on your account page.
                                      </div>
                                 </div>
-                            </div> 
+                            </div>
                         </div> <!-- item:6 -->
 
                          <div class="accordion-group">
@@ -131,7 +129,7 @@ sharing your items on Facebook and Google+.
                                 You can also login using an existing Facebook, Google or Twitter account.
                                      </div>
                                 </div>
-                            </div> 
+                            </div>
                         </div> <!-- item:7 -->
 
                     </div> <!-- accordion -->
@@ -141,13 +139,7 @@ sharing your items on Facebook and Google+.
 
         </div> <!-- container -->
 
-        <div id="ft">
-            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
-        </div>
-
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
         <script type="text/javascript">
             $(function(){
@@ -157,7 +149,9 @@ sharing your items on Facebook and Google+.
             });
         </script>
 
-
+        <div id="ft">
+            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
+        </div>
 
     </body>
 </html>
