@@ -22,12 +22,8 @@
 
     <head>
         <title> share images from a webpage </title>
-
-        <meta charset="utf-8">
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-
+        <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
         <style>
             /*@todo move page specific styles to css file */
@@ -106,15 +102,8 @@
 
         </div> <!-- container -->
 
-        <div id="ft">
-            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
-        </div>
 
-
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/jquery/jquery.ajaxQueue.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
         <script type="text/javascript">
 
@@ -125,6 +114,10 @@
             });
 
         </script>
+
+        <div id="ft">
+            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
+        </div>
 
 
     </body>

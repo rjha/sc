@@ -38,46 +38,11 @@
 <!DOCTYPE html>
 <html>
 
-       <head>
+    <head>
         <title> 3mik.com - Share your find, need and knowledge</title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-        <link rel="stylesheet" type="text/css" href="/3p/ful/valums/fileuploader.css">
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <script type="text/javascript" src="/3p/ful/valums/fileuploader.js" ></script>
-
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
-
-        <script type="text/javascript">
-
-            $(document).ready(function(){
-
-                $("#web-form1").validate({
-                       errorLabelContainer: $("#web-form1 div.error")
-                });
-
-                webgloo.media.init(["image", "link"]);
-                webgloo.media.attachEvents();
-                webgloo.sc.util.addTextCounter("#description", "#description_counter");
-
-                //@imp: we pass our own button label to the fileupload js
-                var uploader = new qq.FileUploader({
-                    element: document.getElementById('image-uploader'),
-                    action: '/upload/image.php',
-                    debug: false,
-                    labelOfButton : 'Add Images',
-                    onComplete: function(id, fileName, responseJSON) {
-                        webgloo.media.addImage(responseJSON.mediaVO);
-                    }
-                });
-
-            });
-
-        </script>
 
     </head>
 
@@ -176,6 +141,36 @@
             </div>
 
         </div> <!-- container -->
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+        <script type="text/javascript">
+
+            $(document).ready(function(){
+
+                $("#web-form1").validate({
+                       errorLabelContainer: $("#web-form1 div.error")
+                });
+
+                webgloo.media.init(["image", "link"]);
+                webgloo.media.attachEvents();
+                webgloo.sc.util.addTextCounter("#description", "#description_counter");
+
+                //@imp: we pass our own button label to the fileupload js
+                var uploader = new qq.FileUploader({
+                    element: document.getElementById('image-uploader'),
+                    action: '/upload/image.php',
+                    debug: false,
+                    labelOfButton : 'Add Images',
+                    onComplete: function(id, fileName, responseJSON) {
+                        webgloo.media.addImage(responseJSON.mediaVO);
+                    }
+                });
+
+            });
+
+        </script>
+
 
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
