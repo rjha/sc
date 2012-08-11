@@ -1131,7 +1131,7 @@ div #tiles{background:url(/css/asset/sc/wash-white-30.png)}
 #feedback{position:fixed;top:200px;right:0;background-color:#06C;padding:5px;font-size:14px;font-weight:bold}
 .social-buttons .zocial{margin-bottom:5px;font-size:12px;font-weight:bold}
 .social-buttons a{color:white}
-#mik-login-wrapper{padding:20px;box-shadow:0 1px 3px rgba(34,25,25,0.4)}
+.box-shadow{box-shadow:0 1px 3px rgba(34,25,25,0.4)}
 .group-panel{width:620px;height:auto;line-height:18px;padding:0;margin-bottom:10px;margin-top:10px}
 .group-panel .wrapper{padding:0;border-bottom:1px solid #ccc}
 .group-panel .box{padding:10px 10px 5px 20px;background:whiteSmoke;margin-bottom:1px}
@@ -1147,7 +1147,7 @@ div #tiles{background:url(/css/asset/sc/wash-white-30.png)}
 .wbg{background-color:white}
 .item .title{color:#222;font-size:19px;font-weight:bold;line-height:1em;padding-bottom:10px}
 .item .user .name{font-weight:bold}
-.item .quote{margin-bottom:10px;padding-bottom:10px;border-left:4px solid #eee;padding-left:20px;overflow:hidden}
+.quote{margin-bottom:10px;padding-bottom:10px;border-left:4px solid #eee;padding-left:20px;overflow:hidden}
 .item .toolbar{float:right}
 .item .toolbar .btn-mini{font-weight:bold;padding:4px 8px}
 .section{min-height:20px;padding:15px 20px 15px 20px;margin-bottom:10px;margin-top:10px;border-top:1px solid rgba(0,0,0,0.05)}

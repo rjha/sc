@@ -5261,13 +5261,10 @@ button::-moz-focus-inner {
          color: white ;
     }
 
-
-    #mik-login-wrapper {
-        padding:20px;
-        /* border-right:1px solid black; */
+    .box-shadow {
         box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
-    }
 
+    }
     .group-panel {
         width:620px;
         height:auto;
@@ -5354,7 +5351,7 @@ button::-moz-focus-inner {
     }
 
     /* simulate blockquote style */
-    .item .quote {
+    .quote {
         margin-bottom: 10px;
         padding-bottom: 10px;
         border-left: 4px solid #eee;
