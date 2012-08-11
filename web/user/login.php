@@ -133,13 +133,13 @@
 
                 <div class="span4 social-buttons quote">
                     <h3> - OR - </h3>
-                    <div class="section1">
+                    <div class="p5">
                         <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Login with Facebook</a>
                     </div>
-                    <div class="section">
+                    <div class="p5">
                         <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Login with Google</a>&nbsp;&nbsp;
                     </div>
-                    <div class="section">
+                    <div class="p5">
                         <a class="zocial twitter" href="/user/twitter-login.php">Login with Twitter</a>&nbsp;
                     </div>
 
