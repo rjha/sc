@@ -99,7 +99,7 @@ namespace com\indigloo\sc\html {
             $postView->isLoggedInUser = false ;
             if(!is_null($loginIdInSession) && ($loginIdInSession == $postView->loginId)) {
                 $postView->isLoggedInUser = true ;
-                $params = array('id' => $itemId , 'q' => urlencode(Url::current()));
+                $params = array('id' => $postView->itemId , 'q' => urlencode(Url::current()));
                 $postView->editUrl = Url::createUrl('/qa/edit.php',$params);
             }
 
