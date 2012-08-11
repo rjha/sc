@@ -20,8 +20,7 @@ session_start();
 
 
 if (isset($_COOKIE[session_name()])) {
-    //@see gc.maxlifetime
-    $lifetime = 180 ; //7days x24 HRx 60 min x 60 seconds
+    $lifetime = 604800 ; //7days x24 HRx 60 min x 60 seconds
     setcookie(session_name(), session_id(), time() + $lifetime , "/");
 }
 
