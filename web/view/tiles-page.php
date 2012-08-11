@@ -48,23 +48,81 @@
 
                     </div><!-- tiles -->
                     <hr>
-                    <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
+
 
                 </div>
             </div>
 
+            <div id="scroll-loading"> </div>
 
         </div>  <!-- container -->
 
+        <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
+
          <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
          <script type="text/javascript">
-            /* column width = css width + margin */
-            $(document).ready(function(){
-                webgloo.sc.home.addTiles();
+
+            $(function(){
+
+                //show options on hover
+                $('.tile .options').hide();
+
+                function add_tile_options () {
+                    $('.tile').live("mouseenter", function() {$(this).find('.options').show();});
+                    $('.tile').live("mouseleave", function() {$(this).find('.options').hide();});
+                }
+
+                var $container = $('#tiles');
+
+                $container.imagesLoaded(function(){
+                    $container.masonry({
+                        itemSelector : '.tile',
+                        gutterWidth  : 10
+                    });
+
+                    add_tile_options();
+
+                });
+
+
+                $container.infinitescroll(
+                    {
+                        navSelector  	: '.pager',
+                        nextSelector 	: '.pager a[rel="next"]',
+                        itemSelector : '.tile',
+                        bufferPx : 80,
+
+                        loading : {
+                            selector : "#scroll-loading",
+                            img : "/css/asset/sc/round_loader.gif",
+                            msgText: "<em>Please wait. Loading more items...</em>",
+                            finishedMsg : "<b> You have reached the end of this page </b>",
+                            speed: "slow"
+
+                        }
+
+                    },
+
+                    function( newElements ) {
+                         // hide new items while they are loading
+                        var $newElems = $(newElements).css({ opacity: 0 });
+                        $newElems.imagesLoaded(function(){
+                            $newElems.css({ opacity: 1 });
+                            $container.masonry('appended', $newElems);
+                            $("#infscr-loading").fadeOut("slow");
+                        });
+
+                    }
+                );
+
+
+                //Add item toolbar actions
+                webgloo.sc.item.addActions();
                 webgloo.sc.toolbar.add();
             });
+
         </script>
-        
+
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
         </div>
