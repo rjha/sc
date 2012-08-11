@@ -94,9 +94,9 @@ namespace com\indigloo\sc\html {
             //what properties are actually set in DB
             $columns = array();
             // labels for properties
-            $labels = array('website' => '<span class="faded-text"> Website </span>' ,
-                            'blog' => '<span class="faded-text"> Blog </span> ' ,
-                            'location' => '<span class="faded-text"> Location </span> ');
+            $labels = array('website' => 'Website' ,
+                            'blog' => 'Blog' ,
+                            'location' => 'Location');
 
             foreach($labels as $key => $label ) {
                 //for label key, the row in DB is set
@@ -122,8 +122,8 @@ namespace com\indigloo\sc\html {
 
             if($total > 0 ) {
                 array_push($columns,"num_posts");
-                $data["num_posts"] = "" ;
-                $labels["num_posts"] = '<span class="faded-text"> '.$total.' posts </b> </span>' ;
+                $data["num_posts"] = $total.' posts &rarr;' ;
+                $labels["num_posts"] = "&nbsp;" ;
             }
 
             $view->createdOn = Util::formatDBTime($userDBRow['created_on']);

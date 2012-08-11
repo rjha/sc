@@ -11025,7 +11025,7 @@ $.format = $.validator.format;
    + Licensed under the MIT license
 
    + Documentation: http://infinite-scroll.com/
-   + 
+   +
    ===========================================================
    + This is a hacked up version to be used on www.3mik.com
    + changes
@@ -11034,7 +11034,7 @@ $.format = $.validator.format;
      3. when loading finished: do not fade out loading message : moved to masonry callback
      4. our own implementation of retrieve : to fetch nextUrl and content.
 
-   + @see diff from original 
+   + @see diff from original
    =============================================================
 
 */
@@ -11457,6 +11457,11 @@ $.format = $.validator.format;
             box, frag, desturl, method, condition,
             pageNum = pageNum || null,
             getPage = (!!pageNum) ? pageNum : opts.state.currPage;
+
+            if(typeof(opts.state.nextUrl) == 'undefined' ) {
+                 instance._error('end');
+            }
+
             beginAjax = function infscr_ajax(opts) {
 
                 // increment the current page
@@ -11470,10 +11475,10 @@ $.format = $.validator.format;
 
                 /*
                  * Earlier the plugin was using jQuery load() method on box to retrieve page fragments
-                 * (using url+space+selector trick and itemSelector filtering on returned document) 
-                 * box.load(url,callback) method was adding the page fragment as first child of box. 
+                 * (using url+space+selector trick and itemSelector filtering on returned document)
+                 * box.load(url,callback) method was adding the page fragment as first child of box.
                  *
-                 * so we also "simulate" that behavior. we find the nextUrl from page and then 
+                 * so we also "simulate" that behavior. we find the nextUrl from page and then
                  * use append the page fragment inside box.
                  *
                  *
@@ -11487,11 +11492,19 @@ $.format = $.validator.format;
                         condition = (typeof (jqXHR.isResolved) !== 'undefined') ? (jqXHR.isResolved()) : (textStatus === "success" || textStatus === "notmodified");
                         if(condition) {
                             response = '<div>' + jqXHR.responseText  + '</div>' ;
-                            opts.state.nextUrl = $(response).find(opts.nextSelector).attr("href");
+                            var pagerDom = $(response).find(opts.nextSelector) ;
+                            if(pagerDom.length == 0 ) {
+                                //not found
+                                opts.state.nextUrl = undefined ;
+                            } else {
+                                opts.state.nextUrl = pagerDom.attr("href") ;
+                            }
+
                             data = $(response).find(opts.itemSelector);
                             //Do the equivalent of box.load here
                             $(box).append(data);
                             instance._loadcallback(box,data) ;
+
                         } else {
                             instance._error('end');
                         }
