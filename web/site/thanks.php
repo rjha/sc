@@ -47,7 +47,6 @@
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
         <script>
-            webgloo.sc.toolbar.add();
             window.setTimeout(function() {window.location.href = '<?php echo $goUrl; ?>'; }, 5000);
         </script>
 

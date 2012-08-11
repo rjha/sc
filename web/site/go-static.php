@@ -45,12 +45,7 @@
         </div> <!-- container -->
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
-
-        <script>
-            webgloo.sc.toolbar.add();
-        </script>
-
-
+        
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
         </div>
