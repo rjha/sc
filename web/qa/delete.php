@@ -38,11 +38,7 @@
        <head>
         <title>3mik.com - Delete a post</title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
     </head>
 
@@ -54,7 +50,7 @@
                 </div>
 
             </div>
-            
+
             <div class="row">
                 <div class="span9">
 
@@ -86,6 +82,8 @@
                 </div>
             </div>
         </div> <!-- container -->
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
