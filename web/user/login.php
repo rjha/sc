@@ -61,16 +61,10 @@
 <!DOCTYPE html>
 <html>
 
-       <head><title> 3mik.com - login page</title>
+    <head>
+        <title> 3mik.com - login page</title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="/3p/zocial/css/zocial.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
-
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
         <script type="text/javascript">
             $(document).ready(function(){
@@ -94,11 +88,11 @@
                     <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="span12">
-                    <div class="page-header"> 
-                        <a href="/user/register.php">Register for a new 3mik account</a>&nbsp;(&nbsp;Free and takes only 30 seconds! )
+                    <div class="page-header">
+                        <a href="/user/register.php">Register for a new 3mik account</a>&nbsp;(&nbsp;Free and takes only a minute! )
                     </div>
                     <div class="p10"> <?php FormMessage::render(); ?> </div>
                 </div>
@@ -106,8 +100,8 @@
 
             <div class="row">
                 <div class="span7">
-                  <div id="mik-login-wrapper">
-                   <h3> Login with 3mik account </h3>
+
+                    <h3> Login with 3mik account </h3>
 
                         <form id="web-form1"  name="web-form1" action="/user/form/login.php" method="POST">
                             <div class="error">    </div>
@@ -124,7 +118,8 @@
                                 <td class="field"> Password<span class="red-label">*</span></td>
                                 <td>
                                     <input type="password" name="password" maxlength="32" class="required" title="Password is required" value=""/>
-                                    &nbsp;<a href="/user/account/mail-password.php">Forgot your password?</a>
+                                    &nbsp;<br>
+                                    <a href="/user/account/mail-password.php">Forgot your password?</a>
 
                                 </td>
                             </tr>
@@ -143,11 +138,11 @@
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
 
                     </form>
-                   </div>
+
 
                 </div> <!-- span5 -->
 
-                <div class="span4 social-buttons p20">
+                <div class="span4 social-buttons quote">
                     <h3> - OR - </h3>
                     <div class="section1">
                         <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Login with Facebook</a>
@@ -163,6 +158,19 @@
             </div> <!-- row -->
 
        </div> <!-- container -->
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+
+                $("#web-form1").validate({
+                    errorLabelContainer: $("#web-form1 div.error")
+                });
+
+            });
+
+        </script>
 
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
 
