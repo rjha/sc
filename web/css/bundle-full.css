@@ -5375,6 +5375,7 @@ button::-moz-focus-inner {
         margin-bottom:10px;
         margin-top:10px;
         border-top:1px solid rgba(0,0,0,0.05);
+        overflow:hidden ;
     }
 
     .section1 {
@@ -5382,6 +5383,7 @@ button::-moz-focus-inner {
         padding:15px 20px 15px 20px;
         margin-bottom:10px;
         margin-top:10px;
+        overflow:hidden ;
     }
 
 
@@ -5508,46 +5510,38 @@ button::-moz-focus-inner {
     /* + Activity feeds */
 
     .feeds {
-        font-size : 13px;
+        font-size : 12px;
         padding: 0px 0px 0px 10px;
+        font-family: arial;  
     }
 
     .feeds a {
-        color : #4183C4 ;
-        color: #0F6F9F ;
+        color: #333 ;
     }
 
     .feeds .item {
         width: 100%;
         clear: both;
         padding-top:5px;
-        border-top: 1px solid #ccc ;
+        border-top : 1px solid #eee ;
+        padding-bottom :5px;
+    }
+
+    .feeds .item:hover {
+        background-color:#f2f0f0 ;
     }
 
     .feeds .item:first-child {
         border-top :0px;
     }
 
-    .feeds .item .title {
-        font-size:10px;
-        font-weight:bold;
-    }
-
-    .feeds .item .photo {
-
-    }
-
     .feeds .item img {
         padding:5px;
+        float:left ;
     }
 
     .feeds .item .message {
         color: #8c7e7e ;
-        font-size: 12px;
-    }
-
-    .feeds .item .verb {
-        color : #777 ;
     }
 
     .noresults {
@@ -5730,6 +5724,31 @@ button::-moz-focus-inner {
         font-size: 12px;
         font-weight: normal;
     }
+
+    #pubuser .avatar {
+        width:auto;
+        height:auto;
+        max-width:200px;
+        max-height :150px;
+        text-align:center ;
+    }
+
+    #pubuser .follow-user-link {
+        width:120px;
+        height:20px;
+        font-weight:bold;
+    }
+
+    #pubuser .header {
+
+    }
+
+    #pubuser .data {
+        padding-bottom:5px;
+        font-weight:bold;
+
+    }
+
 
     /* paul iris infinite scroll plugin */
     #infscr-loading{
