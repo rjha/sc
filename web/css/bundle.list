@@ -1,7 +1,0 @@
-# --------------------------------------
-# list files in order of dependency
-# list Y later than X if Y depends on X
-# --------------------------------------
-
-bootstrap/css/bootstrap.css
-ful/valums/fileuploader.css

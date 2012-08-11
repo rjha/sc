@@ -16,10 +16,14 @@ rm --force bundle*
 
 #minify
 
-java -jar yuicompressor-2.4.7.jar --nomunge --preserve-semi --disable-optimizations bundle-full.js > bundle.js
-java -jar yuicompressor-2.4.7.jar --nomunge --preserve-semi --disable-optimizations bundle-full.css  > bundle.css
+java -jar yuicompressor-2.4.7.jar   bundle-full.js -o bundle.js  --charset utf-8 --disable-optimizations --preserve-semi --line-break 0
+java -jar yuicompressor-2.4.7.jar   bundle-full.css -o bundle.css  --charset utf-8 --disable-optimizations --preserve-semi --line-break 0
+
 
 #copy
-cp ./bundle.js ../web/js/bundle.js
-cp ./bundle.css ../web/css/bundle.css
+cp ./bundle*.js ../web/js/.
+cp ./bundle*.css ../web/css/.
 
+
+#cleanup
+rm --force bundle*
