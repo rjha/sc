@@ -66,17 +66,6 @@
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
-        <script type="text/javascript">
-            $(document).ready(function(){
-
-                $("#web-form1").validate({
-                    errorLabelContainer: $("#web-form1 div.error")
-                });
-
-            });
-
-        </script>
-
 
     </head>
 

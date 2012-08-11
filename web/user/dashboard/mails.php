@@ -47,19 +47,8 @@
     <head>
         <title> 3mik.com - user <?php echo $userDBRow['name']; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
-
-        <script>
-            $(document).ready(function(){
-                webgloo.sc.toolbar.add();
-            });
-
-        </script>
 
     </head>
 
@@ -122,6 +111,14 @@
             </div> <!-- row -->
         </div> <!-- container -->
 
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+        <script>
+            $(document).ready(function(){
+                webgloo.sc.toolbar.add();
+            });
+
+        </script>
 
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

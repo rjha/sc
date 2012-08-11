@@ -42,7 +42,7 @@
         <div class="hr"> </div>
         <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
 
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
         <script type="text/javascript">
             $(document).ready(function(){
@@ -57,4 +57,3 @@
 
     </body>
 </html>
-

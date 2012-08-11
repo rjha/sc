@@ -36,57 +36,10 @@
 <!DOCTYPE html>
 <html>
 
-       <head>
+    <head>
         <title> Edit Profile - <?php echo $userDBRow['first_name']; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="/3p/ful/valums/fileuploader.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-
-        <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
-        <script type="text/javascript" src="/3p/ful/valums/fileuploader.js" ></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
-
-        <script type="text/javascript">
-            $(document).ready(function(){
-                webgloo.sc.toolbar.add();
-                $("#web-form1").validate({errorLabelContainer: $("#web-form1 div.error")});
-                webgloo.sc.util.addTextCounter("#about_me", "#about_me_counter");
-
-                var uploader = new qq.FileUploader({
-                    element: document.getElementById('image-uploader'),
-                    action: '/upload/image.php',
-                    debug: true,
-                    labelOfButton : 'Upload Photo',
-                    onComplete: function(id, fileName, responseJSON) {
-                        mediaVO = responseJSON.mediaVO;
-                        var imageData = {};
-                        imageData.name = mediaVO.originalName;
-                        if(mediaVO.store == 's3'){
-                            imageData.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.storeName ;
-                        } else {
-                             imageData.srcImage = '/' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
-                        }
-                        //update our display
-                        imageDiv = '<div class="widget"> <div class="photo"> ' +
-                                    ' <img src="{srcImage}" alt="{name}" /> </div> </div>' ;
-                        var buffer = imageDiv.supplant(imageData);
-                        $("#my-photo").html(buffer);
-                        //add to form
-                        frm = document.forms["web-form1"];
-                        frm.photo_url.value = imageData.srcImage ;
-
-                    }
-                });
-
-            });
-
-        </script>
-
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
     </head>
 
@@ -212,6 +165,45 @@
 
             </div> <!-- row -->
         </div> <!-- container -->
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                webgloo.sc.toolbar.add();
+                $("#web-form1").validate({errorLabelContainer: $("#web-form1 div.error")});
+                webgloo.sc.util.addTextCounter("#about_me", "#about_me_counter");
+
+                var uploader = new qq.FileUploader({
+                    element: document.getElementById('image-uploader'),
+                    action: '/upload/image.php',
+                    debug: true,
+                    labelOfButton : 'Upload Photo',
+                    onComplete: function(id, fileName, responseJSON) {
+                        mediaVO = responseJSON.mediaVO;
+                        var imageData = {};
+                        imageData.name = mediaVO.originalName;
+                        if(mediaVO.store == 's3'){
+                            imageData.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.storeName ;
+                        } else {
+                             imageData.srcImage = '/' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
+                        }
+                        //update our display
+                        imageDiv = '<div class="widget"> <div class="photo"> ' +
+                                    ' <img src="{srcImage}" alt="{name}" /> </div> </div>' ;
+                        var buffer = imageDiv.supplant(imageData);
+                        $("#my-photo").html(buffer);
+                        //add to form
+                        frm = document.forms["web-form1"];
+                        frm.photo_url.value = imageData.srcImage ;
+
+                    }
+                });
+
+            });
+
+        </script>
+
 
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

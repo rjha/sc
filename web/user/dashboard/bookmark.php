@@ -60,26 +60,11 @@
 <!DOCTYPE html>
 <html>
 
-       <head>
-       <title> <?php echo $pageTitle; ?> </title>
-       <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
-
-        <script type="text/javascript">
-            /* column width = css width + margin */
-            $(document).ready(function(){
-                webgloo.sc.toolbar.add();
-                webgloo.sc.home.addTiles();
-
-            });
-        </script>
-
+    <head>
+        <title> <?php echo $pageTitle; ?> </title>
+        <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
+        
     </head>
 
      <body>
@@ -129,6 +114,17 @@
             </div>
 
         </div>  <!-- container -->
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+        <script type="text/javascript">
+            /* column width = css width + margin */
+            $(document).ready(function(){
+                webgloo.sc.toolbar.add();
+                webgloo.sc.home.addTiles();
+
+            });
+        </script>
 
 
         <div id="ft">

@@ -48,32 +48,8 @@
     <head>
         <title> 3mik.com - user <?php echo $userDBRow['name']; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
-
-         <script>
-            $(document).ready(function(){
-                //show options on widget hover
-                $('.widget .options').hide();
-                $('.widget').mouseenter(function() {
-                    $(this).find('.options').toggle();
-                    $(this).css("background-color", "#FEFDF1");
-                });
-
-                $('.widget').mouseleave(function() {
-                    $(this).find('.options').toggle();
-                    $(this).css("background-color", "#FFFFFF");
-                });
-
-                 webgloo.sc.toolbar.add();
-            });
-
-        </script>
-
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
+        
     </head>
 
     <body>
@@ -116,7 +92,30 @@
                 </div>
             </div>
         </div> <!-- container -->
+
         <?php $paginator->render('/user/dashboard/comments.php', $startId, $endId); ?>
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+         <script>
+            $(document).ready(function(){
+                //show options on widget hover
+                $('.widget .options').hide();
+                $('.widget').mouseenter(function() {
+                    $(this).find('.options').toggle();
+                    /* @todo move colors to a css style */
+                    $(this).css("background-color", "#FEFDF1");
+                });
+
+                $('.widget').mouseleave(function() {
+                    $(this).find('.options').toggle();
+                    $(this).css("background-color", "#FFFFFF");
+                });
+
+                 webgloo.sc.toolbar.add();
+            });
+
+        </script>
 
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
