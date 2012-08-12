@@ -89,6 +89,7 @@
                 var uploader = new qq.FileUploader({
                     element: document.getElementById('image-uploader'),
                     action: '/upload/image.php',
+                    allowedExtensions: ['png','gif','jpg','jpeg'],
                     debug: false,
                     labelOfButton : 'Add Images',
                     onComplete: function(id, fileName, responseJSON) {
