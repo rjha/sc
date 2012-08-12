@@ -13438,6 +13438,9 @@ $.format = $.validator.format;
  * © 2010 Andrew Valums ( andrew(at)valums.com ) 
  * 
  * Licensed under GNU GPL 2 or later and GNU LGPL 2 or later, see license.txt.
+ *
+ * +rjha changed to add custom label for upload button
+ *
  */    
 
 //
