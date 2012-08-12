@@ -5095,11 +5095,14 @@ button::-moz-focus-inner {
     .hide-me {
         display:none ;
     }
-
-    #link-preview {
-        margin-top:5px;
-        margin-bottom :5px;
+     
+    #link-preview  a{
+        font-size:10px;
+        line-height: 1.8 ;
+        color: #444 ;
+        text-decoration: underline ;
     }
+    
 
     #image-preview .container{
        position :relative ;

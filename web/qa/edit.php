@@ -66,27 +66,37 @@
 
     <body>
         <div class="container">
+            
             <div class="row">
                 <div class="span12">
                     <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
                 </div>
 
             </div>
-
+            
             <div class="row">
-                <div class="span9">
-
-
-                    <div class="page-header">
+                <div class="span12">
+                  <div class="page-header">
                         <h2> Edit </h2>
                     </div>
+                </div>
 
+            </div>
+            
+            <div class="row">
+                <div class="span9">
+                    
                     <?php FormMessage::render(); ?>
 
                     <form  id="web-form1"  name="web-form1" action="/qa/form/edit.php" enctype="multipart/form-data"  method="POST">
                         <div class="row">
                             <div class="span9"><div id="image-uploader"> </div></div>
                         </div>
+                        
+                        <div class="faded-text">
+                            <a href="#link-preview">+&nbsp;show images and websites &rAarr;</a>
+                        </div>
+                        
                         <table class="form-table">
                            <tr>
                                 <td> <label>Category</label>
@@ -114,16 +124,14 @@
                             </tr>
                             <tr>
                                 <td> <label>Groups (Separate groups using comma)
-                                    <?php if($hasGroups) { ?>
-                                        &nbsp;|&nbsp;<a href="/group/user/all.php" target="_blank"><i class="icon-list"></i>&nbsp;Show my groups</a> </label>
-                                    <?php } ?>
+                                   
                                     <input type="text" name="group_names" maxlength="64" value="<?php echo $sticky->get('group_names',$group_names); ?>" />
 
                             </tr>
 
                             <tr>
                                 <td>
-                                    <label>Website (Type website and click Add or press Enter) </label>
+                                    <label>Website (click Add or press Enter) </label>
                                     <input id="link-box" name="link" value="<?php echo $sticky->get('link'); ?>" />
                                     <button id="add-link" type="button" class="btn gBtnUp" value="Add"><i class="icon-plus-sign"> </i>&nbsp;Add</button>
                                 </td>
@@ -141,7 +149,11 @@
 
                         </table>
 
-                        <div id="link-preview"> </div>
+                        <span class="faded-text">Preview</span>
+                        <div class="section">
+                            <div id="link-preview"> </div>
+                        </div>
+                         
                         <div id="image-preview"> </div>
 
                         <input type="hidden" name="links_json" value='<?php echo $strLinksJson ; ?>' />
@@ -156,7 +168,7 @@
                 </div> <!-- span9 -->
 
                 <div class="span3">
-                     <?php include(APP_WEB_DIR .'/qa/sidebar/edit.inc'); ?>
+                     <?php include(APP_WEB_DIR .'/share/sidebar/new.inc'); ?>
                 </div>
 
             </div>
@@ -182,7 +194,7 @@
                     element: document.getElementById('image-uploader'),
                     action: '/upload/image.php',
                     debug: false,
-                    labelOfButton : 'Add Images',
+                    labelOfButton : 'Upload Images',
                     onComplete: function(id, fileName, responseJSON) {
                          webgloo.media.addImage(responseJSON.mediaVO);
                     }

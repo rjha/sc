@@ -1108,7 +1108,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .fancybox-container{display:none}
 .fancybox-container input{width:400px}
 .hide-me{display:none}
-#link-preview{margin-top:5px;margin-bottom:5px}
+#link-preview a{font-size:10px;line-height:1.8;color:#444;text-decoration:underline}
 #image-preview .container{position:relative;float:left;padding:7px;height:160px;width:190px;box-shadow:0 1px 3px rgba(34,25,25,0.4);margin:4px}
 #image-preview .container img{width:auto;height:auto;max-width:180px;max-height:135px;margin-bottom:5px;padding:5px}
 #image-preview .container .link{position:absolute;left:60px;bottom:3px}

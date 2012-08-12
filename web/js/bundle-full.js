@@ -16496,6 +16496,7 @@ webgloo.media = {
         $("#link-preview").append(buffer);
         //clear out the box
         $("#link-box").val('');
+        
     },
 
     removeLink : function(linkObj) {
@@ -16528,6 +16529,9 @@ webgloo.media = {
             default:
                 break ;
         }
+        
+        // var position = $("#image-preview").offset();
+        // scroll(0,position.top + 80);
 
     }
 }
