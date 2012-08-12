@@ -13,8 +13,7 @@
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
     </head>
 
@@ -26,14 +25,6 @@
                 </div>
 
             </div>
-
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
-                    <?php include(APP_WEB_DIR . '/inc/browser.inc'); ?>
-                </div>
-            </div>
-
 
             <div class="row">
                 <div class="span12">
@@ -68,15 +59,9 @@
             <div id="scroll-loading"> </div>
 
         </div>  <!-- container -->
-        <ul class="pager"> <li> <a href="<?php echo $nextPageUrl ?>">Next &rarr;</a> <li> </ul>
+        <ul class="pager"> <li> <a rel="next" href="<?php echo $nextPageUrl ?>">Next &rarr;</a> <li> </ul>
 
-
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
-        <script type="text/javascript" src="/3p/jquery/infinite/jquery.infinitescroll.hacked.js"> </script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
-
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
         <script type="text/javascript">
             /* column width = css width + margin */
@@ -104,14 +89,14 @@
 
                 $container.infinitescroll(
                     {
-                        navSelector  	: ".pager",
-                        nextSelector 	: ".pager a:last",
-                        itemSelector : ".tile",
+                        navSelector  	: '.pager',
+                        nextSelector 	: '.pager a[rel="next"]',
+                        itemSelector : '.tile',
                         bufferPx : 80,
 
                         loading : {
                             selector : "#scroll-loading",
-                            img : "/css/images/round_loader.gif",
+                            img : "/css/asset/sc/round_loader.gif",
                             msgText: "<em>Please wait. Loading more items...</em>",
                             finishedMsg : "<b> You have reached the end of this page </b>",
                             speed: "slow"
@@ -130,17 +115,14 @@
                         });
 
                     }
-                ); 
+                );
 
 
                 //Add item toolbar actions
                 webgloo.sc.item.addActions();
                 webgloo.sc.toolbar.add();
 
-
-
             });
-
 
         </script>
 

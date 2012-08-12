@@ -1,15 +1,6 @@
-<style type="text/css">
-     /* @bad comment form - inline css */
-    .form-table {
-        margin-bottom : 0px;
-    }
-    .form-table textarea {
-        width:500px;
-        height:60px;
-    }
-</style>
+
 <!-- include comment form -->
-<div id="comment-wrapper">
+<div class="section">
     <?php echo $formErrors; ?>
         <form id="web-form1"  name="web-form1" action="/qa/form/comment.php?q=/item/<?php echo $itemId; ?>" enctype="multipart/form-data"  method="POST">
 
@@ -17,7 +8,7 @@
 
         <table class="form-table">
             <tr>
-            <?php if(is_null($loginId)) { ?>
+            <?php if(is_null($loginIdInSession)) { ?>
                 <td> please <a href="<?php echo $loginUrl ?>">login</a> to comment</td>
             <?php } ?>
 
@@ -30,8 +21,8 @@
 
         </table>
 
-         <div class="form-actions2">
-            <button class="btn" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Add Comment</span></button>
+         <div>
+            <button class="btn" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Comment</span></button>
         </div>
 
        <input type="hidden" name="owner_id" value="<?php echo $postDBRow['login_id']; ?>" />
@@ -40,6 +31,6 @@
        <input type="hidden" name="fUrl" value="<?php echo $_SERVER['REQUEST_URI']; ?>" />
 
     </form>
-    </div> <!-- comment wrapper -->
+    </div> <!-- section:comment -->
 
 

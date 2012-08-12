@@ -14,10 +14,12 @@ namespace com\indigloo\sc\html {
 
     class Post {
 
-        static function getGallery($title,$images) {
+
+        static function getGalleria($title,$images) {
             if(sizeof($images) == 0 ) { return '' ; }
 
             $view = new \stdClass;
+            $view->title = $title ;
             $records = array();
 
             foreach($images as $image) {
@@ -25,11 +27,11 @@ namespace com\indigloo\sc\html {
                 $imgv = self::convertImageJsonObj($image);
                 $record["source"] = $imgv["source"];
                 $record["thumbnail"] = $imgv["thumbnail"];
-                $record["title"] = $title;
+
                 $record["originalName"] = $imgv["name"];
                 $record["tname"] = $imgv["tname"];
 
-                //for gallery - both height and width is fixed. 
+                //for gallery - both height and width is fixed.
                 $td = Util::foldXY($image->width,$image->height,190,140);
                 $record["twidth"] = $td["width"];
                 $record["theight"] = $td["height"];
@@ -38,7 +40,80 @@ namespace com\indigloo\sc\html {
 
             $view->records = $records ;
 
-            $template = '/fragments/post/gallery.tmpl' ;
+            $template = '/fragments/item/galleria.tmpl' ;
+            $html = Template::render($template,$view);
+            return $html;
+
+        }
+
+        static function getFancybox($title,$images) {
+            if(sizeof($images) == 0 ) { return '' ; }
+
+            $view = new \stdClass;
+            $view->title = $title ;
+            $template = (sizeof($images) == 1 ) ? "fancybox-single.tmpl" : "fancybox.tmpl" ;
+
+            $mainImage = array_shift($images);
+            $view->mainImage = self::convertImageJsonObj($mainImage);
+
+            $newd = Util::foldX($mainImage->width,$mainImage->height,550);
+            $view->mainImage["width"] = $newd["width"];
+            $view->mainImage["height"] = $newd["height"];
+
+            $thumbnails = array();
+
+            foreach($images as $image) {
+
+                $record = array();
+                $imgv = self::convertImageJsonObj($image);
+                $record["source"] = $imgv["source"];
+                $record["thumbnail"] = $imgv["thumbnail"];
+
+                $record["originalName"] = $imgv["name"];
+                $record["tname"] = $imgv["tname"];
+
+                //for gallery - both height and width is fixed.
+                $td = Util::foldXY($image->width,$image->height,190,140);
+                $record["twidth"] = $td["width"];
+                $record["theight"] = $td["height"];
+                $thumbnails[] = $record;
+
+            }
+
+            $view->thumbnails = $thumbnails ;
+
+            $template = "/fragments/item/".$template ;
+            $html = Template::render($template,$view);
+            return $html;
+
+        }
+
+        static function getHeader($postView,$loginIdInSession) {
+
+            //toolbar stuff
+
+            $postView->followerId = $loginIdInSession;
+            $postView->followingId = $postView->loginId;
+
+            //edit item
+            $postView->isLoggedInUser = false ;
+            if(!is_null($loginIdInSession) && ($loginIdInSession == $postView->loginId)) {
+                $postView->isLoggedInUser = true ;
+                $params = array('id' => $postView->itemId , 'q' => urlencode(Url::current()));
+                $postView->editUrl = Url::createUrl('/qa/edit.php',$params);
+            }
+
+            $template = '/fragments/item/header.tmpl' ;
+            $html = Template::render($template,$postView);
+            return $html;
+        }
+
+        static function getActivity($feedHtml,$commentHtml) {
+            if(empty($feedHtml)) { return "" ; }
+            $view = new \stdClass;
+            $view->feedHtml = $feedHtml;
+            $view->commentHtml = $commentHtml;
+            $template = '/fragments/item/activity.tmpl' ;
             $html = Template::render($template,$view);
 
             return $html;
@@ -57,26 +132,26 @@ namespace com\indigloo\sc\html {
                 $view->hasSite = true ;
             }
 
-            $template = '/fragments/post/link.tmpl' ;
+            $template = '/fragments/item/links.tmpl' ;
             $html = Template::render($template,$view);
             return $html;
         }
 
-        static function getToolbar($itemId,$loginId,$postLoginId) {
+        static function getToolbar($loginIdInSession,$postLoginId, $itemId) {
             $view = new \stdClass;
             $view->itemId = $itemId;
-            $view->followerId = $loginId;
+            $view->followerId = $loginIdInSession;
             $view->followingId = $postLoginId;
 
             //edit item
             $view->isLoggedInUser = false ;
-            if(!is_null($loginId) && ($loginId == $postLoginId)) {
+            if(!is_null($loginIdInSession) && ($loginIdInSession == $postLoginId)) {
                 $view->isLoggedInUser = true ;
                 $params = array('id' => $itemId , 'q' => urlencode(Url::current()));
                 $view->editUrl = Url::createUrl('/qa/edit.php',$params);
             }
 
-            $template = '/fragments/post/toolbar.tmpl' ;
+            $template = '/fragments/item/toolbar.tmpl' ;
             $html = Template::render($template,$view);
             return $html;
         }
@@ -84,7 +159,7 @@ namespace com\indigloo\sc\html {
         static function getSmallTile($postDBRow) {
             $html = NULL ;
             $template = NULL ;
-            $voptions = array("abbreviate" => true , "imageWidth" => 100 );
+            $voptions = array("abbreviate" => true);
             $view = self::createPostView($postDBRow, $voptions);
 
             if($view->hasImage) {
@@ -114,7 +189,7 @@ namespace com\indigloo\sc\html {
 
             $voptions = array("abbreviate" => true ,"group" => true);
             $view = self::createPostView($postDBRow,$voptions);
-            
+
             if($view->hasImage) {
                 $template = '/fragments/tile/image.tmpl' ;
                 //Add thumbnail width and height
@@ -138,30 +213,44 @@ namespace com\indigloo\sc\html {
 
         }
 
-        static function getDetail($postDBRow) {
+        static function getDetail($postView,$links) {
+
+            $postView->links = $links ;
+
             $html = NULL ;
-            $voptions = array("image" => false);
-            $view = self::createPostView($postDBRow,$voptions) ;
-            $template = '/fragments/post/detail.tmpl' ;
-            $html = Template::render($template,$view);
+            $template = '/fragments/item/detail.tmpl' ;
+            $html = Template::render($template,$postView);
             return $html ;
         }
 
-        static function getGroups($postDBRow) {
+        static function getGroups($postView) {
             $html = NULL ;
-            $voptions = array("image" => false, "group" => true);
-            $view = self::createPostView($postDBRow,$voptions) ;
 
-            if(!$view->hasGroups) return '' ;
-            $template = '/fragments/post/group.tmpl' ;
-            $html = Template::render($template,$view);
+            if(!$postView->hasGroups) return '' ;
+            $template = '/fragments/item/group.tmpl' ;
+            $html = Template::render($template,$postView);
+            return $html ;
+        }
+
+        static function getMoreLinks($postView,$siteDBRow) {
+            $html = NULL ;
+            $postView->hasSite = false ;
+
+            if(!empty($siteDBRow)) {
+                $postView->siteId = $siteDBRow["id"];
+                $postView->siteUrl = $siteDBRow["canonical_url"];
+                $postView->hasSite = true ;
+            }
+
+            $template = '/fragments/item/more-links.tmpl' ;
+            $html = Template::render($template,$postView);
             return $html ;
         }
 
         static function getWidget($postDBRow,$options=NULL) {
 
             $html = NULL ;
-            $voptions = array("abbreviate" => true , "imageWidth" => 100 );
+            $voptions = array("abbreviate" => true);
             $view = self::createPostView($postDBRow,$voptions);
 
             if($view->hasImage) {
@@ -194,7 +283,7 @@ namespace com\indigloo\sc\html {
         static function getAdminWidget($postDBRow,$options=NULL) {
 
             $html = NULL ;
-            $voptions = array("abbreviate" => true , "imageWidth" => 100 );
+            $voptions = array("abbreviate" => true);
             $view = self::createPostView($postDBRow,$voptions);
             if(is_null($options)) {
                 $options = UIConstants::WIDGET_ALL ;
@@ -228,7 +317,6 @@ namespace com\indigloo\sc\html {
 
             //default options
             $options = array();
-            $options["imageWidth"] = 190 ;
             $options["abbreviate"] = false ;
             $options["image"] = true ;
             $options["group"] = false ;
@@ -246,6 +334,7 @@ namespace com\indigloo\sc\html {
 
             $view->hasImage = false ;
             $view->hasGroups = false ;
+            $view->groups= array();
             $view->id = $row['id'];
             // title in DB is 128 chars long.
             // here on page we want to use a 70 char title.
@@ -258,6 +347,7 @@ namespace com\indigloo\sc\html {
             $view->userName = $row['user_name'];
             $view->createdOn = Util::formatDBTime($row['created_on'], AppConstants::TIME_MDYHM);
             $view->pubUserId = PseudoId::encode($row['login_id']);
+            $view->loginId = $row['login_id'];
             $view->userPageURI = "/pub/user/".$view->pubUserId;
 
             //process post image.
@@ -269,6 +359,7 @@ namespace com\indigloo\sc\html {
                 $view->thumbnail = $imgv["thumbnail"];
                 $view->height = $imgv["height"];
                 $view->width = $imgv["width"];
+                $view->images = $images ;
             }
 
             //process groups
@@ -311,8 +402,8 @@ namespace com\indigloo\sc\html {
             } else {
                 $imgv["name"] = "placeholder" ;
                 $imgv["tname"] = "placeholder" ;
-                $imgv["source"] = "/css/images/twitter-icon.png" ;
-                $imgv["thumbnail"] = "/css/images/twitter-icon.png" ;
+                $imgv["source"] = "/css/asset/sc/twitter-icon.png" ;
+                $imgv["thumbnail"] = "/css/asset/sc/twitter-icon.png" ;
                 $imgv["width"] = 48;
                 $imgv["height"] = 48;
                 $imgv["twidth"] = 40;

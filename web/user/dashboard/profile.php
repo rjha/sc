@@ -23,7 +23,7 @@
     if (empty($userDBRow)) {
         trigger_error("No user exists with this login_id", E_USER_ERROR);
     }
-    
+
 ?>
 
 
@@ -33,18 +33,7 @@
     <head>
         <title> 3mik.com - user <?php echo $userDBRow['name']; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-
-        <script>
-            $(document).ready(function(){
-
-            });
-
-        </script>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
     </head>
 
@@ -59,11 +48,6 @@
 
             <div class="row">
                 <div class="span12">
-                <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
-                </div>
-            </div>
-            <div class="row">
-                <div class="span12">
                      <?php  include('inc/setting-menu.inc'); ?>
                 </div>
             </div>
@@ -76,6 +60,15 @@
                 </div>
             </div> <!-- row -->
         </div> <!-- container -->
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+        <script>
+            $(document).ready(function(){
+                webgloo.sc.toolbar.add();
+            });
+
+        </script>
 
 
         <div id="ft">

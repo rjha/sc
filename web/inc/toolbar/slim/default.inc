@@ -21,6 +21,7 @@
         <div class="floatr">
             <ul class="nav nav-pills">
                 <li> <a href="/">Home</a> </li>
+                <li> <a href="/user/login.php">Login</a> </li>
                 <li class="active"> <a href="<?php echo $qUrl ?>">Back</a> </li>
                 <li> <a href="/site/help.php">Help</a> </li>
                 <li class="divider-vertical"></li>
@@ -37,7 +38,7 @@
                 </li> <!-- About -->
             </ul>
         </div>
-        </div> <!-- span:4 -->
+        </div> <!-- span:6 -->
     </div> <!-- row1 -->
 
     <div class="row">
@@ -50,10 +51,18 @@
 
 
 <div id="block-spinner"> </div>
+
 <div id="simple-popup">
+     <div id="header">
+         <div class="wrapper">
+            <div class="floatr">
+                <a id="simple-popup-close" href="">close&nbsp;<i class="icon-remove"> </i></a>
+            </div>
+        </div>
+        <div class="clear"> </div>
+     </div>
     <div id="content"> </div>
-    <div class="panel-footer">
-        <div class="floatr"><span class="feed-text"> Esc or </span>&nbsp;<a id="simple-popup-close" class="btn btn-primary" href="">close&nbsp;</a> </div>
-    </div>
+
 </div> <!-- simple popup -->
+
 <div id="popup-mask"> </div>

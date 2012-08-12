@@ -71,7 +71,7 @@ namespace com\indigloo\sc\controller{
                 /* use original image for og snippets, smaller images may be ignored */
                 $itemObj->picture = $prefix.$image->bucket."/".$image->storeName ;
             } else {
-                 $itemObj->picture = $itemObj->host."/css/images/logo.png";
+                 $itemObj->picture = $itemObj->host."/css/asset/sc/logo.png";
             }
 
             //do not urlencode - as we use this value as canonical url
@@ -93,7 +93,7 @@ namespace com\indigloo\sc\controller{
 
             $gWeb = \com\indigloo\core\Web::getInstance();
             $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
-            $loginId = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
+            $loginIdInSession = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
 
             $xids = array();
             $xrows = array();

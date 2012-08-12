@@ -10,7 +10,7 @@
     }
     #slider-code .buttons {
         display: block; margin: 120px 10px 0 0; float: left;
-        background: url("/css/images/tiny-buttons.png");
+        background: url("/css/asset/sc/tiny-buttons.png");
         width: 36px; height: 37px;
     }
     

@@ -45,7 +45,7 @@
                     <li><a href="/user/logout.php">Logout</a></li>
                 </ul>
             </li> <!-- user menu -->
-         
+
             <li class="divider-vertical"></li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -73,10 +73,18 @@
 
 
 <div id="block-spinner"> </div>
+
 <div id="simple-popup">
+     <div id="header">
+         <div class="wrapper">
+            <div class="floatr">
+                <a id="simple-popup-close" href="">close&nbsp;<i class="icon-remove"> </i></a>
+            </div>
+        </div>
+        <div class="clear"> </div>
+     </div>
     <div id="content"> </div>
-    <div class="panel-footer">
-        <div class="floatr"><span class="feed-text"> Esc or </span>&nbsp;<a id="simple-popup-close" class="btn btn-primary" href="">close&nbsp;</a> </div>
-    </div>
+
 </div> <!-- simple popup -->
+
 <div id="popup-mask"> </div>

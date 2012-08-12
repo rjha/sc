@@ -21,18 +21,14 @@
 <html>
 
     <head>
-        <title> share a  webpage </title>
-
-        <meta charset="utf-8">
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
-
+        <title> share images from a webpage </title>
+        <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
         <style>
             /*@todo move page specific styles to css file */
             #step1-container { margin-top:10px; padding:10px; }
-            #step2-container { margin-top:10px; padding:10px; border-left:1px solid #f7f7f7;}
+            #step2-container { margin-top:10px; padding:10px; border-left:6px solid #eee;}
 
             #link-box {width:280px; }
             #fetch-button {width:60px; height:28px; margin-bottom:10px;}
@@ -40,14 +36,14 @@
             #ajax-message .normal {}
             #ajax-message .error { color:red ; }
 
-            #stack { margin-top:40px; }
+            #image-preview { margin-top:40px; }
 
             /* override default stack image padding */
-            div .stackImage { padding: 1px; }
+            #image-preview .container { padding: 1px; }
 
         </style>
 
-       
+
 
     </head>
 
@@ -55,34 +51,33 @@
         <div class="container mh600">
             <div class="row">
                 <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div> 
+                    <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
+                </div>
             </div>
-            
-            <div class="hr"> </div>
+
             <?php FormMessage::render(); ?>
 
             <div class="row">
                 <div class="span6">
                     <div id="step1-container">
                         <span class="badge badge-warning">Step1</span>
-                        Type webpage URL and click fetch ( or press Enter ) 
+                        Type webpage URL and click fetch ( or press Enter )
                         <br>
                         <br>
                         <input id="link-box" name="link" value="" />
-                        <button id="fetch-button" type="button" class="btn" value="Fetch">Fetch</button> 
+                        <button id="fetch-button" type="button" class="btn" value="Fetch">Fetch</button>
                     </div>
-                    
+
                 </div> <!-- span -->
                 <div class="span6">
                     <div id="step2-container">
                         <p>
                             <span class="badge badge-warning">Step2</span>
-                            Place your mouse over an image to select it. 
+                            Place your mouse over an image to select it.
                             Please click Next after selecting images.
                         </p>
                         <ul class="pager">
-                            <li> <a id="next-button" href="#">Next&nbsp;&rarr;</a> </li> 
+                            <li> <a id="next-button" href="#">Next&nbsp;&rarr;</a> </li>
                         </ul>
 
                         <form  id="web-form1"  name="web-form1" action="/qa/external/router.php"  method="POST">
@@ -96,37 +91,33 @@
                 </div>
 
             </div><!-- row:1 -->
-            
-            <div class="hr"> </div>
-            <div id="ajax-message" class="ml20"> </div>
+
+            <div id="ajax-message" class="ml20 mt20"> </div>
 
             <div class="row">
-                <div id="stack"> 
-                    <div class="images p10"> </div>
+                <div id="image-preview" class="p20">
+
                 </div>
             </div> <!-- row:2 -->
-           
-        </div> <!-- container -->   
-              
-        <div id="ft">
-            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
-        </div>
 
-       
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/jquery/jquery.ajaxQueue.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?> 
+        </div> <!-- container -->
+
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
         <script type="text/javascript">
 
             $(document).ready(function(){
-                webgloo.sc.ImageSelector.debug= true ;
+                //webgloo.sc.ImageSelector.debug= true ;
                 webgloo.sc.ImageSelector.attachEvents();
 
             });
 
         </script>
+
+        <div id="ft">
+            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
+        </div>
 
 
     </body>

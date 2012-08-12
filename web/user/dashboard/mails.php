@@ -32,7 +32,7 @@
     $fUrl = Url::current();
     $preferenceDao = new \com\indigloo\sc\dao\Preference();
     $pData = $preferenceDao->get($loginId);
-     
+
     $checked = array();
     $checked["follow"] = ($pData->follow) ? "checked" : "" ;
     $checked["comment"] = ($pData->comment) ? "checked" : "" ;
@@ -47,18 +47,8 @@
     <head>
         <title> 3mik.com - user <?php echo $userDBRow['name']; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-
-        <script>
-            $(document).ready(function(){
-
-            });
-
-        </script>
 
     </head>
 
@@ -71,11 +61,6 @@
 
             </div>
 
-            <div class="row">
-                <div class="span12">
-                <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
-                </div>
-            </div>
             <div class="row">
                 <div class="span12">
                      <?php  include('inc/setting-menu.inc'); ?>
@@ -126,6 +111,14 @@
             </div> <!-- row -->
         </div> <!-- container -->
 
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+        <script>
+            $(document).ready(function(){
+                webgloo.sc.toolbar.add();
+            });
+
+        </script>
 
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

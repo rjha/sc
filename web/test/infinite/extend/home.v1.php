@@ -60,14 +60,6 @@
 
             <div class="row">
                 <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
-                    <?php include(APP_WEB_DIR . '/inc/browser.inc'); ?>
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="span12">
                     <div id="tiles">
 
                            <?php
@@ -130,7 +122,7 @@
 
                         loading : {
                             selector : "#scroll-loading",
-                            img : "/css/images/6RMhx.gif",
+                            img : "/css/asset/sc/round_loader.gif",
                             msgText: "<em>Please wait. Loading more items...</em>",
                             finishedMsg : "<b> You have reached the end of this page </b>",
                             speed: "slow"
@@ -145,7 +137,7 @@
                         });
 
                     }
-                ); 
+                );
 
                 $.extend($.infinitescroll.prototype,{
                     _setup_webgloo: function infscr_setup_webgloo () {
@@ -172,13 +164,13 @@
                     },
 
                     retrieve_webgloo : function infscr_retrieve_webgloo(pageNum) {
-                        
+
                         var opts = this.options,
-                        instance = this, 
+                        instance = this,
                         box,
-                        desturl, 
+                        desturl,
                         condition ;
-                        
+
 
                         // increment the current page
                         opts.state.currPage++;
@@ -192,10 +184,10 @@
 
                         /*
                          * Earlier the plugin was using jQuery load() method on box to retrieve page fragments
-                         * (using url+space+selector trick and itemSelector filtering on returned document) 
-                         * box.load(url,callback) method was adding the page fragment as first child of box. 
+                         * (using url+space+selector trick and itemSelector filtering on returned document)
+                         * box.load(url,callback) method was adding the page fragment as first child of box.
                          *
-                         * so we also "simulate" that behavior. we find the nextUrl from page and then 
+                         * so we also "simulate" that behavior. we find the nextUrl from page and then
                          * use append the page fragment inside box.
                          *
                          *
@@ -232,7 +224,7 @@
                         opts.loading.start.call($(opts.contentSelector)[0],opts);
 
 
-                    } //end:retrieve 
+                    } //end:retrieve
 
 
                 });

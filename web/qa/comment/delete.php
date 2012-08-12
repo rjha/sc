@@ -30,42 +30,31 @@
         exit ;
     }
 
-?>  
+?>
 
 <!DOCTYPE html>
 <html>
 
-       <head>
+    <head>
         <title>3mik.com - Delete a comment</title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-         
     </head>
 
     <body>
         <div class="container mh800">
             <div class="row">
                 <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div> 
-                
-            </div>
-            
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
+                    <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
                 </div>
+
             </div>
-            
-            
+
             <div class="row">
                 <div class="span9">
-                    
-                    
+
+
                     <div class="page-header">
                         <h2> Delete Comment</h2>
                     </div>
@@ -73,10 +62,10 @@
                       <a class="close" data-dismiss="alert">×</a>
                       Please make sure that you really want to delete this comment.
                     </div>
-                    
+
                     <?php FormMessage::render(); ?>
                     <?php echo \com\indigloo\sc\html\Comment::getWidget($commentDBRow); ?>
-                            
+
                     <form id="web-form1"  name="web-form1" action="/qa/comment/form/delete.php" method="POST">
                         <div>
                             <button class="btn btn-danger" type="submit" name="delete" value="Delete" onclick="this.setAttribute('value','Delete');">Delete</button>
@@ -90,6 +79,8 @@
                 </div>
             </div>
         </div> <!-- container -->
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.js"); ?>
 
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

@@ -46,7 +46,7 @@
     </head>
     <body>
         <div id="mini_inner" class="centered">
-            <img src="/css/images/alert.png" alt="alert" class="alert">
+            <img src="/css/asset/sc/alert.png" alt="alert" class="alert">
             <h1> Error! We Apologize.</h1>
             <p>This page has encountered an error </p>
             <div class="error"> &nbsp; </div>

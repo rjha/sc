@@ -20,6 +20,7 @@ namespace com\indigloo\sc\controller{
                 exit;
             }
 
+
             $pubUserId = Util::getArrayKey($params,"login_id");
             $loginId = PseudoId::decode($pubUserId);
             $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
@@ -33,6 +34,9 @@ namespace com\indigloo\sc\controller{
                 $controller->process();
                 exit;
             }
+
+            $gpage = Url::tryQueryParam("gpage");
+            $gpage = empty($gpage) ? "1" : $gpage ;
 
             //meta data about user - #groups/#posts/#comments/#followers etc.
             // user feeds
@@ -50,7 +54,7 @@ namespace com\indigloo\sc\controller{
 
             $total = $postDao->getTotalCount($filters);
 
-            $pageSize = Config::getInstance()->get_value("user.page.items");
+            $pageSize = Config::getInstance()->get_value("main.page.items");
             $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
             $postDBRows = $postDao->getPaged($paginator,$filters);
 

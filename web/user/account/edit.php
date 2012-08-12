@@ -4,7 +4,7 @@
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
     include(APP_WEB_DIR . '/inc/role/user.inc');
-     
+
     use \com\indigloo\Util;
     use \com\indigloo\Url;
     use \com\indigloo\ui\form\Sticky;
@@ -12,13 +12,13 @@
     use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\sc\auth\Login as Login ;
     use \com\indigloo\sc\html\User as User;
-     
+
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
     $qUrl = Url::tryQueryParam("q");
     $qUrl = is_null($qUrl) ? '/' : $qUrl ;
     $fUrl = Url::current();
-    
+
     $gSessionLogin = Login::getLoginInSession();
     $loginId = $gSessionLogin->id ;
 
@@ -31,62 +31,16 @@
         $emailExtra = '' ;
     }
 
-?>  
+?>
 
 <!DOCTYPE html>
 <html>
 
-       <head>
+    <head>
         <title> Edit Profile - <?php echo $userDBRow['first_name']; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="/3p/ful/valums/fileuploader.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
-
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        
-        <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
-        <script type="text/javascript" src="/3p/ful/valums/fileuploader.js" ></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?> 
-
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $("#web-form1").validate({errorLabelContainer: $("#web-form1 div.error")});
-                webgloo.sc.util.addTextCounter("#about_me", "#about_me_counter");
-                      
-                var uploader = new qq.FileUploader({
-                    element: document.getElementById('image-uploader'),
-                    action: '/upload/image.php',
-                    debug: true,
-                    labelOfButton : 'Upload Photo',
-                    onComplete: function(id, fileName, responseJSON) {
-                        mediaVO = responseJSON.mediaVO;
-                        var imageData = {};
-                        imageData.name = mediaVO.originalName;
-                        if(mediaVO.store == 's3'){
-                            imageData.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.storeName ;
-                        } else {
-                             imageData.srcImage = '/' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
-                        }
-                        //update our display
-                        imageDiv = '<div class="widget"> <div class="photo"> ' +
-                                    ' <img src="{srcImage}" alt="{name}" /> </div> </div>' ;
-                        var buffer = imageDiv.supplant(imageData);
-                        $("#my-photo").html(buffer);
-                        //add to form
-                        frm = document.forms["web-form1"];
-                        frm.photo_url.value = imageData.srcImage ;
-
-                    }
-                });
-
-            });
-
-        </script>
-  
-       
     </head>
 
     <body>
@@ -94,25 +48,18 @@
             <div class="row">
                 <div class="span12">
                     <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div> 
-                
-            </div>
-            
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
                 </div>
+
             </div>
-            
-            
+
             <div class="row">
                 <div class="span8">
                     <div class="page-header">
                         <h2> <?php echo $userDBRow['name']; ?> </h2>
                     </div>
-                                
+
                     <p class="help-text">
-                       Please update the details and click on Submit.  If you provide a nick name then your nick name 
+                       Please update the details and click on Submit.  If you provide a nick name then your nick name
                        will be displayed instead of your real name.
                     </p>
                 </div>
@@ -121,9 +68,9 @@
             <div class="row">
                 <div class="span8">
                     <div class="wrapper" style="border-right:1px dotted #ccc;">
-                    
+
                     <?php FormMessage::render(); ?>
-            
+
                         <form id="web-form1"  name="web-form1" action="/user/account/form/edit.php" enctype="multipart/form-data"  method="POST">
 
                             <div class="error">    </div>
@@ -188,9 +135,9 @@
                                    <td>
                                     <textarea  id="about_me" maxlength="512" name="about_me" class="h130" cols="2" rows="4" ><?php echo $sticky->get('about_me',$userDBRow['about_me']); ?></textarea>
                                     <br>
-                                   <span id="about_me_counter"></span> 
+                                   <span id="about_me_counter"></span>
                                   </td>
-                                </tr>   
+                                </tr>
                             </table>
 
                             <div class="form-actions">
@@ -198,9 +145,9 @@
                                 <a href="<?php echo $qUrl;?>">
                                     <button class="btn" type="button" name="cancel"><span>Cancel</span></button>
                                 </a>
-                                
+
                             </div>
-                            
+
                             <div style="clear: both;"></div>
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                             <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
@@ -218,7 +165,46 @@
 
             </div> <!-- row -->
         </div> <!-- container -->
-        
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                webgloo.sc.toolbar.add();
+                $("#web-form1").validate({errorLabelContainer: $("#web-form1 div.error")});
+                webgloo.sc.util.addTextCounter("#about_me", "#about_me_counter");
+
+                var uploader = new qq.FileUploader({
+                    element: document.getElementById('image-uploader'),
+                    action: '/upload/image.php',
+                    debug: true,
+                    labelOfButton : 'Upload Photo',
+                    onComplete: function(id, fileName, responseJSON) {
+                        mediaVO = responseJSON.mediaVO;
+                        var imageData = {};
+                        imageData.name = mediaVO.originalName;
+                        if(mediaVO.store == 's3'){
+                            imageData.srcImage = 'http://' + mediaVO.bucket + '/' + mediaVO.storeName ;
+                        } else {
+                             imageData.srcImage = '/' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
+                        }
+                        //update our display
+                        imageDiv = '<div class="widget"> <div class="photo"> ' +
+                                    ' <img src="{srcImage}" alt="{name}" /> </div> </div>' ;
+                        var buffer = imageDiv.supplant(imageData);
+                        $("#my-photo").html(buffer);
+                        //add to form
+                        frm = document.forms["web-form1"];
+                        frm.photo_url.value = imageData.srcImage ;
+
+                    }
+                });
+
+            });
+
+        </script>
+
+
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
         </div>

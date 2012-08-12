@@ -7,14 +7,11 @@
 <!DOCTYPE html>
 <html>
 
-       <head>
+    <head>
         <title> 3mik.com - Learn more  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
-         
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
-       
-        
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
+
     </head>
 
      <body class="">
@@ -22,24 +19,16 @@
             <div class="row">
                 <div class="span12">
                     <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div> 
-                
-            </div>
-            
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/banner.inc'); ?>
-                    <?php include(APP_WEB_DIR . '/inc/browser.inc'); ?>
                 </div>
+
             </div>
-            
-            
+
             <div class="row">
                 <div class="span4 offset1">
-                    <h1> 3mik is a sharing and discovery platform in India.</h1> 
+                    <h1> 3mik is a sharing and discovery platform in India.</h1>
                     <blockquote class="pull-right">
                         <p>
-                    3mik lets you share interesting and unique things in India. You can use 3mik to discover your interests and see stuff shared by others. Move around and see what you like! 
+                    3mik lets you share interesting and unique things in India. You can use 3mik to discover your interests and see stuff shared by others. Move around and see what you like!
                         </p>
                     </blockquote>
                 </div>
@@ -47,7 +36,7 @@
                 <!-- collage -->
                     <div>
                         <div class="photo">
-                            <img src="/css/images/about-collage.jpg" />
+                            <img src="/css/asset/sc/about-collage.jpg" />
 
                         </div>
 
@@ -75,7 +64,7 @@
                         <li> Build reputation </li>
                         <li> Get to know people who look for your products or shares </li>
                     </ul>
-                
+
                 </div>
             </div> <!-- row -->
 
@@ -88,7 +77,7 @@
             </div>
             <div class="row mt20">
                 <div class="span6 offset2">
-                    <h2> what is there? </h2> 
+                    <h2> what is there? </h2>
                     <ul class="unordered">
                         <li> street food, best sandesh and jalebi!</li>
                         <li> Designer sarees, what is that vidya balan is wearing?</li>
@@ -107,26 +96,21 @@
                 </div>
 
             </div>
-                    
+
         </div>  <!-- container -->
-              
-       
-        <div id="ft">
-            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
-        </div>
 
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
 
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?> 
-        
-        
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
         <script type="text/javascript">
             $(document).ready(function(){
                 webgloo.sc.toolbar.add();
            });
         </script>
+
+        <div id="ft">
+            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
+        </div>
 
     </body>
 </html>

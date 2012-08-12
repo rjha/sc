@@ -22,12 +22,8 @@
     <head>
         <title> 3mik.com - Activity feeds  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?> 
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
 
     </head>
@@ -41,11 +37,6 @@
 
             </div>
 
-            <div class="row">
-                <div class="span12">
-                <?php include(APP_WEB_DIR. '/monitor/inc/banner.inc'); ?>
-                </div>
-            </div>
             <div class="row">
                 <div class="span12">
                 <?php include('inc/menu.inc'); ?>
