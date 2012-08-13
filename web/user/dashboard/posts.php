@@ -73,6 +73,10 @@
 
             <div class="row">
                 <div class="span9 mh600">
+                    <div class="faded-text">
+                        All your posts are shown here. Do mouse over a post to get 
+                        edit and remove links.
+                    </div>
                     <?php
                         $startId = NULL;
                         $endId = NULL;
@@ -94,6 +98,7 @@
                 </div>
             </div>
         </div> <!-- container -->
+        <div class="hr"> </div>
         <?php $paginator->render('/user/dashboard/posts.php', $startId, $endId); ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>

@@ -68,7 +68,13 @@
             </div>
 
             <div class="row">
-                <div class="span9 mh600">
+                <div class="span9 mh800">
+
+                    <div class="faded-text">
+                        All your comments are shown here. Do mouse over a comment to get 
+                        edit and remove links.
+                    </div>
+
                     <?php
                         $startId = NULL ;
                         $endId = NULL ;

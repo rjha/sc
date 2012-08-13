@@ -84,9 +84,13 @@
             </div>
 
             <div class="row">
-                <div class="span12">
+                <div class="span9 mh600">
+                    <div class="faded-text">
+                        All your favorite posts are shown here. To remove a post 
+                        from favorites, do mouse over the post and click Remove.
+                    </div>
 
-                    <div id="tiles" class="mh600">
+                    <div id="widgets" class="mt20">
                         <?php
                             $startId = NULL;
                             $endId = NULL ;
@@ -107,14 +111,14 @@
                         ?>
 
                     </div><!-- tiles -->
-                    <div class="hr"> </div>
-                    <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
 
                 </div>
 
             </div>
 
         </div>  <!-- container -->
+        <div class="hr"> </div>
+        <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
