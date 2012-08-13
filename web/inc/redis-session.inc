@@ -1,6 +1,6 @@
 <?php
 
-$sessionHandler = new \com\indigloo\core\MySQLSession();
+$sessionHandler = new \com\indigloo\core\RedisSession();
 session_set_save_handler(array($sessionHandler,"open"),
                             array($sessionHandler,"close"),
                             array($sessionHandler,"read"),
@@ -20,7 +20,6 @@ session_start();
 
 
 if (isset($_COOKIE[session_name()])) {
-    //cookie lifetime in seconds
     $lifetime = \com\indigloo\Configuration::getInstance()->get_value("session.lifetime",3600);
     setcookie(session_name(), session_id(), time() + $lifetime , "/");
 }

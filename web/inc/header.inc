@@ -10,12 +10,18 @@
     use com\indigloo\core\Web  ;
     use com\indigloo\Configuration as Config  ;
 
-    $sessionBackend = Config::getInstance()->get_value("session.backend");
+    $session_backend = Config::getInstance()->get_value("session.backend");
+    $session_backend = empty($session_backend) ? "default" :  strtolower($session_backend);
 
-    if(strcmp($sessionBackend,"mysql") == 0 ) {
-        include(APP_WEB_DIR . '/inc/mysql-session.inc');
-    }else{
-        include(APP_WEB_DIR . '/inc/session.inc');
+    switch($session_backend) {
+        case "redis" :
+            include(APP_WEB_DIR . '/inc/redis-session.inc');
+        break;
+        case "mysql" :
+            include(APP_WEB_DIR . '/inc/mysql-session.inc');
+        break ;
+        default:
+            include(APP_WEB_DIR . '/inc/session.inc');
     }
 
     include(WEBGLOO_LIB_ROOT . '/com/indigloo/error.inc');
