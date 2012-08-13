@@ -19,14 +19,13 @@
    </div>
        
     <div>
-        <span class="b"> <a href="~~$view->userPageURI~">~~$view->userName~</a> </span>
+        <span class="user"> <a href="~~$view->userPageURI~">~~$view->userName~</a> </span>
     </div>
 
     ~if($view->hasGroups) {~
     <div class="groups">
-    Groups:
         ~foreach($view->groups as $group){~
-            <a href="/group/~~$group['slug']~">~~$group['display']~</a>&nbsp;
+            <a href="/group/~~$group['slug']~">~~$group['display']~&nbsp;&nbsp;</a>
 
         ~}~
 
