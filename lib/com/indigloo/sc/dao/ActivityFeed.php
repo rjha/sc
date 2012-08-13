@@ -15,7 +15,7 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\Logger as Logger;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\Constants as AppConstants;
-    use \com\indigloo\sc\util\Redis as Redis;
+    use \com\indigloo\connection\Redis as Redis;
 
     class ActivityFeed {
 
