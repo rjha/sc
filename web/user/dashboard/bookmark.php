@@ -84,7 +84,7 @@
             </div>
 
             <div class="row">
-                <div class="span12 dark-body">
+                <div class="span12">
 
                     <div id="tiles" class="mh600">
                         <?php
@@ -94,7 +94,8 @@
                                 $startId = $postDBRows[0]['id'] ;
                                 $endId =   $postDBRows[sizeof($postDBRows)-1]['id'] ;
                                 foreach($postDBRows as $postDBRow) {
-                                    $html = \com\indigloo\sc\html\Post::getTile($postDBRow,$tileOptions);
+                                    //$html = \com\indigloo\sc\html\Post::getTile($postDBRow,$tileOptions);
+                                    $html = \com\indigloo\sc\html\Post::getBookmarkWidget($postDBRow);
                                     echo $html ;
 
                                 }
@@ -120,8 +121,20 @@
         <script type="text/javascript">
             /* column width = css width + margin */
             $(document).ready(function(){
+
+                $('.widget .options').hide();
+                $('.widget').mouseenter(function() {
+                    $(this).find('.options').toggle();
+                    /* @todo move colors to a css style */
+                    $(this).css("background-color", "#f9f9f9");
+                });
+
+                $('.widget').mouseleave(function() {
+                    $(this).find('.options').toggle();
+                    $(this).css("background-color", "#FFFFFF");
+                });
+
                 webgloo.sc.toolbar.add();
-                webgloo.sc.home.addTiles();
 
             });
         </script>

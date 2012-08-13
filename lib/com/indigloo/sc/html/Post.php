@@ -311,6 +311,29 @@ namespace com\indigloo\sc\html {
 
         }
 
+         static function getBookmarkWidget($postDBRow) {
+
+            $html = NULL ;
+            $voptions = array("abbreviate" => true);
+            $view = self::createPostView($postDBRow,$voptions);
+
+             if($view->hasImage) {
+                $template = '/fragments/widget/bookmark/image.tmpl' ;
+                //Add thumbnail width and height
+                $td = Util::foldX($view->width,$view->height,100);
+                $view->twidth = $td["width"];
+                $view->theight = $td["height"];
+
+            } else {
+                $template = '/fragments/widget/bookmark/text.tmpl' ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+         }
+
+
         static function createPostView($row,$voptions=NULL) {
 
             $voptions = empty($voptions) ? array() : $voptions ;
