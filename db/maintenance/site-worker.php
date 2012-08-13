@@ -192,7 +192,7 @@
 
     $session_backend = Config::getInstance()->get_value("session.backend");
     $session_backend = empty($session_backend) ? "default" :  strtolower($session_backend);
-    if(strmcmp($session_backend,"mysql") == 0 ) {
+    if(strcmp($session_backend,"mysql") == 0 ) {
         remove_mysql_sessions();
     }
 
