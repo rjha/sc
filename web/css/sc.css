@@ -339,7 +339,8 @@
     }
 
      #image-preview .container .options .links a {
-        color : black;
+        color : #222;
+        font-weight:bold ;
     }
 
     /* + Homepage tiles */
@@ -379,6 +380,7 @@
 
     .tile .options .links a {
         color : #2B2B2B;
+        font-weight:bold;
     }
 
     .tile .photo {
