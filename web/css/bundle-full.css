@@ -5145,7 +5145,8 @@ button::-moz-focus-inner {
     }
 
      #image-preview .container .options .links a {
-        color : black;
+        color : #222;
+        font-weight:bold ;
     }
 
     /* + Homepage tiles */
@@ -5160,6 +5161,7 @@ button::-moz-focus-inner {
         padding:8px;
         background-color: white;
         box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
+        min-height:60px;
         /* position:relative ; */
     }
 
@@ -5185,6 +5187,7 @@ button::-moz-focus-inner {
 
     .tile .options .links a {
         color : #2B2B2B;
+        font-weight:bold;
     }
 
     .tile .photo {
@@ -5196,6 +5199,22 @@ button::-moz-focus-inner {
         max-width:190px;
         margin :0px;
     }
+
+    .tile .user {
+        font-weight : bold ;
+        margin-top: 4px ;
+    }
+
+    .tile .groups {
+        font-size:12px ;
+        margin-top: 4px ;
+    }
+
+    .tile .groups a {
+        color : #333 ;
+    }
+
+
 
     /* smaller tile on item page */
 
