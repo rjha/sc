@@ -47,7 +47,7 @@
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
         <script>
-            window.setTimeout(function() {window.location.href = '<?php echo $goUrl; ?>'; }, 5000);
+            window.setTimeout(function() {window.location.href = 'http://www.3mik.com'; }, 5000);
         </script>
 
         <div id="ft">
