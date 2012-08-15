@@ -16551,6 +16551,7 @@ webgloo.sc.ImageSelector = {
     upload_counter : 0 ,
     debug : false ,
     description: '' ,
+    website : '' ,
 
     extractEndpoint : "/qa/ajax/extract-image.php",
     uploadEndpoint : "/upload/image.php" ,
@@ -16828,6 +16829,7 @@ webgloo.sc.ImageSelector = {
         images = response.images ;
         webgloo.sc.ImageSelector.num_total = images.length;
         webgloo.sc.ImageSelector.description = response.description;
+        webgloo.sc.ImageSelector.website = $("#link-box").val();
 
         var tmpl = "Total {total} images found" ;
         var message = tmpl.supplant({"total" : webgloo.sc.ImageSelector.num_total}) ;
@@ -16973,6 +16975,7 @@ webgloo.sc.ImageSelector = {
                 frm = document.forms["web-form1"];
                 frm.images_json.value = strImagesJson ;
                 frm.description.value = webgloo.sc.ImageSelector.description ;
+                frm.link.value = webgloo.sc.ImageSelector.website ;
                 $('#web-form1').submit();
             }
 

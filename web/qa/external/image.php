@@ -83,6 +83,7 @@
                         <form  id="web-form1"  name="web-form1" action="/qa/external/router.php"  method="POST">
                             <input type="hidden" name="images_json" />
                             <input type="hidden" name="description" />
+                            <input type="hidden" name="link" />
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                             <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
                         </form>
