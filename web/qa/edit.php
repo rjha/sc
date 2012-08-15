@@ -196,8 +196,16 @@
                     allowedExtensions: ['png','gif','jpg','jpeg'],
                     debug: false,
                     labelOfButton : 'Upload Images',
+                    
                     onComplete: function(id, fileName, responseJSON) {
                          webgloo.media.addImage(responseJSON.mediaVO);
+                    },  
+
+                    showMessage: function(message){ 
+                        var tmpl = '<li class="qq-uplad-fail"> <span class="error"> {message}</span></li> ';
+                        var errorMessage = tmpl.supplant({"message" : message}) ;
+                        $(".qq-upload-list").append(errorMessage);
+                        
                     }
                 });
             });

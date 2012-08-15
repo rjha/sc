@@ -1000,3 +1000,7 @@
     .zocial {
         white-space: nowrap;
     }
+
+    .qq-upload-failed-text {
+        color:red ;
+    }

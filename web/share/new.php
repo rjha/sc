@@ -64,7 +64,7 @@
             </div>
             <div class="row">
                 <div class="span9">
-
+                    <div id="ful-message"> </div>
                     <?php FormMessage::render(); ?>
 
                     <form  id="web-form1"  name="web-form1" action="/qa/form/new.php" enctype="multipart/form-data"  method="POST">
@@ -168,12 +168,20 @@
                 //@imp: we pass our own button label to the fileupload js
                 var uploader = new qq.FileUploader({
                     element: document.getElementById('image-uploader'),
-                    action: '/upload/image.php',
+                    action: '/upload/image.php', 
                     allowedExtensions: ['png','gif','jpg','jpeg'],
                     debug: false,
                     labelOfButton : 'Upload Images',
+
                     onComplete: function(id, fileName, responseJSON) {
                         webgloo.media.addImage(responseJSON.mediaVO);
+                    },
+
+                    showMessage: function(message){ 
+                        var tmpl = '<li class="qq-uplad-fail"> <span class="error"> {message}</span></li> ';
+                        var errorMessage = tmpl.supplant({"message" : message}) ;
+                        $(".qq-upload-list").append(errorMessage);
+                        
                     }
                 });
 

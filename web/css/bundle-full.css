@@ -5807,6 +5807,9 @@ button::-moz-focus-inner {
         white-space: nowrap;
     }
 
+    .qq-upload-failed-text {
+        color:red ;
+    }
 
  /* cat:sc:file:1:css/sc.css */ 
 
