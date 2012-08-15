@@ -358,16 +358,20 @@ namespace com\indigloo\sc\html {
             $view->hasGroups = false ;
             $view->groups= array();
             $view->id = $row['id'];
+            $view->itemId = PseudoId::encode($view->id);
+
             // title in DB is 128 chars long.
             // here on page we want to use a 70 char title.
             // also used in item images alt text
-
+            // clean up bad utf-8 data for display
             $view->title = Util::filterBadUtf8($row['title']) ;
             $view->title = Util::abbreviate($view->title,70);
+
+            $view->description = Util::filterBadUtf8($row['description']) ;
+            if($options["abbreviate"]) {
+                $view->description = Util::abbreviate($view->description,160);
+            }
             
-            $view->itemId = PseudoId::encode($view->id);
-            $view->description = ($options["abbreviate"]) ?
-                    Util::abbreviate($row["description"],160) : $row['description'] ;
 
             $view->userName = $row['user_name'];
             $view->createdOn = Util::formatDBTime($row['created_on'], AppConstants::TIME_MDYHM);
