@@ -55,7 +55,7 @@
         $uploader->process($prefix,$_GET["qqfile"]);
         
     } elseif (isset($_FILES["qqfile"])) {
-        $name = $_FILES["qqfile"]['name'] ;
+        $name = $_FILES["qqfile"]["name"] ;
         check_image_name($name);
 
         $pipe = new \com\indigloo\media\FormPipe();
