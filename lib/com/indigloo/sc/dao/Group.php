@@ -9,6 +9,14 @@ namespace com\indigloo\sc\dao {
 
     class Group {
 
+        function search($token,$limit) {
+            if(empty($token)) { return array(); }
+
+            $token = strtolower($token);
+            $rows = mysql\Group::search($token,$limit);
+            return $rows ;
+        }
+
         function getLatest($limit,$filters=array()) {
             $rows = mysql\Group::getLatest($limit,$filters);
             return $rows ;

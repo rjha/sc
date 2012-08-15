@@ -1,21 +1,96 @@
 
+#jdk1.7
 
-#netbeans conf
-netbeans_default_options="-J-client -J-Xss2m -J-Xms128m -J-Xmx256m -J-XX:PermSize=64m -J-Dsun.java2d.noddraw=true -J-XX:+UseConcMarkSweepGC -J-XX:+CMSClassUnloadingEnabled -J-Dsun.zip.disableMemoryMapping=true --laf com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"
+To install jdk1.7 we just untar the tarball and copy it to ~/sw/ 
+add to PATH in user .profile (~/.profile) like
+PATH=$PATH:$HOME/sw/jdk1.7.0_04/bin
 
+source new profile (. .profile)
 
+#netbeans 
 
-#install netbeans scanOnDemand plugin
++ download netbeans tarball
+
+#add consolas fonts
+
+mkdir ~/.fonts
+copy msfonts to ~/.fonts dir
+$fc-cache -fv  (do not run as root)
+
+verify using $fc-list
+
+#netbeans:scanOnDemand plugin
 
 Run the IDE,
 go to Tools | Plugins
 choose Settings and verify "Latest Development Plugins" update center is there.
 if not, add it, the URL is: http://deadlock.netbeans.org/hudson/job/nbms-and-javadoc/lastStableBuild/artifact/nbbuild/nbms/updates.xml.gz
+
 Watch out! From the moment you add it you'll start receiving notifications for yet not stable updates, so you may want to check new updates carefully before installing.
+
 click the "Reload Catalog" button,
+    + Netbeans 7.2 : Go to updates tab - click check for updates
+    + Go to available plugins tab - search for scan
+ 
 search for "Scan On Demand",
 install module.
 
+Now go to installed plugins
+Deactivate following plugins
+(what is part of Base IDE)
+ + git 
+ + hudson
+ + subversion
+ + mercurial
+ + bugzilla
+ + whatever takes your fancy : the fewer the better
+
+
+uninstall useless plugins
+(Donot remove PHP plugin : All PHP project support is via this plugin)
+ - php frameworks
+ - whatever takes your fancy
+
+
+
+#netbeans: configuration
+#
+
++ make a copy of ~/sw /<netbeans>/etc/netbeans.conf
++ open file ~/sw /<netbeans>/etc/netbeans.conf
+
++ change java heap size and L&F 
+
+netbeans_default_options="-J-client -J-Xss2m -J-Xms128m -J-Xmx256m -J-XX:PermSize=64m -J-Dsun.java2d.noddraw=true -J-XX:+UseConcMarkSweepGC -J-XX:+CMSClassUnloadingEnabled -J-Dsun.zip.disableMemoryMapping=true --laf com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"
+
++ restart netbeans
+
+Tools | Options 
++ Editor | General
+Remove Trailing whitespace - never
++ Editor | Formatting
+expand tabs to spaces
+tab size is 4
+
+
++ Fonts and colors
+ - select Consolas 13 
+
+Menu | View | Toolbars | Memory (will show memory usage on netbeans)
+
+
+#netbeans:add project
+
+Add project | existing sources
+path : /home/rjha/code/github/sc
+project name: sc
+select php 5.3
+utf-8 encoding
+put netbeans metadata in a separate dir - do not pollute our code dir
+
+#install pear
+
+$sudo aptitude install php-pear
 
 #install phpmd
 #install phploc

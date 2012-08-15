@@ -7,10 +7,27 @@
 
     set_exception_handler('webgloo_ajax_exception_handler');
     
-    use \com\indigloo\Util as Util;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login ;
+    use \com\indigloo\Util as Util ;
+ 
+    function check_image_name($name) {
 
+        $allowed = array("jpg","jpeg","png","gif");
+        $extension = Util::getFileExtension($name);
+
+        if(!empty($extension)) {
+            $extension = strtolower($extension);
+        }
+
+        if(empty($extension) || !in_array($extension,$allowed)) {
+            $message = sprintf("error uploading %s : only JPG, JPEG, GIF, or PNG allowed", $name);
+            $data = array("code" => 500, "error" => $message);
+            echo json_encode($data);
+            exit ;
+        }
+       
+    }
 
     //use login is required for image upload 
     if(!Login::hasSession()) {
@@ -19,7 +36,7 @@
         echo $json;
         exit;
     }
-
+    
     $uploader =  NULL ; 
     $prefix = sprintf("%s/",date('Y/m/d')) ;
     
@@ -30,11 +47,16 @@
     }
         
     if (isset($_GET["qqfile"])) {
+        $name = $_GET["qqfile"];
+        check_image_name($name);
+
         $pipe = new \com\indigloo\media\XhrPipe();
         $uploader = new com\indigloo\media\ImageUpload($pipe);
         $uploader->process($prefix,$_GET["qqfile"]);
         
     } elseif (isset($_FILES["qqfile"])) {
+        $name = $_FILES["qqfile"]["name"] ;
+        check_image_name($name);
 
         $pipe = new \com\indigloo\media\FormPipe();
         $uploader = new com\indigloo\media\ImageUpload($pipe);

@@ -1,0 +1,17 @@
+
+To add facebook like
+=========================
+
+1) add this markup immediately after body opening
+
+<div id="fb-root"></div>
+        <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+        fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        </script>
+
+2) Like button is rendered by code
+
+<div class="fb-like p5" data-href="<?php echo $itemObj->netLink;?>" data-send="false" data-layout="button_count" data-width="220" data-show-faces="false"></div>

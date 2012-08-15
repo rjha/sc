@@ -1,0 +1,24 @@
+
+<div class="section1">
+    <div class="item">
+        <div class="title">
+            ~~$view->title~
+        </div>
+        <div class="user">
+            <span class="feed-text">posted by&nbsp;</span>
+             <span class="name"> <a href="~~$view->userPageURI~" target="_blank">~~$view->userName~</a> </span>
+        </div>
+        <div class="toolbar">
+            ~if($view->isLoggedInUser){~
+                <a href="~~$view->editUrl~" class="btn btn-mini">Edit</a>&nbsp;
+            ~}~
+            <a href="" id="~~$view->itemId~" class="like-post-link btn btn-mini">Like</a>&nbsp;
+            <a href="" id="~~$view->itemId~" class="favorite-post-link btn btn-mini">Favorite</a>&nbsp;
+            <a href="" id="~~$view->followerId~|~~$view->followingId~" class="follow-user-link btn btn-mini">Follow user</a>
+
+        </div>
+    </div>
+
+</div>
+
+

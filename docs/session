@@ -1,0 +1,77 @@
+
+
+session 
+--------
+
+To use your own custom session implementation we provide two classes
+1. Redis based
+2. mySQL based
+
+
+sc_config.ini
+--------------
+session.backend=mysql|redis|default
+;time in seconds
+session.lifetime=3600 
+
+php.ini
+-----------
+
+session.gc_probability=0
+
+
+Caveats
+---------
+
++ cookie lifetime is important. If we do not set rolling expiry on cookie then 
+after browser close, there is no cookie, we have to generate a new session_id and start 
+a new session. This rolling expiry on session cookie is set inside web/inc/mysql-session.inc file.
+
++ Donot write sessions to DB if we donot have any session data (if we have not stored anything)
+We do a session_start() in header so a session is started. However we can simply return from the 
+session_write() call if we donot have session_data.
+
++ set session.gc_probability=0 inside fpm/php.ini.
+This will ensure that default sessions are cleared via ubuntu /etc/cron.d/php5 script.
+To clear mysql stale sessions - we can use a cron job.
+There is no need to clear redis based sessions - As we set an expiry on keys 
+Redis will automatically clean these keys after expiry
+
+
++ To manually clean redis sessions : we can 
+
+ * find keys using command "keys sc:PHPSESSID:*"
+ * for all such we can issue a DEL KEY command
+ * we can also find the time left for such keys via TTL command 
+
+
+concurrent access to session data
+------------------------------------
+for mysql based session backend we open a Tx inside session_open and 
+commit the Tx inside session_close. PHP session data is read at the start of page execute
+and is flushed at the end. Therefore it is important that no modifications to session data 
+happen before my page exits. 
+
+One page - One sessionId - One Tx
+ - get lock
+ - read data
+ - write data 
+ - release lock
+
+
+http://stackoverflow.com/questions/1022416/how-to-properly-implement-a-custom-session-persister-in-php-mysql/10422239#10422239
+
+How to intorduce session data locking with Redis session handler?
+https://github.com/homm/php-sessions-redis/issues/2
+
+
+
+
+
+
+
+
+
+
+
+

@@ -42,6 +42,17 @@ namespace com\indigloo\sc\html {
 
         }
 
+         static function getTile($groups) {
+            $html = NULL ;
+            $view = new \stdClass;
+            $view->groups = $groups ;
+            $template = '/fragments/group/tile.tmpl' ;
+            $html = Template::render($template,$view);
+            return $html;
+
+         }
+
+
     }
 }
 ?>

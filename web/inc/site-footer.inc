@@ -11,7 +11,7 @@
 
     // close redis connx.
     // do not create a new connx.
-    $redis = \com\indigloo\sc\util\Redis::getInstance(false) ;
+    $redis = \com\indigloo\connection\Redis::getInstance(false) ;
     if(!is_null($redis)) {
         $redis->close();
     }

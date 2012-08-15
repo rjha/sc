@@ -15,7 +15,7 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\Logger as Logger;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\Constants as AppConstants;
-    use \com\indigloo\sc\util\Redis as Redis;
+    use \com\indigloo\connection\Redis as Redis;
 
     class ActivityFeed {
 
@@ -195,7 +195,6 @@ namespace com\indigloo\sc\dao {
                 $key1 = sprintf("sc:user:%s:activities", $loginId);
                 $key2 = sprintf("sc:user:%s:feeds", $loginId);
                 $key3 = sprintf("sc:post:%s:subscribers", $itemId);
-
 
                 // Add jobId to global:queue:new list
                 // Add feed(job) to sc:global:jobs hash - jobId field

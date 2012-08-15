@@ -130,12 +130,7 @@
         &nbsp;<a class="nav-learn-more" href="/site/about.php"><span class="badge">Learn more&nbsp;&raquo;</span></a>
 
         </div>
-        <div style="float:right;padding-bottom:5px;">
-                <span style="font-size: 16px; padding-right: 5px;">&nbsp;</span>
-                <a href="http://twitter.com/3mikindia"><img src="/css/images/ico_twitter.png" width="32" height="32" style="vertical-align: middle; padding-left: 2px;" alt="Twitter"></a>
-                <a href="http://www.facebook.com/3mikindia"><img src="/css/images/ico_facebook.png" width="32" height="32" style="vertical-align: middle; padding-left: 2px;" alt="Facebook"></a>
-                <a href="http://plus.google.com/108668124722035129135"><img src="/css/images/ico_googleplus.png" width="32" height="32" style="vertical-align: middle; padding-left: 2px;" alt="Google+"></a>
-        </div> <!-- social buttons -->
+        
 
     </div> <!-- row3 -->
     <div class="row">

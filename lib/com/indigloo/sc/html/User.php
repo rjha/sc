@@ -50,7 +50,7 @@ namespace com\indigloo\sc\html {
             $view->aboutMe = $userDBRow['about_me'];
             $view->photoUrl = $userDBRow['photo_url'];
             if(empty($view->photoUrl)) {
-                $view->photoUrl = '/css/images/twitter-icon.png' ;
+                $view->photoUrl = '/css/asset/sc/twitter-icon.png' ;
             }
 
             $loginId = $userDBRow['login_id'];
@@ -75,7 +75,7 @@ namespace com\indigloo\sc\html {
             $view->name = $name;
             $view->photoUrl = $photoUrl;
             if(empty($view->photoUrl)) {
-                $view->photoUrl = '/css/images/twitter-icon.png' ;
+                $view->photoUrl = '/css/asset/sc/twitter-icon.png' ;
             }
 
             $html = Template::render($template,$view);
@@ -94,9 +94,9 @@ namespace com\indigloo\sc\html {
             //what properties are actually set in DB
             $columns = array();
             // labels for properties
-            $labels = array('website' => '<span class="faded-text"> Website </span>' ,
-                            'blog' => '<span class="faded-text"> Blog </span> ' ,
-                            'location' => '<span class="faded-text"> Location </span> ');
+            $labels = array('website' => 'Website' ,
+                            'blog' => 'Blog' ,
+                            'location' => 'Location');
 
             foreach($labels as $key => $label ) {
                 //for label key, the row in DB is set
@@ -117,13 +117,13 @@ namespace com\indigloo\sc\html {
             $data['photo_url'] = $userDBRow['photo_url'];
 
             if(empty($data['photo_url'])) {
-                $data['photo_url'] = '/css/images/twitter-icon.png' ;
+                $data['photo_url'] = '/css/asset/sc/twitter-icon.png' ;
             }
 
             if($total > 0 ) {
                 array_push($columns,"num_posts");
-                $data["num_posts"] = "" ;
-                $labels["num_posts"] = '<span class="faded-text"> '.$total.' posts </b> </span>' ;
+                $data["num_posts"] = $total.' posts &rarr;' ;
+                $labels["num_posts"] = "&nbsp;" ;
             }
 
             $view->createdOn = Util::formatDBTime($userDBRow['created_on']);

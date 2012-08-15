@@ -42,9 +42,11 @@ namespace com\indigloo\sc\controller{
                 exit;
             }
 
-            $imagesJson = $postDBRow['images_json'];
-            $images = json_decode($imagesJson);
+            $options = array();
+            $options["group"] = true ;
+            $postView = \com\indigloo\sc\html\Post::createPostView($postDBRow,$options);
 
+            // links is separate from postView for historical reasons 
             $linksJson = $postDBRow['links_json'];
             $dblinks = json_decode($linksJson);
 
@@ -55,7 +57,7 @@ namespace com\indigloo\sc\controller{
                 array_push($links,$link);
             }
 
-            /* data for facebook share link */
+            /* data for facebook/google+ dialogs */
             $itemObj = new \stdClass ;
             $itemObj->appId = Config::getInstance()->get_value("facebook.app.id");
             $itemObj->host = "http://" .$_SERVER["HTTP_HOST"] ;
@@ -63,37 +65,36 @@ namespace com\indigloo\sc\controller{
             $itemObj->netHost = "http://www.3mik.com" ;
             $itemObj->callback = $itemObj->host."/callback/fb-share.php" ;
 
-
-            if(sizeof($images) > 0 ) {
-                $image = $images[0];
-                //Facebook dialog needs absolute URL
-                $prefix = (property_exists($image,'store') && ($image->store == 's3')) ? 'http://' : $itemObj->host."/";
+            if($postView->hasImage) {
                 /* use original image for og snippets, smaller images may be ignored */
-                $itemObj->picture = $prefix.$image->bucket."/".$image->storeName ;
+                /* facebook and google+ dialogs need absolute URL */
+                $itemObj->picture = $postView->srcImage ;
             } else {
-                 $itemObj->picture = $itemObj->host."/css/images/logo.png";
+                $itemObj->picture = $itemObj->host."/css/asset/sc/logo.png";
             }
 
             //do not urlencode - as we use this value as canonical url
             $itemObj->link = $itemObj->host."/item/".$itemId ;
             $itemObj->netLink = $itemObj->netHost."/item/".$itemId ;
+
             // title in DB is 128 chars long.
             // here on page we want to use a 70 char title.
             // also used in item images alt text
             // item description should be 160 chars.
-            $itemObj->title = Util::abbreviate($postDBRow['title'],70);
-            $itemObj->description = Util::abbreviate($postDBRow['description'],160);
+            $itemObj->title = Util::abbreviate($postView->title,70);
+            $itemObj->description = Util::abbreviate($postView->description,160);
+
             $strItemObj = json_encode($itemObj);
             //make the item json string form safe
             $strItemObj = Util::formSafeJson($strItemObj);
 
-
+            /* comments data */
             $commentDao = new \com\indigloo\sc\dao\Comment();
             $commentDBRows = $commentDao->getOnPostId($postId);
 
             $gWeb = \com\indigloo\core\Web::getInstance();
             $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
-            $loginId = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
+            $loginIdInSession = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
 
             $xids = array();
             $xrows = array();

@@ -14,7 +14,7 @@
 
         <link rel="stylesheet" type="text/css" href="/3p/yui3/grids-min.css">
         <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-        <script type="text/javascript" src="/3p/jquery/jquery-1.6.4.min.js"></script>
+        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/3p/swfobject2.2/swfobject.min.js"></script>
 
 

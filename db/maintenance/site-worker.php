@@ -60,12 +60,13 @@
         }
     }
 
-    function remove_stale_sessions(){
+    function remove_mysql_sessions(){
         //clean sessions inactive for half an hour
         $mysql_session = new \com\indigloo\core\MySQLSession();
         $mysql_session->open(null,null);
-        //30 minutes * 60 seconds
-        $mysql_session->gc(1800);
+        //7 days * 24 HR /Day * 3600 seconds/Hour
+        $lifetime = Config::getInstance()->get_value("session.lifetime",3600);
+        $mysql_session->gc($lifetime);
         $mysql_session->close();
     }
 
@@ -189,10 +190,17 @@
     process_reset_password($mysqli);
     sleep(1);
 
+    $session_backend = Config::getInstance()->get_value("session.backend");
+    $session_backend = empty($session_backend) ? "default" :  strtolower($session_backend);
+    if(strcmp($session_backend,"mysql") == 0 ) {
+        remove_mysql_sessions();
+    }
+
+
     //initialize redis connx.
-    $redis = \com\indigloo\sc\util\Redis::getInstance()->connection();
+    $redis = \com\indigloo\connection\Redis::getInstance()->connection();
     send_notifications($mysqli,$redis);
     $mysqli->close();
     $redis->quit();
-    //total time
+
    ?>

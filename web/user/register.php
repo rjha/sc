@@ -20,42 +20,10 @@
 <!DOCTYPE html>
 <html>
 
-       <head><title> User registration page  </title>
+    <head><title> User registration page  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
-
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
-
-
-        <script type="text/javascript">
-            $(document).ready(function(){
-                //form validator
-                //http://docs.jquery.com/Plugins/Validation/Methods/equalTo
-                //new jquery validate plugin can accept rules
-
-                $("#web-form1").validate({
-                    errorLabelContainer: $("#web-form1 div.error"),
-                    rules: {
-                        password: "required",
-                        password_again: {
-                            equalTo: "#password"
-                        },
-                        email : {
-                            required: true ,
-                            email : true
-                        }
-                     }
-                });
-
-            });
-
-        </script>
-
-
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
+        
     </head>
 
    <body>
@@ -66,7 +34,7 @@
                 </div>
 
             </div>
-            
+
             <div class="row">
                 <div class="span8">
                     <div class="page-header">
@@ -145,6 +113,32 @@
             </div>
         </div>
     </div> <!-- container -->
+
+    <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            //form validator
+            //http://docs.jquery.com/Plugins/Validation/Methods/equalTo
+            //new jquery validate plugin can accept rules
+
+            $("#web-form1").validate({
+                errorLabelContainer: $("#web-form1 div.error"),
+                rules: {
+                    password: "required",
+                    password_again: {
+                        equalTo: "#password"
+                    },
+                    email : {
+                        required: true ,
+                        email : true
+                    }
+                    }
+            });
+
+        });
+
+    </script>
 
     <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

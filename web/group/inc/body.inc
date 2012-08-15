@@ -1,23 +1,12 @@
 <!DOCTYPE html>
 <html>
 
-       <head>
+    <head>
        <title> <?php echo $title; ?> </title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
-
-        <script type="text/javascript">
-            $(document).ready(function(){
-                webgloo.sc.toolbar.add();
-           });
-        </script>
 
     </head>
 
@@ -29,7 +18,7 @@
                 </div>
 
             </div>
-           
+
             <div class="row">
                 <div class="span12">
                     <div class="stack">
@@ -69,11 +58,23 @@
 
             </div>
         </div> <!-- container -->
-    <div class="hr"> </div>
-    <?php if($hasPagination) { $paginator->render($pageBaseUrl,$startId,$endId); } ?>
-    <div id="ft">
-        <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
-    </div>
+
+        <div class="hr"> </div>
+
+        <?php if($hasPagination) { $paginator->render($pageBaseUrl,$startId,$endId); } ?>
+
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                webgloo.sc.toolbar.add();
+            });
+        </script>
+
+        <div id="ft">
+            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
+        </div>
 
     </body>
 </html>

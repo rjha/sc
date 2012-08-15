@@ -60,26 +60,11 @@
 <!DOCTYPE html>
 <html>
 
-       <head>
-       <title> <?php echo $pageTitle; ?> </title>
-       <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <script type="text/javascript" src="/3p/jquery/masonary/jquery.masonry.min.js"></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
-
-        <script type="text/javascript">
-            /* column width = css width + margin */
-            $(document).ready(function(){
-                webgloo.sc.toolbar.add();
-                webgloo.sc.home.addTiles();
-
-            });
-        </script>
-
+    <head>
+        <title> <?php echo $pageTitle; ?> </title>
+        <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
+        
     </head>
 
      <body>
@@ -99,9 +84,13 @@
             </div>
 
             <div class="row">
-                <div class="span12 dark-body">
+                <div class="span9 mh600">
+                    <div class="faded-text">
+                        All your favorite posts are shown here. To remove a post 
+                        from favorites, do mouse over the post and click Remove.
+                    </div>
 
-                    <div id="tiles" class="mh600">
+                    <div id="widgets" class="mt20">
                         <?php
                             $startId = NULL;
                             $endId = NULL ;
@@ -109,7 +98,8 @@
                                 $startId = $postDBRows[0]['id'] ;
                                 $endId =   $postDBRows[sizeof($postDBRows)-1]['id'] ;
                                 foreach($postDBRows as $postDBRow) {
-                                    $html = \com\indigloo\sc\html\Post::getTile($postDBRow,$tileOptions);
+                                    //$html = \com\indigloo\sc\html\Post::getTile($postDBRow,$tileOptions);
+                                    $html = \com\indigloo\sc\html\Post::getBookmarkWidget($postDBRow);
                                     echo $html ;
 
                                 }
@@ -121,14 +111,37 @@
                         ?>
 
                     </div><!-- tiles -->
-                    <div class="hr"> </div>
-                    <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
 
                 </div>
 
             </div>
 
         </div>  <!-- container -->
+        <div class="hr"> </div>
+        <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+        <script type="text/javascript">
+            /* column width = css width + margin */
+            $(document).ready(function(){
+
+                $('.widget .options').hide();
+                $('.widget').mouseenter(function() {
+                    $(this).find('.options').toggle();
+                    /* @todo move colors to a css style */
+                    $(this).css("background-color", "#f9f9f9");
+                });
+
+                $('.widget').mouseleave(function() {
+                    $(this).find('.options').toggle();
+                    $(this).css("background-color", "#FFFFFF");
+                });
+
+                webgloo.sc.toolbar.add();
+
+            });
+        </script>
 
 
         <div id="ft">

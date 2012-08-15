@@ -22,17 +22,13 @@
 
     <head>
         <title> share images from a webpage </title>
-
-        <meta charset="utf-8">
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-
+        <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
         <style>
             /*@todo move page specific styles to css file */
             #step1-container { margin-top:10px; padding:10px; }
-            #step2-container { margin-top:10px; padding:10px; border-left:1px solid #f7f7f7;}
+            #step2-container { margin-top:10px; padding:10px; border-left:6px solid #eee;}
 
             #link-box {width:280px; }
             #fetch-button {width:60px; height:28px; margin-bottom:10px;}
@@ -40,10 +36,10 @@
             #ajax-message .normal {}
             #ajax-message .error { color:red ; }
 
-            #stack { margin-top:40px; }
+            #image-preview { margin-top:40px; }
 
             /* override default stack image padding */
-            div .stackImage { padding: 1px; }
+            #image-preview .container { padding: 1px; }
 
         </style>
 
@@ -59,7 +55,6 @@
                 </div>
             </div>
 
-            <div class="hr"> </div>
             <?php FormMessage::render(); ?>
 
             <div class="row">
@@ -88,6 +83,7 @@
                         <form  id="web-form1"  name="web-form1" action="/qa/external/router.php"  method="POST">
                             <input type="hidden" name="images_json" />
                             <input type="hidden" name="description" />
+                            <input type="hidden" name="link" />
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                             <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
                         </form>
@@ -97,26 +93,18 @@
 
             </div><!-- row:1 -->
 
-            <div class="hr"> </div>
-            <div id="ajax-message" class="ml20"> </div>
+            <div id="ajax-message" class="ml20 mt20"> </div>
 
             <div class="row">
-                <div id="stack">
-                    <div class="images p10"> </div>
+                <div id="image-preview" class="p20">
+
                 </div>
             </div> <!-- row:2 -->
 
         </div> <!-- container -->
 
-        <div id="ft">
-            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
-        </div>
 
-
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/jquery/jquery.ajaxQueue.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
         <script type="text/javascript">
 
@@ -127,6 +115,10 @@
             });
 
         </script>
+
+        <div id="ft">
+            <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
+        </div>
 
 
     </body>

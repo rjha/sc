@@ -12,6 +12,20 @@ namespace com\indigloo\sc\mysql {
 
     class Group {
         
+        static function search($token,$limit) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            settype($limit,"integer");
+            $token = $mysqli->real_escape_string($token);
+
+
+            $sql = "select token,name from sc_group_master where token like '%s%s%s'  limit %d" ;
+            $sql = sprintf($sql,"%",$token,"%",$limit);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
         static function getLatest($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 

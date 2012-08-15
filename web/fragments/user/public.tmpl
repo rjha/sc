@@ -1,31 +1,23 @@
+<div id="pubuser">
+    <img class="avatar"  src="~~$view->data['photo_url']~" alt ="~~$view->data['name']~" />
 
-    <div class="widget">
-        <div class="photo"> <img src="~~$view->data['photo_url']~" alt ="~~$view->data['name']~" /> </div>
+     <h3>~~$view->data['name']~</h3>
+    <div class="section">
+        <p> ~~$view->data['about_me']~ </p>
+        <a href="" id="~~$view->followerId~|~~$view->followingId~" class="btn follow-user-link">Follow user</a>
     </div>
-    <h3>~~$view->data['name']~</h3>
-
-    <div class="description">
-            ~~$view->data['about_me']~
-    </div>
-    <br/>
-    <div class="hr"> </div>
-    
-    <div>
-        <div class="pt10">
-            <a href="" id="~~$view->followerId~|~~$view->followingId~" class="btn btn-primary follow-user-link">Follow</a>
-            <br/>
-        </div>
-        <div class="mt20">
-            <ul class="unstyled">
+    <div class="section">
+        <ul class="unstyled">
             ~foreach($view->columns as $key){ ~
-                <li> ~~$view->labels[$key]~ </li>
-                <li> ~~$view->data[$key]~ </li>
+                <li class="header"> ~~$view->labels[$key]~ </li>
+                <li class="data"> ~~$view->data[$key]~ </li>
             ~}~
 
-            </ul>
+        </ul>
 
-        </div>
     </div>
-    <div class="feeds mt10">
-        ~~$view->feedHtml~
+    <div>
+        <div class="feeds"> ~~$view->feedHtml~ </div>
     </div>
+
+</div>

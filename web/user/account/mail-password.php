@@ -20,26 +20,7 @@
        <head>
         <title> 3mik.com - Share your find, need and knowledge</title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
-
-        <script type="text/javascript">
-
-            $(document).ready(function(){
-
-                $("#web-form1").validate({
-                       errorLabelContainer: $("#web-form1 div.error")
-                });
-            });
-
-
-        </script>
-
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
     </head>
 
@@ -108,6 +89,22 @@
             </div> <!-- row -->
 
         </div> <!-- container -->
+
+
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+        <script type="text/javascript">
+
+            $(document).ready(function(){
+
+                $("#web-form1").validate({
+                       errorLabelContainer: $("#web-form1 div.error")
+                });
+            });
+
+
+        </script>
 
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

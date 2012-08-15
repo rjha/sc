@@ -14,9 +14,13 @@ namespace com\indigloo\sc\controller{
         function process($params,$options) {
 
             $token = Url::tryQueryParam("gt");
-            if(is_null($token)) {
+
+            if(empty($token)) {
                 header("Location: / ");
             }
+
+            $gpage = Url::tryQueryParam("gpage");
+            $gpage = empty($gpage) ? "1" : $gpage ;
 
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
             $total = $sphinx->getPostsCount($token);
@@ -34,7 +38,7 @@ namespace com\indigloo\sc\controller{
                 $pageHeader = "$token - $total Results" ;
                 $pageBaseUrl = "/search/site";
 
-                $template = APP_WEB_DIR. '/view/tiles-page.php';
+                $template = APP_WEB_DIR. '/view/search.php';
                 $postDao = new \com\indigloo\sc\dao\Post();
                 $postDBRows = $postDao->getOnSearchIds($ids) ;
 
@@ -43,6 +47,9 @@ namespace com\indigloo\sc\controller{
                 $template = APP_WEB_DIR. '/view/notiles.php';
 
             }
+
+            $groupDao = new \com\indigloo\sc\dao\Group();
+            $groupDBRows = $groupDao->search($token,$pageSize);
 
             $pageTitle = SeoData::getPageTitle($token);
             $metaKeywords = SeoData::getMetaKeywords($token);

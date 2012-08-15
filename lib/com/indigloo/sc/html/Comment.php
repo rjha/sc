@@ -12,7 +12,7 @@ namespace com\indigloo\sc\html {
 
     class Comment {
 
-        static function renderAll($rows) {
+        static function getFeedHtml($rows) {
             $html = NULL ;
             $view = new \stdClass;
             $template = '/fragments/comment/summary-all.tmpl' ;
@@ -29,7 +29,7 @@ namespace com\indigloo\sc\html {
             }
 
             $html = Template::render($template,$view);
-            echo $html ;
+            return $html ;
         }
 
         static function getSummary($row) {

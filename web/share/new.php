@@ -38,48 +38,11 @@
 <!DOCTYPE html>
 <html>
 
-       <head>
+    <head>
         <title> 3mik.com - Share your find, need and knowledge</title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
-
-        <link rel="stylesheet" type="text/css" href="/3p/bootstrap/css/bootstrap.css">
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-        <link rel="stylesheet" type="text/css" href="/3p/ful/valums/fileuploader.css">
-        <script type="text/javascript" src="/3p/jquery/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/3p/jquery/jquery.validate.1.9.0.min.js"></script>
-        <script type="text/javascript" src="/3p/bootstrap/js/bootstrap.js"></script>
-        <script type="text/javascript" src="/3p/ful/valums/fileuploader.js" ></script>
-
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/sc.js"); ?>
-
-        <script type="text/javascript">
-
-            $(document).ready(function(){
-
-                $("#web-form1").validate({
-                       errorLabelContainer: $("#web-form1 div.error")
-                });
-
-                webgloo.media.init(["image", "link"]);
-                webgloo.media.attachEvents();
-                webgloo.sc.util.addTextCounter("#description", "#description_counter");
-
-                //@imp: we pass our own button label to the fileupload js
-                var uploader = new qq.FileUploader({
-                    element: document.getElementById('image-uploader'),
-                    action: '/upload/image.php',
-                    allowedExtensions: ['png','gif','jpg','jpeg'],
-                    debug: false,
-                    labelOfButton : 'Add Images',
-                    onComplete: function(id, fileName, responseJSON) {
-                        webgloo.media.addImage(responseJSON.mediaVO);
-                    }
-                });
-
-            });
-
-        </script>
-
+        <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
+ 
     </head>
 
     <body>
@@ -90,22 +53,26 @@
                 </div>
 
             </div>
-
+            <div class="row">
+                <div class="span12">
+                     <div class="page-header">
+                        <h3> Share</h3> 
+                    </div>
+                   
+                </div>
+            </div>
             <div class="row">
                 <div class="span9">
-
-
-                    <div class="page-header">
-                        <h2> Share</h2>
-                    </div>
-
+                    <div id="ful-message"> </div>
                     <?php FormMessage::render(); ?>
 
                     <form  id="web-form1"  name="web-form1" action="/qa/form/new.php" enctype="multipart/form-data"  method="POST">
                         <div class="row">
                             <div class="span9"><div id="image-uploader"> </div></div>
                         </div>
-                        <p> images will appear at the end of this form </p>
+                        <div class="faded-text">
+                            <a href="#link-preview">+&nbsp;show images and websites &rAarr;</a>
+                        </div>
                         <table class="form-table">
                             <tr>
                                 <td> <label>Category</label>
@@ -135,7 +102,7 @@
 
                             <tr>
                                 <td>
-                                    <label>Website (Type website and click Add or press Enter) </label>
+                                    <label>Website (click Add or press Enter) </label>
                                     <input id="link-box" name="link" value="<?php echo $sticky->get('link'); ?>" />
                                     <button id="add-link" type="button" class="btn gBtnUp" value="Add"><i class="icon-plus-sign"> </i>&nbsp;Add</button>
                                 </td>
@@ -153,9 +120,14 @@
 
                         </table>
 
-                        <div id="link-data"> </div>
-                        <div id="image-data"> </div>
-
+                        <span class="faded-text">Preview</span>
+                        <div class="section">
+                            <div id="link-preview"> </div>
+                        </div>
+                         
+                        <div id="image-preview"> </div>
+                       
+                        
                         <!-- put json data in single quotes to avoid interpreting double quotes -->
                         <input type="hidden" name="links_json" value='<?php echo $strLinksJson ; ?>' />
                         <input type="hidden" name="images_json" value='<?php echo $strImagesJson ; ?>' />
@@ -177,6 +149,45 @@
             </div>
 
         </div> <!-- container -->
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+        <script type="text/javascript">
+
+            $(document).ready(function(){
+
+                $("#web-form1").validate({
+                       errorLabelContainer: $("#web-form1 div.error")
+                });
+
+                webgloo.media.init(["image", "link"]);
+                webgloo.media.attachEvents();
+                webgloo.sc.util.addTextCounter("#description", "#description_counter");
+
+                //@imp: we pass our own button label to the fileupload js
+                var uploader = new qq.FileUploader({
+                    element: document.getElementById('image-uploader'),
+                    action: '/upload/image.php', 
+                    allowedExtensions: ['png','gif','jpg','jpeg'],
+                    debug: false,
+                    labelOfButton : 'Upload Images',
+
+                    onComplete: function(id, fileName, responseJSON) {
+                        webgloo.media.addImage(responseJSON.mediaVO);
+                    },
+
+                    showMessage: function(message){ 
+                        var tmpl = '<li class="qq-uplad-fail"> <span class="error"> {message}</span></li> ';
+                        var errorMessage = tmpl.supplant({"message" : message}) ;
+                        $(".qq-upload-list").append(errorMessage);
+                        
+                    }
+                });
+
+            });
+
+        </script>
+
 
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

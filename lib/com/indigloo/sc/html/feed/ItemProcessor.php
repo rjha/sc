@@ -21,7 +21,7 @@ namespace com\indigloo\sc\html\feed {
 
             if($flag){
                 $view['subject'] = $feedObj->subject ;
-                $view['object'] = "this post" ;
+                $view['object'] = "this item" ;
                 $pubId = PseudoId::encode($feedObj->subjectId);
                 $view['subjectUrl'] = sprintf("%s/pub/user/%s", Url::wwwBase(),$pubId);
 

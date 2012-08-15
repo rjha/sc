@@ -41,11 +41,9 @@ namespace com\indigloo\sc\controller{
             if(sizeof($ids) > 0 ) {
                 $pageHeader = "$groupName -  $total results" ;
                 $pageBaseUrl = "/group/$slug" ;
-                $template = APP_WEB_DIR. '/view/group/tiles.php';
+                $template = APP_WEB_DIR. '/view/tiles-page.php';
                 $postDao = new \com\indigloo\sc\dao\Post();
                 $postDBRows = $postDao->getOnSearchIds($ids) ;
-
-
 
             } else {
 
