@@ -51,11 +51,7 @@
                     <div id="item-page">
                     <?php
 
-                        $options = array();
-                        $options["group"] = true ;
-                        $postView = \com\indigloo\sc\html\Post::createPostView($postDBRow,$options);
                         echo \com\indigloo\sc\html\Post::getHeader($postView,$loginIdInSession);
-
                         echo \com\indigloo\sc\html\Post::getFancybox($itemObj->title,$images);
                         echo \com\indigloo\sc\html\Post::getDetail($postView,$links);
 

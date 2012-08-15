@@ -311,7 +311,7 @@ namespace com\indigloo\sc\html {
 
         }
 
-         static function getBookmarkWidget($postDBRow) {
+        static function getBookmarkWidget($postDBRow) {
 
             $html = NULL ;
             $voptions = array("abbreviate" => true);
@@ -331,8 +331,7 @@ namespace com\indigloo\sc\html {
             $html = Template::render($template,$view);
             return $html ;
 
-         }
-
+        }
 
         static function createPostView($row,$voptions=NULL) {
 
@@ -362,7 +361,10 @@ namespace com\indigloo\sc\html {
             // title in DB is 128 chars long.
             // here on page we want to use a 70 char title.
             // also used in item images alt text
-            $view->title = Util::abbreviate($row['title'],70);
+
+            $view->title = Util::filterBadUtf8($row['title']) ;
+            $view->title = Util::abbreviate($view->title,70);
+            
             $view->itemId = PseudoId::encode($view->id);
             $view->description = ($options["abbreviate"]) ?
                     Util::abbreviate($row["description"],160) : $row['description'] ;
@@ -375,6 +377,7 @@ namespace com\indigloo\sc\html {
 
             //process post image.
             if( (!empty($images)) && (sizeof($images) > 0) && $options["image"]) {
+
                 /* process image #1 */
                 $view->hasImage = true ;
                 $image = $images[0] ;
@@ -382,6 +385,8 @@ namespace com\indigloo\sc\html {
                 $view->thumbnail = $imgv["thumbnail"];
                 $view->height = $imgv["height"];
                 $view->width = $imgv["width"];
+                $view->srcImage = $imgv["source"];
+                /* assign all images */
                 $view->images = $images ;
             }
 
