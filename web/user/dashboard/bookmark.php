@@ -138,6 +138,7 @@
                     $(this).css("background-color", "#FFFFFF");
                 });
 
+                webgloo.sc.item.addActions();
                 webgloo.sc.toolbar.add();
 
             });
