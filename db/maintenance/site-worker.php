@@ -40,7 +40,7 @@
     }
 
     function process_reset_password($mysqli) {
-        $sql = " select email,token from sc_reset_password where flag = 0 order by id limit 50";
+        $sql = " select name,email,token from sc_reset_password where flag = 0 order by id limit 50";
         $map = array();
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
 
