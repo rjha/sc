@@ -96,5 +96,30 @@ $sudo aptitude install php-pear
 #install phploc
 
 
+#sublime text2
+#
+
+Download the 64 bit version of ST2
+start up
+
+#install sublime package control plugin
+
+ST2 | Preferences | Browse Packages 
+note down your location
+You need to copy the sublime  package control plugin into Installed Packages folder
+Download from : http://wbond.net/sublime_packages/package_control/installation
+$cp ~/Package\ Control.sublime-package  ~/.config/sublime-text-2/Installed\ Packages/
+restart ST2
+after restart - You should see ST2 | Preferences | Package control menu item.
+
+
+
+# add soda theme
+ST2 | preferences | package control
+Add packages
+search for soda 
+install Soda-Theme package
+
+
 
 
