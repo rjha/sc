@@ -6,34 +6,49 @@
 source mydb {
 	type			= mysql
 	sql_host		= localhost
-	sql_user		= db_user
-	sql_pass		= db_password
-	sql_db			= db_name
+	sql_user		= mysql_user
+	sql_pass		= mysql_password
+	sql_db			= mysql_db
 	sql_port		= 3306	
 }
 
 source posts : mydb
 {
 
-	sql_query		=  SELECT id,group_slug,description from sc_post
-	# for debug only
-	sql_query_info		= SELECT * FROM sc_post  WHERE id=$id
+    sql_query       =  SELECT id,group_slug,description, unix_timestamp(created_on) as created_on, \
+                       is_feature , login_id from sc_post
+
+    sql_attr_uint = login_id
+    sql_attr_uint = is_feature
+    sql_attr_timestamp = created_on
+
+    # debug only
+    sql_query_info      = SELECT * FROM sc_post  WHERE id=$id
 }
 
 source comments : mydb
 {
-	sql_query		=  SELECT id,description from sc_comment
-	# for debug only
-	sql_query_info		= SELECT * FROM sc_comment  WHERE id=$id
+    sql_query       =  SELECT id,description,post_id,login_id,unix_timestamp(created_on) as created_on  from sc_comment
+
+    sql_attr_uint = login_id
+    sql_attr_uint = post_id
+    sql_attr_timestamp = created_on
+
+    # debug
+    sql_query_info      = SELECT * FROM sc_comment  WHERE id=$id
 
 }
 
 source groups : mydb
 
 {
-    sql_query = select id,group_slug from sc_post 
-	# for debug only
-	sql_query_info		= SELECT * FROM sc_post  WHERE id=$id
+    sql_query = select id,group_slug,login_id,unix_timestamp(created_on) as created_on from sc_post 
+
+    sql_attr_uint = login_id
+    sql_attr_timestamp = created_on
+
+    # debug 
+    sql_query_info      = SELECT * FROM sc_post  WHERE id=$id
 
 }
 
@@ -43,7 +58,7 @@ index posts
 	path			= /var/lib/sphinxsearch/data/posts
 	min_word_len = 3 
 	min_prefix_len=3
-	charset_type		= sbcs
+	charset_type		= utf-8
 }
 
 index comments : posts
@@ -56,7 +71,7 @@ index groups
 {
     source = groups
 	path			= /var/lib/sphinxsearch/data/groups
-	charset_type		= sbcs
+	charset_type		= utf-8
     ignore_chars = U+002D
 }
 
