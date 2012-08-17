@@ -10,7 +10,7 @@
         $files[] = "jquery/jquery-1.7.1.js" ;
         $files[] = "jquery/jquery.ajaxQueue.js" ;
         $files[] = "jquery/jquery.validate.1.9.0.js" ;
-        $files[] = "jquery/masonary/jquery.masonry.js" ;
+        $files[] = "jquery/isotope/jquery.isotope.js" ;
         $files[] = "jquery/infinite/jquery.infinitescroll.hacked.js" ;
         $files[] = "bootstrap/js/bootstrap.js" ;
         $files[] = "ful/valums/fileuploader.js" ;

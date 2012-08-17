@@ -139,9 +139,11 @@ webgloo.sc.home = {
 
         var $container = $('#tiles');
         $container.imagesLoaded(function(){
-            $container.masonry({
+            $container.isotope({
                 itemSelector : '.tile',
-                gutterWidth : 10
+                layoutMode : 'masonry',
+                masonry : { columnWidth :235}
+                
             });
 
             //show tile options only after images has been loaded by
@@ -164,9 +166,11 @@ webgloo.sc.home = {
     addSmallTiles : function() {
         var $container = $('#tiles');
         $container.imagesLoaded(function(){
-            $container.masonry({
-                itemSelector : '.stamp'
+            $container.isotope({
+                itemSelector : '.stamp',
+                layoutMode : 'masonry'             
             });
+
         });
     }
 
