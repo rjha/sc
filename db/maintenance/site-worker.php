@@ -60,7 +60,7 @@
             }
         }
 
-        $sql2 = " delete from sc_reset_password where flag = 1 and created_on < (now() - interval 20 minute)";
+        $sql2 = " delete from sc_reset_password where flag = 1 and created_on < (now() - interval 1 HOUR)";
         MySQL\Helper::executeSQL($mysqli, $sql2);
 
     }
