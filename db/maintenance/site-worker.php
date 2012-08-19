@@ -40,6 +40,7 @@
     }
 
     function process_reset_password($mysqli) {
+
         $sql = " select name,email,token from sc_reset_password where flag = 0 order by id limit 50";
         $map = array();
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
@@ -58,6 +59,10 @@
                 array_push($map,$email);
             }
         }
+
+        $sql2 = " delete from sc_reset_password where flag = 1 and created_on < (now() - interval 20 minute)";
+        MySQL\Helper::executeSQL($mysqli, $sql2);
+
     }
 
     function remove_mysql_sessions(){
