@@ -19,13 +19,23 @@ namespace com\indigloo\sc\dao {
         }
 
         function addResetPassword($name,$email) {
-            //do we have a request pending already?
+
+            //3mik user account exists with this email?
+            $row = mysql\User::has3mikEmail($email);
+            $count = $row["count"] ;
+            if($count <= 0 ) {
+                $message = "Sorry! We could not find any 3mik login with this email.";
+                throw new UIException(array($message));
+            }
+
+            //is a request already pending for this email?
             $row = mysql\Mail::getResetPasswordInRange($email);
-            $count = $row['count'] ;
+            $count = $row["count"] ;
             if($count > 0 ) {
                 $message = "Your request is already pending. Please try after 20 minutes.";
                 throw new UIException(array($message));
             }
+
 
             $token = Util::getMD5GUID();
             mysql\Mail::addResetPassword($name,$email,$token);

@@ -7,6 +7,19 @@ namespace com\indigloo\sc\mysql {
 
     class User {
 
+        static function has3MikEmail($email) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            $email = $mysqli->real_escape_string($email);
+
+            $sql = " select count(id) as count from sc_denorm_user where email = '%s' and provider = '%s' " ;
+            $sql = sprintf($sql,$email, \com\indigloo\sc\auth\Login::MIK);
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            
+            return $row;
+        }
+
         static function getOnId($userId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
