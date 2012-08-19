@@ -35,7 +35,7 @@ namespace com\indigloo\sc\controller{
             $searchTitle = NULL ;
 
             if(sizeof($ids) > 0 ) {
-                $pageHeader = "$token - $total Results" ;
+                $pageHeader = "$token - search results" ;
                 $pageBaseUrl = "/search/site";
 
                 $template = APP_WEB_DIR. '/view/search.php';
