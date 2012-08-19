@@ -34,7 +34,7 @@
                 <div class="span12 mh800">
                     <div id="tiles">
                         <?php
-                            if($gpage == 1 ) {
+                            if( ($gpage == 1) && !empty($groupDBRows)) {
                                 echo \com\indigloo\sc\html\Group::getTile($groupDBRows);
                             }
 
