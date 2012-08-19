@@ -12,6 +12,20 @@ namespace com\indigloo\sc\mysql {
 
     class Group {
         
+        static function getOnSearchIds($strIds) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            $strIds = $mysqli->real_escape_string($strIds);
+
+            $sql = " select name,token from sc_group_master  " ;
+            $sql .= " where id in (".$strIds. ") order by id desc" ;
+
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
+
         static function search($token,$limit) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -19,7 +33,7 @@ namespace com\indigloo\sc\mysql {
             settype($limit,"integer");
             $token = $mysqli->real_escape_string($token);
 
-
+            //search on token - token has an INDEX on it
             $sql = "select token,name from sc_group_master where token like '%s%s%s'  limit %d" ;
             $sql = sprintf($sql,"%",$token,"%",$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);

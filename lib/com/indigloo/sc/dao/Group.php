@@ -9,11 +9,21 @@ namespace com\indigloo\sc\dao {
 
     class Group {
 
+        function getOnSearchIds($arrayIds) {
+            if(empty($arrayIds)) { return array(); }
+
+            $strIds = implode(",",$arrayIds);
+            $rows = mysql\Group::getOnSearchIds($strIds);
+            return $rows ;
+
+        }
+
         function search($token,$limit) {
             if(empty($token)) { return array(); }
 
-            $token = strtolower($token);
-            $rows = mysql\Group::search($token,$limit);
+            $token = strtolower($token);  
+            $slug = \com\indigloo\util\StringUtil::convertNameToKey($token);
+            $rows = mysql\Group::search($slug,$limit);
             return $rows ;
         }
 
