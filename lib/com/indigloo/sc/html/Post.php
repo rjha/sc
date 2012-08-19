@@ -453,7 +453,7 @@ namespace com\indigloo\sc\html {
 
             if((strcmp($jsonObj->store,"s3") == 0 ) || (strcmp($jsonObj->store,"local") == 0)) {
                 $view["name"] = $jsonObj->originalName ;
-                $prefix = ($jsonObj->store == 's3') ? 'http://' : '/' ;
+                $prefix = ($jsonObj->store == 's3') ? 'http://' : Url::base().'/' ;
                 $fileName = NULL ;
 
                 //@imp: if thumbnail is not available then fallback on original image
