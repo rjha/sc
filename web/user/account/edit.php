@@ -175,10 +175,14 @@
                 webgloo.sc.util.addTextCounter("#about_me", "#about_me_counter");
 
                 var uploader = new qq.FileUploader({
+
                     element: document.getElementById('image-uploader'),
                     action: '/upload/image.php',
-                    debug: true,
-                    labelOfButton : 'Upload Photo',
+                    debug: false,
+
+                    labelOfButton : 'Upload Image',
+                    allowedExtensions: ['png','gif','jpg','jpeg'],
+
                     onComplete: function(id, fileName, responseJSON) {
                         mediaVO = responseJSON.mediaVO;
                         var imageData = {};
@@ -188,6 +192,7 @@
                         } else {
                              imageData.srcImage = '/' + mediaVO.bucket + '/' + mediaVO.thumbnail ;
                         }
+
                         //update our display
                         imageDiv = '<div class="widget"> <div class="photo"> ' +
                                     ' <img src="{srcImage}" alt="{name}" /> </div> </div>' ;
@@ -197,6 +202,13 @@
                         frm = document.forms["web-form1"];
                         frm.photo_url.value = imageData.srcImage ;
 
+                    },
+
+                    showMessage: function(message){ 
+                        var tmpl = '<li class="qq-uplad-fail"> <span class="error"> {message}</span></li> ';
+                        var errorMessage = tmpl.supplant({"message" : message}) ;
+                        $(".qq-upload-list").append(errorMessage);
+                        
                     }
                 });
 
