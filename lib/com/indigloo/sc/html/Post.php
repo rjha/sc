@@ -16,7 +16,7 @@ namespace com\indigloo\sc\html {
 
 
         static function getGalleria($title,$images) {
-            if(sizeof($images) == 0 ) { return '' ; }
+            if(empty($images) || (sizeof($images) == 0)) { return '' ; }
 
             $view = new \stdClass;
             $view->title = $title ;
@@ -47,7 +47,7 @@ namespace com\indigloo\sc\html {
         }
 
         static function getFancybox($title,$images) {
-            if(sizeof($images) == 0 ) { return '' ; }
+            if(empty($images) || (sizeof($images) == 0)) { return '' ; }
 
             $view = new \stdClass;
             $view->title = $title ;
@@ -355,6 +355,8 @@ namespace com\indigloo\sc\html {
             $view = new \stdClass;
 
             $view->hasImage = false ;
+            $view->images = NULL ;
+            
             $view->hasGroups = false ;
             $view->groups= array();
             $view->id = $row['id'];
@@ -378,6 +380,7 @@ namespace com\indigloo\sc\html {
             $view->pubUserId = PseudoId::encode($row['login_id']);
             $view->loginId = $row['login_id'];
             $view->userPageURI = "/pub/user/".$view->pubUserId;
+           
 
             //process post image.
             if( (!empty($images)) && (sizeof($images) > 0) && $options["image"]) {
