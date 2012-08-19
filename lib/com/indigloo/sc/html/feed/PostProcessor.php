@@ -31,8 +31,8 @@ namespace com\indigloo\sc\html\feed {
                 $view['subject'] = $feedObj->subject;
                 $view['object'] = $feedObj->title;
                 $pubId = PseudoId::encode($feedObj->subjectId);
-                $view['subjectUrl'] = sprintf("%s/pub/user/%s",Url::wwwBase(),$pubId);
-                $view['objectUrl'] = sprintf("%s/item/%s",Url::wwwBase(),$feedObj->objectId);
+                $view['subjectUrl'] = sprintf("%s/pub/user/%s",Url::base(),$pubId);
+                $view['objectUrl'] = sprintf("%s/item/%s",Url::base(),$feedObj->objectId);
                 $view['srcImage'] = $feedObj->srcImage ;
                 $view['nameImage'] = $feedObj->nameImage ;
                 $view['verb'] = $this->getVerb($feedObj->verb);

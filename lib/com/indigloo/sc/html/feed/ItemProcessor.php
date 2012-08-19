@@ -23,9 +23,9 @@ namespace com\indigloo\sc\html\feed {
                 $view['subject'] = $feedObj->subject ;
                 $view['object'] = "this item" ;
                 $pubId = PseudoId::encode($feedObj->subjectId);
-                $view['subjectUrl'] = sprintf("%s/pub/user/%s", Url::wwwBase(),$pubId);
+                $view['subjectUrl'] = sprintf("%s/pub/user/%s", Url::base(),$pubId);
 
-                $view['objectUrl'] = sprintf("%s/item/%s",Url::wwwBase(),$feedObj->objectId);
+                $view['objectUrl'] = sprintf("%s/item/%s",Url::base(),$feedObj->objectId);
                 $view['verb'] = $this->getVerb($feedObj->verb);
 
                 $template = '/fragments/feed/vanilla.tmpl' ;

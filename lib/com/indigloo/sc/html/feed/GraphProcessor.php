@@ -27,9 +27,9 @@ namespace com\indigloo\sc\html\feed {
                 $view['subject'] = $feedObj->subject ;
                 $view['object'] = $feedObj->object ;
                 $pubId = PseudoId::encode($feedObj->subjectId);
-                $view['subjectUrl'] = sprintf("%s/pub/user/%s",Url::wwwBase(),$pubId);
+                $view['subjectUrl'] = sprintf("%s/pub/user/%s",Url::base(),$pubId);
                 $pubId = PseudoId::encode($feedObj->objectId);
-                $view['objectUrl'] = sprintf("%s/pub/user/%s",Url::wwwBase(),$pubId);
+                $view['objectUrl'] = sprintf("%s/pub/user/%s",Url::base(),$pubId);
                 $view['verb'] = $this->getVerb($feedObj->verb);
 
                 if(isset($templates[$feedObj->type])) {
