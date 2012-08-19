@@ -26,6 +26,14 @@
     $params->followerId = Util::tryArrayKey($_POST, "followerId");
     $params->followingId = Util::tryArrayKey($_POST, "followingId");
 
+     //use login is required for bookmarking
+    if($params->followerId == $params->followingId ) {
+        $message = array("code" => 200 , "message" => "No need to follow yourself!");
+        $html = json_encode($message);
+        echo $html;
+        exit;
+    }
+
     $command = new \com\indigloo\sc\command\SocialGraph();
     $response = $command->execute($params);
     $html = json_encode($response);
