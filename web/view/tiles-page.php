@@ -75,12 +75,14 @@
                 var $container = $('#tiles');
 
                 $container.imagesLoaded(function(){
-                    $container.masonry({
+                    $container.isotope({
                         itemSelector : '.tile',
-                        gutterWidth  : 10
+                        layoutMode : 'masonry',
+                        masonry: { columnWidth :235 } ,
+                        onLayout : function( $elems, instance ) {
+                            add_tile_options();
+                        }                   
                     });
-
-                    add_tile_options();
 
                 });
 
@@ -108,7 +110,7 @@
                         var $newElems = $(newElements).css({ opacity: 0 });
                         $newElems.imagesLoaded(function(){
                             $newElems.css({ opacity: 1 });
-                            $container.masonry('appended', $newElems);
+                            $container.isotope('appended', $newElems);
                             $("#infscr-loading").fadeOut("slow");
                         });
 
