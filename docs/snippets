@@ -15,3 +15,34 @@ To add facebook like
 2) Like button is rendered by code
 
 <div class="fb-like p5" data-href="<?php echo $itemObj->netLink;?>" data-send="false" data-layout="button_count" data-width="220" data-show-faces="false"></div>
+
+
+2) g+1 button
+
+<!-- g+1 button -->
+                        <div class="g-plusone" data-size="tall" data-href="<?php echo $itemObj->netLink;?>" data-annotation="none" data-width="200"></div>
+
+
+include js in <head> </head> section of HTML page
+
+
+ <script>
+
+            (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+            })();
+
+        </script>
+
+
+3) Twitter button 
+
+<div>
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-via="3mikindia" data-count="none">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                        </div>
+
+
+
+

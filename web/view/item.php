@@ -22,20 +22,32 @@
         <meta property="og:image" content="<?php echo $itemObj->picture ?>"/>
         <meta property="og:description" content="<?php echo $itemObj->description; ?>"/>
 
+        <script>
 
-        <!-- g+1 async js -->
-        <script type="text/javascript">
             (function() {
                 var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
                 po.src = 'https://apis.google.com/js/plusone.js';
                 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
             })();
+
         </script>
+
 
 
     </head>
 
     <body class="dark-body">
+        <div id="fb-root"></div>
+
+        <script>
+
+            (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+                fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+
+        </script>
 
         <div class="container mh800">
             <div class="row">
@@ -92,17 +104,16 @@
 
                     <?php echo \com\indigloo\sc\html\Post::getGroups($postView); ?>
 
-                    <div class="section social-buttons">
+
+                    <div class="section" style="overflow:visible">
+                        <div class="fb-like pb10" data-href="<?php echo $itemObj->netLink;?>" data-send="false" data-layout="button_count" data-width="225" data-show-faces="false">
+                        </div>
                         <div class="pb10">
                             <a href="https://twitter.com/share" class="twitter-share-button" data-via="3mikindia" data-count="none">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                         </div>
 
-                        <div class="pb10">
-                            <a href="#" class="zocial facebook" id="share-facebook">share on facebook</a>
-                        </div>
-                        <div>
-                               <a href="#" class="zocial googleplus" id="share-google">share on google+</a>
-                        </div>
+                        <!-- g+1 button -->
+                        <div class="g-plusone" data-size="tall" data-href="<?php echo $itemObj->netLink;?>" data-annotation="none" data-width="200"></div>
 
                     </div>
 
@@ -127,11 +138,11 @@
                 $("a.gallery").fancybox();
 
                 var $container = $('#tiles');
-                
+
                 $container.imagesLoaded(function(){
                     $container.isotope({
                         itemSelector : '.stamp',
-                        layoutMode : 'masonry'             
+                        layoutMode : 'masonry'
                     });
 
                 });
@@ -140,68 +151,8 @@
                     errorLabelContainer: $("#web-form1 div.error")
                 });
 
-                webgloo.sc.item.openShareWindow = function(title,url) {
-
-                    var popupWidth = 500 ;
-                    var popupHeight = 375 ;
-                    var xPosition=($(window).width()-popupWidth)/2;
-                    var yPosition=($(window).height()-popupHeight)/2;
-
-                    var popupOptions = "width=" + popupWidth +
-                        ",height=" + popupHeight +
-                        ",left=" + xPosition +
-                        ",top=" + yPosition +
-                        "menubar=no,toolbar=no,resizable=yes,scrollbars=yes";
-
-                    window.open(url,title,popupOptions);
-
-                } ;
-
-
-
-                $("#share-facebook").click(function(event) {
-
-                    var itemObj = {};
-                    var strItemObj = '<?php echo $strItemObj; ?>' ;
-
-                    try{
-                        itemObj = JSON.parse(strItemObj) ;
-                    } catch(ex) {
-                        console.log("Error parsing the item data json");
-                        return ;
-                    }
-
-                    var fbUrl = "http://www.facebook.com/dialog/feed?app_id=" + itemObj.appId +
-                        "&display=popup" +
-                        "&redirect_uri=" + encodeURIComponent(itemObj.callback) +
-                        "&picture=" + itemObj.picture +
-                        "&link=" + encodeURIComponent(itemObj.link) +
-                        "&name=" + encodeURIComponent(itemObj.title) +
-                        "&description=" + encodeURIComponent(itemObj.description) ;
-
-                    webgloo.sc.item.openShareWindow("Share on Facebook", fbUrl);
-
-                });
-
-                $("#share-google").click(function(event) {
-
-                    var itemObj = {};
-                    var strItemObj = '<?php echo $strItemObj; ?>' ;
-
-                    try{
-                        itemObj = JSON.parse(strItemObj) ;
-                    } catch(ex) {
-                        console.log("Error parsing the item data json");
-                        return ;
-                    }
-
-                    var googleUrl = "https://plus.google.com/share?url=" + encodeURIComponent(itemObj.netLink) ;
-                    webgloo.sc.item.openShareWindow("Share on Google+", googleUrl);
-
-
-                });
-
             });
+
 
         </script>
 
