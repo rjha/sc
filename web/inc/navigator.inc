@@ -1,16 +1,17 @@
-<div class="row">
-    <div class="span6 offset2">
-        <div id="top-unit">
-
+<div id="top-unit">
+    <div class="row">
+        <div class="span4 offset2">
             <h3> Share and Discover with 3mik </h3>
-            <br>
+        </div>
+        <div class="span5">
             <a id="nav-open-share" class="btn">Add&nbsp;/&nbsp;Upload your item</a>
             &nbsp;&nbsp;
             <a class="btn" href="/user/register.php">Join now&nbsp;&raquo;</a>
-
         </div>
     </div>
+
 </div>
+
 
 <div id="site-navigator">
 
