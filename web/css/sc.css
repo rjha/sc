@@ -775,11 +775,11 @@
        height:20px;
        float:left ;
        margin-top:5px;
-       width:300px;
+       width:400px;
     }
 
     #navbar-search input {
-        width: 280px;
+        width: 380px;
         border-radius: 0;
     }
 
@@ -796,7 +796,6 @@
     }
 
     #site-toolbar .navbar-inner {
-        /* background: #EAEAEA ; */
         background: #FAFAFA ;
     }
 
@@ -810,6 +809,19 @@
         font-weight:bold ;
         text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5)
 
+    }
+
+    #site-toolbar a:hover {
+        text-decoration: none ;
+    }
+
+    #site-toolbar .dropdown-menu a {
+        color : #333 ;
+        font-weight:normal;
+    }
+
+    #site-toolbar .dropdown-menu a:hover {
+        color : white ;
     }
 
     #site-navigator {
@@ -834,33 +846,13 @@
 
     }
 
-    #site-toolbar a:hover {
-        text-decoration: none ;
-    }
-
-    #site-toolbar .dropdown-menu a {
+    #site-navigator .dropdown-menu a {
         color : #333 ;
         font-weight:normal;
     }
 
-    #site-toolbar .dropdown-menu a:hover {
+    #site-navigator .dropdown-menu a:hover {
         color : white ;
-    }
-
-    #site-toolbar .toolbar-row1 {
-          background-color:#222;
-    }
-
-    #site-toolbar .toolbar-row2 {
-          background-color:#222;
-          border-bottom-left-radius:8px ;
-          border-bottom-right-radius:8px ;
-    }
-
-    #site-toolbar .nav-learn-more {
-        color:#333 ;
-        vertical-align:text-bottom;
-
     }
 
     #top-unit {
@@ -868,8 +860,21 @@
         background:#FFF9B1 ;
         margin-top:-10px;
         border-radius: 6px;
-        padding-top:10px;
+
     }
+
+    #top-unit a {
+        color:#FCF9F9 ;
+        background : #E64D5C;
+        font-weight:bold ;
+    }
+
+    #top-unit .btn {
+        text-shadow : none ;
+        line-height: 20px;
+        border: #910101 ;
+    }
+
    /* + simple popup */
 
     #simple-popup {
@@ -960,8 +965,7 @@
         cursor:pointer ;
     }
 
-
-     #overlay-message{
+     #overlay-message {
         background: none repeat scroll 0 0 rgba(255, 255, 255, 0.95);
         border-bottom: 1px solid black;
         box-shadow: 0 1px 15px #9C9C9C;
@@ -971,9 +975,10 @@
         opacity: 0;
         padding: 5px 10% 10px;
         position: fixed;
-        top: 0;
+        top: 45px;
         width: 80%;
-        z-index: 250;
+        z-index: 1009;
+        height:60px;
         text-align:center ;
         opacity :1 ;
         display :block ;

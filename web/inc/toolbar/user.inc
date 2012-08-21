@@ -17,130 +17,64 @@
 
 ?>
 
-<div id="site-toolbar" class="navbar">
 
-    <div class="row toolbar-row1">
-        <div class="span6">
-        <h1> <a class="brand" href="/">3mik.com <span class="beta">BETA</span> </a> </h1>
 
-        </div>
-        <div class="span6">
-        <div class="floatr">
-            <ul class="nav nav-pills">
+<div id="site-toolbar" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a> <!-- 3bars for smaller screens -->
+            <a class="brand" href="/">3mik.com <span class="beta">BETA</span> </a>
 
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $gSessionLogin->name; ?><b class="caret"></b> </a>
-                <ul class="dropdown-menu">
-                    <li><a href="/user/dashboard/posts.php">Account</a></li>
-                    <li><a href="/user/dashboard/profile.php">Settings</a></li>
-                    <li><a href="/pub/user/<?php echo $pubUserId; ?>">Public Profile</a></li>
-
-                    <?php echo $monitorUrl; ?>
-                    <li class="divider"></li>
-                    <li><a href="/user/logout.php">Logout</a></li>
-                </ul>
-            </li> <!-- user menu -->
-            <li class="divider-vertical"></li>
-            <li> <a href="/site/help.php">Help</a> </li>
-            <li class="divider-vertical"></li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                About
-                <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li> <a href="/"><i class="icon-home"></i>&nbsp;Home</a></li>
                     <li> <a href="/site/contact.php">Contact</a> </li>
                     <li> <a href="/site/help.php">Help</a> </li>
-                    <li> <a href="/site/copyright.php">Copyright</a> </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $gSessionLogin->name; ?><b class="caret"></b> </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/user/dashboard/posts.php">Account</a></li>
+                            <li><a href="/user/dashboard/profile.php">Settings</a></li>
+                            <li><a href="/pub/user/<?php echo $pubUserId; ?>">Public Profile</a></li>
+
+                            <?php echo $monitorUrl; ?>
+                            <li class="divider"></li>
+                            <li><a href="/user/logout.php">Logout</a></li>
+                        </ul>
+                    </li> <!-- user menu -->
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        About
+                        <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li> <a href="/site/about.php">About 3mik</a> </li>
+                            <li> <a href="/site/copyright.php">Copyright</a> </li>
+                        </ul>
+                    </li>
+
                 </ul>
-            </li> <!-- About -->
-            </ul>
-        </div>
-        </div>
-    </div> <!-- row1 -->
+                <div id="navbar-search">
+                    <form method="GET" action="/search/site">
+                        <input name="gt" type="text"  placeholder="Search ...">
+                    </form>
+                </div>
 
-    <div class="row toolbar-row2">
-        <div class="span6">
-
-        <ul class="nav nav-pills">
-
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Categories
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <?php
-                            $categoryDao = new \com\indigloo\sc\dao\Category();
-                            $map = $categoryDao->getIdNameMap();
-                            foreach($map as $item) {
-                                $strItem = sprintf("<li><a href=\"/category/%s\">%s</a></li>",$item['id'],$item['name']);
-                                echo $strItem ;
-                            }
-                        ?>
-                    </ul>
-                </li> <!-- category -->
-
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Location
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/search/location/bangalore">Bangalore</a></li>
-                        <li><a href="/search/location/chennai">Chennai</a></li>
-                        <li><a href="/search/location/delhi">Delhi</a></li>
-                        <li><a href="/search/location/hyderabad">Hyderabad</a></li>
-                        <li><a href="/search/location/kolkata">Kolkata</a></li>
-                        <li><a href="/search/location/mumbai">Mumbai</a></li>
-                        <li><a href="/search/location/pune">Pune</a></li>
-                    </ul>
-                </li> <!-- location -->
-
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        More
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/recent">New items</a></li>
-                        <li><a href="/editor/picks">Editor's pick</a></li>
-                        <li><a id="nav-open-group" href="">Popular Groups</a></li>
-                        <li><a href="/surprise/me">Surprise me!</a></li>
-                    </ul>
-                </li> <!-- more -->
-                <li class="active"> <a id="nav-open-share" href="">#&nbsp;Share</a></li>
-                </ul>
+            </div>
 
         </div>
-        <div class="span2">
-            <form method="GET" action="/search/site">
-                <input id="site-search" name="gt" type="text" class="search-query" placeholder="Search">
-            </form>
-        </div>
-        <div class="span4">
-            &nbsp;
-        </div>
 
-    </div> <!-- row2 -->
-
-    <div class="row p10">
-        <div class="span6 offset2">
-        <span class="comment-text"> Discover and share with 3mik </span>
-        &nbsp;<a class="nav-learn-more" href="/site/about.php"><span class="badge">Learn more&nbsp;&raquo;</span></a>
-
-        </div>
-        
-
-    </div> <!-- row3 -->
-    <div class="row">
-        <?php if(!empty($goverlay)) { echo $goverlay ; } ?>
     </div>
+</div> <!-- top navigation bar -->
 
-</div> <!-- site toolbar -->
-
-
-
+<div class="row">
+    <?php if(!empty($goverlay)) { echo $goverlay ; } ?>
+</div>
 
 <div id="block-spinner"> </div>
 
@@ -155,12 +89,13 @@
      </div>
     <div id="content"> </div>
 
-</div> <!-- simple popup -->
+</div>
 
 <div id="popup-mask"> </div>
+<!-- site simple popup -->
 
 <div id="nav-share">
-<a href="<?php echo $shareUrl ?>">
+    <a href="<?php echo $shareUrl ?>">
         <div class="stack">
             <div class="header">Upload from computer</div>
             <p>&nbsp;</p>
@@ -172,6 +107,5 @@
             <p> select this option if you want to share images from a webpage </p>
         </div>
     </a>
-</div> <!-- share-popup for navigation -->
-
+</div> <!-- share popup -->
 
