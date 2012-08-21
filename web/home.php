@@ -18,14 +18,10 @@
     </head>
 
      <body class="dark-body">
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
+
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
-
+            <?php include(APP_WEB_DIR . '/inc/navigator.inc'); ?>
             <div class="row">
                 <div class="span12">
                     <div id="tiles">
@@ -81,10 +77,10 @@
                     $container.isotope({
                         itemSelector : '.tile',
                         layoutMode : 'masonry',
-                        masonry: { columnWidth :235 } ,
+
                         onLayout : function( $elems, instance ) {
                             add_tile_options();
-                        }                   
+                        }
                     });
 
                 });

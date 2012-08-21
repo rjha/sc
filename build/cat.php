@@ -49,7 +49,7 @@
         $files[] = "fancybox/jquery.fancybox-1.3.4.css";
         $files[] = "zocial/css/zocial.css";
         $files[] = "ful/valums/fileuploader.css" ;
-        
+
         $scfiles = array();
         $scfiles[] = "css/sc.css" ;
 
@@ -71,6 +71,10 @@
             $separator = sprintf("\n\n /* cat:sc:file:%d:%s */ \n\n",$i+1,$scfiles[$i]);
             fwrite($fp,$separator);
         }
+
+        //reponsive css is last include
+        $glob = file_get_contents($root3p.'bootstrap/css/bootstrap-responsive.css');
+        fwrite($fp,$glob);
 
         fclose($fp);
 

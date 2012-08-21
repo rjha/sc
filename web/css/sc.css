@@ -12,14 +12,17 @@
     body {
         font-size: 13px;
         font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif ;
-        min-height: 100%;
-        margin: 0;
-        padding: 0;
         position: relative;
         background-color:white  ;
+        padding-top:50px;
     }
 
-    .dark-body { background : #f1f1f1 url(/css/asset/sc/paper-bg2.jpg); }
+    .dark-body {
+        background :  url(/css/asset/sc/paper-bg2.jpg) ;
+        /*  background: #f7f7f7 ; */
+        /* background: #EAEAEA ; */
+
+    }
 
     a:hover { text-decoration:none ; }
     a img { border: 0; }
@@ -278,14 +281,14 @@
     .hide-me {
         display:none ;
     }
-     
+
     #link-preview  a{
         font-size:10px;
         line-height: 1.8 ;
         color: #444 ;
         text-decoration: underline ;
     }
-    
+
 
     #image-preview .container{
        position :relative ;
@@ -345,7 +348,7 @@
 
     /* + Homepage tiles */
     div #tiles{
-        background : url(/css/asset/sc/wash-white-30.png);
+       /*  background : url(/css/asset/sc/wash-white-30.png); */
     }
 
     .tile {
@@ -717,7 +720,7 @@
     .feeds {
         font-size : 12px;
         padding: 0px 0px 0px 10px;
-        font-family: arial;  
+        font-family: arial;
     }
 
     .feeds a {
@@ -768,8 +771,16 @@
 
     /* +site toolbar and popups */
 
-    #site-search{
+    #navbar-search{
        height:20px;
+       float:left ;
+       margin-top:5px;
+       width:300px;
+    }
+
+    #navbar-search input {
+        width: 280px;
+        border-radius: 0;
     }
 
     /* beta next to brand */
@@ -778,14 +789,52 @@
         font-size:11px;
     }
 
-    #site-toolbar { z-index:1 ;}
-    #site-toolbar a { margin-top:10px; }
-
-    #site-toolbar a {
-        font-weight : bold ;
+    #site-toolbar {
+        border-bottom: 1px solid #CACACA ;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4),0 0px 10px rgba(0, 0, 0, 0.1);
+        line-height:26px;
     }
 
-    #site-toolbar a.brand:hover {
+    #site-toolbar .navbar-inner {
+        /* background: #EAEAEA ; */
+        background: #FAFAFA ;
+    }
+
+    #site-toolbar .caret {
+        border-top-color: black ;
+    }
+
+    #site-toolbar a {
+        color:#666 ;
+        color:#222 ;
+        font-weight:bold ;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5)
+
+    }
+
+    #site-navigator {
+        font-size:13px ;
+        line-height: 18px ;
+
+        padding-top:10px;
+        padding-left:20px;
+        padding-right:20px;
+        margin-bottom: 6px;
+        border-bottom: 1px solid whiteSmoke ;
+
+        /* border-top: 1px dashed #333 ; */
+
+    }
+
+    #site-navigator a {
+        color:#70727E ;
+        color:#222 ;
+        text-shadow:0 1px white ;
+        cursor : pointer ;
+
+    }
+
+    #site-toolbar a:hover {
         text-decoration: none ;
     }
 
@@ -814,6 +863,13 @@
 
     }
 
+    #top-unit {
+        padding:30px;
+        background:#FFF9B1 ;
+        margin-top:-10px;
+        border-radius: 6px;
+        padding-top:10px;
+    }
    /* + simple popup */
 
     #simple-popup {
