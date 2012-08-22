@@ -72,7 +72,7 @@
     </div>
     <div class="span3">
         <div class="p10">
-            <a id="join-now-link" href="/user/register.php">Sign up with email&nbsp;&raquo;</a>
+            <a id="join-now-link" href="/user/register.php">Sign in with email&nbsp;&raquo;</a>
         </div>
     </div>
 

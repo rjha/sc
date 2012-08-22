@@ -126,9 +126,7 @@
 
                             <div class="form-actions">
                                 <button class="btn btn-primary" type="submit" name="login" value="Login" onclick="this.setAttribute('value','Login');" ><span>Login</span></button>
-                                <a href="<?php echo $qUrl; ?>">
-                                    <button class="btn" type="button" name="cancel"><span>Cancel</span></button>
-                                </a>
+                                
                                 &nbsp;&nbsp;
                                 <a href="/user/account/mail-password.php">Forgot your password?</a>
                             </div>

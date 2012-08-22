@@ -1065,6 +1065,10 @@
         border-top : none ;
     }
 
+    #adrisya-wrapper {
+        display: none ;
+    }
+
     /* last section: override zocial */
     /* @see https://github.com/samcollins/css-social-buttons/issues/19 */
     .zocial {

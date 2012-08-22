@@ -15,7 +15,10 @@
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     $fUrl = Url::current();
 
-    //@todo : add honeypot /session token
+    //add security token to form
+    $formToken = Util::getBase36GUID();
+    $gWeb->store("form.token",$formToken);
+
 
 ?>
 
@@ -35,7 +38,7 @@
             <div class="row">
                 <div class="span8">
                     <div class="page-header">
-                        <h2> Sign up for a 3mik account</h2>
+                        <h2> Create a 3mik account</h2>
                     </div>
                     <p class="help-text">
                         Password should be atleast 8 characters.
@@ -81,18 +84,21 @@
                                 <td> <input id="password_again" type="password" name="password_again" maxlength="32" class="required" minlength="8"  title="passwords do not match" value="" /></td>
                             </tr>
 
+                            <tr id="adrisya-wrapper">
+                                <td class="field">Please leave this blank&nbsp;</td>
+                                <td> <input name="adrisya_number" maxlength="10" value="" /></td>
+                                
+                            </tr>
 
                         </table>
 
 
                         <div class="form-actions">
-                            <button class="btn btn-primary" type="submit" name="register" value="Register" onclick="this.setAttribute('value','Register');" ><span>Sign up</span></button>
-                             <a href="/user/login.php">
-                                <button class="btn" type="button" name="cancel"><span>Cancel</span></button>
-                            </a>
+                            <button class="btn btn-primary" type="submit" name="register" value="Register" onclick="this.setAttribute('value','Register');" ><span>Sign in</span></button>
 
                         </div>
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
+                        <input type="hidden" name="token" value="<?php echo $formToken; ?>" />
 
                     </form>
                 </div>
@@ -124,6 +130,8 @@
                     }
                 }
             });
+
+            $("#adrisya-wrapper").hide();
 
         });
 
