@@ -15,33 +15,30 @@
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     $fUrl = Url::current();
 
+    //@todo : add honeypot /session token
+
 ?>
 
 <!DOCTYPE html>
 <html>
 
-    <head><title> User registration page  </title>
+    <head><title> User sign up page  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         
     </head>
 
    <body>
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
-                </div>
-
-            </div>
-
+            
             <div class="row">
                 <div class="span8">
                     <div class="page-header">
-                        <h2> Register </h2>
+                        <h2> Sign up for a 3mik account</h2>
                     </div>
                     <p class="help-text">
-                       Please provide details below to register. Password should be atleast 8 characters.
+                        Password should be atleast 8 characters.
 
                     </p>
 
@@ -87,17 +84,9 @@
 
                         </table>
 
-                        <div class="ml20">
-                            <p> Type the two words in the image below </p>
-                            <?php
-                                $publickey = "6Lc3p80SAAAAAJvGjs1RyMl8zHBRtg1sf1nRwnJn";
-                                echo recaptcha_get_html($publickey);
-                           ?>
-
-                        </div>
 
                         <div class="form-actions">
-                            <button class="btn btn-primary" type="submit" name="register" value="Register" onclick="this.setAttribute('value','Register');" ><span>Register</span></button>
+                            <button class="btn btn-primary" type="submit" name="register" value="Register" onclick="this.setAttribute('value','Register');" ><span>Sign up</span></button>
                              <a href="/user/login.php">
                                 <button class="btn" type="button" name="cancel"><span>Cancel</span></button>
                             </a>
@@ -109,7 +98,7 @@
                 </div>
 
             <div class="span4">
-                <?php include('sidebar/register.inc'); ?>
+            
             </div>
         </div>
     </div> <!-- container -->

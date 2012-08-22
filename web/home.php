@@ -21,7 +21,7 @@
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
 
         <div class="container">
-            <?php include(APP_WEB_DIR . '/inc/navigator.inc'); ?>
+            <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
             <div class="row">
                 <div class="span12">
                     <div id="tiles">

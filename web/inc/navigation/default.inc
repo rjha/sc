@@ -4,9 +4,9 @@
             <h3> Share and Discover with 3mik </h3>
         </div>
         <div class="span6">
-            <a id="nav-open-share" class="btn">Add+&nbsp;/&nbsp;Upload</a>
+            <a id="nav-popup-share" class="btn">Add+&nbsp;/&nbsp;Upload</a>
             &nbsp;&nbsp;
-            <a class="btn" href="/user/register.php">Register</a>
+            <a id="nav-popup-join" class="btn">Join now &raquo;</a>
             &nbsp;&nbsp;
             <a class="btn" href="/user/login.php">Login&nbsp;&raquo;</a>
         </div>
@@ -61,7 +61,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="/recent">New items</a></li>
-                        <li><a id="nav-open-group" href="">New Groups</a></li>
+                        <li><a id="nav-popup-group" href="">New Groups</a></li>
 
                     </ul>
                 </li> <!-- whats new -->

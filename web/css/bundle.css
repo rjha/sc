@@ -1032,7 +1032,7 @@ button::-moz-focus-inner{border:0;padding:0}
 html,html#nojs{height:100%}
 html#js{height:100%}
 body{font-size:13px;font-family:"HelveticaNeue","Helvetica Neue",Helvetica,Verdana,Arial,sans-serif;position:relative;background-color:white;padding-top:50px}
-.dark-body{background:url(/css/asset/sc/paper-bg2.jpg)}
+.dark-body{background:url(/css/asset/sc/white-mosaic.png)}
 a:hover{text-decoration:none}
 a img{border:0}
 form{margin:0;padding:0}
@@ -1199,12 +1199,13 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #site-toolbar .dropdown-menu a{color:#333;font-weight:normal}
 #site-toolbar .dropdown-menu a:hover{color:white}
 #site-navigator{font-size:13px;line-height:18px;padding-top:10px;padding-left:20px;padding-right:20px;margin-bottom:6px;border-bottom:1px solid whiteSmoke}
-#site-navigator a{color:#70727e;color:#222;text-shadow:0 1px white;cursor:pointer}
+#site-navigator a{color:#444;cursor:pointer}
 #site-navigator .dropdown-menu a{color:#333;font-weight:normal}
 #site-navigator .dropdown-menu a:hover{color:white}
 #top-unit{padding:30px;background:#fff9b1;margin-top:-10px;border-radius:6px}
 #top-unit a{color:#fcf9f9;background:#e64d5c;font-weight:bold}
 #top-unit .btn{text-shadow:none;line-height:20px;border:#910101}
+#join-now-link{color:#333;font-size:18px;line-height:22px;font-weight:bold}
 #simple-popup{position:fixed;width:600px;top:50%;left:50%;margin-top:-140px;margin-left:-300px;background:white;color:black;z-index:1009;border:4px solid #333;border-radius:10px;padding:7px 11px 7px 11px;display:none;overflow:hidden}
 #popup-mask{position:absolute;z-index:900;background-color:#f7f7f7;display:none;top:0;left:0;opacity:.8}
 #block-spinner{text-align:center;position:fixed;width:200px;background:black;opacity:.8;color:white;border-radius:10px;top:50%;left:50%;margin-top:-40px;margin-left:-80px;z-index:1090;padding:10px;display:none;overflow:hidden}
@@ -1229,6 +1230,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .carousel img{max-width:100%}
 .table th,.table td{border-top:0}
 .zocial{white-space:nowrap}
+a.zocial{font:bold 100%/2.1}
 .qq-upload-failed-text{color:red}
 /*!
  * Bootstrap Responsive v2.0.2

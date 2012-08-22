@@ -24,18 +24,7 @@
             $fUrl = $fvalues['fUrl'];
             $gWeb = \com\indigloo\core\Web::getInstance();
 
-            //captcha code
-
-            $privatekey = "6Lc3p80SAAAAABtSCxk0iHeZDRrMxvC0XTTqJpHI";
-            $resp = recaptcha_check_answer ($privatekey,
-                                    $_SERVER["REMOTE_ADDR"],
-                                    $_POST["recaptcha_challenge_field"],
-                                    $_POST["recaptcha_response_field"]);
-
-            if (!$resp->is_valid) {
-                $fhandler->addError("Wrong answer to Captcha! Please try again!");
-            }
-
+            
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors());
             }

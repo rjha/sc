@@ -16858,20 +16858,28 @@ webgloo.sc.toolbar = {
     add : function() {
         window.setTimeout(webgloo.sc.toolbar.closeOverlay,8000);
         //group browser
-        $("a#nav-open-group").click(function(event) {
+        $("a#nav-popup-group").click(function(event) {
             event.preventDefault();
-            $targetUrl= "/group/data/featured.php";
+            $targetUrl= "/group/popup/new.php";
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.load($targetUrl);
         });
 
         //share popup
-        $("a#nav-open-share").click(function(event) {
+        $("a#nav-popup-share").click(function(event) {
             event.preventDefault();
             //get content of nav-share
             var content = $("#nav-share").html();
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.show(content);
+        });
+
+         //share popup
+        $("a#nav-popup-join").click(function(event) {
+            event.preventDefault();
+            $targetUrl= "/user/popup/join-now.php";
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.load($targetUrl);
         });
 
         $("a#close-overlay").click(function(event) {

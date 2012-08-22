@@ -18,7 +18,7 @@
     }
 
     .dark-body {
-        background :  url(/css/asset/sc/paper-bg2.jpg) ;
+        background :  url(/css/asset/sc/white-mosaic.png) ;
         /*  background: #f7f7f7 ; */
         /* background: #EAEAEA ; */
 
@@ -98,6 +98,7 @@
     .pb20 {padding-bottom:20px; }
     .mh800 { min-height:800px;}
     .mh600 { min-height: 600px;}
+
 
     .b {font-weight : bold ;}
     .gray {color : gray; }
@@ -568,6 +569,7 @@
 
     }
 
+
     .item .toolbar {
         float:right ;
     }
@@ -839,11 +841,8 @@
     }
 
     #site-navigator a {
-        color:#70727E ;
-        color:#222 ;
-        text-shadow:0 1px white ;
+        color:#444 ;
         cursor : pointer ;
-
     }
 
     #site-navigator .dropdown-menu a {
@@ -873,6 +872,13 @@
         text-shadow : none ;
         line-height: 20px;
         border: #910101 ;
+    }
+
+    #join-now-link {
+        color:#333 ;
+        font-size:18px;
+        line-height: 22px;
+        font-weight: bold ;
     }
 
    /* + simple popup */
@@ -1060,6 +1066,10 @@
     /* @see https://github.com/samcollins/css-social-buttons/issues/19 */
     .zocial {
         white-space: nowrap;
+    }
+
+    a.zocial {
+        font: bold 100%/2.1 ;
     }
 
     .qq-upload-failed-text {
