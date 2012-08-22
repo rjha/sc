@@ -83,7 +83,6 @@
                     $container.isotope({
                         itemSelector : '.tile',
                         layoutMode : 'masonry',
-                        masonry: { columnWidth :235 } ,
                         onLayout : function( $elems, instance ) {
                             add_tile_options();
                         }                   
