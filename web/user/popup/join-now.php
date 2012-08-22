@@ -52,12 +52,12 @@
 <div class="row">
     <div class="span3">
         <div class="p10">
-            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Sign up with Facebook</a>
+            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Sign in with Facebook</a>
         </div>
     </div>
     <div class="span3">
         <div class="p10">
-            <a class="zocial twitter" href="/user/twitter-login.php">Sign up with Twitter</a>&nbsp;
+            <a class="zocial twitter" href="/user/twitter-login.php">Sign in with Twitter</a>&nbsp;
         </div>
     </div>
 
@@ -66,14 +66,25 @@
 <div class="row">
   <div class="span3">
         <div class="p10">
-            <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Sign up with Google</a>&nbsp;&nbsp;
+            <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Sign in with Google</a>&nbsp;&nbsp;
         </div>
 
     </div>
     <div class="span3">
         <div class="p10">
-            <a id="join-now-link" href="/user/register.php">Sign up with email&nbsp;&rarr;</a>
+            <a id="join-now-link" href="/user/register.php">Sign up with email&nbsp;&raquo;</a>
         </div>
     </div>
 
 </div> <!-- row:2 -->
+
+<div class="row">
+  <div class="span3 offset3">
+        <div class="p10">
+           Have a 3mik account? <a href="/user/login.php">login now</a>
+        </div>
+
+    </div>
+   
+</div> <!-- row:3 -->
+
