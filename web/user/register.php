@@ -122,7 +122,7 @@
                         required: true ,
                         email : true
                     }
-                    }
+                }
             });
 
         });

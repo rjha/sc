@@ -21,7 +21,7 @@
             <div class="nav-collapse">
                 <ul class="nav">
                     <li> <a href="/"><i class="icon-home"></i>&nbsp;Home</a></li>
-                    <li> <a href="/site/contact.php">Contact</a> </li>
+                    <li> <a href="/user/login.php">Login</a> </li>
                     <li> <a href="/site/help.php">Help</a> </li>
 
                     <li class="dropdown">
@@ -31,6 +31,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li> <a href="/site/about.php">About 3mik</a> </li>
+                            <li> <a href="/site/contact.php">Contact</a> </li>
                             <li> <a href="/site/copyright.php">Copyright</a> </li>
                         </ul>
                     </li>

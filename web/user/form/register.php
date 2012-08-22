@@ -24,6 +24,7 @@
             $fUrl = $fvalues['fUrl'];
             $gWeb = \com\indigloo\core\Web::getInstance();
 
+            //@todo : honeypot and session token check!
             
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors());

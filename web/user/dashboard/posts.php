@@ -56,27 +56,19 @@
         
     </head>
 
-    <body>
+    <body class="pt120">
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="span12">
-                     <?php  include('inc/menu.inc'); ?>
-                </div>
-            </div>
-
+            
             <div class="row">
                 <div class="span9 mh600">
-                    <div class="faded-text">
-                        All your posts are shown here. Do mouse over a post to get 
-                        edit and remove links.
+                    <div class="page-header">
+                        <div class="faded-text">
+                            All your posts are shown here. Do mouse over a post to get 
+                            edit and remove links.
+                        </div>
                     </div>
+
                     <?php
                         $startId = NULL;
                         $endId = NULL;

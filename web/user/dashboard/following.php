@@ -42,34 +42,13 @@
         
     </head>
 
-    <body>
-
+    <body class="pt120">
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
+          
 
             <div class="row">
-                <div class="span12">
-                     <?php  include('inc/menu.inc'); ?>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="span2">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li class="active">
-                            <a href="/user/dashboard/following.php">Following</a>
-                        </li>
-                         <li class="">
-                            <a href="/user/dashboard/follower.php">Followers</a>
-                        </li>
-
-                    </ul>
-                </div>
+               
                 <div class="span7 mh600">
                     <?php echo \com\indigloo\sc\html\SocialGraph::getFollowingHtml($loginId,$followings); ?>
                 </div>

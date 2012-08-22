@@ -1,6 +1,6 @@
 <div id="top-unit">
     <div class="row">
-        <div class="span3 offset1">
+        <div class="span4 offset1">
             <h3> Share and Discover with 3mik </h3>
         </div>
         <div class="span6">

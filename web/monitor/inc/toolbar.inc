@@ -1,16 +1,11 @@
-<div id="header">
-    <div class="navbar">
-        <div class="navbar-inner">
-            <div class="container">
-                <div class="pull-left">
-                    <a class="brand" href="/">3mik.com  <span class="beta">BETA</span> </a>
-                </div>
-                <div class="pull-left">
-                    <ul class="nav">
-                        <li class="active"> <a href="/">Home</a> </li>
-                    </ul> <!-- links -->
-                </div>
-          </div>
+
+<div id="site-toolbar" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="/">3mik.com <span class="beta">BETA</span> </a>
+            <ul class="nav">
+                <li> <a href="/"><i class="icon-home"></i>&nbsp;Home</a></li>
+            </ul>
         </div>
-    </div> <!-- navbar -->
-</div> <!-- header -->
+    </div>
+</div>

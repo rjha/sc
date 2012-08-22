@@ -1,14 +1,13 @@
 <div id="top-unit">
     <div class="row">
-        <div class="span3 offset1">
+        <div class="span4 offset1">
             <h3> Share and Discover with 3mik </h3>
         </div>
         <div class="span6">
             <a id="nav-popup-share" class="btn">Add+&nbsp;/&nbsp;Upload</a>
             &nbsp;&nbsp;
             <a id="nav-popup-join" class="btn">Join now &raquo;</a>
-            &nbsp;&nbsp;
-            <a class="btn" href="/user/login.php">Login&nbsp;&raquo;</a>
+            
         </div>
     </div>
 

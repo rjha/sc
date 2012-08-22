@@ -23,22 +23,20 @@
     </head>
 
     <body class="dark-body">
-        <div class="container">
-            <div class="row">
-                <div class="span12 mh600">
-                    <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
 
-                    <div class="span3 offset2">
-                        <?php echo $tileHtml ; ?>
-                    </div>
-                    <div class="span4 offset1">
-                        <div class="noresults">
-                            Thanks for visiting, <br>
-                            see you soon.
-                        </div>
-                    </div>
+        <div class="container mh800">
+            <div class="row">  
+                <div class="span3 offset2">
+                    <?php echo $tileHtml ; ?>
                 </div>
 
+                <div class="span4 offset1">
+                    <div class="noresults">
+                        Thanks for visiting, <br>
+                        see you soon.
+                    </div>
+                </div>
             </div>
 
 
@@ -47,7 +45,7 @@
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
         <script>
-            window.setTimeout(function() {window.location.href = 'http://www.3mik.com'; }, 5000);
+            window.setTimeout(function() {window.location.href = 'http://www.3mik.com'; }, 6000);
         </script>
 
         <div id="ft">

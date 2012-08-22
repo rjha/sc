@@ -4,7 +4,14 @@
     $params = array('q' => urlencode(\com\indigloo\Url::current()));
     $shareUrl = \com\indigloo\Url::createUrl('/share/new.php',$params);
     $externalPageUrl = \com\indigloo\Url::createUrl('/qa/external/image.php',$params);
+    
     $monitorUrl = '' ;
+    $passwordUrl = '' ;
+
+    if(\com\indigloo\sc\auth\Login::hasMikLogin()) {
+        $passwordUrl = '<li><a href="/user/account/change-password.php">Change password</a></li>' ;
+    }
+
     if(\com\indigloo\sc\auth\Login::isAdmin()) {
         $monitorUrl = '<li><a href="/monitor/index.php">Monitor App</a></li>';
     }
@@ -16,7 +23,6 @@
 
 
 ?>
-
 
 
 <div id="site-toolbar" class="navbar navbar-fixed-top">
@@ -32,18 +38,34 @@
             <div class="nav-collapse">
                 <ul class="nav">
                     <li> <a href="/"><i class="icon-home"></i>&nbsp;Home</a></li>
-                    <li> <a href="/site/contact.php">Contact</a> </li>
                     <li> <a href="/site/help.php">Help</a> </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $gSessionLogin->name; ?><b class="caret"></b> </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/user/dashboard/posts.php">Account</a></li>
-                            <li><a href="/user/dashboard/profile.php">Settings</a></li>
-                            <li><a href="/pub/user/<?php echo $pubUserId; ?>">Public Profile</a></li>
 
+                            <li><a href="/user/dashboard/posts.php">Posts</a></li>
+                            <li><a href="/user/dashboard/comments.php">Comments</a></li>
+                            <li><a href="/user/dashboard/bookmark.php">Favorites</a></li>
+                            <li><a href="/user/dashboard/activities.php">Activities</a></li>
+                            <li><a href="/user/dashboard/following.php">Following</a></li>
+                            <li><a href="/user/dashboard/follower.php">Followers</a></li>
+                             
+                            <li class="divider"></li>
+
+
+                            <li><a href="/user/dashboard/profile.php">Edit profile</a></li>
+                            <li><a href="/user/dashboard/mails.php">Mail settings</a></li>
+                            <?php echo $passwordUrl; ?>
+
+                            <li class="divider"></li>
+
+                            <li><a href="/pub/user/<?php echo $pubUserId; ?>">Public page</a></li>
                             <?php echo $monitorUrl; ?>
+                           
                             <li class="divider"></li>
                             <li><a href="/user/logout.php">Logout</a></li>
+
+                            
                         </ul>
                     </li> <!-- user menu -->
 
@@ -54,6 +76,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li> <a href="/site/about.php">About 3mik</a> </li>
+                            <li> <a href="/site/contact.php">Contact</a> </li>
                             <li> <a href="/site/copyright.php">Copyright</a> </li>
                         </ul>
                     </li>

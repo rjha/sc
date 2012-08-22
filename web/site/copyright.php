@@ -16,12 +16,10 @@
     </head>
 
     <body>
+
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container mh600">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
-                </div>
-            </div>
+            
             <div class="row">
                 <div class="span12">
                     <div class="page-header"> <h2> Copyright </h2> </div>

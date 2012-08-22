@@ -14,15 +14,10 @@
 
     </head>
 
-     <body class="">
+     <body>
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container mh800">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
-
+            
             <div class="row">
                 <div class="span4 offset1">
                     <h1> 3mik is a sharing and discovery platform in India.</h1>

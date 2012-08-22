@@ -67,30 +67,20 @@
         
     </head>
 
-     <body>
-
+     <body class="pt120">
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="span12">
-                     <?php include('inc/menu.inc'); ?>
-                </div>
-            </div>
-
+            
             <div class="row">
                 <div class="span9 mh600">
-                    <div class="faded-text">
-                        All your favorite posts are shown here. To remove a post 
-                        from favorites, do mouse over the post and click Remove.
-                    </div>
+                    <div class="page-header">
+                        <div class="faded-text">
+                            All your favorite posts are shown here. To remove a post 
+                            from favorites, do mouse over the post and click Remove.
+                        </div>
+                    <div>
 
-                    <div id="widgets" class="mt20">
+                    <div id="widgets">
                         <?php
                             $startId = NULL;
                             $endId = NULL ;
@@ -117,7 +107,7 @@
             </div>
 
         </div>  <!-- container -->
-        <div class="hr"> </div>
+        
         <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
