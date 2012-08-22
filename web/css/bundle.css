@@ -1203,7 +1203,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #site-navigator a{color:#444;cursor:pointer}
 #site-navigator .dropdown-menu a{color:#333;font-weight:normal}
 #site-navigator .dropdown-menu a:hover{color:white}
-#top-unit{padding:30px;background:#fff9b1;margin-top:-10px;border-radius:6px}
+#top-unit{padding:30px;background:#fff9b1;margin-top:-10px;border-radius:6px;margin-bottom:15px}
 #top-unit a{color:#fcf9f9;background:#e64d5c;font-weight:bold}
 #top-unit .btn{text-shadow:none;line-height:20px;border:#910101}
 #join-now-link{color:#333;font-size:18px;line-height:22px;font-weight:bold}

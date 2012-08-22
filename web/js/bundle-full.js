@@ -16904,7 +16904,6 @@ webgloo.sc.home = {
             $container.isotope({
                 itemSelector : '.tile',
                 layoutMode : 'masonry',
-                masonry : { columnWidth :235}
                 
             });
 

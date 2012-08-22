@@ -4945,7 +4945,7 @@ $("#overlay-message").hide();
 }};
 webgloo.sc.home={addTiles:function(){$(".tile .options").hide();
 var a=$("#tiles");
-a.imagesLoaded(function(){a.isotope({itemSelector:".tile",layoutMode:"masonry",masonry:{columnWidth:235}});
+a.imagesLoaded(function(){a.isotope({itemSelector:".tile",layoutMode:"masonry",});
 webgloo.sc.home.addTileOptions();
 });
 webgloo.sc.item.addActions();

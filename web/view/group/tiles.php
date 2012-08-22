@@ -13,14 +13,10 @@
     </head>
 
      <body class="dark-body">
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
-
+            <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>    
+            
             <div class="row">
                 <div class="span12">
                     <div class="page-header">

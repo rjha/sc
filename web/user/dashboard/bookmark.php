@@ -67,10 +67,10 @@
         
     </head>
 
-     <body class="pt120">
+     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            
+            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
             <div class="row">
                 <div class="span9 mh600">
                     <div class="page-header">

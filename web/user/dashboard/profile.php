@@ -37,11 +37,16 @@
 
     </head>
 
-    <body class="pt120">
+    <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            
+            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
             <div class="row">
+                  <div class="span9">
+                    <div class="page-header">
+                        <div class="faded-text">Profile</div>
+                    </div>
+                </div>
                 <div class="span9 mh600">
                 <?php echo \com\indigloo\sc\html\User::getProfile($gSessionLogin,$userDBRow) ; ?>
                 </div>

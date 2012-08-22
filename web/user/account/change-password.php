@@ -49,14 +49,14 @@
 
     </head>
 
-     <body class="pt120">
+     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            
+            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
             <div class="row">
                 <div class="span9">
                     <div class="page-header">
-                        <h2> Change Password - <?php echo $title; ?> </h2>
+                        <div class="faded-text"> Change Password - <?php echo $title; ?> </div>
                     </div>
 
                     <p class="help-text">

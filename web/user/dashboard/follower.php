@@ -41,11 +41,17 @@
         
     </head>
 
-    <body class="pt120">
+    <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            
+            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+
             <div class="row">
+                <div class="span7">
+                    <div class="page-header">
+                        <div class="faded-text">Followers</div>
+                    </div>
+                </div>
                 <div class="span7 mh600">
                     <?php echo \com\indigloo\sc\html\SocialGraph::getFollowerHtml($loginId,$followers); ?>
                 </div>
