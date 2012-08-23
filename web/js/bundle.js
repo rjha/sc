@@ -4962,6 +4962,8 @@ webgloo.sc.SimplePopup={init:function(){$(document).bind("keydown",function(a){i
 $("a#simple-popup-close").click(function(a){a.preventDefault();
 webgloo.sc.SimplePopup.close();
 });
+$("#popup-mask").click(function(){webgloo.sc.SimplePopup.close();
+});
 },close:function(){$("#simple-popup #content").html("");
 $("#simple-popup").hide();
 $("#popup-mask").hide();

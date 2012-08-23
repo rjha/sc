@@ -16951,6 +16951,10 @@ webgloo.sc.SimplePopup = {
             webgloo.sc.SimplePopup.close();
         });
 
+        $("#popup-mask").click(function() {
+            webgloo.sc.SimplePopup.close();
+        });
+
     },
 
     close : function() {
