@@ -30,7 +30,7 @@
                             $count = 0 ;
                             foreach($this->homeDBRows as $postDBRow) {
                                 $count++ ;
-                                if($count == 4) {
+                                if($count == 1) {
                                     //inject activity tile
                                     $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
                                     $feedDataObj = $activityDao->getGlobalFeeds(10);
