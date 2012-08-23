@@ -4825,9 +4825,6 @@ button::-moz-focus-inner {
 
     .dark-body {
         background :  url(/css/asset/sc/white-mosaic.png) ;
-        /*  background: #f7f7f7 ; */
-        /* background: #EAEAEA ; */
-
     }
 
     a:hover { text-decoration:none ; }
@@ -4921,6 +4918,8 @@ button::-moz-focus-inner {
         padding-top:10px;
         min-height : 600px;
     }
+
+    .wbg { background-color : white ; }
 
 
     /* + Footer */
@@ -5109,7 +5108,7 @@ button::-moz-focus-inner {
        margin :4px;
     }
 
-     #image-preview .container img {
+    #image-preview .container img {
         width: auto;
         height: auto;
         max-width: 180px;
@@ -5156,10 +5155,7 @@ button::-moz-focus-inner {
     }
 
     /* + Homepage tiles */
-    div #tiles{
-       /*  background : url(/css/asset/sc/wash-white-30.png); */
-    }
-
+    
     .tile {
         width:204px;
         margin:4px 2px 4px 2px;
@@ -5168,7 +5164,7 @@ button::-moz-focus-inner {
         background-color: white;
         box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
         min-height:60px;
-        /* position:relative ; */
+
     }
 
     .tile .options {
@@ -5282,6 +5278,7 @@ button::-moz-focus-inner {
         box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
 
     }
+
     .group-panel {
         width:620px;
         height:auto;
@@ -5302,6 +5299,7 @@ button::-moz-focus-inner {
         background : whiteSmoke;
         margin-bottom:1px;
     }
+
     .group-panel .wrapper .groups {
         padding: 10px 0px 5px 0px;
         width:150px;
@@ -5350,10 +5348,7 @@ button::-moz-focus-inner {
         height:60px;
     }
 
-    .wbg {
-        background-color : white ;
-    }
-
+    
     .item .title {
         color: #222;
         font-size: 19px;
@@ -5629,8 +5624,8 @@ button::-moz-focus-inner {
     #site-toolbar .dropdown-menu .active > a,
     #site-toolbar .dropdown-menu .active > a:hover {
         color: #222;
-        font-weight: bold;
-        text-decoration: none;
+        font-weight: normal;
+        text-decoration: underline;
         background-color: inherit;
     } 
 
@@ -5674,8 +5669,8 @@ button::-moz-focus-inner {
     #site-navigator .dropdown-menu .active > a,
     #site-navigator .dropdown-menu .active > a:hover {
         color: #333;
-        font-weight: bold;
-        text-decoration: none;
+        font-weight: normal;
+        text-decoration: underline;
         background-color: inherit;
     } 
 
@@ -5782,7 +5777,6 @@ button::-moz-focus-inner {
     #simple-popup .stack .header {
         font-size:21px;
         text-align:center ;
-        /* color: #28C; */
         padding:10px;
     }
 
@@ -5799,7 +5793,7 @@ button::-moz-focus-inner {
         cursor:pointer ;
     }
 
-     #overlay-message {
+    #overlay-message {
         background: none repeat scroll 0 0 rgba(255, 255, 255, 0.95);
         border-bottom: 1px solid black;
         box-shadow: 0 1px 15px #9C9C9C;
@@ -5837,10 +5831,6 @@ button::-moz-focus-inner {
         width:120px;
         height:20px;
         font-weight:bold;
-    }
-
-    #pubuser .header {
-
     }
 
     #pubuser .data {
