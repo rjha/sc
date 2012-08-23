@@ -5579,7 +5579,7 @@ button::-moz-focus-inner {
         width:80px; height:32px; margin-bottom:10px;
     }
 
-    /* +site toolbar and popups */
+    /* +site toolbar , navigation and popup styles */
 
     #navbar-search{
        height:20px;
@@ -5614,15 +5614,10 @@ button::-moz-focus-inner {
     }
 
     #site-toolbar a {
-        color:#666 ;
         color:#222 ;
         font-weight:bold ;
         text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5)
 
-    }
-
-    #site-toolbar a:hover {
-        text-decoration: none ;
     }
 
     #site-toolbar .dropdown-menu a {
@@ -5630,21 +5625,34 @@ button::-moz-focus-inner {
         font-weight:normal;
     }
 
-    #site-toolbar .dropdown-menu a:hover {
-        color : white ;
+    #site-toolbar .dropdown-menu li > a:hover,
+    #site-toolbar .dropdown-menu .active > a,
+    #site-toolbar .dropdown-menu .active > a:hover {
+        color: #222;
+        font-weight: bold;
+        text-decoration: none;
+        background-color: inherit;
+    } 
+
+    #submenu-col2 {
+        width:360px;
+        display : block ;
+        overflow:hidden;
+    }
+
+    #submenu-col2 ul {
+        float:left ;
+        width: 50%;
+        list-style:none ;
+        margin : 0 auto;
     }
 
     #site-navigator {
         font-size:13px ;
         line-height: 18px ;
-
-        padding-top:10px;
-        padding-left:20px;
-        padding-right:20px;
+        padding: 10px 20px 6px 20px;
         margin-bottom: 6px;
         border-bottom: 1px solid whiteSmoke ;
-
-        /* border-top: 1px dashed #333 ; */
 
     }
 
@@ -5653,14 +5661,24 @@ button::-moz-focus-inner {
         cursor : pointer ;
     }
 
+    #site-toolbar .caret {
+        border-top-color: black ;
+    }
+
     #site-navigator .dropdown-menu a {
         color : #333 ;
         font-weight:normal;
     }
 
-    #site-navigator .dropdown-menu a:hover {
-        color : white ;
-    }
+    #site-navigator .dropdown-menu li > a:hover,
+    #site-navigator .dropdown-menu .active > a,
+    #site-navigator .dropdown-menu .active > a:hover {
+        color: #333;
+        font-weight: bold;
+        text-decoration: none;
+        background-color: inherit;
+    } 
+
 
     #top-unit {
         padding:30px;
@@ -5689,6 +5707,7 @@ button::-moz-focus-inner {
         line-height: 22px;
         font-weight: bold ;
     }
+
 
    /* + simple popup */
 
@@ -5870,6 +5889,12 @@ button::-moz-focus-inner {
     .table th, .table td {
         border-top : none ;
     }
+
+    #adrisya-wrapper {
+        display: none ;
+    }
+
+
 
     /* last section: override zocial */
     /* @see https://github.com/samcollins/css-social-buttons/issues/19 */

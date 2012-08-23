@@ -1195,14 +1195,16 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #site-toolbar{border-bottom:1px solid #cacaca;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1);line-height:26px}
 #site-toolbar .navbar-inner{background:#fafafa}
 #site-toolbar .caret{border-top-color:black}
-#site-toolbar a{color:#666;color:#222;font-weight:bold;text-shadow:0 1px 0 rgba(255,255,255,0.5)}
-#site-toolbar a:hover{text-decoration:none}
+#site-toolbar a{color:#222;font-weight:bold;text-shadow:0 1px 0 rgba(255,255,255,0.5)}
 #site-toolbar .dropdown-menu a{color:#333;font-weight:normal}
-#site-toolbar .dropdown-menu a:hover{color:white}
-#site-navigator{font-size:13px;line-height:18px;padding-top:10px;padding-left:20px;padding-right:20px;margin-bottom:6px;border-bottom:1px solid whiteSmoke}
+#site-toolbar .dropdown-menu li>a:hover,#site-toolbar .dropdown-menu .active>a,#site-toolbar .dropdown-menu .active>a:hover{color:#222;font-weight:bold;text-decoration:none;background-color:inherit}
+#submenu-col2{width:360px;display:block;overflow:hidden}
+#submenu-col2 ul{float:left;width:50%;list-style:none;margin:0 auto}
+#site-navigator{font-size:13px;line-height:18px;padding:10px 20px 6px 20px;margin-bottom:6px;border-bottom:1px solid whiteSmoke}
 #site-navigator a{color:#444;cursor:pointer}
+#site-toolbar .caret{border-top-color:black}
 #site-navigator .dropdown-menu a{color:#333;font-weight:normal}
-#site-navigator .dropdown-menu a:hover{color:white}
+#site-navigator .dropdown-menu li>a:hover,#site-navigator .dropdown-menu .active>a,#site-navigator .dropdown-menu .active>a:hover{color:#333;font-weight:bold;text-decoration:none;background-color:inherit}
 #top-unit{padding:30px;background:#fff9b1;margin-top:-10px;border-radius:6px;margin-bottom:15px}
 #top-unit a{color:#fcf9f9;background:#e64d5c;font-weight:bold}
 #top-unit .btn{text-shadow:none;line-height:20px;border:#910101}
@@ -1230,6 +1232,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .hero-unit{padding:30px;margin-bottom:10px}
 .carousel img{max-width:100%}
 .table th,.table td{border-top:0}
+#adrisya-wrapper{display:none}
 .zocial{white-space:nowrap}
 a.zocial{font:bold 100%/2.1}
 .qq-upload-failed-text{color:red}

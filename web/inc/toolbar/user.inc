@@ -39,34 +39,42 @@
                 <ul class="nav">
                     <li> <a href="/"><i class="icon-home"></i>&nbsp;Home</a></li>
                     <li> <a href="/site/help.php">Help</a> </li>
-                    <li class="dropdown">
+                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $gSessionLogin->name; ?><b class="caret"></b> </a>
                         <ul class="dropdown-menu">
 
-                            <li><a href="/user/dashboard/posts.php">Posts</a></li>
-                            <li><a href="/user/dashboard/comments.php">Comments</a></li>
-                            <li><a href="/user/dashboard/bookmark.php">Favorites</a></li>
-                            <li><a href="/user/dashboard/activities.php">Activities</a></li>
-                            <li><a href="/user/dashboard/following.php">Following</a></li>
-                            <li><a href="/user/dashboard/follower.php">Followers</a></li>
-                             
-                            <li class="divider"></li>
+                            <li>
+                               <div id="submenu-col2"> 
+                                   
+                                    <ul>
 
+                                        <li><a href="/user/dashboard/posts.php">Posts</a></li>
+                                        <li><a href="/user/dashboard/comments.php">Comments</a></li>
+                                        <li><a href="/user/dashboard/bookmark.php">Favorites</a></li>
+                                        <li><a href="/user/dashboard/activities.php">Activities</a></li>
+                                        <li><a href="/user/dashboard/following.php">Following</a></li>
+                                        <li><a href="/user/dashboard/follower.php">Followers</a></li>
+                                    </ul>
+                                    <ul>
 
-                            <li><a href="/user/dashboard/profile.php">Edit profile</a></li>
-                            <li><a href="/user/dashboard/mails.php">Mail settings</a></li>
-                            <?php echo $passwordUrl; ?>
+                                        <li><a href="/user/dashboard/profile.php">Edit profile</a></li>
+                                        <li><a href="/user/dashboard/mails.php">Mail settings</a></li>
+                                        <?php echo $passwordUrl; ?>
+                                        <li><a href="/pub/user/<?php echo $pubUserId; ?>">Public page</a></li>
+                                        <?php echo $monitorUrl; ?>
+                                        <li><a href="/user/logout.php">Logout</a></li>
+                                    </ul>
 
-                            <li class="divider"></li>
-
-                            <li><a href="/pub/user/<?php echo $pubUserId; ?>">Public page</a></li>
-                            <?php echo $monitorUrl; ?>
-                           
-                            <li class="divider"></li>
-                            <li><a href="/user/logout.php">Logout</a></li>
-
-                            
+                                      
+                                     
+                                </div> <!-- 2-col submenu -->
+                            </li>
                         </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        
+                       
                     </li> <!-- user menu -->
 
                     <li class="dropdown">
