@@ -5249,16 +5249,16 @@ button::-moz-focus-inner {
 
     .vertical a {
         text-decoration : none;
-        color: white;
+        color: #222;
         width:22px;
 
     }
 
     #feedback{
         position:fixed;
-        top:200px;
+        top:300px;
         right:0px;
-        background-color:#06C;
+        background-color:#FFF9B1;
         padding:5px;
         font-size:14px;
         font-weight:bold;

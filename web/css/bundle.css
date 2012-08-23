@@ -1131,8 +1131,8 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .stamp .photo{padding:3px}
 .stamp .photo img{max-width:100px;margin:0}
 .vertical{width:1em;text-transform:uppercase;letter-spacing:40px}
-.vertical a{text-decoration:none;color:white;width:22px}
-#feedback{position:fixed;top:200px;right:0;background-color:#06C;padding:5px;font-size:14px;font-weight:bold}
+.vertical a{text-decoration:none;color:#222;width:22px}
+#feedback{position:fixed;top:300px;right:0;background-color:#fff9b1;padding:5px;font-size:14px;font-weight:bold}
 .social-buttons .zocial{margin-bottom:5px;font-size:12px;font-weight:bold}
 .social-buttons a{color:white}
 .box-shadow{box-shadow:0 1px 3px rgba(34,25,25,0.4)}
