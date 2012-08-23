@@ -20,21 +20,37 @@
      <div class="row">
         <div class="span12">
             <ul class="nav nav-pills">
-
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         Category
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <?php
-                            $categoryDao = new \com\indigloo\sc\dao\Category();
-                            $map = $categoryDao->getIdNameMap();
-                            foreach($map as $item) {
-                                $strItem = sprintf("<li><a href=\"/category/%s\">%s</a></li>",$item['id'],$item['name']);
-                                echo $strItem ;
-                            }
-                        ?>
+
+                        <li>
+                           <div id="submenu-col2"> 
+                                <ul>
+                                <?php
+                                    $categoryDao = new \com\indigloo\sc\dao\Category();
+                                    $map = $categoryDao->getIdNameMap();
+                                    $count = sizeof($map);
+                                    $index = 1 ;
+
+                                    foreach($map as $item) {
+                                        $index++ ;
+                                        if($index > ($count/2)) {
+                                            echo "</ul> <ul>";
+                                        }
+                                        
+                                        $strItem = sprintf("<li><a href=\"/category/%s\">%s</a></li>",$item['id'],$item['name']);
+                                        echo $strItem ;
+                                    }
+                                ?>
+
+                                </ul>
+                            </div> <!-- 2-col submenu -->
+                        </li>
+
                     </ul>
                 </li> <!-- category -->
 
