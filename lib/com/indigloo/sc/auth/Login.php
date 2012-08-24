@@ -106,7 +106,7 @@ namespace com\indigloo\sc\auth {
 
                 } else {
                     $message = sprintf("session action response code : %d",$response["code"]);
-                    throw new Exception($message) ;
+                    throw new \Exception($message) ;
                 }
 
 
