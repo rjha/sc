@@ -10,7 +10,7 @@
     use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\sc\ui\Constants as UIConstants;
 
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    $qparams = Url::getRequestQueryParams();
 
     $commentDao = new \com\indigloo\sc\dao\Comment() ;
     $total = $commentDao->getTotalCount();

@@ -13,7 +13,7 @@
 
     // paginate
 
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    $qparams = Url::getRequestQueryParams();
     $userDao = new \com\indigloo\sc\dao\User();
 
     //filters

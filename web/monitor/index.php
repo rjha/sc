@@ -14,7 +14,8 @@
     use \com\indigloo\ui\Filter as Filter;
 
     //url decoded parameters
-    $qparams = Url::getQueryParams($_SERVER["REQUEST_URI"]);
+   
+    $qparams = Url::getRequestQueryParams();
     $options = UIConstants::WIDGET_ALL ;
 
 

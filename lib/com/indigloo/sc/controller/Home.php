@@ -93,7 +93,7 @@ namespace com\indigloo\sc\controller{
 
             $postDao = new \com\indigloo\sc\dao\Post();
             $total = $postDao->getTotalCount();
-            $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+            $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("main.page.items");
             $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
 

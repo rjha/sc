@@ -9,8 +9,8 @@
     use \com\indigloo\sc\auth\Login as Login ;
     use \com\indigloo\ui\Filter as Filter;
 
-
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    
+    $qparams = Url::getRequestQueryParams();
     $login = Login::getLoginInSession();
     $loginId  = $login->id;
 

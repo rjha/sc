@@ -9,7 +9,8 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
 
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+   
+    $qparams = Url::getRequestQueryParams();
     $feedbackDao = new \com\indigloo\sc\dao\Feedback();
 
     $total = $feedbackDao->getTotalCount();

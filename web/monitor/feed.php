@@ -9,7 +9,6 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
 
-    //$qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
     $feedDataObj = $feedDao->getGlobalFeeds(100);
 

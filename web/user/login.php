@@ -3,7 +3,7 @@
     include (APP_WEB_DIR.'/inc/header.inc');
 
     use com\indigloo\Util;
-    use com\indigloo\Url;
+    use com\indigloo\Url as Url;
     use com\indigloo\ui\form\Sticky;
     use com\indigloo\Constants as Constants;
     use com\indigloo\Configuration as Config;
@@ -35,7 +35,7 @@
     //Facebook OAuth2
     $fbAppId = Config::getInstance()->get_value("facebook.app.id");
 
-    $host = "http://".$_SERVER["HTTP_HOST"];
+    $host = Url::base();
     $fbCallback = $host."/callback/fb2.php" ;
 
     $fbDialogUrl = "https://www.facebook.com/dialog/oauth?client_id=".$fbAppId ;
