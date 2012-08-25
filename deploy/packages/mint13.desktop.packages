@@ -4,6 +4,11 @@ build-essential
 git						
 git-core					
 git-man						
+gitk
+gitg
+vim-gtk
+meld
+links                       
 screen						
 bc						
 bzip2						
@@ -32,14 +37,12 @@ php5-snmp
 php5-suhosin					
 php5-xcache					
 php5-fpm		
-php-pear
 ssl-cert					
 strace						
 unzip						
 wget						
 tofrodos                    
 dnsutils                    
-links                       
 g++
-redis-server
 sphinxsearch
+redis-server

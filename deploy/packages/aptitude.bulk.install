@@ -4,14 +4,3 @@
 #Actual install
  sudo aptitude install $(< filename)
 
-
- 
-# platform quirks - Debian wheezy 
-wheezy does not have package php5-suhosin and libmysqlclient16-dev
-
-#ubuntu lucid LTS 10.4 quirks
-
-# ubuntu precise quirks
-
-
-
