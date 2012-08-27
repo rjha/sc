@@ -13,13 +13,12 @@ This will install the debian redis-server package
 $sudo service redis-server stop
 
 # get the latest redis tarball
-# Download redis-2.6 RC4
+
 go to http://redis.io/download
 and download the latest redis 2.6 tarball
+(At some point we want Lua scripting support so we need 2.6)
 
-#compile latest redis tarball as 32 bt binaries
-# install 32 bit support for libc6
-$sudo aptitude install  libc6-dev-i386
+#compile latest redis tarball
 
 $ mkdir -p  $HOME/nuke
 $ cd $HOME/nuke
@@ -28,17 +27,8 @@ $ cd $HOME/nuke
 $ tar -zxvf <redis-tarball>
 This will create a new redis-2.6 directory..
 $ cd <redis-2.6 dir> 
-$ sudo make 32bit
-we want  32 bit compile as our server RAM is small and it produces compact packages.
+$ sudo make
 $ sudo make test
-
-# to strip binaries of debug symbols
-The redis makefile supplies -O2 switch but not the -s switch to gcc.
-The binaries we compiled also include the debug symbols. To strip the 
-binaries of debug symbols, we can do 
-
-$strip --strip-all <binary-name>
-This should result in a size reduction.
 
 
 
@@ -68,9 +58,22 @@ sudo  strip --strip-all  /usr/bin/redis-benchmark
 sudo  strip --strip-all  /usr/bin/redis-check-aof 
 sudo  strip --strip-all  /usr/bin/redis-check-dump 
 
+# why strip binaries of debug symbols?
+The redis makefile supplies -O2 switch but not the -s switch to gcc.
+The binaries we compiled also include the debug symbols. To strip the 
+binaries of debug symbols, we can do 
+
+$strip --strip-all <binary-name>
+should result in a size reduction.
+
+
+
 
 # copy latest redis.conf file
-$sudo cp $HOME/deploy/redis/redis.conf /etc/redis/.
+
+$ sudo cp /etc/redis/redis.conf /etc/redis/redis.conf.orig
+$ sudo cp ~/code/github/sc/deploy/redis/redis.conf /etc/redis/.
+
 
 verify 
 - redis bind address
