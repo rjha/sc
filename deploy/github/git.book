@@ -1,3 +1,10 @@
+
+set username and email
+----------------------
+
+git config --global user.name "rjha"
+git config --global user.email  "jha.rajeev@gmail.com"
+
 get a file from another branch
 --------------------------------------------
 $git checkout <branchname> <path>
