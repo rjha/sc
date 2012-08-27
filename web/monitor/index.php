@@ -122,7 +122,7 @@
                 $('.widget .options').hide();
                 $('.widget').mouseenter(function() {
                     $(this).find('.options').toggle();
-                    $(this).css("background-color", "#f9f9f9");
+                    $(this).css("background-color", "#FEFDF1");
                 });
                 $('.widget').mouseleave(function() {
                     $(this).find('.options').toggle();
@@ -152,6 +152,15 @@
                 <?php include('inc/menu.inc'); ?>
                 </div>
             </div>
+
+             <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h2>Posts</h2>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="row">
                 <div class="span11">

@@ -41,6 +41,13 @@
                 <?php include('inc/menu.inc'); ?>
                 </div>
             </div>
+            <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h2>Activities</h2>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="span9">

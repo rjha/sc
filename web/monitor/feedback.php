@@ -37,7 +37,7 @@
                 $('.widget .options').hide();
                 $('.widget').mouseenter(function() {
                     $(this).find('.options').toggle();
-                    $(this).css("background-color", "#F0FFFF");
+                    $(this).css("background-color", "#FEFDF1");
                 });
                 $('.widget').mouseleave(function() {
                     $(this).find('.options').toggle();
@@ -46,7 +46,12 @@
             });
 
         </script>
+        <style>
+            .item .title {
+                font-size:13px;
+            }
 
+        </style>
     </head>
 
     <body>
@@ -61,6 +66,13 @@
             <div class="row">
                 <div class="span12">
                 <?php include('inc/menu.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h2>Feedback</h2>
+                    </div>
                 </div>
             </div>
 
