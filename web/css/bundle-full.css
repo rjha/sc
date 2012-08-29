@@ -5602,6 +5602,10 @@ button::-moz-focus-inner {
 
     #site-toolbar .navbar-inner {
         background: #FAFAFA ;
+        /* fix for black toolbar in IE9 */
+        /* http://stackoverflow.com/questions/9780464/twitter-bootstrap-nav-bar-issues-in-internet-explorer */
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#FAFAFA', GradientType=0)
+        
     }
 
     #site-toolbar .caret {
@@ -5899,6 +5903,7 @@ button::-moz-focus-inner {
     .qq-upload-failed-text {
         color:red ;
     }
+
 
  /* cat:sc:file:1:css/sc.css */ 
 

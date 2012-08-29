@@ -796,6 +796,10 @@
 
     #site-toolbar .navbar-inner {
         background: #FAFAFA ;
+        /* fix for black toolbar in IE9 */
+        /* http://stackoverflow.com/questions/9780464/twitter-bootstrap-nav-bar-issues-in-internet-explorer */
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#FAFAFA', GradientType=0)
+        
     }
 
     #site-toolbar .caret {
