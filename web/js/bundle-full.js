@@ -16903,7 +16903,7 @@ webgloo.sc.home = {
         $container.imagesLoaded(function(){
             $container.isotope({
                 itemSelector : '.tile',
-                layoutMode : 'masonry',
+                layoutMode : 'masonry'
                 
             });
 
