@@ -77,8 +77,8 @@ namespace com\indigloo\sc\auth {
                 //
                 // @warning: the foreach value reference is maintained
                 // after the loop. variable scope in PHP is at function level
-                // so do not be too cute here and do not user $name => $value
-                // as that conflicts with function argumnet "name"
+                // so do not be too cute here and do not use $name => $value
+                // inside loop as that conflicts with function argument "name"
                 //
                 // see if one of the parameters has "value" {loginId}
                 // update this parameter value to actual loginId
