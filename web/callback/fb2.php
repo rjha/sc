@@ -48,7 +48,7 @@
     //last state token
     $stoken = $gWeb->find('mik_state_token',true);
 
-    if(!empty($code) && ($_REQUEST['state'] == $stoken)) {
+    if(!empty($code) && (strcmp($_REQUEST['state'],$stoken) == 0)) {
 
         //request to get access token
         $fbTokenUrl = "https://graph.facebook.com/oauth/access_token?client_id=".$fbAppId ;
@@ -58,20 +58,22 @@
         $response = file_get_contents($fbTokenUrl);
         $params = null;
         parse_str($response, $params);
-
+        
         if(!is_array($params) && !array_key_exists("access_token",$params)) {
              $message = "Could not retrieve access token from Facebook";
              trigger_error($message,E_USER_ERROR);
         }
 
-        $graph_url = "https://graph.facebook.com/me?access_token=".$params['access_token'];
+        $graph_url = "https://graph.facebook.com/me?access_token=".$params["access_token"];
         $user = json_decode(file_get_contents($graph_url));
 
         if(!property_exists($user,'id')) {
             trigger_error("No facebook_id in graph API response", E_USER_ERROR);
         }
 
-        processUser($user);
+        $expires = isset($params["expires"]) ? $params["expires"] : 3600 ;
+        processUser($user,$params["access_token"],$expires);
+
 
     }
     else {
@@ -79,12 +81,24 @@
         trigger_error($message,E_USER_ERROR);
     }
 
-    function processUser($user) {
+    /**
+     * 
+     * @param access_token - access token returned by facebook for offline use
+     * @param expires - time in seconds till the access_token expiry  
+     * 
+     * 
+     */
+
+    function processUser($user,$access_token,$expires) {
         // exisitng record ? find on facebook_id
         // New record - create login + facebook record
         // start login session
 
         $id = $user->id;
+
+        if(empty($id)) {
+            trigger_error("facebook id not available : please try again.",E_USER_ERROR);
+        }
 
         //rest of the properties may be missing
         $email = property_exists($user,'email') ? $user->email : '';
@@ -95,7 +109,7 @@
         $gender = property_exists($user,'gender') ? $user->gender : '';
 
 
-        // do not what facebook will return
+        // do not know what facebook will return
         // we consider auth to be good enough for a user
         if(empty($name) && empty($firstName)) {
             $name = "Anonymous" ;
@@ -105,7 +119,15 @@
         Logger::getInstance()->info($message);
 
         $facebookDao = new \com\indigloo\sc\dao\Facebook();
-        $loginId = $facebookDao->getOrCreate($id,$name,$firstName,$lastName,$link,$gender,$email);
+        $loginId = $facebookDao->getOrCreate($id,
+            $name,
+            $firstName,
+            $lastName,
+            $link,
+            $gender,
+            $email,
+            $access_token,
+            $expires);
 
         if(empty($loginId)) {
             trigger_error("Not able to create login for facebook user",E_USER_ERROR);

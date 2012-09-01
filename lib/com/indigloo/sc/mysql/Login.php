@@ -113,6 +113,29 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        static function updateAccessToken($loginId, $access_token, $expires) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = " update sc_login set access_token = ? , expire_on = %s where id = ? " ;
+            $expiresOn = "(now() + interval ".$expires. " second)";
+            $sql = sprintf($sql,$expiresOn);
+            
+            $stmt = $mysqli->prepare($sql);
+            
+            if ($stmt) {
+                $stmt->bind_param("si",$access_token,$loginId);
+                $stmt->execute();
+
+                if ($mysqli->affected_rows != 1) {
+                    MySQL\Error::handle($stmt);
+                }
+                $stmt->close();
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
+
+        }
+
     }
 }
 ?>

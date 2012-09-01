@@ -42,21 +42,36 @@ namespace com\indigloo\sc\mysql {
          *
          *
          */
-        static function create($facebookId,$name,$firstName,$lastName,$link,$gender,$email,$provider){
+        static function create($facebookId,
+            $name,
+            $firstName,
+            $lastName,
+            $link,
+            $gender,
+            $email,
+            $provider,
+            $access_token,
+            $expires){
             
              $dbh = NULL ;
              
              try {
-                $sql1 = "insert into sc_login (provider,name,created_on) values(:provider,:name,now()) " ;
+                $sql1 = "insert into sc_login (provider,name,created_on,access_token,expire_on) " ;
+                $sql1 .= " values(:provider,:name,now(),:access_token, %s) " ;
                 $flag = true ;
 
                 $dbh =  PDOWrapper::getHandle();
                 //Tx start
                 $dbh->beginTransaction();
 
+                $expiresOn = "(now() + interval ".$expires. " second)";
+                $sql1 = sprintf($sql1,$expiresOn);
+
                 $stmt = $dbh->prepare($sql1);
                 $stmt->bindParam(":name", $name);
                 $stmt->bindParam(":provider", $provider);
+                $stmt->bindParam(":access_token", $access_token);
+                
                 $flag = $stmt->execute();
 
                 if(!$flag){

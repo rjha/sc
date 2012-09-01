@@ -1302,6 +1302,14 @@ alter table  sc_preference add constraint UNIQUE uniq_login (login_id);
 
 
 
+--
+-- 31 Aug 2012
+-- @changes for adding oauth access_token to sc_login
+--
+
+alter table sc_login add column  access_token text ;
+alter table sc_login add column  expire_on  timestamp  DEFAULT '0000-00-00 00:00:00' ;
+
 
 --
 -- @next push

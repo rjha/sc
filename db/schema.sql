@@ -139,8 +139,10 @@ CREATE TABLE  sc_login  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    name  varchar(32) NOT NULL,
    provider  varchar(16) NOT NULL,
+   access_token text ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   expire_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
@@ -522,6 +524,8 @@ CREATE TABLE  sc_preference (
   PRIMARY KEY ( id )) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 alter table  sc_preference add constraint UNIQUE uniq_login (login_id);
+
+
 
 
 
