@@ -93,6 +93,18 @@ put netbeans metadata in a separate dir - do not pollute our code dir
 $sudo aptitude install php-pear
 
 #install phpmd
+
+$sudo pear channel-discover pear.phpmd.org
+$sudo pear channel-discover pear.pdepend.org
+$sudo pear install  phpmd/PHP_PMD
+(do not use --all-deps)
+##Add include_path for php5 cli
+sudo vim /etc/php5/cli/php.ini
+	- include_path = "/var/www/apps:/usr/share/php"
+
+## test a file for mess
+$ phpmd web/callback/fb2.php text codesize,design,naming,unusedcode
+
 #install phploc
 
 
