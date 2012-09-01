@@ -1,0 +1,165 @@
+
+
+Storing feeds data
+-------------------------------
+
+sc_follow table
+-----------------
+
+ + follower_id
+ + following_id
+
+
++ Add a follower
+-------------------
+ - Add to global feeds
+ - Add to global jobs
+
+ - Add to user:1:activities feed 
+ - Add to user:1:feeds
+ - Add to user:1:followers list
+
+ - Add to user:2:activities feed 
+ - Add to user:2:feeds
+ - Add to user:2:following list
+
++ Remove a follower
+---------------------
+ - trim user:1:followers list
+ - trim user:2:following list
+
+
+
+sc_bookmark table
+-------------------
+
+	owner_id  - owner of item - the guy who created it
+	subject - whoever is doing the action - logged in user
+	subject_id  
+	object - more like object_type , say "post" or "comment" etc.
+	object_id
+	object_title - 
+	verb - 
+	verb_desc - is useless
+
+
++ Add a LIKE/Follow
+
+  * Add to global feeds
+  * Add to global jobs
+
+  * sc:post:100:feeds list - Add  full feed
+  * sc:post:100:subscribers list - Add this guy who commented/liked/favorited an item.
+  * sc:user:1:activities - full feed 
+  	(user:1:feed is everything feed whereas user:1:activities is what the user had done as a subject (doer))
+
++ Fan out on post
+	get all post:100:subscribers and push to their sc:user:1:feeds
+
++ Fan out on User (the doer of this action)
+	get all user:1:followers and push to their sc:user:2:feeds
+
+
+
+  New Post
+  -------------
+
+  * Add to global feeds
+  * Add to global jobs
+
+  * Add to user:1:activities - full feed
+  * Add to user:1:feeds - full feed
+  * Add to user:post:100:subscribers - The creator - to receive all further updates.
+
+
++ Fan out on user
+
+New comment
+--------------
+* Add to global feeds
+* Add to global jobs
+
+* sc:post:100:subscribers list - The guy who commented on it
+* sc:user:1:activities - Add feed
+* sc:post:100:feeds - full feed
+
++ Fan out on post
++ Fan out on user
+
+
+Display feeds data
+------------------------
+
++ Post feeds
+
+
++ Global feeds
+
+
++ User feeds/Activities
+
+
+
+feed notifications
+--------------------------
+
+
+
+
+
+
+
+
+
+send 3mik registration notice to Facebook
+
+- on successful facebook login - create a JOB 
+- JOB should be of type 3MIK_NEW_LOGIN_TO_FACEBOOK
+
+User clicks on LIKE - option A
+=====================================
+ - Before storing LIKE
+ - FIND user preference for this Notification
+ - If user wants to send this to FACEBOOK
+ 	+ THEN he should have an accesss token - valid for atleast 1 more DAY
+ - If not then we redirect to login page.
+ - if we have a valid access token - log the JOB 
+ - we will clear the JOB within a day.
+ - JOB cannot find right access token - Donot clear it in the queue
+ - save access token for this user 
+ - Next run of JOB - should see if access_token has changed - if not then do not attempt to send it anyway
+ - delete the JOB after 3 days anyway.
+
+
+User clicks on LIKE - option B
+=================================
+
+- store the LIKE
+- A JOB for like is created
+- The GUY who liked this item has a login_id
+
+- when clearing this JOB 
+	+ see if we want to send this to FB 
+	+ see if we have a valid access token for login_id
+
+- if yes, use graph API to post the LIKE to his wall
+- otherwise just drop it
+
+====================================
+
+
+our login - valid for 7 days
+FB token valid for 60 days
+so after 3mik login - 3mik token should always be valid!
+Go for option B 
+
+
+
+
+
+
+Before sending an FB notification 
+
+ - find login_id
+ - find access_token using login_id 
+ - access token expired? 
