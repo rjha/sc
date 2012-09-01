@@ -14,20 +14,27 @@
     use com\indigloo\ui\form\Message as FormMessage ;
     use \com\indigloo\sc\auth\Login as Login ;
 
+    function raiseUIError() {
+        $uimessage = "something went wrong with the signup process. Please try again." ;
+        trigger_error($uimessage,E_USER_ERROR);
+    }
+
     $host = "http://".$_SERVER["HTTP_HOST"];
     $googleClientId = Config::getInstance()->get_value("google.client.id");
     $clientSecret = Config::getInstance()->get_value("google.client.secret");
     $googleCallback = $host. "/callback/google2.php" ;
 
     $error = NULL ;
-    if(array_key_exists('error',$_REQUEST)) {
-        $error = $_REQUEST['error'] ;
+    $code = NULL;
+
+    if(array_key_exists("error",$_REQUEST)) {
+        $error = $_REQUEST["error"] ;
         $message = sprintf("Google returned error :: %s ",$error);
-        trigger_error($message,E_USER_ERROR);
+        Logger::getInstance()->error($message);
+        raiseUIError();
     }
 
-    $code = NULL;
-    if(array_key_exists('code',$_REQUEST)) {
+    if(array_key_exists("code",$_REQUEST)) {
         $code = $_REQUEST["code"];
     }
 
@@ -53,9 +60,9 @@
     }
 
     //last mik state token
-    $stoken = $gWeb->find('mik_state_token',true);
+    $stoken = $gWeb->find("mik_state_token",true);
 
-    if(!empty($code) && (strcmp($_REQUEST['state'],$stoken) == 0)) {
+    if(!empty($code) && (strcmp($_REQUEST["state"],$stoken) == 0)) {
 
         //exchange the authorization code for an access token and refresh token
         // Google needs 5 params as HTTP POST
@@ -89,29 +96,38 @@
         if((json_last_error() != JSON_ERROR_NONE) || ($jsObject === NULL)) {
             //malformed json
             $message = "Google returned malformed json in response";
-            trigger_error($message,E_USER_ERROR);
+            Logger::getInstance()->error($message);
+            raiseUIError();
+
         }
 
         //json fine but access_token is missing
         if(!property_exists($jsObject, "access_token")) {
-             $message = "Could not retrieve access token from Google";
-             trigger_error($message,E_USER_ERROR);
+            $message = "Could not retrieve access token from Google";
+            Logger::getInstance()->error($message);
+            raiseUIError();
         }
 
         //Now call the userinfo  endpoint using access tokens
         $url = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=".$jsObject->access_token ;
         $response = file_get_contents($url) ;
         $user = json_decode($response);
-        if(!property_exists($user,'id')) {
-            trigger_error("No google_id in google userinfo endpoint response", E_USER_ERROR);
+
+        if(!property_exists($user,"id")) {
+            $message = "No google_id in google userinfo endpoint response" ;
+            Logger::getInstance()->error($message);
+            raiseUIError();
         }
 
         processUser($user);
 
     }
     else {
-        $message = "Google returned a different state token. Please try again.";
-        trigger_error($message,E_USER_ERROR);
+
+        $message = "CSRF token returned by google does not match the one stored in 3mik session";
+        Logger::getInstance()->error($message);
+        raiseUIError();
+
     }
 
     function processUser($user) {
@@ -119,7 +135,7 @@
         $id = $user->id;
 
         if(empty($id)) {
-            trigger_error("google id not available : please try again.",E_USER_ERROR);
+            trigger_error("Could not retrieve google id : please try again.",E_USER_ERROR);
         }
 
         //rest of the properties may be missing
@@ -141,7 +157,9 @@
         $loginId = $googleDao->getOrCreate($id,$email,$name,$firstName,$lastName,$photo);
 
         if(empty($loginId)) {
-            trigger_error("Not able to create login for google user",E_USER_ERROR);
+            $message = "Not able to create 3mik login for google user" ;
+            Logger::getInstance()->error($message);
+            raiseUIError();
         }
 
         Login::startOAuth2Session($loginId,Login::GOOGLE);

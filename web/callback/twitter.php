@@ -17,23 +17,33 @@
         unset($_SESSION['oauth_token_secret']);
     }
 
+    function raiseUIError() {
+        $uimessage = "something went wrong with the signup process. Please try again." ;
+        trigger_error($uimessage,E_USER_ERROR);
+    }
+
     /* If the oauth_token is old redirect to the login page. */
     if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
         clearSession();
-        trigger_error("Twitter login detected an old authentication token ",E_USER_ERROR);
+
+        $message = "Twitter login detected an old authentication token ";
+        Logger::getInstance()->error($message);
+        raiseUIError();
     }
 
     /* request is missing oauth verifier */
     if(!isset($_REQUEST['oauth_verifier'])) {
         clearSession();
-        trigger_error("Twitter login :: oauth verifier is missing",E_USER_ERROR);
+
+        $message = "Twitter login :: oauth verifier is missing";
+        Logger::getInstance()->error($message);
+        raiseUIError();
     }
 
     $appId = Config::getInstance()->get_value("twitter.app.id");
     $appSecret = Config::getInstance()->get_value("twitter.app.secret");
 
     $connection = new TwitterOAuth($appId, $appSecret, $_SESSION['oauth_token'],$_SESSION['oauth_token_secret']);
-
 
     /* get access token from twitter and save in session */
     $access_token = $connection->getAccessToken($_REQUEST['oauth_verifier']);
@@ -46,19 +56,22 @@
     /* continue If HTTP response is 200 */
     if (200 == $connection->http_code) {
         processUser($connection);
+
     } else {
-        Logger::getInstance()->error("Error in Twitter get_access_token :: connection dump is :: ");
-        Logger::getInstance()->dump($connection);
         clearSession();
-        trigger_error("Twitter login could not find an authentication token",E_USER_ERROR);
+        $message = "Could not retrieve Twitter access_token" ;
+        Logger::getInstance()->error($message);
+        raiseUIError();
     }
 
     function processUser($connection) {
         $user_info = $connection->get('account/verify_credentials');
         if(isset($user_info->error)){
-            trigger_error("Error retrieving twitter user information");
-        }
-        else {
+            $message = "Error retrieving twitter user information";
+            Logger::getInstance()->error($message);
+            raiseUIError();
+
+        } else {
             // get screenName, profile Pic
             // exisitng record ? find on twitter_id
             // New record - create login + twitter record
@@ -66,7 +79,7 @@
             $id = $user_info->id;
 
             if(empty($id)) {
-                trigger_error("twitter id not available : please try again.",E_USER_ERROR);
+                trigger_error("Could not retrieve twitter id : please try again.",E_USER_ERROR);
             }
 
             $image = $user_info->profile_image_url;
@@ -87,7 +100,10 @@
             $loginId = $twitterDao->getOrCreate($id,$name,$screenName,$location,$image);
 
             if(empty($loginId)) {
-                trigger_error("Not able to create login for twitter user",E_USER_ERROR);
+                $message = "Not able to create 3mik login for twitter user";
+                Logger::getInstance()->error($message);
+                raiseUIError();
+
             }
 
             Login::startOAuth2Session($loginId,Login::TWITTER);
