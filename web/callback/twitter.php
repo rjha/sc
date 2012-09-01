@@ -64,12 +64,17 @@
             // New record - create login + twitter record
             // start login session
             $id = $user_info->id;
+
+            if(empty($id)) {
+                trigger_error("twitter id not available : please try again.",E_USER_ERROR);
+            }
+
             $image = $user_info->profile_image_url;
             $screenName = $user_info->screen_name;
             $name = $user_info->name;
             $location = $user_info->location;
 
-            // do not what twitter will return
+            // do not know what twitter will return
             // we consider auth to be good enough for a user
             if(empty($name) && empty($screenName)) {
                 $name = "Anonymous" ;
