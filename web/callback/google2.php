@@ -55,7 +55,7 @@
     //last mik state token
     $stoken = $gWeb->find('mik_state_token',true);
 
-    if(!empty($code) && ($_REQUEST['state'] == $stoken)) {
+    if(!empty($code) && (strcmp($_REQUEST['state'],$stoken) == 0)) {
 
         //exchange the authorization code for an access token and refresh token
         // Google needs 5 params as HTTP POST
@@ -117,6 +117,10 @@
     function processUser($user) {
 
         $id = $user->id;
+
+        if(empty($id)) {
+            trigger_error("google id not available : please try again.",E_USER_ERROR);
+        }
 
         //rest of the properties may be missing
         $email = property_exists($user,'email') ? $user->email : '';
