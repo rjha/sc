@@ -5805,9 +5805,10 @@ button::-moz-focus-inner {
         font-weight: bold;
         left: 0;
         opacity: 0;
-        padding: 5px 10% 10px;
+        padding: 10px 10% 10px;
         position: fixed;
-        top: 45px;
+        /* overlay.top should match body.padding-top */
+        top: 50px;
         width: 80%;
         z-index: 1009;
         height:60px;
