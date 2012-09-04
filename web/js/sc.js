@@ -277,16 +277,19 @@ webgloo.sc.SimplePopup = {
             case 401:
                 // authentication failure
                 // redirect to login page with pending session action
-
+                // dataObj to complete session action should supply the following 
+                // dataObj.endPoint
+                // dataObj.params = {} ; 
+                // dataObj.params.x  = xval ;
+                // dataObj.params.y = yval ;
+                // dataObj.params.action = "REMOVE" ;
+                //  dataObj.params.{loginId} is a special parameter that will be substituted by
+                // actual loginId after authentication
+                
                 // @imp  dataObj.params should be an object containing simple
                 // key value pairs. Params keys or values can again be objects
                 // but it is better to avoid that complexity.
-                // on the other end, this params object will be passed as it is to
-                // PHP http_build_query method.
-
-                dataObj.qUrl = window.location.href;
-                dataObj.method = "POST";
-
+                
                 g_action_data =  encodeBase64(JSON.stringify(dataObj));
                 //encode for use in URL query string
                 qUrl = encodeURIComponent(window.location.href);
@@ -462,6 +465,8 @@ webgloo.sc.item = {
 
             var dataObj = {} ;
             dataObj.params = {} ;
+            // when there is no login session, params.followerId has a special value of
+            // "{loginId}" that will be substituted by actual loginId after authentication.
             dataObj.params.followerId  = ids[0] ;
             dataObj.params.followingId  = ids[1] ;
             dataObj.params.action = "FOLLOW" ;
