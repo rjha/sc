@@ -27,7 +27,8 @@
             const FOLLOW_USER = "FOLLOW" ;
             const UNFOLLOW_USER = "UNFOLLOW" ;
             
-
+            const ADD_COMMENT = "ADD" ;
+            
         }
 }
 ?>
