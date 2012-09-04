@@ -109,7 +109,11 @@ namespace com\indigloo\sc\html {
         }
 
         static function getActivity($feedHtml,$commentHtml) {
-            if(empty($feedHtml) && empty($commentHtml)) { return "" ; }
+      
+            if(Util::tryEmpty($feedHtml) && Util::tryEmpty($commentHtml)) { 
+                return "" ; 
+            }
+
             $view = new \stdClass;
             $view->feedHtml = $feedHtml;
             $view->commentHtml = $commentHtml;
