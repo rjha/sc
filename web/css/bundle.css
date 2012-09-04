@@ -1226,6 +1226,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #pubuser .avatar{width:auto;height:auto;max-width:200px;max-height:150px;text-align:center}
 #pubuser .follow-user-link{width:120px;height:20px;font-weight:bold}
 #pubuser .data{padding-bottom:5px;font-weight:bold}
+#pubuser .about-me{padding-top:10px}
 #infscr-loading{text-align:center;position:fixed;left:45%;bottom:40px;width:200px;background:black;opacity:.8;color:white;border-radius:10px}
 .accordion-inner img{border:1px solid #ddd;padding:8px;background:#eee;box-shadow:0 1px 7px rgba(34,25,25,0.4)}
 .page-header{padding-bottom:7px}

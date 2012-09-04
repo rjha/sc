@@ -1038,7 +1038,10 @@
 
     }
 
-
+    #pubuser .about-me {
+        padding-top:10px; 
+    }
+    
     /* paul iris infinite scroll plugin */
     #infscr-loading{
         text-align: center;
