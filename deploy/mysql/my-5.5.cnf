@@ -54,7 +54,7 @@ transaction-isolation=READ-COMMITTED
 #
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
-bind-address		= 10.178.225.240
+bind-address		= 127.0.0.1
 #
 # * Fine Tuning
 #

@@ -1,0 +1,84 @@
+
+# create a VM
+Ubuntu (unity) as well as Debian (xfce) default choice of Desktop manager leaves a lot to desire.
+Also  a lot of desktop tweaking may be required to get a a nice looking (working) desktop 
+vmware fusion with linux 3.x kernels - no hardware acceleration support so it is better
+to use linux mint 13 (based on Ubuntu precise 12.04 LTS) with MATE desktop.
+ 
+install mint13 iso.
+
+#install build essential compilers and headers
+
+linux-hearders-`uname -r` libx11-6 libx11-dev xorg libxtst6 psmisc build-essential 
+ia32-libs ia32-libs-gtk
+
+
+#VMWARE tools
+
+vmware fusion 4.1.x does not support linux 3.x kernels. so we have to install open-vm-tools
+
+install packages
+
+open-vm-tools (should also install open-vm-dkms)
+open-vm-tools-dev  
+open-vm-toolbox 
+open-vm-dkms
+
+The open-vm-tools package should install required kernel modules as well.
+
+#check kernel modules are loaded
+
+%modinfo vmxnet
+%modinfo vmhgfs
+
+#Run vmware-hgfsclient to verify the mounted shared folders
+$vmware-hgfsclient
+
+if the kernel modules are not installed then we have to install them manually
+# To install required kernel modules
+
+% dkms add open-vm-tools/2011.12.20
+% dkms build open-vm-tools/2011.12.20
+% dkms install open-vm-tools/2011.12.20
+
+Last number in red is the module version, you can get that by using  
+sudo aptitude show open-vm-tools and look for version string (after + sign)
+
+# Mount shared folders 
+# shut down VM
+# Add a folder (Public) in this case for sharing on VM
+# restart VM
+
+$sudo mkdir -p /mnt/hgfs
+create a mount.sh file with following content
+sudo mount -t  vmhgfs -v -o rw  .host:/Public /mnt/hgfs
+chmod +x mount.sh
+$./mount.sh
+
+This will mount content of Public/ folder on host at /mnt/hgfs/
+
+
+#Install MS CORE fonts 
+sudo aptitude install  ttf-mscorefonts-installer
+#copy ms fonts (like Calibri/Consolas) into ~/.fonts folder
+
+#Reload font configuration
+$fc-cache -fv (sudo will load for root, so run w/o sudo)
+$fc-list to check installed fonts.
+ 
+# Fix Rendering
+ - Right click on desktop
+ - change desktop background | fonts
+
+	+ subpixel order - RGB
+	+ font smoothing - subpixel (LCD)
+	+ font hinting - slight
+
+
+
+#install git 
+# copy ssh keys (id_pub*) to ~/.ssh folder
+# clone required git repositories
+
+
+

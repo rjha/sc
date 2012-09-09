@@ -1,3 +1,6 @@
+#gvim
+mkdir ~/nuke/swap
+cp deploy/apps/vimrc  ~/.vimrc
 
 #jdk1.7
 
@@ -95,9 +98,17 @@ $sudo aptitude install php-pear
 #install phpmd
 #install phploc
 
+# YUI compressor
+# google closure compiler (closure-tools project and not closure-lib!)
+# http://code.google.com/p/closure-compiler/
+# closure is good for detecting issues with javascript file.
+
+$ java -jar compiler.jar --js=bundle-full.js   --js_output_file=out.js
+
+
 
 #sublime text2
-#
+
 
 Download the 64 bit version of ST2
 start up

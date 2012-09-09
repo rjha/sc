@@ -23,7 +23,7 @@ server {
         try_files /site/503.html =503;
     }
 
-    location ~* \.(js|css|png|jpg|jpeg|gif)$ {
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
         expires 30d ;
         break ;
     }		

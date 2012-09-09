@@ -14,5 +14,3 @@ define("APP_WEB_DIR", "/var/www/vhosts/www.3mik.com/htdocs") ;
 define("WEBGLOO_LIB_ROOT","/home/rjha/code/github/webgloo/lib");
 
 ?>
-
-

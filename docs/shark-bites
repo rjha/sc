@@ -1,0 +1,8 @@
+
+Redis
+---------------
+
+1) redis max memory size is 64 MB - if keys take more than 64 MB then we will run out of memory
+check redis memory consumption using info command on redis-cli
+
+

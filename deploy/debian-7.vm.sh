@@ -18,6 +18,7 @@ mkdir -p /var/www/vhosts/www.3mik.com
 #make symlink to github dir
 ln -nfs $MYHOME/code/github/sc/web /var/www/vhosts/www.3mik.com/htdocs
 cp sc/sc-app.inc /var/www/apps/.
+cp sc/sc_config.ini  /var/www/apps/.
 
 #copy php-fpm pool and ini files
 cp /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.conf.orig
@@ -48,14 +49,17 @@ ln -nfs $MYHOME/web/upload /var/www/upload
 #copy gitignore
 cp github/gitignore $MYHOME/code/github/sc/.gitignore
 
+#copy logrotate script
+sudo cp logrotate/webgloo /etc/logrotate.d/webgloo
+sudo logrotate --force /etc/logrotate.d/webgloo
+
 echo " ***********************  Pending Tasks ***************** "
 echo " 1. Add nginx vhost entry in /etc/hosts file "
 echo " 2. create mysql database and load latest data from server "
-echo " 3. install and configure sphinx. create sphinx indexes."
-echo " 4. get a copy of latest sc-app.inc file "
-echo " 5. get a copy of latest sc_config.ini file , check values."
+echo " 3. install sphinx config file and create sphinx indexes"
+echo " 4. verify /var/www/apps/sc-app.inc and sc_config.ini files "
+echo " 5. install and configure redis server  "
 echo " 6. install cron Scripts  "
-echo " 7. install logrotate Scripts  "
 echo "    REBOOT ..."
 echo " ********************************************************** "
 
