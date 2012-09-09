@@ -10,7 +10,7 @@
     use \com\indigloo\sc\auth\Login as Login;
 
     use \com\indigloo\ui\Filter as Filter;
-    //$qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+     
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
 

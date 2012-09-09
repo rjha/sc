@@ -3,7 +3,7 @@ namespace com\indigloo\sc\controller{
 
 
     use \com\indigloo\Util as Util;
-    use \com\indigloo\Url;
+    use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Constants as Constants;
     use \com\indigloo\ui\form\Message as FormMessage;
@@ -60,7 +60,8 @@ namespace com\indigloo\sc\controller{
             /* data for facebook/google+ dialogs */
             $itemObj = new \stdClass ;
             $itemObj->appId = Config::getInstance()->get_value("facebook.app.id");
-            $itemObj->host = "http://" .$_SERVER["HTTP_HOST"] ;
+            $itemObj->host = Url::base();
+
             /* google+ cannot redirect to local box */
             $itemObj->netHost = "http://www.3mik.com" ;
             $itemObj->callback = $itemObj->host."/callback/fb-share.php" ;
@@ -146,14 +147,14 @@ namespace com\indigloo\sc\controller{
             $siteDao = new \com\indigloo\sc\dao\Site();
             $siteDBRow = $siteDao->getOnPostId($postId);
 
-            $loginUrl = "/user/login.php?q=".$_SERVER['REQUEST_URI'];
+            $loginUrl = "/user/login.php?q=".Url::current();
             $formErrors = FormMessage::render();
 
             $pageTitle = $itemObj->title;
             $metaDescription = Util::abbreviate($postDBRow['description'],160);
             $metaKeywords = SeoData::getMetaKeywords($group_names);
-            $pageUrl = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-
+            $pageUrl = Url::base().Url::current() ;
+            
             $file = APP_WEB_DIR. '/view/item.php' ;
             include($file);
         }

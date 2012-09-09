@@ -5602,6 +5602,10 @@ button::-moz-focus-inner {
 
     #site-toolbar .navbar-inner {
         background: #FAFAFA ;
+        /* fix for black toolbar in IE9 */
+        /* http://stackoverflow.com/questions/9780464/twitter-bootstrap-nav-bar-issues-in-internet-explorer */
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#FAFAFA', GradientType=0)
+        
     }
 
     #site-toolbar .caret {
@@ -5801,9 +5805,10 @@ button::-moz-focus-inner {
         font-weight: bold;
         left: 0;
         opacity: 0;
-        padding: 5px 10% 10px;
+        padding: 10px 10% 10px;
         position: fixed;
-        top: 45px;
+        /* overlay.top should match body.padding-top */
+        top: 50px;
         width: 80%;
         z-index: 1009;
         height:60px;
@@ -5839,7 +5844,10 @@ button::-moz-focus-inner {
 
     }
 
-
+    #pubuser .about-me {
+        padding-top:10px; 
+    }
+    
     /* paul iris infinite scroll plugin */
     #infscr-loading{
         text-align: center;
@@ -5899,6 +5907,7 @@ button::-moz-focus-inner {
     .qq-upload-failed-text {
         color:red ;
     }
+
 
  /* cat:sc:file:1:css/sc.css */ 
 

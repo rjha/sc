@@ -133,7 +133,18 @@ namespace com\indigloo\sc\dao {
                         $groupSlug,
                         $categoryCode) {
 
-            $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
+            $loginId = NULL ;
+
+            if(\com\indigloo\sc\auth\Login::isAdmin()) {
+
+                //inject right loginId for admins
+                $postDBRow = $this->getOnId($postId);
+                $loginId = $postDBRow["login_id"];
+
+            } else {
+                $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
+            }
+
             mysql\Post::update($postId,
                                $title,
                                $description,
@@ -146,17 +157,34 @@ namespace com\indigloo\sc\dao {
         }
 
         function delete($postId){
-            $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
+            
+            $loginId = NULL ;
+
+            if(\com\indigloo\sc\auth\Login::isAdmin()) {
+                
+                //inject right loginId for admins
+                $postDBRow = $this->getOnId($postId);
+                $loginId = $postDBRow["login_id"];
+
+            } else {
+                $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
+            }
+
             mysql\Post::delete($postId,$loginId);
+            
 
         }
 
         function doAdminAction($postId,$action){
-            $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
+
+            if(! \com\indigloo\sc\auth\Login::isAdmin()) {
+                trigger_error("You need admin privileges to do this action.", E_USER_ERROR);
+            }
+            
             //action => feature value map
             $map = array(\com\indigloo\sc\Constants::FEATURE_POST => 1 ,
                         \com\indigloo\sc\Constants::UNFEATURE_POST => 0 );
-            mysql\Post::setFeature($loginId,$postId,$map[$action]);
+            mysql\Post::setFeature($postId,$map[$action]);
 
         }
     }

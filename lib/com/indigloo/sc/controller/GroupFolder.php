@@ -17,7 +17,7 @@ namespace com\indigloo\sc\controller{
         }
 
         function process($params,$options) {
-            $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+            $qparams = Url::getRequestQueryParams();
             $filters = array();
 
             $groupDao = new \com\indigloo\sc\dao\Group();

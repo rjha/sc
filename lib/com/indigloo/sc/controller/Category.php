@@ -23,7 +23,7 @@ namespace com\indigloo\sc\controller{
             }
 
             $total = $categoryDao->getTotalCount($code);
-            $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+            $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("search.page.items");
             $paginator = new Pagination($qparams,$total,$pageSize);
             $postDBRows = $categoryDao->getPaged($paginator,$code);

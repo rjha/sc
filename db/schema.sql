@@ -3,11 +3,11 @@ DROP TABLE IF EXISTS  sc_comment ;
 CREATE TABLE  sc_comment  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    post_id  int(11) NOT NULL,
-   description  varchar(512) ,
+   description  varchar(512) not null,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   title  varchar(128) ,
-   login_id  int(11) ,
+   title  varchar(128) not null,
+   login_id  int(11) not null ,
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -38,8 +38,8 @@ CREATE TABLE  sc_comment_archive  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    login_id  int(11) NOT NULL,
    post_id  int(11) NOT NULL,
-   title  varchar(128) ,
-   description  varchar(512) ,
+   title  varchar(128) not null,
+   description  varchar(512) not null,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
@@ -139,8 +139,10 @@ CREATE TABLE  sc_login  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    name  varchar(32) NOT NULL,
    provider  varchar(16) NOT NULL,
+   access_token text ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   expire_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
@@ -177,15 +179,15 @@ DROP TABLE IF EXISTS  sc_post ;
 CREATE TABLE  sc_post  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    title  varchar(128) NOT NULL,
-   description  varchar(512) ,
+   description  varchar(512) not null ,
    links_json  mediumtext,
    images_json  mediumtext,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   login_id  int(11) ,
+   login_id  int(11) not null ,
    group_slug  varchar(64) ,
    is_feature  int(11) DEFAULT '0',
-   pseudo_id  varchar(32) ,
+   pseudo_id  varchar(32) not null,
    cat_code  varchar(16) ,
    version  int(11) DEFAULT '1',
   PRIMARY KEY ( id ),
@@ -245,12 +247,12 @@ CREATE TABLE  sc_post_archive  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    login_id  int(11) NOT NULL,
    title  varchar(128) NOT NULL,
-   description  varchar(512) ,
+   description  varchar(512) not null ,
    links_json  text,
    images_json  text,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   pseudo_id  int(11) ,
+   pseudo_id  int(11) not null,
    group_slug  varchar(64) ,
    is_feature  int(11) ,
    cat_code  varchar(16) ,
@@ -522,6 +524,8 @@ CREATE TABLE  sc_preference (
   PRIMARY KEY ( id )) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 alter table  sc_preference add constraint UNIQUE uniq_login (login_id);
+
+
 
 
 

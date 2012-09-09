@@ -1302,6 +1302,36 @@ alter table  sc_preference add constraint UNIQUE uniq_login (login_id);
 
 
 
+--
+-- 31 Aug 2012
+-- @changes for adding oauth access_token to sc_login
+--
+
+alter table sc_login add column  access_token text ;
+alter table sc_login add column  expire_on  timestamp  DEFAULT '0000-00-00 00:00:00' ;
+
+--
+-- changes to mark post and comment columns as not null
+--
+
+alter table sc_post modify column description varchar(512) not null ;
+alter table sc_post modify column login_id int not null ;
+alter table sc_post modify column pseudo_id varchar(32) not null ;
+
+alter table sc_post_archive modify column description varchar(512) not null ;
+alter table sc_post_archive modify column login_id int not null ;
+alter table sc_post_archive modify column pseudo_id varchar(32) not null ;
+
+
+alter table sc_comment modify column description varchar(512) not null ;
+alter table sc_comment modify column title  varchar(128) not null ;
+alter table sc_comment modify column login_id int  not null ;
+
+
+alter table sc_comment_archive modify column description varchar(512) not null ;
+alter table sc_comment_archive modify column title  varchar(128) not null ;
+alter table sc_comment_archive modify column login_id int  not null ;
+
 
 --
 -- @next push

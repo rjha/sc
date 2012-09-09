@@ -44,11 +44,28 @@ namespace com\indigloo\sc\auth {
            self::startSession($loginId, $provider);
         }
 
+        /*
+         * An action is normally performed against an endpoint.
+         * we send a parameter object and an action to that endpoint.
+         * 
+         * so the dataObj needed to complete session action should have following properties
+         * 
+         * dataObj.endPoint 
+         * dataObj.params (an object containing various parameters)
+         * dataObj.params.x = xval ;
+         * dataObj.params.y = yval ;
+         * dataObj.params.action = ADD ; 
+         * if dataObj.params.z is equal to "{loginId}" - This is a special value 
+         * dataObj.params.z will be made equal to actual loginId value in session after 
+         * authentication.
+         * 
+         * A command facade will find a suitable command for dataObj.endPoint
+         * That command will be sent dataObj.params object after loginId substitution.
+         * 
+         */
         private static function completeSessionAction($loginId,$name,$provider) {
 
-            $qUrl = NULL ;
             $message = NULL ;
-            $gotoUrl = NULL ;
             $action = NULL ;
 
             try{
@@ -68,17 +85,14 @@ namespace com\indigloo\sc\auth {
                 $endPoint = $actionObj->endPoint ;
                 $params = $actionObj->params ;
 
-                // encode for use in url query.
-                $qUrl = urlencode($actionObj->qUrl);
-
                 $variables = get_object_vars($params);
                 // associated array of name value pairs
                 // undefines properties are returned as NULL
                 //
                 // @warning: the foreach value reference is maintained
                 // after the loop. variable scope in PHP is at function level
-                // so do not be too cute here and do not user $name => $value
-                // as that conflicts with function argumnet "name"
+                // so do not be too cute here and do not use $name => $value
+                // inside loop as that conflicts with function argument "name"
                 //
                 // see if one of the parameters has "value" {loginId}
                 // update this parameter value to actual loginId
@@ -106,7 +120,7 @@ namespace com\indigloo\sc\auth {
 
                 } else {
                     $message = sprintf("session action response code : %d",$response["code"]);
-                    throw new Exception($message) ;
+                    throw new \Exception($message) ;
                 }
 
 

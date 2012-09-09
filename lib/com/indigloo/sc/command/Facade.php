@@ -9,6 +9,7 @@ namespace com\indigloo\sc\command {
 
         function __construct() {
             $this->map = array(
+                md5("/qa/form/comment.php") => "COMMENT",
                 md5("/qa/ajax/bookmark.php") => "BOOKMARK",
                 md5("/qa/ajax/social-graph.php") => "GRAPH" );
         }
@@ -26,12 +27,15 @@ namespace com\indigloo\sc\command {
             //end point is mapped.
             $name = $this->map[$hash];
             switch($name) {
+                 case "COMMENT" :
+                    $command = new \com\indigloo\sc\command\Comment();
+                break ;
                 case "BOOKMARK" :
                     $command = new \com\indigloo\sc\command\Bookmark();
-                    break ;
+                break ;
                 case "GRAPH" :
                     $command = new \com\indigloo\sc\command\SocialGraph();
-                    break ;
+                break ;
                 default:
                     //coding error.
                     $message = sprintf("Unknown session action  [%s] for endpoint [%s]",$name,$endPoint);

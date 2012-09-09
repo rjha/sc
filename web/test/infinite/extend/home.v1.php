@@ -5,15 +5,15 @@
     include(APP_CLASS_LOADER);
 
     use \com\indigloo\Util as Util;
-    use com\indigloo\Url;
+    use com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\html\Seo as SeoData ;
 
 
     $postDao = new \com\indigloo\sc\dao\Post();
     $total = $postDao->getTotalCount();
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-    //$pageSize = Config::getInstance()->get_value("main.page.items");
+    
+    $qparams = Url::getRequestQueryParams();
     $pageSize = 5;
     $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
 

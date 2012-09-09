@@ -10,7 +10,7 @@
     use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\sc\ui\Constants as UIConstants;
 
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    $qparams = Url::getRequestQueryParams();
 
     $commentDao = new \com\indigloo\sc\dao\Comment() ;
     $total = $commentDao->getTotalCount();
@@ -60,6 +60,13 @@
             <div class="row">
                 <div class="span12">
                 <?php include('inc/menu.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h2>Comments</h2>
+                    </div>
                 </div>
             </div>
 

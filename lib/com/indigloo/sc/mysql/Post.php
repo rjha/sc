@@ -331,20 +331,13 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function setFeature($loginId,$postId,$value){
+        static function setFeature($postId,$value){
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input
-            settype($loginId,"integer");
             settype($postId,"integer");
             settype($value,"integer");
-
-            //operation needs admin privileges
-            $mikUserRow = \com\indigloo\sc\mysql\MikUser::getOnLoginId($loginId);
-            if($mikUserRow['is_admin'] != 1 ){
-                trigger_error("User does not have admin rights", E_USER_ERROR);
-            }
-
+            
             $sql = " update sc_post set is_feature = %d where ID = %d " ;
             $sql = sprintf($sql,$value,$postId);
             MySQL\Helper::executeSQL($mysqli,$sql);

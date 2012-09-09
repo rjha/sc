@@ -49,6 +49,13 @@
                 <?php include('inc/menu.inc'); ?>
                 </div>
             </div>
+            <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h2>Groups</h2>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="span9">
@@ -64,7 +71,7 @@
                                 <a href="/monitor/posts.php"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
                             </div>
 
-                            <input type="hidden" name="q" value="<?php echo $_SERVER["REQUEST_URI"]; ?>" />
+                            <input type="hidden" name="q" value="<?php echo Url::current(); ?>" />
                         </form>
 
                 </div>

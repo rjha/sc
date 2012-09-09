@@ -8,7 +8,17 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\sc\mysql as mysql;
 
     class Facebook {
-        function getOrCreate($facebookId,$name,$firstName,$lastName,$link,$gender,$email) {
+
+        function getOrCreate($facebookId,
+            $name,
+            $firstName,
+            $lastName,
+            $link,
+            $gender,
+            $email,
+            $access_token,
+            $expires) {
+
             $loginId = NULL ;
 
             //is existing record?
@@ -21,11 +31,24 @@ namespace com\indigloo\sc\dao {
 
                 //create login + facebook user
                 $provider = \com\indigloo\sc\auth\Login::FACEBOOK ;
-                $loginId = mysql\Facebook::create($facebookId,$name,$firstName, 
-                                        $lastName,$link,$gender,$email,$provider);
+                $loginId = mysql\Facebook::create(
+                    $facebookId,
+                    $name,
+                    $firstName, 
+                    $lastName,
+                    $link,
+                    $gender,
+                    $email,
+                    $provider,
+                    $access_token,
+                    $expires);
+                
+             
+
             } else {
                 //found
-                $loginId = $row['login_id'];
+                $loginId = $row["login_id"];
+                mysql\Login::updateAccessToken($loginId,$access_token,$expires);
             }
 
             return $loginId ;

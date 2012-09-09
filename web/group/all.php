@@ -9,7 +9,7 @@
     use \com\indigloo\ui\Filter as Filter;
 
 
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    $qparams = Url::getRequestQueryParams();
     $filters = array();
 
     $groupDao = new \com\indigloo\sc\dao\Group();

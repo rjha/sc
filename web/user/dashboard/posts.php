@@ -26,8 +26,8 @@
     }
 
     $postDao = new \com\indigloo\sc\dao\Post();
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
-
+    
+    $qparams = Url::getRequestQueryParams();
     //filters
     $filters = array();
     //Always add login_id filter for user dashboard

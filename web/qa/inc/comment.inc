@@ -2,27 +2,23 @@
 <!-- include comment form -->
 <div class="section">
     <?php echo $formErrors; ?>
+     <span class="faded-text">comments or questions? please type them here.</span>
         <form id="web-form1"  name="web-form1" action="/qa/form/comment.php?q=/item/<?php echo $itemId; ?>" enctype="multipart/form-data"  method="POST">
 
         <div class="error">  </div>
 
         <table class="form-table">
-            <tr>
-            <?php if(is_null($loginIdInSession)) { ?>
-                <td> please <a href="<?php echo $loginUrl ?>">login</a> to comment</td>
-            <?php } ?>
-
-            </tr>
+            
              <tr>
                 <td>
-                    <textarea  name="comment" class="required comment-box" title="Comment is required" cols="50" rows="4" ><?php echo $sticky->get('comment'); ?></textarea>
+                    <textarea  name="comment" class="required comment-box" title="Comment is required" cols="50" rows="4" ><?php echo $sticky->get("comment"); ?></textarea>
                 </td>
              </tr>
 
         </table>
 
          <div>
-            <button class="btn" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Comment</span></button>
+            <button id="item-comment" class="btn" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span class="b">comment</span></button>
         </div>
 
        <input type="hidden" name="owner_id" value="<?php echo $postDBRow['login_id']; ?>" />

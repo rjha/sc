@@ -27,7 +27,7 @@ namespace com\indigloo\sc\controller{
             //get match on group slug
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
             $total = $sphinx->getGroupsCount($token);
-            $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+            $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("search.page.items");
             $paginator = new Pagination($qparams,$total,$pageSize);
 

@@ -70,12 +70,7 @@
                                 </div> <!-- 2-col submenu -->
                             </li>
                         </ul>
-                    </li>
-
-                    <li class="dropdown">
-                        
-                       
-                    </li> <!-- user menu -->
+                    </li>  <!-- user menu -->
 
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">

@@ -24,7 +24,7 @@ namespace com\indigloo\sc\controller{
 
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
             $total = $sphinx->getPostsCount($token);
-            $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+            $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("search.page.items");
             $paginator = new Pagination($qparams,$total,$pageSize);
 

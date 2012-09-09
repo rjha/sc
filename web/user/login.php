@@ -3,7 +3,7 @@
     include (APP_WEB_DIR.'/inc/header.inc');
 
     use com\indigloo\Util;
-    use com\indigloo\Url;
+    use com\indigloo\Url as Url;
     use com\indigloo\ui\form\Sticky;
     use com\indigloo\Constants as Constants;
     use com\indigloo\Configuration as Config;
@@ -35,7 +35,7 @@
     //Facebook OAuth2
     $fbAppId = Config::getInstance()->get_value("facebook.app.id");
 
-    $host = "http://".$_SERVER["HTTP_HOST"];
+    $host = Url::base();
     $fbCallback = $host."/callback/fb2.php" ;
 
     $fbDialogUrl = "https://www.facebook.com/dialog/oauth?client_id=".$fbAppId ;
@@ -73,17 +73,8 @@
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         
         <div class="container mh800">
-            <div style="margin-top:100px;">
-                <div class="row">
-                    
-                    <div class="span4 offset4">
-                        <h3>3mik login</h3>
-                    </div>
+            <div style="margin-top:100px;"> &nbsp; </div> <!-- row:1 -->
                 
-                </div>
-
-            </div> <!-- row:1 -->
-
             <div class="row mt20">
                 <div class="span3 offset1">
                     <div class="social-buttons floatr">
@@ -100,7 +91,8 @@
 
                 </div> <!-- span3 -->
 
-                <div class="span6 offset1">
+                <div class="span6" style="border-left:1px dashed #333333;padding-left:40px;">
+                    <h3>3mik login</h3>
                     <div class="p10"> <?php FormMessage::render(); ?> </div>
                     <div class="lb1">
                         <form id="web-form1"  name="web-form1" action="/user/form/login.php" method="POST">
@@ -136,17 +128,12 @@
 
                         </form>
                     </div> <!-- form wrapper -->
-
+                    <div class="mt20">
+                        <a href="/user/register.php">Register for a new 3mik account</a>&nbsp;(&nbsp;Free and takes only a minute! )
+                    </div>
             </div> 
 
         </div> <!-- row:2 -->
-
-         <div class="row mt20">
-            <div class="span6 offset5">
-                <a href="/user/register.php">Register for a new 3mik account</a>&nbsp;(&nbsp;Free and takes only a minute! )
-            </div>
-                
-        </div> <!-- row:3 -->
 
 
        </div> <!-- container -->

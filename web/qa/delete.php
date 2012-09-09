@@ -25,7 +25,7 @@
     $postDao = new \com\indigloo\sc\dao\Post();
     $postDBRow = $postDao->getOnId($postId);
 
-    if(!Login::isOwner($postDBRow['login_id'])) {
+    if(! (Login::isOwner($postDBRow['login_id']) || Login::isAdmin())) {
         header("Location: /qa/noowner.php");
         exit ;
     }

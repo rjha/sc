@@ -1193,7 +1193,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #navbar-search input{width:380px;border-radius:0}
 .beta{vertical-align:sub;font-size:11px}
 #site-toolbar{border-bottom:1px solid #cacaca;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1);line-height:26px}
-#site-toolbar .navbar-inner{background:#fafafa}
+#site-toolbar .navbar-inner{background:#fafafa;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA',endColorstr='#FAFAFA',GradientType=0)}
 #site-toolbar .caret{border-top-color:black}
 #site-toolbar a{color:#222;font-weight:bold;text-shadow:0 1px 0 rgba(255,255,255,0.5)}
 #site-toolbar .dropdown-menu a{color:#333;font-weight:normal}
@@ -1221,11 +1221,12 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #simple-popup .stack p{color:#333;font-weight:normal}
 #simple-popup a:first-child .stack{border-left-width:0}
 #simple-popup .stack:hover{background:#f7f7f7;cursor:pointer}
-#overlay-message{background:none repeat scroll 0 0 rgba(255,255,255,0.95);border-bottom:1px solid black;box-shadow:0 1px 15px #9c9c9c;font-size:20px;font-weight:bold;left:0;opacity:0;padding:5px 10% 10px;position:fixed;top:45px;width:80%;z-index:1009;height:60px;text-align:center;opacity:1;display:block}
+#overlay-message{background:none repeat scroll 0 0 rgba(255,255,255,0.95);border-bottom:1px solid black;box-shadow:0 1px 15px #9c9c9c;font-size:20px;font-weight:bold;left:0;opacity:0;padding:10px 10% 10px;position:fixed;top:50px;width:80%;z-index:1009;height:60px;text-align:center;opacity:1;display:block}
 #overlay-message a{color:#222;cursor:pointer;font-size:12px;font-weight:normal}
 #pubuser .avatar{width:auto;height:auto;max-width:200px;max-height:150px;text-align:center}
 #pubuser .follow-user-link{width:120px;height:20px;font-weight:bold}
 #pubuser .data{padding-bottom:5px;font-weight:bold}
+#pubuser .about-me{padding-top:10px}
 #infscr-loading{text-align:center;position:fixed;left:45%;bottom:40px;width:200px;background:black;opacity:.8;color:white;border-radius:10px}
 .accordion-inner img{border:1px solid #ddd;padding:8px;background:#eee;box-shadow:0 1px 7px rgba(34,25,25,0.4)}
 .page-header{padding-bottom:7px}

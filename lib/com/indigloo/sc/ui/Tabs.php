@@ -9,7 +9,7 @@ namespace com\indigloo\sc\ui {
     class Tabs {
         
         static function getHtml($tabUrlMap) {
-            $currentUrl = $_SERVER["REQUEST_URI"] ;
+            $currentUrl = Url::current() ;
             $pos = strpos($currentUrl, '?');
 
             //remove the part after ? from Url
