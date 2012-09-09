@@ -52,8 +52,7 @@ namespace com\indigloo\sc\controller{
 
             $links = array();
             foreach($dblinks as $link) {
-                $scheme = \parse_url($link,PHP_URL_SCHEME);
-                $link = empty($scheme) ? "http://".$link : $link ;
+                $link = Url::addHttp($link);
                 array_push($links,$link);
             }
 

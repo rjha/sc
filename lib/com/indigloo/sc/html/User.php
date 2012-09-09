@@ -106,7 +106,7 @@ namespace com\indigloo\sc\html {
                     array_push($columns,$key);
                     //push value in data
                     if(strcasecmp($key,'website') == 0 || strcasecmp($key,'blog') == 0 )
-                        $data[$key] = '<a href="'.$value.'" target="_blank">'.$value.'</a>' ;
+                        $data[$key] = '<a href="'.Url::addHttp($value).'" target="_blank">'.$value.'</a>' ;
                     else
                         $data[$key] = $value ;
                 }
