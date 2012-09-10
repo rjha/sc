@@ -35,8 +35,10 @@
     <div class="section">
         
         <span class="faded-text">
-            it is assumed that before posting on 3mik you agree to our 
-            <a href="/site/tos.php" target="_blank">Terms of service</a>
+            By posting your content on 3mik, you agree to the
+            <a href="/site/tos.php" target="_blank">terms of service</a>
+            &nbsp; and
+             <a href="/site/privacy.php" target="_blank">privacy policy</a>
         </span>
                                 
     </div>
