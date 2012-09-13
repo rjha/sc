@@ -2,44 +2,46 @@
 <!DOCTYPE html>
 <html>  
     <head>
-        
-        <title>3mik.com - site is down for maintenance </title>
+           
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>3mik.com - site maintenance notice</title>
         
         <style type="text/css">
         
              body {
                 text-align: center;
+                background: white ;
                 color: black ;
                 font-family : Arial, sans-serif ;
                 font-size : 13px;
             }
             
-            .centered {
+            #box {
                 position: fixed;
-                margin-top: 200px;
+                margin-top: 100px;
                 margin-left: 200px;
+               
+                padding:40px;
+                border-bottom:4px solid black;
+                
             }
 
             #message {
-                width:400px ;
-                height:400px ;
-                padding: 30px;
-                border-radius: 10px;
-                z-index:1;
+                font-size:16px;
+                line-height: 22px;
+                font-family: Georgia, Arial, sans-serif ;
+                z-index:100;
             }
 
-            #message a {
-                text-decoration : none ;
-
-            }
+           
            
         </style>
 
     </head>
     <body>
-        <div class="centered">
-            <h2> Site is down for maintenance </h2>
-            <p> please come back after some time. </p>
+        <div id="box">
+            <h1> Our server is under maintenance</h1>
+            <p id="message"> We apologize for the inconvenience. please try after some time. </p>
         </div>
 
     </body>
