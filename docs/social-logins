@@ -61,6 +61,27 @@ Does not look possible w/o launching auth dialog.
 # debug a facebook access token 
 https://developers.facebook.com/tools/debug/access_token
 
+# customize extended permissions message
+  - if our app is accepted in Facebook App center then we can display a customized message
+    what appears on App details page. However if app is not in app center then we keep showing
+    the default message that is quite scary.
+
+
+# launch a dialog to get extended permissions after authorization
+- https://www.facebook.com/dialog/permissions.request?app_id=&
+- using FB login social plugin trick
+- launching oauth dialog via javascript (what we have in callback)
+
+Launching fbDialogURL (what we use on login page with extra scope parameters should do the trick!)
+
+
+#fixing  facebook dialog popup
+
+see the old item page share on Facebook popup on how to open the FB dialog in a popup 
+instead of in a separate page. Beware that it does not make sense to open oAuth dialog in a
+popup as we redirect back to a URL that will replace the popup window. (Unless we close popup window on redirect)
+
+
 
 
 Google App
