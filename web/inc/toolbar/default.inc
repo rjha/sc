@@ -31,6 +31,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li> <a href="/site/about.php">About 3mik</a> </li>
+                            <li> <a href="http://blog.3mik.com">Blog</a> </li>
                             <li> <a href="/site/contact.php">Contact</a> </li>
                             <li> <a href="/site/copyright.php">Copyright</a> </li>
                         </ul>
