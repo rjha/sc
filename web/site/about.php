@@ -19,13 +19,40 @@
         <div class="container mh800">
             
             <div class="row">
-                <div class="span4 offset1">
+                <div class="span4 offset1 mt20">
                     <h1> 3mik is a sharing and discovery platform in India.</h1>
                     <blockquote class="pull-right">
                         <p>
                     3mik lets you share interesting and unique things in India. You can use 3mik to discover your interests and see stuff shared by others. Move around and see what you like!
                         </p>
                     </blockquote>
+                    <div class="p20">
+                        <h4> Follow 3mik on</h4>
+                        <a href="http://www.facebook.com/3mikindia" target="_blank">
+                            <div class="floatl p10">
+                                <img src="/css/asset/sc/ico_facebook.png"/>
+                                <br>
+                                Facebook
+                            </div>
+                        </a>
+                        <a href="https://plus.google.com/108668124722035129135" target="_blank">
+                            <div class="floatl p10">
+                                <img src="/css/asset/sc/ico_googleplus.png"/>
+                                <br>
+                                Google+
+                            </div>
+                        </a>
+
+                        <a href="http://www.twitter.com/3mikindia" target="_blank">
+                            <div class="floatl p10">
+                                <img src="/css/asset/sc/ico_twitter.png"/>
+                                <br>
+                                Twitter
+                            </div>
+                        </a>
+
+                    </div> <!-- 3mik social links -->
+                    
                 </div>
                 <div class="span6 offset1 ">
                 <!-- collage -->
@@ -40,6 +67,10 @@
 
                 </div>
             </div> <!-- row -->
+            <div class="row">
+                   
+            </div>
+
             <div class="row">
                 <div class="span5 p20">
                     <h3>Discovery </h3>

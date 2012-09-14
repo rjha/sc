@@ -35,9 +35,35 @@
                             <li> <a href="/site/copyright.php">copyright page </a> </li>
                         </ul>
 
+                        <div class="p20">
+                            <h4> Follow 3mik on</h4>
+                            <a href="http://www.facebook.com/3mikindia" target="_blank">
+                                <div class="floatl p10">
+                                    <img src="/css/asset/sc/ico_facebook.png"/>
+                                    <br>
+                                    Facebook
+                                </div>
+                            </a>
+                            <a href="https://plus.google.com/108668124722035129135" target="_blank">
+                                <div class="floatl p10">
+                                    <img src="/css/asset/sc/ico_googleplus.png"/>
+                                    <br>
+                                    Google+
+                                </div>
+                            </a>
+
+                            <a href="http://www.twitter.com/3mikindia" target="_blank">
+                                <div class="floatl p10">
+                                    <img src="/css/asset/sc/ico_twitter.png"/>
+                                    <br>
+                                    Twitter
+                                </div>
+                            </a>
+
+                        </div> <!-- 3mik social links -->
                     </div>
             </div> <!-- row -->
-
+          
 
             <div class="row">
                 <div id="faq" class="span8 offset2 mt20">
