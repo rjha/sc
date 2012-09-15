@@ -119,6 +119,7 @@
         <script>
             $(document).ready(function(){
                 //show options on widget hover
+                
                 $('.widget .options').hide();
                 $('.widget').mouseenter(function() {
                     $(this).find('.options').toggle();
@@ -127,7 +128,7 @@
                 $('.widget').mouseleave(function() {
                     $(this).find('.options').toggle();
                     $(this).css("background-color", "#FFFFFF");
-                });
+                }); 
 
                 webgloo.sc.item.addAdminActions();
 
@@ -149,7 +150,7 @@
 
             <div class="row">
                 <div class="span12">
-                <?php include('inc/menu.inc'); ?>
+                <?php include('inc/top-unit.inc'); ?>
                 </div>
             </div>
 
@@ -163,9 +164,12 @@
 
 
             <div class="row">
-                <div class="span11">
+                <div class="span2">
+                    <?php include('inc/menu.inc'); ?>
+                </div>
+                <div class="span9">
                     <div class="row">
-                        <div class="span5">
+                        <div class="span4">
 
                             <form method="GET" action="<?php echo $clearSearchUrl; ?>">
                                 <input id="site-search" name="gt" type="text" class="search-query" placeholder="Quick Search">
@@ -174,7 +178,7 @@
 
                         </div>
 
-                        <div class="span6">
+                        <div class="span5">
                             <span class="label label-warning"> Filter </span>
                             &nbsp;
                             <a href="<?php echo $ftFeaturedUrl; ?>">Featured</a>
@@ -186,6 +190,7 @@
                         </div>
 
                     </div> <!-- row -->
+
                     <div class="p20">
                         <span class="color-red">
                             Applied filters = <?php echo $gtoken; ?>  <?php echo $ftname; ?>
@@ -194,21 +199,21 @@
                         <span> ( hint: item:itemno and + operator works in search box) </span>
                     </div>
 
-                        <?php
-                            $startId = NULL;
-                            $endId = NULL;
-                            if (sizeof($postDBRows) > 0) {
-                                $startId = $postDBRows[0]["id"];
-                                $endId = $postDBRows[sizeof($postDBRows) - 1]["id"];
-                            }
+                    <?php
+                        $startId = NULL;
+                        $endId = NULL;
+                        if (sizeof($postDBRows) > 0) {
+                            $startId = $postDBRows[0]["id"];
+                            $endId = $postDBRows[sizeof($postDBRows) - 1]["id"];
+                        }
 
-                            foreach ($postDBRows as $postDBRow) {
-                                echo \com\indigloo\sc\html\Post::getAdminWidget($postDBRow,$options);
-                            }
-                        ?>
+                        foreach ($postDBRows as $postDBRow) {
+                            echo \com\indigloo\sc\html\Post::getAdminWidget($postDBRow,$options);
+                        }
+                    ?>
 
                 </div>
-                <div class="span1"> </div>
+                 
             </div>
         </div> <!-- container -->
         <?php $paginator->render('/monitor/index.php', $startId, $endId); ?>

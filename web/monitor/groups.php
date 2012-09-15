@@ -46,7 +46,7 @@
 
             <div class="row">
                 <div class="span12">
-                <?php include('inc/menu.inc'); ?>
+                <?php include('inc/top-unit.inc'); ?>
                 </div>
             </div>
             <div class="row">
@@ -58,6 +58,9 @@
             </div>
 
             <div class="row">
+                <div class="span2">
+                    <?php include('inc/menu.inc'); ?>
+                </div>
                 <div class="span9">
                     <?php FormMessage::render(); ?>
                         <form name="web-form1" action="/monitor/form/group/featured.php" method="POST">

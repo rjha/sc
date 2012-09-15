@@ -58,7 +58,7 @@
 
             <div class="row">
                 <div class="span12">
-                <?php include('inc/menu.inc'); ?>
+                <?php include('inc/top-unit.inc'); ?>
                 </div>
             </div>
             <div class="row">
@@ -69,7 +69,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="span11">
+                <div class="span2">
+                    <?php include('inc/menu.inc'); ?>
+                </div>
+                <div class="span10">
 
 
                     <h3> Total <?php echo $total; ?> / Last 24 HR <?php echo $l24hTotal; ?>   </h3>
