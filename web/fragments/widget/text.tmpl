@@ -1,4 +1,16 @@
 <div class="widget separator1">
+    <div class="options">
+        <div class="links">
+            ~if($view->hasEdit){~
+                <a href="~~$view->editUrl~"><i class="icon-edit"></i>&nbsp;Edit</a>
+            ~}~
+            &nbsp;
+            ~if($view->hasDelete){~
+                <a href="~~$view->deleteUrl~"><i class="icon-remove"></i>&nbsp;Delete</a>
+            ~}~
+        </div>
+    </div>
+    
     <p>
         <i class="icon-asterisk"></i>&nbsp;
         ~~$view->description~
@@ -10,17 +22,7 @@
 
     </p>
 
-    <div class="options">
-        <div class="links">
-                ~if($view->hasEdit){~
-                <a href="~~$view->editUrl~"><i class="icon-edit"></i>&nbsp;Edit</a>
-            ~}~
-            &nbsp;
-            ~if($view->hasDelete){~
-                <a href="~~$view->deleteUrl~"><i class="icon-remove"></i>&nbsp;Delete</a>
-            ~}~
-        </div>
-    </div>
+
 
 </div>
 
