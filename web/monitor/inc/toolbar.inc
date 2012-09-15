@@ -1,3 +1,10 @@
+<?php
+
+    $gWeb = \com\indigloo\core\Web::getInstance();
+    $gomInSession = $gWeb->find("global.overlay.message",true);
+    $goverlay = \com\indigloo\sc\html\Site::getOverlay($gomInSession);
+
+?>
 
 <div id="site-toolbar" class="navbar navbar-fixed-top">
     <div class="navbar-inner">
@@ -9,6 +16,11 @@
         </div>
     </div>
 </div>
+
+<div class="row">
+    <?php if(!empty($goverlay)) { echo $goverlay ; } ?>
+</div> <!-- overlay -->
+
 
 <div id="block-spinner"> </div>
 

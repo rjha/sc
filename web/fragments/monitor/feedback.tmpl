@@ -1,14 +1,16 @@
 <div class="widget">
     <div class="options">
         <div class="links">
-            <a href="~~$view->deleteUrl~">Delete&nbsp;<i class="icon-remove"></i></a>
+            <a href="/monitor/feedback/delete.php?id=~~$view->id~&q=~~$view->qUrl~">Delete&nbsp;<i class="icon-remove"></i></a>
         </div>
     </div>
             
    <p class="comment-text">~~$view->description~ </p>
    <div class="ml20">
-        <span class="feed-text">
-           ~~$view->name~ &nbsp; ~~$view->email~ &nbsp; ~~$view->phone~
+        <span class="abcd">
+           ~~$view->name~ &nbsp; 
+           <a href="mailto:~~$view->email~">~~$view->email~</a> &nbsp;
+           ~~$view->phone~
         </span>
    </div>
             
