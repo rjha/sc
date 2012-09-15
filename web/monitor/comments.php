@@ -59,7 +59,7 @@
 
             <div class="row">
                 <div class="span12">
-                <?php include('inc/top-unit.inc'); ?>
+                <?php include(APP_WEB_DIR.'/monitor/inc/top-unit.inc'); ?>
                 </div>
             </div>
             <div class="row">
@@ -72,7 +72,7 @@
 
             <div class="row">
                  <div class="span2">
-                    <?php include('inc/menu.inc'); ?>
+                    <?php include(APP_WEB_DIR.'/monitor/inc/menu.inc'); ?>
                 </div>
                 <div class="span9">
 
@@ -91,7 +91,7 @@
                         ?>
 
                 </div>
-                <div class="span3"> </div>
+                 
             </div>
         </div> <!-- container -->
 
