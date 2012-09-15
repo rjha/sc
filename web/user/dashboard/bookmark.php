@@ -121,7 +121,7 @@
                 $('.widget').mouseenter(function() {
                     $(this).find('.options').toggle();
                     /* @todo move colors to a css style */
-                    $(this).css("background-color", "#f9f9f9");
+                    $(this).css("background-color", "#FEFDF1");
                 });
 
                 $('.widget').mouseleave(function() {
