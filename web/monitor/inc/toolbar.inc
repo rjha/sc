@@ -9,3 +9,22 @@
         </div>
     </div>
 </div>
+
+<div id="block-spinner"> </div>
+
+<div id="simple-popup">
+     <div id="header">
+         <div class="wrapper">
+            <div class="floatr">
+                <a id="simple-popup-close" href="">close&nbsp;<i class="icon-remove"> </i></a>
+            </div>
+        </div>
+        <div class="clear"> </div>
+     </div>
+    <div id="content"> </div>
+
+</div>
+
+<div id="popup-mask"> </div>
+<!-- site simple popup -->
+
