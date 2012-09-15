@@ -114,3 +114,23 @@ show logs after a certain date
 ----------------------------
 git log --after=2012-05-07 --pretty=oneline > logs 
 
+
+
+Dealing with bad pulls
+---------------------------
+
+$git pull origin master
+whoops? want to revert? 
+
+$git reflog show 
+
+will show the changes in HEAD. Then you can just reset to wherever you want, like,
+$git reset HEAD@{1} 
+if there are modified files due to pull
+$git checkout .
+$git status
+
+
+
+
+
