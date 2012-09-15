@@ -33,13 +33,13 @@
         <script>
             $(document).ready(function(){
                 //show options on widget hover
-                $('.widget .options').hide();
+                
                 $('.widget').mouseenter(function() {
-                    $(this).find('.options').toggle();
+                    $(this).find('.options').css("visibility", "visible");
                     $(this).css("background-color", "#FEFDF1");
                 });
                 $('.widget').mouseleave(function() {
-                    $(this).find('.options').toggle();
+                    $(this).find('.options').css("visibility", "hidden");
                     $(this).css("background-color", "#FFFFFF");
                 });
             });

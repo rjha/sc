@@ -98,15 +98,15 @@
         <script>
             $(document).ready(function(){
                 //show options on widget hover
-                $('.widget .options').hide();
+                
                 $('.widget').mouseenter(function() {
-                    $(this).find('.options').toggle();
+                    $(this).find('.options').css("visibility", "visible");
                     /* @todo move colors to a css style */
                     $(this).css("background-color", "#FEFDF1");
                 });
 
                 $('.widget').mouseleave(function() {
-                    $(this).find('.options').toggle();
+                    $(this).find('.options').css("visibility", "hidden");
                     $(this).css("background-color", "#FFFFFF");
                 });
 
