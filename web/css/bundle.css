@@ -1090,7 +1090,7 @@ div .form-message{margin-bottom:10px;margin-top:10px;color:green}
 div .error label{width:500px;text-align:left;display:block;margin-left:10px;color:red}
 .widget{width:100%;clear:both;border-bottom:1px solid #e6e6e6;min-height:60px;float:left;padding-bottom:7px}
 .widget .options{background:none repeat scroll 0 0 #f7f7f7;border-bottom:2px solid #f8d575;z-index:100;visibility:hidden;overflow:hidden;margin:0;padding:0}
-.widget .options .links{padding:5px 5px 10px 30px;font-size:12px;line-height:17px}
+.widget .options .links{padding:5px 5px 5px 30px;font-size:12px;line-height:17px}
 .widget .options .links a{color:#333;cursor:pointer;font-size:1em}
 .widget .photo{padding:13px}
 .widget img{max-width:90%}

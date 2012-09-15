@@ -5019,7 +5019,7 @@ button::-moz-focus-inner {
     }
 
     .widget .options .links {
-        padding : 5px 5px 10px 30px;
+        padding : 5px 5px 5px 30px;
         font-size:12px;
         line-height:17px;
         
