@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.8.1: http://docutils.sourceforge.net/" />
+<title></title>
+<style type="text/css">
+
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id: html4css1.css 7056 2011-06-17 10:50:48Z milde $
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+object[type="image/svg+xml"], object[type="application/x-shockwave-flash"] {
+  overflow: hidden;
+}
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left, .figure.align-left, object.align-left {
+  clear: left ;
+  float: left ;
+  margin-right: 1em }
+
+img.align-right, .figure.align-right, object.align-right {
+  clear: right ;
+  float: right ;
+  margin-left: 1em }
+
+img.align-center, .figure.align-center, object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.align-left {
+  text-align: left }
+
+.align-center {
+  clear: both ;
+  text-align: center }
+
+.align-right {
+  text-align: right }
+
+/* reset inner alignment in figures */
+div.align-right {
+  text-align: inherit }
+
+/* div.align-center * { */
+/*   text-align: left } */
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font: inherit }
+
+pre.literal-block, pre.doctest-block, pre.math {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+</head>
+<body>
+<div class="document">
+
+
+<div class="section" id="essential-tests">
+<h1>Essential Tests</h1>
+<ul class="simple">
+<li><em>Author</em> Rajeev Jha</li>
+<li><em>version</em> 0.1</li>
+<li><em>date</em> 02-08-2012</li>
+<li><em>version</em> 0.2</li>
+<li><em>date</em> 19-09-2012</li>
+</ul>
+</div>
+<div class="section" id="caveats">
+<h1>Caveats</h1>
+<ul class="simple">
+<li>Ask for data before starting your tests</li>
+<li><strong>This is a live site so do not leave behind &quot;ugly&quot; data</strong> and posts like &quot;test test&quot; (cruel intentions)</li>
+<li>Try to work with &quot;right&quot; test data that a &quot;normal&quot; user would also use.</li>
+</ul>
+</div>
+<div class="section" id="variables-for-testing">
+<h1>Variables for testing</h1>
+<ul class="simple">
+<li>different browsers (IE9 vs. chrome)</li>
+<li>sessions - Logged in user vs. anonymous user</li>
+<li>Different login provider (3mik vs. Facebook)</li>
+</ul>
+</div>
+<div class="section" id="browsing">
+<h1>Browsing</h1>
+<p>Browsing should support following cases</p>
+<blockquote>
+<ul class="simple">
+<li>when you are not logged in</li>
+<li>when you are logged in.</li>
+<li>working in IE9 and IE9+</li>
+<li>working in IE8</li>
+<li>working in a sane browser like FF/Chromes</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="home-page">
+<h1>Home page</h1>
+<p>Nomenclature : The page is composed of <em>tiles</em> arranged in a <em>masonry</em> layout
+A tile can be an image tile (when post is created with image) or a text tile
+(post is created without image)</p>
+<p>when you click on a tile, it shows you the details on an item details page</p>
+<ul class="simple">
+<li>clicking on an image tile should take you to item details page.</li>
+<li>Text tile should show more link</li>
+<li>Hover on an tile should show Like/Favorite buttons</li>
+</ul>
+<p>Click on a tile now - Go to item details page</p>
+</div>
+<div class="section" id="item-details-page">
+<h1>Item details page</h1>
+<p>Nomenclature : on clicking an image : you bring up the &quot;fancybox&quot; that shows same
+image in a modal window.</p>
+<blockquote>
+<ul>
+<li><p class="first">images - zoom click should work</p>
+</li>
+<li><p class="first">images on zoom - check fancybox scrolling for multiple images</p>
+</li>
+<li><p class="first">details of item</p>
+</li>
+<li><p class="first">comments should work</p>
+</li>
+<li><p class="first">activities should show up</p>
+</li>
+<li><dl class="first docutils">
+<dt>site link should work</dt>
+<dd><ul class="first last simple">
+<li>for cases when post was created with full URL : e.g. with <a class="reference external" href="http://">http://</a> in front</li>
+<li>for cases when someone just typed in www.sitename.com (without <a class="reference external" href="http://">http://</a> in front)</li>
+<li>try with a facebook page</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">click on user name should show user public profile</p>
+</li>
+<li><p class="first">Related items - should show 16 related items</p>
+</li>
+<li><p class="first">click on view source : verify open graph (og:tags)</p>
+</li>
+<li><p class="first">share on Google+/Facebook/Twitter should work</p>
+</li>
+</ul>
+<p><strong>All links should work</strong></p>
+</blockquote>
+<ul class="simple">
+<li>Clicking on group name in tile should show groups page</li>
+<li>clicking on user name in tile should show user pub page</li>
+</ul>
+</div>
+<div class="section" id="search">
+<h1>Search</h1>
+<blockquote>
+<ul>
+<li><p class="first">site search should work : try typing tokens like</p>
+<blockquote>
+<ul class="simple">
+<li>saree</li>
+<li>candle</li>
+<li>chocolate</li>
+<li>bangalore</li>
+<li>whatever else you want</li>
+</ul>
+</blockquote>
+</li>
+<li><p class="first">New posts - search indexing should happen within two hours.</p>
+</li>
+<li><p class="first">Search Results should show groups as well</p>
+</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="toolbar">
+<h1>Toolbar</h1>
+<ul>
+<li><p class="first">toolbar links should work</p>
+<ul class="simple">
+<li>Add/Upload - should show choice popup</li>
+<li>Add/Upload - popup - should take to login page if not logged IN</li>
+<li>Add/upload - popup - should take to post create page when logged IN</li>
+<li>Join Now - try joining in with Facebook</li>
+</ul>
+</li>
+<li><p class="first">Site Navigation</p>
+<blockquote>
+<ul class="simple">
+<li>Categories - check that categories navigation work</li>
+<li>Locations - check that location navigation work</li>
+<li>Other Navigation links : click to check</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>contact page : post some data</li>
+<li>About page</li>
+<li>copyright page</li>
+<li>Help page</li>
+<li>Registration page</li>
+<li>Terms of service page</li>
+<li>Privacy policy URL</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="scrolling">
+<h1>Scrolling</h1>
+<p>Nomenclature : infinite scrolling pattern is when you keep getting new content
+on scrolling past the current window (without clicking a link)</p>
+<p>infinite scrolling is on</p>
+<blockquote>
+<ul class="simple">
+<li>Home page</li>
+<li>search page</li>
+<li>groups page</li>
+<li>user public profile</li>
+</ul>
+</blockquote>
+<p>Verify that above pages load new data on scrolling and there are no semantic issues!</p>
+</div>
+<div class="section" id="text-browser-test">
+<h1>Text browser test</h1>
+<ul class="simple">
+<li>Open the page in text browser like <strong>links</strong></li>
+<li>All pages should have right pagination w/o java script.</li>
+</ul>
+</div>
+<div class="section" id="registration">
+<h1>Registration</h1>
+<p>3mik registration should work.</p>
+</div>
+<div class="section" id="login">
+<h1>Login</h1>
+<ul>
+<li><p class="first">old 3mik login should work</p>
+</li>
+<li><p class="first">New 3mik registration login should work</p>
+</li>
+<li><dl class="first docutils">
+<dt>Login should work for all providers</dt>
+<dd><ul class="first last simple">
+<li>3mik login</li>
+<li>FB login</li>
+<li>Google login</li>
+<li>Twitter login</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">wrong password should not work - should show appropriate message*</p>
+</li>
+</ul>
+</div>
+<div class="section" id="password">
+<h1>Password</h1>
+<ul class="simple">
+<li>Go to User accounts page | settings | change password</li>
+<li>Above page should be shown only for 3mik accounts</li>
+<li>Test Forgot password workflow</li>
+</ul>
+</div>
+<div class="section" id="after-login-sign-in">
+<h1>After login (Sign In)</h1>
+<p>Heavy duty &quot;logged in&quot; testing should be done from an FB account
+Twitter/Gmail/3mik - Do quick testing after verifying everything from FB account</p>
+<ul>
+<li><p class="first">Like/Favorite on image tiles should work on</p>
+<ul class="simple">
+<li>Home page</li>
+<li>groups page</li>
+<li>User public profile page</li>
+<li>search results page</li>
+</ul>
+</li>
+<li><p class="first">Like/Favorite should show in site feed/User feed</p>
+</li>
+<li><dl class="first docutils">
+<dt>Add/Upload</dt>
+<dd><ul class="first last">
+<li><p class="first">Upload from computer - check</p>
+</li>
+<li><dl class="first docutils">
+<dt>share from a webpage - check</dt>
+<dd><ul class="first last simple">
+<li>Here images with (Width &lt; 100px || Height &lt; 100px) should not be shown</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">During your upload</p>
+<blockquote>
+<ul class="simple">
+<li>Try removing added images</li>
+<li>Try adding more images</li>
+<li>website remove in preview should work</li>
+</ul>
+</blockquote>
+</li>
+<li><dl class="first docutils">
+<dt>Post edit should work</dt>
+<dd><ul class="first last simple">
+<li>try adding images to a post</li>
+<li>try removing images from a post</li>
+<li>Edit description/groups</li>
+<li>Change category</li>
+<li>Add website / remove old website</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="post-create-images">
+<h1>Post create - images</h1>
+<ul class="simple">
+<li>try uploading an image with bmp extension (valid image - extension not allowed )</li>
+<li>try uploading an exe file (invalid file)</li>
+<li>try uploading a file with question mark (?) at end - abcd.png?v1234</li>
+<li>jpg, jpeg, png and gif upload should happen</li>
+<li>Try to break the page in whatever way you want</li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h1>Item details Page</h1>
+<ul>
+<li><p class="first">Item toolbar - like/favorite/edit should work</p>
+</li>
+<li><p class="first">Comment on item page should work</p>
+</li>
+<li><dl class="first docutils">
+<dt>Facebook Like/Google+ sharing / Tweet  should work</dt>
+<dd><ul class="first last simple">
+<li>see description and image when sharing on G+/FB</li>
+<li>verify open graph tags via view:source of page</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="user-account-page">
+<h1>User Account page</h1>
+<ul class="simple">
+<li>User public profile should work.</li>
+<li>Follow user button on user pub page should work</li>
+<li>User accounts - Post edit/delete</li>
+<li>User accounts - posts pagination</li>
+<li>User accounts - comments pagination</li>
+<li>User accounts - comment delete</li>
+<li>User accounts - remove a favorite item</li>
+<li>User accounts - list of following/followers</li>
+<li>User accounts - unfollow should work</li>
+<li>change profile - add and remove picture</li>
+</ul>
+</div>
+<div class="section" id="activities">
+<h1>Activities</h1>
+<ul>
+<li><dl class="first docutils">
+<dt>Activities should be updated on actions</dt>
+<dd><ul class="first last simple">
+<li>comment</li>
+<li>Like</li>
+<li>Favorite</li>
+<li>Follow</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Activities should appear on</dt>
+<dd><ul class="first last simple">
+<li>Items pages</li>
+<li>Home page</li>
+<li>User accounts page</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">Follow/Unfollow should work</p>
+</li>
+<li><p class="first">Follow user button on pub page should work.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="logout">
+<h1>Logout</h1>
+<ul class="simple">
+<li>verify that logout clears the session</li>
+</ul>
+</div>
+<div class="section" id="resume-session-action">
+<h1>Resume session action</h1>
+<p>After login, resume session actions that were not completed
+because user was not logged in.s</p>
+<ul class="simple">
+<li>click logout - You are no longer logged In</li>
+<li>Go to Homepage</li>
+<li>click on like in an image tile</li>
+<li>Redirected to login page - Sign in now</li>
+<li>After login, you should see a &quot;success&quot; message at top of screen</li>
+</ul>
+</div>
+<div class="section" id="security">
+<h1>Security</h1>
+<ul>
+<li><p class="first">Try editing posts of other users</p>
+<blockquote>
+<ul class="simple">
+<li>Sign In</li>
+<li>Go to posts page from Toolbar | User Account</li>
+<li>Click edit : Note down the edit URL</li>
+<li>Now try to substitute an item ID that you do not own</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="bonus">
+<h1>Bonus</h1>
+<ul>
+<li><dl class="first docutils">
+<dt>Try to break the site whatever way you want</dt>
+<dd><ul class="first last simple">
+<li>Just do not leave ugly data behind : This is a live site!</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+</body>
+</html>
