@@ -13,7 +13,7 @@ namespace com\indigloo\sc\mysql {
             //sanitize input
             $name = $mysqli->real_escape_string($name);
 
-            $sql = " select * from sc_list where name = '%s' order by ui_order ASC " ;
+            $sql = " select * from sc_ui_list where name = '%s' order by ui_order ASC " ;
             $sql = sprintf($sql,$name);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows ;
