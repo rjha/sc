@@ -24,6 +24,14 @@
             const TIME_MDYHM = "%b %e %Y, %R" ;
             const TIME_MDY = "%b %e, %Y" ;
 
+            //collections
+            const SYS_FP_SET = "sys:monitor:fposts" ;
+            const SYS_WNEWS_SET = "sys:monitor:wnews" ;
+
+            //collection sources
+            const ITEM = "item" ;
+            const GROUP = "group";
+
         }
 }
 ?>

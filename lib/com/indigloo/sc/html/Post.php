@@ -307,6 +307,7 @@ namespace com\indigloo\sc\html {
             $params = array('id' => $view->itemId, 'q' => Url::current());
             $view->editUrl = Url::createUrl('/qa/edit.php',$params);
             $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
+            
             $view->feature = ($postDBRow['is_feature'] == 0 ) ? true : false ;
             $view->unfeature = ($postDBRow['is_feature'] == 1 ) ? true : false ;
 

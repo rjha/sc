@@ -129,18 +129,7 @@ CREATE TABLE  sc_group_master  (
 -- 
 -- The URL for category navigation is like 
 -- /category/1 , /category/2 etc.
--- Category data looks like
--- code | Name | ui_order
--- CODE1 | Name 1 | 1
--- CODE2 | Name 2 | 2
 -- 
--- suppose we insert a new category CODE3 between 1 and 2 now
--- 
--- CODE1 | Name 1 | 1 
--- CODE3 | Name 3 | 2
--- CODE2 | Name 2 | 3
--- 
--- so 
 -- 1) we cannnot use ui_order in SEO URL because that obviously can change.
 -- 2) we cannot use CODE or Name either because that can also change, like
 -- what we call code CAR today can be code AUTO tomorrow and all /category/CAR link will not work
@@ -165,6 +154,12 @@ CREATE TABLE  sc_ui_list  (
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- @todo SEED data for sc_ui_list
+-- 
+-- 
 
 DROP TABLE IF EXISTS  sc_login ;
 CREATE TABLE  sc_login  (
@@ -556,6 +551,48 @@ CREATE TABLE  sc_preference (
   PRIMARY KEY ( id )) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 alter table  sc_preference add constraint UNIQUE uniq_login (login_id);
+
+
+
+
+DROP TABLE IF EXISTS  sc_set ;
+
+CREATE TABLE  sc_set (
+  id  int(11) NOT NULL AUTO_INCREMENT,
+  card int default -1,
+  name varchar(32) not null,
+  skey varchar(32) not null,
+  shash BINARY(16) not null,
+  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY ( id )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+alter table sc_set add constraint UNIQUE uniq_hash(shash);
+
+
+DROP TABLE IF EXISTS  sc_set_member ;
+
+CREATE TABLE  sc_set_member (
+  id  int(11) NOT NULL AUTO_INCREMENT,
+  set_hash BINARY(16) not null,
+  member varchar(64) not null,
+  source varchar(8) not null,
+  ui_order int ,
+  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY ( id )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+alter table sc_set_member add constraint UNIQUE uniq_mem(set_hash,member);
+
+
+
+
+
+
 
 
 

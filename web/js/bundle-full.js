@@ -17135,7 +17135,7 @@ webgloo.sc.item = {
             dataObj.params = {} ;
             dataObj.params.postId  = $(this).attr("id");
             dataObj.params.action = "ADD" ;
-            dataObj.endPoint = "/monitor/ajax/feature.php";
+            dataObj.endPoint = "/monitor/action/item/feature.php";
 
             //open popup
             webgloo.sc.SimplePopup.init();
@@ -17150,7 +17150,7 @@ webgloo.sc.item = {
             dataObj.params = {} ;
             dataObj.params.postId  = $(this).attr("id");
             dataObj.params.action = "REMOVE" ;
-            dataObj.endPoint = "/monitor/ajax/feature.php";
+            dataObj.endPoint = "/monitor/action/item/feature.php";
 
             //open popup
             webgloo.sc.SimplePopup.init();

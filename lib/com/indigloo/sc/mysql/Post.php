@@ -331,6 +331,7 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        /*
         static function setFeature($postId,$value){
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -341,7 +342,8 @@ namespace com\indigloo\sc\mysql {
             $sql = " update sc_post set is_feature = %d where ID = %d " ;
             $sql = sprintf($sql,$value,$postId);
             MySQL\Helper::executeSQL($mysqli,$sql);
-        }
+        } */
+        
 
     }
 }

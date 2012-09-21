@@ -175,6 +175,7 @@ namespace com\indigloo\sc\dao {
 
         }
 
+        /*
         function doAdminAction($postId,$action){
 
             if(! \com\indigloo\sc\auth\Login::isAdmin()) {
@@ -186,7 +187,9 @@ namespace com\indigloo\sc\dao {
                         \com\indigloo\sc\Constants::UNFEATURE_POST => 0 );
             mysql\Post::setFeature($postId,$map[$action]);
 
-        }
+        } */
+
+        
     }
 
 }
