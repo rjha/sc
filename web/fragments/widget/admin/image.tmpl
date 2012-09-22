@@ -21,10 +21,13 @@
     <div class="photo">
         <a href="/item/~~$view->itemId~"> <img src="~~$view->thumbnail~" class="alignleft" width="~~$view->twidth~" height="~~$view->theight~" class="alignleft" alt="~~$view->title~"/> </a>
     </div>
+
     <div class="description">
-        ~if($view->unfeature){~
-        <span class="faded-text">* featured </span>
-        ~}~
+        <div id="fps-~~$view->id~" class="faded-text">
+            ~if($view->unfeature){~
+            *featured 
+            ~}~
+        </div>
         <p> ~~$view->description~ </p>
         <p> <span>~~$view->createdOn~ </span> </p>
     </div>

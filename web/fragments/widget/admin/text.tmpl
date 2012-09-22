@@ -17,9 +17,11 @@
     </div> <!-- options -->
     
     <div class="description">
-        ~if($view->unfeature){~
-        <span class="faded-text">* featured </span>
-        ~}~
+        <div id="fps-~~$view->id~" class="faded-text">
+            ~if($view->unfeature){~
+            *featured 
+            ~}~
+        </div>
         <p> ~~$view->description~ </p>
         <p> <span>~~$view->createdOn~ </span> </p>
     </div>

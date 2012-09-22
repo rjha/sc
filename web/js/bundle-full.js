@@ -17009,20 +17009,24 @@ webgloo.sc.SimplePopup = {
         window.location.replace(webgloo.sc.SimplePopup.gotoUrl);
     },
 
-    processJson : function(response,options,dataObj) {
+    processJson : function(response,settings,dataObj) {
 
         switch(response.code) {
             case 200 :
                 //success
-                if(options.autoCloseInterval > 0 ) {
-                    window.setTimeout(this.close,options.autoCloseInterval);
+                if(settings.autoCloseInterval > 0 ) {
+                    window.setTimeout(this.close,settings.autoCloseInterval);
                 }
 
-                if(options.visible){
+                if(settings.visible){
                     this.show(response.message);
                 }
 
-                if(options.reload){
+                if(!settings.reload && (typeof settings.onSuccess !== "undefined")) {
+                    settings.onSuccess.call();
+                }
+
+                if(settings.reload){
                     window.location.reload(true);
                 }
 
@@ -17076,17 +17080,23 @@ webgloo.sc.SimplePopup = {
         //show spinner
         this.addSpinner();
 
-        options.visible = (typeof options.visible === "undefined") ? true : options.visible;
-        options.autoCloseInterval = (typeof options.autoCloseInterval === "undefined") ? -1 :  options.autoCloseInterval ;
-        options.reload = (typeof options.reload === "undefined") ? false : options.reload;
-        options.type = (typeof options.type === "undefined") ? "POST" :  options.type ;
-        options.dataType = (typeof options.dataType === "undefined") ? "text" :  options.dataType ;
+        var defaults = {
+            visible : true ,
+            autoCloseInterval : -1,
+            reload : false ,
+            type : "POST",
+            dataType : "text" ,
+            onSuccess : undefined 
 
+        }
+
+        var settings = $.extend({}, defaults, options);
+        
         //ajax call start
         $.ajax({
             url: dataObj.endPoint,
-            type: options.type ,
-            dataType: options.dataType,
+            type: settings.type ,
+            dataType: settings.dataType,
             data :  dataObj.params,
             timeout: 9000,
             processData:true,
@@ -17098,9 +17108,9 @@ webgloo.sc.SimplePopup = {
 
             //server script errors are reported inside success callback
             success: function(response){
-                switch(options.dataType) {
+                switch(settings.dataType) {
                     case 'json' :
-                        webgloo.sc.SimplePopup.processJson(response,options,dataObj);
+                        webgloo.sc.SimplePopup.processJson(response,settings,dataObj);
                     break;
 
                     default:
@@ -17140,10 +17150,14 @@ webgloo.sc.item = {
             //open popup
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.post(dataObj,{
-                "dataType" : "json",
-                "autoCloseInterval" : 3000,
-                "reload" : true
+                dataType : "json",
+                reload : false,
+                onSuccess : function () {
+                    $("#fps-" + dataObj.params.postId).html("*featured");
+                }
             });
+
+
         }) ;
 
         //unfeature posts
@@ -17160,8 +17174,10 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.post(dataObj,{
                 "dataType" : "json",
-                "autoCloseInterval" : 3000,
-                "reload" : true
+                "reload" : false,
+                onSuccess : function () {
+                    $("#fps-" + dataObj.params.postId).html("");
+                }
             });
         }) ;
 
