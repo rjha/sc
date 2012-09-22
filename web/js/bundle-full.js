@@ -17139,7 +17139,11 @@ webgloo.sc.item = {
 
             //open popup
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json"});
+            webgloo.sc.SimplePopup.post(dataObj,{
+                "dataType" : "json",
+                "autoCloseInterval" : 3000,
+                "reload" : true
+            });
         }) ;
 
         //unfeature posts
@@ -17154,7 +17158,11 @@ webgloo.sc.item = {
 
             //open popup
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json"});
+            webgloo.sc.SimplePopup.post(dataObj,{
+                "dataType" : "json",
+                "autoCloseInterval" : 3000,
+                "reload" : true
+            });
         }) ;
 
     },
