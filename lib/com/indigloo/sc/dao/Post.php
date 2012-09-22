@@ -88,8 +88,8 @@ namespace com\indigloo\sc\dao {
             }
         }
 
-        function getLatest($offset,$limit,$filters=array()) {
-            $rows = mysql\Post::getLatest($offset,$limit,$filters);
+        function getLatest($limit,$filters=array()) {
+            $rows = mysql\Post::getLatest($limit,$filters);
             return $rows ;
         }
 

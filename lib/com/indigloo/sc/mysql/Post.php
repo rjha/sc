@@ -125,7 +125,7 @@ namespace com\indigloo\sc\mysql {
             return $rows;
         }
 
-        static function getLatest($offset,$limit,$filters) {
+        static function getLatest($limit,$filters) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -142,8 +142,8 @@ namespace com\indigloo\sc\mysql {
             $condition = $q->get();
             $sql .= $condition;
 
-            $sql .= " order by q.id desc LIMIT %d,%d " ;
-            $sql = sprintf($sql,$offset,$limit);
+            $sql .= " order by q.id desc LIMIT %d " ;
+            $sql = sprintf($sql,$limit);
             
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
