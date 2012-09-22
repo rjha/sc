@@ -213,7 +213,7 @@ CREATE TABLE  sc_post  (
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    login_id  int(11) not null ,
    group_slug  varchar(64) ,
-   is_feature  int(11) DEFAULT '0',
+   fp_bit  int(11) DEFAULT '0',
    pseudo_id  varchar(32) not null,
    cat_code  varchar(16) ,
    version  int(11) DEFAULT '1',
@@ -281,7 +281,7 @@ CREATE TABLE  sc_post_archive  (
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    pseudo_id  int(11) not null,
    group_slug  varchar(64) ,
-   is_feature  int(11) ,
+   fp_bit  int(11) ,
    cat_code  varchar(16) ,
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -571,6 +571,15 @@ CREATE TABLE  sc_set (
 
 alter table sc_set add constraint UNIQUE uniq_hash(shash);
 
+DELIMITER //
+CREATE TRIGGER trg_set_del BEFORE DELETE ON sc_set
+    FOR EACH ROW
+    BEGIN
+      delete from sc_set_member where set_hash = OLd.shash ;
+      
+    END //
+DELIMITER ;
+
 
 DROP TABLE IF EXISTS  sc_set_member ;
 
@@ -587,6 +596,29 @@ CREATE TABLE  sc_set_member (
 
 
 alter table sc_set_member add constraint UNIQUE uniq_mem(set_hash,member);
+
+
+
+DELIMITER //
+CREATE TRIGGER trg_set_member_add  BEFORE INSERT ON sc_set_member
+    FOR EACH ROW
+    BEGIN
+      IF (unhex(md5("sys:monitor:fposts")) = NEW.set_hash ) THEN 
+        update sc_post set fp_bit = 1 where id = NEW.member ;
+      END IF ;
+    END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE TRIGGER trg_set_member_del  BEFORE DELETE ON sc_set_member
+    FOR EACH ROW
+    BEGIN
+      IF (unhex(md5("sys:monitor:fposts")) = OLD.set_hash ) THEN 
+        update sc_post set fp_bit = 0 where id = OLD.member ;
+      END IF ;
+    END //
+DELIMITER ;
 
 
 

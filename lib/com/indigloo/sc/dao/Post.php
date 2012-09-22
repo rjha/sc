@@ -174,21 +174,6 @@ namespace com\indigloo\sc\dao {
             
 
         }
-
-        /*
-        function doAdminAction($postId,$action){
-
-            if(! \com\indigloo\sc\auth\Login::isAdmin()) {
-                trigger_error("You need admin privileges to do this action.", E_USER_ERROR);
-            }
-            
-            //action => feature value map
-            $map = array(\com\indigloo\sc\Constants::FEATURE_POST => 1 ,
-                        \com\indigloo\sc\Constants::UNFEATURE_POST => 0 );
-            mysql\Post::setFeature($postId,$map[$action]);
-
-        } */
-
         
     }
 

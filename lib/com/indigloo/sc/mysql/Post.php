@@ -329,21 +329,7 @@ namespace com\indigloo\sc\mysql {
                 MySQL\Error::handle($mysqli);
             }
 
-        }
-
-        /*
-        static function setFeature($postId,$value){
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-
-            //sanitize input
-            settype($postId,"integer");
-            settype($value,"integer");
-            
-            $sql = " update sc_post set is_feature = %d where ID = %d " ;
-            $sql = sprintf($sql,$value,$postId);
-            MySQL\Helper::executeSQL($mysqli,$sql);
-        } */
-        
+        }  
 
     }
 }

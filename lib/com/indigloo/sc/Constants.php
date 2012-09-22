@@ -32,6 +32,9 @@
             const ITEM = "item" ;
             const GROUP = "group";
 
+            //DB Error codes
+            const DUPKEY_ERROR_CODE = 1062 ;
+
         }
 }
 ?>

@@ -13,7 +13,7 @@
     }
 
     if(\com\indigloo\sc\auth\Login::isAdmin()) {
-        $monitorUrl = '<li><a href="/monitor/index.php">Monitor App</a></li>';
+        $monitorUrl = '<li><a href="/monitor/users.php">Monitor App</a></li>';
     }
 
     $pubUserId = \com\indigloo\sc\util\PseudoId::encode($gSessionLogin->id) ;

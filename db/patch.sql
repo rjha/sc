@@ -1342,6 +1342,78 @@ alter table sc_comment_archive modify column login_id int  not null ;
 -- rename ui dropdown table
 -- 
 rename table sc_list to sc_ui_list ;
+alter table sc_post drop column is_feature ;
+alter table sc_post add column fp_bit  int  default 0 ;
+
+
+
+DROP TABLE IF EXISTS  sc_set ;
+
+CREATE TABLE  sc_set (
+  id  int(11) NOT NULL AUTO_INCREMENT,
+  card int default -1,
+  name varchar(32) not null,
+  skey varchar(32) not null,
+  shash BINARY(16) not null,
+  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY ( id )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+alter table sc_set add constraint UNIQUE uniq_hash(shash);
+
+DELIMITER //
+CREATE TRIGGER trg_set_del BEFORE DELETE ON sc_set
+    FOR EACH ROW
+    BEGIN
+      delete from sc_set_member where set_hash = OLd.shash ;
+      
+    END //
+DELIMITER ;
+
+
+DROP TABLE IF EXISTS  sc_set_member ;
+
+CREATE TABLE  sc_set_member (
+  id  int(11) NOT NULL AUTO_INCREMENT,
+  set_hash BINARY(16) not null,
+  member varchar(64) not null,
+  source varchar(8) not null,
+  ui_order int ,
+  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY ( id )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+alter table sc_set_member add constraint UNIQUE uniq_mem(set_hash,member);
+
+
+
+DELIMITER //
+CREATE TRIGGER trg_set_member_add  BEFORE INSERT ON sc_set_member
+    FOR EACH ROW
+    BEGIN
+      IF (unhex(md5("sys:monitor:fposts")) = NEW.set_hash ) THEN 
+        update sc_post set fp_bit = 1 where id = NEW.member ;
+      END IF ;
+    END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE TRIGGER trg_set_member_del  BEFORE DELETE ON sc_set_member
+    FOR EACH ROW
+    BEGIN
+      IF (unhex(md5("sys:monitor:fposts")) = OLD.set_hash ) THEN 
+        update sc_post set fp_bit = 0 where id = OLD.member ;
+      END IF ;
+    END //
+DELIMITER ;
+
+
+
 
 --
 -- @next push
