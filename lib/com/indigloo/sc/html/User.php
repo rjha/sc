@@ -163,6 +163,16 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
+        static function getWidget($row) {
+            $row["pubId"] = PseudoId::encode($row["login_id"]) ;
+            $format = "%d-%b, %Y / %H:%M" ;
+            $row["createdOn"] =  strftime($format, strtotime($row["created_on"]));
+            $html = NULL ;
+            $template = '/fragments/user/widget.tmpl' ;
+            $html = Template::render($template,$row);
+            return $html ;
+        }
+
     }
 
 }

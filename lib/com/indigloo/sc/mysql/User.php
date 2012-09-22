@@ -56,22 +56,30 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
-        //@todo use filters
         static function getLatest($limit,$filters) {
+
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input
             settype($limit,"integer");
 
-            $sql = " select * from sc_denorm_user order by id desc LIMIT %d " ;
+            $sql = " select * from sc_denorm_user u" ;
+
+            $q = new MySQL\Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\User","u");
+            $q->filter($filters);
+            $condition = $q->get();
+            $sql .= $condition;
+
+            $sql .= " order by u.id desc LIMIT %d" ;
             $sql = sprintf($sql,$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
-
         }
 
-        //@todo - use filters
+        
         static function getPaged($start,$direction,$limit,$filters) {
+
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input

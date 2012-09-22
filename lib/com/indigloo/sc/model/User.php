@@ -6,18 +6,24 @@ namespace com\indigloo\sc\model {
     class User extends Table {
 
          const CREATED_ON = 1;
+         const LOGIN_ID = 2 ;
+         const USER_NAME = 3 ;
+
          
          function __construct() {
 
          }
 
          public function getColumns() {
-             $columns = array( self::CREATED_ON => "created_on");
+             $columns = array( 
+                self::CREATED_ON => "created_on",
+                self::LOGIN_ID => "login_id",
+                self::USER_NAME => "name");
              return $columns;
          }
 
          public function getValue($alias,$column,$condition,$value) {
-             if(strcmp($column,"created_on") == 0) {
+            if(strcmp($column,"created_on") == 0) {
                  //special case: all processing in this block
                  //value comes in as 24 HOUR / 1 WEEK / 1 MONTH etc.
                  //mysql format for date comparison
@@ -25,7 +31,13 @@ namespace com\indigloo\sc\model {
                  $column = (is_null($alias)) ? $column : $alias.".".$column ;
                  $sql = sprintf("%s > (now() - interval %s) ",$column,$value);
                  return $sql;
-             }
+            }
+
+            if(strcmp($column,"name") == 0) {
+                 $column = (is_null($alias)) ? $column : $alias.".".$column ;
+                 $sql = sprintf(" %s %s '%s%s%s' ", $column,$condition,'%%',$value,'%%');
+                 return $sql ;
+             } 
 
              $column = (is_null($alias)) ? $column : $alias.".".$column ;
              $sql = sprintf("%s %s %s ", $column,$condition,$value);
