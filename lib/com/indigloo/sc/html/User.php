@@ -165,8 +165,14 @@ namespace com\indigloo\sc\html {
 
         static function getWidget($row) {
             $row["pubId"] = PseudoId::encode($row["login_id"]) ;
+            
             $format = "%d-%b, %Y / %H:%M" ;
             $row["createdOn"] =  strftime($format, strtotime($row["created_on"]));
+
+            $ts = Util::secondsInDBTimeFromNow($row["created_on"]);
+            $span = 24*3600 ;
+            $row["last24hr"] = ($ts < $span) ? true : false ;
+
             $html = NULL ;
             $template = '/fragments/user/widget.tmpl' ;
             $html = Template::render($template,$row);
