@@ -47,7 +47,9 @@
     $gtoken = Util::tryArrayKey($qparams,"gt");
     $itemId = NULL ;
 
-    if( (strlen($gtoken) > 5) && (strcmp(substr($gtoken,0,5), "item:") == 0)){
+    if(empty($ft) 
+        && (strlen($gtoken) > 5) 
+        && (strcmp(substr($gtoken,0,5), "item:") == 0)){
         $ft = "item" ;
         $itemId = substr($gtoken,5);
         //reset search token
@@ -85,9 +87,8 @@
     $postDao = new \com\indigloo\sc\dao\Post();
     $pageSize = Config::getInstance()->get_value("user.page.items");
 
-    if(!empty($gtoken)) {
-        //@todo - add item:number token as well.
-        //get matching ids from sphinx
+    if(empty($ft) && !empty($gtoken)) {
+        
         $sphinx = new \com\indigloo\sc\search\SphinxQL();
         $total = $sphinx->getPostsCount($gtoken);
         $paginator = new Pagination($qparams,$total,$pageSize);
@@ -98,12 +99,13 @@
             $postDBRows = $postDao->getOnSearchIds($ids) ;
         }
 
+        $ftname = $gtoken ;
+
     } else {
 
         $total = $postDao->getTotalCount($filters);
         $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
         $postDBRows = $postDao->getPaged($paginator,$filters);
-        $gtoken = "" ;
     }
 
 ?>
@@ -190,32 +192,32 @@
                     </div> <!-- row -->
 
                     <div class="p10">
-                        <span> Total: <?php echo $total; ?> </span>
+                        <span class="label label-warning"> Total: <?php echo $total; ?> </span>
                         <span class="color-red">
-                            &nbsp;/&nbsp;filters (<?php echo $gtoken; ?>  <?php echo $ftname; ?> )
+                            &nbsp;filters (<?php echo $ftname; ?>)
                         </span>
                         &nbsp;
-                        <a href="<?php echo $ftFeaturedUrl; ?>">Featured Posts</a>
-                        &nbsp;|&nbsp;
-                        <a href="<?php echo $ft24hoursUrl; ?>">Last 24 Hours</a>
-                        &nbsp;|&nbsp;
                         <a href="/monitor/posts.php">All Posts</a>
-
+                        &nbsp;|&nbsp;
+                        <a href="<?php echo $ftFeaturedUrl; ?>">Featured</a>
+                        &nbsp;|&nbsp;
+                        <a href="<?php echo $ft24hoursUrl; ?>">Last 24HR</a>
+                        
                     </div>
+                    <div class="mt20">
+                        <?php
+                            $startId = NULL;
+                            $endId = NULL;
+                            if (sizeof($postDBRows) > 0) {
+                                $startId = $postDBRows[0]["id"];
+                                $endId = $postDBRows[sizeof($postDBRows) - 1]["id"];
+                            }
 
-                    <?php
-                        $startId = NULL;
-                        $endId = NULL;
-                        if (sizeof($postDBRows) > 0) {
-                            $startId = $postDBRows[0]["id"];
-                            $endId = $postDBRows[sizeof($postDBRows) - 1]["id"];
-                        }
-
-                        foreach ($postDBRows as $postDBRow) {
-                            echo \com\indigloo\sc\html\Post::getAdminWidget($postDBRow,$options);
-                        }
-                    ?>
-
+                            foreach ($postDBRows as $postDBRow) {
+                                echo \com\indigloo\sc\html\Post::getAdminWidget($postDBRow,$options);
+                            }
+                        ?>
+                    </div>
                 </div>
                  
             </div>
