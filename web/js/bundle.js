@@ -5314,7 +5314,7 @@ $("#image-preview").html("");
 endPoint=webgloo.sc.ImageSelector.extractEndpoint;
 params={};
 params.target=b;
-$.ajax({url:endPoint,type:"POST",dataType:"json",data:params,timeout:9000,processData:true,error:function(e,d){webgloo.sc.ImageSelector.showError(d);
+$.ajax({url:endPoint,type:"POST",dataType:"json",data:params,timeout:18000,processData:true,error:function(e,d){webgloo.sc.ImageSelector.showError(d);
 },success:function(d){if(webgloo.sc.ImageSelector.debug){console.log("server response for image fetch :: ");
 console.log(d);
 }switch(d.code){case 401:webgloo.sc.ImageSelector.showError(d.message);

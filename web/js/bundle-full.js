@@ -17849,7 +17849,7 @@ webgloo.sc.ImageSelector = {
             type: "POST",
             dataType: "json",
             data :  params,
-            timeout: 9000,
+            timeout: 18000,
             processData:true,
             //js errors callback
             error: function(XMLHttpRequest, response){
