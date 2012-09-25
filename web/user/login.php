@@ -76,18 +76,26 @@
             <div style="margin-top:100px;"> &nbsp; </div> <!-- row:1 -->
                 
             <div class="row mt20">
+
                 <div class="span3 offset1">
-                    <div class="social-buttons floatr">
-                        <div class="p10">
-                            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Login with Facebook</a>
-                        </div>
-                        <div class="p10">
-                            <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Login with Google</a>&nbsp;&nbsp;
-                        </div>
-                        <div class="p10">
-                            <a class="zocial twitter" href="/user/twitter-login.php">Login with Twitter</a>&nbsp;
-                        </div>
-                    </div>
+                    
+            <div id="zocial-grid">
+                <div class="column">
+                    <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Facebook Sign in</a>&nbsp;
+                </div>
+
+                <div class="column">
+                    <a class="zocial twitter" href="/user/twitter-login.php">Twitter Sign in</a>&nbsp;
+                </div>
+             
+
+                <div class="column">
+                     <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Google Sign in</a>&nbsp;
+                </div>
+
+            </div> <!-- zocial-grid -->
+
+
 
                 </div> <!-- span3 -->
 

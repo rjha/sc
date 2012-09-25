@@ -6,7 +6,7 @@
         <div class="span6">
             <a id="nav-popup-share" class="btn">Add+&nbsp;/&nbsp;Upload</a>
             &nbsp;&nbsp;
-            <a id="nav-popup-join" class="btn">Join now &raquo;</a>
+            <a id="nav-popup-join" class="btn">Join 3mik &raquo;</a>
             
         </div>
     </div>

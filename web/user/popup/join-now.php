@@ -48,43 +48,38 @@
 ?>
 
 
- 
-<div class="row">
-    <div class="span3">
-        <div class="p10">
-            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Sign in with Facebook</a>
-        </div>
-    </div>
-    <div class="span3">
-        <div class="p10">
-            <a class="zocial twitter" href="/user/twitter-login.php">Sign in with Twitter</a>&nbsp;
-        </div>
-    </div>
-
-</div> <!-- row:1 -->
-
-<div class="row">
-  <div class="span3">
-        <div class="p10">
-            <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Sign in with Google</a>&nbsp;&nbsp;
+<div id="zocial-grid">
+    <div class="grid-row"> 
+        <div class="column">
+            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Facebook Sign up</a>&nbsp;
         </div>
 
+        <div class="column">
+            <a class="zocial twitter" href="/user/twitter-login.php">Twitter Sign up</a>&nbsp;
+        </div>
     </div>
-    <div class="span3">
-        <div class="p10">
-            <a id="join-now-link" href="/user/register.php">Sign in with email&nbsp;&raquo;</a>
+    <div class="clear"> </div>
+
+    <div class="grid-row"> 
+
+        <div class="column">
+             <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Google Sign up</a>&nbsp;
+        </div>
+
+        <div class="column">
+            <a class="btn" href="/user/register.php">Email Sign up&nbsp;&raquo;</a>
+        </div>
+    </div>
+    <div class="clear"> </div>
+
+    <div class="grid-row"> 
+        <div class="column">
+            have 3mik account?
+            <a href="/user/login.php">login</a>
         </div>
     </div>
 
-</div> <!-- row:2 -->
+</div> <!-- zocial-grid -->
 
-<div class="row">
-  <div class="span3 offset3">
-        <div class="p10">
-           Have a 3mik account? <a href="/user/login.php">login now</a>
-        </div>
 
-    </div>
-   
-</div> <!-- row:3 -->
 

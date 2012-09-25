@@ -457,16 +457,6 @@
         font-weight:bold;
     }
 
-    .social-buttons .zocial {
-        margin-bottom :5px;
-        font-size:12px;
-        font-weight : bold ;
-    }
-
-    .social-buttons a {
-         color: white ;
-    }
-
     .box-shadow {
         box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
 
@@ -873,10 +863,10 @@
 
 
     #top-unit {
-        padding:30px;
+        padding:25px;
         background:#FFF9B1 ;
         margin-top:-10px;
-        border-radius: 6px;
+        border-radius: 5px;
         margin-bottom:15px;
 
     }
@@ -885,19 +875,15 @@
         color:#FCF9F9 ;
         background : #E64D5C;
         font-weight:bold ;
+        font-size:16px;
+        font-family:"Myriad Pro",myriad,arial,sans-serif ;
     }
 
     #top-unit .btn {
         text-shadow : none ;
-        line-height: 20px;
-        border: #910101 ;
-    }
-
-    #join-now-link {
-        color:#333 ;
-        font-size:18px;
         line-height: 22px;
-        font-weight: bold ;
+        border: #910101 ;
+        padding:7px;
     }
 
 
@@ -1085,6 +1071,28 @@
         display: none ;
     }
 
+    /* site popup max width is 600px */
+    #zocial-grid .column {
+        width:250px;
+        padding:10px;
+        float:left;
+        font-weight:bold;
+    }
+
+    #zocial-grid .zocial {
+        width:210px;
+        font-size:18px;
+        font-family:"Myriad Pro",myriad,arial,sans-serif ;
+    }
+
+    #zocial-grid .btn {
+        width:210px;
+        height:24px;
+        padding-top:7px;
+        color : #FE63BB;
+        font-family:"Myriad Pro",myriad,arial,sans-serif ;
+        font-size:18px;
+    }
 
 
     /* last section: override zocial */
