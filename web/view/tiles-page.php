@@ -37,7 +37,7 @@
                                 }
                             }else {
                                 $message = "No results found " ;
-                                echo \com\indigloo\sc\html\NoResult::get($message);
+                                echo \com\indigloo\sc\html\Site::getNoResult($message);
                             }
 
 
