@@ -10,9 +10,8 @@ namespace com\indigloo\sc\mysql {
     class Category {
 
         static function getIdNameMap(){
-            //use fixed_id in SEO URL
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "select fixed_id as id, display as name from sc_ui_list " ;
+            $sql = "select fixed_id as id, display as name from sc_list " ;
             $sql .= " where name = 'CATEGORY' order by ui_order" ;
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
@@ -25,8 +24,7 @@ namespace com\indigloo\sc\mysql {
             //sanitize input
             settype($categoryId,"integer");
 
-            //match SEO URL /category/<category_id> against fixed_id column
-            $sql = "select code from sc_ui_list where name = 'CATEGORY' and fixed_id = ".$categoryId ;
+            $sql = "select code from sc_list where name = 'CATEGORY' and fixed_id = ".$categoryId ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 
@@ -38,7 +36,7 @@ namespace com\indigloo\sc\mysql {
             //sanitize input
             $code = $mysqli->real_escape_string($code);
 
-            $sql = "select display as name from sc_ui_list where name = 'CATEGORY' and code ='".$code. "' " ;
+            $sql = "select display as name from sc_list where name = 'CATEGORY' and code ='".$code. "' " ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
 

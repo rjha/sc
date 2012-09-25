@@ -1333,17 +1333,8 @@ alter table sc_comment_archive modify column title  varchar(128) not null ;
 alter table sc_comment_archive modify column login_id int  not null ;
 
 
-
-
-
---
--- 19 sept 2012
--- 
--- rename ui dropdown table
--- 
-rename table sc_list to sc_ui_list ;
-
 --
 -- @next push
 --
+
 

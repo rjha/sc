@@ -121,40 +121,8 @@ CREATE TABLE  sc_group_master  (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
---
--- for sc_ui_list 
--- ui_order controls how the list appear on UI
--- 
--- Explanation - what do we need fixed_id column? 
--- 
--- The URL for category navigation is like 
--- /category/1 , /category/2 etc.
--- Category data looks like
--- code | Name | ui_order
--- CODE1 | Name 1 | 1
--- CODE2 | Name 2 | 2
--- 
--- suppose we insert a new category CODE3 between 1 and 2 now
--- 
--- CODE1 | Name 1 | 1 
--- CODE3 | Name 3 | 2
--- CODE2 | Name 2 | 3
--- 
--- so 
--- 1) we cannnot use ui_order in SEO URL because that obviously can change.
--- 2) we cannot use CODE or Name either because that can also change, like
--- what we call code CAR today can be code AUTO tomorrow and all /category/CAR link will not work
--- 3) we cannot use DB primary key ID in SEO URL (rows can be deleted, can start from N when migrating 
--- to other DB etc. 
---  
--- That is why we need another column to track what we print in SEO URL
--- that can be ported to any DB irrespective of internal implementation.
--- 
---  
--- 
-
-DROP TABLE IF EXISTS  sc_ui_list ;
-CREATE TABLE  sc_ui_list  (
+DROP TABLE IF EXISTS  sc_list ;
+CREATE TABLE  sc_list  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    fixed_id int,
    name  varchar(16) NOT NULL,
