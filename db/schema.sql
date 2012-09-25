@@ -121,46 +121,6 @@ CREATE TABLE  sc_group_master  (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
---
--- for sc_ui_list 
--- ui_order controls how the list appear on UI
--- 
--- Explanation - what do we need fixed_id column? 
--- 
--- The URL for category navigation is like 
--- /category/1 , /category/2 etc.
--- 
--- 1) we cannnot use ui_order in SEO URL because that obviously can change.
--- 2) we cannot use CODE or Name either because that can also change, like
--- what we call code CAR today can be code AUTO tomorrow and all /category/CAR link will not work
--- 3) we cannot use DB primary key ID in SEO URL (rows can be deleted, can start from N when migrating 
--- to other DB etc. 
---  
--- That is why we need another column to track what we print in SEO URL
--- that can be ported to any DB irrespective of internal implementation.
--- 
---  
--- 
-
-DROP TABLE IF EXISTS  sc_ui_list ;
-CREATE TABLE  sc_ui_list  (
-   id  int(11) NOT NULL AUTO_INCREMENT,
-   fixed_id int,
-   name  varchar(16) NOT NULL,
-   code  varchar(16) NOT NULL,
-   display  varchar(32) NOT NULL,
-   ui_order  int(11) NOT NULL,
-   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id )
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
---
--- @todo SEED data for sc_ui_list
--- 
--- 
-
 DROP TABLE IF EXISTS  sc_login ;
 CREATE TABLE  sc_login  (
    id  int(11) NOT NULL AUTO_INCREMENT,
@@ -554,56 +514,114 @@ alter table  sc_preference add constraint UNIQUE uniq_login (login_id);
 
 
 
+DROP TABLE IF EXISTS  sc_ds_meta ;
 
-DROP TABLE IF EXISTS  sc_set ;
-
-CREATE TABLE  sc_set (
+CREATE TABLE  sc_ds_meta (
   id  int(11) NOT NULL AUTO_INCREMENT,
-  card int default -1,
+  max_size int default -1,
   name varchar(32) not null,
-  skey varchar(32) not null,
-  shash BINARY(16) not null,
+  dskey varchar(32) not null,
+  hash BINARY(16) not null,
+  class varchar(16),
+  container varchar(8),
   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-alter table sc_set add constraint UNIQUE uniq_hash(shash);
+alter table sc_ds_meta add constraint UNIQUE uniq_hash(hash);
+
 
 DELIMITER //
-CREATE TRIGGER trg_set_del BEFORE DELETE ON sc_set
+CREATE TRIGGER trg_dsmeta_del BEFORE DELETE ON sc_ds_meta
     FOR EACH ROW
     BEGIN
-      delete from sc_set_member where set_hash = OLd.shash ;
+        IF (OLD.container = "set") THEN 
+            delete from sc_set where set_hash = OLd.hash ;
+        END IF;
+
+       IF (OLD.container = "zset") THEN 
+            delete from sc_ui_zset where set_hash = OLd.hash ;
+        END IF;
+
+        IF (OLD.container = "ui:zset") THEN 
+            delete from sc_ui_zset where set_hash = OLd.hash ;
+        END IF;
+     
       
     END //
 DELIMITER ;
 
 
-DROP TABLE IF EXISTS  sc_set_member ;
 
-CREATE TABLE  sc_set_member (
+--
+-- for sc_ui_zset 
+-- ui_order is the score associated with a member in zset (sorted set)
+-- 
+-- Question - what do we need seo_key column? 
+-- 
+-- The URL for category navigation is like 
+-- /category/1 , /category/2 etc.
+-- 
+-- 1) we cannnot use ui_order in SEO URL because that obviously can change.
+-- 2) we cannot use ui_code or name either because that can also change, like
+-- what we call code CAR today can be code AUTO tomorrow and then all 
+-- /category/CAR link will not work
+-- 
+-- 3) we cannot use DB primary key/ set hash etc in  in SEO URL 
+--  + looks bad, not readable (/category/6E707C49D1FDCF7E4288EEB27E0158E6 
+--  + rows can be deleted, can start from N when migrating 
+--  to other DB etc. 
+--  
+-- That is why we need another column to track what we print in SEO URL
+-- that can be ported to any DB irrespective of internal implementation.
+-- 
+--  
+-- 
+
+
+
+drop table if exists sc_ui_zset;
+create table sc_ui_zset(
+    id int(11) NOT NULL auto_increment,
+    name varchar(32) not null,
+    ui_code varchar(16) not null,
+    ui_order int not null ,
+    seo_key varchar(16) not null,
+    set_hash BINARY(16) not null,
+    set_key varchar(32) not null,
+    created_on timestamp default '0000-00-00 00:00:00',
+    updated_on timestamp default '0000-00-00 00:00:00' ,
+    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+alter table sc_ui_zset add constraint UNIQUE uniq_code(set_hash,ui_code);
+alter table sc_ui_zset add constraint UNIQUE uniq_seo(set_hash,seo_key);
+
+
+DROP TABLE IF EXISTS  sc_set ;
+
+CREATE TABLE  sc_set (
   id  int(11) NOT NULL AUTO_INCREMENT,
   set_hash BINARY(16) not null,
+  set_key varchar(32) not null,
   member varchar(64) not null,
   source varchar(8) not null,
-  ui_order int ,
   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-alter table sc_set_member add constraint UNIQUE uniq_mem(set_hash,member);
+alter table sc_set add constraint UNIQUE uniq_mem(set_hash,member);
 
 
 
 DELIMITER //
-CREATE TRIGGER trg_set_member_add  BEFORE INSERT ON sc_set_member
+CREATE TRIGGER trg_set_add  BEFORE INSERT ON sc_set
     FOR EACH ROW
     BEGIN
-      IF (unhex(md5("sys:monitor:fposts")) = NEW.set_hash ) THEN 
+      IF (unhex(md5("set:sys:fposts")) = NEW.set_hash ) THEN 
         update sc_post set fp_bit = 1 where id = NEW.member ;
       END IF ;
     END //
@@ -611,22 +629,11 @@ DELIMITER ;
 
 
 DELIMITER //
-CREATE TRIGGER trg_set_member_del  BEFORE DELETE ON sc_set_member
+CREATE TRIGGER trg_set_del  BEFORE DELETE ON sc_set
     FOR EACH ROW
     BEGIN
-      IF (unhex(md5("sys:monitor:fposts")) = OLD.set_hash ) THEN 
+      IF (unhex(md5("set:sys:fposts")) = OLD.set_hash ) THEN 
         update sc_post set fp_bit = 0 where id = OLD.member ;
       END IF ;
     END //
 DELIMITER ;
-
-
-
-
-
-
-
-
-
-
-

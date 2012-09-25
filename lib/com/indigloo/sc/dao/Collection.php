@@ -24,6 +24,33 @@ namespace com\indigloo\sc\dao {
            mysql\Collection::srem($key,$member);
         }
 
+        function smembers($key) {
+           $rows = mysql\Collection::srem($key,$member);
+           return $rows ;
+        }
+
+        function uizadd($key,$member,$source) {
+            mysql\Collection::uizadd($key,$member,$source);
+        }
+
+        function uizrem($key,$member) {
+           mysql\Collection::uizrem($key,$member);
+        }
+
+        function uizmembers($key) {
+           $rows = mysql\Collection::uizmembers($key);
+           return $rows ;
+        }
+
+        function uizmemberOnSeoKey($key,$seoKey){
+            $row = mysql\Collection::uizmemberOnSeoKey($key,$seoKey);
+            return $row ;
+        }
+        
+        function uizmembersAsMap($key) {
+           $rows = mysql\Collection::uizmembersAsMap($key);
+           return $rows ;
+        }
 
     }
 

@@ -8,6 +8,7 @@
     use \com\indigloo\Util;
     use \com\indigloo\Url;
     use \com\indigloo\ui\form\Sticky;
+    
     use \com\indigloo\Constants as Constants;
     use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\sc\auth\Login as Login;
@@ -75,8 +76,8 @@
 
                                 <?php
                                     $options = array('name' => 'category', 'empty' => true);
-                                    $selectBoxDao = new \com\indigloo\sc\dao\SelectBox();
-                                    $catRows = $selectBoxDao->get('CATEGORY');
+                                    $collectionDao = new \com\indigloo\sc\dao\Collection();
+                                    $catRows = $collectionDao->uizmembers(\com\indigloo\sc\Constants::UI_ZSET_CATEGORY);
                                     echo \com\indigloo\ui\SelectBox::render($catRows,$options);
                                   ?>
                                 </td>

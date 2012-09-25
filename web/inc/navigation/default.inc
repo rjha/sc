@@ -31,8 +31,8 @@
                            <div id="submenu-col2"> 
                                 <ul>
                                 <?php
-                                    $categoryDao = new \com\indigloo\sc\dao\Category();
-                                    $map = $categoryDao->getIdNameMap();
+                                    $collectionDao = new \com\indigloo\sc\dao\Collection();
+                                    $map = $collectionDao->uizmembersAsMap(\com\indigloo\sc\Constants::UI_ZSET_CATEGORY);
                                     $count = sizeof($map);
                                     $index = 1 ;
 

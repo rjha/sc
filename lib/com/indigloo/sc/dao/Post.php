@@ -174,6 +174,33 @@ namespace com\indigloo\sc\dao {
 
         }
         
+        function getLatestOnCategory($code,$limit){
+            $rows = mysql\Post::getLatestOnCategory($code,$limit);
+            return $rows ;
+        }
+        
+        function getPagedOnCategory($paginator,$code) {
+ 
+            $limit = $paginator->getPageSize();
+
+            if($paginator->isHome()){
+                return $this->getLatestOnCategory($code,$limit);
+                
+            } else {
+                $params = $paginator->getDBParams();
+                $start = $params["start"];
+                $direction = $params["direction"];
+
+                $rows = mysql\Post::getPagedOnCategory($start,$direction,$limit,$code);
+                return $rows ;
+            }
+        }
+
+        function getTotalOnCategory($code) {
+            $row = mysql\Post::getTotalOnCategory($code);
+            return $row["count"] ;
+        }
+
     }
 
 }

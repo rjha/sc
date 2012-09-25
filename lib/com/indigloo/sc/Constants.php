@@ -24,13 +24,14 @@
             const TIME_MDYHM = "%b %e %Y, %R" ;
             const TIME_MDY = "%b %e, %Y" ;
 
-            //collections
-            const SYS_FP_SET = "sys:monitor:fposts" ;
-            const SYS_WNEWS_SET = "sys:monitor:wnews" ;
+            //system and UI collections
+            const SET_SYS_FPOSTS = "set:sys:fposts" ;
+            const SET_SYS_WNEWS = "set:sys:wnews" ;
+            const UI_ZSET_CATEGORY = "ui:zset:category";
 
-            //collection sources
-            const ITEM = "item" ;
-            const GROUP = "group";
+            //set smember sources
+            const MEMBER_ITEM = "item" ;
+            const MEMBER_GROUP = "group";
 
             //DB Error codes
             const DUPKEY_ERROR_CODE = 1062 ;
