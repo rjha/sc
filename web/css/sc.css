@@ -883,7 +883,7 @@
         text-shadow : none ;
         line-height: 22px;
         border: #910101 ;
-        padding:7px;
+        padding-left:17px;
     }
 
 
@@ -1081,7 +1081,7 @@
 
     #zocial-grid .zocial {
         width:210px;
-        font-size:18px;
+        font-size:16px;
         font-family:"Myriad Pro",myriad,arial,sans-serif ;
     }
 
@@ -1091,7 +1091,11 @@
         padding-top:7px;
         color : #FE63BB;
         font-family:"Myriad Pro",myriad,arial,sans-serif ;
-        font-size:18px;
+        font-size:17px;
+    }
+
+    #zocial-grid .zocial .twitter {
+        background-color: #008DB8 ;
     }
 
 
@@ -1100,11 +1104,7 @@
     .zocial {
         white-space: nowrap;
     }
-
-    a.zocial {
-        font: bold 100%/2.1 ;
-    }
-
+    
     .qq-upload-failed-text {
         color:red ;
     }
