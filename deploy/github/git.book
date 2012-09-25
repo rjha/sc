@@ -1,3 +1,15 @@
+
+Rollback last commit
+----------------------
+first make sure you are on repo HEAD
+    + git fetch origin 
+    + git pull origin ml3
+
+Then revert the HEAD
+
+    + git revert HEAD
+    + git push origin ml3
+
 get a file from another branch
 --------------------------------------------
 $git checkout <branchname> <path>
