@@ -1,0 +1,117 @@
+
+
+data sets
+----------
+
+
++ name (display name)
++ cardinality
++ key (name used by application)
++ hash (created from key - for quick lookup)
+
+There is no need to store set information in DB to do
+lookup. The application is using set keys and that is 
+all the information you need to do lookup. sets can be
+constructed entirely via application.
+
+
+*A set has members* 
+
++ set_hash (for quick lookup)
++ set_key (human readable)
++ member (a string )
++ source (info on how to process this member)
+
+set members need to be stored in Database (persistence storage)
+
+
+An example
+-----------
+
+*set*
+
+Featured Posts
+cardinality - ?
+key - sys:monitor:fposts
+hash- unhex(md5(key))
+
+*set member*
+
+set_hash _hash
+set_key _key
+member 8566
+source ITEM
+
+
+
+UI sorted sets
+---------------
+sc_ui_sorted_set
+
+use different namespace for UI sets. Otherwise we need to store
+the same informartion for UI sets as well. UI set elements have 
+some extra properties though!
+
+
++ set_hash
++ ui_code
++ ui_display
++ ui_order
++ seo_token
+
+
+An example of UI_SORTED_SET_MEMBER
+---------------------------------------
+
+ set_hash hash
+ ui_code BABY
+ name Baby/Kids
+ ui_order - 2 
+ seo_token - 1
+
+
+
+Item +  UI sorted sets
+------------------------------
+An Item can be tagged with UI set ui_code. like item 8566 can belong to 
+UI set category and code "BABY".
+
+How do we store this information?
+
+storing this information as part of item is not very scalable (each new tagging will require code change). The set can be determined by application alone. Then we need to fetch the sorted set members
+from DB to get sorted set ui_code. Then we create a namespaced set key for lookup like: 
+
+set key : ui:list:category:ui_code (namespaced key)
+set hash : md5(set key)
+
+And store members for this set key.
+
+
+UI sorted set => Item relationship
+--------------------------------------
+is trivial. Given the set, we can find member IDs and then do a JOIN with 
+the source table. 
+
+Item => UI sorted set
+-----------------------
+
+is non trivial. Given a single item, You can figure out all the sets it belongs to.
+Use [item + source ] to do a lookup on sc_set. After we find the set hash, we can turn 
+the list of set hash into display names and keys.
+
+However displaying a summary of items with all the sets it belongs to is non trivial and
+can only be accomplished via a bitmap index on item.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+

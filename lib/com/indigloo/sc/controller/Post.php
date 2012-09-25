@@ -5,9 +5,11 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\Util as Util;
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config ;
+
     use \com\indigloo\Constants as Constants;
     use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\ui\form\Sticky;
+
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\html\Seo as SeoData ;
 
@@ -127,8 +129,7 @@ namespace com\indigloo\sc\controller{
             $catCode = $postDBRow['cat_code'];
 
             if(!Util::tryEmpty($catCode)) {
-                $categoryDao = new \com\indigloo\sc\dao\Category();
-                $catRows = $categoryDao->getLatest($catCode,4);
+                $catRows = $postDao->getLatestOnCategory($catCode,4);
                 foreach($catRows as $catRow) {
                     if(!in_array($catRow['id'],$xids) && ($catRow['id'] != $postId)) {
                         array_push($xrows,$catRow);

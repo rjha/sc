@@ -15,6 +15,27 @@ namespace com\indigloo\sc\html {
             $html = Template::render($template,$view);
             return $html ;
         }
+
+        static function getNoResult($message) {
+            $html = NULL ;
+            $view = new \stdClass;
+            $template = '/fragments/site/noresult/vanilla.tmpl' ;
+            $view->message = $message ;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function getNoResultTile($message) {
+            $html = NULL ;
+            $view = new \stdClass;
+            $template = '/fragments/site/noresult/tile.tmpl' ;
+            $view->message = $message ;
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+
     }
 
 }

@@ -45,7 +45,7 @@
                                 }
                             }else {
                                 $message = "No Posts" ;
-                                echo \com\indigloo\sc\html\NoResult::getTile($message);
+                                echo \com\indigloo\sc\html\Site::getNoResultTile($message);
 
                             }
 

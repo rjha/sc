@@ -15,16 +15,16 @@
 
         </div>
     </div> <!-- options -->
-    <p>
-        <i class="icon-asterisk"></i>&nbsp;
-        ~~$view->description~
-        <br/>
-        <span class="ml20">
-            ~~$view->createdOn~
-            &nbsp; <a href="/item/~~$view->itemId~">more...</a>
-        </span>
-
-    </p>
+    
+    <div class="description">
+        <div id="fps-~~$view->id~" class="faded-text">
+            ~if($view->unfeature){~
+            *featured 
+            ~}~
+        </div>
+        <p> ~~$view->description~ </p>
+        <p> <span>~~$view->createdOn~ </span> </p>
+    </div>
 
 </div>
 

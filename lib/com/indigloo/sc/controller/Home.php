@@ -51,7 +51,7 @@ namespace com\indigloo\sc\controller{
             $featureDBRows = $postDao->getPosts(10,$filters);
 
             //20 latest posts
-            $latestDBRows = $postDao->getLatest(0,20);
+            $latestDBRows = $postDao->getLatest(20);
             $pageSize = Config::getInstance()->get_value("main.page.items");
             //rest are random rows.
             $short = $pageSize - (sizeof($featureDBRows) + sizeof($latestDBRows)) ;

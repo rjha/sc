@@ -1334,6 +1334,135 @@ alter table sc_comment_archive modify column login_id int  not null ;
 
 
 --
+-- 19 sept 2012
+-- 
+
+
+
+DROP TABLE IF EXISTS  sc_ds_meta ;
+
+CREATE TABLE  sc_ds_meta (
+  id  int(11) NOT NULL AUTO_INCREMENT,
+  max_size int default -1,
+  name varchar(32) not null,
+  dskey varchar(32) not null,
+  hash BINARY(16) not null,
+  class varchar(16),
+  container varchar(8),
+  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY ( id )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+alter table sc_ds_meta add constraint UNIQUE uniq_hash(hash);
+
+
+DELIMITER //
+CREATE TRIGGER trg_dsmeta_del BEFORE DELETE ON sc_ds_meta
+    FOR EACH ROW
+    BEGIN
+        IF (OLD.container = "set") THEN 
+            delete from sc_set where set_hash = OLd.hash ;
+        END IF;
+
+       IF (OLD.container = "zset") THEN 
+            delete from sc_ui_zset where set_hash = OLd.hash ;
+        END IF;
+
+        IF (OLD.container = "ui:zset") THEN 
+            delete from sc_ui_zset where set_hash = OLd.hash ;
+        END IF;
+     
+      
+    END //
+DELIMITER ;
+
+
+--
+-- first create sc_ui_zset
+--
+
+
+
+drop table if exists sc_ui_zset;
+create table sc_ui_zset(
+    id int(11) NOT NULL auto_increment,
+    name varchar(32) not null,
+    ui_code varchar(16) not null,
+    ui_order int not null ,
+    seo_key varchar(16) not null,
+    set_hash BINARY(16) not null,
+    set_key varchar(32) not null,
+    created_on timestamp default '0000-00-00 00:00:00',
+    updated_on timestamp default '0000-00-00 00:00:00' ,
+    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+alter table sc_ui_zset add constraint UNIQUE uniq_code(set_hash,ui_code);
+alter table sc_ui_zset add constraint UNIQUE uniq_seo(set_hash,seo_key);
+
+
+-- 
+-- copy category data from sc_list to sc_ui_zset
+--
+
+insert into  sc_ui_zset(name,ui_code,ui_order,seo_key,set_key,set_hash)
+    select c.display, c.code,c.ui_order, c.fixed_id,"ui:zset:category", unhex(md5("ui:zset:category"))
+    from sc_list c ;
+
+--
+-- finally drop the old table 
+-- 
+-- drop table sc_list ;
+-- 
+
+
+DROP TABLE IF EXISTS  sc_set ;
+
+CREATE TABLE  sc_set (
+  id  int(11) NOT NULL AUTO_INCREMENT,
+  set_hash BINARY(16) not null,
+  set_key varchar(32) not null,
+  member varchar(64) not null,
+  source varchar(8) not null,
+  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY ( id )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+alter table sc_set add constraint UNIQUE uniq_mem(set_hash,member);
+
+
+DELIMITER //
+CREATE TRIGGER trg_set_add  BEFORE INSERT ON sc_set
+    FOR EACH ROW
+    BEGIN
+      IF (unhex(md5("set:sys:fposts")) = NEW.set_hash ) THEN 
+        update sc_post set fp_bit = 1 where id = NEW.member ;
+      END IF ;
+    END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE TRIGGER trg_set_del  BEFORE DELETE ON sc_set
+    FOR EACH ROW
+    BEGIN
+      IF (unhex(md5("set:sys:fposts")) = OLD.set_hash ) THEN 
+        update sc_post set fp_bit = 0 where id = OLD.member ;
+      END IF ;
+    END //
+DELIMITER ;
+
+
+
+alter table sc_post drop column is_feature ;
+alter table sc_post add column fp_bit  int  default 0 ;
+
+
+
+--
 -- @next push
 --
 

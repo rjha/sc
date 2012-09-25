@@ -1,5 +1,5 @@
 <?php
-    //sc/monitor/index.php
+    //sc/monitor/posts.php
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
     include(APP_WEB_DIR . '/inc/role/admin.inc');
@@ -10,6 +10,8 @@
     use \com\indigloo\sc\auth\Login as Login;
 
     use \com\indigloo\sc\ui\Constants as UIConstants;
+    use \com\indigloo\sc\Constants as AppConstants;
+
     use \com\indigloo\ui\Pagination as Pagination ;
     use \com\indigloo\ui\Filter as Filter;
 
@@ -27,14 +29,14 @@
     //ft urls start with page 1
     $fparams["gpage"] = 1 ;
     //create filter Urls
-    $ftBaseUrl = Url::createUrl("/monitor/index.php",$fparams);
+    $ftBaseUrl = Url::createUrl("/monitor/posts.php",$fparams);
     $ftFeaturedUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "featured"));
     $ft24hoursUrl = Url::addQueryParameters($ftBaseUrl, array("ft" => "24hours"));
 
     //search clear link
     $sparams = $qparams ;
     unset($sparams["gt"]);
-    $clearSearchUrl = Url::createUrl("/monitor/index.php",$sparams);
+    $clearSearchUrl = Url::createUrl("/monitor/posts.php",$sparams);
 
 
     //post filters
@@ -45,7 +47,9 @@
     $gtoken = Util::tryArrayKey($qparams,"gt");
     $itemId = NULL ;
 
-    if( (strlen($gtoken) > 5) && (strcmp(substr($gtoken,0,5), "item:") == 0)){
+    if(empty($ft) 
+        && (strlen($gtoken) > 5) 
+        && (strcmp(substr($gtoken,0,5), "item:") == 0)){
         $ft = "item" ;
         $itemId = substr($gtoken,5);
         //reset search token
@@ -60,6 +64,7 @@
                 array_push($filters,$filter);
                 $ftname = "Featured";
                 break ;
+
             case "24hours" :
                 $filter = new Filter($model);
                 $filter->add($model::CREATED_ON,Filter::GT,"24 HOUR");
@@ -82,9 +87,8 @@
     $postDao = new \com\indigloo\sc\dao\Post();
     $pageSize = Config::getInstance()->get_value("user.page.items");
 
-    if(!empty($gtoken)) {
-        //@todo - add item:number token as well.
-        //get matching ids from sphinx
+    if(empty($ft) && !empty($gtoken)) {
+        
         $sphinx = new \com\indigloo\sc\search\SphinxQL();
         $total = $sphinx->getPostsCount($gtoken);
         $paginator = new Pagination($qparams,$total,$pageSize);
@@ -95,14 +99,14 @@
             $postDBRows = $postDao->getOnSearchIds($ids) ;
         }
 
+        $ftname = $gtoken ;
+
     } else {
 
         $total = $postDao->getTotalCount($filters);
         $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
         $postDBRows = $postDao->getPaged($paginator,$filters);
-        $gtoken = "" ;
     }
-
 
 ?>
 
@@ -168,53 +172,57 @@
                 <div class="span9">
                     <div class="row">
                         <div class="span4">
-
                             <form method="GET" action="<?php echo $clearSearchUrl; ?>">
-                                <input id="site-search" name="gt" type="text" class="search-query" placeholder="Quick Search">
+                                <input id="site-search" name="gt" type="text" class="search-query" placeholder="Search...">
                                 <input type="hidden" name="ft" value="<?php echo $ft; ?>"/>
                             </form>
 
                         </div>
 
-                        <div class="span5">
-                            <span class="label label-warning"> Filter </span>
-                            &nbsp;
-                            <a href="<?php echo $ftFeaturedUrl; ?>">Featured</a>
-                            &nbsp;|&nbsp;
-                            <a href="<?php echo $ft24hoursUrl; ?>">Last 24 Hours</a>
-                            &nbsp;|&nbsp;
-                            <a href="/monitor/index.php">All Posts</a>
-
+                        <div class="span4">
+                            <div class="faded-text">
+                                <ul class="unstyled">
+                                    <li> type item:&lt;item_no&gt;, e.g. item:8566 for a single item </li>
+                                    <li>  use + operator, e.g. saree+work to narrow down results </li>
+                                </ul> 
+                            </div>
+                           
                         </div>
 
                     </div> <!-- row -->
 
-                    <div class="p20">
+                    <div class="p10">
+                        <span class="label label-warning"> Total: <?php echo $total; ?> </span>
                         <span class="color-red">
-                            Applied filters = <?php echo $gtoken; ?>  <?php echo $ftname; ?>
+                            &nbsp;filters (<?php echo $ftname; ?>)
                         </span>
-                        <span> | <?php echo $total; ?> results </span>
-                        <span> ( hint: item:itemno and + operator works in search box) </span>
+                        &nbsp;
+                        <a href="/monitor/posts.php">All Posts</a>
+                        &nbsp;|&nbsp;
+                        <a href="<?php echo $ftFeaturedUrl; ?>">Featured</a>
+                        &nbsp;|&nbsp;
+                        <a href="<?php echo $ft24hoursUrl; ?>">Last 24HR</a>
+                        
                     </div>
+                    <div class="mt20">
+                        <?php
+                            $startId = NULL;
+                            $endId = NULL;
+                            if (sizeof($postDBRows) > 0) {
+                                $startId = $postDBRows[0]["id"];
+                                $endId = $postDBRows[sizeof($postDBRows) - 1]["id"];
+                            }
 
-                    <?php
-                        $startId = NULL;
-                        $endId = NULL;
-                        if (sizeof($postDBRows) > 0) {
-                            $startId = $postDBRows[0]["id"];
-                            $endId = $postDBRows[sizeof($postDBRows) - 1]["id"];
-                        }
-
-                        foreach ($postDBRows as $postDBRow) {
-                            echo \com\indigloo\sc\html\Post::getAdminWidget($postDBRow,$options);
-                        }
-                    ?>
-
+                            foreach ($postDBRows as $postDBRow) {
+                                echo \com\indigloo\sc\html\Post::getAdminWidget($postDBRow,$options);
+                            }
+                        ?>
+                    </div>
                 </div>
                  
             </div>
         </div> <!-- container -->
-        <?php $paginator->render('/monitor/index.php', $startId, $endId); ?>
+        <?php $paginator->render('/monitor/posts.php', $startId, $endId); ?>
 
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

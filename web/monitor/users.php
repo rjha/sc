@@ -9,29 +9,86 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\ui\Filter as Filter;
+    use \com\indigloo\sc\util\PseudoId ;
 
-
-    // paginate
-
+     //url decoded parameters
+   
     $qparams = Url::getRequestQueryParams();
-    $userDao = new \com\indigloo\sc\dao\User();
+  
+    //copy URL parameters
+    $fparams = $qparams;
+    // unset extra ft params and search token param
+    unset($fparams["ft"]);
+    unset($fparams["gt"]);
+    //ft urls start with page 1
+    $fparams["gpage"] = 1 ;
+    //create filter Urls
+    $ftBaseUrl = Url::createUrl("/monitor/users.php",$fparams);
+    
+    //search clear link
+    $sparams = $qparams ;
+    unset($sparams["gt"]);
+    $clearSearchUrl = Url::createUrl("/monitor/users.php",$sparams);
+
 
     //filters
     $filters = array();
+    $model = new \com\indigloo\sc\model\User();
+    $ft = Url::tryQueryParam("ft");
+    $ftname = "";
+    $gtoken = Util::tryArrayKey($qparams,"gt");
+    $userId = NULL ;
+
+    if( empty($ft) && 
+        (strlen($gtoken) > 5)
+        && (strcmp(substr($gtoken,0,5), "user:") == 0)){
+        $ft = "user" ;
+        $userId = substr($gtoken,5);
+        //reset search token
+        $gtoken = NULL ;
+    }
+
+    if(empty($ft) && !empty($gtoken)) {
+        $ft = "name" ;
+    }
+
+    if(!is_null($ft)) {
+        switch($ft){
+
+            case "24HR" :
+                $filter = new Filter($model);
+                $filter->add($model::CREATED_ON,Filter::GT,"24 HOUR");
+                array_push($filters,$filter);
+                $ftname = "Last 24HR" ;
+            break;
+            case "name" :
+                $filter = new Filter($model);
+                $filter->add($model::USER_NAME,Filter::LIKE,$gtoken);
+                array_push($filters,$filter);
+                $ftname = "name:".$gtoken;
+            break;
+            case "user" :
+                $filter = new Filter($model);
+                $loginId = PseudoId::decode($userId);
+                $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
+                array_push($filters,$filter);
+                $ftname = "user:".$userId ;
+            break;
+            default:
+            break;
+        }
+    }
+
+
+    $userDBRows = array();
+    $userDao = new \com\indigloo\sc\dao\User();
+    $pageSize = Config::getInstance()->get_value("user.page.items");
+
     $total = $userDao->getTotal($filters);
-    $pageSize = 20 ;
     $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
     $userDBRows = $userDao->getPaged($paginator,$filters);
-
-
-
-    //past 24 hour filter
-    $filters = array();
-    $model = new \com\indigloo\sc\model\User();
-    $filter = new Filter($model);
-    $filter->add($model::CREATED_ON,Filter::GT,"24 HOUR");
-    array_push($filters,$filter);
-    $l24hTotal = $userDao->getTotal($filters);
+    $gtoken = "" ;
+    
 
 ?>
 
@@ -72,22 +129,59 @@
                 <div class="span2">
                     <?php include(APP_WEB_DIR.'/monitor/inc/menu.inc'); ?>
                 </div>
-                <div class="span10">
+                <div class="span7">
 
+                     <div class="row">
+                        <div class="span4">
+                            <form method="GET" action="<?php echo $clearSearchUrl; ?>">
+                                <input id="site-search" name="gt" type="text" class="search-query" placeholder="Search...">
+                                <input type="hidden" name="ft" value="<?php echo $ft; ?>"/>
+                            </form>
 
-                    <h3> Total <?php echo $total; ?> / Last 24 HR <?php echo $l24hTotal; ?>   </h3>
+                        </div>
 
-                     <?php
+                        <div class="span3">
+                            <div class="faded-text">
+                                <ul class="unstyled">
+                                    <li> type user:&lt;user_id&gt;, e.g. user:9293 for a single user </li>
+                                    
+                                </ul> 
+                            </div>
+                           
+                        </div>
+
+                    </div> <!-- row -->
+
+                    <div class="p10">
+                        <span class="label label-warning"> Total: <?php echo $total; ?> </span>
+                        &nbsp;
+                        <span class="color-red">
+                            filters (<?php echo $ftname; ?>)
+                        </span>
+                        &nbsp;
+                        <a href="/monitor/users.php">All Users</a>
+                        &nbsp;|&nbsp;
+                        <a href="/monitor/users.php?ft=24HR">Last 24HR</a>
+
+                    </div>
+ 
+                    <div class="mt20">
+                        <?php
                             $startId = NULL;
                             $endId = NULL;
+
                             if (sizeof($userDBRows) > 0) {
                                 $startId = $userDBRows[0]['id'];
                                 $endId = $userDBRows[sizeof($userDBRows) - 1]['id'];
                             }
 
-                            echo \com\indigloo\sc\html\User::getTable($userDBRows);
-                        ?>
+                            foreach ($userDBRows as $userDBRow) {
+                                echo \com\indigloo\sc\html\User::getWidget($userDBRow);
+                            }
 
+                                
+                        ?>
+                    </div>
                 </div>
                  
             </div>

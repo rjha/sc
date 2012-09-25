@@ -15,7 +15,7 @@ namespace com\indigloo\sc\html {
             if(!is_array($rows) || empty($rows)) {
                 //no following
                 $message = "You are not following anyone!" ;
-                $html = NoResult::get($message);
+                $html = Site::getNoResult($message);
                 return $html ;
             }
             
@@ -49,7 +49,7 @@ namespace com\indigloo\sc\html {
             if(!is_array($rows) || empty($rows)) {
                 //no following
                 $message = "No one is following you!" ;
-                $html = NoResult::get($message);
+                $html = Site::getNoResult($message);
                 return $html ;
             }
             
