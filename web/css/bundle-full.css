@@ -5280,23 +5280,25 @@ button::-moz-focus-inner {
 
     }
 
-    .item-panel {
+    .add-item-panel {
       
     }
 
-    .item-panel label {
-        display: inline ;
-    }
+    
 
-    .item-panel #new-item-box {
+    .add-item-panel #new-item-box {
         width : 410px;
     }
 
-    #item-preview {
-        width:600px;
+    #slug-panel{
+        width:90%;
     }
 
-    #item-preview .item {
+    #slug-panel label {
+        display: inline ;
+    }
+
+    #slug-panel .item {
         position :relative ;
         float : left;
         padding:4px;

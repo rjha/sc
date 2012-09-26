@@ -1,0 +1,17 @@
+
+<div id="slug-panel">
+    &nbsp;
+    <div class="clear"> </div>
+    <label class="label label-warning">Total &nbsp;~~$view->total~ </label> 
+    <br> <br>
+   
+    <div class="hr mb20"> </div>
+    ~for($i = 0 ; ($i < $view->total) ; $i++) {~
+        <div class="item">
+             <input type="checkbox" name="g[]" value="~~$view->records[$i]['slug']~" ~~$view->records[$i]['checked']~  />~~$view->records[$i]['name']~
+         </div>
+
+    ~}~
+</div> <!-- slug panel -->
+
+<div class="clear"> </div>

@@ -12,7 +12,7 @@
     use \com\indigloo\ui\form\Message as FormMessage;
 
     $groupDao = new \com\indigloo\sc\dao\Group();
-    $slug = $groupDao->getFeatureSlug();
+    $dbslug = $groupDao->getFeatureSlug();
 
 
 ?>
@@ -30,7 +30,7 @@
 
         <script>
             $(document).ready(function(){
-                 webgloo.sc.admin.addPanelEvents();
+                 webgloo.sc.admin.addSlugPanelEvents();
             });
 
         </script>
@@ -69,9 +69,11 @@
                         <div id="form-wrapper">
                             <form name="web-form1" action="/monitor/form/group/featured.php" method="POST">
                                 
-                                <?php echo \com\indigloo\sc\html\GroupPanel::render($slug); ?>
+                                <?php echo \com\indigloo\sc\html\Site::renderAddBox(); ?>
+                                <?php echo \com\indigloo\sc\html\Site::renderSlugPanel($dbslug); ?>
+
                                 <input type="hidden" name="q" value="<?php echo Url::current(); ?>" />
-                                <div class="form-actions">
+                                <div class="p10">
                                     <button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Save</span></button>
                                     <a href="/monitor/posts.php"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
                                 </div>

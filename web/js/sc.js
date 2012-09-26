@@ -535,7 +535,7 @@ webgloo.sc.item = {
 
 webgloo.sc.admin = {
 
-    addPanelItems : function (itemInBox) {
+    addSlugPanelItems : function (itemInBox) {
         //split on commas
         var tokens = itemInBox.split(",");
 
@@ -548,13 +548,13 @@ webgloo.sc.admin = {
                         + token 
                         + ' </div>';
 
-            $("div#item-preview").prepend(buffer);
+            $("#slug-panel").prepend(buffer);
             $("#new-item-box").val('');
         }
 
     },
 
-    addPanelEvents : function() {
+    addSlugPanelEvents : function() {
 
         //capture ENTER
         $("#new-item-box").keydown(function(event) {
@@ -565,7 +565,7 @@ webgloo.sc.admin = {
                 if( itemInBox == '' ) {
                     return ;
                 } else {
-                    webgloo.sc.admin.addPanelItems(itemInBox);
+                    webgloo.sc.admin.addSlugPanelItems(itemInBox);
                 }
 
             }
@@ -578,19 +578,19 @@ webgloo.sc.admin = {
             if( itemInBox == '' ) {
                 return ;
             } else {
-                webgloo.sc.admin.addPanelItems(itemInBox);
+                webgloo.sc.admin.addSlugPanelItems(itemInBox);
             }
 
         });
 
         $("a#uncheck-all-items").click(function(event) {
             event.preventDefault();
-            $(".item-panel").find(":checkbox").removeAttr("checked");
+            $("#slug-panel").find(":checkbox").removeAttr("checked");
         });
 
         $("a#check-all-items").click(function(event) {
             event.preventDefault();
-            $(".item-panel").find(":checkbox").attr("checked","checked");
+            $("#slug-panel").find(":checkbox").attr("checked","checked");
         });
 
     }
