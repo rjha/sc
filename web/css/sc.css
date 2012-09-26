@@ -1098,13 +1098,18 @@
         background-color: #008DB8 ;
     }
 
+    .flickr-color { color : #FE63BB;}
 
-    /* last section: override zocial */
+    /* + last section: customizations of base libraries */
+    /* override zocial */
     /* @see https://github.com/samcollins/css-social-buttons/issues/19 */
     .zocial {
         white-space: nowrap;
     }
     
+    .zocial.twitter {background-color: #00A0D1 ; color : white; }
+    
+    /* override valums file uploader */
     .qq-upload-failed-text {
         color:red ;
     }
