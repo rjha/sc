@@ -42,11 +42,11 @@
 	$mysqli = MySQL\Connection::getInstance()->getHandle();
 
     $name = "Featured Posts" ;
-    $key = AppConstants::SET_SYS_FPOSTS ;
-    add_set($mysqli,"sys:root", $name,$key,37);
+    $key = AppConstants::SET_FEATURED_POST ;
+    add_set($mysqli,"root", $name,$key,37);
 
     $name = "Weekly Newsletter" ;
-    $key = AppConstants::SET_SYS_WNEWS ;
-    add_set($mysqli,"sys:root",$name,$key,37);
+    $key = AppConstants::SET_WEEK_NEWS ;
+    add_set($mysqli,"root",$name,$key,37);
 
 

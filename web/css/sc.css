@@ -474,58 +474,29 @@
 
     }
 
-    .group-panel {
-        width:620px;
-        height:auto;
-        line-height:18px;
-        padding:0px;
-        margin-bottom :10px;
-        margin-top :10px;
-
+    .item-panel {
+      
     }
 
-    .group-panel .wrapper {
-        padding:0px;
-        border-bottom:1px solid #ccc;
+    .item-panel label {
+        display: inline ;
     }
 
-    .group-panel .box {
-        padding: 10px 10px 5px 20px;
-        background : whiteSmoke;
-        margin-bottom:1px;
+    .item-panel #new-item-box {
+        width : 410px;
     }
 
-    .group-panel .wrapper .groups {
-        padding: 10px 0px 5px 0px;
-        width:150px;
-        float:left ;
-        margin-top:10px;
+    #item-preview {
+        width:600px;
     }
 
-    .group-panel input {
-        width : auto ;
-        height:16px;
-        padding-top:2px;
-    }
-
-    .group-panel #group-box {
-        width: 400px;
-        height : 16px;
-    }
-
-    .group-panel #add-group-btn {
-        width :70px;
-
-    }
-
-    .form-actions {
-        background : #FFF ;
-    }
-
-    .groups {
-        color : #777 ;
-        font-size:11px;
-        line-height:16px;
+    #item-preview .item {
+        position :relative ;
+        float : left;
+        padding:4px;
+        height:auto ;
+        width:auto;
+        margin :4px;
     }
 
     /* +item page styles */

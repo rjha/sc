@@ -25,7 +25,7 @@ namespace com\indigloo\sc\dao {
         }
 
         function smembers($key) {
-           $rows = mysql\Collection::srem($key,$member);
+           $rows = mysql\Collection::smembers($key);
            return $rows ;
         }
 

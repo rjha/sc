@@ -638,3 +638,16 @@ CREATE TRIGGER trg_set_del  BEFORE DELETE ON sc_set
       END IF ;
     END //
 DELIMITER ;
+
+
+
+
+--
+-- indexes
+--
+
+-- sc_post.fp_bit
+--
+
+create index idx_fpbit on sc_post(fp_bit) ;
+

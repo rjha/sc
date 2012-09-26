@@ -32,11 +32,11 @@
         switch($action) {
             case UIConstants::FEATURE_POST :
                 //set:key, member, source 
-                $collectionDao->sadd(AppConstants::SET_SYS_FPOSTS,$postId,AppConstants::MEMBER_ITEM);
+                $collectionDao->sadd(AppConstants::SET_FEATURED_POST,$postId,AppConstants::MEMBER_ITEM);
                 $message = sprintf("success! %s %s added to featured posts",AppConstants::MEMBER_ITEM,$postId);
                 break ;
             case UIConstants::UNFEATURE_POST :
-                $collectionDao->srem(AppConstants::SET_SYS_FPOSTS,$postId);
+                $collectionDao->srem(AppConstants::SET_FEATURED_POST,$postId);s
                 $message = sprintf("success! %s %s removed from featured posts",AppConstants::ITEM,$postId);
                 break ;
             default:

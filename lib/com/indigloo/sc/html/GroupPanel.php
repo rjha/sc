@@ -9,11 +9,6 @@ namespace com\indigloo\sc\html {
     
     class GroupPanel {
 
-        /**
-         * @param dbslug - space separated group slug as stored in the DB 
-         *
-         */
-
         static function render($dbslug){
 
             $records = array();
@@ -31,7 +26,7 @@ namespace com\indigloo\sc\html {
             }
 
             $view = new \stdClass;
-            $template = '/fragments/ui/group/panel.tmpl' ;
+            $template = "/fragments/ui/group/panel.tmpl" ;
 
             $view->records  = $records ;
             $view->total = sizeof($records);

@@ -51,6 +51,18 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        static function smembers($key) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            // sanitize input
+            $key = $mysqli->real_escape_string($key);
+
+            // convert to BIN(16) for faster lookup
+            $sql = " select * from sc_set where set_hash = unhex(md5('%s')) " ;
+            $sql = sprintf($sql,$key);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
         static function uizmembers($key) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             // sanitize input

@@ -1,32 +1,29 @@
- <div class="group-panel">
-    <b> ~~$view->total~ Featured Groups</b>&nbsp;
-    <div class="box"> 
-        Add Group 
-        <input id="group-box" name="new-group" value="" />
-        <button id="add-group-btn" type="button" class="btn" value="Add"><i class="icon-tags"> </i>&nbsp;Add</button> 
-        &nbsp; <a href="" id="check-all-groups">check all</a>
-        |&nbsp; <a href="" id="uncheck-all-groups">uncheck all</a>
+ <div class="item-panel">
+    <label class="label label-warning">Total &nbsp;~~$view->total~ </label> 
+    <br>
+    <div class="mt20"> 
+        Add &nbsp;(separate multiple entries by comma) 
+        <br> <br>
+        <input id="new-item-box" name="new-item" value="" />
+        <button id="add-item-btn" type="button" class="btn gBtnUp" value="Add">Add&nbsp;</button> 
+        <div class="p10">
+            <a href="" id="check-all-items">check all</a>
+            &nbsp;|&nbsp; <a href="" id="uncheck-all-items">uncheck all</a>
+        </div>
+
     </div>
 
-    <div class="wrapper"> 
-        <!-- first panel for new items -->
-        <div class="groups">
-            <b>Pending... </b>
-            <ul class="unstyled">
+    <div id="item-preview"> 
 
-            </ul>
-        </div>
-            
+        <div class="clear"> </div>
+        <div class="section"> </div>
+        ~for($i = 0 ; ($i < $view->total) ; $i++) {~
+            <div class="item">
+                 <input type="checkbox" name="g[]" value="~~$view->records[$i]['slug']~" ~~$view->records[$i]['checked']~  />~~$view->records[$i]['name']~
+             </div>
 
-        <!-- rest of panels -->
-        ~for($count = 0 ; $count < ($view->total) ; $count = $count + $view->step ) {~
-            <div class="groups">
-                <ul class="unstyled">
-                ~for($i = $count ; (($i < $count+ $view->step) && ($i < $view->total)) ; $i++) {~
-                    <li> <input type="checkbox" name="g[]" value="~~$view->records[$i]['slug']~" ~~$view->records[$i]['checked']~  />~~$view->records[$i]['name']~</li>
-                ~}~
-                </ul>
-            </div>
-           ~}~ 
-    </div> <!-- wrapper -->
+        ~}~
+    </div> <!-- preview -->
+s
 </div> <!-- panel -->
+<div class="clear"> </div>

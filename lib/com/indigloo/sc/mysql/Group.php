@@ -201,7 +201,7 @@ namespace com\indigloo\sc\mysql {
             MySQL\Helper::executeSQL($mysqli,$sql);
 
         }
-
+        
         static function getFeatureSlug() {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "select slug from sc_feature_group where id = 1 " ;

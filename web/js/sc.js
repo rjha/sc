@@ -382,6 +382,7 @@ webgloo.sc.SimplePopup = {
 }
 
 webgloo.sc.item = {
+
     addAdminActions : function() {
         //feature posts
         $("a.feature-post-link").click(function(event){
@@ -532,46 +533,69 @@ webgloo.sc.item = {
     }
 }
 
-webgloo.sc.groups = {
-    addPanelEvents : function() {
-        $("#add-group-btn").click(function(event) {
-            event.preventDefault();
-            var group = jQuery.trim($("#group-box").val());
-            if( group == '' ) {return ;}
-            //split on commas
-            var tokens = group.split(",");
-            for (var i = 0; i < tokens.length; i++) {
-               var token = jQuery.trim(tokens[i]);
-               if(token == '') continue ;
-                var node = ' <li> <input type="checkbox" name="g[]" checked ="checked" value="' + token + '"/>' + token + '</li> ' ;
-                //new groups are added to first panel
-                $(".group-panel .wrapper ul:first").append(node);
-            }
+webgloo.sc.admin = {
 
-            $("#group-box").val('');
+    addPanelItems : function (itemInBox) {
+        //split on commas
+        var tokens = itemInBox.split(",");
 
-        });
+        for (var i = 0; i < tokens.length; i++) {
+           var token = jQuery.trim(tokens[i]);
+           if(token == '') continue ;
+           var buffer = '<div class="item">' + 
+                        ' <input type="checkbox" name="g[]" checked ="checked" value="' 
+                        + token + '"/>' 
+                        + token 
+                        + ' </div>';
 
-        $("a#uncheck-all-groups").click(function(event) {
-            event.preventDefault();
-            $(".group-panel").find(":checkbox").removeAttr("checked");
-        });
-
-        $("a#check-all-groups").click(function(event) {
-            event.preventDefault();
-            $(".group-panel").find(":checkbox").attr("checked","checked");
-        });
+            $("div#item-preview").prepend(buffer);
+            $("#new-item-box").val('');
+        }
 
     },
 
-    addCloudBox : function() {
-        $(".fancy-box").fancybox({
-            'type':'iframe',
-            'width' : '75%',
-            'height' : '75%'
+    addPanelEvents : function() {
+
+        //capture ENTER
+        $("#new-item-box").keydown(function(event) {
+            //donot submit form
+            if(event.which == 13) {
+                event.preventDefault();
+                var itemInBox = jQuery.trim($("#new-item-box").val());
+                if( itemInBox == '' ) {
+                    return ;
+                } else {
+                    webgloo.sc.admin.addPanelItems(itemInBox);
+                }
+
+            }
+
         });
 
-  }
+        $("#add-item-btn").click(function(event) {
+            event.preventDefault();
+            var itemInBox = jQuery.trim($("#new-item-box").val());
+            if( itemInBox == '' ) {
+                return ;
+            } else {
+                webgloo.sc.admin.addPanelItems(itemInBox);
+            }
+
+        });
+
+        $("a#uncheck-all-items").click(function(event) {
+            event.preventDefault();
+            $(".item-panel").find(":checkbox").removeAttr("checked");
+        });
+
+        $("a#check-all-items").click(function(event) {
+            event.preventDefault();
+            $(".item-panel").find(":checkbox").attr("checked","checked");
+        });
+
+    }
+
+  
 }
 
 /* + webgloo media object */

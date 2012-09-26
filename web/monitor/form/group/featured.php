@@ -15,9 +15,9 @@
         try {
 
 
-            $fhandler = new Form\Handler('web-form-1', $_POST);
+            $fhandler = new Form\Handler("web-form-1", $_POST);
             $fvalues = $fhandler->getValues();
-            $qUrl = $fvalues['q'];
+            $qUrl = $fvalues["q"];
             $gWeb = \com\indigloo\core\Web::getInstance();
 
             if ($fhandler->hasErrors()) {
@@ -25,8 +25,8 @@
             }
 
 
-            $group_slug = '' ;
-            $slugs = Util::tryArrayKey($fvalues,'g');
+            $group_slug = "" ;
+            $slugs = Util::tryArrayKey($fvalues,"g");
 
             if(!is_null($slugs)) {
 

@@ -25,8 +25,9 @@
             const TIME_MDY = "%b %e, %Y" ;
 
             //system and UI collections
-            const SET_SYS_FPOSTS = "set:sys:fposts" ;
-            const SET_SYS_WNEWS = "set:sys:wnews" ;
+            const SET_FEATURED_POST = "set:sys:fposts" ;
+            const SET_FEATURED_GROUP = "set:sys:fgroup" ;
+            const SET_WEEK_NEWS = "set:sys:wnews" ;
             const UI_ZSET_CATEGORY = "ui:zset:category";
 
             //set smember sources

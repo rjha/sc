@@ -1460,6 +1460,7 @@ DELIMITER ;
 alter table sc_post drop column is_feature ;
 alter table sc_post add column fp_bit  int  default 0 ;
 
+create index idx_fpbit on sc_post(fp_bit) ;
 
 
 --
