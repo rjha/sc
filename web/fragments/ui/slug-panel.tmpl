@@ -8,7 +8,7 @@
     <div class="hr"> </div>
     ~for($i = 0 ; ($i < $view->total) ; $i++) {~
         <div class="item">
-             <input type="checkbox" name="g[]" value="~~$view->records[$i]['slug']~" ~~$view->records[$i]['checked']~  />~~$view->records[$i]['name']~
+             <input type="checkbox" name="g[]" value="~~$view->records[$i]['slug']~" ~~$view->records[$i]['checked']~  />&nbsp;~~$view->records[$i]['name']~
          </div>
 
     ~}~
