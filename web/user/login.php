@@ -100,7 +100,7 @@
                 </div> <!-- span3 -->
 
                 <div class="span6" style="border-left:1px dashed #333333;padding-left:40px;">
-                    <h3>3mik login</h3>
+                    <h3>3mik Sign in</h3>
                     <div class="p10"> <?php FormMessage::render(); ?> </div>
                     <div class="lb1">
                         <form id="web-form1"  name="web-form1" action="/user/form/login.php" method="POST">
@@ -125,7 +125,7 @@
                             </table>
 
                             <div class="form-actions">
-                                <button class="btn btn-primary" type="submit" name="login" value="Login" onclick="this.setAttribute('value','Login');" ><span>Login</span></button>
+                                <button class="btn b" type="submit" name="login" value="Login" onclick="this.setAttribute('value','Login');" ><span>Login</span></button>
                                 
                                 &nbsp;&nbsp;
                                 <a href="/user/account/mail-password.php">Forgot your password?</a>
