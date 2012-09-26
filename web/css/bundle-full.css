@@ -5242,7 +5242,7 @@ button::-moz-focus-inner {
     /* +vertical feedback link on pages */
     .vertical{
         width:1em;
-        text-transform:uppercase;
+        text-transform:uppercase; 
         letter-spacing :40px; /* arbitrary letter spacing for vertical */
     }
 
@@ -5257,10 +5257,22 @@ button::-moz-focus-inner {
         position:fixed;
         top:300px;
         right:0px;
-        background-color:#FFF9B1;
+        background-color:#FBFBF0;
         padding:5px;
         font-size:14px;
         font-weight:bold;
+        border:1px solid #DDD;
+        
+    }
+
+    .rotate-90{
+        -moz-transform-origin:0px 0px;-o-transform-origin:0px 0px;
+        -webkit-transform-origin:0px 0px;
+        -moz-transform:rotate(-90deg);
+        -o-transform:rotate(-90deg);
+        -webkit-transform:rotate(-90deg);
+        filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3.00);
+        -ms-filter:"progid:DXImageTransform.Microsoft.BasicImage(rotation=3.00)"
     }
 
     .box-shadow {
@@ -5674,6 +5686,7 @@ button::-moz-focus-inner {
         margin-top:-10px;
         border-radius: 5px;
         margin-bottom:15px;
+        border-bottom: 2px solid #B1A400 ;
 
     }
 
