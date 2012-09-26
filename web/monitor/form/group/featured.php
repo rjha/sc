@@ -42,7 +42,7 @@
             $groupDao = new \com\indigloo\sc\dao\Group();
             $groupDao->setFeatureSlug($group_slug);
             //success
-            $gWeb->store(Constants::FORM_MESSAGES,array("Action is successful!"));
+            $gWeb->store(Constants::FORM_MESSAGES,array("featured groups list updated!"));
             header("Location: ".$qUrl );
 
         } catch(UIException $ex) {
