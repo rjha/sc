@@ -38,13 +38,18 @@ namespace com\indigloo\sc\search {
             $this->connx->close();
         }
 
-        function getGroupsCount($token) {
-            $count = $this->getDocumentsCount("groups",$token);
+        function getPostCountByGroup($token) {
+            $count = $this->getMatchCount("posts",$token);
             return $count ;
         }
 
-        function getGroups($token,$offset,$limit) {
-            $ids = $this->getDocuments("groups",$token,$offset,$limit);
+        function getPostByGroup($token,$offset,$limit) {
+            $ids = $this->getMatch("posts",$token,$offset,$limit);
+            return $ids;
+        }
+
+        function getRelatedPosts($token,$hits,$offset,$limit) {
+            $ids = $this->getQuorum("posts",$token,$hits,$offset,$limit);
             return $ids;
         }
 
@@ -53,17 +58,17 @@ namespace com\indigloo\sc\search {
             $limit = $paginator->getPageSize();
             $offset = ($pageNo-1) * $limit ;
 
-            $ids = $this->getDocuments("groups",$token,$offset,$limit);
+            $ids = $this->getMatch("groups",$token,$offset,$limit);
             return $ids;
         }
 
         function getPostsCount($token) {
-            $count = $this->getDocumentsCount("posts",$token);
+            $count = $this->getMatchCount("posts",$token);
             return $count ;
         }
 
         function getPosts($token,$offset,$limit) {
-            $ids = $this->getDocuments("posts",$token,$offset,$limit);
+            $ids = $this->getMatch("posts",$token,$offset,$limit);
             return $ids;
         }
 
@@ -72,17 +77,17 @@ namespace com\indigloo\sc\search {
             $limit = $paginator->getPageSize();
             $offset = ($pageNo-1) * $limit ;
 
-            $ids = $this->getDocuments("posts",$token,$offset,$limit);
+            $ids = $this->getMatch("posts",$token,$offset,$limit);
             return $ids;
         }
 
-        function getDocumentsCount($index,$token) {
+        function getMatchCount($index,$token) {
             if(Util::tryEmpty($token)) { return 0 ; }
             Util::isEmpty('index',$index);
             //escape token
             $token = $this->escape($token);
 
-            $sql = " select id from %s where match('%s') order by created_on DESC limit 0,1 " ;
+            $sql = " select id from %s where match('%s') limit 0,1 " ;
             $sql = sprintf($sql,$index,$token);
 
             //@imp: we need to fire dummy query
@@ -103,14 +108,14 @@ namespace com\indigloo\sc\search {
             return $count ;
         }
 
-        function getDocuments($index,$token,$offset,$limit) {
+        function getMatch($index,$token,$offset,$limit) {
             if(Util::tryEmpty($token)) { return array() ; }
             Util::isEmpty("index",$index);
             //get paginator params
             //escape token
             $token = $this->escape($token);
 
-            $sql = " select id from %s where match('%s') order by created_on desc " ;
+            $sql = " select id from %s where match('%s') " ;
             $sql = sprintf($sql,$index,$token);
             $sql .= sprintf(" limit %d,%d ",$offset,$limit) ;
 
@@ -123,6 +128,35 @@ namespace com\indigloo\sc\search {
 
             return $ids ;
         }
+
+        /*
+         *
+         * Quorum operator needs a syntax like
+         * mysql> select id from posts where match('\"zari  patang bag\"\/2') limit 0,10;
+         * 
+         *
+         */
+        function getQuorum($index,$token,$hits,$offset,$limit) {
+            if(Util::tryEmpty($token)) { return array() ; }
+            Util::isEmpty("index",$index);
+            //get paginator params
+            //escape token
+            $token = $this->escape($token);
+
+            $sql = sprintf("select id from %s where match('",$index) ;
+            $sql .= '\"'.$token.'\"\/'.$hits."')" ;
+            $sql .= sprintf(" limit %d,%d ",$offset,$limit) ;
+
+            $rows = MySQL\Helper::fetchRows($this->connx,$sql);
+            $ids = array();
+
+            foreach($rows as $row){
+                array_push($ids,$row["id"]);
+            }
+
+            return $ids ;
+        }
+
 
     }
 

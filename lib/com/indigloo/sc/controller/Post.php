@@ -100,49 +100,90 @@ namespace com\indigloo\sc\controller{
 
             $xids = array();
             $xrows = array();
-            $group_slug = $postDBRow['group_slug'];
+            $limit = 10 ;
+
+            $group_slug = $postDBRow["group_slug"];
             $groupDao = new \com\indigloo\sc\dao\Group();
-            $group_names = $groupDao->slugToName($postDBRow['group_slug']);
+            $group_names = $groupDao->slugToName($postDBRow["group_slug"]);
+            $sphinx = new \com\indigloo\sc\search\SphinxQL();
+            
+            /* 
+             * 
+             * when fetching xrows or post related rows, tags(groups) have 
+             * highest priority. Here we assume that we should be able to bring
+             * in 16 items using 2 tags.
+             * 
+             * next we use sphinx quorum operator on title + groups/#of hits
+             * 
+             * if above fails then just bring in more rows from post.category
+             *
+             * 
+             */
 
             if(!Util::tryEmpty($group_slug)) {
 
                 $groups = explode(Constants::SPACE,$group_slug);
-                $sphinx = new \com\indigloo\sc\search\SphinxQL();
-
+ 
                 foreach($groups as $group) {
-                    $ids = $sphinx->getGroups($group,0,8);
+
+                    $ids = $sphinx->getPostByGroup($group,0,12);
                     foreach($ids as $id){
                         if(!in_array($id,$xids) && ($id != $postId)) {
                             array_push($xids,$id);
-                            if(sizeof($xids) >= 8 ) { break; }
+                            if(sizeof($xids) >= 12 ) { break; }
                         }
                     }
-                    if(sizeof($xids) >= 8 ) { break; }
+
+                    if(sizeof($xids) >= 12 ) { break; }
                 }
 
-                //get posts on groups
                 if(!empty($xids)) {
                     $xrows = $postDao->getOnSearchIds($xids);
                 }
+
             }
 
-            $catCode = $postDBRow['cat_code'];
+            if(sizeof($xrows) < 20 ) {
 
-            if(!Util::tryEmpty($catCode)) {
-                $catRows = $postDao->getLatestOnCategory($catCode,4);
-                foreach($catRows as $catRow) {
-                    if(!in_array($catRow['id'],$xids) && ($catRow['id'] != $postId)) {
-                        array_push($xrows,$catRow);
+                $limit = 20 - (sizeof($xrows)) ;
+                $searchToken = (Util::tryEmpty($group_slug)) ? $itemObj->title : $group_slug.$itemObj->title ;
+                $sphinx = new \com\indigloo\sc\search\SphinxQL();
+                //@todo - number of hits based on number of words in token
+                $searchIds = $sphinx->getRelatedPosts($searchToken,3,0,$limit);
+
+                if(!empty($searchIds)) {
+
+                    foreach($searchIds as $searchId){
+                        if(!in_array($searchId,$xids) && ($searchId != $postId)) {
+                            array_push($xids,$searchId);
+                        }
+                    }
+
+                    $search_rows = $postDao->getOnSearchIds($searchIds);
+                    $xrows = array_merge($xrows,$search_rows);
+                }
+            }
+
+
+            if(sizeof($xrows) < 20 ) {
+                //how many?
+                $limit = 20 - (sizeof($xrows)) ;
+
+                //find posts from same category
+                $catCode = $postDBRow["cat_code"];
+
+                if(!Util::tryEmpty($catCode)) {
+
+                    $catRows = $postDao->getLatestOnCategory($catCode,$limit);
+                    foreach($catRows as $catRow) {
+                        if(!in_array($catRow["id"],$xids) && ($catRow["id"] != $postId)) {
+                            array_push($xrows,$catRow);
+                            array_push($xids,$catRow["id"]);
+                        }
                     }
                 }
             }
 
-            if(sizeof($xrows) < 16 ) {
-                //how many?
-                $limit = 16 - (sizeof($xrows)) ;
-                $randomRows = $postDao->getRandom($limit);
-                $xrows = array_merge($xrows,$randomRows);
-            }
 
             $siteDao = new \com\indigloo\sc\dao\Site();
             $siteDBRow = $siteDao->getOnPostId($postId);
@@ -151,7 +192,7 @@ namespace com\indigloo\sc\controller{
             $formErrors = FormMessage::render();
 
             $pageTitle = $itemObj->title;
-            $metaDescription = Util::abbreviate($postDBRow['description'],160);
+            $metaDescription = Util::abbreviate($postDBRow["description"],160);
             $metaKeywords = SeoData::getMetaKeywords($group_names);
             $pageUrl = Url::base().Url::current() ;
             

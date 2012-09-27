@@ -3,7 +3,8 @@
 # @imp: escape special chars like # in password using backslash!
 #
 
-source mydb {
+source mydb 
+{
 	type			= mysql
 	sql_host		= localhost
 	sql_user		= mysql_user
@@ -12,43 +13,26 @@ source mydb {
 	sql_port		= 3306	
 }
 
-source posts : mydb
+source posts : mydb 
 {
 
     sql_query       =  SELECT id,group_slug,description, unix_timestamp(created_on) as created_on, \
-                       is_feature , login_id from sc_post
+                       login_id from sc_post
 
     sql_attr_uint = login_id
-    sql_attr_uint = is_feature
     sql_attr_timestamp = created_on
-
+    
     # debug only
     sql_query_info      = SELECT * FROM sc_post  WHERE id=$id
 }
 
-source comments : mydb
+source groups : mydb 
 {
-    sql_query       =  SELECT id,description,post_id,login_id,unix_timestamp(created_on) as created_on  from sc_comment
-
-    sql_attr_uint = login_id
-    sql_attr_uint = post_id
-    sql_attr_timestamp = created_on
-
-    # debug
-    sql_query_info      = SELECT * FROM sc_comment  WHERE id=$id
-
-}
-
-source groups : mydb
-
-{
-    sql_query = select id,group_slug,login_id,unix_timestamp(created_on) as created_on from sc_post 
-
-    sql_attr_uint = login_id
+    sql_query = select id,name,cat_code,unix_timestamp(created_on) as created_on from sc_group_master
     sql_attr_timestamp = created_on
 
     # debug 
-    sql_query_info      = SELECT * FROM sc_post  WHERE id=$id
+    sql_query_info      = SELECT * FROM sc_group_master  WHERE id=$id
 
 }
 
@@ -59,12 +43,6 @@ index posts
 	min_word_len = 3 
 	min_prefix_len=3
 	charset_type		= utf-8
-}
-
-index comments : posts
-{
-	source			= comments
-	path			= /var/lib/sphinxsearch/data/comments
 }
 
 index groups 
@@ -79,7 +57,6 @@ indexer
 {
 	mem_limit		= 32M
 }
-
 
 searchd
 {

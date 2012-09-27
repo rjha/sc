@@ -24,9 +24,19 @@ namespace com\indigloo\sc\controller{
             // group index settings - no prefix,charset_type sbcs, ignore_chars U+002D
             $token = $slug;
 
-            //get match on group slug
+            // ------------------------------------------------------------------------
+            // get match on group slug
+            // @imp: sphinx treats hyphen (dash) as a word separator
+            // so sc_post.group_slug are indexed as dehyphenated
+            // words. e.g. chilli-billi will be indexed as two separate
+            // words [chilli billi]. That means you can just match the user typed
+            // tokens against sphinx index. 
+            // @caveat: This will create issues when user wants to search for a full 
+            // hyphenated word. However this is life. you win some and then you lose some!
+            // --------------------------------------------------------------------------
+
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
-            $total = $sphinx->getGroupsCount($token);
+            $total = $sphinx->getPostCountByGroup($token);
             $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("search.page.items");
             $paginator = new Pagination($qparams,$total,$pageSize);

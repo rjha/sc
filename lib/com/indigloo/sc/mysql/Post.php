@@ -119,8 +119,8 @@ namespace com\indigloo\sc\mysql {
 
             $sql = " select q.*,l.name as user_name from sc_post q, sc_login l " ;
             $sql .= " where l.id = q.login_id and q.id in (".$strIds. ") " ;
-            $sql .= " ORDER BY q.id desc" ;
-
+            $sql .= " ORDER BY FIELD(q.id,".$strIds. ") " ;
+            
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
