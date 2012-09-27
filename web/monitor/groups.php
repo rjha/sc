@@ -74,8 +74,8 @@
 
                                 <input type="hidden" name="q" value="<?php echo Url::current(); ?>" />
                                 <div class="mt20 p10">
-                                    <button class="btn b flickr-color" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Save</span></button>
-                                    <a href="/monitor/posts.php"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
+                                    <button class="btn gBtnUp b flickr-color" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Save</span></button>
+                                 
                                 </div>
                             </form>
                         </div>
