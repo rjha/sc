@@ -8,7 +8,7 @@
     set_exception_handler('webgloo_ajax_exception_handler');
 
     $groupDao = new \com\indigloo\sc\dao\Group();
-    $limit = 61 ;
+    $limit = 43 ;
     $navGroups = $groupDao->getLatest($limit);
     
     $html = \com\indigloo\sc\html\Group::getCloud($navGroups); 
