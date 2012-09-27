@@ -10,7 +10,7 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\ui\Pagination as Pagination;
   
     
-    class GroupFolder {
+    class GroupsMap {
 
         function __construct() {
 

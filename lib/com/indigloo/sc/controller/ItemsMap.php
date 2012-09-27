@@ -9,7 +9,7 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\ui\Filter as Filter;
   
     
-    class ItemFolder {
+    class ItemsMap {
 
         function __construct() {
 
