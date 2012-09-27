@@ -13,6 +13,13 @@
   </url>
   
   <url>
+    <loc>http://www.3mik.com/editor/picks</loc>
+    <changefreq>daily</changefreq>
+    <priority>.9</priority>
+  </url>
+
+
+  <url>
     <loc>http://www.3mik.com/recent</loc>
     <changefreq>hourly</changefreq>
     <priority>.8</priority>
@@ -23,13 +30,6 @@
     <changefreq>daily</changefreq>
     <priority>.8</priority>
   </url>
-
-  <url>
-    <loc>http://www.3mik.com/editor/picks</loc>
-    <changefreq>daily</changefreq>
-    <priority>.7</priority>
-  </url>
-
 
   <url>
     <loc>http://www.3mik.com/site/about.php</loc>
