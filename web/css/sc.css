@@ -1059,7 +1059,7 @@
 
     /* site popup max width is 600px */
     #zocial-grid .column {
-        width:250px;
+        width:230px;
         padding:10px;
         float:left;
         font-weight:bold;
@@ -1089,6 +1089,9 @@
     /* + last section: customizations of base libraries */
     /* override zocial */
     /* @see https://github.com/samcollins/css-social-buttons/issues/19 */
+    .form-actions {
+        background-color: #ffffff ;
+    }
     .zocial {
         white-space: nowrap;
     }

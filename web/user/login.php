@@ -73,34 +73,37 @@
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         
         <div class="container mh800">
-            <div style="margin-top:100px;"> &nbsp; </div> <!-- row:1 -->
+
+            <div style="margin-top:100px;"> &nbsp; </div> <!-- top:padding -->
                 
-            <div class="row mt20">
+            <div class="row">
+                <div class="span9 offset1" style="border-bottom:1px dashed #333333;">
+                    <p class="comment-text">
+                        You can use your existing facebook, google or twitter account to sign in.
+                    </p>
+                    <div id="zocial-grid">
+                        <div class="column">
+                            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Facebook Sign in</a>&nbsp;
+                        </div>
 
-                <div class="span3 offset1">
-                    
-            <div id="zocial-grid">
-                <div class="column">
-                    <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Facebook Sign in</a>&nbsp;
+                        <div class="column">
+                             <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Google Sign in</a>&nbsp;
+                        </div>
+
+                        <div class="column">
+                            <a class="zocial twitter" href="/user/twitter-login.php">Twitter Sign in</a>&nbsp;
+                        </div>
+
+                    </div> <!-- zocial-grid -->
+
+
                 </div>
+            </div> <!-- row:1 -->
 
-                <div class="column">
-                    <a class="zocial twitter" href="/user/twitter-login.php">Twitter Sign in</a>&nbsp;
-                </div>
-             
+            <div class="row">
 
-                <div class="column">
-                     <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Google Sign in</a>&nbsp;
-                </div>
-
-            </div> <!-- zocial-grid -->
-
-
-
-                </div> <!-- span3 -->
-
-                <div class="span6" style="border-left:1px dashed #333333;padding-left:40px;">
-                    <h3>3mik Sign in</h3>
+                <div class="span6 offset1" style="padding-top:40px;padding-left:40px;">
+                    <h4>Sign in using 3mik account</h4>
                     <div class="p10"> <?php FormMessage::render(); ?> </div>
                     <div class="lb1">
                         <form id="web-form1"  name="web-form1" action="/user/form/login.php" method="POST">
@@ -125,7 +128,7 @@
                             </table>
 
                             <div class="form-actions">
-                                <button class="btn b" type="submit" name="login" value="Login" onclick="this.setAttribute('value','Login');" ><span>Login</span></button>
+                                <button class="btn gBtnUp b" type="submit" name="login" value="Login" onclick="this.setAttribute('value','Login');" ><span>Sign in</span></button>
                                 
                                 &nbsp;&nbsp;
                                 <a href="/user/account/mail-password.php">Forgot your password?</a>
