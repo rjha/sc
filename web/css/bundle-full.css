@@ -5010,7 +5010,6 @@ button::-moz-focus-inner {
         /* position: absolute; */
         background: none repeat scroll 0 0 #f7f7f7 ;
         border-bottom: 2px solid #F8D575 ;
-        z-index: 100 ;
         visibility: hidden; 
         overflow:hidden;
         margin:0px;
