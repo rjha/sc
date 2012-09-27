@@ -10,11 +10,6 @@
     $groups = $groupDao->getRandom(50);
 
     $title = "Random groups";
-
-    $hasPagination = false ;
-    $hasNavigation = true ;
-    $hasAlpha = false ;
-
-    include(APP_WEB_DIR.'/group/inc/body.inc');
-
+    $file =APP_WEB_DIR. "/view/group/cards.php" ;
+    include ($file);
 ?>
