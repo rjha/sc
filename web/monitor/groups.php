@@ -71,10 +71,10 @@
                                 
                                 <?php echo \com\indigloo\sc\html\Site::renderAddBox(); ?>
                                 <?php echo \com\indigloo\sc\html\Site::renderSlugPanel($dbslug); ?>
-
+                                
                                 <input type="hidden" name="q" value="<?php echo Url::current(); ?>" />
-                                <div class="mt20 p10">
-                                    <button class="btn gBtnUp b flickr-color" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Save</span></button>
+                                <div class="p10">
+                                    <button class="btn gBtnUp b" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Update</span></button>
                                  
                                 </div>
                             </form>

@@ -544,9 +544,9 @@ webgloo.sc.admin = {
            if(token == '') continue ;
            var buffer = '<div class="item">' + 
                         ' <input type="checkbox" name="g[]" checked ="checked" value="' 
-                        + token + '"/>' 
+                        + token + '"/> <span class="comment-text">' 
                         + token 
-                        + ' </div>';
+                        + '</span> </div>';
 
             $("#slug-panel").prepend(buffer);
             $("#new-item-box").val('');

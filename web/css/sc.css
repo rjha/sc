@@ -477,8 +477,6 @@
       
     }
 
-    
-
     .add-item-panel #new-item-box {
         width : 410px;
     }
@@ -492,12 +490,13 @@
     }
 
     #slug-panel .item {
-        position :relative ;
-        float : left;
+        /* position :relative ; */
+        /* float : left; */
         padding:4px;
         height:auto ;
         width:auto;
         margin :4px;
+        border-bottom:1px solid #eeeeee;
     }
 
     /* +item page styles */

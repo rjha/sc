@@ -5097,7 +5097,7 @@ for(var c=0;
 c<e.length;
 c++){var b=jQuery.trim(e[c]);
 if(b==""){continue;
-}var a='<div class="item">'+' <input type="checkbox" name="g[]" checked ="checked" value="'+b+'"/>'+b+" </div>";
+}var a='<div class="item">'+' <input type="checkbox" name="g[]" checked ="checked" value="'+b+'"/> <span class="comment-text">'+b+"</span> </div>";
 $("#slug-panel").prepend(a);
 $("#new-item-box").val("");
 }},addSlugPanelEvents:function(){$("#new-item-box").keydown(function(a){if(a.which==13){a.preventDefault();

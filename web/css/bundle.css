@@ -1137,7 +1137,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .add-item-panel #new-item-box{width:410px}
 #slug-panel{width:90%}
 #slug-panel label{display:inline}
-#slug-panel .item{position:relative;float:left;padding:4px;height:auto;width:auto;margin:4px}
+#slug-panel .item{padding:4px;height:auto;width:auto;margin:4px;border-bottom:1px solid #eee}
 #item-page .feeds .item{border-top:0}
 #item-page .form-table{width:610px}
 #item-page .form-table textarea{width:100%;height:60px}
