@@ -47,7 +47,7 @@ namespace com\indigloo\sc\controller{
 
             } else {
 
-                $pageHeader = "No results found for group $groupName" ;
+                $pageHeader = "No results for $groupName" ;
                 $template = APP_WEB_DIR. '/view/notiles.php';
             }
 
