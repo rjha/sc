@@ -16860,7 +16860,7 @@ webgloo.sc.toolbar = {
         //group browser
         $("a#nav-popup-group").click(function(event) {
             event.preventDefault();
-            $targetUrl= "/group/popup/new.php";
+            $targetUrl= "/group/popup/featured.php";
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.load($targetUrl);
         });

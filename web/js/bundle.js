@@ -4924,7 +4924,7 @@ $(c).text(d+"/"+a);
 }};
 webgloo.sc.toolbar={add:function(){window.setTimeout(webgloo.sc.toolbar.closeOverlay,8000);
 $("a#nav-popup-group").click(function(a){a.preventDefault();
-$targetUrl="/group/popup/new.php";
+$targetUrl="/group/popup/featured.php";
 webgloo.sc.SimplePopup.init();
 webgloo.sc.SimplePopup.load($targetUrl);
 });

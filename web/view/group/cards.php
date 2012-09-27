@@ -41,8 +41,7 @@
 
             </div>
         </div> <!-- container -->
-        <div class="mt20"> </div>
-        <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
+        
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 

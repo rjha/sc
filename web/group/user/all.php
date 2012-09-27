@@ -39,7 +39,7 @@
     $pageBaseUrl = "/group/user/all.php" ;
     $title = sprintf("%s's groups",$login->name);
     $hasNavigation = false ;
-    include(APP_WEB_DIR."/view/group/folder.php");
+    include(APP_WEB_DIR."/view/group/cards-page.php");
 
 
 ?>

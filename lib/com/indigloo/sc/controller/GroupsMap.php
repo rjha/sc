@@ -17,6 +17,23 @@ namespace com\indigloo\sc\controller{
         }
 
         function process($params,$options) {
+            
+            $path = $options["path"];
+
+            if(!empty($path) && (strlen($path) > 8)) {
+                $name = substr($path,8);
+                if(strcmp($name,"featured") == 0 ) {
+                    $this->spewFeatured($params,$options);
+                } else {
+                    $this->spewRecent($params,$options);
+                }
+            }
+
+        }
+
+
+        function spewRecent($params,$options) {
+
             $qparams = Url::getRequestQueryParams();
             $filters = array();
 
@@ -31,16 +48,26 @@ namespace com\indigloo\sc\controller{
             $endId = NULL ;
 
             if(sizeof($groups) > 0 ) {
-                $startId = $groups[0]['id'] ;
-                $endId =   $groups[sizeof($groups)-1]['id'] ;
+                $startId = $groups[0]["id"] ;
+                $endId =   $groups[sizeof($groups)-1]["id"] ;
             }
 
             $pageBaseUrl = $options["path"];
             $title = "Recent groups";
 
-            $file = APP_WEB_DIR. '/view/group/folder.php' ;
+            $file = APP_WEB_DIR. "/view/group/cards-page.php" ;
             include ($file);
 
+        }
+
+        function spewFeatured($params,$options) {
+            
+            $groupDao = new \com\indigloo\sc\dao\Group();
+            $feature_slug = $groupDao->getFeatureSlug();
+            $groups = $groupDao->slugToGroups($feature_slug);
+            $title = "Featured groups";
+            $file = APP_WEB_DIR. "/view/group/cards.php" ;
+            include ($file);
         }
 
     }

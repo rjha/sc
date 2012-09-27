@@ -76,7 +76,9 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="/recent">New items</a></li>
-                        <li><a id="nav-popup-group" href="">New Groups</a></li>
+                        <li><a href="/groups/recent">New Groups</a></li>
+                        <li><a id="nav-popup-group" href="">Featured Groups</a></li>
+
 
                     </ul>
                 </li> <!-- whats new -->
