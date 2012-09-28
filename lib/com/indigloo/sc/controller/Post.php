@@ -128,8 +128,8 @@ namespace com\indigloo\sc\controller{
              */
 
             if(!Util::tryEmpty($group_slug)) {
-                $searchToken = $groupDao->tokenizeSlug($group_slug,"|",false);
-                $ids = $sphinx->getPostByGroup($searchToken,0,12);
+            
+                $ids = $sphinx->getPostByGroup($group_slug,0,12);
                 
                 foreach($ids as $id){
                     if(!in_array($id,$xids) && ($id != $postId)) {

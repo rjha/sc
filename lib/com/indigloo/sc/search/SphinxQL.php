@@ -5,7 +5,9 @@ namespace com\indigloo\sc\search {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\Configuration as Config ;
+
     use \com\indigloo\mysql as MySQL;
+   use \com\indigloo\Constants ;
 
     class SphinxQL {
 
@@ -23,6 +25,7 @@ namespace com\indigloo\sc\search {
                 trigger_error($connx->connect_error, E_USER_ERROR);
                 exit ;
             }
+            
             $this->connx = $connx ;
         }
 
@@ -40,47 +43,72 @@ namespace com\indigloo\sc\search {
 
         // exact match of sc_post.group_slug (internal use only)
         // used on item page (token supplied with OR operator)
-        function getPostByGroup($token,$offset,$limit) {
-            $ids = $this->getMatch("post_groups",$token,$offset,$limit,false);
+        function getPostByGroup($dbslug,$offset,$limit) {
+
+            $ids = array();
+            $tokens = array();
+
+            if(!Util::tryEmpty($dbslug)) {
+
+                $slugs = explode(Constants::SPACE,$dbslug);
+                $count = 0 ;
+                //escape separately as pipe itself will be escaped!
+                foreach($slugs as $slug) {
+                    if(Util::tryEmpty($slug)) { continue ; }
+                    array_push($tokens,$this->escape($slug));
+
+                }
+            }
+
+            if(!empty($tokens)) {
+                $token = implode($tokens, "|");
+                $ids = $this->getMatch("post_groups",$token,$offset,$limit);
+            }
+
             return $ids;
         }
 
         // used on item page to find related posts via groups and title
         // use quorum operator
-        function getRelatedPosts($token,$hits,$offset,$limit) {
-            $ids = $this->getQuorum("posts",$token,$hits,$offset,$limit);
+        function getRelatedPosts($line,$hits,$offset,$limit) {
+            $line = $this->escape($line);
+            $ids = $this->getQuorum("posts",$line,$hits,$offset,$limit);
             return $ids;
         }
 
         // used by group controller
-        // @todo - first run escape on tokens and then 
-        // combine them by pipe
+        // single token
         function getPostCountByGroup($token) {
+            $token = $this->escape($token);
             $count = $this->getMatchCount("post_groups",$token);
             return $count ;
         }
 
         function getPagedPostByGroup($token,$paginator) {
+            $token = $this->escape($token);
             $pageNo = $paginator->getPageNo();
             $limit = $paginator->getPageSize();
             $offset = ($pageNo-1) * $limit ;
             //use the token as it is w/o escaping the pipes
-            $ids = $this->getMatch("post_groups",$token,$offset,$limit,false);
+            $ids = $this->getMatch("post_groups",$token,$offset,$limit);
             return $ids;
         }
 
         // used by search controller
         function getPostsCount($token) {
+            $token = $this->escape($token);
             $count = $this->getMatchCount("posts",$token);
             return $count ;
         }
 
         function getPosts($token,$offset,$limit) {
+            $token = $this->escape($token);
             $ids = $this->getMatch("posts",$token,$offset,$limit);
             return $ids;
         }
 
         function getPagedPosts($token,$paginator) {
+            $token = $this->escape($token);
             $pageNo = $paginator->getPageNo();
             $limit = $paginator->getPageSize();
             $offset = ($pageNo-1) * $limit ;
@@ -90,18 +118,15 @@ namespace com\indigloo\sc\search {
         }
 
         function getGroups($token,$offset,$limit) {
+            $token = $this->escape($token);
             $ids = $this->getMatch("groups",$token,$offset,$limit);
             return $ids;
         }
 
-        function getMatchCount($index,$token,$escape=true) {
+        function getMatchCount($index,$token) {
             if(Util::tryEmpty($token)) { return 0 ; }
             Util::isEmpty('index',$index);
-            //@todo
-            //plain wrong! all tokens must be escaped
-
-            $token = ($escape) ? $this->escape($token) : $token;
-
+            
             $sql = " select id from %s where match('%s') limit 0,1 " ;
             $sql = sprintf($sql,$index,$token);
 
@@ -123,12 +148,10 @@ namespace com\indigloo\sc\search {
             return $count ;
         }
 
-        function getMatch($index,$token,$offset,$limit,$escape=true) {
+        function getMatch($index,$token,$offset,$limit) {
             if(Util::tryEmpty($token)) { return array() ; }
             Util::isEmpty("index",$index);
             
-            $token = ($escape) ? $this->escape($token) : $token;
-
             $sql = " select id from %s where match('%s') " ;
             $sql = sprintf($sql,$index,$token);
             $sql .= sprintf(" limit %d,%d ",$offset,$limit) ;
@@ -150,12 +173,10 @@ namespace com\indigloo\sc\search {
          * 
          *
          */
-        function getQuorum($index,$token,$hits,$offset,$limit,$escape=true) {
+        function getQuorum($index,$token,$hits,$offset,$limit) {
             if(Util::tryEmpty($token)) { return array() ; }
             Util::isEmpty("index",$index);
             
-            $token = ($escape) ? $this->escape($token) : $token;
-
             $sql = sprintf("select id from %s where match('",$index) ;
             $sql .= '\"'.$token.'\"\/'.$hits."')" ;
             $sql .= sprintf(" limit %d,%d ",$offset,$limit) ;
