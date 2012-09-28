@@ -90,7 +90,7 @@ namespace com\indigloo\sc\mysql {
 
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l where q.login_id = l.id " ;
             $sql .= " and  q.login_id = %d order by id desc limit %d " ;
-            $sql = sprintf($sql,$limit);
+            $sql = sprintf($sql,$loginId,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
