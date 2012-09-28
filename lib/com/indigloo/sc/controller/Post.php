@@ -98,7 +98,7 @@ namespace com\indigloo\sc\controller{
             $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
             $loginIdInSession = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
 
-            $xids = array();
+            $xids = array($postId);
             $xrows = array();
             $limit = 10 ;
 
@@ -130,15 +130,13 @@ namespace com\indigloo\sc\controller{
             if(!Util::tryEmpty($group_slug)) {
             
                 $ids = $sphinx->getPostByGroup($group_slug,0,12);
-                
-                foreach($ids as $id){
-                    if(!in_array($id,$xids) && ($id != $postId)) {
-                        array_push($xids,$id);
-                    }
-                }
+                //unique ids?
+                $ids = array_diff($ids,$xids);
+                //xids for next iteration
+                $xids = array_merge($xids,$ids);    
 
-                if(!empty($xids)) {
-                    $xrows = $postDao->getOnSearchIds($xids);
+                if(!empty($ids)) {
+                    $xrows = $postDao->getOnSearchIds($ids);
                 }
 
             }
@@ -150,20 +148,17 @@ namespace com\indigloo\sc\controller{
                 $sphinx = new \com\indigloo\sc\search\SphinxQL();
                 //@todo - number of hits based on number of words in token
                 $searchIds = $sphinx->getRelatedPosts($searchToken,3,0,$limit);
+                //unique search ids?
+                $searchIds = array_diff($searchIds,$xids);
+                //xids for next iteration
+                $xids = array_merge($searchIds,$xids);
 
                 if(!empty($searchIds)) {
-
-                    foreach($searchIds as $searchId){
-                        if(!in_array($searchId,$xids) && ($searchId != $postId)) {
-                            array_push($xids,$searchId);
-                        }
-                    }
-
                     $search_rows = $postDao->getOnSearchIds($searchIds);
+                    //collect in rows bucket
                     $xrows = array_merge($xrows,$search_rows);
                 }
             }
-
 
             if(sizeof($xrows) < 20 ) {
                 //how many?
@@ -176,7 +171,7 @@ namespace com\indigloo\sc\controller{
 
                     $catRows = $postDao->getLatestOnCategory($catCode,$limit);
                     foreach($catRows as $catRow) {
-                        if(!in_array($catRow["id"],$xids) && ($catRow["id"] != $postId)) {
+                        if(!in_array($catRow["id"],$xids)) {
                             array_push($xrows,$catRow);
                             array_push($xids,$catRow["id"]);
                         }
