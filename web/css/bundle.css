@@ -1126,7 +1126,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .tile .user{font-weight:bold;margin-top:4px}
 .tile .groups{font-size:12px;margin-top:4px}
 .tile .groups a{color:#333}
-.stamp{width:110px;margin:2px;float:left;padding:4px;background-color:#fff;border:1px solid #eee}
+.stamp{width:110px;margin:2px;float:left;padding:4px;background-color:#fff;border:1px solid #eee;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1)}
 .stamp .photo{padding:3px}
 .stamp .photo img{max-width:100px;margin:0}
 .vertical{width:1em;text-transform:uppercase;letter-spacing:40px}

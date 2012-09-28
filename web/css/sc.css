@@ -419,8 +419,8 @@
         padding:4px;
         background-color: #fff;
         border:1px solid #eee ;
-        /* bigger shadow because we have white backgorund on item page */
-       /*  box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4); */
+        /*  box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4); */
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4),0 0px 10px rgba(0, 0, 0, 0.1);
     }
 
     .stamp .photo {
