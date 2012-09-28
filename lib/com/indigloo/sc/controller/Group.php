@@ -18,22 +18,11 @@ namespace com\indigloo\sc\controller{
                 exit;
             }
 
-            $slug = Util::getArrayKey($params,"name");
-            //break hyphenated tokens into normal words for sphinx
-            //$token = \com\indigloo\util\StringUtil::convertKeyToName($slug);
-            // group index settings - no prefix,charset_type sbcs, ignore_chars U+002D
-            $token = $slug;
-
-            // ------------------------------------------------------------------------
-            // get match on group slug
-            // @imp: sphinx treats hyphen (dash) as a word separator
-            // so sc_post.group_slug are indexed as dehyphenated
-            // words. e.g. chilli-billi will be indexed as two separate
-            // words [chilli billi]. That means you can just match the user typed
-            // tokens against sphinx index. 
-            // @caveat: This will create issues when user wants to search for a full 
-            // hyphenated word. However this is life. you win some and then you lose some!
-            // --------------------------------------------------------------------------
+            $token = Util::getArrayKey($params,"name");
+            
+            // group controller is invoked via the fixed links 
+            // (as opposed to users typing in search box)
+            // so we (exact) match this token against post_groups index.
 
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
             $total = $sphinx->getPostCountByGroup($token);
@@ -41,7 +30,7 @@ namespace com\indigloo\sc\controller{
             $pageSize = Config::getInstance()->get_value("search.page.items");
             $paginator = new Pagination($qparams,$total,$pageSize);
 
-            $ids = $sphinx->getPagedGroups($token,$paginator);
+            $ids = $sphinx->getPagedPostByGroup($token,$paginator);
             $sphinx->close();
 
             $template =  NULL ;
@@ -50,7 +39,7 @@ namespace com\indigloo\sc\controller{
 
             if(sizeof($ids) > 0 ) {
                 $pageHeader = "Group - $groupName" ;
-                $pageBaseUrl = "/group/$slug" ;
+                $pageBaseUrl = "/group/$token" ;
                 $template = APP_WEB_DIR. '/view/tiles-page.php';
                 $postDao = new \com\indigloo\sc\dao\Post();
                 $postDBRows = $postDao->getOnSearchIds($ids) ;

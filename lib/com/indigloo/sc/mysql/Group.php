@@ -18,28 +18,14 @@ namespace com\indigloo\sc\mysql {
             //sanitize input
             $strIds = $mysqli->real_escape_string($strIds);
 
-            $sql = " select name,token from sc_group_master  " ;
-            $sql .= " where id in (".$strIds. ") order by id desc" ;
+            $sql = " select name,token from sc_group_master g " ;
+            $sql .= " where g.id in (".$strIds. ") " ;
+             $sql .= " ORDER BY FIELD(g.id,".$strIds. ") " ;
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
-
-
-        static function search($token,$limit) {
-
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-
-            settype($limit,"integer");
-            $token = $mysqli->real_escape_string($token);
-
-            //search on token - token has an INDEX on it
-            $sql = "select token,name from sc_group_master where token like '%s%s%s'  limit %d" ;
-            $sql = sprintf($sql,"%",$token,"%",$limit);
-            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-            return $rows;
-        }
-
+        
         static function getLatest($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 

@@ -9,7 +9,7 @@
 
     $groupDao = new \com\indigloo\sc\dao\Group();
     $feature_slug = $groupDao->getFeatureSlug();
-    $fgroups = $groupDao->slugToGroups($feature_slug);
+    $fgroups = $groupDao->slugToGroupsMap($feature_slug);
     $html = \com\indigloo\sc\html\Group::getCloud($fgroups); 
     echo $html;
 ?>

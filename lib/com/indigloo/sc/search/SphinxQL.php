@@ -38,30 +38,38 @@ namespace com\indigloo\sc\search {
             $this->connx->close();
         }
 
-        function getPostCountByGroup($token) {
-            $count = $this->getMatchCount("posts",$token);
-            return $count ;
-        }
-
+        // exact match of sc_post.group_slug (internal use only)
+        // used on item page (token supplied with OR operator)
         function getPostByGroup($token,$offset,$limit) {
-            $ids = $this->getMatch("posts",$token,$offset,$limit);
+            $ids = $this->getMatch("post_groups",$token,$offset,$limit,false);
             return $ids;
         }
 
+        // used on item page to find related posts via groups and title
+        // use quorum operator
         function getRelatedPosts($token,$hits,$offset,$limit) {
             $ids = $this->getQuorum("posts",$token,$hits,$offset,$limit);
             return $ids;
         }
 
-        function getPagedGroups($token,$paginator) {
+        // used by group controller
+        // @todo - first run escape on tokens and then 
+        // combine them by pipe
+        function getPostCountByGroup($token) {
+            $count = $this->getMatchCount("post_groups",$token);
+            return $count ;
+        }
+
+        function getPagedPostByGroup($token,$paginator) {
             $pageNo = $paginator->getPageNo();
             $limit = $paginator->getPageSize();
             $offset = ($pageNo-1) * $limit ;
-
-            $ids = $this->getMatch("groups",$token,$offset,$limit);
+            //use the token as it is w/o escaping the pipes
+            $ids = $this->getMatch("post_groups",$token,$offset,$limit,false);
             return $ids;
         }
 
+        // used by search controller
         function getPostsCount($token) {
             $count = $this->getMatchCount("posts",$token);
             return $count ;
@@ -81,11 +89,18 @@ namespace com\indigloo\sc\search {
             return $ids;
         }
 
-        function getMatchCount($index,$token) {
+        function getGroups($token,$offset,$limit) {
+            $ids = $this->getMatch("groups",$token,$offset,$limit);
+            return $ids;
+        }
+
+        function getMatchCount($index,$token,$escape=true) {
             if(Util::tryEmpty($token)) { return 0 ; }
             Util::isEmpty('index',$index);
-            //escape token
-            $token = $this->escape($token);
+            //@todo
+            //plain wrong! all tokens must be escaped
+
+            $token = ($escape) ? $this->escape($token) : $token;
 
             $sql = " select id from %s where match('%s') limit 0,1 " ;
             $sql = sprintf($sql,$index,$token);
@@ -108,17 +123,16 @@ namespace com\indigloo\sc\search {
             return $count ;
         }
 
-        function getMatch($index,$token,$offset,$limit) {
+        function getMatch($index,$token,$offset,$limit,$escape=true) {
             if(Util::tryEmpty($token)) { return array() ; }
             Util::isEmpty("index",$index);
-            //get paginator params
-            //escape token
-            $token = $this->escape($token);
+            
+            $token = ($escape) ? $this->escape($token) : $token;
 
             $sql = " select id from %s where match('%s') " ;
             $sql = sprintf($sql,$index,$token);
             $sql .= sprintf(" limit %d,%d ",$offset,$limit) ;
-
+            
             $rows = MySQL\Helper::fetchRows($this->connx,$sql);
             $ids = array();
 
@@ -136,12 +150,11 @@ namespace com\indigloo\sc\search {
          * 
          *
          */
-        function getQuorum($index,$token,$hits,$offset,$limit) {
+        function getQuorum($index,$token,$hits,$offset,$limit,$escape=true) {
             if(Util::tryEmpty($token)) { return array() ; }
             Util::isEmpty("index",$index);
-            //get paginator params
-            //escape token
-            $token = $this->escape($token);
+            
+            $token = ($escape) ? $this->escape($token) : $token;
 
             $sql = sprintf("select id from %s where match('",$index) ;
             $sql .= '\"'.$token.'\"\/'.$hits."')" ;

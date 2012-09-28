@@ -29,8 +29,7 @@ namespace com\indigloo\sc\controller{
             $paginator = new Pagination($qparams,$total,$pageSize);
 
             $ids = $sphinx->getPagedPosts($token,$paginator);
-            $sphinx->close();
-
+            
             $template =  NULL ;
             $searchTitle = NULL ;
 
@@ -48,9 +47,12 @@ namespace com\indigloo\sc\controller{
 
             }
 
+            $groupIds = $sphinx->getGroups($token,0,25);
             $groupDao = new \com\indigloo\sc\dao\Group();
-            $groupDBRows = $groupDao->search($token,$pageSize);
-
+            $groupDBRows = $groupDao->getOnSearchIds($groupIds);
+             
+            $sphinx->close();
+            
             $pageTitle = SeoData::getPageTitle($token);
             $metaKeywords = SeoData::getMetaKeywords($token);
             $metaDescription = SeoData::getMetaDescription($token);

@@ -64,7 +64,7 @@ namespace com\indigloo\sc\controller{
             
             $groupDao = new \com\indigloo\sc\dao\Group();
             $feature_slug = $groupDao->getFeatureSlug();
-            $groups = $groupDao->slugToGroups($feature_slug);
+            $groups = $groupDao->slugToGroupsMap($feature_slug);
             $title = "Featured groups";
             $file = APP_WEB_DIR. "/view/group/cards.php" ;
             include ($file);

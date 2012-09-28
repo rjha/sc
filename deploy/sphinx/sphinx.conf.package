@@ -5,71 +5,103 @@
 
 source mydb 
 {
-	type			= mysql
-	sql_host		= localhost
-	sql_user		= mysql_user
-	sql_pass		= mysql_password
-	sql_db			= mysql_db
-	sql_port		= 3306	
+    type            = mysql
+    sql_host        = localhost
+    sql_user        = gloo
+    sql_pass        = osje8L
+    sql_db          = scdb1
+    sql_port        = 3306  
 }
 
 source posts : mydb 
 {
 
-    sql_query       =  SELECT id,group_slug,description, unix_timestamp(created_on) as created_on, \
-                       login_id from sc_post
-
+    sql_query       =  SELECT id,group_slug,description,links_json, unix_timestamp(created_on) as created_on, \
+    login_id from sc_post
     sql_attr_uint = login_id
     sql_attr_timestamp = created_on
-    
     # debug only
     sql_query_info      = SELECT * FROM sc_post  WHERE id=$id
 }
 
+source post_groups : mydb 
+{
+    sql_query       =  SELECT id,group_slug ,login_id from sc_post
+    sql_attr_uint = login_id
+    # debug only
+    sql_query_info      = SELECT * FROM sc_post  WHERE id=$id
+}
+
+
 source groups : mydb 
 {
-    sql_query = select id,name,cat_code,unix_timestamp(created_on) as created_on from sc_group_master
-    sql_attr_timestamp = created_on
-
+    sql_query = select id,name,cat_code from sc_group_master
+    sql_attr_uint = cat_code
     # debug 
     sql_query_info      = SELECT * FROM sc_group_master  WHERE id=$id
 
 }
 
+# main posts index
+#prefix indexing for wildcard searching 
+
 index posts
 {
-	source			= posts
-	path			= /var/lib/sphinxsearch/data/posts
-	min_word_len = 3 
-	min_prefix_len=3
-	charset_type		= utf-8
+    source          = posts
+    path            = /var/lib/sphinxsearch/data/posts
+    min_word_len = 3 
+    min_prefix_len=3
+    charset_type        = utf-8
 }
+
+# index to match sc_post.groups
+# created against group_slug only
+# soft hyphen  is added to ignore_chars list, so we index nyv-studio as [nyvstudio]
+# without ignore_char, hyphen acts as word breaker so nyv-studio will be indexed
+# as [nyv studio] 
+# for internal matching (DB vs DB) only
+# do not use this index against user supplied tokens.
+
+index post_groups 
+{
+    source          = post_groups
+    path            = /var/lib/sphinxsearch/data/post_groups
+    charset_type        = utf-8
+    ignore_chars = U+002D
+}
+
+# index against groups master 
+# for group lookup
+# here we let hyphen break words
+# so nyt-studio becomes [nyt studio]
+# we also need token* capability so we want prefix as well.
 
 index groups 
 {
     source = groups
-	path			= /var/lib/sphinxsearch/data/groups
-	charset_type		= utf-8
-    ignore_chars = U+002D
+    path            = /var/lib/sphinxsearch/data/groups
+    min_word_len = 3 
+    min_prefix_len=3
+    charset_type        = utf-8
 }
 
 indexer
 {
-	mem_limit		= 32M
+    mem_limit       = 32M
 }
 
 searchd
 {
-	listen			= 9306:mysql41
-	log			= /var/log/sphinxsearch/searchd.log
-	query_log		= /var/log/sphinxsearch/query.log
-	read_timeout		= 5
-	max_children		= 30
-	pid_file		= /var/run/sphinxsearch/searchd.pid
-	max_matches		= 1000
-	seamless_rotate		= 1
-	preopen_indexes		= 1
-	unlink_old		= 1
-	workers			= threads # for RT to work
+    listen          = 9306:mysql41
+    log         = /var/log/sphinxsearch/searchd.log
+    query_log       = /var/log/sphinxsearch/query.log
+    read_timeout        = 5
+    max_children        = 30
+    pid_file        = /var/run/sphinxsearch/searchd.pid
+    max_matches     = 1000
+    seamless_rotate     = 1
+    preopen_indexes     = 1
+    unlink_old      = 1
+    workers         = threads # for RT to work
     compat_sphinxql_magics = 0
 }

@@ -104,37 +104,37 @@ namespace com\indigloo\sc\controller{
 
             $group_slug = $postDBRow["group_slug"];
             $groupDao = new \com\indigloo\sc\dao\Group();
-            $group_names = $groupDao->slugToName($postDBRow["group_slug"]);
+            //@imp for display purpose only
+            // convert tokens to names and join by comma
+            $group_names = $groupDao->tokenizeSlug($group_slug,",",true);
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
+            $searchToken = NULL ;
             
             /* 
+             * recipe for fetching related posts
+             * ------------------------------------------
              * 
-             * when fetching xrows or post related rows, tags(groups) have 
-             * highest priority. Here we assume that we should be able to bring
-             * in 16 items using 2 tags.
+             * 1) groups (tags) are priority #1 for matching
+             * first check against sc_post.group_slug index (not polluted by other data)
+             * fetch 12
              * 
-             * next we use sphinx quorum operator on title + groups/#of hits
+             * 2) Next try to do a "related items" match via quorum operator
+             * use sc_post.title + sc_post.group_slug against posts index.
+             * # of hits is 3
              * 
-             * if above fails then just bring in more rows from post.category
-             *
+             * 3) bring the remaining "related posts" using category
+             * 
              * 
              */
 
             if(!Util::tryEmpty($group_slug)) {
-
-                $groups = explode(Constants::SPACE,$group_slug);
- 
-                foreach($groups as $group) {
-
-                    $ids = $sphinx->getPostByGroup($group,0,12);
-                    foreach($ids as $id){
-                        if(!in_array($id,$xids) && ($id != $postId)) {
-                            array_push($xids,$id);
-                            if(sizeof($xids) >= 12 ) { break; }
-                        }
+                $searchToken = $groupDao->tokenizeSlug($group_slug,"|",false);
+                $ids = $sphinx->getPostByGroup($searchToken,0,12);
+                
+                foreach($ids as $id){
+                    if(!in_array($id,$xids) && ($id != $postId)) {
+                        array_push($xids,$id);
                     }
-
-                    if(sizeof($xids) >= 12 ) { break; }
                 }
 
                 if(!empty($xids)) {
@@ -146,7 +146,7 @@ namespace com\indigloo\sc\controller{
             if(sizeof($xrows) < 20 ) {
 
                 $limit = 20 - (sizeof($xrows)) ;
-                $searchToken = (Util::tryEmpty($group_slug)) ? $itemObj->title : $group_slug.$itemObj->title ;
+                $searchToken = (Util::tryEmpty($group_slug)) ? $itemObj->title : $itemObj->title.$group_slug ;
                 $sphinx = new \com\indigloo\sc\search\SphinxQL();
                 //@todo - number of hits based on number of words in token
                 $searchIds = $sphinx->getRelatedPosts($searchToken,3,0,$limit);
