@@ -133,5 +133,12 @@ search for soda
 install Soda-Theme package
 
 
+misc
+--------
+To load your vimrc when doing sudo vim <file>
+use $sudo vim -u /home/rjha/.vimrc <file>
+
+
+
 
 
