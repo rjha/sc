@@ -102,6 +102,22 @@ namespace com\indigloo\sc\controller{
             $xrows = array();
             $limit = 10 ;
 
+            /* site metadata and posts */ 
+            $siteDao = new \com\indigloo\sc\dao\Site();
+            $siteMetaRow = $siteDao->getOnPostId($postId);
+            $siteId = $siteMetaRow["id"];
+            $site_rows = $siteDao->getPostsOnId($siteId,8);
+            $sitePostRows = array();
+
+            foreach($site_rows as $row) {
+                if(!in_array($row["id"],$xids)) {
+                    array_push($sitePostRows,$row);
+                    array_push($xids,$row["id"]);
+                    if(sizeof($sitePostRows) > 4 ) { break ;}
+                }
+            }
+
+            /* related to item : via groups */
             $group_slug = $postDBRow["group_slug"];
             $groupDao = new \com\indigloo\sc\dao\Group();
             //@imp for display purpose only
@@ -129,7 +145,7 @@ namespace com\indigloo\sc\controller{
 
             if(!Util::tryEmpty($group_slug)) {
             
-                $ids = $sphinx->getPostByGroup($group_slug,0,12);
+                $ids = $sphinx->getPostByGroup($group_slug,0,16);
                 //unique ids?
                 $ids = array_diff($ids,$xids);
                 //xids for next iteration
@@ -147,7 +163,7 @@ namespace com\indigloo\sc\controller{
                 $searchToken = (Util::tryEmpty($group_slug)) ? $itemObj->title : $itemObj->title.$group_slug ;
                 $sphinx = new \com\indigloo\sc\search\SphinxQL();
                 //@todo - number of hits based on number of words in token
-                $searchIds = $sphinx->getRelatedPosts($searchToken,3,0,$limit);
+                $searchIds = $sphinx->getRelatedPosts($searchToken,3,0,2*$limit);
                 //unique search ids?
                 $searchIds = array_diff($searchIds,$xids);
                 //xids for next iteration
@@ -159,7 +175,8 @@ namespace com\indigloo\sc\controller{
                     $xrows = array_merge($xrows,$search_rows);
                 }
             }
-
+            
+            /*
             if(sizeof($xrows) < 20 ) {
                 //how many?
                 $limit = 20 - (sizeof($xrows)) ;
@@ -177,22 +194,7 @@ namespace com\indigloo\sc\controller{
                         }
                     }
                 }
-            }
-
-            /* site metadata and posts */ 
-            $siteDao = new \com\indigloo\sc\dao\Site();
-            $siteMetaRow = $siteDao->getOnPostId($postId);
-            $siteId = $siteMetaRow["id"];
-            $site_rows = $siteDao->getPostsOnId($siteId,8);
-            $sitePostRows = array();
-
-            foreach($site_rows as $row) {
-                if(!in_array($row["id"],$xids)) {
-                    array_push($sitePostRows,$row);
-                    array_push($xids,$row["id"]);
-                    if(sizeof($sitePostRows) > 4 ) { break ;}
-                }
-            }
+            }*/
 
             $loginUrl = "/user/login.php?q=".Url::current();
             $formErrors = FormMessage::render();
