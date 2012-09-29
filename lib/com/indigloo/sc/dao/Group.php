@@ -149,6 +149,9 @@ namespace com\indigloo\sc\dao {
 
                 foreach($names as $name) {
                     if(Util::tryEmpty($name)) { continue ; }
+                    // remove single quotes from group names
+                    // it is a bit difficult to deal with single quotes and sphinx
+                    $name = str_replace("'","",$name);
                     $slug = \com\indigloo\util\StringUtil::convertNameToKey($name);
                     array_push($slugs,$slug);
                 }

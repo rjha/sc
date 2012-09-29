@@ -21,7 +21,7 @@
 
             $fhandler->addRule('links_json', 'links_json', array('rawData' => 1));
             $fhandler->addRule('images_json', 'images_json', array('rawData' => 1));
-            $fhandler->addRule('group_names', 'Tags', array('maxlength' => 64));
+            $fhandler->addRule('group_names', 'Tags', array('maxlength' => 64,'rawData' => 1));
             $fhandler->addRule('qUrl', 'qUrl', array('required' => 1, 'rawData' =>1));
             $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
 

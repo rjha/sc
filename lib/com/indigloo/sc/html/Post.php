@@ -436,6 +436,11 @@ namespace com\indigloo\sc\html {
 
                     foreach($slugs as $slug) {
                         if(empty($slug)) continue ;
+                        //@imp @todo @hack
+                        // dirty hack - for single quotes in group name - for old data
+                        // anything indexed as flury&#039;s - should be converted to flury
+                        // now we ignore the single quote in group name so we should be fine
+                        $slug = str_replace("&#039;s","",$slug);
                         $display = StringUtil::convertKeyToName($slug);
                         $groups[] = array("slug" => $slug, "display"=> $display);
                     }
