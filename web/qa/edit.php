@@ -46,7 +46,7 @@
     $strLinksJson = Util::formSafeJson($strLinksJson);
 
     $groupDao = new \com\indigloo\sc\dao\Group();
-    $group_names = $groupDao->slugToName($postDBRow['group_slug']);
+    $group_names = $groupDao->tokenizeSlug($postDBRow['group_slug'],",",true);
 
     $totalGroups = $groupDao->getCountOnLoginId($loginId);
     $hasGroups = ($totalGroups > 0) ? true : false;
