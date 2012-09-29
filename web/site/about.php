@@ -96,7 +96,7 @@
 
             <div class="row p20" style="border-top:1px solid #DEDEDE;">
                 <div class="span6 offset4">
-                    <a class="btn btn-primary" href="/user/register.php">Register a 3mik account</a>
+                    <a class="btn b" href="/user/register.php">Register a 3mik account</a>
                     &nbsp;
                     <small>Free and takes only a min.</small>
                 </div>
