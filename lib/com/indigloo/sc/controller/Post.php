@@ -179,9 +179,20 @@ namespace com\indigloo\sc\controller{
                 }
             }
 
-
+            /* site metadata and posts */ 
             $siteDao = new \com\indigloo\sc\dao\Site();
-            $siteDBRow = $siteDao->getOnPostId($postId);
+            $siteMetaRow = $siteDao->getOnPostId($postId);
+            $siteId = $siteMetaRow["id"];
+            $site_rows = $siteDao->getPostsOnId($siteId,8);
+            $sitePostRows = array();
+
+            foreach($site_rows as $row) {
+                if(!in_array($row["id"],$xids)) {
+                    array_push($sitePostRows,$row);
+                    array_push($xids,$row["id"]);
+                    if(sizeof($sitePostRows) > 4 ) { break ;}
+                }
+            }
 
             $loginUrl = "/user/login.php?q=".Url::current();
             $formErrors = FormMessage::render();

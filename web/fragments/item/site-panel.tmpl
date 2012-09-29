@@ -1,0 +1,25 @@
+ <div class="quote">
+    <a target="_blank" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">
+        ~if($view->hasPosts){~
+            <span class="faded-text b">more from shop &darr;&nbsp;&nbsp;</span>
+        ~}~
+        
+        <span class="faded-text b">Go to shop ~~$view->siteUrl~ &rarr;</span>
+       
+    </a>
+</div> 
+
+<a target="_blank" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">
+    <div class="image-grid">
+    ~foreach($view->posts as $post){~
+        <div class="box">
+            <img src="~~$post->thumbnail~" title="~~$post->title~" alt="~~$post->title~" />
+        </div>
+    ~}~
+
+    </div>
+</a>
+<div class="clear"> </div>
+
+
+

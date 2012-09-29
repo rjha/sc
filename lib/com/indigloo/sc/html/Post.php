@@ -236,19 +236,42 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        static function getMoreLinks($postView,$siteDBRow) {
+        static function getUserPanel($postView) {
             $html = NULL ;
-            $postView->hasSite = false ;
-
-            if(!empty($siteDBRow)) {
-                $postView->siteId = $siteDBRow["id"];
-                $postView->siteUrl = $siteDBRow["canonical_url"];
-                $postView->hasSite = true ;
-            }
-
-            $template = '/fragments/item/more-links.tmpl' ;
+            $template = '/fragments/item/user-panel.tmpl' ;
             $html = Template::render($template,$postView);
             return $html ;
+        }
+
+        static function getSitePanel($siteMetaRow,$sitePostRows) {
+
+            if(empty($siteMetaRow)) {
+                //no site information available
+                return "" ;
+            }
+
+            $html = NULL ;
+            $template = '/fragments/item/site-panel.tmpl' ;
+            $view = new \stdClass;
+
+            $view->siteId = $siteMetaRow["id"];
+            $view->siteUrl = $siteMetaRow["canonical_url"];
+            $view->hasSite = true ;
+            $view->hasPosts = false ;
+
+            $posts = array();
+            foreach($sitePostRows as $row) {
+                $postView = self::createPostView($row);
+                if($postView->hasImage) {
+                    array_push($posts,$postView);
+                    $view->hasPosts = true ;
+                }
+            }
+
+            $view->posts = $posts ;
+            $html = Template::render($template,$view);
+            return $html ;
+
         }
 
         static function getWidget($postDBRow,$options=NULL) {

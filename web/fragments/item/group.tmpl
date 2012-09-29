@@ -3,10 +3,12 @@
         <span class="label">Groups&nbsp;</span>
         <br>
         <br>
+        <ul class="unstyled">
         ~foreach($view->groups as $group){~
-            <a href="/group/~~$group['slug']~" class="faded-text">&nbsp;~~$group['display']~</a>&nbsp;
+            <li> <a href="/group/~~$group['slug']~" class="faded-text">&nbsp;~~$group['display']~</a></li>
 
         ~}~
+        </ul>
     </div>
 
 ~}~

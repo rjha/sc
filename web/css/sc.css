@@ -282,6 +282,25 @@
         display:none ;
     }
 
+    .image-grid .box{
+        position :relative ;
+        float : left;
+        padding:7px;
+        height:125px;
+        width:125px;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4),0 0px 10px rgba(0, 0, 0, 0.1);
+        margin :4px;
+    }
+
+    .image-grid .box img {
+        width: auto;
+        height: auto;
+        max-width: 100px;
+        max-height: 100px;
+        padding:5px;
+    }
+
+
     #link-preview  a{
         font-size:10px;
         line-height: 1.8 ;
@@ -514,7 +533,6 @@
         height:60px;
     }
 
-    
     .item .title {
         color: #222;
         font-size: 19px;
@@ -526,6 +544,7 @@
 
     .item .user .name {
         font-weight : bold ;
+        font-size:16px;
     }
 
     /* simulate blockquote style */
@@ -562,6 +581,14 @@
         padding:15px 20px 15px 20px;
         margin-bottom:10px;
         margin-top:10px;
+        overflow:hidden ;
+    }
+
+    .section3 {
+        min-height: 20px;
+        padding:15px 20px 1px 20px;
+        margin-bottom:10px;
+        margin-top:1px;
         overflow:hidden ;
     }
 

@@ -22,6 +22,7 @@
         <meta property="og:image" content="<?php echo $itemObj->picture ?>"/>
         <meta property="og:description" content="<?php echo $itemObj->description; ?>"/>
 
+
         <script>
 
             (function() {
@@ -77,10 +78,11 @@
                     </div>
                     <div class="section">
 
-                        <?php echo \com\indigloo\sc\html\Post::getMoreLinks($postView,$siteDBRow); ?>
+                        <?php echo \com\indigloo\sc\html\Post::getSitePanel($siteMetaRow,$sitePostRows); ?>
+                        
                         <div class="mt20">
                             <blockquote>
-                                 <span class="faded-text"> Related items</span>
+                                 <span class="faded-text b"> Related items</span>
                             </blockquote>
 
 
