@@ -1,4 +1,17 @@
 
+
+Merge selective files/folder from another branch
+-------------------------------------------------
+
+e.g. merge deploy/mysql folder from master branch into ml3 branch
+
+when in ml3 branch
+$git checkout master deploy/mysql
+
+And then commit the changes
+
+
+
 Rollback last commit
 ----------------------
 first make sure you are on repo HEAD
