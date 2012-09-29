@@ -146,6 +146,7 @@ namespace com\indigloo\sc\controller{
             if(!Util::tryEmpty($group_slug)) {
             
                 $ids = $sphinx->getPostByGroup($group_slug,0,16);
+                
                 //unique ids?
                 $ids = array_diff($ids,$xids);
                 //xids for next iteration
@@ -157,13 +158,15 @@ namespace com\indigloo\sc\controller{
 
             }
 
-            if(sizeof($xrows) < 20 ) {
 
+            if(sizeof($xrows) < 20 ) {
+                
                 $limit = 20 - (sizeof($xrows)) ;
-                $searchToken = (Util::tryEmpty($group_slug)) ? $itemObj->title : $itemObj->title.$group_slug ;
+                
+                $searchToken = $itemObj->title ;
                 $sphinx = new \com\indigloo\sc\search\SphinxQL();
                 //@todo - number of hits based on number of words in token
-                $searchIds = $sphinx->getRelatedPosts($searchToken,3,0,2*$limit);
+                $searchIds = $sphinx->getRelatedPosts($searchToken,3,0,$limit);
                 //unique search ids?
                 $searchIds = array_diff($searchIds,$xids);
                 //xids for next iteration
@@ -175,26 +178,6 @@ namespace com\indigloo\sc\controller{
                     $xrows = array_merge($xrows,$search_rows);
                 }
             }
-            
-            /*
-            if(sizeof($xrows) < 20 ) {
-                //how many?
-                $limit = 20 - (sizeof($xrows)) ;
-
-                //find posts from same category
-                $catCode = $postDBRow["cat_code"];
-
-                if(!Util::tryEmpty($catCode)) {
-
-                    $catRows = $postDao->getLatestOnCategory($catCode,$limit);
-                    foreach($catRows as $catRow) {
-                        if(!in_array($catRow["id"],$xids)) {
-                            array_push($xrows,$catRow);
-                            array_push($xids,$catRow["id"]);
-                        }
-                    }
-                }
-            }*/
 
             $loginUrl = "/user/login.php?q=".Url::current();
             $formErrors = FormMessage::render();

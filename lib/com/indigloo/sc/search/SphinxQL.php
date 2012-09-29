@@ -45,32 +45,36 @@ namespace com\indigloo\sc\search {
         // used on item page (token supplied with OR operator)
         function getPostByGroup($dbslug,$offset,$limit) {
 
-            $ids = array();
-            $tokens = array();
+            $bucket = array();
+            /* weightage for groups */
+            /* we do not care beyond group #3 */
+            $limitMap = array( 0 => 10, 1 => 4 , 2 => 2);
 
             if(!Util::tryEmpty($dbslug)) {
 
                 $slugs = explode(Constants::SPACE,$dbslug);
                 $count = 0 ;
+
                 //escape separately as pipe itself will be escaped!
                 foreach($slugs as $slug) {
                     if(Util::tryEmpty($slug)) { continue ; }
-                    array_push($tokens,$this->escape($slug));
+                    $limit = $limitMap[$count];
+                    $ids = $this->getMatch("post_groups",$slug,$offset,$limit);
+                    $bucket = array_merge($bucket,$ids);
+
+                    $count++ ;
+                    if($count >= 2) { break ;}
 
                 }
             }
 
-            if(!empty($tokens)) {
-                $token = implode($tokens, "|");
-                $ids = $this->getMatch("post_groups",$token,$offset,$limit);
-            }
-
-            return $ids;
+            return $bucket;
         }
 
         // used on item page to find related posts via groups and title
         // use quorum operator
         function getRelatedPosts($line,$hits,$offset,$limit) {
+            
             $line = $this->escape($line);
             $ids = $this->getQuorum("posts",$line,$hits,$offset,$limit);
             return $ids;
