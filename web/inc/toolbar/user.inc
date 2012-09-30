@@ -130,8 +130,8 @@
     </a>
     <a href="<?php echo $externalPageUrl ?>">
         <div class="stack">
-            <div class="header">Share a webpage</div>
-            <p> select this option if you want to share images from a webpage </p>
+            <div class="header">Share a web page</div>
+            <p> select this option if you want to share images from a web page </p>
         </div>
     </a>
 </div> <!-- share popup -->
