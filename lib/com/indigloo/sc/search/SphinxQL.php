@@ -46,25 +46,25 @@ namespace com\indigloo\sc\search {
         function getPostByGroup($dbslug,$offset,$limit) {
 
             $bucket = array();
-            /* weightage for groups */
-            /* we do not care beyond group #3 */
-            $limitMap = array( 0 => 10, 1 => 4 , 2 => 2);
+            /* limit for groups #1,2 and 3 */
+            
+            $limitMap = array( 0 => 8, 1 => 4 , 2 => 2);
 
             if(!Util::tryEmpty($dbslug)) {
 
                 $slugs = explode(Constants::SPACE,$dbslug);
                 $count = 0 ;
 
-                //escape separately as pipe itself will be escaped!
                 foreach($slugs as $slug) {
                     if(Util::tryEmpty($slug)) { continue ; }
-                    $limit = $limitMap[$count];
+
+                    /* fetch only one post beyond group #3 */
+                    $limit = ($count <=2 ) ? $limitMap[$count] : 1 ;
                     $ids = $this->getMatch("post_groups",$slug,$offset,$limit);
-                    $bucket = array_merge($bucket,$ids);
 
+                    $unique = array_diff($bucket,$ids);
+                    $bucket = array_merge($bucket,$unique);
                     $count++ ;
-                    if($count >= 2) { break ;}
-
                 }
             }
 
@@ -184,7 +184,7 @@ namespace com\indigloo\sc\search {
             $sql = sprintf("select id from %s where match('",$index) ;
             $sql .= '\"'.$token.'\"\/'.$hits."')" ;
             $sql .= sprintf(" limit %d,%d ",$offset,$limit) ;
-
+            
             $rows = MySQL\Helper::fetchRows($this->connx,$sql);
             $ids = array();
 
