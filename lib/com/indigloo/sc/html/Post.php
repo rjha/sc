@@ -243,19 +243,17 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        static function getSiteMeta($siteMetaRow) {
-            if(empty($siteMetaRow)) {
-                //no site information available
-                return "" ;
+        static function getSiteMeta($view,$siteMetaRow) {
+            $view->hasSite = false ;
+
+            if(!empty($siteMetaRow)) {
+                $view->hasSite = true ;
+                $view->siteId = $siteMetaRow["id"];
+                $view->siteUrl = $siteMetaRow["canonical_url"];
             }
 
             $html = NULL ;
             $template = '/fragments/item/site-meta.tmpl' ;
-            
-            $view = new \stdClass;
-            $view->siteId = $siteMetaRow["id"];
-            $view->siteUrl = $siteMetaRow["canonical_url"];
-
             $html = Template::render($template,$view);
             return $html ;
 

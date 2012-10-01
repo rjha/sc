@@ -1,8 +1,22 @@
-<div class="section">
-    <a class="btn" target="_blank" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">
-        <span>Visit website&nbsp;&gt;</span>
-       
-    </a>
+<div class="section1">
+    <div class="item">
+        <div class="user">
+            <span class="faded-text">shared by</span>
+            <br>
+            <span class="name"><a href="~~$view->userPageURI~" target="_blank">~~$view->userName~</a> </span>
+        </div>
+    </div> 
+
+    
+    ~if($view->hasSite){~
+    <span class="faded-text">from&nbsp;~~$view->siteUrl~</span>
+    <div class="mt10">
+        <a class="btn" target="_blank" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">
+            <span>Visit website&nbsp;&gt;</span>
+        </a>
+    </div>
+    ~}~
+   
 </div>
 
 

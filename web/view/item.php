@@ -99,17 +99,8 @@
 
                 </div>
                 <div class="span3 wbg">
-                    <div class="section1">
-                        <div class="item">
-                            <div class="user">
-                                <span class="name"><a href="<?php echo $postView->userPageURI ?>" target="_blank"><?php echo $postView->userName ?></a> </span>
-                                <br> 
-                                <span class="faded-text">posted</span>
-                                
-                            </div>
-                        </div>
-                    </div>
-
+                    
+                    <?php echo \com\indigloo\sc\html\Post::getSiteMeta($postView,$siteMetaRow); ?>
                     <?php echo \com\indigloo\sc\html\Post::getGroups($postView); ?>
 
 
@@ -124,7 +115,7 @@
                         <div class="g-plusone" data-size="tall" data-href="<?php echo $itemObj->netLink;?>" data-annotation="none" data-width="200"></div>
 
                     </div>
-                    <?php echo \com\indigloo\sc\html\Post::getSiteMeta($siteMetaRow); ?>
+                   
 
 
                 </div>
