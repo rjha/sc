@@ -52,12 +52,13 @@
                 </div>
             </div> <!-- row -->
             
+            <!-- feedback 
             <div id="feedback" class="vertical">
                 <a href="/site/contact.php">
                     <br>
                     F e e d b a c k
                 </a>
-            </div>  <!-- feedback -->
+            </div>  -->
 
 
             <div id="scroll-loading"> </div>
