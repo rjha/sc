@@ -64,7 +64,7 @@
                 <div class="span9 mh600">
                     <div class="page-header">
                         <div class="faded-text">
-                            All your posts are shown here. Do mouse over a post to get 
+                            All your items are shown here. Do mouse over an item to get 
                             edit and remove links.
                         </div>
                     </div>

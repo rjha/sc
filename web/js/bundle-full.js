@@ -17200,7 +17200,7 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
         }) ;
 
-        $("a.favorite-post-link").live("click", function(event){
+        $("a.save-post-link").live("click", function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -17214,7 +17214,7 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
         }) ;
 
-        //unfavorite
+        //unsave
         $("a.remove-post-link").live("click",function(event){
             event.preventDefault();
 

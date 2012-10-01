@@ -48,9 +48,9 @@
                                    
                                     <ul>
 
-                                        <li><a href="/user/dashboard/posts.php">Posts</a></li>
+                                        <li><a href="/user/dashboard/posts.php">My items</a></li>
                                         <li><a href="/user/dashboard/comments.php">Comments</a></li>
-                                        <li><a href="/user/dashboard/bookmark.php">Favorites</a></li>
+                                        <li><a href="/user/dashboard/bookmark.php">Saved items</a></li>
                                         <li><a href="/user/dashboard/activities.php">Activities</a></li>
                                         <li><a href="/user/dashboard/following.php">Following</a></li>
                                         <li><a href="/user/dashboard/follower.php">Followers</a></li>

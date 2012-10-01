@@ -31,7 +31,7 @@
     }
 
     $tileOptions = ~UIConstants::TILE_ALL ;
-    $pageTitle = "your favorites on 3mik" ;
+    $pageTitle = "Saved items on 3mik" ;
     $tileOptions = UIConstants::TILE_REMOVE ;
 
     $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
@@ -47,7 +47,7 @@
 
     //filter-2
     $filter = new Filter($model);
-    $filter->add($model::VERB_COLUMN,Filter::EQ,AppConstants::FAVORITE_VERB);
+    $filter->add($model::VERB_COLUMN,Filter::EQ,AppConstants::SAVE_VERB);
     array_push($filters,$filter);
 
     $total = $bookmarkDao->getTotal($filters);
@@ -76,8 +76,8 @@
                 <div class="span9 mh600">
                     <div class="page-header">
                         <div class="faded-text">
-                            All your favorite posts are shown here. To remove a post 
-                            from favorites, do mouse over the post and click Remove.
+                            The items you saved are shown here. To remove an item 
+                            from saved list, do mouse over the item and click Remove.
                         </div>
                     <div>
 

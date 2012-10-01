@@ -5049,7 +5049,7 @@ a.endPoint="/qa/ajax/bookmark.php";
 webgloo.sc.SimplePopup.init();
 webgloo.sc.SimplePopup.post(a,{"dataType":"json","autoCloseInterval":3000});
 });
-$("a.favorite-post-link").live("click",function(b){b.preventDefault();
+$("a.save-post-link").live("click",function(b){b.preventDefault();
 var a={};
 a.params={};
 a.params.itemId=$(this).attr("id");

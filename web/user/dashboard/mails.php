@@ -79,7 +79,7 @@
                                      </tr>
                                      <tr>
                                         <td><input type="checkbox" name="p[bookmark]" value="true" <?php echo $checked["bookmark"]; ?>/></td>
-                                        <td> When people like or favorite my post </td>
+                                        <td> When people like or save my post </td>
                                     </tr>
                                      <tr>
                                         <td>&nbsp;</td>

@@ -5,7 +5,7 @@ $tabUrlMap  = array(
                 "/user/dashboard/posts.php" => "Posts",
                 "/user/dashboard/comments.php" => "Comments",
                 "/user/dashboard/activities.php" => "Activity",
-                "/user/dashboard/bookmark.php" => "Favorites",
+                "/user/dashboard/bookmark.php" => "Saved",
                 "/user/dashboard/following.php" => "Following"
                );
 
