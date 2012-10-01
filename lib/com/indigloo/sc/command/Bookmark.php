@@ -32,12 +32,12 @@ namespace com\indigloo\sc\command {
                     $message = sprintf(" Success! Like for item %s done.",$title);
                     break ;
                 case UIConstants::SAVE_POST:
-                    $bookmarkDao->favorite($ownerId,$loginId,$name,$itemId,$title);
-                    $message = sprintf("Success! Item %s added to favorites",$title);
+                    $bookmarkDao->save($ownerId,$loginId,$name,$itemId,$title);
+                    $message = sprintf("Success! Item %s added to saved list!",$title);
                     break;
                 case UIConstants::REMOVE_POST :
-                    $bookmarkDao->unfavorite($loginId,$itemId);
-                    $message = sprintf("Success! Item %s removed from favorites",$title);
+                    $bookmarkDao->unsave($loginId,$itemId);
+                    $message = sprintf("Success! Item %s removed from saved list",$title);
                     break ;
                 default :
                     break;

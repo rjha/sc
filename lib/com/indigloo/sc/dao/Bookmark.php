@@ -34,13 +34,13 @@ namespace com\indigloo\sc\dao {
             $this->add($ownerId,$loginId,$name,$itemId,$title,$verb);
         }
 
-        function favorite($ownerId,$loginId,$name,$itemId,$title) {
-             $verb = \com\indigloo\sc\Constants::FAVORITE_VERB ;
+        function save($ownerId,$loginId,$name,$itemId,$title) {
+             $verb = \com\indigloo\sc\Constants::SAVE_VERB ;
              $this->add($ownerId,$loginId,$name,$itemId,$title,$verb);
         }
 
-        function unfavorite($loginId,$itemId) {
-            $verb = \com\indigloo\sc\Constants::FAVORITE_VERB ;
+        function unsave($loginId,$itemId) {
+            $verb = \com\indigloo\sc\Constants::SAVE_VERB ;
             mysql\Bookmark::remove($loginId,$itemId,$verb);
         }
 
