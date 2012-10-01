@@ -18,7 +18,8 @@
     }
 
     .dark-body {
-        background :  url(/css/asset/sc/white-mosaic.png) ;
+        /* background :  url(/css/asset/sc/white-mosaic.png) ; */
+        background-color:#fafafa; 
     }
 
     a:hover { text-decoration:none ; }
@@ -373,7 +374,8 @@
         float:left ;
         padding:8px;
         background-color: white;
-        box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4),0 0px 10px rgba(0, 0, 0, 0.1);
+        /* box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4); */
         min-height:60px;
 
     }
@@ -544,7 +546,7 @@
 
     .item .user .name {
         font-weight : bold ;
-        font-size:16px;
+        /* font-size:16px; */
     }
 
     /* simulate blockquote style */
@@ -558,13 +560,21 @@
     }
 
 
-    .item .toolbar {
-        float:right ;
+    .toolbar {
+        margin-top:20px;
+        border-bottom: 2px solid #F8D575 ;
+        border-top: 2px solid #F8D575 ;
     }
 
-    .item .toolbar .btn-mini {
-        font-weight :bold ;
-        padding : 4px 8px;
+    .tools li {
+        float:left ;
+        position: relative;
+        padding: 5px 10px 5px 20px;
+
+    }
+
+    .tools a {
+        color: #333 ;
     }
 
     .section {
@@ -572,7 +582,7 @@
         padding:15px 20px 15px 20px;
         margin-bottom:10px;
         margin-top:10px;
-        border-top:1px solid rgba(0,0,0,0.05);
+        border-top:1px solid rgba(0,0,0,0.03);
         overflow:hidden ;
     }
 
@@ -844,7 +854,7 @@
         line-height: 18px ;
         padding: 10px 20px 6px 20px;
         margin-bottom: 6px;
-        border-bottom: 1px solid whiteSmoke ;
+        /* border-bottom: 1px solid whiteSmoke ; */
 
     }
 

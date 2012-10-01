@@ -243,10 +243,27 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        static function getSitePanel($siteMetaRow,$sitePostRows) {
-
+        static function getSiteMeta($siteMetaRow) {
             if(empty($siteMetaRow)) {
                 //no site information available
+                return "" ;
+            }
+
+            $html = NULL ;
+            $template = '/fragments/item/site-meta.tmpl' ;
+            
+            $view = new \stdClass;
+            $view->siteId = $siteMetaRow["id"];
+            $view->siteUrl = $siteMetaRow["canonical_url"];
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+        static function getSitePanel($sitePostRows) {
+
+            if(sizeof($sitePostRows) == 0 ) {
                 return "" ;
             }
 
@@ -254,17 +271,11 @@ namespace com\indigloo\sc\html {
             $template = '/fragments/item/site-panel.tmpl' ;
             $view = new \stdClass;
 
-            $view->siteId = $siteMetaRow["id"];
-            $view->siteUrl = $siteMetaRow["canonical_url"];
-            $view->hasSite = true ;
-            $view->hasPosts = false ;
-
             $posts = array();
             foreach($sitePostRows as $row) {
                 $postView = self::createPostView($row);
                 if($postView->hasImage) {
                     array_push($posts,$postView);
-                    $view->hasPosts = true ;
                 }
             }
 
@@ -273,7 +284,7 @@ namespace com\indigloo\sc\html {
             return $html ;
 
         }
-
+        
         static function getWidget($postDBRow,$options=NULL) {
 
             $html = NULL ;

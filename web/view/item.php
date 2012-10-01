@@ -76,13 +76,13 @@
 
                     ?>
                     </div>
-                    <div class="section">
+                    <div class="section1">
 
-                        <?php echo \com\indigloo\sc\html\Post::getSitePanel($siteMetaRow,$sitePostRows); ?>
+                        <?php echo \com\indigloo\sc\html\Post::getSitePanel($sitePostRows); ?>
                         
                         <div class="mt20">
                             <blockquote>
-                                 <span class="faded-text b"> Related items</span>
+                                 <span class="faded-text b">Related items</span>
                             </blockquote>
 
 
@@ -99,6 +99,16 @@
 
                 </div>
                 <div class="span3 wbg">
+                    <div class="section1">
+                        <div class="item">
+                            <div class="user">
+                                <span class="name"><a href="<?php echo $postView->userPageURI ?>" target="_blank"><?php echo $postView->userName ?></a> </span>
+                                <br> 
+                                <span class="faded-text">posted</span>
+                                
+                            </div>
+                        </div>
+                    </div>
 
                     <?php echo \com\indigloo\sc\html\Post::getGroups($postView); ?>
 
@@ -114,20 +124,13 @@
                         <div class="g-plusone" data-size="tall" data-href="<?php echo $itemObj->netLink;?>" data-annotation="none" data-width="200"></div>
 
                     </div>
+                    <?php echo \com\indigloo\sc\html\Post::getSiteMeta($siteMetaRow); ?>
 
 
                 </div>
 
 
             </div>
-
-            <div id="feedback" class="vertical">
-                <a href="/site/contact.php">
-                    <br>
-                    F e e d b a c k
-                </a>
-            </div>  <!-- feedback -->
-
 
         </div> <!-- container -->
 

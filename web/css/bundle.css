@@ -1032,7 +1032,7 @@ button::-moz-focus-inner{border:0;padding:0}
 html,html#nojs{height:100%}
 html#js{height:100%}
 body{font-size:13px;font-family:"HelveticaNeue","Helvetica Neue",Helvetica,Verdana,Arial,sans-serif;position:relative;background-color:white;padding-top:50px}
-.dark-body{background:url(/css/asset/sc/white-mosaic.png)}
+.dark-body{background-color:#fafafa}
 a:hover{text-decoration:none}
 a img{border:0}
 form{margin:0;padding:0}
@@ -1119,7 +1119,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #image-preview .container .options{position:absolute;overflow:hidden;z-index:100;display:none;background-color:#f7f7f7;margin:0;padding:0;height:36px;width:100%}
 #image-preview .container .options .links{padding:5px 5px 5px 60px;font-size:11px;line-height:16px}
 #image-preview .container .options .links a{color:#222;font-weight:bold}
-.tile{width:204px;margin:4px 2px 4px 2px;float:left;padding:8px;background-color:white;box-shadow:0 1px 2px rgba(34,25,25,0.4);min-height:60px}
+.tile{width:204px;margin:4px 2px 4px 2px;float:left;padding:8px;background-color:white;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1);min-height:60px}
 .tile .options{position:absolute;overflow:hidden;z-index:100;display:none;background-color:#f7f7f7;margin:0;padding:0;top:0;left:0;height:30px;width:100%}
 .tile .options .links{padding:5px 5px 10px 30px;font-size:11px;line-height:16px}
 .tile .options .links a{color:#2b2b2b;font-weight:bold}
@@ -1144,11 +1144,12 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #item-page .form-table{width:610px}
 #item-page .form-table textarea{width:100%;height:60px}
 .item .title{color:#222;font-size:19px;font-weight:bold;line-height:1em;padding-bottom:10px}
-.item .user .name{font-weight:bold;font-size:16px}
+.item .user .name{font-weight:bold}
 .quote{margin-bottom:10px;padding-bottom:10px;border-left:4px solid #eee;padding-left:20px;overflow:hidden}
-.item .toolbar{float:right}
-.item .toolbar .btn-mini{font-weight:bold;padding:4px 8px}
-.section{min-height:20px;padding:15px 20px 15px 20px;margin-bottom:10px;margin-top:10px;border-top:1px solid rgba(0,0,0,0.05);overflow:hidden}
+.toolbar{margin-top:20px;border-bottom:2px solid #f8d575;border-top:2px solid #f8d575}
+.tools li{float:left;position:relative;padding:5px 10px 5px 20px}
+.tools a{color:#333}
+.section{min-height:20px;padding:15px 20px 15px 20px;margin-bottom:10px;margin-top:10px;border-top:1px solid rgba(0,0,0,0.03);overflow:hidden}
 .section1{min-height:20px;padding:15px 20px 15px 20px;margin-bottom:10px;margin-top:10px;overflow:hidden}
 .section3{min-height:20px;padding:15px 20px 1px 20px;margin-bottom:10px;margin-top:1px;overflow:hidden}
 #gallery{height:auto;padding-top:1px}
@@ -1196,7 +1197,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #site-toolbar .dropdown-menu li>a:hover,#site-toolbar .dropdown-menu .active>a,#site-toolbar .dropdown-menu .active>a:hover{color:#222;font-weight:normal;text-decoration:underline;background-color:inherit}
 #submenu-col2{width:360px;display:block;overflow:hidden}
 #submenu-col2 ul{float:left;width:50%;list-style:none;margin:0 auto}
-#site-navigator{font-size:13px;line-height:18px;padding:10px 20px 6px 20px;margin-bottom:6px;border-bottom:1px solid whiteSmoke}
+#site-navigator{font-size:13px;line-height:18px;padding:10px 20px 6px 20px;margin-bottom:6px}
 #site-navigator a{color:#444;cursor:pointer}
 #site-toolbar .caret{border-top-color:black}
 #site-navigator .dropdown-menu a{color:#333;font-weight:normal}
