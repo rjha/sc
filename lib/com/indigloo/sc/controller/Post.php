@@ -131,14 +131,11 @@ namespace com\indigloo\sc\controller{
              * ------------------------------------------
              * 
              * 1) groups (tags) are priority #1 for matching
-             * first check against sc_post.group_slug index (not polluted by other data)
-             * fetch 12
+             * do exact match against sc_post.group_slug index 
+             * (not polluted by other data like description etc.)
              * 
              * 2) Next try to do a "related items" match via quorum operator
-             * use sc_post.title + sc_post.group_slug against posts index.
-             * # of hits is 3
-             * 
-             * 3) bring the remaining "related posts" using category
+             * use sc_post.title against posts index - # of hits is 3
              * 
              * 
              */
@@ -158,7 +155,6 @@ namespace com\indigloo\sc\controller{
 
             }
 
-
             if(sizeof($xrows) < 20 ) {
                 
                 $limit = 20 - (sizeof($xrows)) ;
@@ -169,6 +165,7 @@ namespace com\indigloo\sc\controller{
                 $searchIds = $sphinx->getRelatedPosts($searchToken,3,0,$limit);
                 //unique search ids?
                 $searchIds = array_diff($searchIds,$xids);
+
                 //xids for next iteration
                 $xids = array_merge($searchIds,$xids);
 
