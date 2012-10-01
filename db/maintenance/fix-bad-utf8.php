@@ -64,6 +64,7 @@
 
     $mysqli = MySQL\Connection::getInstance()->getHandle();
     detect_bad_utf8($mysqli,true);
-
-
+    
+    //close resources
+    $mysqli->close();
 ?>

@@ -49,4 +49,7 @@
     $key = AppConstants::SET_WEEK_NEWS ;
     add_set($mysqli,"root",$name,$key,37);
 
+    //close resources
+    $mysqli->close();
+
 

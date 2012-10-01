@@ -248,4 +248,6 @@
     sleep(1);
     post_to_feed($mysqli);
 
+    //close resources
+    $mysqli->close();
 ?>
