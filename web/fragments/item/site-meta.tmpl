@@ -8,12 +8,9 @@
 
     
     ~if($view->hasSite){~
-        <span class="faded-text">from&nbsp;~~$view->siteUrl~</span>
-        <div class="mt10">
-            <a class="btn" target="_blank" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">
-                <span>Visit website&nbsp;&gt;</span>
-            </a>
-        </div>
+        <span class="faded-text">from&nbsp;</span>
+        <a class="b" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">~~$view->siteUrl~</a>
+        
     ~}~
    
 </div>
