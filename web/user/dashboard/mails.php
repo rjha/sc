@@ -88,7 +88,7 @@
                                 </tbody>
                                 </table>
                                     <div class="form-actions2">
-                                        <button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button>
+                                        <button class="btn btn-primary" type="submit" name="save" value="Save"><span>Submit</span></button>
                                     </div>
                                 <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
                         </form>

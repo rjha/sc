@@ -94,7 +94,7 @@
 
 
                         <div class="form-actions">
-                            <button class="btn btn-primary" type="submit" name="register" value="Register" onclick="this.setAttribute('value','Register');" ><span>Sign in</span></button>
+                            <button class="btn btn-primary" type="submit" name="register" value="Register"><span>Sign in</span></button>
 
                         </div>
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />

@@ -117,7 +117,7 @@
                             </table>
 
                             <div class="form-actions">
-                                <button class="btn btn-primary" type="submit" name="login" value="Login" onclick="this.setAttribute('value','Login');" ><span>Login</span></button>
+                                <button class="btn btn-primary" type="submit" name="login" value="Login"><span>Login</span></button>
                                 
                                 &nbsp;&nbsp;
                                 <a href="/user/account/mail-password.php">Forgot your password?</a>

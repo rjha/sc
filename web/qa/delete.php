@@ -64,7 +64,7 @@
 
                     <form id="web-form1"  name="web-form1" action="/qa/form/delete.php" method="POST">
                         <div>
-                            <button class="btn btn-danger" type="submit" name="delete" value="Delete" onclick="this.setAttribute('value','Delete');">Delete</button>
+                            <button class="btn btn-danger" type="submit" name="delete" value="Delete">Delete</button>
                             <a href="<?php echo $qUrl; ?>"><button class="btn" type="button">Cancel</a></button></a>
                         </div>
                         <input type="hidden" name="q" value="<?php echo $qUrl; ?>" />
