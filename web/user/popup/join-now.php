@@ -47,15 +47,19 @@
     $googleAuthUrl .= "&redirect_uri=".urlencode($googleCallback) ;
 ?>
 
+<p class="comment-text">
+    You can use your existing facebook, google or twitter account to sign up.
+    You can also sign up using your email.
+</p>
 
 <div id="zocial-grid">
     <div class="grid-row"> 
         <div class="column">
-            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Facebook Sign up</a>&nbsp;
+            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">&nbsp;&nbsp;Facebook</a>&nbsp;
         </div>
 
         <div class="column">
-            <a class="zocial twitter" href="/user/twitter-login.php">Twitter Sign up</a>&nbsp;
+            <a class="zocial twitter" href="/user/twitter-login.php">&nbsp;&nbsp;Twitter</a>&nbsp;
         </div>
     </div>
     <div class="clear"> </div>
@@ -63,7 +67,7 @@
     <div class="grid-row"> 
 
         <div class="column">
-             <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Google Sign up</a>&nbsp;
+             <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">&nbsp;&nbsp;Google</a>&nbsp;
         </div>
 
         <div class="column">
@@ -73,8 +77,8 @@
     <div class="clear"> </div>
 
     <div class="grid-row"> 
-        <div class="column">
-            have 3mik account?
+        <div class="column2">
+            Already have a 3mik account?
             <a href="/user/login.php">login</a>
         </div>
     </div>

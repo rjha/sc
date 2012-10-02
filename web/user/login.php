@@ -83,15 +83,15 @@
                     </p>
                     <div id="zocial-grid">
                         <div class="column">
-                            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Facebook Sign in</a>&nbsp;
+                            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">&nbsp;&nbsp;Facebook</a>&nbsp;
                         </div>
 
                         <div class="column">
-                             <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Google Sign in</a>&nbsp;
+                             <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">&nbsp;&nbsp;Google</a>&nbsp;
                         </div>
 
                         <div class="column">
-                            <a class="zocial twitter" href="/user/twitter-login.php">Twitter Sign in</a>&nbsp;
+                            <a class="zocial twitter" href="/user/twitter-login.php">&nbsp;&nbsp;Twitter</a>&nbsp;
                         </div>
 
                     </div> <!-- zocial-grid -->
