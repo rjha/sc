@@ -5350,9 +5350,34 @@ button::-moz-focus-inner {
 
     }
 
-    .item .user .name {
-        font-weight : bold ;
-        /* font-size:16px; */
+    .user .name {
+        color: #FE63BB;
+        font-size: 15px;
+        font-weight:bold;
+        text-shadow : 0 1px rgba(255, 255, 255, 0.3) ;
+    }
+
+    .user .name:hover {
+        text-decoration: underline;
+    }
+
+    .user .follow-user-link {
+        width:50px;
+        font-weight: bold;
+        line-height:14px;
+    }
+
+    #item-site-link {
+        color: #222222;
+        font-size: 18px;
+        font-weight:bold;
+        line-height:1em ;
+        padding-bottom:10px;
+
+    }
+
+    #item-site-link:hover {
+        text-decoration: underline;
     }
 
     /* simulate blockquote style */
@@ -5381,6 +5406,10 @@ button::-moz-focus-inner {
 
     .tools a {
         color: #333 ;
+    }
+
+    .tools a:hover {
+        text-decoration: underline ;
     }
 
     .section {
@@ -5701,7 +5730,7 @@ button::-moz-focus-inner {
         color:#FCF9F9 ;
         background : #E64D5C;
         font-weight:bold ;
-        font-size:16px;
+        font-size:15px;
         font-family:"Myriad Pro",myriad,arial,sans-serif ;
     }
 

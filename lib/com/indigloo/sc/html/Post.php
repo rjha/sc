@@ -92,8 +92,7 @@ namespace com\indigloo\sc\html {
 
             //toolbar stuff
 
-            $postView->followerId = $loginIdInSession;
-            $postView->followingId = $postView->loginId;
+            
 
             //edit item
             $postView->isLoggedInUser = false ;
@@ -137,25 +136,6 @@ namespace com\indigloo\sc\html {
             }
 
             $template = '/fragments/item/links.tmpl' ;
-            $html = Template::render($template,$view);
-            return $html;
-        }
-
-        static function getToolbar($loginIdInSession,$postLoginId, $itemId) {
-            $view = new \stdClass;
-            $view->itemId = $itemId;
-            $view->followerId = $loginIdInSession;
-            $view->followingId = $postLoginId;
-
-            //edit item
-            $view->isLoggedInUser = false ;
-            if(!is_null($loginIdInSession) && ($loginIdInSession == $postLoginId)) {
-                $view->isLoggedInUser = true ;
-                $params = array('id' => $itemId , 'q' => urlencode(Url::current()));
-                $view->editUrl = Url::createUrl('/qa/edit.php',$params);
-            }
-
-            $template = '/fragments/item/toolbar.tmpl' ;
             $html = Template::render($template,$view);
             return $html;
         }
@@ -236,30 +216,18 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        static function getUserPanel($postView) {
+        static function getUserPanel($postView,$loginIdInSession) {
+
+            $postView->followerId = $loginIdInSession;
+            $postView->followingId = $postView->loginId;
+
             $html = NULL ;
             $template = '/fragments/item/user-panel.tmpl' ;
             $html = Template::render($template,$postView);
             return $html ;
         }
 
-        static function getSiteMeta($view,$siteMetaRow) {
-            $view->hasSite = false ;
-
-            if(!empty($siteMetaRow)) {
-                $view->hasSite = true ;
-                $view->siteId = $siteMetaRow["id"];
-                $view->siteUrl = $siteMetaRow["canonical_url"];
-            }
-
-            $html = NULL ;
-            $template = '/fragments/item/site-meta.tmpl' ;
-            $html = Template::render($template,$view);
-            return $html ;
-
-        }
-
-        static function getSitePanel($sitePostRows) {
+        static function getSitePanel($siteMetaRow,$sitePostRows) {
 
             if(sizeof($sitePostRows) == 0 ) {
                 return "" ;
@@ -268,6 +236,14 @@ namespace com\indigloo\sc\html {
             $html = NULL ;
             $template = '/fragments/item/site-panel.tmpl' ;
             $view = new \stdClass;
+
+            if(!empty($siteMetaRow)) {
+                $view->hasSite = true ;
+                $view->siteId = $siteMetaRow["id"];
+                $view->siteUrl = $siteMetaRow["canonical_url"];
+            }
+
+           
 
             $posts = array();
             foreach($sitePostRows as $row) {

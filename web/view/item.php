@@ -78,11 +78,11 @@
                     </div>
                     <div class="section1">
 
-                        <?php echo \com\indigloo\sc\html\Post::getSitePanel($sitePostRows); ?>
+                        <?php echo \com\indigloo\sc\html\Post::getSitePanel($siteMetaRow,$sitePostRows); ?>
                         
                         <div class="mt20">
                             <blockquote>
-                                 <span class="faded-text b">Related items</span>
+                                 <span class="faded-text">Related items</span>
                             </blockquote>
 
 
@@ -100,7 +100,7 @@
                 </div>
                 <div class="span3 wbg">
                     
-                    <?php echo \com\indigloo\sc\html\Post::getSiteMeta($postView,$siteMetaRow); ?>
+                    <?php echo \com\indigloo\sc\html\Post::getUserPanel($postView,$loginIdInSession); ?>
                     <?php echo \com\indigloo\sc\html\Post::getGroups($postView); ?>
 
 
