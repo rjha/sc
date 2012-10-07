@@ -140,5 +140,18 @@ use $sudo vim -u /home/rjha/.vimrc <file>
 
 
 
+gVim
+----------
+
+#reload vimrc file
+
+:source ~/.vimrc
+
+#nerdtree
+copy deploy/apps/vim/autoload/pathogen.vim to ~/.vim/
+cd ~/.vim/bundle
+git clone https://github.com/scrooloose/nerdtree.git
+
+ 
 
 

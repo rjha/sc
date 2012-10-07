@@ -1,5 +1,6 @@
 
 
+
 Merge selective files/folder from another branch
 -------------------------------------------------
 
@@ -141,8 +142,8 @@ git log --after=2012-05-07 --pretty=oneline > logs
 
 
 
-Dealing with bad pulls
----------------------------
+revert a bad pull
+----------------------
 
 $git pull origin master
 whoops? want to revert? 
@@ -157,5 +158,9 @@ $git status
 
 
 
+revert a bad merge
+----------------------
+rjha@crunchbang12:~/code/github/sc$ git reset --hard HEAD^
+HEAD is now at ef58743 removed visit website button
 
 
