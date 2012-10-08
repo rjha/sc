@@ -89,11 +89,7 @@ namespace com\indigloo\sc\html {
         }
 
         static function getHeader($postView,$loginIdInSession) {
-
-            //toolbar stuff
-
             
-
             //edit item
             $postView->isLoggedInUser = false ;
             if(!is_null($loginIdInSession) && ($loginIdInSession == $postView->loginId)) {
@@ -218,7 +214,7 @@ namespace com\indigloo\sc\html {
 
         static function getUserPanel($postView,$loginIdInSession) {
 
-            $postView->followerId = $loginIdInSession;
+            $postView->followerId = (empty($loginId)) ? "{loginId}" : $loginId ;
             $postView->followingId = $postView->loginId;
 
             $html = NULL ;
