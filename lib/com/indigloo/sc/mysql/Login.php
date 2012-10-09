@@ -44,7 +44,14 @@ namespace com\indigloo\sc\mysql {
          * sc_denorm_user (via a trigger)
          *
          */
-        static function create($provider,$userName,$firstName,$lastName,$email,$password){
+        static function create(
+            $provider,
+            $userName,
+            $firstName,
+            $lastName,
+            $email,
+            $password,
+            $remoteIp){
 
             $dbh = NULL ;
             
@@ -54,7 +61,7 @@ namespace com\indigloo\sc\mysql {
                 $email = strtolower(trim($email));
                 $password = trim($password);
 
-                $sql1 = "insert into sc_login (provider,name,created_on) values(:provider,:name,now()) " ;
+                $sql1 = "insert into sc_login (provider,name,ip_address,created_on) values(:provider,:name, :ip_address,now()) " ;
                 $flag = true ;
 
                 $dbh =  PDOWrapper::getHandle();
@@ -64,6 +71,8 @@ namespace com\indigloo\sc\mysql {
                 $stmt = $dbh->prepare($sql1);
                 $stmt->bindParam(":name", $userName);
                 $stmt->bindParam(":provider", $provider);
+                $stmt->bindParam(":ip_address", $remoteIp);
+
                 $flag = $stmt->execute();
 
                 if(!$flag){
@@ -83,7 +92,8 @@ namespace com\indigloo\sc\mysql {
                                 $userName,
                                 $email,
                                 $password,
-                                $loginId);
+                                $loginId,
+                                $remoteIp);
 
 
                 //Tx end
@@ -113,17 +123,18 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function updateAccessToken($loginId, $access_token, $expires) {
+        static function updateTokenIp($loginId, $access_token, $expires,$remoteIp) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " update sc_login set access_token = ? , expire_on = %s where id = ? " ;
+            $sql = " update sc_login set access_token = ? , expire_on = %s, " ;
+            $sql .= " ip_address = ?, updated_on = now() where id = ? " ;
             $expiresOn = "(now() + interval ".$expires. " second)";
             $sql = sprintf($sql,$expiresOn);
             
             $stmt = $mysqli->prepare($sql);
             
             if ($stmt) {
-                $stmt->bind_param("si",$access_token,$loginId);
+                $stmt->bind_param("ssi",$access_token,$remoteIp,$loginId);
                 $stmt->execute();
 
                 if ($mysqli->affected_rows != 1) {
@@ -135,6 +146,27 @@ namespace com\indigloo\sc\mysql {
             }
 
         }
+
+        static function updateIp($loginId,$remoteIp) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = " update sc_login set ip_address = ?, updated_on = now() where id = ? " ; 
+            $stmt = $mysqli->prepare($sql);
+
+            if ($stmt) {
+                $stmt->bind_param("si",$remoteIp,$loginId);
+                $stmt->execute();
+
+                if ($mysqli->affected_rows != 1) {
+                    MySQL\Error::handle($stmt);
+                }
+                $stmt->close();
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
+
+        }
+
 
     }
 }

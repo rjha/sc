@@ -1333,8 +1333,143 @@ alter table sc_comment_archive modify column title  varchar(128) not null ;
 alter table sc_comment_archive modify column login_id int  not null ;
 
 
+
+
 --
--- @next push
+-- ipv4 -> ipv6 would require 45 chars
+-- ABCD:ABCD:ABCD:ABCD:ABCD:ABCD:192.168.158.190
+-- 
+
 --
+-- ip_address when records are created
+--
+
+alter table sc_user add column ip_address varchar(46) ;
+alter table sc_facebook add column ip_address varchar(46) ;
+alter table sc_twitter add column ip_address varchar(46) ;
+
+alter table sc_google_user add column ip_address varchar(46) ;
+alter table sc_denorm_user add column ip_address varchar(46) ;
+-- ip_address for current login
+alter table sc_login add column ip_address varchar(46) ;
+
+
+--
+-- update sc_denorm_user_copy triggers
+--
+
+
+DROP TRIGGER IF EXISTS trg_google_user_cp;
+
+DELIMITER //
+CREATE TRIGGER trg_google_user_cp  BEFORE INSERT ON sc_google_user
+    FOR EACH ROW
+    BEGIN
+        insert into sc_denorm_user(
+            login_id,
+            name,
+            first_name,
+            last_name,
+            email,
+            provider,
+            photo_url,
+            ip_address,
+            created_on)
+        values(
+            NEW.login_id,
+            NEW.name,
+            NEW.first_name,
+            NEW.last_name,
+            NEW.email,
+            'google', 
+            NEW.photo,
+            NEW.ip_address,
+            now()) ;
+    END //
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS  trg_fb_user_cp ;
+
+DELIMITER //
+CREATE TRIGGER trg_fb_user_cp  BEFORE INSERT ON sc_facebook
+    FOR EACH ROW
+    BEGIN
+        insert into sc_denorm_user(
+            login_id,
+            name,
+            first_name,
+            last_name,
+            email,
+            provider,
+            website,
+            ip_address,
+            created_on)
+        values(
+            NEW.login_id,
+            NEW.name,
+            NEW.first_name,
+            NEW.last_name,
+            NEW.email,
+            'facebook', 
+            NEW.link, 
+            NEW.ip_address,
+            now()) ;
+    END //
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS  trg_twitter_user_cp ;
+
+DELIMITER //
+CREATE TRIGGER trg_twitter_user_cp  BEFORE INSERT ON sc_twitter
+    FOR EACH ROW
+    BEGIN
+        insert into sc_denorm_user(
+            login_id,
+            name,
+            nick_name,
+            provider,
+            photo_url,
+            location,
+            ip_address,
+            created_on)
+        values(
+            NEW.login_id,
+            NEW.name,
+            NEW.screen_name,
+            'twitter',
+            NEW.profile_image,
+            NEW.location,
+            NEW.ip_address, 
+            now()) ;
+    END //
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS  trg_mik_user_cp ;
+
+DELIMITER //
+CREATE TRIGGER trg_mik_user_cp  BEFORE INSERT ON sc_user
+    FOR EACH ROW
+    BEGIN
+        insert into sc_denorm_user(
+            login_id,
+            name,
+            first_name,
+            last_name,
+            email,
+            provider,
+            ip_address,
+            created_on)
+        values(
+            NEW.login_id,
+            NEW.user_name,
+            NEW.first_name,
+            NEW.last_name,
+            NEW.email,
+            '3mik',
+            NEW.ip_address,
+            now());
+
+    END //
+DELIMITER ;
 
 

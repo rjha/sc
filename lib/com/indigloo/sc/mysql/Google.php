@@ -40,12 +40,20 @@ namespace com\indigloo\sc\mysql {
          *
          *
          */
-        static function create($googleId,$email,$name,$firstName,$lastName,$photo,$provider){
+        static function create(
+            $googleId,
+            $email,
+            $name,
+            $firstName,
+            $lastName,
+            $photo,
+            $provider,
+            $remoteIp){
             
              $dbh = NULL ;
              
              try {
-                $sql1 = "insert into sc_login (provider,name,created_on) values(:provider,:name,now()) " ;
+                $sql1 = "insert into sc_login(provider,name,ip_address,created_on) values(:provider,:name, :ip_address,now()) " ;
                 $flag = true ;
 
                 $dbh =  PDOWrapper::getHandle();
@@ -55,6 +63,8 @@ namespace com\indigloo\sc\mysql {
                 $stmt = $dbh->prepare($sql1);
                 $stmt->bindParam(":name", $name);
                 $stmt->bindParam(":provider", $provider);
+                $stmt->bindParam(":ip_address", $remoteIp);
+
                 $flag = $stmt->execute();
 
                 if(!$flag){
@@ -68,8 +78,8 @@ namespace com\indigloo\sc\mysql {
                 settype($loginId, "integer");
 
                 $sql2 = " insert into sc_google_user(google_id,email,name,first_name,last_name," ;
-                $sql2 .= " photo,login_id,created_on) " ;
-                $sql2 .= " values(?,?,?,?,?,?,?,now()) ";
+                $sql2 .= " photo,login_id,ip_address,created_on) " ;
+                $sql2 .= " values(?,?,?,?,?,?,?,?,now()) ";
 
                 $stmt = $dbh->prepare($sql2);
                 $stmt->bindParam(1, $googleId);
@@ -79,6 +89,7 @@ namespace com\indigloo\sc\mysql {
                 $stmt->bindParam(5, $lastName);
                 $stmt->bindParam(6, $photo);
                 $stmt->bindParam(7, $loginId);
+                $stmt->bindParam(8, $remoteIp);
 
                 $flag = $stmt->execute();
 

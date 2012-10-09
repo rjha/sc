@@ -8,8 +8,10 @@
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Logger ;
     use \com\indigloo\Constants as Constants ;
+
     use \com\indigloo\exception\UIException as UIException;
     use \com\indigloo\exception\DBException as DBException;
+
 
     if (isset($_POST['register']) && ($_POST['register'] == 'Register')) {
 
@@ -50,9 +52,10 @@
             //canonical email - all lower case
             $email = strtolower(trim($fvalues['email']));
             $password = trim($fvalues['password']);
-            $flag = \com\indigloo\auth\User::login('sc_user',$email,$password);
 
-            if ($flag < 0 ) {
+            $loginId = \com\indigloo\auth\User::login('sc_user',$email,$password);
+
+            if (empty($loginId) || is_null($loginId)) {
                 $message = "Wrong login or password. Please try again!";
                 throw new UIException(array($message));
             }
@@ -61,6 +64,7 @@
             \com\indigloo\sc\auth\Login::startMikSession();
             //add overlay message
             $message = "success! Thanks for joining ".$fvalues['first_name'];
+
             $gWeb->store("global.overlay.message", $message);
             header("Location: /");
 

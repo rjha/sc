@@ -51,13 +51,14 @@ namespace com\indigloo\sc\mysql {
             $email,
             $provider,
             $access_token,
-            $expires){
+            $expires,
+            $remoteIp){
             
              $dbh = NULL ;
              
              try {
-                $sql1 = "insert into sc_login (provider,name,created_on,access_token,expire_on) " ;
-                $sql1 .= " values(:provider,:name,now(),:access_token, %s) " ;
+                $sql1 = "insert into sc_login (provider,name,created_on,access_token,expire_on,ip_address) " ;
+                $sql1 .= " values(:provider,:name,now(),:access_token, %s, :ip_address) " ;
                 $flag = true ;
 
                 $dbh =  PDOWrapper::getHandle();
@@ -71,7 +72,8 @@ namespace com\indigloo\sc\mysql {
                 $stmt->bindParam(":name", $name);
                 $stmt->bindParam(":provider", $provider);
                 $stmt->bindParam(":access_token", $access_token);
-                
+                $stmt->bindParam(":ip_address", $remoteIp);
+
                 $flag = $stmt->execute();
 
                 if(!$flag){
@@ -85,8 +87,8 @@ namespace com\indigloo\sc\mysql {
                 settype($loginId, "integer");
 
                 $sql2 = " insert into sc_facebook(facebook_id,name,first_name,last_name,link,gender," ;
-                $sql2 .= " email,login_id,created_on) " ;
-                $sql2 .= " values(?,?,?,?,?,?,?,?,now()) ";
+                $sql2 .= " email,login_id,ip_address,created_on) " ;
+                $sql2 .= " values(?,?,?,?,?,?,?,?,?,now()) ";
 
                 $stmt = $dbh->prepare($sql2);
                 $stmt->bindParam(1, $facebookId);
@@ -97,6 +99,7 @@ namespace com\indigloo\sc\mysql {
                 $stmt->bindParam(6, $gender);
                 $stmt->bindParam(7, $email);
                 $stmt->bindParam(8, $loginId);
+                $stmt->bindParam(9, $remoteIp);
 
                 $flag = $stmt->execute();
 

@@ -58,6 +58,7 @@ CREATE TABLE  sc_facebook  (
    link  varchar(128) ,
    gender  varchar(8) ,
    email  varchar(64) ,
+   ip_address varchar(46),
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
@@ -65,14 +66,35 @@ CREATE TABLE  sc_facebook  (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
+DROP TRIGGER IF EXISTS  trg_fb_user_cp ;
+
 DELIMITER //
 CREATE TRIGGER trg_fb_user_cp  BEFORE INSERT ON sc_facebook
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,website,created_on)
-        values(NEW.login_id,NEW.name,NEW.first_name,NEW.last_name,NEW.email, 'facebook', NEW.link, now()) ;
+        insert into sc_denorm_user(
+            login_id,
+            name,
+            first_name,
+            last_name,
+            email,
+            provider,
+            website,
+            ip_address,
+            created_on)
+        values(
+            NEW.login_id,
+            NEW.name,
+            NEW.first_name,
+            NEW.last_name,
+            NEW.email,
+            'facebook', 
+            NEW.link, 
+            NEW.ip_address,
+            now()) ;
     END //
 DELIMITER ;
+
 
 
 DROP TABLE IF EXISTS  sc_feature_group ;
@@ -140,6 +162,7 @@ CREATE TABLE  sc_login  (
    name  varchar(32) NOT NULL,
    provider  varchar(16) NOT NULL,
    access_token text ,
+   ip_address varchar(46),
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    expire_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -331,6 +354,7 @@ CREATE TABLE  sc_twitter  (
    screen_name  varchar(32) ,
    profile_image  varchar(128) ,
    location  varchar(32) ,
+   ip_address varchar(46),
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
@@ -338,12 +362,30 @@ CREATE TABLE  sc_twitter  (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
+DROP TRIGGER IF EXISTS  trg_twitter_user_cp ;
+
 DELIMITER //
 CREATE TRIGGER trg_twitter_user_cp  BEFORE INSERT ON sc_twitter
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,nick_name,provider,photo_url,location,created_on)
-        values(NEW.login_id,NEW.name,NEW.screen_name,'twitter',NEW.profile_image,NEW.location, now()) ;
+        insert into sc_denorm_user(
+            login_id,
+            name,
+            nick_name,
+            provider,
+            photo_url,
+            location,
+            ip_address,
+            created_on)
+        values(
+            NEW.login_id,
+            NEW.name,
+            NEW.screen_name,
+            'twitter',
+            NEW.profile_image,
+            NEW.location,
+            NEW.ip_address, 
+            now()) ;
     END //
 DELIMITER ;
 
@@ -360,6 +402,7 @@ CREATE TABLE  sc_user  (
    is_admin  int(11) DEFAULT '0',
    is_active  int(11) NOT NULL DEFAULT '1',
    salt  varchar(16) NOT NULL,
+   ip_address varchar(46),
    login_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -368,17 +411,35 @@ CREATE TABLE  sc_user  (
   UNIQUE KEY  uniq_email  ( email )
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-
+DROP TRIGGER IF EXISTS  trg_mik_user_cp ;
 
 DELIMITER //
 CREATE TRIGGER trg_mik_user_cp  BEFORE INSERT ON sc_user
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,created_on)
-        values(NEW.login_id,NEW.user_name,NEW.first_name,NEW.last_name,NEW.email, '3mik', now());
+        insert into sc_denorm_user(
+            login_id,
+            name,
+            first_name,
+            last_name,
+            email,
+            provider,
+            ip_address,
+            created_on)
+        values(
+            NEW.login_id,
+            NEW.user_name,
+            NEW.first_name,
+            NEW.last_name,
+            NEW.email,
+            '3mik',
+            NEW.ip_address,
+            now());
 
     END //
 DELIMITER ;
+
+
 
 DROP TABLE IF EXISTS  sc_user_group ;
 CREATE TABLE  sc_user_group  (
@@ -444,6 +505,7 @@ create table sc_denorm_user(
     about_me varchar(512),
     age int ,
     gender varchar(1) ,
+    ip_address varchar(46),
 	created_on TIMESTAMP  default '0000-00-00 00:00:00',
     updated_on TIMESTAMP   default '0000-00-00 00:00:00',
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -478,6 +540,7 @@ CREATE TABLE  sc_google_user  (
    last_name  varchar(32) ,
    photo  varchar(128) ,
    email  varchar(64) ,
+   ip_address varchar(46),
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
@@ -485,12 +548,33 @@ CREATE TABLE  sc_google_user  (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
+
+DROP TRIGGER IF EXISTS trg_google_user_cp;
+
 DELIMITER //
 CREATE TRIGGER trg_google_user_cp  BEFORE INSERT ON sc_google_user
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,photo_url,created_on)
-        values(NEW.login_id,NEW.name,NEW.first_name,NEW.last_name,NEW.email, 'google', NEW.photo,now()) ;
+        insert into sc_denorm_user(
+            login_id,
+            name,
+            first_name,
+            last_name,
+            email,
+            provider,
+            photo_url,
+            ip_address,
+            created_on)
+        values(
+            NEW.login_id,
+            NEW.name,
+            NEW.first_name,
+            NEW.last_name,
+            NEW.email,
+            'google', 
+            NEW.photo,
+            NEW.ip_address,
+            now()) ;
     END //
 DELIMITER ;
 
@@ -524,8 +608,6 @@ CREATE TABLE  sc_preference (
   PRIMARY KEY ( id )) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 alter table  sc_preference add constraint UNIQUE uniq_login (login_id);
-
-
 
 
 
