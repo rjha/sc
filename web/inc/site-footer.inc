@@ -1,6 +1,6 @@
 
 <div id="footer">
-    All rights reserved (2012-2013)  3mik.com  </div>
+    All rights reserved (2012-2013)  3mik.com
 
 </div>
 

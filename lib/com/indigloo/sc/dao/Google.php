@@ -13,6 +13,7 @@ namespace com\indigloo\sc\dao {
 
             //is existing record?
             $googleId = trim($googleId);
+            $remoteIp =  \com\indigloo\Url::getRemoteIp();
             $row = $this->getOnId($googleId); 
 
             if(empty($row)){
@@ -20,12 +21,20 @@ namespace com\indigloo\sc\dao {
                 Logger::getInstance()->info($message);
                 
                 $provider = \com\indigloo\sc\auth\Login::GOOGLE ;
-                $loginId = mysql\Google::create($googleId,$email,$name,$firstName,
-                                                $lastName,$photo,$provider) ;
+                $loginId = mysql\Google::create(
+                    $googleId,
+                    $email,
+                    $name,
+                    $firstName,
+                    $lastName,
+                    $photo,
+                    $provider,
+                    $remoteIp) ;
                                         
             } else {
                 //found
                 $loginId = $row['login_id'];
+                mysql\Login::updateIp($loginId,$remoteIp);
             }
 
             return $loginId ;

@@ -8,6 +8,7 @@
     use com\indigloo\ui\form as Form;
     use com\indigloo\Constants as Constants ;
     use \com\indigloo\exception\UIException as UIException;
+    use \com\indigloo\sc\mysql as mysql;
 
     if (isset($_POST['login']) && ($_POST['login'] == 'Login')) {
         try{
@@ -31,15 +32,20 @@
             //canonical email - all lower case
             $email = strtolower(trim($fvalues['email']));
             $password = trim($fvalues['password']);
-            $flag = \com\indigloo\auth\User::login('sc_user',$email,$password);
+            $loginId = \com\indigloo\auth\User::login('sc_user',$email,$password);
 
-            if ($flag < 0 ) {
+            if (empty($loginId) || is_null($loginId)) {
                 $message = "Wrong login or password. Please try again!";
                 throw new UIException(array($message));
             }
 
-            //success set our own session variables
+            //success - update login record
+            // start 3mik session
+            $remoteIp = \com\indigloo\Url::getRemoteIp();
+            mysql\Login::updateIp($loginId,$remoteIp);
             \com\indigloo\sc\auth\Login::startMikSession();
+           
+
             header("Location: ".$qUrl);
             exit ;
 

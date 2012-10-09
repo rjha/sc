@@ -27,12 +27,19 @@ namespace com\indigloo\sc\mysql {
             return $row ;
         }
 
-        static function create($twitterId,$name,$screenName,$location,$image,$provider){
+        static function create(
+            $twitterId,
+            $name,
+            $screenName,
+            $location,
+            $image,
+            $provider,
+            $remoteIp){
 
             $dbh = NULL ;
             
             try {
-                $sql1 = "insert into sc_login (provider,name,created_on) values(:provider,:name,now()) " ;
+                $sql1 = "insert into sc_login (provider,name,ip_address,created_on) values(:provider,:name, :ip_address,now()) " ;
                 $flag = true ;
 
                 $dbh =  PDOWrapper::getHandle();
@@ -42,6 +49,8 @@ namespace com\indigloo\sc\mysql {
                 $stmt = $dbh->prepare($sql1);
                 $stmt->bindParam(":name", $name);
                 $stmt->bindParam(":provider", $provider);
+                $stmt->bindParam(":ip_address", $remoteIp);
+
                 $flag = $stmt->execute();
 
                 if(!$flag){
@@ -55,8 +64,8 @@ namespace com\indigloo\sc\mysql {
                 settype($loginId, "integer");
 
                 $sql2 = " insert into sc_twitter(twitter_id,name,screen_name,location, " ;
-                $sql2 .= " profile_image,login_id,created_on) " ;
-                $sql2 .= " values(?,?,?,?,?,?,now()) ";
+                $sql2 .= " profile_image,login_id,ip_address,created_on) " ;
+                $sql2 .= " values(?,?,?,?,?,?,?,now()) ";
 
                 $stmt = $dbh->prepare($sql2);
                 $stmt->bindParam(1, $twitterId);
@@ -65,6 +74,7 @@ namespace com\indigloo\sc\mysql {
                 $stmt->bindParam(4, $location);
                 $stmt->bindParam(5, $image);
                 $stmt->bindParam(6, $loginId);
+                $stmt->bindParam(7, $remoteIp);
 
                 $flag = $stmt->execute();
 

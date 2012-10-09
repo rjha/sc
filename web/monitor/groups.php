@@ -74,7 +74,7 @@
                                 
                                 <input type="hidden" name="q" value="<?php echo Url::current(); ?>" />
                                 <div class="p10">
-                                    <button class="btn gBtnUp b" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Update</span></button>
+                                    <button class="btn gBtnUp b" type="submit" name="save" value="Save"><span>Update</span></button>
                                  
                                 </div>
                             </form>

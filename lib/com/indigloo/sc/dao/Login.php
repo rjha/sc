@@ -20,7 +20,15 @@ namespace com\indigloo\sc\dao {
             }
 
             $userName = $firstName. ' '.$lastName ;
-            mysql\Login::create($provider,$userName,$firstName,$lastName,$email,$password);
+            $remoteIp = \com\indigloo\Url::getRemoteIp();
+            mysql\Login::create(
+                $provider,
+                $userName,
+                $firstName,
+                $lastName,
+                $email,
+                $password,
+                $remoteIp);
 
         }
 
