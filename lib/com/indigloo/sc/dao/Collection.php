@@ -16,8 +16,8 @@ namespace com\indigloo\sc\dao {
 
     class Collection {
 
-        function sadd($key,$member,$source) {
-            mysql\Collection::sadd($key,$member,$source);
+        function sadd($key,$member) {
+            mysql\Collection::sadd($key,$member);
         }
 
         function srem($key,$member) {
@@ -29,8 +29,8 @@ namespace com\indigloo\sc\dao {
            return $rows ;
         }
 
-        function uizadd($key,$member,$source) {
-            mysql\Collection::uizadd($key,$member,$source);
+        function uizadd($key,$member) {
+            mysql\Collection::uizadd($key,$member);
         }
 
         function uizrem($key,$member) {

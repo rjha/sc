@@ -598,46 +598,6 @@ CREATE TABLE  sc_preference (
 alter table  sc_preference add constraint UNIQUE uniq_login (login_id);
 
 
-DROP TABLE IF EXISTS  sc_ds_meta ;
-
-CREATE TABLE  sc_ds_meta (
-  id  int(11) NOT NULL AUTO_INCREMENT,
-  max_size int default -1,
-  name varchar(32) not null,
-  dskey varchar(32) not null,
-  hash BINARY(16) not null,
-  class varchar(16),
-  container varchar(8),
-  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id )
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-alter table sc_ds_meta add constraint UNIQUE uniq_hash(hash);
-
-
-DELIMITER //
-CREATE TRIGGER trg_dsmeta_del BEFORE DELETE ON sc_ds_meta
-    FOR EACH ROW
-    BEGIN
-        IF (OLD.container = "set") THEN 
-            delete from sc_set where set_hash = OLd.hash ;
-        END IF;
-
-       IF (OLD.container = "zset") THEN 
-            delete from sc_ui_zset where set_hash = OLd.hash ;
-        END IF;
-
-        IF (OLD.container = "ui:zset") THEN 
-            delete from sc_ui_zset where set_hash = OLd.hash ;
-        END IF;
-     
-      
-    END //
-DELIMITER ;
-
-
 
 --
 -- for sc_ui_zset 
@@ -688,16 +648,16 @@ DROP TABLE IF EXISTS  sc_set ;
 CREATE TABLE  sc_set (
   id  int(11) NOT NULL AUTO_INCREMENT,
   set_hash BINARY(16) not null,
-  set_key varchar(32) not null,
+  set_key varchar(64) not null,
   member varchar(64) not null,
-  source varchar(8) not null,
+  member_hash binary(16) not null,
   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-alter table sc_set add constraint UNIQUE uniq_mem(set_hash,member);
+alter table sc_set add constraint UNIQUE uniq_mem(set_hash,member_hash);
 
 
 
@@ -705,7 +665,7 @@ DELIMITER //
 CREATE TRIGGER trg_set_add  BEFORE INSERT ON sc_set
     FOR EACH ROW
     BEGIN
-      IF (unhex(md5("set:sys:fposts")) = NEW.set_hash ) THEN 
+      IF (NEW.set_hash = unhex(md5("set:sys:fposts")) ) THEN 
         update sc_post set fp_bit = 1 where id = NEW.member ;
       END IF ;
     END //
@@ -716,7 +676,7 @@ DELIMITER //
 CREATE TRIGGER trg_set_del  BEFORE DELETE ON sc_set
     FOR EACH ROW
     BEGIN
-      IF (unhex(md5("set:sys:fposts")) = OLD.set_hash ) THEN 
+      IF ( OLD.set_hash = unhex(md5("set:sys:fposts"))) THEN 
         update sc_post set fp_bit = 0 where id = OLD.member ;
       END IF ;
     END //

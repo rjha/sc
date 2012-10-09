@@ -26,13 +26,9 @@
 
             //system and UI collections
             const SET_FEATURED_POST = "set:sys:fposts" ;
-            const SET_FEATURED_GROUP = "set:sys:fgroup" ;
+            const HASH_FEATURED_GROUP = "hash:sys:fgroups" ;
             const SET_WEEK_NEWS = "set:sys:wnews" ;
             const UI_ZSET_CATEGORY = "ui:zset:category";
-
-            //set smember sources
-            const MEMBER_ITEM = "item" ;
-            const MEMBER_GROUP = "group";
 
             //DB Error codes
             const DUPKEY_ERROR_CODE = 1062 ;

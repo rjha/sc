@@ -32,12 +32,12 @@
         switch($action) {
             case UIConstants::FEATURE_POST :
                 //set:key, member, source 
-                $collectionDao->sadd(AppConstants::SET_FEATURED_POST,$postId,AppConstants::MEMBER_ITEM);
-                $message = sprintf("success! %s %s added to featured posts",AppConstants::MEMBER_ITEM,$postId);
+                $collectionDao->sadd(AppConstants::SET_FEATURED_POST,$postId);
+                $message = sprintf("success! item %s added to featured posts",$postId);
                 break ;
             case UIConstants::UNFEATURE_POST :
                 $collectionDao->srem(AppConstants::SET_FEATURED_POST,$postId);
-                $message = sprintf("success! %s %s removed from featured posts",AppConstants::MEMBER_ITEM,$postId);
+                $message = sprintf("success! item %s removed from featured posts",$postId);
                 break ;
             default:
                 trigger_error("Unknown UI action", E_USER_ERROR);

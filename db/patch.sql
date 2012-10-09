@@ -1339,54 +1339,6 @@ alter table sc_comment_archive modify column login_id int  not null ;
 -- 19 sept 2012
 -- 
 
-
-
-DROP TABLE IF EXISTS  sc_ds_meta ;
-
-CREATE TABLE  sc_ds_meta (
-  id  int(11) NOT NULL AUTO_INCREMENT,
-  max_size int default -1,
-  name varchar(32) not null,
-  dskey varchar(32) not null,
-  hash BINARY(16) not null,
-  class varchar(16),
-  container varchar(8),
-  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id )
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-alter table sc_ds_meta add constraint UNIQUE uniq_hash(hash);
-
-
-DELIMITER //
-CREATE TRIGGER trg_dsmeta_del BEFORE DELETE ON sc_ds_meta
-    FOR EACH ROW
-    BEGIN
-        IF (OLD.container = "set") THEN 
-            delete from sc_set where set_hash = OLd.hash ;
-        END IF;
-
-       IF (OLD.container = "zset") THEN 
-            delete from sc_ui_zset where set_hash = OLd.hash ;
-        END IF;
-
-        IF (OLD.container = "ui:zset") THEN 
-            delete from sc_ui_zset where set_hash = OLd.hash ;
-        END IF;
-     
-      
-    END //
-DELIMITER ;
-
-
---
--- first create sc_ui_zset
---
-
-
-
 drop table if exists sc_ui_zset;
 create table sc_ui_zset(
     id int(11) NOT NULL auto_increment,
@@ -1402,7 +1354,6 @@ create table sc_ui_zset(
 
 alter table sc_ui_zset add constraint UNIQUE uniq_code(set_hash,ui_code);
 alter table sc_ui_zset add constraint UNIQUE uniq_seo(set_hash,seo_key);
-
 
 -- 
 -- copy category data from sc_list to sc_ui_zset
@@ -1424,23 +1375,21 @@ DROP TABLE IF EXISTS  sc_set ;
 CREATE TABLE  sc_set (
   id  int(11) NOT NULL AUTO_INCREMENT,
   set_hash BINARY(16) not null,
-  set_key varchar(32) not null,
+  set_key varchar(64) not null,
   member varchar(64) not null,
-  source varchar(8) not null,
+  member_hash  BINARY(16) not null,
   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-alter table sc_set add constraint UNIQUE uniq_mem(set_hash,member);
-
 
 DELIMITER //
 CREATE TRIGGER trg_set_add  BEFORE INSERT ON sc_set
     FOR EACH ROW
     BEGIN
-      IF (unhex(md5("set:sys:fposts")) = NEW.set_hash ) THEN 
+      IF (NEW.set_hash = unhex(md5("set:sys:fposts")) ) THEN 
         update sc_post set fp_bit = 1 where id = NEW.member ;
       END IF ;
     END //
@@ -1451,11 +1400,41 @@ DELIMITER //
 CREATE TRIGGER trg_set_del  BEFORE DELETE ON sc_set
     FOR EACH ROW
     BEGIN
-      IF (unhex(md5("set:sys:fposts")) = OLD.set_hash ) THEN 
+      IF ( OLD.set_hash = unhex(md5("set:sys:fposts"))) THEN 
         update sc_post set fp_bit = 0 where id = OLD.member ;
       END IF ;
     END //
 DELIMITER ;
+
+DROP TABLE IF EXISTS  sc_hashtable ;
+
+CREATE TABLE  sc_hashtable (
+  id  int(11) NOT NULL AUTO_INCREMENT,
+  t_key varchar(64) not null,
+  t_hash BINARY(16) not null,
+  t_value text not null,
+  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY ( id )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+alter table sc_hashtable add constraint UNIQUE uniq_field(t_hash);
+
+--
+-- populate old sc_feature_group data 
+--
+
+insert into sc_hashtable(
+    t_key,
+    t_hash,
+    t_value,
+    created_on)
+    select "hash:sys:fgroups", 
+        unhex(md5("hash:sys:fgroups")), 
+        slug , 
+        now()
+    from sc_feature_group;
 
 
 
@@ -1466,6 +1445,7 @@ create index idx_fpbit on sc_post(fp_bit) ;
 
 --
 -- 09 oct 2012
+-- changes to store ip_address
 -- 
 -- ipv4 -> ipv6 would require 45 chars
 -- ABCD:ABCD:ABCD:ABCD:ABCD:ABCD:192.168.158.190
@@ -1604,3 +1584,11 @@ CREATE TRIGGER trg_mik_user_cp  BEFORE INSERT ON sc_user
 DELIMITER ;
 
 
+
+--
+-- jot down sc_preferences data 
+-- That data should be populated manually
+--
+--
+-- drop sc_preference, sc_feature_group tables
+-- 

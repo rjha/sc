@@ -14,7 +14,6 @@
     $groupDao = new \com\indigloo\sc\dao\Group();
     $dbslug = $groupDao->getFeatureSlug();
 
-
 ?>
 
 

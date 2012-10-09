@@ -7,6 +7,7 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Constants as Constants ;
 
+    use \com\indigloo\sc\Constants as AppConstants ;
     use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException;
 
@@ -182,15 +183,21 @@ namespace com\indigloo\sc\mysql {
                 trigger_error("User does not have admin rights", E_USER_ERROR);
             }
 
-            $sql = "update sc_feature_group set slug = '%s' where id = 1 ";
-            $sql = sprintf($sql,$slug);
+            $sql = "update sc_hashtable set t_value = '%s' where t_hash = '%s' ";
+            $khash = md5(trim(AppConstants::HASH_FEATURED_GROUP),TRUE);
+            $sql = sprintf($sql,$slug,$khash);
             MySQL\Helper::executeSQL($mysqli,$sql);
 
         }
         
         static function getFeatureSlug() {
+           
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "select slug from sc_feature_group where id = 1 " ;
+            $sql = "select t_value from sc_hashtable where t_hash = '%s' " ;
+
+            $khash = md5(trim(AppConstants::HASH_FEATURED_GROUP),TRUE);
+            $sql = sprintf($sql,$khash);
+            
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
