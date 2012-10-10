@@ -15,7 +15,7 @@ namespace com\indigloo\sc\dao {
             
             if(!empty($row)) {
                 //json stored in DB for this login
-                $strPData = $row["p_data"] ;
+                $strPData = $row["t_value"] ;
                 $pData = json_decode($strPData);
             }
 
