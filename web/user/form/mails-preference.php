@@ -49,7 +49,7 @@
             //save data for this loginId
             $pDataObj = json_encode($pdata);
             $preferenceDao = new \com\indigloo\sc\dao\Preference();
-            $preferenceDao->update($loginId,$pDataObj);
+            $preferenceDao->set($loginId,$pDataObj);
 
 
             $gWeb->store(Constants::FORM_MESSAGES,array("Your settings have been updated."));

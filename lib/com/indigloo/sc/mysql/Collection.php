@@ -126,13 +126,17 @@ namespace com\indigloo\sc\mysql {
 
             //create the key if it does not exist
             // otherwise update
-            $sql = " insert into sc_glob_table(t_key,t_hash,t_value,created_on) values (?,?,?,now()) " ;
+            $sql = " insert into sc_glob_table(t_hash,t_key,t_value,created_on) values (?,?,?,now()) " ;
             $sql .= " on duplicate key update t_value = values(t_value), updated_on = values(created_on) " ;
             
             $stmt = $mysqli->prepare($sql);
             $khash = md5(trim($key),TRUE);
+
+            // printf("key = %s and khash = %s \n",$key,$khash);
+            // exit ;
+
             if ($stmt) {
-                $stmt->bind_param("sss",$key,$khash,$value);
+                $stmt->bind_param("sss",$khash,$key,$value);
                 $stmt->execute();
 
                 if ($mysqli->affected_rows != 1) {

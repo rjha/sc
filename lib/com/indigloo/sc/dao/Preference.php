@@ -8,7 +8,8 @@ namespace com\indigloo\sc\dao {
     class Preference {
 
         function get($loginId) {
-            $row = mysql\Preference::get($loginId);
+            $key = "glob:user:".$loginId.":preference" ;
+            $row = mysql\Collection::glget($key);
             $pData = NULL ;
 
             
@@ -31,8 +32,9 @@ namespace com\indigloo\sc\dao {
             
         }
 
-        function update($loginId,$pData) {
-            mysql\Preference::update($loginId,$pData);
+        function set($loginId,$data) {
+            $key = "glob:user:".$loginId.":preference" ;
+            mysql\Collection::glset($key,$data);
         }
 
     }
