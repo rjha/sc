@@ -131,10 +131,7 @@ namespace com\indigloo\sc\mysql {
             
             $stmt = $mysqli->prepare($sql);
             $khash = md5(trim($key),TRUE);
-
-            // printf("key = %s and khash = %s \n",$key,$khash);
-            // exit ;
-
+            
             if ($stmt) {
                 $stmt->bind_param("sss",$khash,$key,$value);
                 $stmt->execute();
