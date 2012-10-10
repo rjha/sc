@@ -7,14 +7,15 @@
 
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
+    use \com\indigloo\sc\Constants as AppConstants;
+
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
 
         try {
-
-
+            
             $fhandler = new Form\Handler("web-form-1", $_POST);
             $fvalues = $fhandler->getValues();
             $qUrl = $fvalues["q"];
@@ -39,8 +40,9 @@
 
             }
 
-            $groupDao = new \com\indigloo\sc\dao\Group();
-            $groupDao->setFeatureSlug($group_slug);
+            $collectionDao = new \com\indigloo\sc\dao\Collection();
+            $collectionDao->glset(AppConstants::GLOB_FEATURED_GROUP,$group_slug);
+
             //success
             $gWeb->store(Constants::FORM_MESSAGES,array("featured groups list updated!"));
             header("Location: ".$qUrl );

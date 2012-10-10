@@ -80,18 +80,6 @@ namespace com\indigloo\sc\dao {
             return $count ;
         }
 
-        function getFeatureSlug() {
-            $row = mysql\Group::getFeatureSlug();
-            $slug = $row["slug"];
-            return $slug;
-        }
-
-        function setFeatureSlug($slug) {
-            $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
-            mysql\Group::setFeatureSlug($loginId,$slug);
-             
-        }
-
         function slugToGroupsMap($slug){
             if(Util::tryEmpty($slug)) { return array(); }
 

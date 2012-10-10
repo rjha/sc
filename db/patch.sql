@@ -1380,9 +1380,11 @@ CREATE TABLE  sc_set (
   member_hash  BINARY(16) not null,
   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id )
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+create index idx_shash on sc_set(set_hash) ;
+create index idx_smhash on sc_set(set_hash,member_hash) ;
 
 
 DELIMITER //
@@ -1406,32 +1408,30 @@ CREATE TRIGGER trg_set_del  BEFORE DELETE ON sc_set
     END //
 DELIMITER ;
 
-DROP TABLE IF EXISTS  sc_hashtable ;
 
-CREATE TABLE  sc_hashtable (
-  id  int(11) NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS  sc_glob_table ;
+
+CREATE TABLE  sc_glob_table (
   t_key varchar(64) not null,
   t_hash BINARY(16) not null,
   t_value text not null,
   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id )
+  PRIMARY KEY (t_hash)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-alter table sc_hashtable add constraint UNIQUE uniq_field(t_hash);
 
 --
 -- populate old sc_feature_group data 
 --
 
-insert into sc_hashtable(
+insert into sc_glob_table(
     t_key,
     t_hash,
     t_value,
     created_on)
-    select "hash:sys:fgroups", 
-        unhex(md5("hash:sys:fgroups")), 
+    select "glob:sys:fgroups", 
+        unhex(md5("glob:sys:fgroups")), 
         slug , 
         now()
     from sc_feature_group;

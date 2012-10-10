@@ -26,7 +26,7 @@
 
             //system and UI collections
             const SET_FEATURED_POST = "set:sys:fposts" ;
-            const HASH_FEATURED_GROUP = "hash:sys:fgroups" ;
+            const GLOB_FEATURED_GROUP = "glob:sys:fgroups" ;
             const SET_WEEK_NEWS = "set:sys:wnews" ;
             const UI_ZSET_CATEGORY = "ui:zset:category";
 

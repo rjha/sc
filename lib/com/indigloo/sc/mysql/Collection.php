@@ -107,6 +107,56 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        /*
+         * why use values() function inside sql statmenet?
+         * http://dev.mysql.com/doc/refman/5.0/en/miscellaneous-functions.html#function_values
+         * 
+         * from the manual 
+         * -------------------------------------------------------------------------------
+         * you can use the VALUES(col_name) function in the UPDATE clause to refer to 
+         * column values from the INSERT portion of the statement. In other words, 
+         * VALUES(col_name) in the UPDATE clause refers to the value of col_name that would 
+         * be inserted, had no duplicate-key conflict occurred.
+         * -------------------------------------------------------------------------------
+         * 
+         */
+        static function glset($key,$value) {
+          
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //create the key if it does not exist
+            // otherwise update
+            $sql = " insert into sc_glob_table(t_key,t_hash,t_value,created_on) values (?,?,?,now()) " ;
+            $sql .= " on duplicate key update t_value = values(t_value), updated_on = values(created_on) " ;
+            
+            $stmt = $mysqli->prepare($sql);
+            $khash = md5(trim($key),TRUE);
+            if ($stmt) {
+                $stmt->bind_param("sss",$key,$khash,$value);
+                $stmt->execute();
+
+                if ($mysqli->affected_rows != 1) {
+                    MySQL\Error::handle($stmt);
+                }
+                $stmt->close();
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
+
+        }
+
+        static function glget($key) {
+
+            $khash = md5(trim($key),TRUE);
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "select t_value from sc_glob_table where t_hash = '%s'" ;
+            $sql = sprintf($sql,$khash);
+
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+
         
     }
 }

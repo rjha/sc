@@ -11,9 +11,10 @@
     use \com\indigloo\sc\Constants as AppConstants;
     use \com\indigloo\ui\form\Message as FormMessage;
 
-    $groupDao = new \com\indigloo\sc\dao\Group();
-    $dbslug = $groupDao->getFeatureSlug();
-
+    $collectionDao = new \com\indigloo\sc\dao\Collection();
+    $row = $collectionDao->glget(AppConstants::GLOB_FEATURED_GROUP);
+    $dbslug = empty($row) ? "" : $row["t_value"] ;
+    
 ?>
 
 

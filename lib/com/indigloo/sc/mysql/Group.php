@@ -169,39 +169,6 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
-        static function setFeatureSlug($loginId,$slug) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-
-            //sanitize input
-            settype($loginId,"integer");
-            $slug = $mysqli->real_escape_string($slug);
-
-            //operation needs admin privileges
-            //read privileges from sc_user table
-            $mikUserRow = \com\indigloo\sc\mysql\MikUser::getOnLoginId($loginId);
-            if($mikUserRow['is_admin'] != 1 ){
-                trigger_error("User does not have admin rights", E_USER_ERROR);
-            }
-
-            $sql = "update sc_hashtable set t_value = '%s' where t_hash = '%s' ";
-            $khash = md5(trim(AppConstants::HASH_FEATURED_GROUP),TRUE);
-            $sql = sprintf($sql,$slug,$khash);
-            MySQL\Helper::executeSQL($mysqli,$sql);
-
-        }
-        
-        static function getFeatureSlug() {
-           
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "select t_value from sc_hashtable where t_hash = '%s' " ;
-
-            $khash = md5(trim(AppConstants::HASH_FEATURED_GROUP),TRUE);
-            $sql = sprintf($sql,$khash);
-            
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-        }
-
         static function process($postId,$loginId,$version,$catCode,$group_slug) {
 
             //sanitize input

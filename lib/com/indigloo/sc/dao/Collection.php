@@ -52,6 +52,15 @@ namespace com\indigloo\sc\dao {
            return $rows ;
         }
 
+        function glset($key,$value) {
+           mysql\Collection::glset($key,$value);
+        }
+
+        function glget($key) {
+          $row = mysql\Collection::glget($key);
+          return $row ;
+        }
+
     }
 
 }
