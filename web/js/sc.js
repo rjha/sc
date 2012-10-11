@@ -428,6 +428,43 @@ webgloo.sc.item = {
             });
         }) ;
 
+         //unfeature posts
+        $("a.ban-user").click(function(event){
+            event.preventDefault();
+
+            var dataObj = {} ;
+            dataObj.params = {} ;
+            dataObj.params.userId  = $(this).attr("id");
+            dataObj.params.action = "BAN" ;
+            dataObj.endPoint = "/monitor/action/user/tag.php";
+
+            //open popup
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.post(dataObj,{
+                "dataType" : "json",
+                "reload" : true
+            });
+        }) ;
+
+         //unfeature posts
+        $("a.taint-user").click(function(event){
+            event.preventDefault();
+
+            var dataObj = {} ;
+            dataObj.params = {} ;
+            dataObj.params.userId  = $(this).attr("id");
+            dataObj.params.action = "TAINT" ;
+            dataObj.endPoint = "/monitor/action/user/tag.php";
+
+            //open popup
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.post(dataObj,{
+                "dataType" : "json",
+                "reload" : true
+            });
+        }) ;
+
+
     },
 
     addActions : function() {

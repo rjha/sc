@@ -9,6 +9,7 @@ namespace com\indigloo\sc\util{
     
     class Nest {
 
+        //redis keys
         static function following($entity,$id) {
             return sprintf("sc:%s:%s:following",$entity,$id);
         }
@@ -45,6 +46,7 @@ namespace com\indigloo\sc\util{
             return "sc:global:feeds" ;
         }
         
+        // DB keys 
         static function fposts() {
             return "set:sys:fposts" ;
         }
@@ -59,6 +61,10 @@ namespace com\indigloo\sc\util{
 
         static function preference($entity,$id) {
              return sprintf("glob:%s:%s:preference",$entity,$id);
+        }
+
+        static function getTaggedSet($entity,$label) {
+            return sprintf("set:sys:%s:%s",$entity,$label) ;
         }
 
     }

@@ -186,8 +186,28 @@
                  
             </div>
         </div> <!-- container -->
-        <?php $paginator->render('/monitor/users.php', $startId, $endId); ?>
+        <div class="mt20">
+            <?php $paginator->render('/monitor/users.php', $startId, $endId); ?>
+        </div>
 
+        <script>
+            $(document).ready(function(){
+                //show options on widget hover
+                $('.widget').mouseenter(function() {
+                    $(this).find('.options').css("visibility", "visible");
+                    $(this).css("background-color", "#FEFDF1");
+                });
+                $('.widget').mouseleave(function() {
+                    $(this).find('.options').css("visibility", "hidden");
+                    $(this).css("background-color", "#FFFFFF");
+                }); 
+
+                webgloo.sc.item.addAdminActions();
+
+
+            });
+
+        </script>
 
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

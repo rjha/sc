@@ -1,26 +1,34 @@
-<div class="section">
-  <i class="icon icon-th"> </i>
-  &nbsp;&nbsp;
-  ~if($view["last24hr"]){~
-    <span class="label label-important">Last 24HR</span>
-    &nbsp;&nbsp;
-  ~}~
+<div class="widget">
+    <div class="options">
+        <div class="links">
+            <a id="~~$view["id"]~" href="#" class="ban-user">Ban user</a>
+            &nbsp;|&nbsp;
+            <a id="~~$view["id"]~" href="#" class="taint-user">Taint user</a>
+             
+        </div>
+    </div> <!-- options -->
 
-  <span> ~~$view["pubId"]~ </span> 
-  &nbsp;&nbsp;
-  <span class="b"> ~~$view["provider"]~ </span> 
+  <div class="comment-text">
+      ~if($view["last24hr"]){~
+        <span class="label label-important">Last 24HR</span>
+        &nbsp;
+      ~}~
 
-  <div class="p5">
+      <span> ~~$view["pubId"]~ </span> &nbsp;
+      <span class="b"> ~~$view["provider"]~ </span> 
+      <br>
+
       ~~$view["name"]~ &nbsp;
       (<a href="mailto:~~$view["email"]~">~~$view["email"]~</a>) &nbsp;
       ~~$view["location"]~ 
-  </div> 
- 
-  <div class="faded-text"> 
-    <a href="/pub/user/~~$view["pubId"]~" target="_blank">3mik page&nbsp;</a> 
-    &nbsp; ~~$view["createdOn"]~ 
+      <br> 
+     
+      <span class="faded-text"> 
+        <a href="/pub/user/~~$view["pubId"]~" target="_blank">3mik page&nbsp;</a> 
+        &nbsp; ~~$view["createdOn"]~ 
+      </span>
+      
+      <span> <a href="~~$view["website"]~" target="_blank">~~$view["website"]~</a> </span> 
   </div>
-
-  <span> <a href="~~$view["website"]~" target="_blank">~~$view["website"]~</a> </span> 
 </div>
     
