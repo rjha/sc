@@ -62,7 +62,7 @@
                             <tr>
                                 <td>
                                     <div class="form-actions">
-                                        <button class="btn btn-primary" type="submit" name="save" value="Save"><span>Submit</span></button>
+                                        <button class="btn gBtnUp" type="submit" name="save" value="Save"><span>Submit</span></button>
                                     </div>
 
                                 </td>
