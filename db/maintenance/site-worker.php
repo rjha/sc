@@ -212,15 +212,12 @@
 
     //this script is locked via site-worker.sh shell script
     $mysqli = MySQL\Connection::getInstance()->getHandle();
-    /*
+   
     process_sites($mysqli);
     sleep(1);
     process_groups($mysqli);
-    sleep(1); */
+    sleep(1); 
     process_mail_queue($mysqli);
-    exit ;
-
-    /*
     sleep(1);
 
     $session_backend = Config::getInstance()->get_value("session.backend");
@@ -236,6 +233,6 @@
 
     //release resources
     $mysqli->close();
-    $redis->quit(); */
+    $redis->quit(); 
 
    ?>
