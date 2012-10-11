@@ -15,6 +15,8 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\Logger as Logger;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\Constants as AppConstants;
+
+    use \com\indigloo\sc\util\Nest as Nest;
     use \com\indigloo\connection\Redis as Redis;
 
     class ActivityFeed {
@@ -41,17 +43,16 @@ namespace com\indigloo\sc\dao {
                 $redis = Redis::getInstance()->connection();
 
                 // get global job queueId
-                $jobId = $redis->incr("sc:global:nextJobId");
+                $jobId = $redis->incr(Nest::jobId());
                 $feedVO->jobId = $jobId;
                 $strFeedVO = json_encode($feedVO);
-
-                $key1 = sprintf("sc:user:%s:following", $followerId);
-                $key2 = sprintf("sc:user:%s:activities", $followerId);
-                $key3 = sprintf("sc:user:%s:followers", $followingId);
-                $key4 = sprintf("sc:user:%s:activities", $followingId);
-
-                $key5 = sprintf("sc:user:%s:feeds", $followerId);
-                $key6 = sprintf("sc:user:%s:feeds", $followingId);
+                
+                $key1 = Nest::following("user",$followerId);
+                $key2 = Nest::activities("user", $followerId);
+                $key3 = Nest::followers("user",$followingId);
+                $key4 = Nest::activities("user", $followingId);
+                $key5 = Nest::feeds("user",$followerId);
+                $key6 = Nest::feeds("user",$followingId);
 
                 // Add jobId to global:queue:new list
                 // Add feed(job) to sc:global:jobs hash - jobId field
@@ -61,10 +62,10 @@ namespace com\indigloo\sc\dao {
                 // Add to follower and following feeds.
 
                 $redis->pipeline()
-                        ->lpush("sc:global:queue:new", $jobId)
-                        ->hset("sc:global:jobs", $jobId, $strFeedVO)
-                        ->lpush("sc:global:feeds", $strFeedVO)
-                        ->ltrim("sc:global:feeds", 0, 1000)
+                        ->lpush(Nest::queue(), $jobId)
+                        ->hset(Nest::jobs(), $jobId, $strFeedVO)
+                        ->lpush(Nest::global_feeds(), $strFeedVO)
+                        ->ltrim(Nest::global_feeds(), 0, 1000)
                         ->sadd($key1, $followingId)
                         ->lpush($key2, $strFeedVO)
                         ->sadd($key3, $followerId)
@@ -91,8 +92,8 @@ namespace com\indigloo\sc\dao {
             try {
                 $redis = Redis::getInstance()->connection();
 
-                $key1 = sprintf("sc:user:%s:following", $followerId);
-                $key2 = sprintf("sc:user:%s:followers", $followingId);
+                $key1 = Nest::following("user",$followerId);
+                $key2 = Nest::followers("user",$followingId);
 
                 // remove $followerId from $followingId's followers set
                 // remove $followingId from $followerId's following set
@@ -138,19 +139,19 @@ namespace com\indigloo\sc\dao {
                 // 6) push to subject's followers's feed.
                 // 
 
-                $jobId = $redis->incr("sc:global:nextJobId");
+                $jobId = $redis->incr(Nest::jobId());
                 $feedVO->jobId = $jobId;
                 $strFeedVO = json_encode($feedVO);
 
-                $key1 = sprintf("sc:post:%s:feeds", $itemId);
-                $key2 = sprintf("sc:post:%s:subscribers", $itemId);
-                $key3 = sprintf("sc:user:%s:activities", $loginId);
+                $key1 = Nest::feeds("post",$itemId);
+                $key2 = Nest::subscribers("post",$itemId);
+                $key3 = Nest::activities("user",$loginId);
 
                 $redis->pipeline()
-                        ->lpush("sc:global:queue:new", $jobId)
-                        ->hset("sc:global:jobs", $jobId, $strFeedVO)
-                        ->lpush("sc:global:feeds", $strFeedVO)
-                        ->ltrim("sc:global:feeds", 0, 1000)
+                        ->lpush(Nest::queue(), $jobId)
+                        ->hset(Nest::jobs(), $jobId, $strFeedVO)
+                        ->lpush(Nest::global_feeds(), $strFeedVO)
+                        ->ltrim(Nest::global_feeds(), 0, 1000)
                         ->lpush($key1, $strFeedVO)
                         ->sadd($key2, $loginId)
                         ->lpush($key3, $strFeedVO)
@@ -188,14 +189,14 @@ namespace com\indigloo\sc\dao {
 
             try {
                 $redis = Redis::getInstance()->connection();
-                $jobId = $redis->incr("sc:global:nextJobId");
+                $jobId = $redis->incr(Nest::jobId());
                 $feedVO->jobId = $jobId;
                 $strFeedVO = json_encode($feedVO);
 
-                $key1 = sprintf("sc:user:%s:activities", $loginId);
-                $key2 = sprintf("sc:user:%s:feeds", $loginId);
-                $key3 = sprintf("sc:post:%s:subscribers", $itemId);
-
+                $key1 = Nest::activities("user",$loginId);
+                $key2 = Nest::feeds("user",$loginId);
+                $key3 = Nest::subscribers("post",$itemId);
+                
                 // Add jobId to global:queue:new list
                 // Add feed(job) to sc:global:jobs hash - jobId field
                 // Add to  global feeds, trim to 1000
@@ -208,10 +209,10 @@ namespace com\indigloo\sc\dao {
                 
 
                 $redis->pipeline()
-                        ->lpush("sc:global:queue:new", $jobId)
-                        ->hset("sc:global:jobs", $jobId, $strFeedVO)
-                        ->lpush("sc:global:feeds", $strFeedVO)
-                        ->ltrim("sc:global:feeds", 0, 1000)
+                        ->lpush(Nest::queue(), $jobId)
+                        ->hset(Nest::jobs(), $jobId, $strFeedVO)
+                        ->lpush(Nest::global_feeds(), $strFeedVO)
+                        ->ltrim(Nest::global_feeds(), 0, 1000)
                         ->lpush($key1, $strFeedVO)
                         ->lpush($key2, $strFeedVO)
                         ->sadd($key3, $loginId)
@@ -249,7 +250,7 @@ namespace com\indigloo\sc\dao {
                 $redis = Redis::getInstance()->connection();
 
                 // get global job queueId
-                $jobId = $redis->incr("sc:global:nextJobId");
+                $jobId = $redis->incr(Nest::jobId());
                 $feedVO->jobId = $jobId;
                 $strFeedVO = json_encode($feedVO);
 
@@ -262,16 +263,17 @@ namespace com\indigloo\sc\dao {
                 // 
                 // whether we display it or not is up to us.
                 // 
-              
-                $key1 = sprintf("sc:post:%s:subscribers", $itemId);
-                $key2 = sprintf("sc:user:%s:activities", $loginId);
-                $key3 = sprintf("sc:post:%s:feeds", $itemId);
                 
+                $key1 = Nest::subscribers("post",$itemId);
+                $key2 = Nest::activities("user",$loginId);
+                $key3 = Nest::feeds("post",$itemId);
+
+               
                 $redis->pipeline()
-                        ->lpush("sc:global:queue:new", $jobId)
-                        ->hset("sc:global:jobs", $jobId, $strFeedVO)
-                        ->lpush("sc:global:feeds", $strFeedVO)
-                        ->ltrim("sc:global:feeds", 0, 1000)
+                        ->lpush(Nest::queue(), $jobId)
+                        ->hset(Nest::jobs(), $jobId, $strFeedVO)
+                        ->lpush(Nest::global_feeds(), $strFeedVO)
+                        ->ltrim(Nest::global_feeds(), 0, 1000)
                         ->sadd($key1, $loginId)
                         ->lpush($key2, $strFeedVO)
                         ->lpush($key3, $strFeedVO)
@@ -292,24 +294,24 @@ namespace com\indigloo\sc\dao {
         
         function fanoutOnPost($redis, $itemId, $value) {
             //fan-out to followers
-            $key = sprintf("sc:post:%s:subscribers", $itemId);
+            $key = Nest::subscribers("post",$itemId) ;
             $followers = $redis->smembers($key);
 
             foreach ($followers as $followerId) {
                 //push to subscriber's feeds
-                $key = sprintf("sc:user:%s:feeds", $followerId);
+                $key = Nest::feeds("user",$followerId);
                 $redis->lpush($key, $value);
             }
         }
         
         function fanoutOnSubject($redis, $loginId, $value) {
             //fan-out to followers
-            $key = sprintf("sc:user:%s:followers", $loginId);
+            $key = Nest::followers("user",$loginId);
             $followers = $redis->smembers($key);
 
             foreach ($followers as $followerId) {
                 //push to follower's feeds
-                $key = sprintf("sc:user:%s:feeds", $followerId);
+                $key = Nest::feeds("user",$followerId);
                 $redis->lpush($key, $value);
             }
         }
@@ -339,21 +341,21 @@ namespace com\indigloo\sc\dao {
         }
 
         function getGlobalFeeds($limit = 100) {
-            return $this->getList("sc:global:feeds", $limit);
+            return $this->getList(Nest::global_feeds(), $limit);
         }
 
         function getUserActivities($loginId, $limit = 50) {
-            $key = sprintf("sc:user:%s:activities", $loginId);
+            $key = Nest::activities("user",$loginId);
             return $this->getList($key, $limit);
         }
         
         function getUserFeeds($loginId, $limit = 50) {
-            $key = sprintf("sc:user:%s:feeds", $loginId);
+            $key = Nest::feeds("user",$loginId);
             return $this->getList($key, $limit);
         }
         
         function getPostFeeds($itemId, $limit = 10) {
-            $key = sprintf("sc:post:%s:feeds", $itemId);
+            $key = Nest::feeds("post",$itemId);
             return $this->getList($key, $limit);
         }
 

@@ -4,11 +4,12 @@ namespace com\indigloo\sc\dao {
 
     use \com\indigloo\Util as Util ;
     use \com\indigloo\sc\mysql as mysql;
+    use \com\indigloo\sc\util\Nest ;
 
     class Preference {
 
         function get($loginId) {
-            $key = "glob:user:".$loginId.":preference" ;
+            $key = Nest::preference("user",$loginId);
             $row = mysql\Collection::glget($key);
             $pData = NULL ;
 
@@ -33,7 +34,7 @@ namespace com\indigloo\sc\dao {
         }
 
         function set($loginId,$data) {
-            $key = "glob:user:".$loginId.":preference" ;
+            $key = Nest::preference("user",$loginId);
             mysql\Collection::glset($key,$data);
         }
 

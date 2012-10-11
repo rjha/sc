@@ -7,7 +7,7 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\Configuration as Config ;
 
     use \com\indigloo\Constants as Constants;
-    use \com\indigloo\sc\Constants as AppConstants;
+    use \com\indigloo\sc\util\Nest as Nest;
     use \com\indigloo\ui\Pagination as Pagination;
     use \com\indigloo\sc\html\Seo as SeoData ;
 
@@ -17,7 +17,7 @@ namespace com\indigloo\sc\controller{
 
             $seoKey = Util::getArrayKey($params,"category_id");
             $collectionDao = new \com\indigloo\sc\dao\Collection();
-            $zmember = $collectionDao->uizmemberOnSeoKey(AppConstants::UI_ZSET_CATEGORY,$seoKey);
+            $zmember = $collectionDao->uizmemberOnSeoKey(Nest::ui_category(),$seoKey);
 
             if(is_null($zmember) || !isset($zmember["ui_code"])) {
                 $controller = new \com\indigloo\sc\controller\Http404();

@@ -6,6 +6,8 @@
     use \com\indigloo\Util as Util;
     use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\sc\ui\Constants as UIConstants ;
+
+    use \com\indigloo\sc\util\Nest as Nest ;
     use \com\indigloo\sc\Constants as AppConstants ;
     use \com\indigloo\exception\DBException as DBException;
 
@@ -32,11 +34,11 @@
         switch($action) {
             case UIConstants::FEATURE_POST :
                 //set:key, member, source 
-                $collectionDao->sadd(AppConstants::SET_FEATURED_POST,$postId);
+                $collectionDao->sadd(Nest::fposts(),$postId);
                 $message = sprintf("success! item %s added to featured posts",$postId);
                 break ;
             case UIConstants::UNFEATURE_POST :
-                $collectionDao->srem(AppConstants::SET_FEATURED_POST,$postId);
+                $collectionDao->srem(Nest::fposts(),$postId);
                 $message = sprintf("success! item %s removed from featured posts",$postId);
                 break ;
             default:

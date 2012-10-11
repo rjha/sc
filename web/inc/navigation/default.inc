@@ -32,7 +32,7 @@
                                 <ul>
                                 <?php
                                     $collectionDao = new \com\indigloo\sc\dao\Collection();
-                                    $map = $collectionDao->uizmembersAsMap(\com\indigloo\sc\Constants::UI_ZSET_CATEGORY);
+                                    $map = $collectionDao->uizmembersAsMap(\com\indigloo\sc\util\Nest::ui_category());
                                     $count = sizeof($map);
                                     $index = 1 ;
 

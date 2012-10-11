@@ -24,12 +24,6 @@
             const TIME_MDYHM = "%b %e %Y, %R" ;
             const TIME_MDY = "%b %e, %Y" ;
 
-            //system and UI collections
-            const SET_FEATURED_POST = "set:sys:fposts" ;
-            const GLOB_FEATURED_GROUP = "glob:sys:fgroups" ;
-            const SET_WEEK_NEWS = "set:sys:wnews" ;
-            const UI_ZSET_CATEGORY = "ui:zset:category";
-
             //DB Error codes
             const DUPKEY_ERROR_CODE = 1062 ;
 

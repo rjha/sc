@@ -104,7 +104,7 @@
                                         'empty'=>true);
 
                                     $collectionDao = new \com\indigloo\sc\dao\Collection();
-                                    $catRows = $collectionDao->uizmembers(\com\indigloo\sc\Constants::UI_ZSET_CATEGORY);
+                                    $catRows = $collectionDao->uizmembers(\com\indigloo\sc\util\Nest::ui_category());
                                     echo \com\indigloo\ui\SelectBox::render($catRows,$options);
                                   ?>
                                 </td>

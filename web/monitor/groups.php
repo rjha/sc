@@ -8,11 +8,11 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
 
-    use \com\indigloo\sc\Constants as AppConstants;
+    use \com\indigloo\sc\util\Nest  as Nest;
     use \com\indigloo\ui\form\Message as FormMessage;
 
     $collectionDao = new \com\indigloo\sc\dao\Collection();
-    $row = $collectionDao->glget(AppConstants::GLOB_FEATURED_GROUP);
+    $row = $collectionDao->glget(Nest::fgroups());
     $dbslug = empty($row) ? "" : $row["t_value"] ;
     
 ?>

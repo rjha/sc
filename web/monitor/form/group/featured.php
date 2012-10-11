@@ -7,7 +7,7 @@
 
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
-    use \com\indigloo\sc\Constants as AppConstants;
+    use \com\indigloo\sc\util\Nest as Nest;
 
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
@@ -41,7 +41,7 @@
             }
 
             $collectionDao = new \com\indigloo\sc\dao\Collection();
-            $collectionDao->glset(AppConstants::GLOB_FEATURED_GROUP,$group_slug);
+            $collectionDao->glset(Nest::fgroups(),$group_slug);
 
             //success
             $gWeb->store(Constants::FORM_MESSAGES,array("featured groups list updated!"));
