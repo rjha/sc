@@ -26,6 +26,22 @@ namespace com\indigloo\sc\html {
 
         }
 
+        static function getNewAccount($name) {
+
+            $view = new \stdClass;
+            $view->name = $name;
+            
+            $template = '/fragments/mail/text/new-account.tmpl' ;
+            $text = Template::render($template,$view);
+
+            $template = '/fragments/mail/html/new-account.tmpl' ;
+            $html = Template::render($template,$view);
+
+            $data = array('text' => $text , 'html' => $html);
+            return $data;
+
+        }
+
         static function getActivity($name,$feedText,$feedHtml) {
             $view = new \stdClass;
             $view->name = $name;

@@ -1436,6 +1436,23 @@ insert into sc_glob_table(
         now()
     from sc_feature_group;
 
+-- 
+-- transfer the preference data manually
+-- key is glob:user:login_id:preference
+-- 
+-- 
+
+-- change login_id manually
+-- insert into sc_glob_table(t_key,t_hash,t_value,created_on)
+-- select "glob:user:<login_id>:preference",unhex(md5("glob:user:<login_id>:preference")), p_data ,now()
+-- from sc_preference where login_id = <login_id>;
+--
+--
+--
+-- finally drop sc_preference, sc_feature_group tables
+-- 
+
+
 
 
 alter table sc_post drop column is_feature ;
@@ -1496,6 +1513,13 @@ CREATE TRIGGER trg_google_user_cp  BEFORE INSERT ON sc_google_user
             NEW.photo,
             NEW.ip_address,
             now()) ;
+        -- 
+        -- source for new a/c mail :2 
+        --
+        insert into sc_mail_queue(name,email,source,created_on)
+        values(NEW.name,NEW.email,2,now());
+
+
     END //
 DELIMITER ;
 
@@ -1525,6 +1549,10 @@ CREATE TRIGGER trg_fb_user_cp  BEFORE INSERT ON sc_facebook
             NEW.link, 
             NEW.ip_address,
             now()) ;
+
+        insert into sc_mail_queue(name,email,source,created_on)
+        values(NEW.name,NEW.email,2,now());
+
     END //
 DELIMITER ;
 
@@ -1580,15 +1608,39 @@ CREATE TRIGGER trg_mik_user_cp  BEFORE INSERT ON sc_user
             NEW.ip_address,
             now());
 
+        insert into sc_mail_queue(name,email,source,created_on)
+        values(NEW.user_name,NEW.email,2,now());
+
+
+    END //
+DELIMITER ;
+
+
+--
+-- change sc_reset_password table name
+--
+
+
+rename table sc_reset_password to sc_mail_queue ;
+alter table sc_mail_queue add column source int default 0 ;
+
+
+DELIMITER //
+CREATE TRIGGER trg_ac_mail  AFTER INSERT ON sc_denorm_user
+    FOR EACH ROW
+    BEGIN
+       
+            NEW.login_id,
+            NEW.user_name,
+            NEW.first_name,
+            NEW.last_name,
+            NEW.email,
+            '3mik',
+            NEW.ip_address,
+            now());
+
     END //
 DELIMITER ;
 
 
 
---
--- jot down sc_preferences data 
--- That data should be populated manually
---
---
--- drop sc_preference, sc_feature_group tables
--- 

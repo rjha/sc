@@ -8,8 +8,10 @@
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Logger as Logger;
     use \com\indigloo\Util as Util;
+
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\Constants as AppConstants ;
+    use \com\indigloo\sc\Mail as WebMail ;
 
     set_exception_handler('offline_exception_handler');
 
@@ -39,28 +41,50 @@
         }
     }
 
-    function process_reset_password($mysqli) {
+    function process_mail_queue($mysqli) {
 
-        $sql = " select name,email,token from sc_reset_password where flag = 0 order by id limit 50";
+        $sql = " select * from sc_mail_queue where flag = 0 order by id limit 50";
         $map = array();
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
 
         foreach($rows as $row) {
-            $email = $row['email'];
-            if(!in_array($email,$map)){
-                //send mail
-                $code = \com\indigloo\sc\Mail::sendResetPassword($row['name'],$row['email'], $row['token']);
+            $email = $row["email"];
+            $source = $row["source"];
+            settype($source,"integer");
+
+            $khash = md5($email.$source);
+            $name = $row["name"];
+
+            if(!in_array($khash,$map)){
+                // send mail
+                // assume error 
+                $code = 1 ;
+
+                switch($source) {
+                    case AppConstants::RESET_PASSWORD_MAIL :
+                        $code = WebMail::sendResetPassword($name,$email, $row["token"]);
+                        \com\indigloo\sc\mysql\Mail::toggle($email);
+                        array_push($map,$khash);
+                    break ;
+                    case AppConstants::NEW_ACCOUNT_MAIL :
+                        $code = WebMail::newAccountMail($name,$email);
+                    break ;
+                }
+                
                 if($code > 0 ) {
-                    $message = "Error in sending mail. site worker aborting!";
+                    $message = sprintf("code %s - error sending mail. aborting!",$code);
                     throw new Exception($message);
                 }
-                //set db flag to 1.
-                \com\indigloo\sc\mysql\Mail::flipResetPassword($email);
-                array_push($map,$email);
-            }
-        }
 
-        $sql2 = " delete from sc_reset_password where flag = 1 and created_on < (now() - interval 1 HOUR)";
+                //mail went 
+                \com\indigloo\sc\mysql\Mail::toggle($email);
+                array_push($map,$khash);
+                
+            }
+        } //:loop
+
+        //delete old mails in queue 
+        $sql2 = " delete from sc_mail_queue where flag = 1 and created_on < (now() - interval 1 DAY)";
         MySQL\Helper::executeSQL($mysqli, $sql2);
 
     }
@@ -87,7 +111,7 @@
 
         if(!empty($email)) {
             // send text and html to email + name.
-            $code = \com\indigloo\sc\Mail::sendActivityMail($name,$email,$feedText,$feedHtml);
+            $code = WebMail::sendActivityMail($name,$email,$feedText,$feedHtml);
             if($code > 0 ) {
                 $message = "Error in sending mail. site worker aborting!";
                 throw new Exception($message);
@@ -188,11 +212,15 @@
 
     //this script is locked via site-worker.sh shell script
     $mysqli = MySQL\Connection::getInstance()->getHandle();
+    /*
     process_sites($mysqli);
     sleep(1);
     process_groups($mysqli);
-    sleep(1);
-    process_reset_password($mysqli);
+    sleep(1); */
+    process_mail_queue($mysqli);
+    exit ;
+
+    /*
     sleep(1);
 
     $session_backend = Config::getInstance()->get_value("session.backend");
@@ -205,7 +233,9 @@
     //initialize redis connx.
     $redis = \com\indigloo\connection\Redis::getInstance()->connection();
     send_notifications($mysqli,$redis);
+
+    //release resources
     $mysqli->close();
-    $redis->quit();
+    $redis->quit(); */
 
    ?>

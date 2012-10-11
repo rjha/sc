@@ -27,6 +27,10 @@
             //DB Error codes
             const DUPKEY_ERROR_CODE = 1062 ;
 
+            //mail types
+            const RESET_PASSWORD_MAIL = 1 ;
+            const NEW_ACCOUNT_MAIL = 2 ;
+
         }
 }
 ?>
