@@ -803,7 +803,12 @@
     }
 
     .gBtnUp {
-        width:80px; height:32px; margin-bottom:10px;
+        min-width:60px; 
+        height:32px; 
+        margin-bottom:10px;
+        padding-left:20px;
+        padding-right: 20px;
+        font-weight: bold ;
     }
 
     /* +site toolbar , navigation and popup styles */

@@ -39,7 +39,7 @@
 
                     <div class="well">
                         <p class="help-text">
-                           <a class="btn btn-primary" href="/">Home Page</a>
+                           <a class="btn gBtnUp" href="/">Home Page</a>
                         </p>
                     </div>
 

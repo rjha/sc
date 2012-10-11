@@ -128,7 +128,7 @@
                             </table>
 
                             <div class="form-actions">
-                                <button class="btn gBtnUp b" type="submit" name="login" value="Login"><span>Sign in</span></button>
+                                <button class="btn gBtnUp" type="submit" name="login" value="Login"><span>Sign in</span></button>
                                 &nbsp;&nbsp;
                                 <a href="/user/account/mail-password.php">Forgot your password?</a>
                             </div>
