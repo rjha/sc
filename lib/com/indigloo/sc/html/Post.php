@@ -314,7 +314,7 @@ namespace com\indigloo\sc\html {
             
             $view->feature = ($postDBRow['fp_bit'] == 0 ) ? true : false ;
             $view->unfeature = ($postDBRow['fp_bit'] == 1 ) ? true : false ;
-
+            $view->status = ($view->unfeature) ? "F" : "" ;
             $html = Template::render($template,$view);
             return $html ;
 

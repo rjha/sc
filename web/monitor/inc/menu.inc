@@ -1,5 +1,5 @@
 
-<div class="section1 mh600" style="border-right:1px solid;">
+<div style="height:600px;border-right:1px dashed #222;">
 
     <ul class="nav nav-list">
 

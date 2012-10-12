@@ -61,6 +61,19 @@ namespace com\indigloo\sc\dao {
             }
         }
 
+        function ban ($userId) {
+            mysql\User::set_bu_bit($userId,1);
+        }
+
+        function unban ($userId) {
+            mysql\User::set_bu_bit($userId,0);
+        }
+
+        function taint ($userId) {
+            mysql\User::set_tu_bit($userId,1);
+        }
+
+
     }
 
 }

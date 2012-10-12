@@ -17146,7 +17146,7 @@ webgloo.sc.item = {
             dataObj.params = {} ;
             dataObj.params.postId  = $(this).attr("id");
             dataObj.params.action = "ADD" ;
-            dataObj.endPoint = "/monitor/action/item/feature.php";
+            dataObj.endPoint = "/monitor/action/item/tag.php";
 
             //open popup
             webgloo.sc.SimplePopup.init();
@@ -17154,7 +17154,7 @@ webgloo.sc.item = {
                 dataType : "json",
                 reload : false,
                 onSuccess : function () {
-                    $("#fps-" + dataObj.params.postId).html("*featured");
+                    $("#fps-" + dataObj.params.postId).html('<span class="badge badge-warning">F</span>');
                 }
             });
 
@@ -17169,7 +17169,7 @@ webgloo.sc.item = {
             dataObj.params = {} ;
             dataObj.params.postId  = $(this).attr("id");
             dataObj.params.action = "REMOVE" ;
-            dataObj.endPoint = "/monitor/action/item/feature.php";
+            dataObj.endPoint = "/monitor/action/item/tag.php";
 
             //open popup
             webgloo.sc.SimplePopup.init();
@@ -17182,7 +17182,7 @@ webgloo.sc.item = {
             });
         }) ;
 
-         //unfeature posts
+        //unfeature posts
         $("a.ban-user").click(function(event){
             event.preventDefault();
 
@@ -17190,6 +17190,24 @@ webgloo.sc.item = {
             dataObj.params = {} ;
             dataObj.params.userId  = $(this).attr("id");
             dataObj.params.action = "BAN" ;
+            dataObj.endPoint = "/monitor/action/user/tag.php";
+
+            //open popup
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.post(dataObj,{
+                "dataType" : "json",
+                "reload" : true
+            });
+        }) ;
+
+         //unfeature posts
+        $("a.unban-user").click(function(event){
+            event.preventDefault();
+
+            var dataObj = {} ;
+            dataObj.params = {} ;
+            dataObj.params.userId  = $(this).attr("id");
+            dataObj.params.action = "UNBAN" ;
             dataObj.endPoint = "/monitor/action/user/tag.php";
 
             //open popup

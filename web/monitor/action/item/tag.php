@@ -21,24 +21,22 @@
         exit;
     }
 
-
     $postId = Util::getArrayKey($_POST, "postId");
-    //Action from UI is ADD | REMOVE
+    // Action from UI is ADD | REMOVE
     // see com\indigloo\sc\ui\Constants file
     $action = Util::getArrayKey($_POST, "action");
 
-    $collectionDao = new \com\indigloo\sc\dao\Collection();
+    $postDao = new \com\indigloo\sc\dao\Post();
     $message = NULL ;
 
     try{ 
         switch($action) {
             case UIConstants::FEATURE_POST :
-                //set:key, member, source 
-                $collectionDao->sadd(Nest::fposts(),$postId);
+                $postDao->feature($postId);
                 $message = sprintf("success! item %s added to featured posts",$postId);
                 break ;
             case UIConstants::UNFEATURE_POST :
-                $collectionDao->srem(Nest::fposts(),$postId);
+                $postDao->unfeature($postId);
                 $message = sprintf("success! item %s removed from featured posts",$postId);
                 break ;
             default:

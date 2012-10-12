@@ -8,6 +8,8 @@ namespace com\indigloo\sc\model {
          const CREATED_ON = 1;
          const LOGIN_ID = 2 ;
          const USER_NAME = 3 ;
+         const BANNED = 4 ;
+         const TAINTED = 5 ;
 
          
          function __construct() {
@@ -18,6 +20,8 @@ namespace com\indigloo\sc\model {
              $columns = array( 
                 self::CREATED_ON => "created_on",
                 self::LOGIN_ID => "login_id",
+                self::BANNED => "bu_bit",
+                self::TAINTED => "tu_bit",
                 self::USER_NAME => "name");
              return $columns;
          }

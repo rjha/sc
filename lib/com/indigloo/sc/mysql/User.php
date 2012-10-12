@@ -137,6 +137,47 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        static function set_bu_bit($userId,$value) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "update sc_denorm_user set updated_on = now(), bu_bit = ? where id = ?" ;
+            $stmt = $mysqli->prepare($sql);
+
+            if ($stmt) {
+                $stmt->bind_param("ii",$value,$userId) ;
+                $stmt->execute();
+
+                if ($mysqli->affected_rows != 1) {
+                    MySQL\Error::handle($stmt);
+                }
+                $stmt->close();
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
+        }
+
+        static function set_tu_bit($userId,$value) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "update sc_denorm_user set updated_on = now(), tu_bit = ? where id = ?" ;
+            $stmt = $mysqli->prepare($sql);
+
+            if ($stmt) {
+                $stmt->bind_param("ii",$value,$userId) ;
+                $stmt->execute();
+
+                if ($mysqli->affected_rows != 1) {
+                    MySQL\Error::handle($stmt);
+                }
+                $stmt->close();
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
+        }
+
+
+
+
     }
 }
 ?>

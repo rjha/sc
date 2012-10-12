@@ -61,6 +61,21 @@
                 array_push($filters,$filter);
                 $ftname = "Last 24HR" ;
             break;
+
+            case "banned" :
+                $filter = new Filter($model);
+                $filter->add($model::BANNED,Filter::EQ,1);
+                array_push($filters,$filter);
+                $ftname = "Banned" ;
+            break;
+
+            case "tainted" :
+                $filter = new Filter($model);
+                $filter->add($model::TAINTED,Filter::EQ,1);
+                array_push($filters,$filter);
+                $ftname = "Tainted" ;
+            break;
+
             case "name" :
                 $filter = new Filter($model);
                 $filter->add($model::USER_NAME,Filter::LIKE,$gtoken);
@@ -153,7 +168,7 @@
                     </div> <!-- row -->
 
                     <div class="p10">
-                        <span class="label label-warning"> Total: <?php echo $total; ?> </span>
+                        <span class="b"> Total: <?php echo $total; ?> </span>
                         &nbsp;
                         <span class="color-red">
                             filters (<?php echo $ftname; ?>)
@@ -162,6 +177,10 @@
                         <a href="/monitor/users.php">All Users</a>
                         &nbsp;|&nbsp;
                         <a href="/monitor/users.php?ft=24HR">Last 24HR</a>
+                        &nbsp;|&nbsp;
+                        <a href="/monitor/users.php?ft=banned">Banned</a>
+                         &nbsp;|&nbsp;
+                        <a href="/monitor/users.php?ft=tainted">Tainted</a>
 
                     </div>
  
@@ -176,7 +195,7 @@
                             }
 
                             foreach ($userDBRows as $userDBRow) {
-                                echo \com\indigloo\sc\html\User::getWidget($userDBRow);
+                                echo \com\indigloo\sc\html\User::getAdminWidget($userDBRow);
                             }
 
                                 

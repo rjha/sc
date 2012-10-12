@@ -398,6 +398,26 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        static function set_fp_bit($postId,$value) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "update sc_post set updated_on = now() ,fp_bit = ? where id = ?" ;
+            
+            $stmt = $mysqli->prepare($sql);
+
+            if ($stmt) {
+                $stmt->bind_param("ii",$value,$postId) ;
+                $stmt->execute();
+
+                if ($mysqli->affected_rows != 1) {
+                    MySQL\Error::handle($stmt);
+                }
+                $stmt->close();
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
+        }
+
     }
 }
 ?>

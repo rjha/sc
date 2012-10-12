@@ -201,6 +201,14 @@ namespace com\indigloo\sc\dao {
             return $row["count"] ;
         }
 
+        function feature ($postId) {
+            mysql\Post::set_fp_bit($postId,1);
+        }
+
+        function unfeature ($postId) {
+            mysql\Post::set_fp_bit($postId,0);
+        }
+        
     }
 
 }

@@ -27,8 +27,11 @@
             const FOLLOW_USER = "FOLLOW" ;
             const UNFOLLOW_USER = "UNFOLLOW" ;
             const ADD_COMMENT = "ADD" ;
+
             const BAN_USER = "BAN" ;
+            const UNBAN_USER = "UNBAN" ;
             const TAINT_USER = "TAINT" ;
+
             
         }
 }

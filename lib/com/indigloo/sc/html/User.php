@@ -163,19 +163,34 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        static function getWidget($row) {
-            $row["pubId"] = PseudoId::encode($row["login_id"]) ;
+        static function getAdminWidget($row) {
+            $view = new \stdClass ;
             
+            //db fields
+            $view->id = $row["id"];
+            $view->provider = $row["provider"];
+            $view->email = $row["email"];
+            $view->website = $row["website"];
+            $view->name = $row["name"];
+            $view->location = $row["location"];
+
+            //display fields
+            $view->pubId = PseudoId::encode($row["login_id"]) ;
             $format = "%d-%b, %Y / %H:%M" ;
-            $row["createdOn"] =  strftime($format, strtotime($row["created_on"]));
+            $view->createdOn =  strftime($format, strtotime($row["created_on"]));
 
             $ts = Util::secondsInDBTimeFromNow($row["created_on"]);
+            
             $span = 24*3600 ;
-            $row["last24hr"] = ($ts < $span) ? true : false ;
+            $view->last24hr = ($ts < $span) ? true : false ;
+
+            $view->ban = ($row["bu_bit"] == 0 ) ? true : false ;
+            $view->unban = ($row["bu_bit"] == 1 ) ? true : false ;
+            $view->taint = ($row["tu_bit"] == 0 ) ? true : false ;
 
             $html = NULL ;
-            $template = '/fragments/user/widget.tmpl' ;
-            $html = Template::render($template,$row);
+            $template = "/fragments/user/admin/widget.tmpl" ;
+            $html = Template::render($template,$view);
             return $html ;
         }
 

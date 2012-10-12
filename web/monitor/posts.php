@@ -192,7 +192,7 @@
                     </div> <!-- row -->
 
                     <div class="p10">
-                        <span class="label label-warning"> Total: <?php echo $total; ?> </span>
+                        <span class="b"> Total: <?php echo $total; ?> </span>
                         <span class="color-red">
                             &nbsp;filters (<?php echo $ftname; ?>)
                         </span>

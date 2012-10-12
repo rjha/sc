@@ -1337,7 +1337,30 @@ alter table sc_comment_archive modify column login_id int  not null ;
 
 --
 -- 19 sept 2012
+-- changes to existing tables
 -- 
+--
+
+alter table sc_post drop column is_feature ;
+alter table sc_post add column fp_bit  int  default 0 ;
+
+
+alter table sc_denorm_user add column bu_bit int default 0 ;
+alter table sc_denorm_user add column tu_bit int default 0 ;
+
+
+
+--
+-- change sc_reset_password table name
+--
+
+rename table sc_reset_password to sc_mail_queue ;
+alter table sc_mail_queue add column source int default 0 ;
+
+
+--
+-- Add data structures
+--
 
 drop table if exists sc_ui_zset;
 create table sc_ui_zset(
@@ -1351,6 +1374,10 @@ create table sc_ui_zset(
     created_on timestamp default '0000-00-00 00:00:00',
     updated_on timestamp default '0000-00-00 00:00:00' ,
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+--
+-- indexes
+--
 
 alter table sc_ui_zset add constraint UNIQUE uniq_code(set_hash,ui_code);
 alter table sc_ui_zset add constraint UNIQUE uniq_seo(set_hash,seo_key);
@@ -1366,7 +1393,7 @@ insert into  sc_ui_zset(name,ui_code,ui_order,seo_key,set_key,set_hash)
 --
 -- finally drop the old table 
 -- 
--- drop table sc_list ;
+-- @drop table sc_list ;
 -- 
 
 
@@ -1386,27 +1413,6 @@ CREATE TABLE  sc_set (
 create index idx_shash on sc_set(set_hash) ;
 create index idx_smhash on sc_set(set_hash,member_hash) ;
 
-
-DELIMITER //
-CREATE TRIGGER trg_set_add  BEFORE INSERT ON sc_set
-    FOR EACH ROW
-    BEGIN
-      IF (NEW.set_hash = unhex(md5("set:sys:fposts")) ) THEN 
-        update sc_post set fp_bit = 1 where id = NEW.member ;
-      END IF ;
-    END //
-DELIMITER ;
-
-
-DELIMITER //
-CREATE TRIGGER trg_set_del  BEFORE DELETE ON sc_set
-    FOR EACH ROW
-    BEGIN
-      IF ( OLD.set_hash = unhex(md5("set:sys:fposts"))) THEN 
-        update sc_post set fp_bit = 0 where id = OLD.member ;
-      END IF ;
-    END //
-DELIMITER ;
 
 
 DROP TABLE IF EXISTS  sc_glob_table ;
@@ -1449,15 +1455,10 @@ insert into sc_glob_table(
 --
 --
 --
--- finally drop sc_preference, sc_feature_group tables
+-- @drop sc_preference
+-- @drop sc_feature_group
 -- 
 
-
-
-
-alter table sc_post drop column is_feature ;
-alter table sc_post add column fp_bit  int  default 0 ;
-create index idx_fpbit on sc_post(fp_bit) ;
 
 
 --
@@ -1616,31 +1617,27 @@ CREATE TRIGGER trg_mik_user_cp  BEFORE INSERT ON sc_user
 DELIMITER ;
 
 
+
 --
--- change sc_reset_password table name
---
+-- indexes
+-- 
 
+alter table sc_post add index fp_bit_idx (fp_bit) ;
+alter table sc_post add index login_idx (login_id) ;
+alter table sc_post add index cat_idx (cat_code) ;
+alter table sc_post add index date_idx(created_on) ;
 
-rename table sc_reset_password to sc_mail_queue ;
-alter table sc_mail_queue add column source int default 0 ;
+alter table sc_comment add index login_idx (login_id);
+alter table sc_comment add index post_idx (post_id);
+alter table sc_facebook add index id_idx(facebook_id);
+alter table sc_google_user add index id_idx (google_id);
+alter table sc_twitter add index id_idx (twitter_id);
 
+alter table sc_mail_queue add index email_idx(email);
+alter table sc_user add index login_idx (login_id);
 
-DELIMITER //
-CREATE TRIGGER trg_ac_mail  AFTER INSERT ON sc_denorm_user
-    FOR EACH ROW
-    BEGIN
-       
-            NEW.login_id,
-            NEW.user_name,
-            NEW.first_name,
-            NEW.last_name,
-            NEW.email,
-            '3mik',
-            NEW.ip_address,
-            now());
-
-    END //
-DELIMITER ;
-
-
-
+alter table sc_denorm_user add index login_idx (login_id) ;
+alter table sc_denorm_user add index email_idx (email) ;
+alter table sc_denorm_user add index date_idx (created_on) ;
+alter table sc_denorm_user add index ban_idx (bu_bit) ;
+alter table sc_denorm_user add index taint_idx (tu_bit) ;
