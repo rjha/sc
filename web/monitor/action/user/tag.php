@@ -21,7 +21,6 @@
         exit;
     }
 
-    $userId = Util::getArrayKey($_POST, "userId");
     $action = Util::getArrayKey($_POST, "action");
 
     $userDao = new \com\indigloo\sc\dao\User();
@@ -30,17 +29,19 @@
     try{ 
         switch($action) {
             case UIConstants::BAN_USER :
-                //set:key, member, source 
-                $userDao->ban($userId);
-                $message = sprintf("success! user %s has been banned!",$userId);
+                $loginId = Util::getArrayKey($_POST, "loginId");
+                $userDao->ban($loginId);
+                $message = sprintf("success! user %s has been banned!",$loginId);
             break ;
             case UIConstants::TAINT_USER :
+                $userId = Util::getArrayKey($_POST, "userId");
                 $userDao->taint($userId);
                 $message = sprintf("success! user %s has been tainted!",$userId);
             break ;
             case UIConstants::UNBAN_USER :
-                $userDao->unban($userId);
-                $message = sprintf("success! user %s has been restored!",$userId);
+                $loginId = Util::getArrayKey($_POST, "loginId");
+                $userDao->unban($loginId);
+                $message = sprintf("success! user %s has been restored!",$loginId);
             break ;
             default:
                 trigger_error("Unknown UI action", E_USER_ERROR);

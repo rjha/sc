@@ -23,6 +23,7 @@ namespace com\indigloo\sc\dao {
             //is existing record?
             $facebookId = trim($facebookId);
             $remoteIp =  \com\indigloo\Url::getRemoteIp();
+
             $row = $this->getOnFacebookId($facebookId);
 
             if(empty($row)){
@@ -49,7 +50,7 @@ namespace com\indigloo\sc\dao {
             } else {
                 //found
                 $loginId = $row["login_id"];
-                mysql\Login::updateTokenIp($loginId,$access_token,$expires,$remoteIp);
+                mysql\Login::updateTokenIp(session_id(),$loginId,$access_token,$expires,$remoteIp);
             }
 
             return $loginId ;

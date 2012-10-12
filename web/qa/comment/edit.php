@@ -27,7 +27,7 @@
     $commentDBRow = $commentDao->getOnId($commentId);
 
     if(!Login::isOwner($commentDBRow['login_id'])) {
-        header("Location: /qa/noowner.php");
+        header("Location: /site/error/403.html");
         exit ;
     }
 

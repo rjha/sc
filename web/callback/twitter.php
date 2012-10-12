@@ -107,7 +107,7 @@
             }
             
             $code = Login::startOAuth2Session($loginId,Login::TWITTER);
-            $location = ($code == Login::FORBIDDEN_CODE) ? "/site/info/ban.php"  : "/" ;
+            $location = ($code == Login::FORBIDDEN_CODE) ? "/site/error/403.html"  : "/" ;
             header("Location: ".$location);
 
         }

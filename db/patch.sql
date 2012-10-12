@@ -1463,7 +1463,7 @@ insert into sc_glob_table(
 
 --
 -- 09 oct 2012
--- changes to store ip_address
+-- changes to track login : ip_address and session_id
 -- 
 -- ipv4 -> ipv6 would require 45 chars
 -- ABCD:ABCD:ABCD:ABCD:ABCD:ABCD:192.168.158.190
@@ -1481,7 +1481,7 @@ alter table sc_google_user add column ip_address varchar(46) ;
 alter table sc_denorm_user add column ip_address varchar(46) ;
 -- ip_address for current login
 alter table sc_login add column ip_address varchar(46) ;
-
+alter table sc_login add column session_id varchar(40);
 
 --
 -- update sc_denorm_user_copy triggers

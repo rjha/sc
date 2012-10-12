@@ -168,6 +168,7 @@ namespace com\indigloo\sc\html {
             
             //db fields
             $view->id = $row["id"];
+            $view->loginId = $row["login_id"];
             $view->provider = $row["provider"];
             $view->email = $row["email"];
             $view->website = $row["website"];

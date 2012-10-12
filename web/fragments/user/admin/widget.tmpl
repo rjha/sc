@@ -2,11 +2,11 @@
     <div class="options">
         <div class="links">
             ~if($view->ban){~
-              <a id="~~$view->id~" href="#" class="ban-user">Ban user&nbsp;<i class="icon-ban-circle"></i></a>
+              <a id="~~$view->loginId~" href="#" class="ban-user">Ban user&nbsp;<i class="icon-ban-circle"></i></a>
             ~}~
 
             ~if($view->unban){~
-              <a id="~~$view->id~" href="#" class="unban-user">Unban user</a>
+              <a id="~~$view->loginId~" href="#" class="unban-user">Unban user</a>
             ~}~
             &nbsp;|&nbsp;
             <a id="~~$view->id~" href="#" class="taint-user">Taint user</a>

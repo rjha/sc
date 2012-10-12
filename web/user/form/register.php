@@ -71,7 +71,7 @@
 
             //start 3mik set session
             $remoteIp = \com\indigloo\Url::getRemoteIp();
-            mysql\Login::updateIp($loginId,$remoteIp);
+            mysql\Login::updateIp(session_id(),$loginId,$remoteIp);
             Login::startOAuth2Session($loginId,Login::MIK);
 
             //add overlay message

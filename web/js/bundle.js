@@ -5043,7 +5043,7 @@ webgloo.sc.SimplePopup.post(a,{"dataType":"json","reload":false,onSuccess:functi
 $("a.ban-user").click(function(b){b.preventDefault();
 var a={};
 a.params={};
-a.params.userId=$(this).attr("id");
+a.params.loginId=$(this).attr("id");
 a.params.action="BAN";
 a.endPoint="/monitor/action/user/tag.php";
 webgloo.sc.SimplePopup.init();
@@ -5052,7 +5052,7 @@ webgloo.sc.SimplePopup.post(a,{"dataType":"json","reload":true});
 $("a.unban-user").click(function(b){b.preventDefault();
 var a={};
 a.params={};
-a.params.userId=$(this).attr("id");
+a.params.loginId=$(this).attr("id");
 a.params.action="UNBAN";
 a.endPoint="/monitor/action/user/tag.php";
 webgloo.sc.SimplePopup.init();

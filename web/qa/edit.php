@@ -31,7 +31,7 @@
 
 
     if(! (Login::isOwner($postDBRow['login_id']) || Login::isAdmin())) {
-        header("Location: /qa/noowner.php");
+        header("Location: /site/error/403.html");
         exit(1);
     }
 

@@ -17188,7 +17188,7 @@ webgloo.sc.item = {
 
             var dataObj = {} ;
             dataObj.params = {} ;
-            dataObj.params.userId  = $(this).attr("id");
+            dataObj.params.loginId  = $(this).attr("id");
             dataObj.params.action = "BAN" ;
             dataObj.endPoint = "/monitor/action/user/tag.php";
 
@@ -17206,7 +17206,7 @@ webgloo.sc.item = {
 
             var dataObj = {} ;
             dataObj.params = {} ;
-            dataObj.params.userId  = $(this).attr("id");
+            dataObj.params.loginId  = $(this).attr("id");
             dataObj.params.action = "UNBAN" ;
             dataObj.endPoint = "/monitor/action/user/tag.php";
 

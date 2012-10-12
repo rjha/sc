@@ -56,10 +56,10 @@
             //success - update login record
             // start 3mik session
             $remoteIp = \com\indigloo\Url::getRemoteIp();
-            mysql\Login::updateIp($loginId,$remoteIp);
+            mysql\Login::updateIp(session_id(),$loginId,$remoteIp);
             
             $code = Login::startOAuth2Session($loginId,Login::MIK);
-            $location = ($code == Login::FORBIDDEN_CODE) ? "/site/info/ban.php"  : $qUrl ;
+            $location = ($code == Login::FORBIDDEN_CODE) ? "/site/error/403.html"  : $qUrl ;
             header("Location: ".$location);
             exit ;
 
