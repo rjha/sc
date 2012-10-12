@@ -105,9 +105,10 @@
                 raiseUIError();
 
             }
-
-            Login::startOAuth2Session($loginId,Login::TWITTER);
-            header("Location: / ");
+            
+            $code = Login::startOAuth2Session($loginId,Login::TWITTER);
+            $location = ($code == Login::FORBIDDEN_CODE) ? "/site/info/ban.php"  : "/" ;
+            header("Location: ".$location);
 
         }
     }

@@ -22,28 +22,41 @@ namespace com\indigloo\sc\auth {
         const TWITTER = "twitter" ;
         const GOOGLE = "google" ;
 
-        static function startMikSession() {
+        //codes
+        const OK_CODE = 200 ;
+        const FORBIDDEN_CODE = 403 ;
+        
+        static function startOAuth2Session($loginId,$provider) {
 
-            if (isset($_SESSION) && isset($_SESSION[WebglooUser::USER_TOKEN])) {
-                $mikUser = $_SESSION[WebglooUser::USER_DATA];
+            // get denorm data on login from $userDao
+            // the data in sc_user is for first time creation only
+            // and denorm columns like name etc. can be stale in sc_user
 
-                if(empty($mikUser) || empty($mikUser["login_id"])) {
-                    throw new UIException("Missing user data in 3mik session");
-                }
+            $userDao = new \com\indigloo\sc\dao\User();
+            $userDBRow = $userDao->getOnLoginId($loginId);
 
-                $loginId = $mikUser["login_id"];
-                self::startSession($loginId, self::MIK);
+            // is banned?
+            $ban_bit = $userDBRow["bu_bit"] ;
+            settype($ban_bit,"integer");
 
-            } else {
-                throw new UIException("No 3mik user found in session");
+            if( $ban_bit == 1 ) {
+                //donot start session
+                return self::FORBIDDEN_CODE ;
             }
 
-        }
+            //start session
+            $_SESSION[self::LOGIN_ID] = $loginId;
+            $_SESSION[self::NAME] = $userDBRow["name"];
+            $_SESSION[self::PROVIDER] = $provider;
+            $_SESSION[self::TOKEN] = Util::getBase36GUID();
+            
+            // complete any pending session action.
+            self::completeSessionAction($loginId,$userDBRow["name"],$provider);
+            
+            return self::OK_CODE ;
 
-        static function startOAuth2Session($loginId,$provider) {
-           self::startSession($loginId, $provider);
         }
-
+        
         /*
          * An action is normally performed against an endpoint.
          * we send a parameter object and an action to that endpoint.
@@ -131,24 +144,6 @@ namespace com\indigloo\sc\auth {
 
         }
 
-        private static function startSession($loginId,$provider) {
-
-            // get denorm data on login from $userDao
-            // the data in sc_user is for first time creation only
-            // and denorm columns like name etc. can be stale in sc_user
-            $userDao = new \com\indigloo\sc\dao\User();
-            $userDBRow = $userDao->getOnLoginId($loginId);
-
-            $_SESSION[self::LOGIN_ID] = $loginId;
-            $_SESSION[self::NAME] = $userDBRow["name"];
-            $_SESSION[self::PROVIDER] = $provider;
-            $_SESSION[self::TOKEN] = Util::getBase36GUID();
-
-            // complete any pending session action.
-            self::completeSessionAction($loginId,$userDBRow["name"],$provider);
-
-        }
-
         static function getLoginInSession() {
 
             if (isset($_SESSION) && isset($_SESSION[self::TOKEN])) {
@@ -223,10 +218,14 @@ namespace com\indigloo\sc\auth {
 
         static function isAdmin(){
             $flag = false ;
-            if (isset($_SESSION) && isset($_SESSION[WebglooUser::USER_TOKEN])) {
-                $mikUser = $_SESSION[WebglooUser::USER_DATA];
-                if(!empty($mikUser)) {
-                    $flag = ($mikUser['is_admin'] == 1 ) ? true : false ;
+
+            if (isset($_SESSION) 
+                && isset($_SESSION[self::TOKEN])
+                && isset($_SESSION[WebglooUser::USER_DATA])) {
+
+                $baseUser = $_SESSION[WebglooUser::USER_DATA];
+                if(!empty($baseUser)) {
+                    $flag = ($baseUser['is_admin'] == 1 ) ? true : false ;
                 }
             }
 

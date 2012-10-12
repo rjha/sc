@@ -162,8 +162,10 @@
             raiseUIError();
         }
 
-        Login::startOAuth2Session($loginId,Login::GOOGLE);
-        header("Location: / ");
+        $code = Login::startOAuth2Session($loginId,Login::GOOGLE);
+        $location = ($code == Login::FORBIDDEN_CODE) ? "/site/info/ban.php"  : "/" ;
+        header("Location: ".$location);
+        
     }
 
  ?>

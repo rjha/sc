@@ -11,7 +11,7 @@
 
     use \com\indigloo\exception\UIException as UIException;
     use \com\indigloo\exception\DBException as DBException;
-
+    use \com\indigloo\sc\auth\Login as Login ;
 
     if (isset($_POST['register']) && ($_POST['register'] == 'Register')) {
 
@@ -52,19 +52,30 @@
             //canonical email - all lower case
             $email = strtolower(trim($fvalues['email']));
             $password = trim($fvalues['password']);
+            $loginId = NULL ;
 
-            $loginId = \com\indigloo\auth\User::login('sc_user',$email,$password);
-
-            if (empty($loginId) || is_null($loginId)) {
-                $message = "Wrong login or password. Please try again!";
-                throw new UIException(array($message));
+            try{
+                $loginId = \com\indigloo\auth\User::login('sc_user',$email,$password);
+            } catch(\Exception $ex) {
+                $code = $ex->getCode();
+                switch($code) {
+                    case 401 :
+                        $message = "Wrong login or password. Please try again!";
+                        throw new UIException(array($message));
+                    break ;
+                    default:
+                        $message = "Error during login. Please try after some time!";
+                        throw new UIException(array($message));
+                }
             }
 
-            //set session variables
-            \com\indigloo\sc\auth\Login::startMikSession();
+            //start 3mik set session
+            $remoteIp = \com\indigloo\Url::getRemoteIp();
+            mysql\Login::updateIp($loginId,$remoteIp);
+            Login::startOAuth2Session($loginId,Login::MIK);
+
             //add overlay message
             $message = "success! Thanks for joining ".$fvalues['first_name'];
-
             $gWeb->store("global.overlay.message", $message);
             header("Location: /");
 

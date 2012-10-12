@@ -148,9 +148,11 @@
             Logger::getInstance()->error($message);
             raiseUIError();
         }
-
-        Login::startOAuth2Session($loginId,Login::FACEBOOK);
-        header("Location: / ");
+        
+        $code = Login::startOAuth2Session($loginId,Login::FACEBOOK);
+        $location = ($code == Login::FORBIDDEN_CODE) ? "/site/info/ban.php"  : "/" ;
+        header("Location: ".$location);
+        
     }
 
  ?>
