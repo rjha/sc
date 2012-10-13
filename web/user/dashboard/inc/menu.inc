@@ -1,15 +1,24 @@
-<?php
 
-//Active tab depends on rquest URI
-$tabUrlMap  = array(
-                "/user/dashboard/posts.php" => "Posts",
-                "/user/dashboard/comments.php" => "Comments",
-                "/user/dashboard/activities.php" => "Activity",
-                "/user/dashboard/bookmark.php" => "Saved",
-                "/user/dashboard/following.php" => "Following"
-               );
+<div style="min-height:600px;border-right:1px dashed #222;">
 
+    <ul class="nav nav-list">
 
-echo  \com\indigloo\sc\ui\Tabs::getHtml($tabUrlMap);
+        <li class="nav-header">Account</li>
+        <li><a href="/user/dashboard/posts.php">My items</a></li>
+        <li><a href="/user/dashboard/comments.php">Comments</a></li>
+        <li><a href="/user/dashboard/bookmark.php">Saved items</a></li>
+        <li><a href="/user/dashboard/follower.php">Followers</a></li>
+        <li><a href="/user/dashboard/following.php">Following</a></li>
 
-?>
+        <li class="divider"> </li>
+        <li class="nav-header">Settings</li>
+      
+        <li><a href="/user/dashboard/mails.php">Mails</a></li>
+        <li><a href="/user/dashboard/profile.php">Edit profile</a></li>
+        <li class="divider"> </li>
+        <?php echo $passwordUrl; ?>
+    
+        
+
+    </ul>
+</div>

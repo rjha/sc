@@ -69,17 +69,33 @@
     </head>
 
      <body>
-        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
+       <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+
             <div class="row">
-                <div class="span9 mh600">
+                <div class="span12">
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span12">
                     <div class="page-header">
-                        <div class="faded-text">
-                            The items you saved are shown here. To remove an item 
-                            from saved list, do mouse over the item and click Remove.
-                        </div>
-                    <div>
+                        <h2>Saved items</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span2">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+                <div class="span8 mh600">
+                    
+                    <div class="faded-text mb20">
+                        The items you saved are shown here. To remove an item 
+                        from saved list, do mouse over the item and click Remove.
+                    </div>
+                    
 
                     <div id="widgets">
                         <?php
@@ -101,7 +117,7 @@
 
                         ?>
 
-                    </div><!-- tiles -->
+                    </div><!-- widgets -->
 
                 </div>
 

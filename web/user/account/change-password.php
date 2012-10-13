@@ -50,19 +50,31 @@
     </head>
 
      <body>
-        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
+         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+
             <div class="row">
-                <div class="span9">
+                <div class="span12">
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span12">
                     <div class="page-header">
-                        <div class="faded-text"> Change Password - <?php echo $title; ?> </div>
+                        <h2>Change Password</h2>
                     </div>
+                </div>
+            </div>
 
-                    <p class="help-text">
-                       Please select a new password and click on Submit.
-
-                    </p>
+            <div class="row">
+                <div class="span2">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+                <div class="span8">
+                   
+                    <div class="faded-text mb20">
+                        Please select a new password and click on Submit
+                    </div>
 
                     <?php \com\indigloo\ui\form\Message::render(); ?>
 

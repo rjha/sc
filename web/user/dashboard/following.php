@@ -45,15 +45,26 @@
     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-          
-            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+
             <div class="row">
-                <div class="span7">
+                <div class="span12">
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span12">
                     <div class="page-header">
-                        <div class="faded-text">Following</div>
+                        <h2>Following</h2>
                     </div>
                 </div>
-                <div class="span7 mh600">
+            </div>
+
+            <div class="row">
+                <div class="span2">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+                <div class="span7">
+                    <div class="faded-text mb20">&nbsp;</div>
                     <?php echo \com\indigloo\sc\html\SocialGraph::getFollowingHtml($loginId,$followings); ?>
                 </div>
 

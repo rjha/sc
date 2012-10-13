@@ -59,16 +59,32 @@
     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
-            <div class="row">
-                <div class="span9 mh600">
-                    <div class="page-header">
-                        <div class="faded-text">
-                            All your items are shown here. Do mouse over an item to get 
-                            edit and remove links.
-                        </div>
-                    </div>
 
+            <div class="row">
+                <div class="span12">
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h2>My items</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span2">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+
+                <div class="span8 mh600">
+                    
+                    <div class="faded-text mb20">
+                        All your items are shown here. Do mouse over an item to get 
+                        edit and remove links.
+                    </div>
+                     
                     <?php
                         $startId = NULL;
                         $endId = NULL;
@@ -84,10 +100,9 @@
                         }
 
                     ?>
-
+                    
                 </div>
-                <div class="span3">
-                </div>
+               
             </div>
         </div> <!-- container -->
         <div class="hr"> </div>

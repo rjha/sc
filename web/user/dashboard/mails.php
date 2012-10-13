@@ -55,12 +55,26 @@
     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+
             <div class="row">
-                <div class="span9 mh600">
+                <div class="span12">
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span12">
                     <div class="page-header">
-                        <div class="faded-text"> Mail settings </div>
+                        <h2>Mail settings</h2>
                     </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span2">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+                <div class="span8 mh600">
+                        <div class="faded-text mb20"> change your preferences and click update</div>
 
                     <?php FormMessage::render(); ?>
 
@@ -95,8 +109,6 @@
                     </div>
                 </div>
 
-                <div class="span3">
-                </div>
             </div> <!-- row -->
         </div> <!-- container -->
 
