@@ -58,7 +58,7 @@
                 <div class="span2">
                     <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
                 </div>
-                <div class="span8">
+                <div class="span9">
                     <div class="faded-text mb20">&nbsp;</div>
                     <?php echo \com\indigloo\sc\html\User::getProfile($gSessionLogin,$userDBRow) ; ?>
                 </div>
