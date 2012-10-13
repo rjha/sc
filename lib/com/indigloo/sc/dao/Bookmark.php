@@ -53,8 +53,15 @@ namespace com\indigloo\sc\dao {
             return $row['count'];
         }
 
+        // return latest posts that have been bookmarked
         function getLatest($limit,$filters) {
             $rows = mysql\Bookmark::getLatest($limit,$filters);
+            return $rows ;
+        }
+
+        // return raw bookmark data from table!
+        function getTableLatest($limit,$filters) {
+            $rows = mysql\Bookmark::getTableLatest($limit,$filters);
             return $rows ;
         }
 
@@ -68,6 +75,20 @@ namespace com\indigloo\sc\dao {
                 $start = $params['start'];
                 $direction = $params['direction'];
                 $rows = mysql\Bookmark::getPaged($start,$direction,$limit,$filters);
+                return $rows ;
+            }
+        }
+
+         function getTablePaged($paginator,$filters) {
+            $limit = $paginator->getPageSize();
+            if($paginator->isHome()){
+                return $this->getTableLatest($limit,$filters);
+            } else {
+
+                $params = $paginator->getDBParams();
+                $start = $params['start'];
+                $direction = $params['direction'];
+                $rows = mysql\Bookmark::getTablePaged($start,$direction,$limit,$filters);
                 return $rows ;
             }
         }

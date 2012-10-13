@@ -1653,6 +1653,7 @@ alter table sc_glob_table add index idx_key(t_key) ;
 
 alter table sc_bookmark add index idx_sub_verb(subject_id,verb) ;
 alter table sc_follow add index idx_following(following_id) ;
- alter table sc_follow add index idx_follower(follower_id) ;
+alter table sc_follow add index idx_follower(follower_id) ;
 
+alter table sc_login add index idx_session(session_id) ;
 

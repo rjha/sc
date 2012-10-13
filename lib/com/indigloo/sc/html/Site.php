@@ -7,6 +7,9 @@ namespace com\indigloo\sc\html {
     use com\indigloo\Util as Util ;
 
     use \com\indigloo\util\StringUtil as StringUtil ;
+    use \com\indigloo\sc\util\PseudoId as PseudoId ;
+    use \com\indigloo\sc\Constants as AppConstants ;
+    use \com\indigloo\sc\ui\Constants as UIConstants ;
 
     class Site {
 
@@ -73,6 +76,46 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
+        static function getBookmarkTable($rows) {
+            
+            for($i = 0 ; $i < count($rows); $i++) {
+                $rows[$i]["objectUrl"]  = "/item/".$rows[$i]["object_id"];
+                $rows[$i]["subjectUrl"]  = "/pub/user/".PseudoId::encode($rows[$i]["subject_id"]);
+                $verb = $rows[$i]["verb"] ;
+                switch($verb) {
+                    case AppConstants::LIKE_VERB :
+                        $rows[$i]["action"] = UIConstants::LIKE_POST ;
+                        break ;
+                    case AppConstants::SAVE_VERB :
+                        $rows[$i]["action"] = UIConstants::SAVE_POST ;
+                        break ;
+                    default :
+                        break ;
+                }
+                
+            }
+
+            $html = NULL ;
+            $template = '/fragments/site/bookmark/table.tmpl' ;
+            $view = new \stdClass;
+            $view->rows = $rows ;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function getSessionTable($rows) {
+            
+            for($i = 0 ; $i < count($rows); $i++) {
+                $rows[$i]["pubUrl"]  = "/pub/user/".PseudoId::encode($rows[$i]["login_id"]);
+            }
+
+            $html = NULL ;
+            $template = '/fragments/site/analytic/session.tmpl' ;
+            $view = new \stdClass;
+            $view->rows = $rows ;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
 
 
     }
