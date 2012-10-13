@@ -40,6 +40,7 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        //@expensive-query
         //@see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/
         static function getRandom($limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();

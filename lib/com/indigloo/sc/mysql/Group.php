@@ -77,6 +77,9 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        // @expensive-query
+        // the count(id) query is examining all the rows (why?)
+        // innodb count(col) is doing an FTS
         static function getTotalCount($filters){
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "select count(g.id) as count from sc_group_master g " ;
@@ -92,6 +95,7 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
+        //@expensive-query
         static function getRandom($limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 

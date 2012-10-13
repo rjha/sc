@@ -8,6 +8,10 @@ namespace com\indigloo\sc\mysql {
 
     class Collection {
 
+        // @expensive queries
+        // create index on set_key here
+        // @todo do not use set_hash at all?
+        
         static function sadd($key,$member) {
 
             //hash of key and member
@@ -59,11 +63,10 @@ namespace com\indigloo\sc\mysql {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             // sanitize input
             $key = $mysqli->real_escape_string($key);
-            $khash = md5(trim($key),TRUE);
-
+            
             // convert to BIN(16) for faster lookup
-            $sql = " select * from sc_set where set_hash = '%s' " ;
-            $sql = sprintf($sql,$khash);
+            $sql = " select * from sc_set where set_key = '%s' " ;
+            $sql = sprintf($sql,$key);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
@@ -72,11 +75,10 @@ namespace com\indigloo\sc\mysql {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             // sanitize input
             $key = $mysqli->real_escape_string($key);
-            $khash = md5(trim($key),TRUE);
-
+            
             // convert to BIN(16) for faster lookup
-            $sql = " select * from sc_ui_zset where set_hash = '%s' order by ui_order " ;
-            $sql = sprintf($sql,$khash);
+            $sql = " select * from sc_ui_zset where set_key = '%s' order by ui_order " ;
+            $sql = sprintf($sql,$key);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
@@ -85,22 +87,20 @@ namespace com\indigloo\sc\mysql {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             // sanitize input
             $seoKey = $mysqli->real_escape_string($seoKey);
-            $khash = md5(trim($key),TRUE);
-
-            $sql = " select * from sc_ui_zset where set_hash = '%s' and seo_key = '%s' " ;
-            $sql = sprintf($sql,$khash,$seoKey);
+            
+            $sql = " select * from sc_ui_zset where set_key = '%s' and seo_key = '%s' " ;
+            $sql = sprintf($sql,$key,$seoKey);
 
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
 
         static function uizmembersAsMap($key){
-            $khash = md5(trim($key),TRUE);
-
+            
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "select seo_key as id, name as name from sc_ui_zset " ;
-            $sql .= " where set_hash = '%s' order by ui_order" ;
-            $sql = sprintf($sql,$khash);
+            $sql .= " where set_key = '%s' order by ui_order" ;
+            $sql = sprintf($sql,$key);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
@@ -148,11 +148,9 @@ namespace com\indigloo\sc\mysql {
 
         static function glget($key) {
 
-            $khash = md5(trim($key),TRUE);
-
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "select t_value from sc_glob_table where t_hash = '%s'" ;
-            $sql = sprintf($sql,$khash);
+            $sql = "select t_value from sc_glob_table where t_key = '%s'" ;
+            $sql = sprintf($sql,$key);
 
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
