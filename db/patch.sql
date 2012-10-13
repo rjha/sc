@@ -1379,8 +1379,7 @@ create table sc_ui_zset(
 -- indexes
 --
 
-alter table sc_ui_zset add constraint UNIQUE uniq_code(set_hash,ui_code);
-alter table sc_ui_zset add constraint UNIQUE uniq_seo(set_hash,seo_key);
+alter table sc_ui_zset add constraint UNIQUE uniq_key(set_key);
 
 -- 
 -- copy category data from sc_list to sc_ui_zset
@@ -1402,7 +1401,7 @@ DROP TABLE IF EXISTS  sc_set ;
 CREATE TABLE  sc_set (
   id  int(11) NOT NULL AUTO_INCREMENT,
   set_hash BINARY(16) not null,
-  set_key varchar(64) not null,
+  set_key varchar(32) not null,
   member varchar(64) not null,
   member_hash  BINARY(16) not null,
   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -1410,15 +1409,13 @@ CREATE TABLE  sc_set (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-create index idx_shash on sc_set(set_hash) ;
-create index idx_smhash on sc_set(set_hash,member_hash) ;
 
 
 
 DROP TABLE IF EXISTS  sc_glob_table ;
 
 CREATE TABLE  sc_glob_table (
-  t_key varchar(64) not null,
+  t_key varchar(32) not null,
   t_hash BINARY(16) not null,
   t_value text not null,
   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -1629,15 +1626,33 @@ alter table sc_post add index date_idx(created_on) ;
 
 alter table sc_comment add index login_idx (login_id);
 alter table sc_comment add index post_idx (post_id);
+
 alter table sc_facebook add index id_idx(facebook_id);
 alter table sc_google_user add index id_idx (google_id);
 alter table sc_twitter add index id_idx (twitter_id);
+alter table sc_user add index login_idx (login_id);
 
 alter table sc_mail_queue add index email_idx(email);
-alter table sc_user add index login_idx (login_id);
+
 
 alter table sc_denorm_user add index login_idx (login_id) ;
 alter table sc_denorm_user add index email_idx (email) ;
 alter table sc_denorm_user add index date_idx (created_on) ;
 alter table sc_denorm_user add index ban_idx (bu_bit) ;
 alter table sc_denorm_user add index taint_idx (tu_bit) ;
+
+
+alter table sc_post_site add index post_id_idx(post_id) ;
+alter table sc_post_site add index site_id_idx (site_id) ;
+
+
+alter table sc_set add index idx_key(set_key) ;
+alter table sc_set add index idx_smhash (set_hash,member_hash) ;
+
+alter table sc_glob_table add index idx_key(t_key) ;
+
+alter table sc_bookmark add index idx_sub_verb(subject_id,verb) ;
+alter table sc_follow add index idx_following(following_id) ;
+ alter table sc_follow add index idx_follower(follower_id) ;
+
+
