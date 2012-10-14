@@ -5,7 +5,7 @@
      *
      */
 
-	include('sc-app.inc');
+    include('sc-app.inc');
     include(APP_CLASS_LOADER);
 
     use \com\indigloo\mysql as MySQL;
@@ -56,23 +56,23 @@
 
     function run_diagnostic($mysqli,$flag=false) {
 
-	   	$sql = "select max(id) as total from sc_post " ;
-	    $row = MySQL\Helper::fetchRow($mysqli, $sql);
-	    $total = $row["total"] ;
-	    $pageSize = 50 ;
-	    $pages = ceil($total / $pageSize);
-	    $count = 0 ;
+        $sql = "select max(id) as total from sc_post " ;
+        $row = MySQL\Helper::fetchRow($mysqli, $sql);
+        $total = $row["total"] ;
+        $pageSize = 50 ;
+        $pages = ceil($total / $pageSize);
+        $count = 0 ;
 
-	    while($count  <= $pages ){
+        while($count  <= $pages ){
 
-	    	$start =  ($count * $pageSize ) + 1 ;
-        	$end = $start + ($pageSize - 1 ) ;
+            $start =  ($count * $pageSize ) + 1 ;
+            $end = $start + ($pageSize - 1 ) ;
 
-	        $sql = " select pseudo_id,created_on,images_json from sc_post where  (id <= {end}) and (id >= {start} ) ";
-	        $sql = str_replace(array("{end}", "{start}"),array( 0 => $end, 1=> $start),$sql);
+            $sql = " select pseudo_id,created_on,images_json from sc_post where  (id <= {end}) and (id >= {start} ) ";
+            $sql = str_replace(array("{end}", "{start}"),array( 0 => $end, 1=> $start),$sql);
 
-	        $rows = MySQL\Helper::fetchRows($mysqli,$sql);
-	           
+            $rows = MySQL\Helper::fetchRows($mysqli,$sql);
+               
             foreach($rows as $row) {
                 
                 $images = json_decode($row["images_json"]);
@@ -82,11 +82,11 @@
                 }
             }
 
-	        $count++ ;
+            $count++ ;
 
-    	}
+        }
 
-	}
+    }
 
     $mysqli = MySQL\Connection::getInstance()->getHandle();
     run_diagnostic($mysqli);
