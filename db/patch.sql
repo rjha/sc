@@ -1619,31 +1619,27 @@ DELIMITER ;
 -- indexes
 -- 
 
-alter table sc_post add index fp_bit_idx (fp_bit) ;
-alter table sc_post add index login_idx (login_id) ;
-alter table sc_post add index cat_idx (cat_code) ;
-alter table sc_post add index date_idx(created_on) ;
+alter table sc_post add index idx_fp_bit (fp_bit) ;
+alter table sc_post add index idx_login (login_id) ;
+alter table sc_post add index idx_cat (cat_code) ;
+alter table sc_post add index idx_date(created_on) ;
 
-alter table sc_comment add index login_idx (login_id);
-alter table sc_comment add index post_idx (post_id);
+alter table sc_comment add index idx_login (login_id);
+alter table sc_comment add index idx_post (post_id);
 
-alter table sc_facebook add index id_idx(facebook_id);
-alter table sc_google_user add index id_idx (google_id);
-alter table sc_twitter add index id_idx (twitter_id);
-alter table sc_user add index login_idx (login_id);
+alter table sc_facebook add index idx_id(facebook_id);
+alter table sc_google_user add index idx_id (google_id);
+alter table sc_twitter add index idx_id (twitter_id);
+alter table sc_user add index idx_login (login_id);
 
-alter table sc_mail_queue add index email_idx(email);
-
-
-alter table sc_denorm_user add index login_idx (login_id) ;
-alter table sc_denorm_user add index email_idx (email) ;
-alter table sc_denorm_user add index date_idx (created_on) ;
-alter table sc_denorm_user add index ban_idx (bu_bit) ;
-alter table sc_denorm_user add index taint_idx (tu_bit) ;
+alter table sc_mail_queue add index idx_email(email);
 
 
-alter table sc_post_site add index post_id_idx(post_id) ;
-alter table sc_post_site add index site_id_idx (site_id) ;
+alter table sc_denorm_user add index id_login (login_id) ;
+alter table sc_denorm_user add index idx_email (email) ;
+alter table sc_denorm_user add index idx_date (created_on) ;
+alter table sc_denorm_user add index idx_ban_bit (bu_bit) ;
+alter table sc_denorm_user add index idx_taint_bit (tu_bit) ;
 
 
 alter table sc_set add index idx_key(set_key) ;
@@ -1656,4 +1652,14 @@ alter table sc_follow add index idx_following(following_id) ;
 alter table sc_follow add index idx_follower(follower_id) ;
 
 alter table sc_login add index idx_session(session_id) ;
+alter table sc_login add index idx_date(created_on);
+
+alter table sc_site_master add index idx_hash(hash);
+
+alter table sc_tmp_ps add index idx_post_id(post_id) ;
+alter table sc_tmp_ps add index idx_site_id (site_id) ;
+
+alter table sc_post_site add index idx_post_id(post_id) ;
+alter table sc_post_site add index idx_site_id (site_id) ;
+
 
