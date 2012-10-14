@@ -1,18 +1,13 @@
-
-
 --
--- 19 sept 2012
--- changes to existing tables
--- 
+-- 14 oct. 2012
 --
 
 alter table sc_post drop column is_feature ;
 alter table sc_post add column fp_bit  int  default 0 ;
 
-
 alter table sc_denorm_user add column bu_bit int default 0 ;
 alter table sc_denorm_user add column tu_bit int default 0 ;
-
+alter table sc_login add column session_id varchar(40);
 
 
 --
@@ -25,7 +20,7 @@ alter table sc_mail_queue add column source int default 0 ;
 
 --
 -- Add data structures
---
+-- 
 
 drop table if exists sc_ui_zset;
 create table sc_ui_zset(
@@ -44,14 +39,18 @@ create table sc_ui_zset(
 -- indexes
 --
 
-alter table sc_ui_zset add constraint UNIQUE uniq_key(set_key);
+alter table sc_ui_zset add constraint UNIQUE uniq_key(set_key,seo_key);
 
 -- 
 -- copy category data from sc_list to sc_ui_zset
 --
 
 insert into  sc_ui_zset(name,ui_code,ui_order,seo_key,set_key,set_hash)
-    select c.display, c.code,c.ui_order, c.fixed_id,"ui:zset:category", unhex(md5("ui:zset:category"))
+    select c.display, 
+    c.code,c.ui_order, 
+    c.fixed_id,
+    "ui:zset:category", 
+    unhex(md5("ui:zset:category"))
     from sc_list c ;
 
 --
@@ -73,7 +72,6 @@ CREATE TABLE  sc_set (
   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 
 
@@ -105,16 +103,16 @@ insert into sc_glob_table(
     from sc_feature_group;
 
 -- 
--- transfer the preference data manually
+-- transfer the preference data 
 -- key is glob:user:login_id:preference
--- 
--- 
 
--- change login_id manually
--- insert into sc_glob_table(t_key,t_hash,t_value,created_on)
--- select "glob:user:<login_id>:preference",unhex(md5("glob:user:<login_id>:preference")), p_data ,now()
--- from sc_preference where login_id = <login_id>;
---
+insert into sc_glob_table(t_key,t_hash,t_value,created_on)
+select concat("glob:user:",login_id,":preference"), 
+        unhex(md5(concat("glob:user:",login_id,":preference"))),
+        p_data, now() 
+        from sc_preference;
+
+
 --
 --
 -- @drop sc_preference
@@ -122,31 +120,8 @@ insert into sc_glob_table(
 -- 
 
 
-
 --
--- 09 oct 2012
--- changes to track login : ip_address and session_id
--- 
--- ipv4 -> ipv6 would require 45 chars
--- ABCD:ABCD:ABCD:ABCD:ABCD:ABCD:192.168.158.190
--- 
-
---
--- ip_address when records are created
---
-
-alter table sc_user add column ip_address varchar(46) ;
-alter table sc_facebook add column ip_address varchar(46) ;
-alter table sc_twitter add column ip_address varchar(46) ;
-
-alter table sc_google_user add column ip_address varchar(46) ;
-alter table sc_denorm_user add column ip_address varchar(46) ;
--- ip_address for current login
-alter table sc_login add column ip_address varchar(46) ;
-alter table sc_login add column session_id varchar(40);
-
---
--- update sc_denorm_user_copy triggers
+-- recreate sc_denorm_user_copy triggers
 --
 
 
@@ -311,6 +286,7 @@ alter table sc_set add index idx_key(set_key) ;
 alter table sc_set add index idx_smhash (set_hash,member_hash) ;
 
 alter table sc_glob_table add index idx_key(t_key) ;
+alter table sc_ui_zset add index idx_key(set_key) ;
 
 alter table sc_bookmark add index idx_sub_verb(subject_id,verb) ;
 alter table sc_follow add index idx_following(following_id) ;
@@ -326,5 +302,4 @@ alter table sc_tmp_ps add index idx_site_id (site_id) ;
 
 alter table sc_post_site add index idx_post_id(post_id) ;
 alter table sc_post_site add index idx_site_id (site_id) ;
-
 

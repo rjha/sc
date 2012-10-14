@@ -1333,10 +1333,29 @@ alter table sc_comment_archive modify column title  varchar(128) not null ;
 alter table sc_comment_archive modify column login_id int  not null ;
 
 
+--
+-- 09 oct 2012
+-- changes to track login : ip_address and session_id
+-- 
+-- ipv4 -> ipv6 would require 45 chars
+-- ABCD:ABCD:ABCD:ABCD:ABCD:ABCD:192.168.158.190
+-- 
+
+--
+-- ip_address when records are created
+--
+
+ alter table sc_user add column ip_address varchar(46) ;
+ alter table sc_facebook add column ip_address varchar(46) ;
+ alter table sc_twitter add column ip_address varchar(46) ;
+
+ alter table sc_google_user add column ip_address varchar(46) ;
+ alter table sc_denorm_user add column ip_address varchar(46) ;
+ alter table sc_login add column ip_address varchar(46) ;
 
 
 --
--- 19 sept 2012
+-- 14 october 2012
 -- changes to existing tables
 -- 
 --
