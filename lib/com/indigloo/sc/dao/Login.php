@@ -42,6 +42,11 @@ namespace com\indigloo\sc\dao {
             return $rows;
         }
 
+        function getAggregate() {
+            $rows = mysql\Login::getAggregate();
+            return $rows; 
+        }
+
     }
 }
 ?>

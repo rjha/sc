@@ -116,7 +116,10 @@
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
-        
+        <link rel="stylesheet" type="text/css" href="/3p/jquery/jqplot/jquery.jqplot.min.css" />
+        <script language="javascript" type="text/javascript" src="/3p/jquery/jqplot/jquery.jqplot.min.js"></script>
+
+
     </head>
 
     <body>
@@ -185,7 +188,9 @@
                     </div>
  
                     <div class="mt20">
+                        <div id="chartdiv" style="height:225px;width:450px; "></div>
                         <?php
+
                             $startId = NULL;
                             $endId = NULL;
 
@@ -193,7 +198,7 @@
                                 $startId = $userDBRows[0]['id'];
                                 $endId = $userDBRows[sizeof($userDBRows) - 1]['id'];
                             }
-
+                            
                             foreach ($userDBRows as $userDBRow) {
                                 echo \com\indigloo\sc\html\User::getAdminWidget($userDBRow);
                             }
@@ -223,6 +228,38 @@
 
                 webgloo.sc.item.addAdminActions();
 
+                var ajaxDataRenderer = function(url, plot, options) {
+                    var ret = null;
+                    $.ajax({
+                      async: false,
+                      url: url,
+                      dataType:"json",
+                      success: function(data) {
+                        ret = data;
+                      }
+                    });
+                    return ret;
+                };
+         
+                // The url for our json data
+                var jsonurl = "/monitor/data/user/plot.php";
+
+                var plot2 = $.jqplot('chartdiv', jsonurl,{
+                    title: "past 2 weeks",
+                    seriesColors:["red"],
+                    dataRenderer: ajaxDataRenderer,
+                    grid: {
+                        drawGridLines: false
+                    },
+                    axes: {
+                        xaxis: {
+                            show: false 
+                        }
+                    },
+                    dataRendererOptions: {
+                      unusedOptionalUrl: jsonurl
+                    }
+                  });
 
             });
 

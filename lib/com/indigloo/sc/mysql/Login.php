@@ -11,6 +11,21 @@ namespace com\indigloo\sc\mysql {
 
     class Login {
 
+        // @todo fix expensive query
+        // mysql does not have function indexes - so you need to compute
+        // the values that you want to index.
+
+        static function getAggregate() {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            $sql = " select count(id) as count  from sc_login " ;
+            $sql .= " where created_on >  (now() - interval 14 day) " ;
+            $sql .= " group by year(created_on), dayofyear(created_on) " ;
+
+            $rows = MySQL\Helper::fetchRows($mysqli,$sql);
+            return $rows ;
+        }
+
         static function getOnId($loginId){
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
