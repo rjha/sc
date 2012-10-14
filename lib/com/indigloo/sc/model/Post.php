@@ -33,7 +33,7 @@ namespace com\indigloo\sc\model {
                  $sql = sprintf("%s %s %s ", $column,$condition,$value);
                  return $sql;
              }
-
+             //@todo fix expensive-query
              if(strcmp($column,"created_on") == 0) {
                  //mysql format for date comparison
                  $column = (is_null($alias)) ? $column : $alias.".".$column ;

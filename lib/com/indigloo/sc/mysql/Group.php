@@ -77,7 +77,7 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        // @expensive-query
+        // @todo fix expensive-query
         // the count(id) query is examining all the rows (why?)
         // innodb count(col) is doing an FTS
         static function getTotalCount($filters){
@@ -95,7 +95,7 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
-        //@expensive-query
+        //@todo fix expensive-query
         static function getRandom($limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 

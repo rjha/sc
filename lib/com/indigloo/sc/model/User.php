@@ -27,6 +27,7 @@ namespace com\indigloo\sc\model {
          }
 
          public function getValue($alias,$column,$condition,$value) {
+            //@todo fix expensive-query
             if(strcmp($column,"created_on") == 0) {
                  //special case: all processing in this block
                  //value comes in as 24 HOUR / 1 WEEK / 1 MONTH etc.
@@ -37,6 +38,8 @@ namespace com\indigloo\sc\model {
                  return $sql;
             }
 
+            //@todo fix expensive-query
+            //@todo move to sphinx index
             if(strcmp($column,"name") == 0) {
                  $column = (is_null($alias)) ? $column : $alias.".".$column ;
                  $sql = sprintf(" %s %s '%s%s%s' ", $column,$condition,'%%',$value,'%%');

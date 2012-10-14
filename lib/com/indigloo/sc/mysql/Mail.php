@@ -5,7 +5,7 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\mysql as MySQL;
     
     class Mail {
-        
+        //@todo fix expensive-query : compare on expired_on
         static function getOnEmailToken($email,$token) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -22,6 +22,7 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        //@todo fix expensive-query : compare on created_on
         static function isPending($email) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 

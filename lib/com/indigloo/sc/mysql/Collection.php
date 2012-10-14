@@ -8,7 +8,7 @@ namespace com\indigloo\sc\mysql {
 
     class Collection {
 
-        // @expensive queries
+        // @todo fix expensive queries
         // create index on set_key here
         // @todo do not use set_hash at all?
         
