@@ -858,10 +858,10 @@ webgloo.sc.ImageSelector = {
 
         $('#image-preview .container .options').hide();
         $('#image-preview').hide();
-        $('#step2-container').hide();
-
+        
         $("#fetch-button").live("click", function(event){
             event.preventDefault();
+            $("#next-container").hide();
             var link = jQuery.trim($("#link-box").val());
             if( link == '' ){
                 return ;
@@ -872,6 +872,7 @@ webgloo.sc.ImageSelector = {
 
         //capture ENTER on link box
         $("#link-box").keydown(function(event) {
+            $("#next-container").hide();
             //donot submit form
             if(event.which == 13) {
                 event.preventDefault();
@@ -898,7 +899,7 @@ webgloo.sc.ImageSelector = {
             }
 
             if(webgloo.sc.ImageSelector.num_selected == 0 ) {
-                webgloo.sc.ImageSelector.showError("Please select an image first.");
+                webgloo.sc.ImageSelector.appendError("Please select an image first.");
                 return false;
 
             } else {
@@ -1076,7 +1077,7 @@ webgloo.sc.ImageSelector = {
         }
 
         if(webgloo.sc.ImageSelector.num_added > 0 ) {
-            $("#step2-container").fadeIn("slow");
+            $("#next-container").fadeIn("slow");
         }else {
             var message = "Error: No suitable images found";
             webgloo.sc.ImageSelector.showError(message);
@@ -1107,8 +1108,18 @@ webgloo.sc.ImageSelector = {
         webgloo.sc.ImageSelector.description = response.description;
         webgloo.sc.ImageSelector.website = $("#link-box").val();
 
-        var tmpl = "Total {total} images found" ;
-        var message = tmpl.supplant({"total" : webgloo.sc.ImageSelector.num_total}) ;
+        var tmpl1, message ;
+
+        tmpl1 = " {total} images found.&nbsp;&nbsp;Place your mouse over an image to select it. "
+            + "&nbsp;&nbsp;Click Next after selecting images." ;
+
+        
+        if(webgloo.sc.ImageSelector.num_total > 0 ) {
+            message = tmpl1.supplant({"total" : webgloo.sc.ImageSelector.num_total}) ;
+        } else {
+            message = "No images found!" ;
+        }
+        
         webgloo.sc.ImageSelector.showMessage(message);
 
         for(i = 0 ; i < images.length ; i++) {
@@ -1155,6 +1166,7 @@ webgloo.sc.ImageSelector = {
     fetch : function(target) {
 
         webgloo.sc.ImageSelector.init();
+
         var message = "fetching images from webpage..." ;
         var spinner = '<div> <img src="/css/asset/sc/fb_loader.gif" alt="spinner"/></div>' ;
 
