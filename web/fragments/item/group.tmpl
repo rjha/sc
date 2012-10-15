@@ -1,14 +1,15 @@
   ~if($view->hasGroups) { ~
-    <div class="section">
-        <span class="label">Groups&nbsp;</span>
-        <br>
-        <br>
+    <div class="section1">
+        <span class="faded-text b">Groups&nbsp;</span>
+    </div>
+    <div class="section"> 
         <ul class="unstyled">
         ~foreach($view->groups as $group){~
             <li> <a href="/group/~~$group['slug']~" class="faded-text">&nbsp;~~$group['display']~</a></li>
 
         ~}~
         </ul>
+   
     </div>
 
 ~}~

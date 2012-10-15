@@ -31,7 +31,7 @@
             #step2-container { margin-top:10px; padding:10px; border-left:6px solid #eee;}
 
             #link-box {width:280px; }
-            #fetch-button {width:60px; height:28px; margin-bottom:10px;}
+            #fetch-button {width:60px; }
 
             #ajax-message .normal {}
             #ajax-message .error { color:red ; }
@@ -61,7 +61,7 @@
                         <br>
                         <br>
                         <input id="link-box" name="link" value="" />
-                        <button id="fetch-button" type="button" class="btn" value="Fetch">Fetch</button>
+                        <button id="fetch-button" type="button" class="btn btn-small" value="Fetch">Fetch</button>
                     </div>
 
                 </div> <!-- span -->

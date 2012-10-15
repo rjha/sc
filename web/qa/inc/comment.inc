@@ -18,7 +18,7 @@
         </table>
 
          <div>
-            <button id="item-comment" class="btn" type="submit" name="save" value="Save"><span class="b">comment</span></button>
+            <button id="item-comment" class="btn" type="submit" name="save" value="Save"><span>comment</span></button>
         </div>
 
        <input type="hidden" name="owner_id" value="<?php echo $postDBRow['login_id']; ?>" />

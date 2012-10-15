@@ -556,9 +556,7 @@
     }
 
     .user .follow-user-link {
-        width:50px;
-        font-weight: bold;
-        line-height:14px;
+        width:70px;
     }
 
     #item-site-link {
@@ -913,11 +911,12 @@
         font-weight: normal;
         text-decoration: underline;
         background-color: inherit;
+        background-image: none ;
     } 
 
 
     #top-unit {
-        padding:25px;
+        padding:40px 25px 20px 25px;
         background:#FFF9B1 ;
         margin-top:-10px;
         border-radius: 5px;
@@ -1134,7 +1133,7 @@
     }
 
     /* to fix blue backgorund on links */
-
+    
     .dropdown-menu  a:hover,
     .dropdown-menu  a:focus {
         background-color: #ffffff ;
