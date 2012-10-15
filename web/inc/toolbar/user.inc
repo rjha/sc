@@ -43,21 +43,14 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $gSessionLogin->name; ?><b class="caret"></b> </a>
 
                         <ul class="dropdown-menu">
-                            <li>
-                               <div id="submenu-col2"> 
+                           
+                            <li><a href="/user/dashboard/posts.php">Account</a></li>
+                             <li><a href="/pub/user/<?php echo $pubUserId; ?>">Public page</a></li>
+                            <?php echo $monitorUrl; ?>
+                       
+                            <?php echo $passwordUrl ; ?>
+                            <li><a href="/user/logout.php">Logout</a></li>
                                    
-                                    <ul>
-                                        <li><a href="/user/dashboard/posts.php">Account</a></li>
-                                         <li><a href="/pub/user/<?php echo $pubUserId; ?>">Public page</a></li>
-                                        <?php echo $monitorUrl; ?>
-                                    </ul>
-                                    <ul>
-                                        <?php echo $passwordUrl ; ?>
-                                        <li><a href="/user/logout.php">Logout</a></li>
-                                    </ul>
-
-                                </div> <!-- 2-col submenu -->
-                            </li>
                         </ul>
                     </li>  <!-- user menu -->
 
