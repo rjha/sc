@@ -694,6 +694,7 @@ CREATE TABLE  sc_glob_table (
 
 
 
+
 --
 -- indexes
 -- 
@@ -725,6 +726,7 @@ alter table sc_set add index idx_key(set_key) ;
 alter table sc_set add index idx_smhash (set_hash,member_hash) ;
 
 alter table sc_glob_table add index idx_key(t_key) ;
+alter table sc_ui_zset add index idx_key(set_key) ;
 
 alter table sc_bookmark add index idx_sub_verb(subject_id,verb) ;
 alter table sc_follow add index idx_following(following_id) ;
@@ -740,5 +742,4 @@ alter table sc_tmp_ps add index idx_site_id (site_id) ;
 
 alter table sc_post_site add index idx_post_id(post_id) ;
 alter table sc_post_site add index idx_site_id (site_id) ;
-
 
