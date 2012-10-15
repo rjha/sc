@@ -12,7 +12,7 @@
         $files[] = "jquery/jquery.validate.1.9.0.js" ;
         $files[] = "jquery/isotope/jquery.isotope.js" ;
         $files[] = "jquery/infinite/jquery.infinitescroll.hacked.js" ;
-        $files[] = "bootstrap/js/bootstrap.js" ;
+        $files[] = "bootstrap/2.1.1/js/bootstrap.js" ;
         $files[] = "ful/valums/fileuploader.js" ;
         $files[] = "fancybox/jquery.fancybox-1.3.4.js" ;
 
@@ -45,7 +45,7 @@
     function make_css_bundle($root3p,$rootsc) {
         //list of 3p files to concatenate
         $files = array();
-        $files[] = "bootstrap/css/bootstrap.css" ;
+        $files[] = "bootstrap/2.1.1/css/bootstrap.css" ;
         $files[] = "fancybox/jquery.fancybox-1.3.4.css";
         $files[] = "zocial/css/zocial.css";
         $files[] = "ful/valums/fileuploader.css" ;
@@ -73,7 +73,7 @@
         }
 
         //reponsive css is last include
-        $glob = file_get_contents($root3p.'bootstrap/css/bootstrap-responsive.css');
+        $glob = file_get_contents($root3p.'bootstrap/2.1.1/css/bootstrap-responsive.css');
         fwrite($fp,$glob);
 
         fclose($fp);
