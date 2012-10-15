@@ -108,12 +108,27 @@
 
                             <tr>
                                 <td>
+                                    <div>
+                                        <span class="faded-text">
+                                            By posting your content on 3mik, you agree to the
+                                            <a href="/site/tos.php" target="_blank">terms of service</a>
+                                            &nbsp; and
+                                             <a href="/site/privacy.php" target="_blank">privacy policy</a>
+                                        </span>
+                                                                
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
                                     <div class="form-actions">
                                         <button class="btn btn-primary" type="submit" name="save" value="Save"><span>Submit</span></button>
                                         <a href="<?php echo $qUrl; ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
                                     </div>
 
                                 </td>
+                               
                             </tr>
 
                         </table>

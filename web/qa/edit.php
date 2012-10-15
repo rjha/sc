@@ -130,6 +130,21 @@
                                     <input id="link-box" type="text" class="wp100" name="link" value="<?php echo $sticky->get('link'); ?>" />
                                 </td>
                             </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div>
+                                        <span class="faded-text">
+                                            By posting your content on 3mik, you agree to the
+                                            <a href="/site/tos.php" target="_blank">terms of service</a>
+                                            &nbsp; and
+                                             <a href="/site/privacy.php" target="_blank">privacy policy</a>
+                                        </span>
+                                                                
+                                    </div>
+                                </td>
+                            </tr>
+
                             <tr>
                                 <td>
                                     <div class="form-actions">
