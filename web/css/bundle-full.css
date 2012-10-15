@@ -7685,6 +7685,12 @@ button::-moz-focus-inner {
         border-radius: 10px;
     }
 
+    #adrisya-wrapper {
+        display: none ;
+    }
+
+    .flickr-color { color : #FE63BB;}
+
     /* bootstrap accordion image for site help */
 
     .accordion-inner img {
@@ -7694,7 +7700,8 @@ button::-moz-focus-inner {
         box-shadow: 0 1px 7px rgba(34, 25, 25, 0.4);
     }
 
-    /* last section - override bootstrap css */
+    /* last section - override 3rd party libraries */
+    /* bootstrap css */
     .page-header {
         padding-bottom: 7px;
     }
@@ -7712,10 +7719,34 @@ button::-moz-focus-inner {
         border-top : none ;
     }
 
-    #adrisya-wrapper {
-        display: none ;
+    .form-actions {
+        background-color: #ffffff ;
     }
 
+    /* to fix blue backgorund on links */
+
+    .dropdown-menu  a:hover,
+    .dropdown-menu  a:focus {
+        background-color: #ffffff ;
+        background-image:none ;
+
+    }
+
+    .dropdown-menu li > a:hover,
+    .dropdown-menu li > a:focus,
+    .dropdown-submenu:hover > a {
+        background-color: #ffffff ;
+        background-image:none ;
+    }
+
+    .dropdown-menu .active > a,
+    .dropdown-menu .active > a:hover {
+        background-color: #ffffff ;
+        background-image:none ;
+    }
+
+
+    /* override zocial */
     /* site popup max width is 600px */
     #zocial-grid .column {
         width:180px;
@@ -7744,14 +7775,8 @@ button::-moz-focus-inner {
         background-color: #008DB8 ;
     }
 
-    .flickr-color { color : #FE63BB;}
-
-    /* + last section: customizations of base libraries */
-    /* override zocial */
     /* @see https://github.com/samcollins/css-social-buttons/issues/19 */
-    .form-actions {
-        background-color: #ffffff ;
-    }
+   
     .zocial {
         white-space: nowrap;
     }
@@ -7763,6 +7788,7 @@ button::-moz-focus-inner {
         color:red ;
     }
 
+    
 
  /* cat:sc:file:1:css/sc.css */ 
 

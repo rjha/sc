@@ -1378,18 +1378,21 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #pubuser .data{padding-bottom:5px;font-weight:bold}
 #pubuser .about-me{padding-top:10px}
 #infscr-loading{text-align:center;position:fixed;left:45%;bottom:40px;width:200px;background:black;opacity:.8;color:white;border-radius:10px}
+#adrisya-wrapper{display:none}
+.flickr-color{color:#fe63bb}
 .accordion-inner img{border:1px solid #ddd;padding:8px;background:#eee;box-shadow:0 1px 7px rgba(34,25,25,0.4)}
 .page-header{padding-bottom:7px}
 .hero-unit{padding:30px;margin-bottom:10px}
 .carousel img{max-width:100%}
 .table th,.table td{border-top:0}
-#adrisya-wrapper{display:none}
+.form-actions{background-color:#fff}
+.dropdown-menu a:hover,.dropdown-menu a:focus{background-color:#fff;background-image:none}
+.dropdown-menu li>a:hover,.dropdown-menu li>a:focus,.dropdown-submenu:hover>a{background-color:#fff;background-image:none}
+.dropdown-menu .active>a,.dropdown-menu .active>a:hover{background-color:#fff;background-image:none}
 #zocial-grid .column{width:180px;padding:10px;float:left;font-weight:bold}
 #zocial-grid .zocial{width:160px;font-size:15px;font-family:"Myriad Pro",myriad,arial,sans-serif;text-align:left}
 #zocial-grid .btn{width:160px;height:22px;padding-top:7px;color:#fe63bb;font-family:"Myriad Pro",myriad,arial,sans-serif;font-size:15px}
 #zocial-grid .zocial .twitter{background-color:#008db8}
-.flickr-color{color:#fe63bb}
-.form-actions{background-color:#fff}
 .zocial{white-space:nowrap}
 .zocial.twitter{background-color:#00a0d1;color:white}
 .qq-upload-failed-text{color:red}
