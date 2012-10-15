@@ -141,11 +141,12 @@ namespace com\indigloo\sc\controller{
              */
 
             if(!Util::tryEmpty($group_slug)) {
-            
                 $ids = $sphinx->getPostByGroup($group_slug,0,16);
                 
                 //unique ids?
-                $ids = array_diff($ids,$xids);
+                //@imp order matters for array_diff
+                // bucket should be the second argument
+                $ids = Util::fast_array_diff($ids,$xids);
                 //xids for next iteration
                 $xids = array_merge($xids,$ids);    
 
@@ -158,13 +159,16 @@ namespace com\indigloo\sc\controller{
             if(sizeof($xrows) < 20 ) {
                 
                 $limit = 20 - (sizeof($xrows)) ;
-                
+                $limit = ($limit > 4 ) ? 4 : $limit ;
+
                 $searchToken = $itemObj->title ;
                 $sphinx = new \com\indigloo\sc\search\SphinxQL();
                 //@todo - number of hits based on number of words in token
                 $searchIds = $sphinx->getRelatedPosts($searchToken,3,0,$limit);
                 //unique search ids?
-                $searchIds = array_diff($searchIds,$xids);
+                //@imp order matters for array_diff
+
+                $searchIds = Util::fast_array_diff($searchIds,$xids);
 
                 //xids for next iteration
                 $xids = array_merge($searchIds,$xids);

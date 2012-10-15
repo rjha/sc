@@ -57,13 +57,16 @@ namespace com\indigloo\sc\search {
 
                 foreach($slugs as $slug) {
                     if(Util::tryEmpty($slug)) { continue ; }
-
+                    
                     /* fetch only one post beyond group #3 */
                     $limit = ($count <=2 ) ? $limitMap[$count] : 1 ;
                     $ids = $this->getMatch("post_groups",$slug,$offset,$limit);
-
-                    $unique = array_diff($bucket,$ids);
+                    
+                    // @imp order matters for array_diff
+                    // bucket should always be second argument!
+                    $unique = Util::fast_array_diff($ids,$bucket);
                     $bucket = array_merge($bucket,$unique);
+                    
                     $count++ ;
                 }
             }
