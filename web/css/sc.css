@@ -167,7 +167,7 @@
     .form-table .h130{ height: 130px;}
     .form-table .h280{ height: 280px;}
     .form-table .h430{ height: 430px;}
-
+    .form-table .wp100 {width:100%;}
 
     div .form-error {
         margin-bottom: 10px;
@@ -803,7 +803,6 @@
     .gBtnUp {
         min-width:60px; 
         height:32px; 
-        margin-bottom:10px;
         padding-left:20px;
         padding-right: 20px;
         font-weight: bold ;
