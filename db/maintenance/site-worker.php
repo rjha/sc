@@ -235,4 +235,16 @@
     $mysqli->close();
     $redis->quit(); 
 
+    // write compiled template dir location
+    // we want to chown ownership of any compiled
+    // template dir created by this script (that is run as sudo)
+    // to www-data:www-data
+    // otherwise web code (run as www-data) will not be able to open those
+    // compiled templates
+    // The actual chown operation is done by site-worker.sh script
+    $template_dir = trim(APP_WEB_DIR."/compiled") ;
+    file_put_contents("tmpl.location",$template_dir);
+    //delay - let file content be there!
+    sleep(2);
+
    ?>
