@@ -35,7 +35,6 @@ namespace com\indigloo\sc\dao {
             } else {
                 //found
                 $loginId = $row['login_id'];
-                mysql\Login::updateIp(session_id(),$loginId,$remoteIp);
             }
 
             return $loginId ;

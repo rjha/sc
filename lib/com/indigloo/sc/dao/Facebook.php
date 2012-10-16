@@ -50,7 +50,6 @@ namespace com\indigloo\sc\dao {
             } else {
                 //found
                 $loginId = $row["login_id"];
-                mysql\Login::updateTokenIp(session_id(),$loginId,$access_token,$expires,$remoteIp);
             }
 
             return $loginId ;

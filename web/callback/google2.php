@@ -7,12 +7,15 @@
     include (APP_WEB_DIR.'/callback/error.inc');
     set_error_handler('login_error_handler');
 
-    use com\indigloo\Util;
-    use com\indigloo\Constants as Constants;
-    use com\indigloo\Configuration as Config;
-    use com\indigloo\Logger as Logger;
-    use com\indigloo\ui\form\Message as FormMessage ;
+    use \com\indigloo\Util;
+    use \com\indigloo\Constants as Constants;
+    use \com\indigloo\Configuration as Config;
+
+    use \com\indigloo\Logger as Logger;
+    use \com\indigloo\ui\form\Message as FormMessage ;
     use \com\indigloo\sc\auth\Login as Login ;
+
+    use \com\indigloo\sc\mysql as mysql ;
 
     function raiseUIError() {
         $uimessage = "something went wrong with the signup process. Please try again." ;
@@ -162,7 +165,12 @@
             raiseUIError();
         }
 
+        //success - update login record
+        // start 3mik session
+        $remoteIp = \com\indigloo\Url::getRemoteIp();
+        mysql\Login::updateIp(session_id(),$loginId,$remoteIp);
         $code = Login::startOAuth2Session($loginId,Login::GOOGLE);
+        
         $location = ($code == Login::FORBIDDEN_CODE) ? "/site/error/403.html"  : "/" ;
         header("Location: ".$location);
         

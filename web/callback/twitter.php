@@ -9,8 +9,10 @@
 
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\Configuration as Config ;
-    use com\indigloo\Constants as Constants;
+    use \com\indigloo\Constants as Constants;
+
     use \com\indigloo\sc\auth\Login as Login ;
+    use \com\indigloo\sc\mysql as mysql ;
 
     function clearSession() {
         unset($_SESSION['oauth_token']);
@@ -105,8 +107,13 @@
                 raiseUIError();
 
             }
-            
+
+            //success - update login record
+            // start 3mik session
+            $remoteIp = \com\indigloo\Url::getRemoteIp();
+            mysql\Login::updateIp(session_id(),$loginId,$remoteIp);
             $code = Login::startOAuth2Session($loginId,Login::TWITTER);
+            
             $location = ($code == Login::FORBIDDEN_CODE) ? "/site/error/403.html"  : "/" ;
             header("Location: ".$location);
 

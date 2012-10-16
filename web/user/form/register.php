@@ -11,6 +11,8 @@
 
     use \com\indigloo\exception\UIException as UIException;
     use \com\indigloo\exception\DBException as DBException;
+
+    use \com\indigloo\sc\mysql as mysql;
     use \com\indigloo\sc\auth\Login as Login ;
 
     if (isset($_POST['register']) && ($_POST['register'] == 'Register')) {
@@ -69,7 +71,8 @@
                 }
             }
 
-            //start 3mik set session
+            //success - update login record
+            // start 3mik session
             $remoteIp = \com\indigloo\Url::getRemoteIp();
             mysql\Login::updateIp(session_id(),$loginId,$remoteIp);
             Login::startOAuth2Session($loginId,Login::MIK);
