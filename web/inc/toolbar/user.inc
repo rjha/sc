@@ -6,7 +6,7 @@
     $externalPageUrl = \com\indigloo\Url::createUrl('/qa/external/image.php',$params);
     
     $monitorUrl = '' ;
-    $menuPasswordUrl = '' ;
+    $passwordUrl = '' ;
 
     if(\com\indigloo\sc\auth\Login::hasMikLogin()) {
         $passwordUrl = '<li><a href="/user/account/change-password.php">Change password</a></li>' ;
