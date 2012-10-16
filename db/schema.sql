@@ -101,16 +101,6 @@ CREATE TRIGGER trg_fb_user_cp  BEFORE INSERT ON sc_facebook
 DELIMITER ;
 
 
-
-DROP TABLE IF EXISTS  sc_feature_group ;
-CREATE TABLE  sc_feature_group  (
-   id  int(11) NOT NULL,
-   slug  text,
-   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id )
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 DROP TABLE IF EXISTS  sc_feedback ;
 CREATE TABLE  sc_feedback  (
    id  int(11) NOT NULL AUTO_INCREMENT,
@@ -608,19 +598,6 @@ CREATE TABLE  sc_bookmark (
 
 
 
-DROP TABLE IF EXISTS  sc_preference ;
-CREATE TABLE  sc_preference (
-   id  int NOT NULL AUTO_INCREMENT,
-   login_id  int NOT NULL,
-   p_data varchar(512) not null,
-   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id )) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-alter table  sc_preference add constraint UNIQUE uniq_login (login_id);
-
-
-
 --
 -- for sc_ui_zset 
 -- ui_order is the score associated with a member in zset (sorted set)
@@ -661,8 +638,11 @@ create table sc_ui_zset(
     updated_on timestamp default '0000-00-00 00:00:00' ,
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
+--
+-- indexes
+--
 
-alter table sc_ui_zset add constraint UNIQUE uniq_key(set_key);
+alter table sc_ui_zset add constraint UNIQUE uniq_key(set_key,seo_key);
 
 
 DROP TABLE IF EXISTS  sc_set ;
@@ -680,7 +660,6 @@ CREATE TABLE  sc_set (
 
 
 
-
 DROP TABLE IF EXISTS  sc_glob_table ;
 
 CREATE TABLE  sc_glob_table (
@@ -691,8 +670,6 @@ CREATE TABLE  sc_glob_table (
   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (t_hash)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
 
 
 --
