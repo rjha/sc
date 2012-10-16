@@ -1357,9 +1357,9 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #site-toolbar .caret{border-top-color:black}
 #site-navigator .dropdown-menu a{color:#333;font-weight:normal}
 #site-navigator .dropdown-menu li>a:hover,#site-navigator .dropdown-menu .active>a,#site-navigator .dropdown-menu .active>a:hover{color:#333;font-weight:normal;text-decoration:underline;background-color:inherit;background-image:none}
-#top-unit{padding:40px 25px 20px 25px;background:#fff9b1;margin-top:-10px;border-radius:5px;margin-bottom:15px}
-#top-unit a{color:#fcf9f9;background:#e64d5c;font-weight:bold;font-size:15px;font-family:"Myriad Pro",myriad,arial,sans-serif}
-#top-unit .btn{text-shadow:none;line-height:22px;border:#910101;padding-left:17px}
+#top-unit{padding:40px 25px 20px 25px;background-color:#f9edbe;margin-top:-10px;border-radius:5px;margin-bottom:15px}
+#top-unit a{color:#fcf9f9;background:#e64d5c;font-weight:bold;font-size:15px;font-family:arial,sans-serif}
+#top-unit .btn{text-shadow:none;line-height:22px;border:#910101;padding-left:19px;padding-right:19px}
 #simple-popup{position:fixed;width:600px;top:50%;left:50%;margin-top:-140px;margin-left:-300px;background:white;color:black;z-index:1009;border:1px solid #eee;border-radius:3px;padding:7px 11px 7px 11px;display:none;overflow:hidden;box-shadow:0 4px 23px 5px rgba(0,0,0,0.2),0 2px 6px rgba(0,0,0,0.15)}
 #popup-mask{position:absolute;z-index:900;background-color:#f7f7f7;display:none;top:0;left:0;opacity:.8}
 #block-spinner{text-align:center;position:fixed;width:200px;background:black;opacity:.8;color:white;border-radius:10px;top:50%;left:50%;margin-top:-40px;margin-left:-80px;z-index:1090;padding:10px;display:none;overflow:hidden}

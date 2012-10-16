@@ -7506,11 +7506,10 @@ button::-moz-focus-inner {
 
     #top-unit {
         padding:40px 25px 20px 25px;
-        background:#FFF9B1 ;
+        background-color: #F9EDBE ;
         margin-top:-10px;
         border-radius: 5px;
         margin-bottom:15px;
-        
     }
 
     #top-unit a {
@@ -7518,14 +7517,15 @@ button::-moz-focus-inner {
         background : #E64D5C;
         font-weight:bold ;
         font-size:15px;
-        font-family:"Myriad Pro",myriad,arial,sans-serif ;
+        font-family: arial,sans-serif ;
     }
 
     #top-unit .btn {
         text-shadow : none ;
         line-height: 22px;
         border: #910101 ;
-        padding-left:17px;
+        padding-left:19px;
+        padding-right:19px;
     }
 
 
