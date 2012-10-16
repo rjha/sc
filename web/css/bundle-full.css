@@ -7146,7 +7146,8 @@ button::-moz-focus-inner {
     }
 
     .user .follow-user-link {
-        width:70px;
+        padding-left:19px;
+        padding-right:19px;
     }
 
     #item-site-link {

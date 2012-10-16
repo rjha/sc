@@ -1296,7 +1296,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .item .title{color:#222;font-size:19px;font-weight:bold;line-height:1em;padding-bottom:10px}
 .user .name{color:#fe63bb;font-size:15px;font-weight:bold;text-shadow:0 1px rgba(255,255,255,0.3)}
 .user .name:hover{text-decoration:underline}
-.user .follow-user-link{width:70px}
+.user .follow-user-link{padding-left:19px;padding-right:19px}
 #item-site-link{color:#222;font-size:18px;font-weight:bold;line-height:1em;padding-bottom:10px}
 #item-site-link:hover{text-decoration:underline}
 .quote{margin-bottom:10px;padding-bottom:10px;border-left:4px solid #eee;padding-left:20px;overflow:hidden}
