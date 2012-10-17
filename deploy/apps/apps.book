@@ -154,4 +154,18 @@ git clone https://github.com/scrooloose/nerdtree.git
 
  
 
+facebook pfff
+----------------
+
+git clone git://github.com/facebook/pfff.git
+cd pfff/
+less install.txt 
+sudo aptitude install ocaml
+sudo aptitude install libpcre3-dev
+sudo aptitude install binutils-gold
+./configure -nogui -novisual --prefix=/home/rjha/sw/fb
+make depend
+make 
+./scheck  ~/code/github/sc/lib/com/indigloo/sc/html/
+
 
