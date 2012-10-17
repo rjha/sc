@@ -94,7 +94,7 @@
 
 
                         <div class="form-actions">
-                            <button class="btn gBtnUp b" type="submit" name="register" value="Register"><span>Sign in</span></button>
+                            <button class="btn gBtnUp b" type="submit" name="register" value="Register"><span>Sign up</span></button>
                         </div>
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
                         <input type="hidden" name="token" value="<?php echo $formToken; ?>" />
