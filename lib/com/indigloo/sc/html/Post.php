@@ -213,8 +213,7 @@ namespace com\indigloo\sc\html {
         }
 
         static function getUserPanel($postView,$loginIdInSession) {
-
-            $postView->followerId = (empty($loginId)) ? "{loginId}" : $loginId ;
+            $postView->followerId = (empty($loginIdInSession)) ? "{loginId}" : $loginIdInSession ;
             $postView->followingId = $postView->loginId;
 
             $html = NULL ;
