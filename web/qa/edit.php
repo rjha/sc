@@ -119,14 +119,14 @@
                             </tr>
                             <tr>
                                 <td> 
-                                    <label>Groups (Separate groups using comma) </label>
+                                    <label>Groups (separate groups using comma) </label>
                                     <input type="text" class="wp100" name="group_names" maxlength="64" value="<?php echo $sticky->get('group_names',$group_names); ?>" />
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>
-                                    <label>Website (click Add or press Enter) </label>
+                                    <label>Website</label>
                                     <input id="link-box" type="text" class="wp100" name="link" value="<?php echo $sticky->get('link'); ?>" />
                                 </td>
                             </tr>

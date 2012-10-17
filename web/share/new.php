@@ -94,14 +94,15 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td> <label>Groups (Separate groups using comma)</label>
+                                <td> <label>Groups(separate groups using comma)</label>
                                 <input type="text" class="wp100" name="group_names" maxlength="64" value="<?php echo $sticky->get('group_names'); ?>" />
-
+                                <br>
+                                <span id="group_preview"></span>
                             </tr>
 
                             <tr>
                                 <td>
-                                    <label>Website (click Add or press Enter) </label>
+                                    <label>Website</label>
                                     <input type="text" class="wp100" id="link-box" name="link" value="<?php echo $sticky->get('link'); ?>" />
                                 </td>
                             </tr>
