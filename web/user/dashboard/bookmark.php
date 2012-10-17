@@ -93,7 +93,7 @@
                     
                     <div class="faded-text mb20">
                         The items you saved are shown here. To remove an item 
-                        from saved list, do mouse over the item and click Remove.
+                        do mouse over the item and click Remove.
                     </div>
                     
 
