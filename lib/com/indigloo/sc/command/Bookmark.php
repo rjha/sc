@@ -9,12 +9,13 @@ namespace com\indigloo\sc\command {
 
         function execute($params) {
             $action = $params->action;
-            $itemId = $params->itemId ;
-            $loginId = $params->loginId ;
+            $itemId = intval($params->itemId) ;
+            $loginId = intval($params->loginId) ;
             $name = $params->name ;
 
-            if(empty($action) || empty($itemId)) {
-                $response = array("code" => 500 , "message" => "Bad input: missing required parameters.");
+            if(empty($action) || empty($itemId) || empty($loginId) || empty($name)) {
+                $message = "Bad input: missing required parameters." ;
+                $response = array("code" => 500 , "message" => $message);
                 return $response ;
             }
 
