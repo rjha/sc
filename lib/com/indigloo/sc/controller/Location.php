@@ -40,7 +40,7 @@ namespace com\indigloo\sc\controller{
             $searchTitle = NULL ;
 
             if(sizeof($ids) > 0 ) {
-                $pageHeader = "$token - $total results" ;
+                $pageHeader = "$token" ;
                 $pageBaseUrl = "/search/location/$token";
 
                 $template = APP_WEB_DIR. '/view/tiles-page.php';
