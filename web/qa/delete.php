@@ -61,7 +61,7 @@
 
                     <?php FormMessage::render(); ?>
                     <?php echo \com\indigloo\sc\html\Post::getWidget($postDBRow); ?>
-
+                    <div class="p10">&nbsp;</div>
                     <form id="web-form1"  name="web-form1" action="/qa/form/delete.php" method="POST">
                         <div>
                             <button class="btn btn-danger" type="submit" name="delete" value="Delete">Delete</button>
