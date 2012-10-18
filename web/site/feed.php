@@ -30,6 +30,11 @@
         <div class="container">
             
             <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h3> Activity feed </h3>
+                    </div>
+                </div>
                 <div class="span9">
                     <div class="feeds">
                         <?php
