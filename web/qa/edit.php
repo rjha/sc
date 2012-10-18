@@ -135,10 +135,10 @@
                                 <td>
                                     <div>
                                         <span class="faded-text">
-                                            By posting your content on 3mik, you agree to the
-                                            <a href="/site/tos.php" target="_blank">terms of service</a>
-                                            &nbsp; and
-                                             <a href="/site/privacy.php" target="_blank">privacy policy</a>
+                                            Note: by posting your content, you agree to abide by 
+                                            the 3mik <a href="/site/tos.php" target="_blank">terms of service</a> 
+                                            and
+                                           &nbsp;<a href="/site/privacy.php" target="_blank">privacy policy</a>
                                         </span>
                                                                 
                                     </div>
