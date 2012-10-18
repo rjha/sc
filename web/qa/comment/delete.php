@@ -60,7 +60,7 @@
 
                     <?php FormMessage::render(); ?>
                     <?php echo \com\indigloo\sc\html\Comment::getWidget($commentDBRow); ?>
-
+                    <div class="p20"> &nbsp;</div>
                     <form id="web-form1"  name="web-form1" action="/qa/comment/form/delete.php" method="POST">
                         <div>
                             <button class="btn btn-danger" type="submit" name="delete" value="Delete">Delete</button>
