@@ -34,7 +34,7 @@ namespace com\indigloo\sc\controller{
             $searchTitle = NULL ;
 
             if(sizeof($ids) > 0 ) {
-                $pageHeader = "$token - search results" ;
+                $pageHeader = "$token" ;
                 $pageBaseUrl = "/search/site";
 
                 $template = APP_WEB_DIR. '/view/search.php';
@@ -42,7 +42,7 @@ namespace com\indigloo\sc\controller{
                 $postDBRows = $postDao->getOnSearchIds($ids) ;
 
             } else {
-                $pageHeader = "No results for $token" ;
+                $pageHeader = "No results" ;
                 $template = APP_WEB_DIR. '/view/notiles.php';
 
             }

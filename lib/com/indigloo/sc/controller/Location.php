@@ -48,7 +48,7 @@ namespace com\indigloo\sc\controller{
                 $postDBRows = $postDao->getOnSearchIds($ids) ;
 
             } else {
-                $pageHeader = "No Results for $token" ;
+                $pageHeader = "No Results" ;
                 $template = APP_WEB_DIR. '/view/notiles.php';
 
             }

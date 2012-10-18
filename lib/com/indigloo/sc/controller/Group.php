@@ -38,7 +38,7 @@ namespace com\indigloo\sc\controller{
             $groupName = \com\indigloo\util\StringUtil::convertKeyToName($token);
 
             if(sizeof($ids) > 0 ) {
-                $pageHeader = "Group - $groupName" ;
+                $pageHeader = "$groupName" ;
                 $pageBaseUrl = "/group/$token" ;
                 $template = APP_WEB_DIR. '/view/tiles-page.php';
                 $postDao = new \com\indigloo\sc\dao\Post();
@@ -46,7 +46,7 @@ namespace com\indigloo\sc\controller{
 
             } else {
 
-                $pageHeader = "No results for $groupName" ;
+                $pageHeader = "No results" ;
                 $template = APP_WEB_DIR. '/view/notiles.php';
             }
 
