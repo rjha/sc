@@ -1075,6 +1075,7 @@
     #pubuser .data {
         padding-bottom:5px;
         font-weight:bold;
+        word-wrap:break-word;
 
     }
 

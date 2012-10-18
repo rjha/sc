@@ -1376,7 +1376,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #overlay-message a{color:#222;cursor:pointer;font-size:12px;font-weight:normal}
 #pubuser .avatar{width:auto;height:auto;max-width:200px;max-height:150px;text-align:center}
 #pubuser .follow-user-link{width:120px;height:20px;font-weight:bold}
-#pubuser .data{padding-bottom:5px;font-weight:bold}
+#pubuser .data{padding-bottom:5px;font-weight:bold;word-wrap:break-word}
 #pubuser .about-me{padding-top:10px}
 #infscr-loading{text-align:center;position:fixed;left:45%;bottom:40px;width:200px;background:black;opacity:.8;color:white;border-radius:10px}
 #adrisya-wrapper{display:none}
