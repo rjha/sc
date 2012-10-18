@@ -9,8 +9,7 @@
         <meta name="description" content="<?php echo $metaDescription;  ?>">
 
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-
+        
     </head>
 
      <body class="dark-body">
