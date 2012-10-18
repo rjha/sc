@@ -23,7 +23,9 @@
                     <h1> 3mik is a sharing and discovery platform in India.</h1>
                     <blockquote class="pull-right">
                         <p>
-                    3mik lets you share interesting and unique things in India. You can use 3mik to discover your interests and see stuff shared by others. Move around and see what you like!
+                            3mik lets you share interesting and unique things in India. 
+                            You can use 3mik to discover your interests and 
+                            see stuff shared by others. Move around and see what you like!
                         </p>
                     </blockquote>
                     <div class="p20">
@@ -51,28 +53,9 @@
                             </div>
                         </a>
 
-                    </div> <!-- 3mik social links -->
-                    
-                </div>
-                <div class="span6 offset1 ">
-                <!-- collage -->
-                    <div>
-                        <div class="photo">
-                            <img src="/css/asset/sc/about-collage.jpg" />
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-            </div> <!-- row -->
-            <div class="row">
-                   
-            </div>
-
-            <div class="row">
-                <div class="span5 p20">
+                    </div> <!-- social links -->
+                    <div class="clear"> &nbsp;</div>
+                    <br>
                     <h3>Discovery </h3>
                     <ul>
                         <li>Find interesting items online or a at a location near you </li>
@@ -81,8 +64,7 @@
                         <li>View likes and faves to get an idea of popularity of product </li>
                         <li>Ask questions to find out more about the product or Comment on what you feel about a product</li>
                     </ul>
-                </div>
-                <div class="span5 p20">
+                    <br>
                     <h3>Sharing </h3>
                     <ul>
                         <li> Network and share information which is not accessible </li>
@@ -90,38 +72,48 @@
                         <li> Build reputation </li>
                         <li> Get to know people who look for your products or shares </li>
                     </ul>
+                    
 
-                </div>
-            </div> <!-- row -->
-
-            <div class="row p20" style="border-top:1px solid #DEDEDE;">
-                <div class="span6 offset4">
-                    <a class="btn b" href="/user/register.php">Register a 3mik account</a>
-                    &nbsp;
-                    <small>Free and takes only a min.</small>
-                </div>
-            </div>
-            <div class="row mt20">
-                <div class="span6 offset2">
-                    <h2> what is there? </h2>
+                    <br>
+                    <h3> what is there? </h3>
                     <ul class="unordered">
                         <li> street food, best sandesh and jalebi!</li>
                         <li> Designer sarees, what is that vidya balan is wearing?</li>
                         <li> wood toys, warli art, puppets and handicrafts</li>
                         <li> Fashion accessories </li>
 
-                    </ul>
-                </div>
-                <div class="span4">
-                    <ul class="unordered">
                         <li> Rajnikanth shot glasses, chota bheem bags and other cool stuff</li>
                         <li> chilli chocolate in Bangalore and Tappu Dabbawala in Mumbai</li>
                         <li> Home decor ideas and gift ideas</li>
                         <li> <a href="/">and lot more&nbsp;&rarr;</a></li>
+                    
                     </ul>
-                </div>
 
-            </div>
+                    
+                </div> <!-- col:1 -->
+
+                <div class="span6 offset1 ">
+                    <div class="section">
+                        <a class="btn b" href="/user/register.php">Join 3mik</a>
+                        <br>
+                        <small>Free and takes only a min.</small>
+                    </div>
+                 <!-- collage -->
+                    <div class="section">
+                    </div>
+
+                    <div class="photo">
+                        <img src="/site/images/collage/part-1.png" />
+                    </div>
+                    <div class="photo">
+                        <img src="/site/images/collage/part-2.png" />
+                    </div>
+
+
+
+                </div> <!-- col:2 -->
+            </div> <!-- row -->
+           
 
         </div>  <!-- container -->
 
