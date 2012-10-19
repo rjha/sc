@@ -207,7 +207,7 @@
                     action: '/upload/image.php',
                     allowedExtensions: ['png','gif','jpg','jpeg'],
                     debug: false,
-                    labelOfButton : 'Add photo',
+                    uploadButtonText : 'Add photo', 
                     
                     onComplete: function(id, fileName, responseJSON) {
                          webgloo.media.addImage(responseJSON.mediaVO);

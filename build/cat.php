@@ -13,7 +13,7 @@
         $files[] = "jquery/isotope/jquery.isotope.js" ;
         $files[] = "jquery/infinite/jquery.infinitescroll.hacked.js" ;
         $files[] = "bootstrap/2.1.1/js/bootstrap.js" ;
-        $files[] = "ful/valums/fileuploader.js" ;
+        $files[] = "ful/2.1.1/fileuploader.js" ;
         $files[] = "fancybox/jquery.fancybox-1.3.4.js" ;
 
         $scfiles = array();
@@ -48,7 +48,7 @@
         $files[] = "bootstrap/2.1.1/css/bootstrap.css" ;
         $files[] = "fancybox/jquery.fancybox-1.3.4.css";
         $files[] = "zocial/css/zocial.css";
-        $files[] = "ful/valums/fileuploader.css" ;
+        $files[] = "ful/2.1.1/fileuploader.css" ;
 
         $scfiles = array();
         $scfiles[] = "css/sc.css" ;
