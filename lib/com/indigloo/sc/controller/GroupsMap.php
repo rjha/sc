@@ -3,12 +3,13 @@ namespace com\indigloo\sc\controller{
 
 
     use \com\indigloo\Util as Util;
-    use com\indigloo\Url as Url;
+    use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\html\Seo as SeoData ;
+
     use \com\indigloo\ui\Filter as Filter;
     use \com\indigloo\ui\Pagination as Pagination;
-  
+    use \com\indigloo\sc\util\Nest as Nest ;
     
     class GroupsMap {
 
@@ -62,8 +63,12 @@ namespace com\indigloo\sc\controller{
 
         function spewFeatured($params,$options) {
             
+          
+            $collectionDao = new \com\indigloo\sc\dao\Collection();
             $groupDao = new \com\indigloo\sc\dao\Group();
-            $feature_slug = $groupDao->getFeatureSlug();
+            $row = $collectionDao->glget(Nest::fgroups());
+            $feature_slug = empty($row) ? "" : $row["t_value"] ;
+
             $groups = $groupDao->slugToGroupsMap($feature_slug);
             $title = "Featured groups";
             $file = APP_WEB_DIR. "/view/group/cards.php" ;
