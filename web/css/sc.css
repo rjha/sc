@@ -1148,14 +1148,16 @@
     .dropdown-submenu:hover > a {
         background-color: #ffffff ;
         background-image:none ;
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#FAFAFA', GradientType=0);
     }
 
     .dropdown-menu .active > a,
     .dropdown-menu .active > a:hover {
         background-color: #ffffff ;
         background-image:none ;
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#FAFAFA', GradientType=0);
+       
     }
-
 
     /* override zocial */
     /* site popup max width is 600px */
@@ -1194,6 +1196,6 @@
     
     .zocial.twitter {background-color: #00A0D1 ; color : white; }
     
-    
+
 
     
