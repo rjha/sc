@@ -169,3 +169,13 @@ make
 ./scheck  ~/code/github/sc/lib/com/indigloo/sc/html/
 
 
+google closure compiler
+-------------------------
+
+Download or copy from ~/macbook/common/sw area
+google project: http://code.google.com/p/closure-compiler/
+To run on our bundle-full js script
+
+$java -jar compiler.jar --js=/home/rjha/code/github/sc/web/js/bundle-full.js    --js_output_file=out.js
+
+
