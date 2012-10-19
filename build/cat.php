@@ -7,7 +7,7 @@
     function make_js_bundle($root3p,$rootsc) {
         //list of 3p files to concatenate
         $files = array();
-        $files[] = "jquery/jquery-1.7.1.js" ;
+        $files[] = "jquery/jquery-1.8.2.js" ;
         $files[] = "jquery/jquery.ajaxQueue.js" ;
         $files[] = "jquery/jquery.validate.1.9.0.js" ;
         $files[] = "jquery/isotope/jquery.isotope.js" ;
