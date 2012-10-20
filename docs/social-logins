@@ -1,33 +1,120 @@
 
-Google App
-=============
+Facebook oauth2
+-------------------
 
-Sign into your GMAIL Account
+#creation/maintenance
+
+go to http://developers.facebook.com/
+click on Apps
+Edit 3mik App
+
+
+# FB access_token validity and its impact on 3mik sessions
+
+
+Problem: facebook access tokens obtained via server side auth are valid for 60 days. The 3mik
+login is valid for 7 days. However on 8th day, when you redirect the user to 3mik login page and 
+use is taken through FB authentication flow, Facebook __will not__ issue a new access token or refresh the 
+expires value. Facebook will issue the same access token that it issued 7 days back and with same expires
+value. 
+
+3mik login on day 1 - FB access token A - expire after 60 days
+3mik login on day 8 - FB access token A - expire after 53 days
+
+3mik logout or clearing of session on 3mik server - will not result in a new FB access token unless 
+user does something in his browser. Till this access token expires on 60th day, Facebook will not 
+relaunch the auth dialog and will not issue a new token. 
+
+It __does not look possible__ to extend the expiry of this access token without user intervention.
+(Like issuing a request to some graph API w/o the auth Dialog) So Facebook access token expiry date 
+is not "rolling" with each new 3mik login.  
+
+Impact : The facebook access token will expire on 60th day from the first issue.
+3mik login on 57th day - FB Access token A - 3mik login valid till 63rd day.
+3mik login on 61st day - login valid - FB access token has expired. So we get an error even though 
+user has a valid 3mik session going on.
+
+
+Solution:
+
++ Try to clear the job that writes to FB Feed
+	
+	- nuke if job is more than X days old	
+	- leave the job in queue if there is no access_token 
+	
+	- There is an acess_token
+		* check if access_token.expire_on > now()
+		* check if you get "has expired" error when using this access_token  
+			- clear out the access token 
+			- clear out the user session in mysql DB
+
+
+# we cannot log out the user from Facebook.
+So how do we make the user obtain a new facebook access token?
+
+# FB Reauthentication ( http://developers.facebook.com/docs/authentication/reauthentication/ ) generates
+a new access_token but the expire_on remains the same.
+
+#How to Extend the expiration of access tokens?
+Does not look possible w/o launching auth dialog.
+
+# debug a facebook access token 
+https://developers.facebook.com/tools/debug/access_token
+
+# customize extended permissions message
+  - if our app is accepted in Facebook App center then we can display a customized message
+    what appears on App details page. However if app is not in app center then we keep showing
+    the default message that is quite scary.
+
+
+# launch a dialog to get extended permissions after authorization
+- https://www.facebook.com/dialog/permissions.request?app_id=&
+- using FB login social plugin trick
+- launching oauth dialog via javascript (what we have in callback)
+
+Launching fbDialogURL (what we use on login page with extra scope parameters should do the trick!)
+
+
+#fixing  facebook dialog popup
+
+see the old item page share on Facebook popup on how to open the FB dialog in a popup 
+instead of in a separate page. Beware that it does not make sense to open oAuth dialog in a
+popup as we redirect back to a URL that will replace the popup window. (Unless we close popup window on redirect)
+
+
+
+
+Google App
+----------------
+
+# creation/maintenance
+
+Sign into your GMAIL Account (jha.rajeev@gmail.com)
 Go to google API console
 https://code.google.com/apis/console/#project:656879161784:access
 
 Add product Name - 3mik
-Add product Logo - http://www.3mik.com/css/asset/sc/logo.png
-
+Add product Logo - http://www.3mik.com/site/art/3mikb5-200.png
 
 Client ID:	
-656879161784.apps.googleusercontent.com
+xxxxxx
 Email address:	
 656879161784@developer.gserviceaccount.com
 Client secret:	
-zKdR6SiylQ8OYcplkxVhZPmo
-Redirect URIs:	http://www.3mik.com/oauth2callback
+xxxxx
+Redirect URIs:	http://www.3mik.com/callback/google2.php
 JavaScript origins:	http://www.3mik.com
 
 After the client ID is created :- Edit settings :- Change your redirect URL
 
+# params in auth login 
 scope
 client_id
 response_type
 state
 redirect_uri
 
-
+#documentation
 https://developers.google.com/accounts/docs/OAuth2WebServer
 
 

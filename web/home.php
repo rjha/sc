@@ -18,14 +18,10 @@
     </head>
 
      <body class="dark-body">
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
+
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
-
+            <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
             <div class="row">
                 <div class="span12">
                     <div id="tiles">
@@ -34,7 +30,7 @@
                             $count = 0 ;
                             foreach($this->homeDBRows as $postDBRow) {
                                 $count++ ;
-                                if($count == 4) {
+                                if($count == 1) {
                                     //inject activity tile
                                     $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
                                     $feedDataObj = $activityDao->getGlobalFeeds(10);
@@ -55,6 +51,15 @@
 
                 </div>
             </div> <!-- row -->
+            
+            <!-- feedback 
+            <div id="feedback" class="vertical">
+                <a href="/site/contact.php">
+                    <br>
+                    F e e d b a c k
+                </a>
+            </div>  -->
+
 
             <div id="scroll-loading"> </div>
 
@@ -78,19 +83,21 @@
                 var $container = $('#tiles');
 
                 $container.imagesLoaded(function(){
-                    $container.masonry({
+                    $container.isotope({
                         itemSelector : '.tile',
-                        gutterWidth  : 10
-                    });
+                        layoutMode : 'masonry',
 
-                    add_tile_options();
+                        onLayout : function( $elems, instance ) {
+                            add_tile_options();
+                        }
+                    });
 
                 });
 
                 $container.infinitescroll(
                     {
-                        navSelector  	: '.pager',
-                        nextSelector 	: '.pager a[rel="next"]',
+                        navSelector     : '.pager',
+                        nextSelector    : '.pager a[rel="next"]',
                         itemSelector : '.tile',
                         bufferPx : 80,
 
@@ -110,7 +117,7 @@
                         var $newElems = $(newElements).css({ opacity: 0 });
                         $newElems.imagesLoaded(function(){
                             $newElems.css({ opacity: 1 });
-                            $container.masonry('appended', $newElems);
+                            $container.isotope('appended', $newElems);
                             $("#infscr-loading").fadeOut("slow");
                         });
 

@@ -5,10 +5,15 @@
     include(APP_WEB_DIR . '/inc/header.inc');
     include(WEBGLOO_LIB_ROOT . '/ext/recaptchalib.php');
 
-    use com\indigloo\ui\form as Form;
-    use com\indigloo\Constants as Constants ;
+    use \com\indigloo\ui\form as Form;
+    use \com\indigloo\Logger ;
+    use \com\indigloo\Constants as Constants ;
+
     use \com\indigloo\exception\UIException as UIException;
-    use com\indigloo\exception\DBException as DBException;
+    use \com\indigloo\exception\DBException as DBException;
+
+    use \com\indigloo\sc\mysql as mysql;
+    use \com\indigloo\sc\auth\Login as Login ;
 
     if (isset($_POST['register']) && ($_POST['register'] == 'Register')) {
 
@@ -20,22 +25,20 @@
             $fhandler->addRule('password', 'Password', array('required' => 1 , 'maxlength' => 32));
             $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
 
+             //check security token
+            $fhandler->checkToken("token",$gWeb->find("form.token",true)) ;
+            
             $fvalues = $fhandler->getValues();
             $fUrl = $fvalues['fUrl'];
             $gWeb = \com\indigloo\core\Web::getInstance();
-
-            //captcha code
-
-            $privatekey = "6Lc3p80SAAAAABtSCxk0iHeZDRrMxvC0XTTqJpHI";
-            $resp = recaptcha_check_answer ($privatekey,
-                                    $_SERVER["REMOTE_ADDR"],
-                                    $_POST["recaptcha_challenge_field"],
-                                    $_POST["recaptcha_response_field"]);
-
-            if (!$resp->is_valid) {
-                $fhandler->addError("Wrong answer to Captcha! Please try again!");
+ 
+            if(!empty($fvalues["adrisya_number"])) {
+                $message = "unexpected error with form submission!" ;
+                $fhandler->addError($message) ;
+                $error = "Possible spam bot submission from IP :: ". $_SERVER["REMOTE_ADDR"]; 
+                Logger::getInstance()->info($error);
             }
-
+            
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors());
             }
@@ -47,9 +50,40 @@
                                 $fvalues['email'],
                                 $fvalues['password']);
 
-            //success
-            $gWeb->store(Constants::FORM_MESSAGES,array("Registration success! Please login."));
-            header("Location: /user/login.php");
+
+            //canonical email - all lower case
+            $email = strtolower(trim($fvalues['email']));
+            $password = trim($fvalues['password']);
+            $loginId = NULL ;
+
+            try{
+                $loginId = \com\indigloo\auth\User::login('sc_user',$email,$password);
+            } catch(\Exception $ex) {
+                $code = $ex->getCode();
+                switch($code) {
+                    case 401 :
+                        $message = "Wrong login or password. Please try again!";
+                        throw new UIException(array($message));
+                    break ;
+                    default:
+                        $message = "Error during login. Please try after some time!";
+                        throw new UIException(array($message));
+                }
+            }
+
+            //success - update login record
+            // start 3mik session
+            $remoteIp = \com\indigloo\Url::getRemoteIp();
+            mysql\Login::updateIp(session_id(),$loginId,$remoteIp);
+            Login::startOAuth2Session($loginId,Login::MIK);
+
+            //add overlay message
+            $message = "success! Thanks for joining ".$fvalues['first_name'];
+            $gWeb->store("global.overlay.message", $message);
+            header("Location: /");
+
+            exit ;
+
 
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);

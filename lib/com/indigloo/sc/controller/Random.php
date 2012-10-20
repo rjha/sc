@@ -24,7 +24,7 @@ namespace com\indigloo\sc\controller{
             $rows2 = $postDao->getOnSearchIds($ids);
             $postDBRows = array_merge($rows1,$rows2);
             
-            $pageHeader = "Random picks";
+            $pageHeader = '<a href="/surprise/me">Try again?</a>';
             $pageTitle = SeoData::getHomePageTitle(); 
             $metaDescription = SeoData::getHomeMetaDescription();
             $metaKeywords = SeoData::getHomeMetaKeywords();

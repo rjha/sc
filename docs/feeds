@@ -1,0 +1,190 @@
+
+
+feeds data in mysql
+---------------------
+
+
+* sc_follow table
+    + follower_id
+    + following_id
+
+
+* sc_bookmark table
+	+ owner_id  - owner of item - the guy who created it
+	+ subject - whoever is doing the action - logged in user
+	+ subject_id  
+	+ object - more like object_type , say "post" or "comment" etc.
+	+ object_id
+	+ object_title - 
+	+ verb - 
+
+
+feeds data in redis
+------------------------
+
+* we should be able to generate all feed data from mysql
+* we should move old data for archival purposes in mysql
+* redis should keep new feed data for quick retrieval
+* in mysql - keeping fan-out data - would mean lot of duplication
+  it is better stored in redis with lists/hashs and sets
+
+
+
+
+operation: Add follower
+-----------------------------
+
+ - Add to global feeds
+ - Add to global jobs
+
+ - Add to user:1:activities list 
+ - Add to user:1:feeds list
+ - Add to user:1:followers set
+
+ - Add to user:2:activities feed 
+ - Add to user:2:feeds
+ - Add to user:2:following list
+
+*difference between feeds and activities*
+
+feed is what the user should "receive" as he is following 
+other users and to get news of his interest.
+
+activity is what the user does it himself. activity should go to
+user public profile page. feed is what appears on user account 
+page.
+
+
+
+
+
+operation: Remove follower
+-------------------------------
+ - trim user:1:followers set
+ - trim user:2:following set
+
+
+operation: bookmark (like/save) 
+-----------------------------------
+
+
+  * Add to global feeds
+  * Add to global jobs
+
+  * sc:post:100:feeds list 
+    - something happened on post
+  * sc:post:100:subscribers set 
+        - Add this guy who commented/liked/favorited an item.
+  * sc:user:1:activities
+  * notify post subscribers
+  * notify followers of user who posted it
+
+operation: post 
+----------------------
+
+  * Add to global feeds
+  * Add to global jobs
+
+  * user:1:activities 
+  * user:1:feeds
+     - why ??
+  * sc:post:1:subscribers set 
+        - Add the guy who posted it
+  * notify followers of user who posted it
+
+operation: comment
+--------------------
+
+  * Add to global feeds
+  * Add to global jobs
+  * sc:post:1:subscribers set
+     - the guy who commented on post:1
+  * sc:user:activities 
+    - the guy who posted the comment
+ * sc:post:1:feeds
+    - something happened on post (a comment)
+  
+  * notify post subscribers
+  * notify followers of user who posted it
+
+
+
+notify  post subscribers
+---------------------------
+	get all post:100:subscribers and push to their sc:user:1:feeds
+
+notify followers of user
+---------------------------
+	get all user:1:followers and push to their sc:user:2:feeds
+
+
+post deleted from DB
+-----------------------
+
+* delete post:1:subscribers set 
+* delete post:1:feeds list 
+* delete post feed from global feeds (how to do that?)
+
+
+
+
+
+
+
+
+
+
+3mik registration notice to Facebook
+------------------------------------------
+
+- on successful facebook login - create a JOB 
+- JOB should be of type 3MIK_NEW_LOGIN_TO_FACEBOOK
+
+option A
+-----------
+
+ - Before storing LIKE
+ - FIND user preference for this Notification
+ - If user wants to send this to FACEBOOK
+ 	+ THEN he should have an accesss token - valid for atleast 1 more DAY
+ - If not then we redirect to login page.
+ - if we have a valid access token - log the JOB 
+ - we will clear the JOB within a day.
+ - JOB cannot find right access token - Donot clear it in the queue
+ - save access token for this user 
+ - Next run of JOB - should see if access_token has changed - if not then do not attempt to send it anyway
+ - delete the JOB after 3 days anyway.
+
+
+Option B 
+-----------
+
+- store the LIKE
+- A JOB for like is created
+- The GUY who liked this item has a login_id
+
+- when clearing this JOB 
+	+ see if we want to send this to FB 
+	+ see if we have a valid access token for login_id
+
+- if yes, use graph API to post the LIKE to his wall
+- otherwise just drop it
+
+====================================
+
+
+our login - valid for 7 days
+FB token valid for 60 days
+so after 3mik login - 3mik token should always be valid!
+Go for option B 
+
+
+
+
+
+
+Before sending an FB notification 
+
+ - find login_id
+ - find access_token using login_id 
+ - access token expired? 

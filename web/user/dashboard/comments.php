@@ -10,7 +10,8 @@
     use \com\indigloo\sc\auth\Login as Login;
 
     use \com\indigloo\ui\Filter as Filter;
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+   
+    $qparams = Url::getRequestQueryParams();
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
 
@@ -53,28 +54,33 @@
     </head>
 
     <body>
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
 
             <div class="row">
                 <div class="span12">
-                     <?php  include('inc/menu.inc'); ?>
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h2>Comments</h2>
+                    </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="span9 mh800">
-
-                    <div class="faded-text">
+                <div class="span2">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+                <div class="span8 mh800">
+                     
+                    <div class="faded-text mb20">
                         All your comments are shown here. Do mouse over a comment to get 
                         edit and remove links.
                     </div>
-
+                    
                     <?php
                         $startId = NULL ;
                         $endId = NULL ;
@@ -87,15 +93,14 @@
                             }
                         } else {
                             $message = "No comments found " ;
-                            echo \com\indigloo\sc\html\NoResult::get($message);
+                            echo \com\indigloo\sc\html\Site::getNoResult($message);
                         }
 
                     ?>
 
 
                 </div>
-                <div class="span3">
-                </div>
+                
             </div>
         </div> <!-- container -->
 
@@ -105,16 +110,15 @@
 
          <script>
             $(document).ready(function(){
-                //show options on widget hover
-                $('.widget .options').hide();
-                $('.widget').mouseenter(function() {
-                    $(this).find('.options').toggle();
+            
+               $('.widget').mouseenter(function() {
+                    $(this).find('.options').css("visibility", "visible");
                     /* @todo move colors to a css style */
                     $(this).css("background-color", "#FEFDF1");
                 });
 
                 $('.widget').mouseleave(function() {
-                    $(this).find('.options').toggle();
+                    $(this).find('.options').css("visibility", "hidden");
                     $(this).css("background-color", "#FFFFFF");
                 });
 

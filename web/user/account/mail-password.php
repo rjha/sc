@@ -4,10 +4,11 @@
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
 
-    use com\indigloo\Util;
-    use com\indigloo\ui\form\Sticky;
-    use com\indigloo\Constants as Constants;
-    use com\indigloo\ui\form\Message as FormMessage;
+    use \com\indigloo\Util;
+    use \com\indigloo\Url as Url ;
+    use \com\indigloo\ui\form\Sticky;
+    use \com\indigloo\Constants as Constants;
+    use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\sc\auth\Login as Login;
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
@@ -25,14 +26,9 @@
     </head>
 
     <body>
+         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
-                </div>
-
-            </div>
-
+            
             <div class="row">
                 <div class="span9">
 
@@ -66,7 +62,7 @@
                             <tr>
                                 <td>
                                     <div class="form-actions">
-                                        <button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button>
+                                        <button class="btn gBtnUp" type="submit" name="save" value="Save"><span>Submit</span></button>
                                     </div>
 
                                 </td>
@@ -74,7 +70,7 @@
 
                         </table>
 
-                        <input type="hidden" name="q" value="<?php echo $_SERVER["REQUEST_URI"]; ?>" />
+                        <input type="hidden" name="q" value="<?php echo Url::current(); ?>" />
 
                     </form>
 

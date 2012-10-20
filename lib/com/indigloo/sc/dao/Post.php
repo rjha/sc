@@ -74,10 +74,9 @@ namespace com\indigloo\sc\dao {
 
         function getPaged($paginator,$filters=array()) {
             $limit = $paginator->getPageSize();
-            $offset = ($paginator->getPageNo() -1 )  * $limit;
-
+            
             if($paginator->isHome()){
-                return $this->getLatest($offset,$limit,$filters);
+                return $this->getLatest($limit,$filters);
             } else {
 
                 $params = $paginator->getDBParams();
@@ -88,8 +87,8 @@ namespace com\indigloo\sc\dao {
             }
         }
 
-        function getLatest($offset,$limit,$filters=array()) {
-            $rows = mysql\Post::getLatest($offset,$limit,$filters);
+        function getLatest($limit,$filters=array()) {
+            $rows = mysql\Post::getLatest($limit,$filters);
             return $rows ;
         }
 
@@ -133,7 +132,18 @@ namespace com\indigloo\sc\dao {
                         $groupSlug,
                         $categoryCode) {
 
-            $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
+            $loginId = NULL ;
+
+            if(\com\indigloo\sc\auth\Login::isAdmin()) {
+
+                //inject right loginId for admins
+                $postDBRow = $this->getOnId($postId);
+                $loginId = $postDBRow["login_id"];
+
+            } else {
+                $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
+            }
+
             mysql\Post::update($postId,
                                $title,
                                $description,
@@ -146,19 +156,59 @@ namespace com\indigloo\sc\dao {
         }
 
         function delete($postId){
-            $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
+            
+            $loginId = NULL ;
+
+            if(\com\indigloo\sc\auth\Login::isAdmin()) {
+                
+                //inject right loginId for admins
+                $postDBRow = $this->getOnId($postId);
+                $loginId = $postDBRow["login_id"];
+
+            } else {
+                $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
+            }
+
             mysql\Post::delete($postId,$loginId);
+            
 
         }
-
-        function doAdminAction($postId,$action){
-            $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
-            //action => feature value map
-            $map = array(\com\indigloo\sc\Constants::FEATURE_POST => 1 ,
-                        \com\indigloo\sc\Constants::UNFEATURE_POST => 0 );
-            mysql\Post::setFeature($loginId,$postId,$map[$action]);
-
+        
+        function getLatestOnCategory($code,$limit){
+            $rows = mysql\Post::getLatestOnCategory($code,$limit);
+            return $rows ;
         }
+        
+        function getPagedOnCategory($paginator,$code) {
+ 
+            $limit = $paginator->getPageSize();
+
+            if($paginator->isHome()){
+                return $this->getLatestOnCategory($code,$limit);
+                
+            } else {
+                $params = $paginator->getDBParams();
+                $start = $params["start"];
+                $direction = $params["direction"];
+
+                $rows = mysql\Post::getPagedOnCategory($start,$direction,$limit,$code);
+                return $rows ;
+            }
+        }
+
+        function getTotalOnCategory($code) {
+            $row = mysql\Post::getTotalOnCategory($code);
+            return $row["count"] ;
+        }
+
+        function feature ($postId) {
+            mysql\Post::set_fp_bit($postId,1);
+        }
+
+        function unfeature ($postId) {
+            mysql\Post::set_fp_bit($postId,0);
+        }
+        
     }
 
 }

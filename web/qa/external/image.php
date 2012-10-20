@@ -24,23 +24,21 @@
         <title> share images from a webpage </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
-
+       
         <style>
-            /*@todo move page specific styles to css file */
-            #step1-container { margin-top:10px; padding:10px; }
-            #step2-container { margin-top:10px; padding:10px; border-left:6px solid #eee;}
-
-            #link-box {width:280px; }
-            #fetch-button {width:60px; height:28px; margin-bottom:10px;}
-
-            #ajax-message .normal {}
+            
+            #link-box {width:100%; }
             #ajax-message .error { color:red ; }
-
-            #image-preview { margin-top:40px; }
-
+            #image-preview { padding-top:10px; }
             /* override default stack image padding */
             #image-preview .container { padding: 1px; }
+            #next-container { 
+                padding-left:10px;
+                border-left:2px solid #ccc ;
+                display: none;
+            }
 
+            .btn-container { padding-top: 40px;}
         </style>
 
 
@@ -48,64 +46,54 @@
     </head>
 
     <body>
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container mh600">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
-                </div>
-            </div>
-
+            <div class="mt20">&nbsp;</div>
             <?php FormMessage::render(); ?>
 
             <div class="row">
-                <div class="span6">
-                    <div id="step1-container">
-                        <span class="badge badge-warning">Step1</span>
-                        Type webpage URL and click fetch ( or press Enter )
-                        <br>
-                        <br>
-                        <input id="link-box" name="link" value="" />
-                        <button id="fetch-button" type="button" class="btn" value="Fetch">Fetch</button>
+                <div class="span7">
+                    <div class="p10"> 
+                        Type webpage URL and click on fetch ( or press Enter ) 
                     </div>
-
-                </div> <!-- span -->
-                <div class="span6">
-                    <div id="step2-container">
-                        <p>
-                            <span class="badge badge-warning">Step2</span>
-                            Place your mouse over an image to select it.
-                            Please click Next after selecting images.
-                        </p>
-                        <ul class="pager">
-                            <li> <a id="next-button" href="#">Next&nbsp;&rarr;</a> </li>
-                        </ul>
-
-                        <form  id="web-form1"  name="web-form1" action="/qa/external/router.php"  method="POST">
-                            <input type="hidden" name="images_json" />
-                            <input type="hidden" name="description" />
-                            <input type="hidden" name="link" />
-                            <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
-                            <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
-                        </form>
-                    </div> <!-- step2-container -->
+                    <input id="link-box" name="link" value="" />
+                </div>
+                <div class="span3 btn-container">
+                    <button id="fetch-button" type="button" class="btn" value="Fetch">Fetch</button>
+                    &nbsp;
+                    <span id="next-container">
+                        <a id="next-button" class="btn" href="#">Next</a>
+                    </span>
 
                 </div>
+                <div id="form-wrapper">
 
-            </div><!-- row:1 -->
+                    <form  id="web-form1"  name="web-form1" action="/qa/external/router.php"  method="POST">
+                        <input type="hidden" name="images_json" />
+                        <input type="hidden" name="description" />
+                        <input type="hidden" name="link" />
+                        <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                        <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
+                    </form>
+                </div> <!-- form-wrapper -->
 
-            <div id="ajax-message" class="ml20 mt20"> </div>
+            </div> <!-- row:1 -->
+            <div class="row">
+                <div id="ajax-message" class="ml20 p20"> </div>
+            </div> 
 
             <div class="row">
-                <div id="image-preview" class="p20">
 
+                <div id="image-preview" class="p20">
+                    
                 </div>
-            </div> <!-- row:2 -->
+            </div> <!-- row:3 -->
 
         </div> <!-- container -->
 
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
-
+        
         <script type="text/javascript">
 
             $(document).ready(function(){

@@ -22,33 +22,63 @@ namespace com\indigloo\sc\auth {
         const TWITTER = "twitter" ;
         const GOOGLE = "google" ;
 
-        static function startMikSession() {
+        //codes
+        const OK_CODE = 200 ;
+        const FORBIDDEN_CODE = 403 ;
+        
+        static function startOAuth2Session($loginId,$provider) {
 
-            if (isset($_SESSION) && isset($_SESSION[WebglooUser::USER_TOKEN])) {
-                $mikUser = $_SESSION[WebglooUser::USER_DATA];
+            // get denorm data on login from $userDao
+            // the data in sc_user is for first time creation only
+            // and denorm columns like name etc. can be stale in sc_user
 
-                if(empty($mikUser) || empty($mikUser["login_id"])) {
-                    throw new UIException("Missing user data in 3mik session");
-                }
+            $userDao = new \com\indigloo\sc\dao\User();
+            $userDBRow = $userDao->getOnLoginId($loginId);
 
-                $loginId = $mikUser["login_id"];
-                self::startSession($loginId, self::MIK);
+            // is banned?
+            $ban_bit = $userDBRow["bu_bit"] ;
+            settype($ban_bit,"integer");
 
-            } else {
-                throw new UIException("No 3mik user found in session");
+            if( $ban_bit == 1 ) {
+                //donot start session
+                return self::FORBIDDEN_CODE ;
             }
 
-        }
+            //start session
+            $_SESSION[self::LOGIN_ID] = $loginId;
+            $_SESSION[self::NAME] = $userDBRow["name"];
+            $_SESSION[self::PROVIDER] = $provider;
+            $_SESSION[self::TOKEN] = Util::getBase36GUID();
+            
+            // complete any pending session action.
+            self::completeSessionAction($loginId,$userDBRow["name"],$provider);
+            
+            return self::OK_CODE ;
 
-        static function startOAuth2Session($loginId,$provider) {
-           self::startSession($loginId, $provider);
         }
-
+        
+        /*
+         * An action is normally performed against an endpoint.
+         * we send a parameter object and an action to that endpoint.
+         * 
+         * so the dataObj needed to complete session action should have following properties
+         * 
+         * dataObj.endPoint 
+         * dataObj.params (an object containing various parameters)
+         * dataObj.params.x = xval ;
+         * dataObj.params.y = yval ;
+         * dataObj.params.action = ADD ; 
+         * if dataObj.params.z is equal to "{loginId}" - This is a special value 
+         * dataObj.params.z will be made equal to actual loginId value in session after 
+         * authentication.
+         * 
+         * A command facade will find a suitable command for dataObj.endPoint
+         * That command will be sent dataObj.params object after loginId substitution.
+         * 
+         */
         private static function completeSessionAction($loginId,$name,$provider) {
 
-            $qUrl = NULL ;
             $message = NULL ;
-            $gotoUrl = NULL ;
             $action = NULL ;
 
             try{
@@ -68,17 +98,14 @@ namespace com\indigloo\sc\auth {
                 $endPoint = $actionObj->endPoint ;
                 $params = $actionObj->params ;
 
-                // encode for use in url query.
-                $qUrl = urlencode($actionObj->qUrl);
-
                 $variables = get_object_vars($params);
                 // associated array of name value pairs
                 // undefines properties are returned as NULL
                 //
                 // @warning: the foreach value reference is maintained
                 // after the loop. variable scope in PHP is at function level
-                // so do not be too cute here and do not user $name => $value
-                // as that conflicts with function argumnet "name"
+                // so do not be too cute here and do not use $name => $value
+                // inside loop as that conflicts with function argument "name"
                 //
                 // see if one of the parameters has "value" {loginId}
                 // update this parameter value to actual loginId
@@ -106,7 +133,7 @@ namespace com\indigloo\sc\auth {
 
                 } else {
                     $message = sprintf("session action response code : %d",$response["code"]);
-                    throw new Exception($message) ;
+                    throw new \Exception($message) ;
                 }
 
 
@@ -114,24 +141,6 @@ namespace com\indigloo\sc\auth {
                 $message = sprintf("session action %s failed \n ",$action);
                 Logger::getInstance()->error($ex->getMessage());
             }
-
-        }
-
-        private static function startSession($loginId,$provider) {
-
-            // get denorm data on login from $userDao
-            // the data in sc_user is for first time creation only
-            // and denorm columns like name etc. can be stale in sc_user
-            $userDao = new \com\indigloo\sc\dao\User();
-            $userDBRow = $userDao->getOnLoginId($loginId);
-
-            $_SESSION[self::LOGIN_ID] = $loginId;
-            $_SESSION[self::NAME] = $userDBRow["name"];
-            $_SESSION[self::PROVIDER] = $provider;
-            $_SESSION[self::TOKEN] = Util::getBase36GUID();
-
-            // complete any pending session action.
-            self::completeSessionAction($loginId,$userDBRow["name"],$provider);
 
         }
 
@@ -209,10 +218,14 @@ namespace com\indigloo\sc\auth {
 
         static function isAdmin(){
             $flag = false ;
-            if (isset($_SESSION) && isset($_SESSION[WebglooUser::USER_TOKEN])) {
-                $mikUser = $_SESSION[WebglooUser::USER_DATA];
-                if(!empty($mikUser)) {
-                    $flag = ($mikUser['is_admin'] == 1 ) ? true : false ;
+
+            if (isset($_SESSION) 
+                && isset($_SESSION[self::TOKEN])
+                && isset($_SESSION[WebglooUser::USER_DATA])) {
+
+                $baseUser = $_SESSION[WebglooUser::USER_DATA];
+                if(!empty($baseUser)) {
+                    $flag = ($baseUser['is_admin'] == 1 ) ? true : false ;
                 }
             }
 

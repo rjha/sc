@@ -25,16 +25,16 @@
     </head>
 
     <body>
+
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
+            
             <div class="row">
                 <div class="span12">
-                <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
+                    <div class="page-header">
+                        <h3> Activity feed </h3>
+                    </div>
                 </div>
-
-            </div>
-
-
-            <div class="row">
                 <div class="span9">
                     <div class="feeds">
                         <?php

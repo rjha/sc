@@ -24,18 +24,17 @@ namespace com\indigloo\sc\controller{
 
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
             $total = $sphinx->getPostsCount($token);
-            $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+            $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("search.page.items");
             $paginator = new Pagination($qparams,$total,$pageSize);
 
             $ids = $sphinx->getPagedPosts($token,$paginator);
-            $sphinx->close();
-
+            
             $template =  NULL ;
             $searchTitle = NULL ;
 
             if(sizeof($ids) > 0 ) {
-                $pageHeader = "$token - search results" ;
+                $pageHeader = "$token" ;
                 $pageBaseUrl = "/search/site";
 
                 $template = APP_WEB_DIR. '/view/search.php';
@@ -43,14 +42,17 @@ namespace com\indigloo\sc\controller{
                 $postDBRows = $postDao->getOnSearchIds($ids) ;
 
             } else {
-                $pageHeader = "No results found for $token" ;
+                $pageHeader = "No results" ;
                 $template = APP_WEB_DIR. '/view/notiles.php';
 
             }
 
+            $groupIds = $sphinx->getGroups($token,0,25);
             $groupDao = new \com\indigloo\sc\dao\Group();
-            $groupDBRows = $groupDao->search($token,$pageSize);
-
+            $groupDBRows = $groupDao->getOnSearchIds($groupIds);
+             
+            $sphinx->close();
+            
             $pageTitle = SeoData::getPageTitle($token);
             $metaKeywords = SeoData::getMetaKeywords($token);
             $metaDescription = SeoData::getMetaDescription($token);

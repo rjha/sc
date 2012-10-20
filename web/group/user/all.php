@@ -9,8 +9,8 @@
     use \com\indigloo\sc\auth\Login as Login ;
     use \com\indigloo\ui\Filter as Filter;
 
-
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    
+    $qparams = Url::getRequestQueryParams();
     $login = Login::getLoginInSession();
     $loginId  = $login->id;
 
@@ -39,7 +39,7 @@
     $pageBaseUrl = "/group/user/all.php" ;
     $title = sprintf("%s's groups",$login->name);
     $hasNavigation = false ;
-    include(APP_WEB_DIR."/view/group/folder.php");
+    include(APP_WEB_DIR."/view/group/cards-page.php");
 
 
 ?>

@@ -18,20 +18,19 @@ namespace com\indigloo\sc\controller{
                 exit;
             }
 
-            $slug = Util::getArrayKey($params,"name");
-            //break hyphenated tokens into normal words for sphinx
-            //$token = \com\indigloo\util\StringUtil::convertKeyToName($slug);
-            // group index settings - no prefix,charset_type sbcs, ignore_chars U+002D
-            $token = $slug;
+            $token = Util::getArrayKey($params,"name");
+            
+            // group controller is invoked via the fixed links 
+            // (as opposed to users typing in search box)
+            // so we (exact) match this token against post_groups index.
 
-            //get match on group slug
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
-            $total = $sphinx->getGroupsCount($token);
-            $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+            $total = $sphinx->getPostCountByGroup($token);
+            $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("search.page.items");
             $paginator = new Pagination($qparams,$total,$pageSize);
 
-            $ids = $sphinx->getPagedGroups($token,$paginator);
+            $ids = $sphinx->getPagedPostByGroup($token,$paginator);
             $sphinx->close();
 
             $template =  NULL ;
@@ -39,15 +38,15 @@ namespace com\indigloo\sc\controller{
             $groupName = \com\indigloo\util\StringUtil::convertKeyToName($token);
 
             if(sizeof($ids) > 0 ) {
-                $pageHeader = "$groupName -  search results" ;
-                $pageBaseUrl = "/group/$slug" ;
+                $pageHeader = "$groupName" ;
+                $pageBaseUrl = "/group/$token" ;
                 $template = APP_WEB_DIR. '/view/tiles-page.php';
                 $postDao = new \com\indigloo\sc\dao\Post();
                 $postDBRows = $postDao->getOnSearchIds($ids) ;
 
             } else {
 
-                $pageHeader = "No results found for group $groupName" ;
+                $pageHeader = "No results" ;
                 $template = APP_WEB_DIR. '/view/notiles.php';
             }
 

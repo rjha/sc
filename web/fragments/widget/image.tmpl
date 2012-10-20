@@ -1,4 +1,15 @@
 <div class="widget">
+ <div class="options">
+        <div class="links">
+            ~if($view->hasEdit){~
+                <a href="~~$view->editUrl~">Edit&nbsp;<i class="icon-edit"></i></a>
+            ~}~
+            &nbsp;
+            ~if($view->hasDelete){~
+                <a href="~~$view->deleteUrl~">Delete&nbsp;<i class="icon-remove"></i></a>
+            ~}~
+        </div>
+    </div>
     <div class="photo">
             <a href="/item/~~$view->itemId~"> <img src="~~$view->thumbnail~" width="~~$view->twidth~" height="~~$view->theight~" class="alignleft" alt="~~$view->title~"/> </a>
 
@@ -6,16 +17,6 @@
         <p> ~~$view->description~ </p>
         <p> <span>~~$view->createdOn~ </span> </p>
 
-        <div class="options">
-                <div class="links">
-                ~if($view->hasEdit){~
-                    <a href="~~$view->editUrl~">Edit&nbsp;<i class="icon-edit"></i></a>
-                ~}~
-                &nbsp;
-                ~if($view->hasDelete){~
-                    <a href="~~$view->deleteUrl~">Delete&nbsp;<i class="icon-remove"></i></a>
-                ~}~
-            </div>
-        </div>
+       
 
 </div>

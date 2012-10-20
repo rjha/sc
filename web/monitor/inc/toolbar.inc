@@ -1,16 +1,42 @@
-<div id="header">
-    <div class="navbar">
-        <div class="navbar-inner">
-            <div class="container">
-                <div class="pull-left">
-                    <a class="brand" href="/">3mik.com  <span class="beta">BETA</span> </a>
-                </div>
-                <div class="pull-left">
-                    <ul class="nav">
-                        <li class="active"> <a href="/">Home</a> </li>
-                    </ul> <!-- links -->
-                </div>
-          </div>
+<?php
+
+    $gWeb = \com\indigloo\core\Web::getInstance();
+    $gomInSession = $gWeb->find("global.overlay.message",true);
+    $goverlay = \com\indigloo\sc\html\Site::getOverlay($gomInSession);
+
+?>
+
+<div id="site-toolbar" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="/">3mik.com <span class="beta">BETA</span> </a>
+            <ul class="nav">
+                <li> <a href="/"><i class="icon-home"></i>&nbsp;Home</a></li> 
+            </ul>
         </div>
-    </div> <!-- navbar -->
-</div> <!-- header -->
+    </div>
+</div>
+
+<div class="row">
+    <?php if(!empty($goverlay)) { echo $goverlay ; } ?>
+</div> <!-- overlay -->
+
+
+<div id="block-spinner"> </div>
+
+<div id="simple-popup">
+     <div id="header">
+         <div class="wrapper">
+            <div class="floatr">
+                <a id="simple-popup-close" href="">close&nbsp;<i class="icon-remove"> </i></a>
+            </div>
+        </div>
+        <div class="clear"> </div>
+     </div>
+    <div id="content"> </div>
+
+</div>
+
+<div id="popup-mask"> </div>
+<!-- site simple popup -->
+

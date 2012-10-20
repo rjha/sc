@@ -7,14 +7,14 @@
     function make_js_bundle($root3p,$rootsc) {
         //list of 3p files to concatenate
         $files = array();
-        $files[] = "jquery/jquery-1.7.1.js" ;
+        $files[] = "jquery/jquery-1.8.2.js" ;
         $files[] = "jquery/jquery.ajaxQueue.js" ;
-        $files[] = "jquery/jquery.validate.1.9.0.js" ;
-        $files[] = "jquery/masonary/jquery.masonry.js" ;
+        $files[] = "jquery/jquery.validate.1.10.0.js" ;
+        $files[] = "jquery/isotope/jquery.isotope.js" ;
         $files[] = "jquery/infinite/jquery.infinitescroll.hacked.js" ;
-        $files[] = "bootstrap/js/bootstrap.js" ;
-        $files[] = "ful/valums/fileuploader.js" ;
-        $files[] = "fancybox/jquery.fancybox-1.3.4.js" ;
+        $files[] = "bootstrap/2.1.1/js/bootstrap.js" ;
+        $files[] = "ful/2.1.1/fileuploader.js" ;
+        $files[] = "fancybox/2.1.2/jquery.fancybox.js" ;
 
         $scfiles = array();
         $scfiles[] = "js/sc.js" ;
@@ -45,11 +45,11 @@
     function make_css_bundle($root3p,$rootsc) {
         //list of 3p files to concatenate
         $files = array();
-        $files[] = "bootstrap/css/bootstrap.css" ;
-        $files[] = "fancybox/jquery.fancybox-1.3.4.css";
+        $files[] = "bootstrap/2.1.1/css/bootstrap.css" ;
+        $files[] = "fancybox/2.1.2/jquery.fancybox.css";
         $files[] = "zocial/css/zocial.css";
-        $files[] = "ful/valums/fileuploader.css" ;
-        
+        $files[] = "ful/2.1.1/fileuploader.css" ;
+
         $scfiles = array();
         $scfiles[] = "css/sc.css" ;
 
@@ -71,6 +71,10 @@
             $separator = sprintf("\n\n /* cat:sc:file:%d:%s */ \n\n",$i+1,$scfiles[$i]);
             fwrite($fp,$separator);
         }
+
+        //reponsive css is last include
+        $glob = file_get_contents($root3p.'bootstrap/2.1.1/css/bootstrap-responsive.css');
+        fwrite($fp,$glob);
 
         fclose($fp);
 

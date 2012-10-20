@@ -61,6 +61,22 @@ namespace com\indigloo\sc\dao {
             }
         }
 
+        function ban ($loginId) {
+            // session Id for this user?
+            $loginRow = mysql\Login::getOnId($loginId);
+            $sessionId = $loginRow["session_id"];
+            mysql\User::set_bu_bit($loginId,1,$sessionId);
+        }
+
+        function unban ($loginId) {
+            mysql\User::set_bu_bit($loginId,0,NULL);
+        }
+
+        function taint ($userId) {
+            mysql\User::set_tu_bit($userId,1);
+        }
+
+
     }
 
 }

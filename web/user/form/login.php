@@ -9,8 +9,13 @@
     use com\indigloo\Constants as Constants ;
     use \com\indigloo\exception\UIException as UIException;
 
+    use \com\indigloo\sc\mysql as mysql;
+    use \com\indigloo\sc\auth\Login as Login ;
+
     if (isset($_POST['login']) && ($_POST['login'] == 'Login')) {
+
         try{
+            
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('email', 'Email', array('required' => 1, 'maxlength' => 64));
             $fhandler->addRule('password', 'Password', array('required' => 1, 'maxlength' => 32));
@@ -31,16 +36,31 @@
             //canonical email - all lower case
             $email = strtolower(trim($fvalues['email']));
             $password = trim($fvalues['password']);
-            $flag = \com\indigloo\auth\User::login('sc_user',$email,$password);
+            $loginId = NULL ;
 
-            if ($flag < 0 ) {
-                $message = "Wrong login or password. Please try again!";
-                throw new UIException(array($message));
-            }
+            try{
+                $loginId = \com\indigloo\auth\User::login('sc_user',$email,$password);
+            } catch(\Exception $ex) {
+                $code = $ex->getCode();
+                switch($code) {
+                    case 401 :
+                        $message = "Wrong login or password. Please try again!";
+                        throw new UIException(array($message));
+                    break ;
+                    default:
+                        $message = "Error during login. Please try after some time!";
+                        throw new UIException(array($message));
+                }
+            } 
 
-            //success set our own session variables
-            \com\indigloo\sc\auth\Login::startMikSession();
-            header("Location: ".$qUrl);
+            //success - update login record
+            // start 3mik session
+            $remoteIp = \com\indigloo\Url::getRemoteIp();
+            mysql\Login::updateIp(session_id(),$loginId,$remoteIp);
+            $code = Login::startOAuth2Session($loginId,Login::MIK);
+            
+            $location = ($code == Login::FORBIDDEN_CODE) ? "/site/error/403.html"  : $qUrl ;
+            header("Location: ".$location);
             exit ;
 
         }catch(UIException $ex) {

@@ -1,11 +1,19 @@
-
-
-<div class="item">
-    <div class="title">
-        ~~$view->name~ &nbsp; ~~$view->email~ &nbsp; ~~$view->phone~
+<div class="widget">
+    <div class="options">
+        <div class="links">
+            <a href="/monitor/feedback/delete.php?id=~~$view->id~&q=~~$view->qUrl~">Delete&nbsp;<i class="icon-remove"></i></a>
+        </div>
     </div>
-    <div class="message">
-        ~~$view->description~
-    </div>
+            
+   <p class="comment-text">~~$view->description~ </p>
+   <div class="ml20">
+        <span class="abcd">
+           ~~$view->name~ &nbsp; 
+           <a href="mailto:~~$view->email~">~~$view->email~</a> &nbsp;
+           ~~$view->phone~
+        </span>
+   </div>
+            
 </div>
-<div class="hr"> </div>
+
+

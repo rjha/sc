@@ -1,22 +1,23 @@
 
-<div class="widget separator1">
-
-           <p class="comment-text">~~$view->comment~ </p>
-           <div class="ml20">
-                <span class="feed-text">
-                    on &nbsp; <a href="/item/~~$view->itemId~">~~$view->title~</a>
-                    ~if($view->showUser){~
-                        &nbsp;<b> by</b> <a href="/pub/user/~~$view->pubUserId~">~~$view->userName~</a>
-                    ~}~
-                    &nbsp;~~$view->createdOn~
-                </span>
-           </div>
-            <div class="options">
-                <div class="links">
-                    <a href="~~$view->editUrl~">Edit&nbsp;<i class="icon-edit"></i></a>
-                    &nbsp;|&nbsp;
-                    <a href="~~$view->deleteUrl~">Delete&nbsp;<i class="icon-remove"></i></a>
-                </div>
-            </div>
+<div class="widget">
+    <div class="options">
+        <div class="links">
+            <a href="~~$view->editUrl~">Edit&nbsp;<i class="icon-edit"></i></a>
+            &nbsp;|&nbsp;
+            <a href="~~$view->deleteUrl~">Delete&nbsp;<i class="icon-remove"></i></a>
+        </div>
+    </div>
+            
+   <p class="comment-text">~~$view->comment~ </p>
+   <div class="ml20">
+        <span class="feed-text">
+            on &nbsp; <a href="/item/~~$view->itemId~">~~$view->title~</a>
+            ~if($view->showUser){~
+                &nbsp;<b> by</b> <a href="/pub/user/~~$view->pubUserId~">~~$view->userName~</a>
+            ~}~
+            &nbsp;~~$view->createdOn~
+        </span>
+   </div>
+            
 </div>
 

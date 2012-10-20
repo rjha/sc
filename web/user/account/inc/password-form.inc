@@ -9,14 +9,9 @@
     </head>
 
      <body>
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
-            
+             
             <div class="row">
                 <div class="span9">
                     <div class="page-header">
@@ -49,7 +44,7 @@
                         </table>
 
                         <div class="form-actions">
-                            <button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button>
+                            <button class="btn btn-primary" type="submit" name="save" value="Save"><span>Submit</span></button>
                              <a href="/">
                                 <button class="btn" type="button" name="cancel"><span>Cancel</span></button>
                             </a>

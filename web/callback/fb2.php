@@ -7,12 +7,19 @@
     include (APP_WEB_DIR.'/callback/error.inc');
     set_error_handler('login_error_handler');
 
-    use com\indigloo\Util;
-    use com\indigloo\Constants as Constants;
-    use com\indigloo\Configuration as Config;
-    use com\indigloo\Logger as Logger;
-    use com\indigloo\ui\form\Message as FormMessage ;
+    use \com\indigloo\Util;
+    use \com\indigloo\Constants as Constants;
+    use \com\indigloo\Configuration as Config;
+    
+    use \com\indigloo\Logger as Logger;
+    use \com\indigloo\ui\form\Message as FormMessage ;
     use \com\indigloo\sc\auth\Login as Login ;
+    use \com\indigloo\sc\mysql as mysql ;
+
+    function raiseUIError() {
+        $uimessage = "something went wrong with the signup process. Please try again." ;
+        trigger_error($uimessage,E_USER_ERROR);
+    }
 
     $fbAppId = Config::getInstance()->get_value("facebook.app.id");
     $fbAppSecret = Config::getInstance()->get_value("facebook.app.secret");
@@ -21,16 +28,19 @@
     $fbCallback = $host. "/callback/fb2.php";
 
     $code = NULL;
-    if(array_key_exists('code',$_REQUEST)) {
+    $error = NULL ;
+
+    if(array_key_exists("code",$_REQUEST)) {
         $code = $_REQUEST["code"];
     }
 
-    $error = NULL ;
-    if(array_key_exists('error',$_REQUEST)) {
-        $error = $_REQUEST['error'] ;
-        $description = $_REQUEST['error_description'] ;
+    if(array_key_exists("error",$_REQUEST)) {
+        $error = $_REQUEST["error"] ;
+        $description = $_REQUEST["error_description"] ;
         $message = sprintf(" Facebook returned error :: %s :: %s ",$error,$description);
-        trigger_error($message,E_USER_ERROR);
+
+        Logger::getInstance()->error($message);
+        raiseUIError();
     }
 
     if(empty($code) && empty($error)) {
@@ -46,9 +56,9 @@
     }
 
     //last state token
-    $stoken = $gWeb->find('mik_state_token',true);
+    $stoken = $gWeb->find("mik_state_token",true);
 
-    if(!empty($code) && ($_REQUEST['state'] == $stoken)) {
+    if(!empty($code) && (strcmp($_REQUEST["state"],$stoken) == 0)) {
 
         //request to get access token
         $fbTokenUrl = "https://graph.facebook.com/oauth/access_token?client_id=".$fbAppId ;
@@ -58,33 +68,52 @@
         $response = file_get_contents($fbTokenUrl);
         $params = null;
         parse_str($response, $params);
-
+        
         if(!is_array($params) && !array_key_exists("access_token",$params)) {
-             $message = "Could not retrieve access token from Facebook";
-             trigger_error($message,E_USER_ERROR);
+            $message = "Could not retrieve access_token from Facebook";
+            Logger::getInstance()->error($message);
+            raiseUIError();
         }
 
-        $graph_url = "https://graph.facebook.com/me?access_token=".$params['access_token'];
+        $graph_url = "https://graph.facebook.com/me?access_token=".$params["access_token"];
         $user = json_decode(file_get_contents($graph_url));
 
         if(!property_exists($user,'id')) {
-            trigger_error("No facebook_id in graph API response", E_USER_ERROR);
+            $message = "No facebook_id in graph API response" ;
+            Logger::getInstance()->error($message);
+            raiseUIError();
         }
 
-        processUser($user);
+        $expires = isset($params["expires"]) ? $params["expires"] : 3600 ;
+        processUser($user,$params["access_token"],$expires);
 
     }
     else {
-        $message = "Facebook returned a different state token. Please try again.";
-        trigger_error($message,E_USER_ERROR);
+
+        $message = "CSRF token returned by Facebook is different from 3mik session token";
+        Logger::getInstance()->error($message);
+        raiseUIError();
+      
     }
 
-    function processUser($user) {
+    /**
+     * 
+     * @param access_token - access token returned by facebook for offline use
+     * @param expires - time in seconds till the access_token expiry  
+     * 
+     * 
+     */
+
+    function processUser($user,$access_token,$expires) {
         // exisitng record ? find on facebook_id
         // New record - create login + facebook record
         // start login session
 
         $id = $user->id;
+
+        if(empty($id)) {
+            trigger_error("Could not retrieve facebook id : please try again.",E_USER_ERROR);
+        }
 
         //rest of the properties may be missing
         $email = property_exists($user,'email') ? $user->email : '';
@@ -95,7 +124,7 @@
         $gender = property_exists($user,'gender') ? $user->gender : '';
 
 
-        // do not what facebook will return
+        // do not know what facebook will return
         // we consider auth to be good enough for a user
         if(empty($name) && empty($firstName)) {
             $name = "Anonymous" ;
@@ -105,14 +134,32 @@
         Logger::getInstance()->info($message);
 
         $facebookDao = new \com\indigloo\sc\dao\Facebook();
-        $loginId = $facebookDao->getOrCreate($id,$name,$firstName,$lastName,$link,$gender,$email);
+        $loginId = $facebookDao->getOrCreate($id,
+            $name,
+            $firstName,
+            $lastName,
+            $link,
+            $gender,
+            $email,
+            $access_token,
+            $expires);
 
         if(empty($loginId)) {
-            trigger_error("Not able to create login for facebook user",E_USER_ERROR);
+        
+            $message = "Not able to create 3mik login for facebook user" ;
+            Logger::getInstance()->error($message);
+            raiseUIError();
         }
+        
+        //success - update login record
+        // start 3mik session
+        $remoteIp = \com\indigloo\Url::getRemoteIp();
+        mysql\Login::updateTokenIp(session_id(),$loginId,$access_token,$expires,$remoteIp);
+        $code = Login::startOAuth2Session($loginId,Login::FACEBOOK);
 
-        Login::startOAuth2Session($loginId,Login::FACEBOOK);
-        header("Location: / ");
+        $location = ($code == Login::FORBIDDEN_CODE) ? "/site/error/403.html"  : "/" ;
+        header("Location: ".$location);
+        
     }
 
  ?>

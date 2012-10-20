@@ -89,12 +89,7 @@ namespace com\indigloo\sc\html {
         }
 
         static function getHeader($postView,$loginIdInSession) {
-
-            //toolbar stuff
-
-            $postView->followerId = $loginIdInSession;
-            $postView->followingId = $postView->loginId;
-
+            
             //edit item
             $postView->isLoggedInUser = false ;
             if(!is_null($loginIdInSession) && ($loginIdInSession == $postView->loginId)) {
@@ -109,7 +104,11 @@ namespace com\indigloo\sc\html {
         }
 
         static function getActivity($feedHtml,$commentHtml) {
-            if(empty($feedHtml) && empty($commentHtml)) { return "" ; }
+      
+            if(Util::tryEmpty($feedHtml) && Util::tryEmpty($commentHtml)) { 
+                return "" ; 
+            }
+
             $view = new \stdClass;
             $view->feedHtml = $feedHtml;
             $view->commentHtml = $commentHtml;
@@ -133,25 +132,6 @@ namespace com\indigloo\sc\html {
             }
 
             $template = '/fragments/item/links.tmpl' ;
-            $html = Template::render($template,$view);
-            return $html;
-        }
-
-        static function getToolbar($loginIdInSession,$postLoginId, $itemId) {
-            $view = new \stdClass;
-            $view->itemId = $itemId;
-            $view->followerId = $loginIdInSession;
-            $view->followingId = $postLoginId;
-
-            //edit item
-            $view->isLoggedInUser = false ;
-            if(!is_null($loginIdInSession) && ($loginIdInSession == $postLoginId)) {
-                $view->isLoggedInUser = true ;
-                $params = array('id' => $itemId , 'q' => urlencode(Url::current()));
-                $view->editUrl = Url::createUrl('/qa/edit.php',$params);
-            }
-
-            $template = '/fragments/item/toolbar.tmpl' ;
             $html = Template::render($template,$view);
             return $html;
         }
@@ -232,21 +212,48 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        static function getMoreLinks($postView,$siteDBRow) {
+        static function getUserPanel($postView,$loginIdInSession) {
+            $postView->followerId = (empty($loginIdInSession)) ? "{loginId}" : $loginIdInSession ;
+            $postView->followingId = $postView->loginId;
+
             $html = NULL ;
-            $postView->hasSite = false ;
-
-            if(!empty($siteDBRow)) {
-                $postView->siteId = $siteDBRow["id"];
-                $postView->siteUrl = $siteDBRow["canonical_url"];
-                $postView->hasSite = true ;
-            }
-
-            $template = '/fragments/item/more-links.tmpl' ;
+            $template = '/fragments/item/user-panel.tmpl' ;
             $html = Template::render($template,$postView);
             return $html ;
         }
 
+        static function getSitePanel($siteMetaRow,$sitePostRows) {
+
+            if(sizeof($sitePostRows) == 0 ) {
+                return "" ;
+            }
+
+            $html = NULL ;
+            $template = '/fragments/item/site-panel.tmpl' ;
+            $view = new \stdClass;
+
+            if(!empty($siteMetaRow)) {
+                $view->hasSite = true ;
+                $view->siteId = $siteMetaRow["id"];
+                $view->siteUrl = $siteMetaRow["canonical_url"];
+            }
+
+           
+
+            $posts = array();
+            foreach($sitePostRows as $row) {
+                $postView = self::createPostView($row);
+                if($postView->hasImage) {
+                    array_push($posts,$postView);
+                }
+            }
+
+            $view->posts = $posts ;
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+        
         static function getWidget($postDBRow,$options=NULL) {
 
             $html = NULL ;
@@ -303,9 +310,10 @@ namespace com\indigloo\sc\html {
             $params = array('id' => $view->itemId, 'q' => Url::current());
             $view->editUrl = Url::createUrl('/qa/edit.php',$params);
             $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
-            $view->feature = ($postDBRow['is_feature'] == 0 ) ? true : false ;
-            $view->unfeature = ($postDBRow['is_feature'] == 1 ) ? true : false ;
-
+            
+            $view->feature = ($postDBRow['fp_bit'] == 0 ) ? true : false ;
+            $view->unfeature = ($postDBRow['fp_bit'] == 1 ) ? true : false ;
+            $view->status = ($view->unfeature) ? "F" : "" ;
             $html = Template::render($template,$view);
             return $html ;
 
@@ -408,6 +416,11 @@ namespace com\indigloo\sc\html {
 
                     foreach($slugs as $slug) {
                         if(empty($slug)) continue ;
+                        //@imp @todo @hack
+                        // dirty hack - for single quotes in group name - for old data
+                        // anything indexed as flury&#039;s - should be converted to flury
+                        // now we ignore the single quote in group name so we should be fine
+                        $slug = str_replace("&#039;s","",$slug);
                         $display = StringUtil::convertKeyToName($slug);
                         $groups[] = array("slug" => $slug, "display"=> $display);
                     }

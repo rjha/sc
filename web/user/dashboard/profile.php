@@ -9,7 +9,7 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login;
 
-    //$qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
 
@@ -38,26 +38,31 @@
     </head>
 
     <body>
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
 
             <div class="row">
                 <div class="span12">
-                     <?php  include('inc/setting-menu.inc'); ?>
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h2>Profile</h2>
+                    </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="span9 mh600">
-                <?php echo \com\indigloo\sc\html\User::getProfile($gSessionLogin,$userDBRow) ; ?>
+                <div class="span2">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
                 </div>
-                <div class="span3">
+                <div class="span9">
+                    <div class="faded-text mb20">&nbsp;</div>
+                    <?php echo \com\indigloo\sc\html\User::getProfile($gSessionLogin,$userDBRow) ; ?>
                 </div>
+               
             </div> <!-- row -->
         </div> <!-- container -->
 

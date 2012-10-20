@@ -20,20 +20,20 @@ namespace com\indigloo\sc\model {
                  self::LOGIN_ID => "login_id",
                  self::ITEM_ID => "pseudo_id",
                  self::CREATED_ON => "created_on",
-                 self::FEATURED => "is_feature");
+                 self::FEATURED => "fp_bit");
 
              return $columns;
          }
 
          public function getValue($alias,$column,$condition,$value) {
 
-             if(strcmp($column,"is_feature") == 0 ) {
+             if(strcmp($column,"fp_bit") == 0 ) {
                  $column = (is_null($alias)) ? $column : $alias.".".$column ;
                  $value = ($value) ?  "1" : "0" ;
                  $sql = sprintf("%s %s %s ", $column,$condition,$value);
                  return $sql;
              }
-
+             //@todo fix expensive-query
              if(strcmp($column,"created_on") == 0) {
                  //mysql format for date comparison
                  $column = (is_null($alias)) ? $column : $alias.".".$column ;

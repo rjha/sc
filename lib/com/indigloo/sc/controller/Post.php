@@ -3,11 +3,13 @@ namespace com\indigloo\sc\controller{
 
 
     use \com\indigloo\Util as Util;
-    use \com\indigloo\Url;
+    use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config ;
+
     use \com\indigloo\Constants as Constants;
     use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\ui\form\Sticky;
+
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\html\Seo as SeoData ;
 
@@ -52,15 +54,15 @@ namespace com\indigloo\sc\controller{
 
             $links = array();
             foreach($dblinks as $link) {
-                $scheme = \parse_url($link,PHP_URL_SCHEME);
-                $link = empty($scheme) ? "http://".$link : $link ;
+                $link = Url::addHttp($link);
                 array_push($links,$link);
             }
 
             /* data for facebook/google+ dialogs */
             $itemObj = new \stdClass ;
             $itemObj->appId = Config::getInstance()->get_value("facebook.app.id");
-            $itemObj->host = "http://" .$_SERVER["HTTP_HOST"] ;
+            $itemObj->host = Url::base();
+
             /* google+ cannot redirect to local box */
             $itemObj->netHost = "http://www.3mik.com" ;
             $itemObj->callback = $itemObj->host."/callback/fb-share.php" ;
@@ -96,64 +98,96 @@ namespace com\indigloo\sc\controller{
             $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
             $loginIdInSession = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
 
-            $xids = array();
+            $xids = array($postId);
             $xrows = array();
-            $group_slug = $postDBRow['group_slug'];
+            $limit = 10 ;
+
+            /* site metadata and posts */ 
+            $siteDao = new \com\indigloo\sc\dao\Site();
+            $siteMetaRow = $siteDao->getOnPostId($postId);
+            $siteId = $siteMetaRow["id"];
+            $site_rows = $siteDao->getPostsOnId($siteId,8);
+            $sitePostRows = array();
+
+            foreach($site_rows as $row) {
+                if(!in_array($row["id"],$xids)) {
+                    array_push($sitePostRows,$row);
+                    array_push($xids,$row["id"]);
+                    if(sizeof($sitePostRows) > 4 ) { break ;}
+                }
+            }
+
+            /* related to item : via groups */
+            $group_slug = $postDBRow["group_slug"];
             $groupDao = new \com\indigloo\sc\dao\Group();
-            $group_names = $groupDao->slugToName($postDBRow['group_slug']);
+            //@imp for display purpose only
+            // convert tokens to names and join by comma
+            $group_names = $groupDao->tokenizeSlug($group_slug,",",true);
+            $sphinx = new \com\indigloo\sc\search\SphinxQL();
+            $searchToken = NULL ;
+            
+            /* 
+             * recipe for fetching related posts
+             * ------------------------------------------
+             * 
+             * 1) groups (tags) are priority #1 for matching
+             * do exact match against sc_post.group_slug index 
+             * (not polluted by other data like description etc.)
+             * 
+             * 2) Next try to do a "related items" match via quorum operator
+             * use sc_post.title against posts index - # of hits is 3
+             * 
+             * 
+             */
 
             if(!Util::tryEmpty($group_slug)) {
+                $ids = $sphinx->getPostByGroup($group_slug,0,16);
+                
+                //unique ids?
+                //@imp order matters for array_diff
+                // bucket should be the second argument
+                $ids = Util::fast_array_diff($ids,$xids);
+                //xids for next iteration
+                $xids = array_merge($xids,$ids);    
 
-                $groups = explode(Constants::SPACE,$group_slug);
+                if(!empty($ids)) {
+                    $xrows = $postDao->getOnSearchIds($ids);
+                }
+
+            }
+
+            if(sizeof($xrows) < 20 ) {
+                
+                $limit = 20 - (sizeof($xrows)) ;
+                $limit = ($limit > 4 ) ? 4 : $limit ;
+
+                $searchToken = $itemObj->title ;
                 $sphinx = new \com\indigloo\sc\search\SphinxQL();
+                //@todo - number of hits based on number of words in token
+                $searchIds = $sphinx->getRelatedPosts($searchToken,3,0,$limit);
+                //unique search ids?
+                //@imp order matters for array_diff
 
-                foreach($groups as $group) {
-                    $ids = $sphinx->getGroups($group,0,8);
-                    foreach($ids as $id){
-                        if(!in_array($id,$xids) && ($id != $postId)) {
-                            array_push($xids,$id);
-                            if(sizeof($xids) >= 8 ) { break; }
-                        }
-                    }
-                    if(sizeof($xids) >= 8 ) { break; }
-                }
+                $searchIds = Util::fast_array_diff($searchIds,$xids);
 
-                //get posts on groups
-                if(!empty($xids)) {
-                    $xrows = $postDao->getOnSearchIds($xids);
-                }
-            }
+                //xids for next iteration
+                $xids = array_merge($searchIds,$xids);
 
-            $catCode = $postDBRow['cat_code'];
-
-            if(!Util::tryEmpty($catCode)) {
-                $categoryDao = new \com\indigloo\sc\dao\Category();
-                $catRows = $categoryDao->getLatest($catCode,4);
-                foreach($catRows as $catRow) {
-                    if(!in_array($catRow['id'],$xids) && ($catRow['id'] != $postId)) {
-                        array_push($xrows,$catRow);
-                    }
+                if(!empty($searchIds)) {
+                    $search_rows = $postDao->getOnSearchIds($searchIds);
+                    //collect in rows bucket
+                    $xrows = array_merge($xrows,$search_rows);
                 }
             }
 
-            if(sizeof($xrows) < 16 ) {
-                //how many?
-                $limit = 16 - (sizeof($xrows)) ;
-                $randomRows = $postDao->getRandom($limit);
-                $xrows = array_merge($xrows,$randomRows);
-            }
-
-            $siteDao = new \com\indigloo\sc\dao\Site();
-            $siteDBRow = $siteDao->getOnPostId($postId);
-
-            $loginUrl = "/user/login.php?q=".$_SERVER['REQUEST_URI'];
+            $loginUrl = "/user/login.php?q=".Url::current();
             $formErrors = FormMessage::render();
 
             $pageTitle = $itemObj->title;
-            $metaDescription = Util::abbreviate($postDBRow['description'],160);
+            $metaDescription = Util::abbreviate($postDBRow["description"],160);
             $metaKeywords = SeoData::getMetaKeywords($group_names);
-            $pageUrl = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-
+            $pageUrl = Url::base().Url::current() ;
+            
             $file = APP_WEB_DIR. '/view/item.php' ;
             include($file);
         }

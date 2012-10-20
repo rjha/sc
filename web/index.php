@@ -56,6 +56,6 @@
     }
 
     $e_time = microtime(true);
-    printf("Request %s took %f milliseconds \n", $originalURI, ($e_time - $s_time)*1000);
+    printf(" \n <!-- Request %s took %f milliseconds --> \n", $originalURI, ($e_time - $s_time)*1000);
 
 ?>

@@ -16,17 +16,15 @@
     </head>
 
     <body>
+
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container mh600">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
-                </div>
-            </div>
+            
             <div class="row">
                 <div class="span12">
                     <div class="page-header"> <h2> Copyright </h2> </div>
 
-                        <div class="paragraph">
+                        <div class="section1">
                             3mik.com respects the intellectual property rights of others and expects its users to do
                             the same. 3mik.com in appropriate circumstances and at its discretion reserves rights to
                             disable and/or terminate the accounts of users who repeatedly infringe or are repeatedly
@@ -37,7 +35,7 @@
                             3mik.com will respond expeditiously to claims of copyright infringement committed using
                             the 3mik.com website that are reported to us.
                         </div>
-                        <div class="paragraph">
+                        <div class="section">
 
                         If you are a copyright owner, or are authorized to act on behalf of one, or authorized to act
                         under any exclusive right under copyright, please report alleged copyright infringements taking
@@ -45,7 +43,7 @@
                         3mik.com will take whatever action, in its sole discretion, it deems appropriate, including
                         removal of the challenged material from the Site.
                         </div>
-                        <div class="paragraph">
+                        <div class="section">
                         <h3> The mail should clearly mention: </h3>
 
                         a.)Identify the copyrighted work that you claim has been infringed, or - if multiple
@@ -62,7 +60,7 @@
                         if applicable, the URL of the link shown on the Site where such reference or link may be found.
 
                         <br> c.) Provide your mailing address, telephone number, and, email address.
-                        <div class="paragraph">
+                        <div class="section">
                         <h3> What if I receive a Copyright Complaint notification? </h3>
 
                             If you receive a notification that a post has been removed due a copyright complaint,
@@ -77,7 +75,7 @@
                             infringement of the content at issue, we will remove the complaint from your account’s
                             record, and we may replace the content that was removed.
                         </div>
-                        <div class="paragraph">
+                        <div class="section">
                         <h3> To File a Counter-Notice send a mail to support@3mik.com with the following details: </h3>
 
                         1. Reply to the notification email you received.

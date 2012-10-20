@@ -4,6 +4,8 @@ namespace com\indigloo\sc\html {
 
     use com\indigloo\Template as Template;
     use \com\indigloo\sc\Constants as AppConstants;
+    use \com\indigloo\Logger as Logger ;
+
 
     class ActivityFeed {
 
@@ -77,21 +79,24 @@ namespace com\indigloo\sc\html {
             }
 
             foreach($feedDataObj->feeds as $feed) {
+                try{
+                    //create object out of string
+                    $feedObj = json_decode($feed);
+                    if(!property_exists($feedObj, 'type')) {
+                        throw new \Exception("bad feed : missing type information");
+                    }
 
-                //create object out of string
-                $feedObj = json_decode($feed);
-                if(!property_exists($feedObj, 'type')) {
-                    trigger_error("feed is missing type information", E_USER_ERROR);
+                    $feedObj->type = trim($feedObj->type);
+                    $processor = new feed\PostProcessor();
+                    if($feedObj->type == AppConstants::FOLLOW_FEED) {
+                        $processor = new feed\GraphProcessor();
+                    }
+                    
+                    $html .= $processor->process($feedObj);
+
+                } catch(\Exception $ex) {
+                    $html .= "error parsing feed: ".$feed ;
                 }
-
-                $feedObj->type = trim($feedObj->type);
-                $processor = new feed\PostProcessor();
-                if($feedObj->type == AppConstants::FOLLOW_FEED) {
-                    $processor = new feed\GraphProcessor();
-                }
-
-                $html .= $processor->process($feedObj);
-
             }
 
             return $html ;

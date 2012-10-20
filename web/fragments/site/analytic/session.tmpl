@@ -1,0 +1,17 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>&nbsp;who</th>
+      <th>&nbsp;when</th>
+    </tr>
+  </thead>
+  <tbody>
+    ~foreach($view->rows as $row){ ~
+    <tr>
+      <td class="name"><a href="~~$row["pubUrl"]~" target="_blank">~~$row["name"]~</a></td>
+      <td>~~$row["updated_on"]~</td>
+    </tr>
+    
+    ~}~
+  </tbody>
+</table>

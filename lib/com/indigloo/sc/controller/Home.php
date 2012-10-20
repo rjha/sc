@@ -3,11 +3,12 @@ namespace com\indigloo\sc\controller{
 
 
     use \com\indigloo\Util as Util;
-    use com\indigloo\Url;
+    use \com\indigloo\Url;
     use \com\indigloo\Configuration as Config ;
+
     use \com\indigloo\sc\html\Seo as SeoData ;
     use \com\indigloo\ui\Filter as Filter;
-
+    use \com\indigloo\sc\auth\Login as Login ;
 
     class Home {
 
@@ -37,34 +38,41 @@ namespace com\indigloo\sc\controller{
 
         }
 
-        private function loadHomePage() {
-
-            $postDao = new \com\indigloo\sc\dao\Post();
-            $randomDBRows = array();
-
-            //10 featured posts
+        private function getFeaturedPosts($postDao) {
+            //33 featured posts
             $filters = array();
             $model = new \com\indigloo\sc\model\Post();
             $filter = new Filter($model);
             $filter->add($model::FEATURED,Filter::EQ,TRUE);
             array_push($filters,$filter);
-            $featureDBRows = $postDao->getPosts(10,$filters);
+            $rows = $postDao->getPosts(33,$filters);
+            return $rows ;
+        }
 
-            //20 latest posts
-            $latestDBRows = $postDao->getLatest(0,20);
-            $pageSize = Config::getInstance()->get_value("main.page.items");
-            //rest are random rows.
-            $short = $pageSize - (sizeof($featureDBRows) + sizeof($latestDBRows)) ;
-            if($short > 0 ) {
-                //pull random rows
-                $randomDBRows = $postDao->getRandom($short);
+        private function loadHomePage() {
+
+            $postDao = new \com\indigloo\sc\dao\Post();
+            $featuredDBRows = $this->getFeaturedPosts($postDao);
+            $userDBRows = array();
+
+            // Do we have a login session?
+            $loginId = Login::tryLoginIdInSession();
+            if($loginId != null ) {
+                $userDBRows = $postDao->getOnLoginId($loginId,4);
             }
 
-            $bucket = array_merge($featureDBRows,$randomDBRows);
+            // how many are still missing?
+            $pageSize = Config::getInstance()->get_value("main.page.items");
+            //rest are random rows.
+            $short = $pageSize - (sizeof($featuredDBRows) + sizeof($userDBRows)) ; 
+            //20 latest posts
+            $latestDBRows = $postDao->getLatest($short);
+
+            $bucket = array_merge($userDBRows,$featuredDBRows);
+            shuffle($bucket);
             $count = sizeof($bucket);
 
             for($i = 0 ; $i < $count ; $i++){
-                $this->combine($latestDBRows[$i]);
                 $this->combine($bucket[$i]);
             }
 
@@ -93,7 +101,7 @@ namespace com\indigloo\sc\controller{
 
             $postDao = new \com\indigloo\sc\dao\Post();
             $total = $postDao->getTotalCount();
-            $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+            $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("main.page.items");
             $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
 

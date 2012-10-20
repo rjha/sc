@@ -2,12 +2,12 @@
 
 namespace com\indigloo\sc\html {
 
-    use com\indigloo\Template as Template;
-    use com\indigloo\sc\view\Media as MediaView ;
-    use com\indigloo\Util as Util ;
-    use com\indigloo\Url as Url ;
+    use \com\indigloo\Template as Template;
+    use \com\indigloo\sc\view\Media as MediaView ;
+    use \com\indigloo\Util as Util ;
+    
+    use \com\indigloo\Url as Url ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
-
     use \com\indigloo\sc\auth\Login as Login ;
 
     class User {
@@ -106,7 +106,7 @@ namespace com\indigloo\sc\html {
                     array_push($columns,$key);
                     //push value in data
                     if(strcasecmp($key,'website') == 0 || strcasecmp($key,'blog') == 0 )
-                        $data[$key] = '<a href="'.$value.'" target="_blank">'.$value.'</a>' ;
+                        $data[$key] = '<a href="'.Url::addHttp($value).'" target="_blank">'.$value.'</a>' ;
                     else
                         $data[$key] = $value ;
                 }
@@ -159,6 +159,38 @@ namespace com\indigloo\sc\html {
             $template = '/fragments/user/table.tmpl' ;
             $view = new \stdClass;
             $view->rows = $rows ;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function getAdminWidget($row) {
+            $view = new \stdClass ;
+            
+            //db fields
+            $view->id = $row["id"];
+            $view->loginId = $row["login_id"];
+            $view->provider = $row["provider"];
+            $view->email = $row["email"];
+            $view->website = $row["website"];
+            $view->name = $row["name"];
+            $view->location = $row["location"];
+
+            //display fields
+            $view->pubId = PseudoId::encode($row["login_id"]) ;
+            $format = "%d-%b, %Y / %H:%M" ;
+            $view->createdOn =  strftime($format, strtotime($row["created_on"]));
+
+            $ts = Util::secondsInDBTimeFromNow($row["created_on"]);
+            
+            $span = 24*3600 ;
+            $view->last24hr = ($ts < $span) ? true : false ;
+
+            $view->ban = ($row["bu_bit"] == 0 ) ? true : false ;
+            $view->unban = ($row["bu_bit"] == 1 ) ? true : false ;
+            $view->taint = ($row["tu_bit"] == 0 ) ? true : false ;
+
+            $html = NULL ;
+            $template = "/fragments/user/admin/widget.tmpl" ;
             $html = Template::render($template,$view);
             return $html ;
         }

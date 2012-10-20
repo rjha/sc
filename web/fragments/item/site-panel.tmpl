@@ -1,0 +1,20 @@
+<div class="quote">
+    <a id="item-site-link" href="/site/~~$view->siteId~?cname=~~$view->siteUrl~">
+    ~~$view->siteUrl~ </a>
+</div> 
+
+<div class="image-grid">
+~foreach($view->posts as $post){~
+    <div class="box">
+        <a href="/item/~~$post->itemId~">
+            <img src="~~$post->thumbnail~" title="~~$post->title~" alt="~~$post->title~" />
+        </a>
+    </div>
+~}~
+
+</div>
+
+<div class="clear"> </div>
+
+
+

@@ -10,7 +10,7 @@
     use \com\indigloo\sc\auth\Login as Login;
 
     use \com\indigloo\ui\Filter as Filter;
-    //$qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
 
@@ -42,34 +42,38 @@
     </head>
 
     <body>
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
 
             <div class="row">
                 <div class="span12">
-                     <?php  include('inc/menu.inc'); ?>
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h2>Activities</h2>
+                    </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="span9 mh600">
+                <div class="span2">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+                <div class="span8">
+                    <div class="faded-text mb20">&nbsp;</div>
                     <div class="feeds">
-                    <?php
+                        <?php
 
-                        $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
-                        $html = $htmlObj->getHtml($feedDataObj);
-                        echo $html ;
+                            $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+                            $html = $htmlObj->getHtml($feedDataObj);
+                            echo $html ;
 
-                    ?>
+                        ?>
                     </div>
 
-                </div>
-                <div class="span3">
                 </div>
             </div>
         </div> <!-- container -->

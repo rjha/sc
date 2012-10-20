@@ -24,6 +24,9 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
+        // for historical reasons this method is used to fetch the posts that 
+        // have been bookmarked
+
         static function getLatest($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -45,6 +48,27 @@ namespace com\indigloo\sc\mysql {
             return $rows;
         }
 
+        // This method gets you the latest entries from sc_bookmark table
+        // itself - no post information is fetched here
+
+        static function getTableLatest($limit,$filters) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            settype($limit,"integer");
+
+            $sql = " select a.* from  sc_bookmark a " ;
+            $q = new MySQL\Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\Bookmark","a");
+            $q->filter($filters);
+            $sql .= $q->get();
+
+            $sql .= "order by id desc LIMIT %d ";
+            $sql = sprintf($sql,$limit);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
         static function getTotal($filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = " select count(id) as count from sc_bookmark";
@@ -57,6 +81,9 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
+        // for historical reasons this method is used to fetch the posts that 
+        // have been bookmarked
+        
         static function getPaged($start,$direction,$limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -86,6 +113,35 @@ namespace com\indigloo\sc\mysql {
             return $rows;
         }
 
+        // This method gets you the latest entries from sc_bookmark table
+        // itself - no post information is fetched here
+
+        static function getTablePaged($start,$direction,$limit,$filters) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            settype($start,"integer");
+            settype($limit,"integer");
+            $direction = $mysqli->real_escape_string($direction);
+
+            $sql = " select a.* from  sc_bookmark a " ;
+
+            $q = new MySQL\Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\Bookmark","a");
+            $q->filter($filters);
+            $sql .= $q->get();
+            $sql .= $q->getPagination($start,$direction,"a.id",$limit);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+
+            //reverse rows for 'before' direction
+            if($direction == 'before') {
+                $results = array_reverse($rows) ;
+                return $results ;
+            }
+
+            return $rows;
+        }
+        
         static function getOnLoginId($subjectId,$verb) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 

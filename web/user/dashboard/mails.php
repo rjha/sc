@@ -53,25 +53,28 @@
     </head>
 
     <body>
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
 
             <div class="row">
                 <div class="span12">
-                     <?php  include('inc/setting-menu.inc'); ?>
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
                 </div>
             </div>
-
             <div class="row">
-                <div class="span9 mh600">
+                <div class="span12">
                     <div class="page-header">
-                        <h2> Mail settings </h2>
+                        <h2>Mail settings</h2>
                     </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span2">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+                <div class="span8 mh600">
+                        <div class="faded-text mb20"> change your preferences and click update</div>
 
                     <?php FormMessage::render(); ?>
 
@@ -90,7 +93,7 @@
                                      </tr>
                                      <tr>
                                         <td><input type="checkbox" name="p[bookmark]" value="true" <?php echo $checked["bookmark"]; ?>/></td>
-                                        <td> When people like or favorite my post </td>
+                                        <td> When people like or save my post </td>
                                     </tr>
                                      <tr>
                                         <td>&nbsp;</td>
@@ -99,15 +102,13 @@
                                 </tbody>
                                 </table>
                                     <div class="form-actions2">
-                                        <button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button>
+                                        <button class="btn gBtnUp" type="submit" name="save" value="Save"><span>Update</span></button>
                                     </div>
                                 <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
                         </form>
                     </div>
                 </div>
 
-                <div class="span3">
-                </div>
             </div> <!-- row -->
         </div> <!-- container -->
 

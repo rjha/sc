@@ -9,7 +9,6 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
 
-    //$qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
     $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
     $feedDataObj = $feedDao->getGlobalFeeds(100);
 
@@ -39,11 +38,21 @@
 
             <div class="row">
                 <div class="span12">
-                <?php include('inc/menu.inc'); ?>
+                <?php include(APP_WEB_DIR.'/monitor/inc/top-unit.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h2>Activities</h2>
+                    </div>
                 </div>
             </div>
 
             <div class="row">
+                <div class="span2">
+                    <?php include(APP_WEB_DIR.'/monitor/inc/menu.inc'); ?>
+                </div>
                 <div class="span9">
                     <div class="feeds">
                         <?php
@@ -55,7 +64,7 @@
                     </div> <!-- feeds -->
 
                 </div>
-                <div class="span3"> </div>
+                
             </div>
         </div> <!-- container -->
 

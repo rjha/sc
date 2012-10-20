@@ -15,33 +15,33 @@
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     $fUrl = Url::current();
 
+    //add security token to form
+    $formToken = Util::getBase36GUID();
+    $gWeb->store("form.token",$formToken);
+
+
 ?>
 
 <!DOCTYPE html>
 <html>
 
-    <head><title> User registration page  </title>
+    <head><title> User sign up page  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         
     </head>
 
    <body>
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
-                </div>
-
-            </div>
-
+            
             <div class="row">
                 <div class="span8">
                     <div class="page-header">
-                        <h2> Register </h2>
+                        <h2> Create a 3mik account</h2>
                     </div>
                     <p class="help-text">
-                       Please provide details below to register. Password should be atleast 8 characters.
+                        Password should be atleast 8 characters.
 
                     </p>
 
@@ -84,32 +84,26 @@
                                 <td> <input id="password_again" type="password" name="password_again" maxlength="32" class="required" minlength="8"  title="passwords do not match" value="" /></td>
                             </tr>
 
+                            <tr id="adrisya-wrapper">
+                                <td class="field">Please leave this blank&nbsp;</td>
+                                <td> <input name="adrisya_number" maxlength="10" value="" /></td>
+                                
+                            </tr>
 
                         </table>
 
-                        <div class="ml20">
-                            <p> Type the two words in the image below </p>
-                            <?php
-                                $publickey = "6Lc3p80SAAAAAJvGjs1RyMl8zHBRtg1sf1nRwnJn";
-                                echo recaptcha_get_html($publickey);
-                           ?>
-
-                        </div>
 
                         <div class="form-actions">
-                            <button class="btn btn-primary" type="submit" name="register" value="Register" onclick="this.setAttribute('value','Register');" ><span>Register</span></button>
-                             <a href="/user/login.php">
-                                <button class="btn" type="button" name="cancel"><span>Cancel</span></button>
-                            </a>
-
+                            <button class="btn gBtnUp b" type="submit" name="register" value="Register"><span>Sign up</span></button>
                         </div>
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
+                        <input type="hidden" name="token" value="<?php echo $formToken; ?>" />
 
                     </form>
                 </div>
 
             <div class="span4">
-                <?php include('sidebar/register.inc'); ?>
+            
             </div>
         </div>
     </div> <!-- container -->
@@ -133,8 +127,10 @@
                         required: true ,
                         email : true
                     }
-                    }
+                }
             });
+
+            $("#adrisya-wrapper").hide();
 
         });
 

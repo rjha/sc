@@ -40,6 +40,10 @@ namespace com\indigloo\sc\dao {
             mysql\Feedback::add($name,$email,$phone,$comment);
         }
 
+        function delete($id) {
+            mysql\Feedback::delete($id);
+        }
+
         
     }
 

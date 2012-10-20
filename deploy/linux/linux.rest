@@ -1,0 +1,180 @@
+
+
+crunchbang.12 customizations
+-------------------------------
+
+crunchbang 12 is based on Debian wheezy. To customize this distro we need 
+ * to install open-vm-tools
+ * openbox customizations
+ * tint2 customizations (tint2 renders the panel)
+ * conky customization (to show RAM/CPU system info on desktop)
+ 
+
+Openbox autostart 
+-----------------------
+
+** changes to openbox  autostart script **
+copy the following to openbox autostart script (right click | settings | openbox )
+
+::
+
+    xrandr -s 1280x800 -r 0 &
+    sleep 1s
+    feh --bg-scale ./Pictures/burning-man.jpg
+
+
+openbox cannot set the background images by itself. so we need to install package "feh"
+and set it to execute every time on login. Debian openbox wiki also uses this feh trick to 
+set a random wallpaper on login.
+
+
+To set a custom resolution first use $xrandr -q to see available resolutions. Then set one of
+the available resolution using xrandr -s in autostart script like displayed above.
+
+
+openbox theme
+--------------
+
+To change window decorations etc. use a different openbox theme
+
+I use themes like 
+    + Tropic Bomb
+
+To install a new openbox theme, create a ~/.themes folder and unpack the theme tarball in that
+folder. Next time openbox will pick it up.
+
+
+
+gtk theme
+-------------
+To change applications that use gtk theme, you need to change the gtk theme.
+To do so settings | user interface settings
+
+what I use?
+    + clearlooks
+
+    
+
+
+tint2 customizations
+-------------------------
+
+
+sample#1 - Dark background, tasks have text as well as icon.
+
+----------- start ----------
+::
+
+    #background #1
+    background_color = #000000 80
+    border_color = #ffffff 100
+
+    #panel
+
+    panel_monitor = 1
+    panel_position = top center horizontal
+    panel_items = TCSB
+    panel_size = 0 30
+    panel_margin = 0 0
+    panel_padding = 10 0 
+
+    #taskbar
+    taskbar_padding = 6 0 16
+
+    #task
+
+    task_icon = 1
+    task_text = 1
+    task_centered = 1
+    task_maximum_size = 120 40
+
+    #fonts
+    task_font = Liberation Sans 9
+    task_font_color = #FFFFFF 100
+    task_active_font_color = #FFFFFF 100
+    task_urgent_font_color = #FFFFFF 100
+    task_iconified_font_color = #FFFFFF 100
+
+
+---------- end ------------------------
+
+
+
+conky customizations
+-----------------------
+
+sample #1 - RAM bar + CPU Bar + customized fonts
+
+---------- start --------------
+::
+
+
+        ##############################################
+        # Settings
+        ##############################################
+        background yes
+        use_xft yes
+        xftfont Liberation Sans:size=10
+        xftalpha 1
+        update_interval 5.0
+        total_run_times 0
+        # create own window instead of using desktop
+        # required in Nautilus
+        own_window yes
+        own_window_transparent yes
+        own_window_type desktop
+        #own_window_argb_visual yes
+        own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+        double_buffer yes
+        minimum_size 200 200
+        maximum_width 240
+        draw_shades no
+        draw_outline no
+        draw_borders no
+        draw_graph_borders no
+        #default_color 656667
+        default_color F7F7F7
+        default_shade_color 000000
+        default_outline_color 828282
+        alignment top_right
+        gap_x 12
+        gap_y 56
+        no_buffers yes
+        uppercase no
+        cpu_avg_samples 2
+        override_utf8_locale no
+        ##############################################
+        #  Output
+        ##############################################
+        TEXT
+        S Y S T E M    I N F O
+        ${hr}
+
+        ${font Droid Sans:size=11} 
+        CPU ${alignr}${cpubar cpu0 10,80}  ${cpu cpu0}% 
+        RAM ${alignr}${membar 10,80}  $memperc%
+        FREE $alignr$memeasyfree
+        Swap ${alignr} $swap/$swapmax
+
+        ${hr}
+
+        Disk usage $alignr${fs_used /}/${fs_size /}
+        IP $alignr${addr}
+
+        S H O R T C U T    K E Y S
+        ${hr}
+        Super+d$alignr Minimize Desktop
+        Super+t$alignr Terminal
+        Super+f$alignr File Manager
+        Super+e$alignr Editor
+        Super+w$alignr Web Browser
+        Super+l$alignr Lock Screen
+        Super+x$alignr Logout
+        PrtSc$alignr Screenshot
+
+
+
+------------ end --------------------
+
+
+

@@ -11,6 +11,21 @@ namespace com\indigloo\sc\mysql {
 
     class Login {
 
+        // @todo fix expensive query
+        // mysql does not have function indexes - so you need to compute
+        // the values that you want to index.
+
+        static function getAggregate() {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            $sql = " select count(id) as count  from sc_login " ;
+            $sql .= " where created_on >  (now() - interval 14 day) " ;
+            $sql .= " group by year(created_on), dayofyear(created_on) " ;
+
+            $rows = MySQL\Helper::fetchRows($mysqli,$sql);
+            return $rows ;
+        }
+
         static function getOnId($loginId){
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -44,7 +59,14 @@ namespace com\indigloo\sc\mysql {
          * sc_denorm_user (via a trigger)
          *
          */
-        static function create($provider,$userName,$firstName,$lastName,$email,$password){
+        static function create(
+            $provider,
+            $userName,
+            $firstName,
+            $lastName,
+            $email,
+            $password,
+            $remoteIp){
 
             $dbh = NULL ;
             
@@ -54,7 +76,7 @@ namespace com\indigloo\sc\mysql {
                 $email = strtolower(trim($email));
                 $password = trim($password);
 
-                $sql1 = "insert into sc_login (provider,name,created_on) values(:provider,:name,now()) " ;
+                $sql1 = "insert into sc_login (provider,name,ip_address,created_on) values(:provider,:name, :ip_address,now()) " ;
                 $flag = true ;
 
                 $dbh =  PDOWrapper::getHandle();
@@ -64,6 +86,8 @@ namespace com\indigloo\sc\mysql {
                 $stmt = $dbh->prepare($sql1);
                 $stmt->bindParam(":name", $userName);
                 $stmt->bindParam(":provider", $provider);
+                $stmt->bindParam(":ip_address", $remoteIp);
+
                 $flag = $stmt->execute();
 
                 if(!$flag){
@@ -83,7 +107,8 @@ namespace com\indigloo\sc\mysql {
                                 $userName,
                                 $email,
                                 $password,
-                                $loginId);
+                                $loginId,
+                                $remoteIp);
 
 
                 //Tx end
@@ -112,6 +137,52 @@ namespace com\indigloo\sc\mysql {
             return $row;
 
         }
+
+        static function updateTokenIp($sessionId,$loginId, $access_token, $expires,$remoteIp) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = " update sc_login set access_token = ? , expire_on = %s, " ;
+            $sql .= " ip_address = ?, session_id = ? , updated_on = now() where id = ? " ;
+            $expiresOn = "(now() + interval ".$expires. " second)";
+            $sql = sprintf($sql,$expiresOn);
+            
+            $stmt = $mysqli->prepare($sql);
+            
+            if ($stmt) {
+                $stmt->bind_param("sssi",$access_token,$remoteIp,$sessionId,$loginId);
+                $stmt->execute();
+
+                if ($mysqli->affected_rows != 1) {
+                    MySQL\Error::handle($stmt);
+                }
+                $stmt->close();
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
+
+        }
+
+        static function updateIp($sessionId,$loginId,$remoteIp) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = " update sc_login set ip_address = ?, session_id = ? , updated_on = now() " ;
+            $sql .= " where id = ? " ; 
+            $stmt = $mysqli->prepare($sql);
+
+            if ($stmt) {
+                $stmt->bind_param("ssi",$remoteIp,$sessionId,$loginId);
+                $stmt->execute();
+
+                if ($mysqli->affected_rows != 1) {
+                    MySQL\Error::handle($stmt);
+                }
+                $stmt->close();
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
+
+        }
+
 
     }
 }

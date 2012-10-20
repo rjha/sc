@@ -24,3 +24,12 @@ else
     echo " site worker started with PID  $$ @ $NOW"
     `dirname $0`/site-worker.php
 fi
+
+#chown compiled templates folder
+#  read location from tmpl.location file
+tmpl_dir=`cat tmpl.location`
+if [[ -n "$tmpl_dir" ]]
+then
+    chown -R www-data:www-data $tmpl_dir
+fi
+

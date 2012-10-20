@@ -30,7 +30,7 @@ namespace com\indigloo\sc\controller{
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
             $total = $sphinx->getPostsCount($token);
 
-            $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+            $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("search.page.items");
             $paginator = new Pagination($qparams,$total,$pageSize);
             $ids = $sphinx->getPagedPosts($token,$paginator);
@@ -40,7 +40,7 @@ namespace com\indigloo\sc\controller{
             $searchTitle = NULL ;
 
             if(sizeof($ids) > 0 ) {
-                $pageHeader = "$token - $total results" ;
+                $pageHeader = "$token" ;
                 $pageBaseUrl = "/search/location/$token";
 
                 $template = APP_WEB_DIR. '/view/tiles-page.php';
@@ -48,7 +48,7 @@ namespace com\indigloo\sc\controller{
                 $postDBRows = $postDao->getOnSearchIds($ids) ;
 
             } else {
-                $pageHeader = "No Results for $token" ;
+                $pageHeader = "No Results" ;
                 $template = APP_WEB_DIR. '/view/notiles.php';
 
             }

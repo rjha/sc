@@ -7,7 +7,6 @@ To use your own custom session implementation we provide two classes
 1. Redis based
 2. mySQL based
 
-
 sc_config.ini
 --------------
 session.backend=mysql|redis|default
@@ -19,6 +18,27 @@ php.ini
 
 session.gc_probability=0
 
+
+
+On the server we are using mysql based sessions. This helps us to create sticky sessions
+without bothering about which frontend machine is in use. The sessionId that is stored in 
+user browser is refreshed for next 7 days on each request. so it is a rolling session - always
+valid for next 7 days. 
+
+The server though will only store the session data for 7 days. A cron job runs and cleans the session
+that are more than 7 days old. 
+
+A conflict can arise when the user logs in on 59th day. The 3mik login is now valid for next 7 days.
+However if the user tries to do anything on 61st day - the accesss token is no longer valid. We have to 
+ensure that the access_token the user has from FB is valid for the duration of our session.lifetime.
+
+
+
+
+
+
+
+ 
 
 Caveats
 ---------

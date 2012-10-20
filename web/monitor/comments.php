@@ -10,7 +10,7 @@
     use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\sc\ui\Constants as UIConstants;
 
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    $qparams = Url::getRequestQueryParams();
 
     $commentDao = new \com\indigloo\sc\dao\Comment() ;
     $total = $commentDao->getTotalCount();
@@ -33,13 +33,13 @@
         <script>
             $(document).ready(function(){
                 //show options on widget hover
-                $('.widget .options').hide();
+                
                 $('.widget').mouseenter(function() {
-                    $(this).find('.options').toggle();
+                    $(this).find('.options').css("visibility", "visible");
                     $(this).css("background-color", "#FEFDF1");
                 });
                 $('.widget').mouseleave(function() {
-                    $(this).find('.options').toggle();
+                    $(this).find('.options').css("visibility", "hidden");
                     $(this).css("background-color", "#FFFFFF");
                 });
             });
@@ -59,11 +59,21 @@
 
             <div class="row">
                 <div class="span12">
-                <?php include('inc/menu.inc'); ?>
+                <?php include(APP_WEB_DIR.'/monitor/inc/top-unit.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h2>Comments</h2>
+                    </div>
                 </div>
             </div>
 
             <div class="row">
+                 <div class="span2">
+                    <?php include(APP_WEB_DIR.'/monitor/inc/menu.inc'); ?>
+                </div>
                 <div class="span9">
 
                         <?php
@@ -81,7 +91,7 @@
                         ?>
 
                 </div>
-                <div class="span3"> </div>
+                 
             </div>
         </div> <!-- container -->
 

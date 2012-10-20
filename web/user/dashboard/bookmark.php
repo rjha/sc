@@ -14,7 +14,8 @@
 
     use \com\indigloo\ui\Filter as Filter;
 
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    
+    $qparams = Url::getRequestQueryParams();
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
 
@@ -30,7 +31,7 @@
     }
 
     $tileOptions = ~UIConstants::TILE_ALL ;
-    $pageTitle = "your favorites on 3mik" ;
+    $pageTitle = "Saved items on 3mik" ;
     $tileOptions = UIConstants::TILE_REMOVE ;
 
     $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
@@ -46,7 +47,7 @@
 
     //filter-2
     $filter = new Filter($model);
-    $filter->add($model::VERB_COLUMN,Filter::EQ,AppConstants::FAVORITE_VERB);
+    $filter->add($model::VERB_COLUMN,Filter::EQ,AppConstants::SAVE_VERB);
     array_push($filters,$filter);
 
     $total = $bookmarkDao->getTotal($filters);
@@ -68,29 +69,35 @@
     </head>
 
      <body>
-
+       <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
 
             <div class="row">
                 <div class="span12">
-                     <?php include('inc/menu.inc'); ?>
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
                 </div>
             </div>
-
             <div class="row">
-                <div class="span9 mh600">
-                    <div class="faded-text">
-                        All your favorite posts are shown here. To remove a post 
-                        from favorites, do mouse over the post and click Remove.
+                <div class="span12">
+                    <div class="page-header">
+                        <h2>Saved items</h2>
                     </div>
+                </div>
+            </div>
 
-                    <div id="widgets" class="mt20">
+            <div class="row">
+                <div class="span2">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+                <div class="span8 mh600">
+                    
+                    <div class="faded-text mb20">
+                        The items you saved are shown here. To remove an item 
+                        do mouse over the item and click Remove.
+                    </div>
+                    
+
+                    <div id="widgets">
                         <?php
                             $startId = NULL;
                             $endId = NULL ;
@@ -105,19 +112,19 @@
                                 }
                             } else {
                                 $message = "No results found " ;
-                                echo \com\indigloo\sc\html\NoResult::get($message);
+                                echo \com\indigloo\sc\html\Site::getNoResult($message);
                             }
 
                         ?>
 
-                    </div><!-- tiles -->
+                    </div><!-- widgets -->
 
                 </div>
 
             </div>
 
         </div>  <!-- container -->
-        <div class="hr"> </div>
+        
         <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
@@ -126,15 +133,14 @@
             /* column width = css width + margin */
             $(document).ready(function(){
 
-                $('.widget .options').hide();
-                $('.widget').mouseenter(function() {
-                    $(this).find('.options').toggle();
+               $('.widget').mouseenter(function() {
+                    $(this).find('.options').css("visibility", "visible");
                     /* @todo move colors to a css style */
-                    $(this).css("background-color", "#f9f9f9");
+                    $(this).css("background-color", "#FEFDF1");
                 });
 
                 $('.widget').mouseleave(function() {
-                    $(this).find('.options').toggle();
+                    $(this).find('.options').css("visibility", "hidden");
                     $(this).css("background-color", "#FFFFFF");
                 });
 

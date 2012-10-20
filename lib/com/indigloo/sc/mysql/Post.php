@@ -40,6 +40,7 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        //@todo fix expensive-query
         //@see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/
         static function getRandom($limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -90,7 +91,7 @@ namespace com\indigloo\sc\mysql {
 
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l where q.login_id = l.id " ;
             $sql .= " and  q.login_id = %d order by id desc limit %d " ;
-            $sql = sprintf($sql,$limit);
+            $sql = sprintf($sql,$loginId,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
@@ -119,13 +120,13 @@ namespace com\indigloo\sc\mysql {
 
             $sql = " select q.*,l.name as user_name from sc_post q, sc_login l " ;
             $sql .= " where l.id = q.login_id and q.id in (".$strIds. ") " ;
-            $sql .= " ORDER BY q.id desc" ;
-
+            $sql .= " ORDER BY FIELD(q.id,".$strIds. ") " ;
+            
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
 
-        static function getLatest($offset,$limit,$filters) {
+        static function getLatest($limit,$filters) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -142,8 +143,8 @@ namespace com\indigloo\sc\mysql {
             $condition = $q->get();
             $sql .= $condition;
 
-            $sql .= " order by q.id desc LIMIT %d,%d " ;
-            $sql = sprintf($sql,$offset,$limit);
+            $sql .= " order by q.id desc LIMIT %d " ;
+            $sql = sprintf($sql,$limit);
             
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
@@ -329,25 +330,93 @@ namespace com\indigloo\sc\mysql {
                 MySQL\Error::handle($mysqli);
             }
 
-        }
+        }  
 
-        static function setFeature($loginId,$postId,$value){
+        static function getLatestOnCategory($code,$limit) {
+
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input
-            settype($loginId,"integer");
-            settype($postId,"integer");
-            settype($value,"integer");
+            $code = $mysqli->real_escape_string($code);
+            settype($limit,"integer");
 
-            //operation needs admin privileges
-            $mikUserRow = \com\indigloo\sc\mysql\MikUser::getOnLoginId($loginId);
-            if($mikUserRow['is_admin'] != 1 ){
-                trigger_error("User does not have admin rights", E_USER_ERROR);
+            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
+            $sql .= " where l.id=q.login_id  and q.cat_code = '%s' order by q.id desc LIMIT %d ";
+            $sql = sprintf($sql,$code,$limit);
+
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+
+        }
+
+        static function getTotalOnCategory($code) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            $code = $mysqli->real_escape_string($code);
+
+            $sql = " select count(id) as count from sc_post where cat_code = '%s' " ;
+            $sql = sprintf($sql,$code);
+
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+
+        }
+
+        static function getPagedOnCategory($start,$direction,$limit,$code) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            $code = $mysqli->real_escape_string($code);
+            $direction = $mysqli->real_escape_string($direction);
+            settype($start,"integer");
+            settype($limit,"integer");
+
+            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l ";
+            $codeCondition = sprintf("cat_code = '%s'",$code);
+
+            $q = new MySQL\Query($mysqli);
+            $q->addCondition("l.id = q.login_id");
+            $q->addCondition($codeCondition);
+
+            $sql .= $q->get();
+            $sql .= $q->getPagination($start,$direction, "q.id",$limit);
+
+
+            if(Config::getInstance()->is_debug()) {
+                Logger::getInstance()->debug("sql => $sql \n");
             }
 
-            $sql = " update sc_post set is_feature = %d where ID = %d " ;
-            $sql = sprintf($sql,$value,$postId);
-            MySQL\Helper::executeSQL($mysqli,$sql);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+
+            //reverse rows for 'before' direction
+            if($direction == 'before') {
+                $results = array_reverse($rows) ;
+                return $results ;
+            }
+
+            return $rows;
+
+        }
+
+        static function set_fp_bit($postId,$value) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "update sc_post set updated_on = now() ,fp_bit = ? where id = ?" ;
+            
+            $stmt = $mysqli->prepare($sql);
+
+            if ($stmt) {
+                $stmt->bind_param("ii",$value,$postId) ;
+                $stmt->execute();
+
+                if ($mysqli->affected_rows != 1) {
+                    MySQL\Error::handle($stmt);
+                }
+                $stmt->close();
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
         }
 
     }

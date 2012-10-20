@@ -9,7 +9,7 @@
     use \com\indigloo\ui\Filter as Filter;
 
 
-    $qparams = Url::getQueryParams($_SERVER['REQUEST_URI']);
+    $qparams = Url::getRequestQueryParams();
     $filters = array();
 
     $groupDao = new \com\indigloo\sc\dao\Group();
@@ -29,10 +29,6 @@
 
     $pageBaseUrl = "/group/all.php" ;
     $title = "All groups";
-
-    $hasPagination = true ;
-    $hasNavigation = true ;
-    $hasAlpha = false ;
-
-    include(APP_WEB_DIR.'/group/inc/body.inc');
+    $file = APP_WEB_DIR. "/view/group/cards-page.php" ;
+    include ($file);
 ?>

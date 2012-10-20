@@ -9,18 +9,14 @@
         <meta name="description" content="<?php echo $metaDescription;  ?>">
 
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
-        <?php echo \com\indigloo\sc\util\Asset::version("/css/sc.css"); ?>
-
+        
     </head>
 
      <body class="dark-body">
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container mh800">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-            </div>
-
+            <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
+            
             <div class="row">
 
                 <div class="span12">
@@ -48,7 +44,7 @@
                                 }
                             }else {
                                 $message = "No Posts" ;
-                                echo \com\indigloo\sc\html\NoResult::getTile($message);
+                                echo \com\indigloo\sc\html\Site::getNoResultTile($message);
 
                             }
 
@@ -86,20 +82,21 @@
                 var $container = $('#tiles');
 
                 $container.imagesLoaded(function(){
-                    $container.masonry({
+                    $container.isotope({
                         itemSelector : '.tile',
-                        gutterWidth  : 10
+                        layoutMode : 'masonry',
+                        onLayout : function( $elems, instance ) {
+                            add_tile_options();
+                        }                   
                     });
-
-                    add_tile_options();
 
                 });
 
 
                 $container.infinitescroll(
                     {
-                        navSelector  	: '.pager',
-                        nextSelector 	: '.pager a[rel="next"]',
+                        navSelector     : '.pager',
+                        nextSelector    : '.pager a[rel="next"]',
                         itemSelector : '.tile',
                         bufferPx : 80,
 
@@ -119,7 +116,7 @@
                         var $newElems = $(newElements).css({ opacity: 0 });
                         $newElems.imagesLoaded(function(){
                             $newElems.css({ opacity: 1 });
-                            $container.masonry('appended', $newElems);
+                            $container.isotope('appended', $newElems);
                             $("#infscr-loading").fadeOut("slow");
                         });
 

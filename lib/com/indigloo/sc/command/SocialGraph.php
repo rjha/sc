@@ -9,11 +9,15 @@ namespace com\indigloo\sc\command {
 
         function execute($params) {
             $action = $params->action;
-            $followerId = $params->followerId ;
-            $followingId = $params->followingId ;
+
+            // intval() returns the integer value of var 
+            // on success, or 0 on failure
+            $followerId = intval($params->followerId) ;
+            $followingId = intval($params->followingId) ;
 
             if(empty($followerId) || empty($followingId) || empty($action)) {
-                $response = array("code" => 500 , "message" => "Bad input: missing required parameters.");
+                $message = "Bad input: missing required parameters." ;
+                $response = array("code" => 500 , "message" => $message);
                 return $response;
             }
 

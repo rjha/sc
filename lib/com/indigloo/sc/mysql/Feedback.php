@@ -74,6 +74,24 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        static function delete($id) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "delete from sc_feedback where id = ?" ;
+
+            $stmt = $mysqli->prepare($sql);
+
+            if ($stmt) {
+                $stmt->bind_param("i",$id) ;
+                $stmt->execute();
+                $stmt->close();
+
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
+            
+        }
+
     }
 }
 ?>

@@ -3,7 +3,7 @@
     include (APP_WEB_DIR.'/inc/header.inc');
 
     use com\indigloo\Util;
-    use com\indigloo\Url;
+    use com\indigloo\Url as Url;
     use com\indigloo\ui\form\Sticky;
     use com\indigloo\Constants as Constants;
     use com\indigloo\Configuration as Config;
@@ -35,7 +35,7 @@
     //Facebook OAuth2
     $fbAppId = Config::getInstance()->get_value("facebook.app.id");
 
-    $host = "http://".$_SERVER["HTTP_HOST"];
+    $host = Url::base();
     $fbCallback = $host."/callback/fb2.php" ;
 
     $fbDialogUrl = "https://www.facebook.com/dialog/oauth?client_id=".$fbAppId ;
@@ -70,81 +70,81 @@
     </head>
 
      <body>
-
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
+        
         <div class="container mh800">
+
+            <div style="margin-top:100px;"> &nbsp; </div> <!-- top:padding -->
+                
             <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
+                <div class="span9 offset1" style="border-bottom:1px dashed #333333;">
+                    <p class="comment-text">
+                        You can use your existing facebook, google or twitter account to sign in.
+                    </p>
+                    <div id="zocial-grid">
+                        <div class="column">
+                            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">&nbsp;&nbsp;Facebook</a>&nbsp;
+                        </div>
+
+                        <div class="column">
+                             <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">&nbsp;&nbsp;Google</a>&nbsp;
+                        </div>
+
+                        <div class="column">
+                            <a class="zocial twitter" href="/user/twitter-login.php">&nbsp;&nbsp;Twitter</a>&nbsp;
+                        </div>
+
+                    </div> <!-- zocial-grid -->
+
+
                 </div>
-            </div>
+            </div> <!-- row:1 -->
 
             <div class="row">
-                <div class="span12">
-                    <div class="page-header">
-                        <a href="/user/register.php">Register for a new 3mik account</a>&nbsp;(&nbsp;Free and takes only a minute! )
-                    </div>
+
+                <div class="span6 offset1" style="padding-top:40px;padding-left:40px;">
+                    <h4>Sign in using 3mik account</h4>
                     <div class="p10"> <?php FormMessage::render(); ?> </div>
-                </div>
-            </div> <!-- row -->
-
-            <div class="row">
-                <div class="span7">
-
-                    <h3> Login with 3mik account </h3>
-
+                    <div class="lb1">
                         <form id="web-form1"  name="web-form1" action="/user/form/login.php" method="POST">
                             <div class="error">    </div>
 
                             <table class="form-table">
-                            <tr>
-                                <td class="field">Email<span class="red-label">*</span></td>
-                                <td>
-                                    <input type="text" name="email" maxlength="64" class="required" title="Email is required" value="<?php echo $sticky->get('email'); ?>"/>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td class="field">Email<span class="red-label">*</span></td>
+                                    <td>
+                                        <input type="text" name="email" maxlength="64" class="required" title="Email is required" value="<?php echo $sticky->get('email'); ?>"/>
+                                    </td>
+                                </tr>
 
-                             <tr>
-                                <td class="field"> Password<span class="red-label">*</span></td>
-                                <td>
-                                    <input type="password" name="password" maxlength="32" class="required" title="Password is required" value=""/>
-                                    &nbsp;<br>
-                                    <a href="/user/account/mail-password.php">Forgot your password?</a>
+                                 <tr>
+                                    <td class="field"> Password<span class="red-label">*</span></td>
+                                    <td>
+                                        <input type="password" name="password" maxlength="32" class="required" title="Password is required" value=""/>
+                                        
+                                    </td>
+                                </tr>
 
-                                </td>
-                            </tr>
+                            </table>
 
-                        </table>
+                            <div class="form-actions">
+                                <button class="btn gBtnUp" type="submit" name="login" value="Login"><span>Sign in</span></button>
+                                &nbsp;&nbsp;
+                                <a href="/user/account/mail-password.php">Forgot your password?</a>
+                            </div>
 
-                        <div class="form-actions">
-                            <button class="btn btn-primary" type="submit" name="login" value="Login" onclick="this.setAttribute('value','Login');" ><span>Login</span></button>
-                            <a href="<?php echo $qUrl; ?>">
-                                <button class="btn" type="button" name="cancel"><span>Cancel</span></button>
-                            </a>
+                            <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                            <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
 
-                        </div>
-
-                        <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
-                        <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
-
-                    </form>
-
-
-                </div> <!-- span5 -->
-
-                <div class="span4 social-buttons quote">
-                    <h3> - OR - </h3>
-                    <div class="p5">
-                        <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Login with Facebook</a>
+                        </form>
+                    </div> <!-- form wrapper -->
+                    <div class="mt20">
+                        <a href="/user/register.php">Register for a new 3mik account</a>&nbsp;(&nbsp;Free and takes only a minute! )
                     </div>
-                    <div class="p5">
-                        <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Login with Google</a>&nbsp;&nbsp;
-                    </div>
-                    <div class="p5">
-                        <a class="zocial twitter" href="/user/twitter-login.php">Login with Twitter</a>&nbsp;
-                    </div>
+            </div> 
 
-                </div> <!-- span4 -->
-            </div> <!-- row -->
+        </div> <!-- row:2 -->
+
 
        </div> <!-- container -->
 

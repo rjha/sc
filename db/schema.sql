@@ -3,11 +3,11 @@ DROP TABLE IF EXISTS  sc_comment ;
 CREATE TABLE  sc_comment  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    post_id  int(11) NOT NULL,
-   description  varchar(512) ,
+   description  varchar(512) not null,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   title  varchar(128) ,
-   login_id  int(11) ,
+   title  varchar(128) not null,
+   login_id  int(11) not null ,
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -38,8 +38,8 @@ CREATE TABLE  sc_comment_archive  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    login_id  int(11) NOT NULL,
    post_id  int(11) NOT NULL,
-   title  varchar(128) ,
-   description  varchar(512) ,
+   title  varchar(128) not null,
+   description  varchar(512) not null,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
@@ -58,6 +58,7 @@ CREATE TABLE  sc_facebook  (
    link  varchar(128) ,
    gender  varchar(8) ,
    email  varchar(64) ,
+   ip_address varchar(46),
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
@@ -65,24 +66,40 @@ CREATE TABLE  sc_facebook  (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
+
+DROP TRIGGER IF EXISTS  trg_fb_user_cp ;
+
 DELIMITER //
 CREATE TRIGGER trg_fb_user_cp  BEFORE INSERT ON sc_facebook
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,website,created_on)
-        values(NEW.login_id,NEW.name,NEW.first_name,NEW.last_name,NEW.email, 'facebook', NEW.link, now()) ;
+        insert into sc_denorm_user(
+            login_id,
+            name,
+            first_name,
+            last_name,
+            email,
+            provider,
+            website,
+            ip_address,
+            created_on)
+        values(
+            NEW.login_id,
+            NEW.name,
+            NEW.first_name,
+            NEW.last_name,
+            NEW.email,
+            'facebook', 
+            NEW.link, 
+            NEW.ip_address,
+            now()) ;
+
+        insert into sc_mail_queue(name,email,source,created_on)
+        values(NEW.name,NEW.email,2,now());
+
     END //
 DELIMITER ;
 
-
-DROP TABLE IF EXISTS  sc_feature_group ;
-CREATE TABLE  sc_feature_group  (
-   id  int(11) NOT NULL,
-   slug  text,
-   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id )
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS  sc_feedback ;
 CREATE TABLE  sc_feedback  (
@@ -121,26 +138,18 @@ CREATE TABLE  sc_group_master  (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-DROP TABLE IF EXISTS  sc_list ;
-CREATE TABLE  sc_list  (
-   id  int(11) NOT NULL AUTO_INCREMENT,
-   fixed_id int,
-   name  varchar(16) NOT NULL,
-   code  varchar(16) NOT NULL,
-   display  varchar(32) NOT NULL,
-   ui_order  int(11) NOT NULL,
-   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id )
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS  sc_login ;
 CREATE TABLE  sc_login  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    name  varchar(32) NOT NULL,
    provider  varchar(16) NOT NULL,
+   access_token text ,
+   ip_address varchar(46),
+   session_id varchar(40),
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   expire_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
@@ -177,15 +186,15 @@ DROP TABLE IF EXISTS  sc_post ;
 CREATE TABLE  sc_post  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    title  varchar(128) NOT NULL,
-   description  varchar(512) ,
+   description  varchar(512) not null ,
    links_json  mediumtext,
    images_json  mediumtext,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   login_id  int(11) ,
+   login_id  int(11) not null ,
    group_slug  varchar(64) ,
-   is_feature  int(11) DEFAULT '0',
-   pseudo_id  varchar(32) ,
+   fp_bit  int(11) DEFAULT '0',
+   pseudo_id  varchar(32) not null,
    cat_code  varchar(16) ,
    version  int(11) DEFAULT '1',
   PRIMARY KEY ( id ),
@@ -245,14 +254,14 @@ CREATE TABLE  sc_post_archive  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    login_id  int(11) NOT NULL,
    title  varchar(128) NOT NULL,
-   description  varchar(512) ,
+   description  varchar(512) not null ,
    links_json  text,
    images_json  text,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   pseudo_id  int(11) ,
+   pseudo_id  int(11) not null,
    group_slug  varchar(64) ,
-   is_feature  int(11) ,
+   fp_bit  int(11) ,
    cat_code  varchar(16) ,
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -269,13 +278,14 @@ CREATE TABLE  sc_post_site  (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
-DROP TABLE IF EXISTS  sc_reset_password ;
-CREATE TABLE  sc_reset_password  (
+DROP TABLE IF EXISTS  sc_mail_queue ;
+CREATE TABLE  sc_mail_queue  (
    id  int(11) NOT NULL AUTO_INCREMENT,
    name  varchar(64) NOT NULL,
    email  varchar(64) NOT NULL,
    token  varchar(64) NOT NULL,
-   flag  int(11) DEFAULT '0',
+   flag  int(11) DEFAULT 0,
+   source int default 1 ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    expired_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -329,6 +339,7 @@ CREATE TABLE  sc_twitter  (
    screen_name  varchar(32) ,
    profile_image  varchar(128) ,
    location  varchar(32) ,
+   ip_address varchar(46),
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
@@ -336,12 +347,32 @@ CREATE TABLE  sc_twitter  (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
+
+
+DROP TRIGGER IF EXISTS  trg_twitter_user_cp ;
+
 DELIMITER //
 CREATE TRIGGER trg_twitter_user_cp  BEFORE INSERT ON sc_twitter
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,nick_name,provider,photo_url,location,created_on)
-        values(NEW.login_id,NEW.name,NEW.screen_name,'twitter',NEW.profile_image,NEW.location, now()) ;
+        insert into sc_denorm_user(
+            login_id,
+            name,
+            nick_name,
+            provider,
+            photo_url,
+            location,
+            ip_address,
+            created_on)
+        values(
+            NEW.login_id,
+            NEW.name,
+            NEW.screen_name,
+            'twitter',
+            NEW.profile_image,
+            NEW.location,
+            NEW.ip_address, 
+            now()) ;
     END //
 DELIMITER ;
 
@@ -358,6 +389,7 @@ CREATE TABLE  sc_user  (
    is_admin  int(11) DEFAULT '0',
    is_active  int(11) NOT NULL DEFAULT '1',
    salt  varchar(16) NOT NULL,
+   ip_address varchar(46),
    login_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -368,15 +400,39 @@ CREATE TABLE  sc_user  (
 
 
 
+DROP TRIGGER IF EXISTS  trg_mik_user_cp ;
+
 DELIMITER //
 CREATE TRIGGER trg_mik_user_cp  BEFORE INSERT ON sc_user
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,created_on)
-        values(NEW.login_id,NEW.user_name,NEW.first_name,NEW.last_name,NEW.email, '3mik', now());
+        insert into sc_denorm_user(
+            login_id,
+            name,
+            first_name,
+            last_name,
+            email,
+            provider,
+            ip_address,
+            created_on)
+        values(
+            NEW.login_id,
+            NEW.user_name,
+            NEW.first_name,
+            NEW.last_name,
+            NEW.email,
+            '3mik',
+            NEW.ip_address,
+            now());
+
+        insert into sc_mail_queue(name,email,source,created_on)
+        values(NEW.user_name,NEW.email,2,now());
+
 
     END //
 DELIMITER ;
+
+
 
 DROP TABLE IF EXISTS  sc_user_group ;
 CREATE TABLE  sc_user_group  (
@@ -428,22 +484,25 @@ DELIMITER ;
 
 create table sc_denorm_user(
 	id int(11) NOT NULL auto_increment,
-    login_id int not null,
+  login_id int not null,
 	name varchar(64) not null ,
 	nick_name varchar(32) ,
-    first_name  varchar(32) ,
-    last_name  varchar(32) ,
-    email  varchar(64) ,
-    provider varchar(16) NOT NULL,
-    website varchar(128) ,
-    blog varchar(128) ,
-    photo_url varchar(128) ,
-    location varchar(32) ,
-    about_me varchar(512),
-    age int ,
-    gender varchar(1) ,
+  first_name  varchar(32) ,
+  last_name  varchar(32) ,
+  email  varchar(64) ,
+  provider varchar(16) NOT NULL,
+  website varchar(128) ,
+  blog varchar(128) ,
+  photo_url varchar(128) ,
+  location varchar(32) ,
+  about_me varchar(512),
+  age int ,
+  bu_bit int default 0,
+  tu_bit int default 0,
+  gender varchar(1) ,
+  ip_address varchar(46),
 	created_on TIMESTAMP  default '0000-00-00 00:00:00',
-    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+  updated_on TIMESTAMP   default '0000-00-00 00:00:00',
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
@@ -476,6 +535,7 @@ CREATE TABLE  sc_google_user  (
    last_name  varchar(32) ,
    photo  varchar(128) ,
    email  varchar(64) ,
+   ip_address varchar(46),
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
@@ -483,15 +543,41 @@ CREATE TABLE  sc_google_user  (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
+DROP TRIGGER IF EXISTS trg_google_user_cp;
+
 DELIMITER //
 CREATE TRIGGER trg_google_user_cp  BEFORE INSERT ON sc_google_user
     FOR EACH ROW
     BEGIN
-        insert into sc_denorm_user(login_id,name,first_name,last_name,email,provider,photo_url,created_on)
-        values(NEW.login_id,NEW.name,NEW.first_name,NEW.last_name,NEW.email, 'google', NEW.photo,now()) ;
+        insert into sc_denorm_user(
+            login_id,
+            name,
+            first_name,
+            last_name,
+            email,
+            provider,
+            photo_url,
+            ip_address,
+            created_on)
+        values(
+            NEW.login_id,
+            NEW.name,
+            NEW.first_name,
+            NEW.last_name,
+            NEW.email,
+            'google', 
+            NEW.photo,
+            NEW.ip_address,
+            now()) ;
+        -- 
+        -- source for new a/c mail :2 
+        --
+        insert into sc_mail_queue(name,email,source,created_on)
+        values(NEW.name,NEW.email,2,now());
+
+
     END //
 DELIMITER ;
-
 
 
 DROP TABLE IF EXISTS  sc_bookmark ;
@@ -512,16 +598,125 @@ CREATE TABLE  sc_bookmark (
 
 
 
-DROP TABLE IF EXISTS  sc_preference ;
-CREATE TABLE  sc_preference (
-   id  int NOT NULL AUTO_INCREMENT,
-   login_id  int NOT NULL,
-   p_data varchar(512) not null,
-   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id )) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+--
+-- for sc_ui_zset 
+-- ui_order is the score associated with a member in zset (sorted set)
+-- 
+-- Question - what do we need seo_key column? 
+-- 
+-- The URL for category navigation is like 
+-- /category/1 , /category/2 etc.
+-- 
+-- 1) we cannnot use ui_order in SEO URL because that obviously can change.
+-- 2) we cannot use ui_code or name either because that can also change, like
+-- what we call code CAR today can be code AUTO tomorrow and then all 
+-- /category/CAR link will not work
+-- 
+-- 3) we cannot use DB primary key/ set hash etc in  in SEO URL 
+--  + looks bad, not readable (/category/6E707C49D1FDCF7E4288EEB27E0158E6 
+--  + rows can be deleted, can start from N when migrating 
+--  to other DB etc. 
+--  
+-- That is why we need another column to track what we print in SEO URL
+-- that can be ported to any DB irrespective of internal implementation.
+-- 
+--  
+-- 
 
-alter table  sc_preference add constraint UNIQUE uniq_login (login_id);
 
 
+drop table if exists sc_ui_zset;
+create table sc_ui_zset(
+    id int(11) NOT NULL auto_increment,
+    name varchar(32) not null,
+    ui_code varchar(16) not null,
+    ui_order int not null ,
+    seo_key varchar(16) not null,
+    set_hash BINARY(16) not null,
+    set_key varchar(32) not null,
+    created_on timestamp default '0000-00-00 00:00:00',
+    updated_on timestamp default '0000-00-00 00:00:00' ,
+    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+--
+-- indexes
+--
+
+alter table sc_ui_zset add constraint UNIQUE uniq_key(set_key,seo_key);
+
+
+DROP TABLE IF EXISTS  sc_set ;
+
+CREATE TABLE  sc_set (
+  id  int(11) NOT NULL AUTO_INCREMENT,
+  set_hash BINARY(16) not null,
+  set_key varchar(32) not null,
+  member varchar(64) not null,
+  member_hash  BINARY(16) not null,
+  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE IF EXISTS  sc_glob_table ;
+
+CREATE TABLE  sc_glob_table (
+  t_key varchar(32) not null,
+  t_hash BINARY(16) not null,
+  t_value text not null,
+  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (t_hash)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- indexes
+-- 
+
+alter table sc_post add index idx_fp_bit (fp_bit) ;
+alter table sc_post add index idx_login (login_id) ;
+alter table sc_post add index idx_cat (cat_code) ;
+alter table sc_post add index idx_date(created_on) ;
+
+alter table sc_comment add index idx_login (login_id);
+alter table sc_comment add index idx_post (post_id);
+
+alter table sc_facebook add index idx_id(facebook_id);
+alter table sc_google_user add index idx_id (google_id);
+alter table sc_twitter add index idx_id (twitter_id);
+alter table sc_user add index idx_login (login_id);
+
+alter table sc_mail_queue add index idx_email(email);
+
+
+alter table sc_denorm_user add index id_login (login_id) ;
+alter table sc_denorm_user add index idx_email (email) ;
+alter table sc_denorm_user add index idx_date (created_on) ;
+alter table sc_denorm_user add index idx_ban_bit (bu_bit) ;
+alter table sc_denorm_user add index idx_taint_bit (tu_bit) ;
+
+
+alter table sc_set add index idx_key(set_key) ;
+alter table sc_set add index idx_smhash (set_hash,member_hash) ;
+
+alter table sc_glob_table add index idx_key(t_key) ;
+alter table sc_ui_zset add index idx_key(set_key) ;
+
+alter table sc_bookmark add index idx_sub_verb(subject_id,verb) ;
+alter table sc_follow add index idx_following(following_id) ;
+alter table sc_follow add index idx_follower(follower_id) ;
+
+alter table sc_login add index idx_session(session_id) ;
+alter table sc_login add index idx_date(created_on);
+
+alter table sc_site_master add index idx_hash(hash);
+
+alter table sc_tmp_ps add index idx_post_id(post_id) ;
+alter table sc_tmp_ps add index idx_site_id (site_id) ;
+
+alter table sc_post_site add index idx_post_id(post_id) ;
+alter table sc_post_site add index idx_site_id (site_id) ;
 

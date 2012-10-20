@@ -25,8 +25,8 @@
     $postDao = new \com\indigloo\sc\dao\Post();
     $postDBRow = $postDao->getOnId($postId);
 
-    if(!Login::isOwner($postDBRow['login_id'])) {
-        header("Location: /qa/noowner.php");
+    if(! (Login::isOwner($postDBRow['login_id']) || Login::isAdmin())) {
+        header("Location: /site/error/403.html");
         exit ;
     }
 
@@ -43,14 +43,9 @@
     </head>
 
     <body>
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container mh800">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/slim-toolbar.inc'); ?>
-                </div>
-
-            </div>
-
+            
             <div class="row">
                 <div class="span9">
 
@@ -66,10 +61,10 @@
 
                     <?php FormMessage::render(); ?>
                     <?php echo \com\indigloo\sc\html\Post::getWidget($postDBRow); ?>
-
+                    <div class="p10">&nbsp;</div>
                     <form id="web-form1"  name="web-form1" action="/qa/form/delete.php" method="POST">
                         <div>
-                            <button class="btn btn-danger" type="submit" name="delete" value="Delete" onclick="this.setAttribute('value','Delete');">Delete</button>
+                            <button class="btn btn-danger" type="submit" name="delete" value="Delete">Delete</button>
                             <a href="<?php echo $qUrl; ?>"><button class="btn" type="button">Cancel</a></button></a>
                         </div>
                         <input type="hidden" name="q" value="<?php echo $qUrl; ?>" />

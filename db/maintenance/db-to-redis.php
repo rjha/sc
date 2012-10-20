@@ -78,7 +78,7 @@
 
                 $verb = -1 ;
                 if($action == 1 ) $verb = AppConstants::LIKE_VERB ;
-                if($action == 2 ) $verb = AppConstants::FAVORITE_VERB ;
+                if($action == 2 ) $verb = AppConstants::SAVE_VERB ;
 
                 $postId = PseudoId::decode($itemId);
                 $image = $postDao->getImageOnId($postId);
@@ -248,4 +248,6 @@
     sleep(1);
     post_to_feed($mysqli);
 
+    //close resources
+    $mysqli->close();
 ?>

@@ -44,16 +44,11 @@
     </head>
 
     <body>
+       <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
+            
             <div class="row">
                 <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="span8">
                     <div class="page-header">
                         <h2> <?php echo $userDBRow['name']; ?> </h2>
                     </div>
@@ -66,7 +61,7 @@
             </div> <!-- row -->
 
             <div class="row">
-                <div class="span8">
+                <div class="span6">
                     <div class="wrapper" style="border-right:1px dotted #ccc;">
 
                     <?php FormMessage::render(); ?>
@@ -141,7 +136,7 @@
                             </table>
 
                             <div class="form-actions">
-                                <button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button>
+                                <button class="btn btn-primary" type="submit" name="save" value="Save"><span>Submit</span></button>
                                 <a href="<?php echo $qUrl;?>">
                                     <button class="btn" type="button" name="cancel"><span>Cancel</span></button>
                                 </a>
@@ -156,11 +151,12 @@
                         </form>
                     </div> <!-- wrapper -->
                 </div>
-                <div class="span4">
+                <div class="span6">
                     <div id="my-photo">
                         <?php echo User::getPhoto($userDBRow['name'], $userDBRow['photo_url']); ?>
                     </div>
-                    <div id="image-uploader"> </div>
+                    <div class="clear mb20"> </div>
+                    <div id="image-uploader" class="mt20"> </div>
                 </div>
 
             </div> <!-- row -->
@@ -180,7 +176,7 @@
                     action: '/upload/image.php',
                     debug: false,
 
-                    labelOfButton : 'Upload Image',
+                    labelOfButton : 'Change photo',
                     allowedExtensions: ['png','gif','jpg','jpeg'],
 
                     onComplete: function(id, fileName, responseJSON) {

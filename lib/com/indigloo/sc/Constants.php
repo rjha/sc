@@ -9,7 +9,7 @@
 
             //Activity feed verbs
             const LIKE_VERB = 1 ;
-            const FAVORITE_VERB = 2 ;
+            const SAVE_VERB = 2 ;
             const FOLLOWING_VERB = 3 ;
             const COMMENT_VERB = 4 ;
             const POST_VERB = 5 ;
@@ -23,6 +23,13 @@
             //@see http://in2.php.net/strftime
             const TIME_MDYHM = "%b %e %Y, %R" ;
             const TIME_MDY = "%b %e, %Y" ;
+
+            //DB Error codes
+            const DUPKEY_ERROR_CODE = 1062 ;
+
+            //mail types
+            const RESET_PASSWORD_MAIL = 1 ;
+            const NEW_ACCOUNT_MAIL = 2 ;
 
         }
 }

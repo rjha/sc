@@ -5,7 +5,9 @@ namespace com\indigloo\sc\search {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\Configuration as Config ;
+
     use \com\indigloo\mysql as MySQL;
+   use \com\indigloo\Constants ;
 
     class SphinxQL {
 
@@ -23,6 +25,7 @@ namespace com\indigloo\sc\search {
                 trigger_error($connx->connect_error, E_USER_ERROR);
                 exit ;
             }
+            
             $this->connx = $connx ;
         }
 
@@ -38,51 +41,100 @@ namespace com\indigloo\sc\search {
             $this->connx->close();
         }
 
-        function getGroupsCount($token) {
-            $count = $this->getDocumentsCount("groups",$token);
+        // exact match of sc_post.group_slug (internal use only)
+        // used on item page (token supplied with OR operator)
+        function getPostByGroup($dbslug,$offset,$limit) {
+
+            $bucket = array();
+            /* limit for groups #1,2 and 3 */
+            
+            $limitMap = array( 0 => 8, 1 => 4 , 2 => 2);
+
+            if(!Util::tryEmpty($dbslug)) {
+
+                $slugs = explode(Constants::SPACE,$dbslug);
+                $count = 0 ;
+
+                foreach($slugs as $slug) {
+                    if(Util::tryEmpty($slug)) { continue ; }
+                    
+                    /* fetch only one post beyond group #3 */
+                    $limit = ($count <=2 ) ? $limitMap[$count] : 1 ;
+                    $ids = $this->getMatch("post_groups",$slug,$offset,$limit);
+                    
+                    // @imp order matters for array_diff
+                    // bucket should always be second argument!
+                    $unique = Util::fast_array_diff($ids,$bucket);
+                    $bucket = array_merge($bucket,$unique);
+                    
+                    $count++ ;
+                }
+            }
+
+            return $bucket;
+        }
+
+        // used on item page to find related posts via groups and title
+        // use quorum operator
+        function getRelatedPosts($line,$hits,$offset,$limit) {
+            
+            $line = $this->escape($line);
+            $ids = $this->getQuorum("posts",$line,$hits,$offset,$limit);
+            return $ids;
+        }
+
+        // used by group controller
+        // single token
+        function getPostCountByGroup($token) {
+            $token = $this->escape($token);
+            $count = $this->getMatchCount("post_groups",$token);
             return $count ;
         }
 
-        function getGroups($token,$offset,$limit) {
-            $ids = $this->getDocuments("groups",$token,$offset,$limit);
-            return $ids;
-        }
-
-        function getPagedGroups($token,$paginator) {
+        function getPagedPostByGroup($token,$paginator) {
+            $token = $this->escape($token);
             $pageNo = $paginator->getPageNo();
             $limit = $paginator->getPageSize();
             $offset = ($pageNo-1) * $limit ;
-
-            $ids = $this->getDocuments("groups",$token,$offset,$limit);
+            //use the token as it is w/o escaping the pipes
+            $ids = $this->getMatch("post_groups",$token,$offset,$limit);
             return $ids;
         }
 
+        // used by search controller
         function getPostsCount($token) {
-            $count = $this->getDocumentsCount("posts",$token);
+            $token = $this->escape($token);
+            $count = $this->getMatchCount("posts",$token);
             return $count ;
         }
 
         function getPosts($token,$offset,$limit) {
-            $ids = $this->getDocuments("posts",$token,$offset,$limit);
+            $token = $this->escape($token);
+            $ids = $this->getMatch("posts",$token,$offset,$limit);
             return $ids;
         }
 
         function getPagedPosts($token,$paginator) {
+            $token = $this->escape($token);
             $pageNo = $paginator->getPageNo();
             $limit = $paginator->getPageSize();
             $offset = ($pageNo-1) * $limit ;
 
-            $ids = $this->getDocuments("posts",$token,$offset,$limit);
+            $ids = $this->getMatch("posts",$token,$offset,$limit);
             return $ids;
         }
 
-        function getDocumentsCount($index,$token) {
+        function getGroups($token,$offset,$limit) {
+            $token = $this->escape($token);
+            $ids = $this->getMatch("groups",$token,$offset,$limit);
+            return $ids;
+        }
+
+        function getMatchCount($index,$token) {
             if(Util::tryEmpty($token)) { return 0 ; }
             Util::isEmpty('index',$index);
-            //escape token
-            $token = $this->escape($token);
-
-            $sql = " select id from %s where match('%s') order by created_on DESC limit 0,1 " ;
+            
+            $sql = " select id from %s where match('%s') limit 0,1 " ;
             $sql = sprintf($sql,$index,$token);
 
             //@imp: we need to fire dummy query
@@ -103,17 +155,14 @@ namespace com\indigloo\sc\search {
             return $count ;
         }
 
-        function getDocuments($index,$token,$offset,$limit) {
+        function getMatch($index,$token,$offset,$limit) {
             if(Util::tryEmpty($token)) { return array() ; }
             Util::isEmpty("index",$index);
-            //get paginator params
-            //escape token
-            $token = $this->escape($token);
-
-            $sql = " select id from %s where match('%s') order by created_on desc " ;
+            
+            $sql = " select id from %s where match('%s') " ;
             $sql = sprintf($sql,$index,$token);
             $sql .= sprintf(" limit %d,%d ",$offset,$limit) ;
-
+            
             $rows = MySQL\Helper::fetchRows($this->connx,$sql);
             $ids = array();
 
@@ -123,6 +172,32 @@ namespace com\indigloo\sc\search {
 
             return $ids ;
         }
+
+        /*
+         *
+         * Quorum operator needs a syntax like
+         * mysql> select id from posts where match('\"zari  patang bag\"\/2') limit 0,10;
+         * 
+         *
+         */
+        function getQuorum($index,$token,$hits,$offset,$limit) {
+            if(Util::tryEmpty($token)) { return array() ; }
+            Util::isEmpty("index",$index);
+            
+            $sql = sprintf("select id from %s where match('",$index) ;
+            $sql .= '\"'.$token.'\"\/'.$hits."')" ;
+            $sql .= sprintf(" limit %d,%d ",$offset,$limit) ;
+            
+            $rows = MySQL\Helper::fetchRows($this->connx,$sql);
+            $ids = array();
+
+            foreach($rows as $row){
+                array_push($ids,$row["id"]);
+            }
+
+            return $ids ;
+        }
+
 
     }
 

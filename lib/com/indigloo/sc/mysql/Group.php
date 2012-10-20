@@ -7,6 +7,7 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Constants as Constants ;
 
+    use \com\indigloo\sc\Constants as AppConstants ;
     use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException;
 
@@ -18,28 +19,14 @@ namespace com\indigloo\sc\mysql {
             //sanitize input
             $strIds = $mysqli->real_escape_string($strIds);
 
-            $sql = " select name,token from sc_group_master  " ;
-            $sql .= " where id in (".$strIds. ") order by id desc" ;
+            $sql = " select name,token from sc_group_master g " ;
+            $sql .= " where g.id in (".$strIds. ") " ;
+             $sql .= " ORDER BY FIELD(g.id,".$strIds. ") " ;
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
-
-
-        static function search($token,$limit) {
-
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-
-            settype($limit,"integer");
-            $token = $mysqli->real_escape_string($token);
-
-            //search on token - token has an INDEX on it
-            $sql = "select token,name from sc_group_master where token like '%s%s%s'  limit %d" ;
-            $sql = sprintf($sql,"%",$token,"%",$limit);
-            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-            return $rows;
-        }
-
+        
         static function getLatest($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -90,6 +77,9 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        // @todo fix expensive-query
+        // the count(id) query is examining all the rows (why?)
+        // innodb count(col) is doing an FTS
         static function getTotalCount($filters){
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sql = "select count(g.id) as count from sc_group_master g " ;
@@ -105,6 +95,7 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
+        //@todo fix expensive-query
         static function getRandom($limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -178,33 +169,6 @@ namespace com\indigloo\sc\mysql {
             $sql = "select count(id) as count from sc_user_group ug where ug.login_id = %d " ;
             $sql = sprintf($sql,$loginId);
 
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-        }
-
-        static function setFeatureSlug($loginId,$slug) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-
-            //sanitize input
-            settype($loginId,"integer");
-            $slug = $mysqli->real_escape_string($slug);
-
-            //operation needs admin privileges
-            //read privileges from sc_user table
-            $mikUserRow = \com\indigloo\sc\mysql\MikUser::getOnLoginId($loginId);
-            if($mikUserRow['is_admin'] != 1 ){
-                trigger_error("User does not have admin rights", E_USER_ERROR);
-            }
-
-            $sql = "update sc_feature_group set slug = '%s' where id = 1 ";
-            $sql = sprintf($sql,$slug);
-            MySQL\Helper::executeSQL($mysqli,$sql);
-
-        }
-
-        static function getFeatureSlug() {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "select slug from sc_feature_group where id = 1 " ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }

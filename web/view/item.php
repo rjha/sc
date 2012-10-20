@@ -22,6 +22,7 @@
         <meta property="og:image" content="<?php echo $itemObj->picture ?>"/>
         <meta property="og:description" content="<?php echo $itemObj->description; ?>"/>
 
+
         <script>
 
             (function() {
@@ -49,15 +50,11 @@
 
         </script>
 
+        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
+
         <div class="container mh800">
-            <div class="row">
-                <div class="span12">
-                    <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-                </div>
-
-            </div>
-
-
+            <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
+            
             <div class="row">
                 <div class="span9 wbg">
                     <div id="item-page">
@@ -79,12 +76,13 @@
 
                     ?>
                     </div>
-                    <div class="section">
+                    <div class="section1">
 
-                        <?php echo \com\indigloo\sc\html\Post::getMoreLinks($postView,$siteDBRow); ?>
+                        <?php echo \com\indigloo\sc\html\Post::getSitePanel($siteMetaRow,$sitePostRows); ?>
+                        
                         <div class="mt20">
                             <blockquote>
-                                 <span class="faded-text"> Related items</span>
+                                 <span class="faded-text">Related items</span>
                             </blockquote>
 
 
@@ -101,8 +99,10 @@
 
                 </div>
                 <div class="span3 wbg">
-
+                    
+                    <?php echo \com\indigloo\sc\html\Post::getUserPanel($postView,$loginIdInSession); ?>
                     <?php echo \com\indigloo\sc\html\Post::getGroups($postView); ?>
+
 
                     <div class="section" style="overflow:visible">
                         <div class="fb-like pb10" data-href="<?php echo $itemObj->netLink;?>" data-send="false" data-layout="button_count" data-width="225" data-show-faces="false">
@@ -115,13 +115,13 @@
                         <div class="g-plusone" data-size="tall" data-href="<?php echo $itemObj->netLink;?>" data-annotation="none" data-width="200"></div>
 
                     </div>
+                   
 
 
                 </div>
 
 
             </div>
-
 
         </div> <!-- container -->
 
@@ -137,10 +137,13 @@
                 $("a.gallery").fancybox();
 
                 var $container = $('#tiles');
+
                 $container.imagesLoaded(function(){
-                    $container.masonry({
-                        itemSelector : '.stamp'
+                    $container.isotope({
+                        itemSelector : '.stamp',
+                        layoutMode : 'masonry'
                     });
+
                 });
 
                 $("#web-form1").validate({
