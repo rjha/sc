@@ -7441,26 +7441,24 @@ button::-moz-focus-inner {
 
     #top-unit {
         padding:40px 25px 20px 25px;
-        background-color: #F9EDBE ;
+        background-color: #FEFFC5 ;
         margin-top:-10px;
         border-radius: 5px;
         margin-bottom:15px;
     }
 
     #top-unit a {
-        color:#FCF9F9 ;
-        background : #E64D5C;
+        color:white ;
+        background : #FF555D;
         font-weight:bold ;
-        font-size:15px;
         font-family: arial,sans-serif ;
     }
 
     #top-unit .btn {
         text-shadow : none ;
-        line-height: 22px;
-        border: #910101 ;
         padding-left:19px;
         padding-right:19px;
+        border-radius: 0px;
     }
 
 
