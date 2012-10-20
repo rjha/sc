@@ -9,12 +9,12 @@
         $files = array();
         $files[] = "jquery/jquery-1.8.2.js" ;
         $files[] = "jquery/jquery.ajaxQueue.js" ;
-        $files[] = "jquery/jquery.validate.1.9.0.js" ;
+        $files[] = "jquery/jquery.validate.1.10.0.js" ;
         $files[] = "jquery/isotope/jquery.isotope.js" ;
         $files[] = "jquery/infinite/jquery.infinitescroll.hacked.js" ;
         $files[] = "bootstrap/2.1.1/js/bootstrap.js" ;
         $files[] = "ful/2.1.1/fileuploader.js" ;
-        $files[] = "fancybox/jquery.fancybox-1.3.4.js" ;
+        $files[] = "fancybox/2.1.2/jquery.fancybox.js" ;
 
         $scfiles = array();
         $scfiles[] = "js/sc.js" ;
@@ -46,7 +46,7 @@
         //list of 3p files to concatenate
         $files = array();
         $files[] = "bootstrap/2.1.1/css/bootstrap.css" ;
-        $files[] = "fancybox/jquery.fancybox-1.3.4.css";
+        $files[] = "fancybox/2.1.2/jquery.fancybox.css";
         $files[] = "zocial/css/zocial.css";
         $files[] = "ful/2.1.1/fileuploader.css" ;
 
