@@ -27,7 +27,7 @@
 
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
-
+        
         <script>
             $(document).ready(function(){
                  webgloo.sc.admin.addSlugPanelEvents();
@@ -74,7 +74,7 @@
                                 
                                 <input type="hidden" name="q" value="<?php echo Url::current(); ?>" />
                                 <div class="p10">
-                                    <button class="btn gBtnUp b" type="submit" name="save" value="Save"><span>Update</span></button>
+                                    <button class="btn b" type="submit" name="save" value="Save"><span>Update</span></button>
                                  
                                 </div>
                             </form>

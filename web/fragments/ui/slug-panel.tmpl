@@ -1,7 +1,10 @@
- <div id="slug-panel" class="mt20">
-    
-    <a href="" class="badge" id="check-all-items">check all</a>
-    &nbsp;&nbsp; <a class="badge" href="" id="uncheck-all-items">uncheck all</a>
+<div id="page-action" class="mt20 p5">
+    <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" checked/>
+    <span class="label">&nbsp;select&nbsp;/&nbsp;unselect&nbsp;</span>
+</div>
+
+ <div id="slug-panel">
+  
     <table class="table table-striped">
         <thead>
             <tr>
@@ -11,6 +14,7 @@
             </tr>
         </thead>
         <tbody>
+            
             ~for($i = 0 ; ($i < $view->total) ; $i++) {~
             <tr>
                 <td>

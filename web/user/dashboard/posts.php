@@ -83,34 +83,35 @@
                     
                     
                     <div class="row">
-                        <div class="section4">
+                        <div id="page-action" class="section4">
                             <div class="span1">
-                                <input type="checkbox" id="check-all" name="check_all" value="" />
+                                <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
                             </div>
                             <div class="span7">
-                                <a href="#" class="b btn btn-small">Add to list</a>
+                                <a id="add-to-list" href="#" class="b btn btn-small">Add to list</a>
                                 &nbsp;&nbsp;
-                                <a href="#" class="b btn btn-small">Delete</a>
+                                <a id="item-delete" href="#" class="b btn btn-small">Delete</a>
                             </div>
                         </div>
                     </div>
-                    
-                    <?php
-                        $startId = NULL;
-                        $endId = NULL;
-                        if (sizeof($postDBRows) > 0) {
-                            $startId = $postDBRows[0]['id'];
-                            $endId = $postDBRows[sizeof($postDBRows) - 1]['id'];
-                            foreach ($postDBRows as $postDBRow) {
-                                echo \com\indigloo\sc\html\Post::getWidget($postDBRow);
+                    <div id="widgets">
+                        <?php
+                            $startId = NULL;
+                            $endId = NULL;
+                            if (sizeof($postDBRows) > 0) {
+                                $startId = $postDBRows[0]['id'];
+                                $endId = $postDBRows[sizeof($postDBRows) - 1]['id'];
+                                foreach ($postDBRows as $postDBRow) {
+                                    echo \com\indigloo\sc\html\Post::getWidget($postDBRow);
+                                }
+                            } else {
+                                $message = "No posts found " ;
+                               echo \com\indigloo\sc\html\Site::getNoResult($message);
                             }
-                        } else {
-                            $message = "No posts found " ;
-                           echo \com\indigloo\sc\html\Site::getNoResult($message);
-                        }
 
-                    ?>
-                    
+                        ?>
+                    </div>
+
                 </div>
                
             </div>
@@ -119,10 +120,13 @@
         <?php $paginator->render('/user/dashboard/posts.php', $startId, $endId); ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+        <script src="/js/sc.js" type="text/javascript"> </script>
 
         <script>
             $(document).ready(function(){
-                 webgloo.sc.toolbar.add();
+                webgloo.sc.toolbar.add();
+                webgloo.sc.dashboard.init();
+                
             });
 
         </script>
