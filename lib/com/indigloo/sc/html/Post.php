@@ -257,7 +257,7 @@ namespace com\indigloo\sc\html {
         static function getWidget($postDBRow,$options=NULL) {
 
             $html = NULL ;
-            $voptions = array("abbreviate" => true);
+            $voptions = array("abbreviate" => true, "group" => true);
             $view = self::createPostView($postDBRow,$voptions);
 
             if($view->hasImage) {
@@ -281,7 +281,7 @@ namespace com\indigloo\sc\html {
             $params = array('id' => $view->itemId, 'q' => urlencode(Url::current()));
             $view->editUrl = Url::createUrl('/qa/edit.php',$params);
             $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
-
+            
             $html = Template::render($template,$view);
             return $html ;
 
@@ -409,7 +409,7 @@ namespace com\indigloo\sc\html {
             if($options["group"] === true) {
                 $group_slug = $row['group_slug'];
                 $groups = array();
-
+                
                 if(!is_null($group_slug) && (strlen($group_slug) > 0)) {
                     $slugs = explode(Constants::SPACE,$group_slug);
                     $display = NULL ;
