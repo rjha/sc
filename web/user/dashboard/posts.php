@@ -69,6 +69,7 @@
                 <div class="span12">
                     <div class="page-header">
                         <h2>My items</h2>
+                        
                     </div>
                 </div>
             </div>
@@ -80,11 +81,20 @@
 
                 <div class="span8 mh600">
                     
-                    <div class="faded-text mb20">
-                        All your items are shown here. Do mouse over an item to get 
-                        edit and remove links.
+                    
+                    <div class="row">
+                        <div class="section4">
+                            <div class="span1">
+                                <input type="checkbox" id="check-all" name="check_all" value="" />
+                            </div>
+                            <div class="span7">
+                                <a href="#" class="b btn btn-small">Add to list</a>
+                                &nbsp;&nbsp;
+                                <a href="#" class="b btn btn-small">Delete</a>
+                            </div>
+                        </div>
                     </div>
-                     
+                    
                     <?php
                         $startId = NULL;
                         $endId = NULL;
@@ -112,19 +122,6 @@
 
         <script>
             $(document).ready(function(){
-                //show options on widget hover
-                
-                $('.widget').mouseenter(function() {
-                    $(this).find('.options').css("visibility", "visible");
-                    /* @todo move colors to a css style */
-                    $(this).css("background-color", "#FEFDF1");
-                });
-
-                $('.widget').mouseleave(function() {
-                    $(this).find('.options').css("visibility", "hidden");
-                    $(this).css("background-color", "#FFFFFF");
-                });
-
                  webgloo.sc.toolbar.add();
             });
 
