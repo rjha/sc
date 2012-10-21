@@ -1,17 +1,32 @@
+ <div id="slug-panel" class="mt20">
+    
+    <a href="" class="badge" id="check-all-items">check all</a>
+    &nbsp;&nbsp; <a class="badge" href="" id="uncheck-all-items">uncheck all</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+              <th>Groups</th>
+            </tr>
+        </thead>
+        <tbody>
+            ~for($i = 0 ; ($i < $view->total) ; $i++) {~
+            <tr>
+                <td>
+                    <input type="checkbox" name="g[]" value="~~$view->records[$i]['slug']~" ~~$view->records[$i]['checked']~  />
+                </td>
+                <td>
+                    <?php echo $i+1 ; ?> 
+                </td>
+                <td>
+                    <span class="comment-text">~~$view->records[$i]['name']~</span>
+                </td>
 
-<div id="slug-panel">
-    &nbsp;
-    <div class="clear"> </div>
+            </tr>
+            ~}~
+        </tbody>
 
-    <label class="label label-warning">Total &nbsp;~~$view->total~ </label> 
-    <br> <br>
-        
-    ~for($i = 0 ; ($i < $view->total) ; $i++) {~
-        <div class="item">
-             <input type="checkbox" name="g[]" value="~~$view->records[$i]['slug']~" ~~$view->records[$i]['checked']~  />&nbsp;<span class="comment-text">~~$view->records[$i]['name']~</span>
-         </div>
-
-    ~}~
+    </table>
+    
 </div> <!-- slug panel -->
-
-<div class="clear"> </div>

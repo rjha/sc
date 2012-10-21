@@ -19039,13 +19039,14 @@ webgloo.sc.admin = {
         for (var i = 0; i < tokens.length; i++) {
            var token = jQuery.trim(tokens[i]);
            if(token == '') continue ;
-           var buffer = '<div class="item">' + 
-                        ' <input type="checkbox" name="g[]" checked ="checked" value="' 
-                        + token + '"/> <span class="comment-text">' 
+           var buffer = '<tr>' + 
+                        ' <td> <input type="checkbox" name="g[]" checked ="checked" value="' 
+                        + token + '"/> </td> ' 
+                        +'<td> &dash;</td> <td> <span class="comment-text">' 
                         + token 
-                        + '</span> </div>';
+                        + '</span> </td> </tr>';
 
-            $("#slug-panel").prepend(buffer);
+            $("#slug-panel table").prepend(buffer);
             $("#new-item-box").val('');
         }
 
