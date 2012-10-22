@@ -1,0 +1,78 @@
+
+<style>
+
+#lists {
+    list-style: none;
+    padding-left:20px;
+    padding-right:0px;
+    padding-top:5px;
+    padding-bottom:5px;
+    margin: 0;
+    width:96%;
+    height:160px;
+    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
+
+
+}
+
+#list-container {
+    border-radius: 8px;
+    background-color: #f7f7f7 ;
+    background-color: #eee ;
+
+}
+
+#lists li {
+    padding-bottom: 5px;
+    padding-left:5px;
+    border-radius: 4px;
+}
+#lists li:hover {
+    background-color: #ccc ;
+    background-color: #999 ;
+}
+
+#lists li a {
+    display: block;
+    color: #222;
+    font-weight:bold ;
+}
+
+#lists li a:hover {
+    color: white;
+    font-weight:bold ;
+}
+
+#list-form-wrapper {
+    padding-top:10px;
+    padding-bottom: 10px;
+}
+
+#list-form-wrapper input {
+    width:75%;
+}
+
+
+</style>
+
+<div>
+    <h5> Add to list </h5>
+    <div id="list-container">
+        <ul id="lists">
+        ~foreach($view->list as $item){~
+            <li><a href="#"> ~~$item~ </a></li>
+        ~}~
+        </ul>
+    </div>
+    <div id="list-form-wrapper">
+        <form  id="list-form1"  name="list-form1" action="/user/action/list/new.php"   method="POST">
+            
+            <input class="faded-text" id="new-list-name" name="new-list-name" type="textbox" value="Enter new list name ..." />
+            &nbsp;&nbsp;
+             <button id="new-list-create" class="btn" type="submit" name="create" value="Create">Create</button>
+        </form>
+    </div>
+
+</div>

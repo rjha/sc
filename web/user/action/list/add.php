@@ -1,5 +1,5 @@
 <?php
-    header('Content-type: application/json');
+    
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
 
@@ -17,14 +17,20 @@
     }
 
     $items = Util::getArrayKey($_POST, "items");
-    $itemIds = json_decode($items);
-    $message = "" ;
-    foreach($itemIds as $itemId) {
-        $message = $message. "|".$itemId ;
-    }
 
-    $html = array("code" => 200 , "message" => $message);
-    $html = json_encode($html);
-    echo $html;
-    exit ;
+    // lists
+    $list = array(
+        0 => "reshma ki jawani", 
+        1 => "aaya toofan bhaga shaitan",
+        2 => "This is going to be a very (unreasonably long list name - that normal people do not see",
+        3 => "My Favorites",
+        4 => "Gabbar ki Mohabbat",
+        5 => "shaitaan ki suhaagrat",
+        6 => "Do jism ek Jaan",
+        7 => "Andheri raat ka saathi",
+        8 => "Pyaas bhujti nahin hai");
+
+    $html = \com\indigloo\sc\html\Site::renderList($list);
+    echo $html ;
+
 ?>

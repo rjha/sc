@@ -19030,6 +19030,46 @@ webgloo.sc.item = {
     }
 }
 
+webgloo.sc.dashboard = {
+
+    init : function() {
+
+        $('input:checkbox[id=page-checkbox]').click(function(event) {
+            //@imp donot event.preventDefault();
+            var checkBoxes =  $("#widgets").find("input:checkbox");
+            var state =  $('input:checkbox[id=page-checkbox]').prop("checked");
+            checkBoxes.prop("checked", state);
+            
+        });
+
+        $("#add-to-list").click(function(event) {
+            
+            var checkBoxes =  $("#widgets").find("input:checkbox");
+            var isChecked ;
+            var itemIds = [] ;
+
+            checkBoxes.each(function(i) {
+                isChecked = $(this).prop("checked");
+                if(isChecked) {
+                    itemIds.push($(this).attr('id'));
+                }
+            
+            }) ;
+
+            var dataObj = {} ;
+            dataObj.params = {} ;
+            dataObj.params.items = JSON.stringify(itemIds) ;
+            dataObj.endPoint = "/user/action/list/add.php";
+
+            //open popup
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.post(dataObj, {"dataType":"text", "reload" : false });
+            
+        }) ;
+
+    }
+}
+
 webgloo.sc.admin = {
 
     addSlugPanelItems : function (itemInBox) {
@@ -19081,14 +19121,12 @@ webgloo.sc.admin = {
 
         });
 
-        $("a#uncheck-all-items").click(function(event) {
-            event.preventDefault();
-            $("#slug-panel").find(":checkbox").removeAttr("checked");
-        });
-
-        $("a#check-all-items").click(function(event) {
-            event.preventDefault();
-            $("#slug-panel").find(":checkbox").attr("checked","checked");
+        $('input:checkbox[id=page-checkbox]').click(function(event) {
+            //@imp donot event.preventDefault();
+            var checkBoxes =  $("#slug-panel").find("input:checkbox");
+            var state =  $('input:checkbox[id=page-checkbox]').prop("checked");
+            checkBoxes.prop("checked", state);
+            
         });
 
     }

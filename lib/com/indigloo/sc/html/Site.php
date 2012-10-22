@@ -76,6 +76,14 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
+        static function renderList($list) {
+            $view = new \stdClass;
+            $view->list = $list ;
+            $template = "/fragments/ui/list.tmpl" ;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
         static function getBookmarkTable($rows) {
             
             for($i = 0 ; $i < count($rows); $i++) {

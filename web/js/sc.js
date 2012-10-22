@@ -621,7 +621,7 @@ webgloo.sc.dashboard = {
 
             //open popup
             webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(dataObj, {"dataType":"json", "reload" : false });
+            webgloo.sc.SimplePopup.post(dataObj, {"dataType":"text", "reload" : false });
             
         }) ;
 
