@@ -10,6 +10,7 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login ;
     use \com\indigloo\Util as Util ;
+    use \com\indigloo\Logger ; 
  
     function check_image_name($name) {
 
@@ -45,22 +46,23 @@
     if(strcasecmp($typeOfNode, "development") == 0) {
         $prefix = 'test/'.$prefix ;
     }
-        
-    if (isset($_GET["qqfile"])) {
-        $name = $_GET["qqfile"];
-        check_image_name($name);
 
-        $pipe = new \com\indigloo\media\XhrPipe();
-        $uploader = new com\indigloo\media\ImageUpload($pipe);
-        $uploader->process($prefix,$_GET["qqfile"]);
-        
-    } elseif (isset($_FILES["qqfile"])) {
+    if (!empty($_FILES) && isset($_FILES["qqfile"])) {
         $name = $_FILES["qqfile"]["name"] ;
         check_image_name($name);
 
         $pipe = new \com\indigloo\media\FormPipe();
         $uploader = new com\indigloo\media\ImageUpload($pipe);
         $uploader->process($prefix,"qqfile");
+        
+        
+    } elseif (isset($_GET["qqfile"])) {
+        $name = $_GET["qqfile"];
+        check_image_name($name);
+
+        $pipe = new \com\indigloo\media\XhrPipe();
+        $uploader = new com\indigloo\media\ImageUpload($pipe);
+        $uploader->process($prefix,$_GET["qqfile"]);
         
     } elseif(isset($_POST["qqUrl"])) {
 
