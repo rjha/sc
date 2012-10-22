@@ -88,7 +88,7 @@
                                 <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
                             </div>
                             <div class="span7">
-                                <a id="add-to-list" href="#" class="b btn btn-small">Add to list</a>
+                                <a id="open-list-popup" href="#" class="b btn btn-small">Add to list</a>
                                 &nbsp;&nbsp;
                                 <a id="item-delete" href="#" class="b btn btn-small">Delete</a>
                             </div>

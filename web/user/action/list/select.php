@@ -16,7 +16,7 @@
         exit;
     }
 
-    $items = Util::getArrayKey($_POST, "items");
+    $strItems = Util::getArrayKey($_POST, "items");
 
     // lists
     $list = array(
@@ -30,7 +30,7 @@
         7 => "Andheri raat ka saathi",
         8 => "Pyaas bhujti nahin hai");
 
-    $html = \com\indigloo\sc\html\Site::renderList($list);
+    $html = \com\indigloo\sc\html\Site::renderList($list,$strItems);
     echo $html ;
 
 ?>

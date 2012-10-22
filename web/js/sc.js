@@ -600,7 +600,7 @@ webgloo.sc.dashboard = {
             
         });
 
-        $("#add-to-list").click(function(event) {
+        $("a#open-list-popup").click(function(event) {
             
             var checkBoxes =  $("#widgets").find("input:checkbox");
             var isChecked ;
@@ -617,12 +617,23 @@ webgloo.sc.dashboard = {
             var dataObj = {} ;
             dataObj.params = {} ;
             dataObj.params.items = JSON.stringify(itemIds) ;
-            dataObj.endPoint = "/user/action/list/add.php";
+            dataObj.endPoint = "/user/action/list/select.php";
 
             //open popup
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.post(dataObj, {"dataType":"text", "reload" : false });
             
+        }) ;
+
+        $("#lists li a").live("click", function(event){
+            console.log("clicked select-list");
+            var listId = $(this).attr("id");
+            //populate form and submit
+            frm = document.forms["list-form1"];
+            frm.list_id.value = listId;
+            frm.is_new.value = 0 ;
+            $('#list-form1').submit();
+
         }) ;
 
     }

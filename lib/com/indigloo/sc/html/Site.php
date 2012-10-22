@@ -76,9 +76,10 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        static function renderList($list) {
+        static function renderList($list,$strItems) {
             $view = new \stdClass;
             $view->list = $list ;
+            $view->strItems = $strItems ;
             $template = "/fragments/ui/list.tmpl" ;
             $html = Template::render($template,$view);
             return $html ;

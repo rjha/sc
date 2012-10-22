@@ -3,12 +3,12 @@
 
 #lists {
     list-style: none;
-    padding-left:20px;
+    padding-left:10px;
     padding-right:0px;
     padding-top:5px;
     padding-bottom:5px;
     margin: 0;
-    width:96%;
+    width:98%;
     height:160px;
     overflow: auto;
     overflow-x: auto;
@@ -35,7 +35,6 @@
 }
 
 #lists li a {
-    display: block;
     color: #222;
     font-weight:bold ;
 }
@@ -61,17 +60,19 @@
     <h5> Add to list </h5>
     <div id="list-container">
         <ul id="lists">
-        ~foreach($view->list as $item){~
-            <li><a href="#"> ~~$item~ </a></li>
+        ~foreach($view->list as $id => $name){~
+            <li><a id="~~$id~" class="select-list" href="#">~~$name~</a></li>
         ~}~
         </ul>
     </div>
     <div id="list-form-wrapper">
-        <form  id="list-form1"  name="list-form1" action="/user/action/list/new.php"   method="POST">
-            
+        <form  id="list-form1"  name="list-form1" action="/user/action/list/update.php"   method="POST">
             <input class="faded-text" id="new-list-name" name="new-list-name" type="textbox" value="Enter new list name ..." />
             &nbsp;&nbsp;
-             <button id="new-list-create" class="btn" type="submit" name="create" value="Create">Create</button>
+            <button type="submit" class="btn" name="create" value="Create">Create</button>
+            <input type="hidden" name="items_json" value='~~$view->strItems~' />
+            <input type="hidden" name="list_id" value="" />
+            <input type="hidden" name="is_new" value="1" />
         </form>
     </div>
 
