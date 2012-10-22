@@ -47,6 +47,11 @@
         $prefix = 'test/'.$prefix ;
     }
 
+    // valums file uploader sends a GET parameter - qqfile for normal
+    // (multipart) file upload as well. Hence the check against FILE
+    // should be the first one to decide the transport.
+    // @see https://github.com/valums/file-uploader/issues/352
+    
     if (!empty($_FILES) && isset($_FILES["qqfile"])) {
         $name = $_FILES["qqfile"]["name"] ;
         check_image_name($name);
