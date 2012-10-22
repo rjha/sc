@@ -8,7 +8,9 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login;
-
+    
+    use \com\indigloo\Constants as Constants;
+    use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\ui\Filter as Filter;
 
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
@@ -81,7 +83,7 @@
 
                 <div class="span8 mh600">
                     
-                    
+                    <?php FormMessage::render(); ?>
                     <div class="row">
                         <div id="page-action" class="section4">
                             <div class="span1">

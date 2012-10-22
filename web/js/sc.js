@@ -617,6 +617,7 @@ webgloo.sc.dashboard = {
             var dataObj = {} ;
             dataObj.params = {} ;
             dataObj.params.items = JSON.stringify(itemIds) ;
+            dataObj.params.qUrl = encodeBase64(window.location.href) ;
             dataObj.endPoint = "/user/action/list/select.php";
 
             //open popup
@@ -626,7 +627,6 @@ webgloo.sc.dashboard = {
         }) ;
 
         $("#lists li a").live("click", function(event){
-            console.log("clicked select-list");
             var listId = $(this).attr("id");
             //populate form and submit
             frm = document.forms["list-form1"];

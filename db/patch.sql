@@ -1609,6 +1609,27 @@ CREATE TRIGGER trg_mik_user_cp  BEFORE INSERT ON sc_user
 DELIMITER ;
 
 
+DROP TABLE IF EXISTS  sc_list ;
+CREATE TABLE  sc_list  (
+   id  int NOT NULL AUTO_INCREMENT,
+   login_id  int NOT NULL,
+   name varchar(32) NOT NULL,
+   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
+DROP TABLE IF EXISTS  sc_list_item ;
+CREATE TABLE  sc_list_item  (
+   id  int NOT NULL AUTO_INCREMENT,
+   list_id  int NOT NULL,
+   item_id int not null ,
+   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
+
 
 --
 -- indexes

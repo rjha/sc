@@ -2,13 +2,14 @@
 
 namespace com\indigloo\sc\html {
 
-    use com\indigloo\Template as Template;
+    use \com\indigloo\Template as Template;
     use \com\indigloo\Constants as Constants ;
-    use com\indigloo\Util as Util ;
-
+    use \com\indigloo\Util as Util ;
+    
     use \com\indigloo\util\StringUtil as StringUtil ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\Constants as AppConstants ;
+    
     use \com\indigloo\sc\ui\Constants as UIConstants ;
 
     class Site {
@@ -76,10 +77,11 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        static function renderList($list,$strItems) {
+        static function renderList($list,$strItems,$qUrl) {
             $view = new \stdClass;
             $view->list = $list ;
             $view->strItems = $strItems ;
+            $view->qUrl = $qUrl;
             $template = "/fragments/ui/list.tmpl" ;
             $html = Template::render($template,$view);
             return $html ;
