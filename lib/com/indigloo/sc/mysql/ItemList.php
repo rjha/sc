@@ -11,6 +11,19 @@ namespace com\indigloo\sc\mysql {
 
     class ItemList {
 
+        static function get($loginId) {
+            
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            settype($loginId,"int");
+            $sql = " select id,name from sc_list where login_id = %d " ;
+            $sql = sprintf($sql,$loginId);
+
+            $rows = MySQL\Helper::fetchRows($mysqli,$sql);
+            return $rows ;
+
+        }
+
         static function create($loginId,$name,$itemIds) {
             try {
 

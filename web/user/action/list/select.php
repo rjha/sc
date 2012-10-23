@@ -18,20 +18,11 @@
 
     $strItems = Util::getArrayKey($_POST, "items");
     $qUrl = Util::getArrayKey($_POST, "qUrl");
+    $listDao = new \com\indigloo\sc\dao\ItemList();
+    $loginId = Login::getLoginIdInSession();
+    $listRows = $listDao->get($loginId);
 
-    // lists
-    $list = array(
-        0 => "reshma ki jawani", 
-        1 => "aaya toofan bhaga shaitan",
-        2 => "This is going to be a very (unreasonably long list name - that normal people do not see",
-        3 => "My Favorites",
-        4 => "Gabbar ki Mohabbat",
-        5 => "shaitaan ki suhaagrat",
-        6 => "Do jism ek Jaan",
-        7 => "Andheri raat ka saathi",
-        8 => "Pyaas bhujti nahin hai");
-
-    $html = \com\indigloo\sc\html\Site::renderList($list,$strItems,$qUrl);
+    $html = \com\indigloo\sc\html\Site::renderList($listRows,$strItems,$qUrl);
     echo $html ;
 
 ?>

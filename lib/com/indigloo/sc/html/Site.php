@@ -77,9 +77,13 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        static function renderList($list,$strItems,$qUrl) {
+        static function renderList($listRows,$strItems,$qUrl) {
             $view = new \stdClass;
-            $view->list = $list ;
+            $view->lists = array();
+            foreach($listRows as $row) {
+                $view->lists[$row['id']] = $row['name'] ;
+            }
+            
             $view->strItems = $strItems ;
             $view->qUrl = $qUrl;
             $template = "/fragments/ui/list.tmpl" ;

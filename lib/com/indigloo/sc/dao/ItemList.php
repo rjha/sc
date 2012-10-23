@@ -8,6 +8,11 @@ namespace com\indigloo\sc\dao {
 
     class ItemList {
 
+        function get($loginId) {
+            $rows = mysql\ItemList::get($loginId);
+            return $rows ;
+        }
+
         function create($loginId,$name,$items) {
             $itemIds = array();
             foreach($items as $item) {
