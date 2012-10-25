@@ -970,7 +970,8 @@
     #popup-mask {
         position:absolute;
         z-index:900;
-        background-color:#F7F7F7;
+        /* background-color:#F7F7F7; */
+        background: url(/css/asset/fancybox/2.1.2/fancybox_overlay.png);
         display:none;
         top : 0px;
         left:0px;
