@@ -9,7 +9,7 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\exception\DBException;
 
 
-    class ItemList {
+    class Lists {
 
         static function get($loginId) {
             
@@ -24,12 +24,12 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function create($loginId,$name,$itemIds) {
+        static function create($loginId,$name,$hash, $bin_hash, $itemIds) {
             try {
 
                 //list
-                $sql1 = "insert into sc_list (login_id,name,created_on) " ;
-                $sql1 .= " values (:login_id,:name, now()) " ;
+                $sql1 = "insert into sc_list (login_id,name, md5_name, bin_md5_name, created_on) " ;
+                $sql1 .= " values (:login_id,:name, :hash, :binhash, now()) " ;
                 $flag = true ;
 
                 $dbh =  PDOWrapper::getHandle();
@@ -39,6 +39,8 @@ namespace com\indigloo\sc\mysql {
                 $stmt = $dbh->prepare($sql1);
                 $stmt->bindParam(":login_id", $loginId);
                 $stmt->bindParam(":name", $name);
+                $stmt->bindParam(":hash", $hash);
+                $stmt->bindParam(":binhash", $bin_hash);
                 
                 $flag = $stmt->execute();
 

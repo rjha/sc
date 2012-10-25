@@ -614,15 +614,24 @@ webgloo.sc.dashboard = {
             
             }) ;
 
-            var dataObj = {} ;
-            dataObj.params = {} ;
-            dataObj.params.items = JSON.stringify(itemIds) ;
-            dataObj.params.qUrl = encodeBase64(window.location.href) ;
-            dataObj.endPoint = "/user/action/list/select.php";
+            if(itemIds.length > 0 ) {
+                var dataObj = {} ;
+                dataObj.params = {} ;
+                dataObj.params.items = JSON.stringify(itemIds) ;
+                dataObj.params.qUrl = encodeBase64(window.location.href) ;
+                dataObj.endPoint = "/user/popup/list/select.php";
 
-            //open popup
-            webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(dataObj, {"dataType":"text", "reload" : false });
+                //open popup
+                webgloo.sc.SimplePopup.init();
+                webgloo.sc.SimplePopup.post(dataObj, {"dataType":"text", "reload" : false });
+
+
+            } else {
+                var message = "You have not selected any item! Please select an item.";
+                webgloo.sc.SimplePopup.init();
+                webgloo.sc.SimplePopup.show(message);
+            }
+
             
         }) ;
 

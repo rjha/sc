@@ -1,0 +1,31 @@
+
+<style>
+
+#list-form-wrapper {
+    padding-top:10px;
+    padding-bottom: 10px;
+}
+
+#list-form-wrapper input {
+    width:75%;
+}
+
+
+</style>
+
+<div>
+    <h5> Add to list </h5>
+   
+    <div id="list-form-wrapper">
+        <form  id="list-form1"  name="list-form1" action="/user/action/list/update.php"   method="POST">
+            <input class="faded-text" id="new-list-name" name="new-list-name" type="textbox" value="Enter new list name ..." />
+            &nbsp;&nbsp;
+            <button type="submit" class="btn" name="create" value="Create"><span>Create</span></button>
+            <input type="hidden" name="items_json" value='~~$view->strItems~' />
+            <input type="hidden" name="list_id" value="" />
+            <input type="hidden" name="is_new" value="1" />
+            <input type="hidden" name="qUrl" value="~~$view->qUrl~" />
+        </form>
+    </div>
+
+</div>

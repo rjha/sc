@@ -18,11 +18,11 @@
 
     $strItems = Util::getArrayKey($_POST, "items");
     $qUrl = Util::getArrayKey($_POST, "qUrl");
-    $listDao = new \com\indigloo\sc\dao\ItemList();
+    $listDao = new \com\indigloo\sc\dao\Lists();
     $loginId = Login::getLoginIdInSession();
     $listRows = $listDao->get($loginId);
 
-    $html = \com\indigloo\sc\html\Site::renderList($listRows,$strItems,$qUrl);
+    $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$strItems,$qUrl);
     echo $html ;
 
 ?>

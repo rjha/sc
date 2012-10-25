@@ -19042,7 +19042,7 @@ webgloo.sc.dashboard = {
             
         });
 
-        $("#add-to-list").click(function(event) {
+        $("a#open-list-popup").click(function(event) {
             
             var checkBoxes =  $("#widgets").find("input:checkbox");
             var isChecked ;
@@ -19056,15 +19056,35 @@ webgloo.sc.dashboard = {
             
             }) ;
 
-            var dataObj = {} ;
-            dataObj.params = {} ;
-            dataObj.params.items = JSON.stringify(itemIds) ;
-            dataObj.endPoint = "/user/action/list/add.php";
+            if(itemIds.length > 0 ) {
+                var dataObj = {} ;
+                dataObj.params = {} ;
+                dataObj.params.items = JSON.stringify(itemIds) ;
+                dataObj.params.qUrl = encodeBase64(window.location.href) ;
+                dataObj.endPoint = "/user/popup/list/select.php";
 
-            //open popup
-            webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(dataObj, {"dataType":"text", "reload" : false });
+                //open popup
+                webgloo.sc.SimplePopup.init();
+                webgloo.sc.SimplePopup.post(dataObj, {"dataType":"text", "reload" : false });
+
+
+            } else {
+                var message = "You have not selected any item! Please select an item.";
+                webgloo.sc.SimplePopup.init();
+                webgloo.sc.SimplePopup.show(message);
+            }
+
             
+        }) ;
+
+        $("#lists li a").live("click", function(event){
+            var listId = $(this).attr("id");
+            //populate form and submit
+            frm = document.forms["list-form1"];
+            frm.list_id.value = listId;
+            frm.is_new.value = 0 ;
+            $('#list-form1').submit();
+
         }) ;
 
     }

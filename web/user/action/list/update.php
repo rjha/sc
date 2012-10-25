@@ -41,7 +41,7 @@
         // null, empty, spaces and bad values convert to 0
         $strItems = $fvalues["items_json"];
         $items = json_decode($strItems);
-        $listDao = new \com\indigloo\sc\dao\ItemList();
+        $listDao = new \com\indigloo\sc\dao\Lists();
 
         if( ($flag == 1) && empty($listId)) {
             //Add to new list 
@@ -62,6 +62,11 @@
     }catch(UIException $ex) {
         $gWeb->store(Constants::STICKY_MAP, $fvalues);
         $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
+        header("Location: " . $qUrl);
+        exit(1);
+    }catch(\Exception $ex) {
+        $gWeb->store(Constants::STICKY_MAP, $fvalues);
+        $gWeb->store(Constants::FORM_ERRORS, array($ex->getMessage()));
         header("Location: " . $qUrl);
         exit(1);
     }

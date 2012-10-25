@@ -1613,10 +1613,15 @@ DROP TABLE IF EXISTS  sc_list ;
 CREATE TABLE  sc_list  (
    id  int NOT NULL AUTO_INCREMENT,
    login_id  int NOT NULL,
-   name varchar(32) NOT NULL,
+   name varchar(64) NOT NULL,
+   md5_name varchar(32) NOT NULL,
+   bin_md5_name BINARY(16) not null,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
+alter table sc_list add constraint unique uniq_name(login_id,bin_md5_name);
 
 
 DROP TABLE IF EXISTS  sc_list_item ;
