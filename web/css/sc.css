@@ -632,11 +632,9 @@
 
     .section4 {
         min-height: 20px;
-        padding:20px 0px 20px 0px;
-        margin-bottom:10px;
-        margin-top:10px;
-        border-bottom: 1px solid #eee;
-        background-color: #FAFAFA;
+        padding:15px 0px 15px 0px;
+        background-color : #f7f7f7 ;
+        border-radius:8px;
     }
 
 
@@ -1110,16 +1108,69 @@
 
     .flickr-color { color : #FE63BB;}
 
-    /* bootstrap accordion image for site help */
+    /* list stuff */
+    
+    #list-container {
+        padding-top :20px; 
+        padding-left :40px;
+        border-bottom: 2px solid #F8D575 ;
 
-    .accordion-inner img {
-        border:1px solid #ddd ;
-        padding:8px;
-        background: #eee ;
-        box-shadow: 0 1px 7px rgba(34, 25, 25, 0.4);
     }
 
-    /* last section - override 3rd party libraries */
+    #lists {
+        list-style: none;
+        padding-left:10px;
+        padding-right:0px;
+        padding-top:5px;
+        padding-bottom:5px;
+        margin: 0;
+    }
+
+    #list-wrapper {
+        border-radius: 8px;
+        background-color: #eee ;
+        width:75%;
+        height:auto;
+        overflow: auto;
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height:210px;
+        padding-top:10px;
+        padding-bottom:10px;
+
+    }
+
+    #lists li {
+        padding-bottom: 5px;
+        padding-left:5px;
+        border-radius: 4px;
+    }
+
+    #lists li:hover {
+        background-color: #999 ;
+    }
+
+    #lists li a {
+        color: #222;
+        font-weight:bold ;
+    }
+
+    #lists li a:hover {
+        color: white;
+        font-weight:bold ;
+    }
+
+    #list-form-wrapper {
+        padding-top:10px;
+        padding-bottom: 20px;
+    }
+
+    #list-form-wrapper input {
+        width:75%;
+    }
+
+
+    /* @imp : last section - override 3rd party libraries */
     /* bootstrap css */
     .page-header {
         padding-bottom: 7px;
@@ -1159,16 +1210,16 @@
         filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#FAFAFA', GradientType=0);
     }
 
-    .dropdown-menu .active > a,
-    .dropdown-menu .active > a:hover {
-        background-color: #ffffff ;
-        background-image:none ;
-        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#FAFAFA', GradientType=0);
-       
-    }
+.dropdown-menu .active > a,
+.dropdown-menu .active > a:hover {
+    background-color: #ffffff ;
+    background-image:none ;
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#FAFAFA', GradientType=0);
+   
+}
 
-    /* override zocial */
-    /* site popup max width is 600px */
+/* override zocial */
+/* site popup max width is 600px */
     #zocial-grid .column {
         width:180px;
         padding:10px;

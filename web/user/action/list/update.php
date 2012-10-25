@@ -10,6 +10,7 @@
 
     use \com\indigloo\sc\mysql as mysql;
     use \com\indigloo\sc\auth\Login as Login;
+    use \com\indigloo\Url as Url ;
 
     // @imp submit buttons are only considered successful controls 
     // if they are used to submit the form
@@ -61,11 +62,13 @@
     }catch(UIException $ex) {
         $gWeb->store(Constants::STICKY_MAP, $fvalues);
         $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
+        $qUrl = Url::addQueryParameters($qUrl, array('sl' => 1 ));
         header("Location: " . $qUrl);
         exit(1);
     }catch(\Exception $ex) {
         $gWeb->store(Constants::STICKY_MAP, $fvalues);
         $gWeb->store(Constants::FORM_ERRORS, array($ex->getMessage()));
+        $qUrl = Url::addQueryParameters($qUrl, array('sl' => 1 ));
         header("Location: " . $qUrl);
         exit(1);
     }

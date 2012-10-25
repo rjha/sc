@@ -1,63 +1,12 @@
+    <div class="wrapper">
+        <div class="floatr">
+            <span><a href=#" id="close-list-popup">close&nbsp;x</a> </span>
+        </div>
+        <div>
+            <span class="faded-text">click on a list name to select</span> 
+        </div>
 
-<style>
-
-#lists {
-    list-style: none;
-    padding-left:10px;
-    padding-right:0px;
-    padding-top:5px;
-    padding-bottom:5px;
-    margin: 0;
-    width:98%;
-    height:160px;
-    overflow: auto;
-    overflow-x: auto;
-    overflow-y: auto;
-
-
-}
-
-#list-wrapper {
-    border-radius: 8px;
-    background-color: #f7f7f7 ;
-    background-color: #eee ;
-
-}
-
-#lists li {
-    padding-bottom: 5px;
-    padding-left:5px;
-    border-radius: 4px;
-}
-#lists li:hover {
-    background-color: #ccc ;
-    background-color: #999 ;
-}
-
-#lists li a {
-    color: #222;
-    font-weight:bold ;
-}
-
-#lists li a:hover {
-    color: white;
-    font-weight:bold ;
-}
-
-#list-form-wrapper {
-    padding-top:10px;
-    padding-bottom: 10px;
-}
-
-#list-form-wrapper input {
-    width:75%;
-}
-
-
-</style>
-
-    ~if($view->size > 0 ) {~
-    <h5> Add to list </h5>
+    </div>
     <div id="list-wrapper">
         <ul id="lists">
         ~foreach($view->lists as $id => $name){~
@@ -65,11 +14,10 @@
         ~}~
         </ul>
     </div>
-    ~}~
 
-    <div id="list-form-wrapper" class="form-table">
+    <div id="list-form-wrapper">
         <form  id="list-form1"  name="list-form1" action="/user/action/list/update.php"   method="POST">
-            <label>enter a new list name</label>
+            <span class="faded-text">or enter a new list name and click create</span> <br>
             <input class="faded-text" id="new-list-name" name="new-list-name" maxlength="64" type="textbox" value="" />
             &nbsp;&nbsp;
             <button type="submit" class="btn" name="create" value="Create"><span>Create</span></button>

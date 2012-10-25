@@ -45,6 +45,11 @@
     $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
     $postDBRows = $postDao->getPaged($paginator,$filters);
 
+    
+    $sl = Util::tryArrayKey($_GET,'sl');
+    $slclass = (!is_null($sl) && ($sl == 1 )) ? "" : "hide-me" ; 
+
+
 ?>
 
 
@@ -97,8 +102,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div id="page-message" class="ml40 color-red"> </div>
-                        <div id="list-container" class="ml40 hide-me">
+                        <div id="page-message" class="color-red p20"> </div>
+                        <div id="list-container" class="<?php echo $slclass; ?>">
                             <?php
                                 $qUrl = \com\indigloo\Url::current();
                                 $listDao = new \com\indigloo\sc\dao\Lists();
@@ -140,6 +145,12 @@
         <script src="/js/sc.js" type="text/javascript"> </script>
 
         <script>
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove(); 
+                });
+            }, 5000);
+
             $(document).ready(function(){
                 webgloo.sc.toolbar.add();
                 webgloo.sc.dashboard.init();

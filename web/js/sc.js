@@ -592,6 +592,10 @@ webgloo.sc.dashboard = {
 
     init : function() {
 
+        $("a#close-list-popup").click(function(event) {
+            $("#list-container").hide();
+        });
+
         $('input:checkbox[id=page-checkbox]').click(function(event) {
             //@imp donot event.preventDefault();
             var checkBoxes =  $("#widgets").find("input:checkbox");
@@ -628,6 +632,8 @@ webgloo.sc.dashboard = {
                 var message = "You have not selected any item! Please select an item.";
                 $("#page-message").html(message);
                 $("#page-message").show();
+                window.setTimeout(function () { $("#page-message").hide();},5000);
+
             }
 
             

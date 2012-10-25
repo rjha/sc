@@ -8,7 +8,7 @@ namespace com\indigloo\sc\html {
 
         static function getSelectPopup($listRows,$qUrl) {
             $view = new \stdClass;
-            $template =  "/fragments/lists/popup/select.tmpl" ;
+            $template =  (sizeof($listRows) > 0) ? "/fragments/lists/popup/select.tmpl" : "/fragments/lists/popup/select-0.tmpl"  ;
 
             $view->lists = array();
             $view->size = sizeof($listRows) ;
