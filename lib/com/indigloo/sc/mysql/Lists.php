@@ -25,7 +25,18 @@ namespace com\indigloo\sc\mysql {
         }
 
         static function create($loginId,$name,$hash, $bin_hash, $itemIds) {
+
             try {
+
+                //input check
+
+                Util::isEmpty("name",$name);
+                Util::isEmpty("md5 hash of name",$hash);
+                Util::isEmpty("md5 bin hash of name",$bin_hash);
+
+                if(!is_array($itemIds) || (sizeof($itemIds) <= 0 )) {
+                    trigger_error("Bad input: items array is empty",E_USER_ERROR);
+                } 
 
                 //list
                 $sql1 = "insert into sc_list (login_id,name, md5_name, bin_md5_name, created_on) " ;

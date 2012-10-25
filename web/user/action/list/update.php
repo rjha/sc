@@ -27,8 +27,7 @@
         $gWeb = \com\indigloo\core\Web::getInstance();
 
         $qUrl = $fvalues['qUrl'];
-        $qUrl = base64_decode($qUrl);
-
+        
         if ($fhandler->hasErrors()) {
             throw new UIException($fhandler->getErrors());
         }

@@ -18,7 +18,7 @@
    
     <div id="list-form-wrapper">
         <form  id="list-form1"  name="list-form1" action="/user/action/list/update.php"   method="POST">
-            <input class="faded-text" id="new-list-name" name="new-list-name" type="textbox" value="Enter new list name ..." />
+            <input class="faded-text" id="new-list-name" name="new-list-name" maxlength="64" type="textbox" value="or enter new list name..." />
             &nbsp;&nbsp;
             <button type="submit" class="btn" name="create" value="Create"><span>Create</span></button>
             <input type="hidden" name="items_json" value='~~$view->strItems~' />

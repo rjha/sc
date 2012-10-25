@@ -17,7 +17,7 @@
 
 }
 
-#list-container {
+#list-wrapper {
     border-radius: 8px;
     background-color: #f7f7f7 ;
     background-color: #eee ;
@@ -56,25 +56,26 @@
 
 </style>
 
-<div>
+    ~if($view->size > 0 ) {~
     <h5> Add to list </h5>
-    <div id="list-container">
+    <div id="list-wrapper">
         <ul id="lists">
         ~foreach($view->lists as $id => $name){~
             <li><a id="~~$id~" class="select-list" href="#">~~$name~</a></li>
         ~}~
         </ul>
     </div>
-    <div id="list-form-wrapper">
+    ~}~
+
+    <div id="list-form-wrapper" class="form-table">
         <form  id="list-form1"  name="list-form1" action="/user/action/list/update.php"   method="POST">
-            <input class="faded-text" id="new-list-name" name="new-list-name" type="textbox" value="Enter new list name ..." />
+            <label>enter a new list name</label>
+            <input class="faded-text" id="new-list-name" name="new-list-name" maxlength="64" type="textbox" value="" />
             &nbsp;&nbsp;
             <button type="submit" class="btn" name="create" value="Create"><span>Create</span></button>
-            <input type="hidden" name="items_json" value='~~$view->strItems~' />
+            <input type="hidden" name="items_json" value="" />
             <input type="hidden" name="list_id" value="" />
             <input type="hidden" name="is_new" value="1" />
             <input type="hidden" name="qUrl" value="~~$view->qUrl~" />
         </form>
     </div>
-
-</div>

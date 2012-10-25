@@ -602,6 +602,7 @@ webgloo.sc.dashboard = {
 
         $("a#open-list-popup").click(function(event) {
             
+            //open popup
             var checkBoxes =  $("#widgets").find("input:checkbox");
             var isChecked ;
             var itemIds = [] ;
@@ -615,21 +616,18 @@ webgloo.sc.dashboard = {
             }) ;
 
             if(itemIds.length > 0 ) {
-                var dataObj = {} ;
-                dataObj.params = {} ;
-                dataObj.params.items = JSON.stringify(itemIds) ;
-                dataObj.params.qUrl = encodeBase64(window.location.href) ;
-                dataObj.endPoint = "/user/popup/list/select.php";
+                frm = document.forms["list-form1"];
+                frm.items_json.value = JSON.stringify(itemIds) ;
 
-                //open popup
-                webgloo.sc.SimplePopup.init();
-                webgloo.sc.SimplePopup.post(dataObj, {"dataType":"text", "reload" : false });
-
+                //hide message
+                $("#page-message").html('');
+                $("#page-message").hide();
+                $("#list-container").show();
 
             } else {
                 var message = "You have not selected any item! Please select an item.";
-                webgloo.sc.SimplePopup.init();
-                webgloo.sc.SimplePopup.show(message);
+                $("#page-message").html(message);
+                $("#page-message").show();
             }
 
             

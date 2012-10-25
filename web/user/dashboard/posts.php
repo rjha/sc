@@ -96,6 +96,21 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div id="page-message" class="ml40 color-red"> </div>
+                        <div id="list-container" class="ml40 hide-me">
+                            <?php
+                                $qUrl = \com\indigloo\Url::current();
+                                $listDao = new \com\indigloo\sc\dao\Lists();
+                                $listRows = $listDao->get($loginId);
+                                $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$qUrl);
+                                echo $html ;
+                            ?>
+
+                        </div>
+
+
+                    </div>
                     <div id="widgets">
                         <?php
                             $startId = NULL;
