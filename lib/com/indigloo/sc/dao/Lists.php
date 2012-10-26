@@ -7,7 +7,8 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\sc\util\PseudoId ;
 
     /**
-     * According to our naming convention of using singulars : This class
+     * 
+     * @imp According to our naming convention of using singulars : This class
      * should have been called "List" instead of "Lists"
      *
      * Now you are introduced to half-baked namespace support in PHP5.3
@@ -19,9 +20,18 @@ namespace com\indigloo\sc\dao {
 
     class Lists {
 
-        function get($loginId) {
-            $rows = mysql\Lists::get($loginId);
+        function getOnLoginId($loginId) {
+            $rows = mysql\Lists::getOnLoginId($loginId);
             return $rows ;
+        }
+
+        function getOnId($listId) {
+            $row = mysql\Lists::getonId($listId);
+            return $row ;
+        }
+
+        function exists($listId) {
+            return mysql\Lists::exists($listId);
         }
 
         function create($loginId,$name,$items) {

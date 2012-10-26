@@ -102,12 +102,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div id="page-message" class="color-red p20"> </div>
+                        <div id="page-message" class="color-red ml20"> </div>
                         <div id="list-container" class="<?php echo $slclass; ?>">
                             <?php
                                 $qUrl = \com\indigloo\Url::current();
                                 $listDao = new \com\indigloo\sc\dao\Lists();
-                                $listRows = $listDao->get($loginId);
+                                $listRows = $listDao->getOnLoginId($loginId);
                                 $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$qUrl);
                                 echo $html ;
                             ?>

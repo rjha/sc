@@ -11,7 +11,7 @@ namespace com\indigloo\sc\mysql {
 
     class Lists {
 
-        static function get($loginId) {
+        static function getOnLoginId($loginId) {
             
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -21,6 +21,70 @@ namespace com\indigloo\sc\mysql {
 
             $rows = MySQL\Helper::fetchRows($mysqli,$sql);
             return $rows ;
+
+        }
+
+        static function getOnId($listId) {
+            
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            settype($listId,"int");
+            $sql = " select id,name from sc_list where id = %d " ;
+            $sql = sprintf($sql,$listId);
+
+            $row = MySQL\Helper::fetchRow($mysqli,$sql);
+            return $row ;
+
+        }
+
+        static function exists($listId) {
+            settype($listId,"int");
+            $row = self::getOnId($listId);
+            $flag = (!is_null($row) && !empty($row["name"])) ? true : false ;
+            return $flag ;
+
+        }
+
+        /*
+         * updating a list means pushing new items into it
+         * deleting items from list is a separate call.
+         * we want to 
+         *  - push new items into list 
+         *  - update dup_bit for existing items
+         * 
+        */
+
+        static function update($listId,$itemIds) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            // input check 
+            settype($loginId,"int");
+            if(!is_array($itemIds) || (sizeof($itemIds) <= 0 )) {
+                trigger_error("Bad input: items array is empty",E_USER_ERROR);
+            } 
+
+            if(empty($listId) || !self::exists($listId)) {
+                $message = sprintf("Bad input: listId {%s} does not exists",$listId);
+                trigger_error($message,E_USER_ERROR);
+            }
+
+            $sql = "insert into sc_list_item(list_id, item_id) values " ;
+
+            // mysql multiple rows insert using values
+            // insert size
+            $isize = sizeof($itemIds);
+            for($index = 0 ; $index < $isize ; $index++ ) {
+                //last one?
+                $suffix = ($index == ($isize-1)) ? "" : "," ;
+
+                $itemId = $itemIds[$index];
+                settype($itemId,"integer");
+                $sql .= sprintf(" (%s,%s)%s ",$listId,$itemId,$suffix);
+            }
+
+            $sql .= " on duplicate key update dup_bit = 1 " ;
+            
+            MySQL\Helper::executeSQL($mysqli,$sql);
 
         }
 
@@ -69,12 +133,17 @@ namespace com\indigloo\sc\mysql {
                 $sql2 = "insert into sc_list_item(list_id, item_id) values " ;
 
                 // mysql multiple rows insert using values
-                //insert size
+                // insert size
                 $isize = sizeof($itemIds);
                 for($index = 0 ; $index < $isize ; $index++ ) {
                     //last one?
                     $suffix = ($index == ($isize-1)) ? "" : "," ;
-                    $sql2 .= sprintf(" (%s,%s)%s ",$listId,$itemIds[$index],$suffix);
+
+                    //never trust the user input
+                    // never ever!
+                    $itemId = $itemIds[$index];
+                    settype($itemId,"integer");
+                    $sql2 .= sprintf(" (%s,%s)%s ",$listId,$itemId,$suffix);
                 }
 
                 $count = $dbh->exec($sql2);

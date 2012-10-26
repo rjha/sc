@@ -1629,10 +1629,18 @@ CREATE TABLE  sc_list_item  (
    id  int NOT NULL AUTO_INCREMENT,
    list_id  int NOT NULL,
    item_id int not null ,
+   dup_bit int default 0,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
+alter table sc_list_item add constraint unique uniq_item(list_id,item_id);
+
+--
+-- foreign keys
+-- 
+alter table sc_list_item add constraint foreign key(list_id)  references sc_list(id);
+alter table sc_list_item add constraint foreign key(item_id)  references sc_post(id);
 
 
 
