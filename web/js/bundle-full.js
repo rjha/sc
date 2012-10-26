@@ -18539,7 +18539,41 @@ webgloo.sc.util = {
             var current = text.length;
             $(counterId).text(current + "/" + max);
         });
-   }
+    },
+
+    getCheckedItems : function(containerId) {
+        var checkBoxes =  $(containerId).find("input:checkbox");
+        var isChecked ;
+        var itemIds = [] ;
+
+        checkBoxes.each(function(i) {
+            isChecked = $(this).prop("checked");
+            if(isChecked) {
+                itemIds.push($(this).attr('id'));
+            }
+        
+        }) ;
+
+        return itemIds ;
+    },
+
+    initPageCheckbox : function(containerId) {
+        $('input:checkbox[id=page-checkbox]').click(function(event) {
+            //@imp donot event.preventDefault();
+            var checkBoxes =  $(containerId).find("input:checkbox");
+            var state =  $('input:checkbox[id=page-checkbox]').prop("checked");
+            checkBoxes.prop("checked", state);
+            
+        });
+    },
+
+    fixAlert : function () {
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove(); 
+            });
+        }, 5000);
+    }
 }
 
 webgloo.sc.toolbar = {
@@ -19030,64 +19064,86 @@ webgloo.sc.item = {
     }
 }
 
-webgloo.sc.dashboard = {
+webgloo.sc.Lists = {
 
-    init : function() {
+    containerId : '' ,
+    debug : false,
+    populateSubmitForm : function(itemIds,isNew,listId) {
 
+        frm = document.forms["list-form1"];
+        frm.items_json.value = JSON.stringify(itemIds) ;
+        
+        if(isNew){
+            //create new list
+            frm.list_id.value = '' ;
+            frm.is_new.value = 1 ;
+        } else {
+            frm.list_id.value = listId;
+            frm.is_new.value = 0 ;
+        }
+        
+        if(webgloo.sc.Lists.debug) {
+            console.log("items json = " + frm.items_json.value);
+            console.log("list Id = " + frm.list_id.value);
+            console.log("is_new = " + frm.is_new.value);
+            return ;
+        }
+
+        $('#list-form1').submit();
+
+    },
+
+    openPopup : function() {
+        
+        var itemIds = webgloo.sc.util.getCheckedItems("#widgets");
+
+        if(itemIds.length > 0 ) {
+            // items selected
+            $("#page-message").html('');
+            $("#page-message").hide();
+            $("#list-container").show("slow");
+
+        } else {
+            var message = "You have not selected any item! Please select items.";
+            $("#page-message").html(message);
+            $("#page-message").show("slow");
+            window.setTimeout(function () { $("#page-message").hide("slow");},5000);
+
+        }
+    },
+
+    init : function(containerId) {
+        webgloo.sc.Lists.containerId = containerId ;
         $("a#close-list-popup").click(function(event) {
-            $("#list-container").hide();
-        });
-
-        $('input:checkbox[id=page-checkbox]').click(function(event) {
-            //@imp donot event.preventDefault();
-            var checkBoxes =  $("#widgets").find("input:checkbox");
-            var state =  $('input:checkbox[id=page-checkbox]').prop("checked");
-            checkBoxes.prop("checked", state);
-            
+            $("#list-container").hide("slow");
         });
 
         $("a#open-list-popup").click(function(event) {
-            
-            //open popup
-            var checkBoxes =  $("#widgets").find("input:checkbox");
-            var isChecked ;
-            var itemIds = [] ;
-
-            checkBoxes.each(function(i) {
-                isChecked = $(this).prop("checked");
-                if(isChecked) {
-                    itemIds.push($(this).attr('id'));
-                }
-            
-            }) ;
-
-            if(itemIds.length > 0 ) {
-                frm = document.forms["list-form1"];
-                frm.items_json.value = JSON.stringify(itemIds) ;
-
-                //hide message
-                $("#page-message").html('');
-                $("#page-message").hide();
-                $("#list-container").show();
-
-            } else {
-                var message = "You have not selected any item! Please select an item.";
-                $("#page-message").html(message);
-                $("#page-message").show();
-                window.setTimeout(function () { $("#page-message").hide();},5000);
-
-            }
-
-            
+            webgloo.sc.Lists.openPopup();
         }) ;
 
         $("#lists li a").live("click", function(event){
             var listId = $(this).attr("id");
-            //populate form and submit
-            frm = document.forms["list-form1"];
-            frm.list_id.value = listId;
-            frm.is_new.value = 0 ;
-            $('#list-form1').submit();
+            var itemIds = webgloo.sc.util.getCheckedItems(webgloo.sc.Lists.containerId);
+
+            if(itemIds.length > 0 ) {
+                webgloo.sc.Lists.populateSubmitForm(itemIds,false,listId);
+            }
+
+        }) ;
+
+        $("#create-list").click(function(event){
+            event.preventDefault();
+            var name = jQuery.trim($("#new-list-name").val());
+            if( name == '' )
+                return ;
+
+            var listId = $(this).attr("id");
+            var itemIds = webgloo.sc.util.getCheckedItems(webgloo.sc.Lists.containerId);
+
+            if(itemIds.length > 0 ) {
+                webgloo.sc.Lists.populateSubmitForm(itemIds,true,'');
+            }
 
         }) ;
 

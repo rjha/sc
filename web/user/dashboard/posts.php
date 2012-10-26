@@ -145,15 +145,16 @@
         <script src="/js/sc.js" type="text/javascript"> </script>
 
         <script>
-            window.setTimeout(function() {
-                $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove(); 
-                });
-            }, 5000);
-
+            
             $(document).ready(function(){
+                //fix twitter bootstrap alerts
+                webgloo.sc.util.fixAlert();
+                // initialize page level checkboxes
+                webgloo.sc.util.initPageCheckbox("#widgets");
                 webgloo.sc.toolbar.add();
-                webgloo.sc.dashboard.init();
+                //initialize lists
+                webgloo.sc.Lists.init("#widgets");
+                webgloo.sc.Lists.debug = false ;
                 
             });
 
