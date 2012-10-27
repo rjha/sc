@@ -1609,41 +1609,6 @@ CREATE TRIGGER trg_mik_user_cp  BEFORE INSERT ON sc_user
 DELIMITER ;
 
 
-DROP TABLE IF EXISTS  sc_list ;
-CREATE TABLE  sc_list  (
-   id  int NOT NULL AUTO_INCREMENT,
-   login_id  int NOT NULL,
-   name varchar(64) NOT NULL,
-   md5_name varchar(32) NOT NULL,
-   bin_md5_name BINARY(16) not null,
-   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
-
-
-alter table sc_list add constraint unique uniq_name(login_id,bin_md5_name);
-
-
-DROP TABLE IF EXISTS  sc_list_item ;
-CREATE TABLE  sc_list_item  (
-   id  int NOT NULL AUTO_INCREMENT,
-   list_id  int NOT NULL,
-   item_id int not null ,
-   dup_bit int default 0,
-   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
-
-alter table sc_list_item add constraint unique uniq_item(list_id,item_id);
-
---
--- foreign keys
--- 
-alter table sc_list_item add constraint foreign key(list_id)  references sc_list(id);
-alter table sc_list_item add constraint foreign key(item_id)  references sc_post(id);
-
-
-
 --
 -- indexes
 -- 
@@ -1691,4 +1656,44 @@ alter table sc_tmp_ps add index idx_site_id (site_id) ;
 
 alter table sc_post_site add index idx_post_id(post_id) ;
 alter table sc_post_site add index idx_site_id (site_id) ;
+
+
+
+--
+-- 26 october 2012
+--
+
+
+DROP TABLE IF EXISTS  sc_list ;
+CREATE TABLE  sc_list  (
+   id  int NOT NULL AUTO_INCREMENT,
+   login_id  int NOT NULL,
+   name varchar(64) NOT NULL,
+   md5_name varchar(32) NOT NULL,
+   bin_md5_name BINARY(16) not null,
+   user_name varchar(64) not null,
+   items_json TEXT,
+   num_item int not null,
+   version int not null,
+   op_bit int not null,
+   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
+alter table sc_list add constraint unique uniq_name(login_id,bin_md5_name);
+
+
+DROP TABLE IF EXISTS  sc_list_item ;
+CREATE TABLE  sc_list_item  (
+   id  int NOT NULL AUTO_INCREMENT,
+   list_id  int NOT NULL,
+   item_id int not null ,
+   dup_bit int default 0,
+   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+alter table sc_list_item add constraint unique uniq_item(list_id,item_id);
+
 
