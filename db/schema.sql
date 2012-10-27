@@ -11,6 +11,8 @@ CREATE TABLE  sc_comment  (
   PRIMARY KEY ( id )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+
 DELIMITER //
 CREATE  TRIGGER trg_comment_title BEFORE INSERT ON sc_comment
    FOR EACH ROW
@@ -319,6 +321,7 @@ CREATE TABLE  sc_site_tracker  (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
+
 DROP TABLE IF EXISTS  sc_tmp_ps ;
 CREATE TABLE  sc_tmp_ps  (
    id  int(11) NOT NULL AUTO_INCREMENT,
@@ -345,7 +348,6 @@ CREATE TABLE  sc_twitter  (
   PRIMARY KEY ( id ),
   UNIQUE KEY  uniq_id  ( twitter_id )
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
 
 
 
@@ -447,6 +449,7 @@ CREATE TABLE  sc_user_group  (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
+
 DROP PROCEDURE IF EXISTS  UPDATE_SITE_TRACKER ;
 
 DELIMITER //
@@ -483,28 +486,28 @@ DELIMITER ;
 --
 
 create table sc_denorm_user(
-	id int(11) NOT NULL auto_increment,
-  login_id int not null,
+    id int(11) NOT NULL auto_increment,
+    login_id int not null,
 	name varchar(64) not null ,
 	nick_name varchar(32) ,
-  first_name  varchar(32) ,
-  last_name  varchar(32) ,
-  email  varchar(64) ,
-  provider varchar(16) NOT NULL,
-  website varchar(128) ,
-  blog varchar(128) ,
-  photo_url varchar(128) ,
-  location varchar(32) ,
-  about_me varchar(512),
-  age int ,
-  bu_bit int default 0,
-  tu_bit int default 0,
-  gender varchar(1) ,
-  ip_address varchar(46),
+    first_name  varchar(32) ,
+    last_name  varchar(32) ,
+    email  varchar(64) ,
+    provider varchar(16) NOT NULL,
+    website varchar(128) ,
+    blog varchar(128) ,
+    photo_url varchar(128) ,
+    location varchar(32) ,
+    about_me varchar(512),
+    age int ,
+    bu_bit int default 0,
+    tu_bit int default 0,
+    gender varchar(1) ,
+    ip_address varchar(46),
 	created_on TIMESTAMP  default '0000-00-00 00:00:00',
-  updated_on TIMESTAMP   default '0000-00-00 00:00:00',
+    updated_on TIMESTAMP   default '0000-00-00 00:00:00',
 	PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
-
+	
 
 
 DELIMITER //
@@ -541,6 +544,8 @@ CREATE TABLE  sc_google_user  (
   PRIMARY KEY ( id ),
   UNIQUE KEY  uniq_id  ( google_id )
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+
 
 
 DROP TRIGGER IF EXISTS trg_google_user_cp;
@@ -720,3 +725,35 @@ alter table sc_tmp_ps add index idx_site_id (site_id) ;
 alter table sc_post_site add index idx_post_id(post_id) ;
 alter table sc_post_site add index idx_site_id (site_id) ;
 
+
+
+
+--
+-- missing foreign keys
+-- need to take a call on foreign keys
+-- foreign keys may have performance implications!
+--
+
+
+-- alter table sc_comment add constraint foreign key(post_id)  references sc_post(id);
+--
+-- alter table sc_facebook add constraint foreign key(login_id)  references sc_login(id);
+-- alter table sc_twitter add constraint foreign key(login_id)  references sc_login(id);
+-- alter table sc_google_user add constraint foreign key(login_id)  references sc_login(id);
+-- alter table sc_user add constraint foreign key(login_id)  references sc_login(id);
+-- alter table sc_denorm_user add constraint foreign key(login_id)  references sc_login(id);
+--
+-- alter table sc_follow add constraint foreign key(follower_id)  references sc_login(id);
+-- alter table sc_follow add constraint foreign key(following_id)  references sc_login(id);
+--
+--
+-- alter table sc_post_site add constraint foreign key(post_id)  references sc_post(id);
+-- alter table sc_post_site add constraint foreign key(site_id)  references sc_site_master(id);
+-- alter table sc_tmp_ps add constraint foreign key(post_id)  references sc_post(id);
+-- alter table sc_tmp_ps add constraint foreign key(site_id)  references sc_site_master(id);
+--
+-- alter table sc_site_tracker add constraint foreign key(post_id)  references sc_post(id);
+-- alter table sc_user_group add constraint foreign key(login_id)  references sc_login(id);
+
+-- alter table sc_list_item add constraint foreign key(list_id)  references sc_list(id);
+-- alter table sc_list_item add constraint foreign key(item_id)  references sc_post(id);
