@@ -25,6 +25,32 @@ namespace com\indigloo\sc\dao {
             return $rows ;
         }
 
+        function getTotalOnLoginId($loginId) {
+            $row = mysql\Lists::getTotalOnLoginId($loginId);
+            return $row["count"] ;
+        }
+
+        function getPaged($paginator,$loginId) {
+
+            $limit = $paginator->getPageSize();
+            
+            if($paginator->isHome()){
+                return $this->getLatest($limit,$loginId);
+            } else {
+
+                $params = $paginator->getDBParams();
+                $start = $params["start"];
+                $direction = $params["direction"];
+                $rows = mysql\Lists::getPaged($start,$direction,$limit,$loginId);
+                return $rows ;
+            }
+        }
+
+        function getLatest($limit,$loginId) {
+            $rows = mysql\Lists::getLatest($limit,$loginId);
+            return $rows ;
+        }
+        
         function getOnId($listId) {
             $row = mysql\Lists::getonId($listId);
             return $row ;
