@@ -1,5 +1,5 @@
 
-<div style="min-height:600px;border-right:1px dashed #222;">
+<div style="min-height:600px; border-right: 1px dashed; margin-right:10px;">
 
     <ul class="nav nav-list">
 
