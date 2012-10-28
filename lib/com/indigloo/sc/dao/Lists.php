@@ -60,28 +60,40 @@ namespace com\indigloo\sc\dao {
             return mysql\Lists::exists($listId);
         }
 
-        function create($loginId,$name,$items) {
+        private function convertItemIds($items) {
             $itemIds = array();
+            foreach($items as $item) {
+                if(ctype_digit($item)) {
+                    array_push($itemIds, PseudoId::decode($item)) ;
+                }
+            }
+
+            return $itemIds;
+        }
+
+        function create($loginId,$name,$items) {
+            $itemIds = $this->convertItemIds($items);
+            if(empty($itemIds)) {
+                $message = "List create received no items!";
+                throw new UIException(array($message));
+            }
 
             //md5 hash as hex string and bytes
             $hash = md5($name);
             $bin_hash = md5($name,TRUE); 
 
-            foreach($items as $item) {
-                array_push($itemIds, PseudoId::decode($item)) ;
-            }
-
             $count = mysql\Lists::create($loginId,$name,$hash,$bin_hash,$itemIds);
             return $count ;
         }
 
-        function update($listId,$items){
-            $itemIds = array();
-            foreach($items as $item) {
-                array_push($itemIds, PseudoId::decode($item)) ;
+        function addItems($listId,$items){
+            $itemIds = $this->convertItemIds($items);
+            if(empty($itemIds)) {
+                $message = "List create received no items!";
+                throw new UIException(array($message));
             }
 
-            mysql\Lists::update($listId,$itemIds);
+            mysql\Lists::addItems($listId,$itemIds);
         }
 
     }

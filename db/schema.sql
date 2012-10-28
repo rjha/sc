@@ -595,7 +595,6 @@ CREATE TABLE  sc_bookmark (
    object_id int not null,
    object_title varchar(128),
    verb int not null,
-   verb_desc varchar(16),
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id )) ENGINE=InnoDB  DEFAULT CHARSET=utf8;

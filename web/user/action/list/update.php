@@ -35,7 +35,7 @@
 
         $listId = $fvalues["list_id"] ;
         $loginId = Login::getLoginIdInSession();
-
+        
         $flag = intval($fvalues["is_new"]);
         // test against 1 
         // null, empty, spaces and bad values convert to 0
@@ -48,8 +48,8 @@
             $name =  $fvalues["new-list-name"];
             $listDao->create($loginId,$name,$items);
         } else {
-            //Add to old list 
-             $listDao->update($listId,$items);
+            //Add items to existing list 
+             $listDao->addItems($listId,$items);
         }
 
         $suffix = (sizeof($items) > 1 ) ? "s" : "" ;
