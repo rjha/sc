@@ -60,19 +60,29 @@ namespace com\indigloo\sc\dao {
             return mysql\Lists::exists($listId);
         }
 
-        private function convertItemIds($items) {
+        private function convertItemIds($strItemsJson) {
+            $items = json_decode($strItemsJson);
             $itemIds = array();
+
             foreach($items as $item) {
-                if(ctype_digit($item)) {
-                    array_push($itemIds, PseudoId::decode($item)) ;
+                if(ctype_digit($item->id)) {
+                    array_push($itemIds, PseudoId::decode($item->id)) ;
                 }
             }
 
             return $itemIds;
         }
 
-        function create($loginId,$name,$items) {
-            $itemIds = $this->convertItemIds($items);
+        /**
+         *
+         * @param strItemsJson is string representation of an array of json 
+         * objects. each object has attribute
+         *  - id
+         *  - thumbnail 
+         *
+         */
+        function create($loginId,$name,$strItemsJson) {
+            $itemIds = $this->convertItemIds($strItemsJson);
             if(empty($itemIds)) {
                 $message = "List create received no items!";
                 throw new UIException(array($message));
@@ -82,18 +92,20 @@ namespace com\indigloo\sc\dao {
             $hash = md5($name);
             $bin_hash = md5($name,TRUE); 
 
-            $count = mysql\Lists::create($loginId,$name,$hash,$bin_hash,$itemIds);
+            $count = mysql\Lists::create($loginId,$name,$hash,$bin_hash,$strItemsJson,$itemIds);
             return $count ;
         }
 
-        function addItems($listId,$items){
-            $itemIds = $this->convertItemIds($items);
+        function addItems($listId,$strItemsJson){
+            $itemIds = $this->convertItemIds($strItemsJson);
             if(empty($itemIds)) {
                 $message = "List create received no items!";
                 throw new UIException(array($message));
             }
 
-            mysql\Lists::addItems($listId,$itemIds);
+            //@todo - merge itemsJson
+
+            mysql\Lists::addItems($listId,$strItemsJson,$itemIds);
         }
 
     }

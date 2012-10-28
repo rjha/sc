@@ -115,7 +115,7 @@ namespace com\indigloo\sc\mysql {
          * 
         */
 
-        static function addItems($listId,$itemIds) {
+        static function addItems($listId,$strItemsJson,$itemIds) {
 
             try{
                 // input check 
@@ -134,20 +134,14 @@ namespace com\indigloo\sc\mysql {
                 //Tx start
                 $dbh->beginTransaction();
 
-                //list is changing -
+                // list is changing -
                 // some offline processing is needed (set op_bit = 0)
                 $sql1 = " update sc_list set version = version + 1 , op_bit = 0 where id = :list_id";
 
                 $stmt = $dbh->prepare($sql1);
                 $stmt->bindParam(":list_id", $listId);
-                $flag = $stmt->execute();
-
-                if(!$flag){
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
-                    throw new DBException($message);
-                }
+                $stmt->execute();
+                $stmt = NULL ;
 
                 $sql2 = "insert into sc_list_item(list_id, item_id) values " ;
 
@@ -174,11 +168,17 @@ namespace com\indigloo\sc\mysql {
                 $dbh->rollBack();
                 $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());
+
+             } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
             }
 
         }
 
-        static function create($loginId,$name,$hash, $bin_hash, $itemIds) {
+        static function create($loginId,$name,$hash, $bin_hash,$strItemsJson, $itemIds) {
 
             try {
 
@@ -193,34 +193,27 @@ namespace com\indigloo\sc\mysql {
                 } 
 
                 //list
+                // op_bit is offline_processing bit - set to zero on create
                 $sql1 = "insert into sc_list (login_id,name, md5_name, bin_md5_name, " ;
                 $sql1 .= "items_json, version, op_bit created_on) " ;
                 $sql1 .= " values (:login_id,:name, :hash, :bin_hash, :items_json,1,0,now()) " ;
                 $flag = true ;
 
                 $dbh =  PDOWrapper::getHandle();
-                //Tx start
+
+                // *** Tx start ***
                 $dbh->beginTransaction();
-                // json will be populated by an offline job
-                // op_bit is offline_processing bit - set to zero on create
                 
-                $items_json = '{}' ;
 
                 $stmt = $dbh->prepare($sql1);
                 $stmt->bindParam(":login_id", $loginId);
                 $stmt->bindParam(":name", $name);
                 $stmt->bindParam(":hash", $hash);
                 $stmt->bindParam(":bin_hash", $bin_hash);
-                $stmt->bindParam(":items_json", $items_json);
+                $stmt->bindParam(":items_json", $strItemsJson);
 
-                $flag = $stmt->execute();
-
-                if(!$flag){
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
-                    throw new DBException($message);
-                }
+                $stmt->execute();
+                $stmt = NULL ;
 
                 $listId = $dbh->lastInsertId();
                 settype($listId, "integer");
@@ -243,7 +236,18 @@ namespace com\indigloo\sc\mysql {
                 }
 
                 $count = $dbh->exec($sql2);
-                //Tx end
+
+                // update item_count of list 
+                $sql3 = " update sc_list set item_count = :item_count where id = :list_id " ;
+                $stmt3 = $dbh->prepare($sql3);
+                $stmt3->bindParam(":list_id", $listId);
+                $stmt3->bindParam(":item_count", $isize);
+                $stmt3->execute();
+                $stmt3 = NULL ;
+
+
+
+                // *** Tx end ***
                 $dbh->commit();
                 $dbh = null;
 
@@ -253,6 +257,12 @@ namespace com\indigloo\sc\mysql {
                 $dbh->rollBack();
                 $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
             }
             
         }

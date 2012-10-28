@@ -44,7 +44,6 @@
     $pageSize = Config::getInstance()->get_value("user.page.items");
     $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
     $postDBRows = $postDao->getPaged($paginator,$filters);
-
     
     $sl = Util::tryArrayKey($_GET,'sl');
     $slclass = (!is_null($sl) && ($sl == 1 )) ? "" : "hide-me" ; 
@@ -120,16 +119,33 @@
                         <?php
                             $startId = NULL;
                             $endId = NULL;
+                            $imageData = array();
+
                             if (sizeof($postDBRows) > 0) {
                                 $startId = $postDBRows[0]['id'];
                                 $endId = $postDBRows[sizeof($postDBRows) - 1]['id'];
                                 foreach ($postDBRows as $postDBRow) {
+                                    //output post widget html
                                     echo \com\indigloo\sc\html\Post::getWidget($postDBRow);
+                                    //get id + images_json from postDBRows 
+                                    
+                                    $images = json_decode($postDBRow["images_json"]);
+                                    if( (!empty($images)) && (sizeof($images) > 0)) {
+                                        $image = $images[0];
+                                        $imgv = \com\indigloo\sc\html\Post::convertImageJsonObj($image);
+                                        //id vs. source,thumbnail
+                                        $imageData[$postDBRow["pseudo_id"]] = array("thumbnail" => $imgv["thumbnail"]) ;
+
+                                    }
+
                                 }
                             } else {
                                 $message = "No posts found " ;
                                echo \com\indigloo\sc\html\Site::getNoResult($message);
                             }
+
+                            $strImageJson = json_encode($imageData);
+                            $strImageJson = \com\indigloo\Util::formSafeJson($strImageJson);
 
                         ?>
                     </div>
@@ -155,7 +171,16 @@
                 //initialize lists
                 webgloo.sc.Lists.init("#widgets");
                 webgloo.sc.Lists.debug = false ;
-                
+                webgloo.sc.Lists.strImageJson = '<?php echo $strImageJson; ?>' ;
+
+                try{
+                    webgloo.sc.Lists.imageDataObj = JSON.parse(webgloo.sc.Lists.strImageJson) ;
+                    webgloo.sc.Lists.imageError = 0 ;
+                } catch(ex) {
+                    console.log("error : not able to parse image data json string");
+                    webgloo.sc.Lists.imageError = 1 ;
+                }
+
             });
 
         </script>

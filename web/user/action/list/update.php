@@ -39,21 +39,20 @@
         $flag = intval($fvalues["is_new"]);
         // test against 1 
         // null, empty, spaces and bad values convert to 0
-        $strItems = $fvalues["items_json"];
-        $items = json_decode($strItems);
+        $strItemsJson = $fvalues["items_json"];
+
         $listDao = new \com\indigloo\sc\dao\Lists();
 
         if( ($flag == 1) && empty($listId)) {
             //Add to new list 
             $name =  $fvalues["new-list-name"];
-            $listDao->create($loginId,$name,$items);
+            $listDao->create($loginId,$name,$strItemsJson);
         } else {
-            //Add items to existing list 
-             $listDao->addItems($listId,$items);
+            //Add existing list 
+             $listDao->addItems($listId,$strItemsJson);
         }
 
-        $suffix = (sizeof($items) > 1 ) ? "s" : "" ;
-        $message = sprintf("success! item%s added to list",$suffix);
+        $message = sprintf("success! items added to list",$suffix);
         $gWeb->store(Constants::FORM_MESSAGES,array($message));
 
         header("Location: " . $qUrl);

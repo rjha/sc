@@ -626,10 +626,26 @@ webgloo.sc.Lists = {
 
     containerId : '' ,
     debug : false,
+    imageDataObj : {} ,
+
     populateSubmitForm : function(itemIds,isNew,listId) {
 
-        frm = document.forms["list-form1"];
-        frm.items_json.value = JSON.stringify(itemIds) ;
+        var frm = document.forms["list-form1"];
+        frm.image_error.value = 
+            (typeof webgloo.sc.Lists.imageError === 'undefined') ? 0 : webgloo.sc.Lists.imageError ;
+
+        var items = [] , itemObj;
+        for(var i = 0; i < itemIds.length; i++) {
+            itemObj = {"id" : itemIds[i]};
+            if(webgloo.sc.Lists.imageDataObj.hasOwnProperty(itemObj.id)) {
+                itemObj.thumbnail =  webgloo.sc.Lists.imageDataObj[itemObj.id].thumbnail;
+            }
+
+            items.push(itemObj);
+        }
+
+        frm.items_json.value = JSON.stringify(items) ;
+
         
         if(isNew){
             //create new list
@@ -639,11 +655,12 @@ webgloo.sc.Lists = {
             frm.list_id.value = listId;
             frm.is_new.value = 0 ;
         }
-        
+
         if(webgloo.sc.Lists.debug) {
             console.log("items json = " + frm.items_json.value);
             console.log("list Id = " + frm.list_id.value);
             console.log("is_new = " + frm.is_new.value);
+            console.log("image_error = " + frm.image_error.value);
             return ;
         }
 
@@ -856,7 +873,7 @@ webgloo.media = {
 
     populateHidden : function () {
 
-        frm = document.forms["web-form1"];
+        var frm = document.forms["web-form1"];
 
         if(jQuery.inArray("image",webgloo.media.mode) != -1) {
             var images = new Array() ;
@@ -1092,7 +1109,7 @@ webgloo.sc.ImageSelector = {
             //will split into image and 1
             var ids = imageId.split('-');
             var realId = ids[1] ;
-            imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
+            var imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
 
             if(!imageObj.selected) {
                 // show select button
@@ -1109,7 +1126,7 @@ webgloo.sc.ImageSelector = {
             //will split into image and 1
             var ids = imageId.split('-');
             var realId = ids[1] ;
-            imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
+            var imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
 
             //if this image is selected?
             if(!imageObj.selected) {
@@ -1123,7 +1140,7 @@ webgloo.sc.ImageSelector = {
             var realId = $(this).attr("id");
             var imageId = "#image-" + realId ;
 
-            imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
+            var imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
             //change selected state for imageObj
             imageObj.selected = true ;
             webgloo.sc.ImageSelector.bucket.realId = imageObj ;
@@ -1140,7 +1157,7 @@ webgloo.sc.ImageSelector = {
             var realId = $(this).attr("id");
             var imageId = "#image-" + realId ;
 
-            imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
+            var imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
             //change selected state for imageObj
             imageObj.selected = false ;
             webgloo.sc.ImageSelector.bucket.realId = imageObj ;
@@ -1222,7 +1239,7 @@ webgloo.sc.ImageSelector = {
     },
 
     processUrlFetch : function(response) {
-        images = response.images ;
+        var images = response.images ;
         webgloo.sc.ImageSelector.num_total = images.length;
         webgloo.sc.ImageSelector.description = response.description;
         webgloo.sc.ImageSelector.website = $("#link-box").val();
@@ -1296,7 +1313,7 @@ webgloo.sc.ImageSelector = {
         $("#image-preview").fadeOut("slow");
         $("#image-preview").html('');
 
-        endPoint = webgloo.sc.ImageSelector.extractEndpoint ;
+        var endPoint = webgloo.sc.ImageSelector.extractEndpoint ;
         params = {} ;
         params.target = target ;
         //ajax call start
@@ -1379,7 +1396,7 @@ webgloo.sc.ImageSelector = {
                 //stringify images
                 var strImagesJson =  JSON.stringify(webgloo.sc.ImageSelector.images);
                 //bind to form
-                frm = document.forms["web-form1"];
+                var frm = document.forms["web-form1"];
                 frm.images_json.value = strImagesJson ;
                 frm.description.value = webgloo.sc.ImageSelector.description ;
                 frm.link.value = webgloo.sc.ImageSelector.website ;
