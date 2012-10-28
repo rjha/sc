@@ -40,6 +40,17 @@ alter table sc_list add constraint unique uniq_name(login_id,bin_md5_name);
 
 
 
+DROP TABLE IF EXISTS  sc_site_counter ;
+CREATE TABLE  sc_site_counter  (
+    id  int NOT NULL AUTO_INCREMENT,
+    post_count int  default 0,
+    comment_count int  default 0 ,
+    user_count int  default 0,
+    list_count int  default 0 ,
+    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
+
 
 DROP TABLE IF EXISTS  sc_user_counter ;
 CREATE TABLE  sc_user_counter  (
@@ -66,24 +77,53 @@ CREATE TABLE  sc_post_counter  (
    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
-DROP TABLE IF EXISTS  sc_site_counter ;
-CREATE TABLE  sc_site_counter  (
-    id  int NOT NULL AUTO_INCREMENT,
-    post_count int  default 0,
-    comment_count int  default 0 ,
-    user_count int  default 0,
-    list_count int  default 0 ,
-    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
-
-
 -- 
--- @todo seed counter tables 
+-- seed counter tables 
 --
+
+insert into sc_site_counter(id,post_count)
+    select 1 , count(id) from sc_post ;
+
+update sc_site_counter set comment_count = (select count(id) from sc_comment)  where id = 1 ;
+update sc_site_counter set user_count = (select count(id) from sc_login)  where id = 1 ;
+update sc_site_counter set list_count = 0  where id = 1 ;
+
+insert into sc_user_counter (login_id) 
+    select id from sc_login ;
+
+-- comments from sc_comment
+-- like/save from sc_bookmark
+-- follow/following from sc_follow
+--
+-- @todo run seed-counter.php script now
+--
+
+insert into sc_post_counter(post_id)
+    select id from sc_post ;
+
 
 --
 -- update triggers to use counters
 --
 
+--
+-- new triggers
+-- 
+
+drop trigger if exists trg_post_del ;
+drop trigger if exists trg_comment_add ;
+drop trigger if exists trg_comment_del ;
+drop trigger if exists trg_bookmark_add ;
+drop trigger if exists trg_bookmark_del ;
+drop trigger if exists trg_follow_del ;
+drop trigger if exists trg_follow_add ;
+drop trigger if exists trg_list_add;
+drop trigger if exists trg_list_del;
+
+
+--
+-- old triggers
+-- 
 
 DROP TRIGGER IF EXISTS  trg_post_archive ;
 DROP TRIGGER IF EXISTS  trg_post_add ;
@@ -94,6 +134,10 @@ DROP TRIGGER IF EXISTS  trg_twitter_user_cp ;
 DROP TRIGGER IF EXISTS  trg_mik_user_cp ;
 DROP TRIGGER IF EXISTS  trg_google_user_cp ;
 
+
+
+
+
 DELIMITER //
 CREATE TRIGGER trg_post_del  BEFORE DELETE ON sc_post
     FOR EACH ROW
@@ -103,6 +147,7 @@ CREATE TRIGGER trg_post_del  BEFORE DELETE ON sc_post
         delete from sc_comment where post_id = OLD.id;
         
         -- update counters
+        delete from sc_post_counter where post_id = OLD.id ;
         update sc_user_counter set post_count = post_count + 1 where login_id = OLD.login_id ;
         update sc_site_counter set post_count = post_count - 1 ;
 
@@ -137,6 +182,7 @@ DELIMITER //
         insert into sc_site_tracker(post_id,site_flag,group_flag,version,created_on)
         values (NEW.ID,0,0,NEW.version,NEW.created_on);
       -- update counters
+      insert into sc_post_counter (post_id) values(NEW.id);
       update sc_user_counter set post_count = post_count + 1 where login_id = NEW.login_id ;
       update sc_site_counter set post_count = post_count + 1 ;
 
@@ -210,7 +256,8 @@ CREATE TRIGGER trg_fb_user_cp  BEFORE INSERT ON sc_facebook
         insert into sc_mail_queue(name,email,source,created_on)
         values(NEW.name,NEW.email,2,now());
         -- update counters
-        update sc_site_counter set user_count = user_count + 1 ;
+        insert into sc_user_counter (login_id) values(NEW.login_id);  
+        update sc_site_counter set user_count = user_count + 1 ;  
 
 
     END //
@@ -242,7 +289,8 @@ CREATE TRIGGER trg_twitter_user_cp  BEFORE INSERT ON sc_twitter
             now()) ;
 
             -- update counter
-            update sc_site_counter set user_count = user_count + 1 ;
+            insert into sc_user_counter (login_id) values(NEW.login_id);  
+            update sc_site_counter set user_count = user_count + 1 ;  
     END //
 DELIMITER ;
 
@@ -275,7 +323,8 @@ CREATE TRIGGER trg_mik_user_cp  BEFORE INSERT ON sc_user
         values(NEW.user_name,NEW.email,2,now());
 
         -- update counter
-        update sc_site_counter set user_count = user_count + 1 ;
+        insert into sc_user_counter (login_id) values(NEW.login_id);  
+        update sc_site_counter set user_count = user_count + 1 ;  
 
 
     END //
@@ -316,6 +365,7 @@ CREATE TRIGGER trg_google_user_cp  BEFORE INSERT ON sc_google_user
         values(NEW.name,NEW.email,2,now());
 
         -- update counter
+        insert into sc_user_counter (login_id) values(NEW.login_id);  
         update sc_site_counter set user_count = user_count + 1 ;
 
 
