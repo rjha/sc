@@ -7,10 +7,12 @@
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\exception\UIException as UIException;
+    use \com\indigloo\exception\DBException as DBException;
 
     use \com\indigloo\sc\mysql as mysql;
     use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\Url as Url ;
+    use \com\indigloo\Logger as Logger ;
 
     // @imp submit buttons are only considered successful controls 
     // if they are used to submit the form
@@ -40,6 +42,9 @@
         // test against 1 
         // null, empty, spaces and bad values convert to 0
         $strItemsJson = $fvalues["items_json"];
+        if(empty($strItemsJson)) {
+            $strItemsJson = '[]' ;
+        }
 
         $listDao = new \com\indigloo\sc\dao\Lists();
 
@@ -64,9 +69,21 @@
         $qUrl = Url::addQueryParameters($qUrl, array('sl' => 1 ));
         header("Location: " . $qUrl);
         exit(1);
-    }catch(\Exception $ex) {
+    }catch(DBException $ex) {
+        Logger::getInstance()->error($ex->getMessage());
+        Logger::getInstance()->backtrace($ex->getTrace());
         $gWeb->store(Constants::STICKY_MAP, $fvalues);
-        $gWeb->store(Constants::FORM_ERRORS, array($ex->getMessage()));
+        $message = "Error: something went wrong with database operation" ;
+        $gWeb->store(Constants::FORM_ERRORS,array($message));
+        $qUrl = Url::addQueryParameters($qUrl, array('sl' => 1 ));
+        header("Location: " . $qUrl);
+        exit(1);
+    }catch(\Exception $ex) {
+        Logger::getInstance()->error($ex->getMessage());
+        Logger::getInstance()->backtrace($ex->getTrace());
+        $gWeb->store(Constants::STICKY_MAP, $fvalues);
+        $message = "Error: looks bad. something went wrong!" ;
+        $gWeb->store(Constants::FORM_ERRORS, array($message));
         $qUrl = Url::addQueryParameters($qUrl, array('sl' => 1 ));
         header("Location: " . $qUrl);
         exit(1);

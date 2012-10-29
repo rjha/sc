@@ -45,7 +45,7 @@ namespace com\indigloo\sc\mysql {
          * and we assume that LIMIT OFFSET,N  kind of queries work fine in this 
          * case.
          *
-         */
+         *
         function getPagedOnLoginId($start,$direction,$limit,$loginId) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -83,7 +83,8 @@ namespace com\indigloo\sc\mysql {
         function getLatest($limit,$loginId) {
             $rows = mysql\Lists::getLatest($limit,$loginId);
             return $rows ;
-        }
+        } 
+         */
 
         static function getOnId($listId) {
             
@@ -131,15 +132,17 @@ namespace com\indigloo\sc\mysql {
 
                 $dbh =  PDOWrapper::getHandle();
 
-                //Tx start
+                // *** Tx start *** 
                 $dbh->beginTransaction();
 
                 // list is changing -
                 // some offline processing is needed (set op_bit = 0)
-                $sql1 = " update sc_list set version = version + 1 , op_bit = 0 where id = :list_id";
+                $sql1 = " update sc_list set version = version + 1 , op_bit = 0 , items_json = :items_json " ;
+                $sql1 .= " where id = :list_id";
 
                 $stmt = $dbh->prepare($sql1);
                 $stmt->bindParam(":list_id", $listId);
+                $stmt->bindParam(":items_json", $strItemsJson);
                 $stmt->execute();
                 $stmt = NULL ;
 
@@ -160,7 +163,7 @@ namespace com\indigloo\sc\mysql {
                 $sql2 .= " on duplicate key update dup_bit = 1 " ;
                 $dbh->exec($sql2);
 
-                //Tx end
+                // *** Tx end *** 
                 $dbh->commit();
                 $dbh = null;
 
@@ -195,7 +198,7 @@ namespace com\indigloo\sc\mysql {
                 //list
                 // op_bit is offline_processing bit - set to zero on create
                 $sql1 = "insert into sc_list (login_id,name, md5_name, bin_md5_name, " ;
-                $sql1 .= "items_json, version, op_bit created_on) " ;
+                $sql1 .= "items_json, version, op_bit , created_on) " ;
                 $sql1 .= " values (:login_id,:name, :hash, :bin_hash, :items_json,1,0,now()) " ;
                 $flag = true ;
 
