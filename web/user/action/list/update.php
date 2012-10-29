@@ -57,7 +57,7 @@
              $listDao->addItems($listId,$strItemsJson);
         }
 
-        $message = sprintf("success! items added to list",$suffix);
+        $message = sprintf("success! items added to list");
         $gWeb->store(Constants::FORM_MESSAGES,array($message));
 
         header("Location: " . $qUrl);
