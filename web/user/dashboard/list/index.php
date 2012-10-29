@@ -20,13 +20,6 @@
         trigger_error("Error : NULL login_id on user dashboard", E_USER_ERROR);
     }
 
-    $userDao = new \com\indigloo\sc\dao\User();
-    $userDBRow = $userDao->getOnLoginId($loginId);
-
-    if (empty($userDBRow)) {
-        trigger_error("No user record found for given login_id", E_USER_ERROR);
-    }
-
     $listDao = new \com\indigloo\sc\dao\Lists();
     
     $qparams = Url::getRequestQueryParams();
@@ -34,7 +27,7 @@
 
     $pageSize = Config::getInstance()->get_value("user.page.items");
     $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
-    $listDBRows = $listDao->getPaged($paginator,$loginId);
+    $listDBRows = $listDao->getPagedOnLoginId($paginator,$loginId);
 
 ?>
 
@@ -43,7 +36,7 @@
 <html>
 
     <head>
-        <title> 3mik.com - user <?php echo $userDBRow['name']; ?>  </title>
+        <title> 3mik.com - user <?php echo $gSessionLogin->name ; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         
@@ -74,7 +67,22 @@
 
                 <div class="span8 mh600">
                     
-                    <?php FormMessage::render(); ?>
+                <?php 
+                    FormMessage::render(); 
+                    $startId = NULL;
+                    $endId = NULL;
+
+                    if (sizeof($listDBRows) > 0) {
+                        $startId = $listDBRows[0]["id"];
+                        $endId = $listDBRows[sizeof($listDBRows) - 1]["id"];
+                    }
+
+                    foreach($listDBRows as $listDBRow) {
+                        print_r($listDBRow);
+
+                    }
+                 ?>
+                        
                     
                    
 

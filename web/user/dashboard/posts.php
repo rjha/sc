@@ -104,7 +104,13 @@
                         <div id="page-message" class="color-red ml20"> </div>
                         <div id="list-container" class="<?php echo $slclass; ?>">
                             <?php
-                                $qUrl = \com\indigloo\Url::current();
+                                
+                                //copy URL parameters
+                                $fparams = $qparams;
+                                // unset sl param
+                                unset($fparams["sl"]);
+                                $qUrl = Url::createUrl("/user/dashboard/posts.php",$fparams);
+
                                 $listDao = new \com\indigloo\sc\dao\Lists();
                                 $listRows = $listDao->getOnLoginId($loginId);
                                 $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$qUrl);
