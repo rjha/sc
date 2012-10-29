@@ -32,7 +32,7 @@ namespace com\indigloo\sc\mysql {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($loginId,"int");
 
-            $sql = "select count(id) as count from sc_list where login_id = %d ";
+            $sql = "select list_count as count from sc_user_counter where login_id = %d ";
             $sql = sprintf($sql,$loginId);
 
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
@@ -40,58 +40,38 @@ namespace com\indigloo\sc\mysql {
         }
 
         /**
-         * we do not expext a huge (# of lists/user). There should be a cap of
+         * @imp we do not expext a huge (# of lists/user). There should be a cap of
          * 50 or 100 lists/user. The pagination on login_id is sorted on name
          * and we assume that LIMIT OFFSET,N  kind of queries work fine in this 
          * case.
          *
+         * if that is not the case and if large (#of lists/user) is a common scenario
+         * then consider tuning this script using where clause 
          *
-        function getPagedOnLoginId($start,$direction,$limit,$loginId) {
+         */
+        static function getPagedOnLoginId($loginId,$offset,$limit) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input
-            settype($start,"integer");
-            settype($limit,"integer");
             settype($loginId,"integer");
-            $direction = $mysqli->real_escape_string($direction);
+            settype($offset,"integer");
+            settype($limit,"integer");
 
-            //@todo paged sorting on name!
-            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
-
-            $q = new MySQL\Query($mysqli);
-            $q->setAlias("com\indigloo\sc\model\Post","q");
-            //raw condition
-            $q->addCondition("l.id = q.login_id");
-            $q->filter($filters);
-
-            $sql .= $q->get();
-            $sql .= $q->getPagination($start,$direction,"q.id",$limit);
+            $sql = " select * from sc_list where login_id = %d order by id desc limit %d,%d " ;
+            $sql = sprintf($sql,$loginId,$offset,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-
-            //reverse rows for 'before' direction
-            if($direction == 'before') {
-                $results = array_reverse($rows) ;
-                return $results ;
-            }
-
             return $rows;
 
         }
-
-        function getLatest($limit,$loginId) {
-            $rows = mysql\Lists::getLatest($limit,$loginId);
-            return $rows ;
-        } 
-         */
 
         static function getOnId($listId) {
             
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             settype($listId,"int");
-            $sql = " select id,name from sc_list where id = %d " ;
+            $sql = " select * from sc_list where id = %d " ;
             $sql = sprintf($sql,$listId);
 
             $row = MySQL\Helper::fetchRow($mysqli,$sql);

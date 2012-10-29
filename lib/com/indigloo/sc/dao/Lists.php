@@ -39,33 +39,22 @@ namespace com\indigloo\sc\dao {
             return $row["count"] ;
         }
 
-        function getPaged($paginator,$loginId) {
+        function getPagedOnLoginId($paginator,$loginId) {
 
             $limit = $paginator->getPageSize();
-            
-            if($paginator->isHome()){
-                return $this->getLatest($limit,$loginId);
-            } else {
+            $pageNo = $paginator->getPageNo();
+            $offset = ($pageNo-1) * $limit ; 
 
-                $params = $paginator->getDBParams();
-                $start = $params["start"];
-                $direction = $params["direction"];
-                $rows = mysql\Lists::getPaged($start,$direction,$limit,$loginId);
-                return $rows ;
-            }
-        }
-
-        function getLatest($limit,$loginId) {
-            $rows = mysql\Lists::getLatest($limit,$loginId);
+            $rows = mysql\Lists::getPagedOnLoginId($loginId,$offset,$limit);
             return $rows ;
         }
 
         function getIdMergeItems($dbItemsJson, $frmItemsJson) {
             $data = $this->getIdAndItems($frmItemsJson);
             $ids = $data["ids"];
-            $images = $data["images"];
+            $items = $data["items"];
 
-            $numImages = 5  - (sizeof($images));
+            $numImages = 5  - (sizeof($items));
             $count = 0 ;
 
             if($numImages > 0 ) { 
@@ -73,13 +62,13 @@ namespace com\indigloo\sc\dao {
                 foreach($dbItems as $dbItem) {
                     if($count >= $numImages) break ;
                     if(property_exists($dbItem,"thumbnail")) { 
-                        array_push($images,$dbItem); $count++ ;
+                        array_push($items,$dbItem); $count++ ;
                     }
                 }
             }
 
             //reassign
-            $data["images"] = $images ;
+            $data["items"] = $items ;
             return $data;
         }
 
