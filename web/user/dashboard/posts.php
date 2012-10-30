@@ -72,34 +72,30 @@
                 </div>
             </div>
             <div class="row">
-                <div class="span12">
-                    <div class="page-header">
-                        <h2>My items</h2>
-                        
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="span2">
+                 <div class="span12">
                     <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
                 </div>
 
-                <div class="span8 mh600">
-                    
-                    <?php FormMessage::render(); ?>
-                    <div class="row">
-                        <div id="page-action" class="section4">
-                            <div class="span1">
-                                <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
-                            </div>
-                            <div class="span7">
-                                <a id="open-list-popup" href="#" class="b btn btn-small">Add to list</a>
-                                &nbsp;&nbsp;
-                                <a id="item-delete" href="#" class="b btn btn-small">Delete</a>
-                            </div>
-                        </div>
+            </div>
+            <?php FormMessage::render(); ?>
+            <div class="row">
+                <div id="page-action">
+                    <div class="span1 offset1">
+                        <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
                     </div>
+                    <div class="span7">
+                        <a id="open-list-popup" href="#" class="b btn btn-small">Add to list</a>
+                        &nbsp;&nbsp;
+                        <a id="item-delete" href="#" class="b btn btn-small">Delete</a>
+                    </div>
+                </div>
+           
+            </div>
+
+            <div class="row">
+               
+                <div class="span9 mh600 offset1">
+                    
                     <div class="row">
                         <div id="page-message" class="color-red ml20"> </div>
                         <div id="list-container" class="<?php echo $slclass; ?>">
@@ -118,7 +114,6 @@
                             ?>
 
                         </div>
-
 
                     </div>
                     <div id="widgets">

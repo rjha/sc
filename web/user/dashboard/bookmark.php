@@ -7,12 +7,14 @@
     use \com\indigloo\Util as Util;
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
-    use \com\indigloo\sc\auth\Login as Login;
 
+    use \com\indigloo\Constants as Constants;
     use \com\indigloo\sc\Constants as AppConstants ;
     use \com\indigloo\sc\ui\Constants as UIConstants ;
 
+    use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\ui\Filter as Filter;
+    use \com\indigloo\ui\form\Message as FormMessage;
 
     
     $qparams = Url::getRequestQueryParams();
@@ -57,6 +59,9 @@
     $pageBaseUrl = "/user/dashboard/bookmark.php";
 
 
+    $sl = Util::tryArrayKey($_GET,'sl');
+    $slclass = (!is_null($sl) && ($sl == 1 )) ? "" : "hide-me" ; 
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -78,46 +83,84 @@
                 </div>
             </div>
             <div class="row">
-                <div class="span12">
-                    <div class="page-header">
-                        <h2>Saved items</h2>
+                 <div class="span12">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+
+            </div>
+            <?php FormMessage::render(); ?>
+            <div class="row">
+                <div id="page-action">
+                    <div class="span1 offset1">
+                        <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
+                    </div>
+                    <div class="span7">
+                        <a id="open-list-popup" href="#" class="b btn btn-small">Add to list</a>
+                        &nbsp;&nbsp;
+                        <a id="item-delete" href="#" class="b btn btn-small">Delete</a>
                     </div>
                 </div>
+           
             </div>
 
             <div class="row">
-                <div class="span2">
-                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
-                </div>
-                <div class="span8 mh600">
-                    
-                    <div class="faded-text mb20">
-                        The items you saved are shown here. To remove an item 
-                        do mouse over the item and click Remove.
-                    </div>
-                    
+                <div class="span9 offset1 mh600">
+                    <div class="row">
+                        <div id="page-message" class="color-red ml20"> </div>
+                        <div id="list-container" class="<?php echo $slclass; ?>">
+                            <?php
+                                
+                                //copy URL parameters
+                                $fparams = $qparams;
+                                // unset sl param
+                                unset($fparams["sl"]);
+                                $qUrl = Url::createUrl("/user/dashboard/bookmark.php",$fparams);
+
+                                $listDao = new \com\indigloo\sc\dao\Lists();
+                                $listRows = $listDao->getOnLoginId($loginId);
+                                $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$qUrl);
+                                echo $html ;
+                            ?>
+
+                        </div>
+
+                    </div> <!-- row:list -->
 
                     <div id="widgets">
                         <?php
                             $startId = NULL;
-                            $endId = NULL ;
-                            if(sizeof($postDBRows) > 0 ) {
-                                $startId = $postDBRows[0]['id'] ;
-                                $endId =   $postDBRows[sizeof($postDBRows)-1]['id'] ;
-                                foreach($postDBRows as $postDBRow) {
-                                    //$html = \com\indigloo\sc\html\Post::getTile($postDBRow,$tileOptions);
-                                    $html = \com\indigloo\sc\html\Post::getBookmarkWidget($postDBRow);
-                                    echo $html ;
+                            $endId = NULL;
+                            $imageData = array();
+
+                            if (sizeof($postDBRows) > 0) {
+                                $startId = $postDBRows[0]['id'];
+                                $endId = $postDBRows[sizeof($postDBRows) - 1]['id'];
+                                foreach ($postDBRows as $postDBRow) {
+                                    //output post widget html
+                                    echo \com\indigloo\sc\html\Post::getWidget($postDBRow,0);
+
+                                    //get id + images_json from postDBRows 
+                                    
+                                    $images = json_decode($postDBRow["images_json"]);
+                                    if( (!empty($images)) && (sizeof($images) > 0)) {
+                                        $image = $images[0];
+                                        $imgv = \com\indigloo\sc\html\Post::convertImageJsonObj($image);
+                                        //id vs. source,thumbnail
+                                        $imageData[$postDBRow["pseudo_id"]] = array("thumbnail" => $imgv["thumbnail"]) ;
+
+                                    }
 
                                 }
                             } else {
-                                $message = "No results found " ;
-                                echo \com\indigloo\sc\html\Site::getNoResult($message);
+                                $message = "No posts found " ;
+                               echo \com\indigloo\sc\html\Site::getNoResult($message);
                             }
 
-                        ?>
+                            $strImageJson = json_encode($imageData);
+                            $strImageJson = \com\indigloo\Util::formSafeJson($strImageJson);
 
-                    </div><!-- widgets -->
+                        ?>
+                    </div> <!-- widgets -->
 
                 </div>
 
@@ -132,20 +175,23 @@
         <script type="text/javascript">
             /* column width = css width + margin */
             $(document).ready(function(){
-
-               $('.widget').mouseenter(function() {
-                    $(this).find('.options').css("visibility", "visible");
-                    /* @todo move colors to a css style */
-                    $(this).css("background-color", "#FEFDF1");
-                });
-
-                $('.widget').mouseleave(function() {
-                    $(this).find('.options').css("visibility", "hidden");
-                    $(this).css("background-color", "#FFFFFF");
-                });
-
-                webgloo.sc.item.addActions();
+                //fix twitter bootstrap alerts
+                webgloo.sc.util.fixAlert();
+                // initialize page level checkboxes
+                webgloo.sc.util.initPageCheckbox("#widgets");
                 webgloo.sc.toolbar.add();
+                //initialize lists
+                webgloo.sc.Lists.init("#widgets");
+                webgloo.sc.Lists.debug = false ;
+                webgloo.sc.Lists.strImageJson = '<?php echo $strImageJson; ?>' ;
+
+                try{
+                    webgloo.sc.Lists.imageDataObj = JSON.parse(webgloo.sc.Lists.strImageJson) ;
+                    webgloo.sc.Lists.imageError = 0 ;
+                } catch(ex) {
+                    console.log("error : not able to parse image data json string");
+                    webgloo.sc.Lists.imageError = 1 ;
+                }
 
             });
         </script>
