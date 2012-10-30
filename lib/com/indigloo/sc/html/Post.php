@@ -238,8 +238,6 @@ namespace com\indigloo\sc\html {
                 $view->siteUrl = $siteMetaRow["canonical_url"];
             }
 
-           
-
             $posts = array();
             foreach($sitePostRows as $row) {
                 $postView = self::createPostView($row);
