@@ -46,7 +46,8 @@ namespace com\indigloo\sc\mysql {
          * case.
          *
          * if that is not the case and if large (#of lists/user) is a common scenario
-         * then consider tuning this script using where clause 
+         * then you need to tune the pagination query. LIMIT offset,size kind of queries
+         * is bad for performance.
          *
          */
         static function getPagedOnLoginId($loginId,$offset,$limit) {
