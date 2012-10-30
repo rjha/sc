@@ -1284,7 +1284,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .section{min-height:20px;padding:15px 20px 15px 20px;margin-bottom:10px;margin-top:10px;border-top:1px solid rgba(0,0,0,0.03);overflow:hidden}
 .section1{min-height:20px;padding:15px 20px 15px 20px;margin-bottom:10px;margin-top:10px;overflow:hidden}
 .section3{min-height:20px;padding:15px 20px 1px 20px;margin-bottom:10px;margin-top:1px;overflow:hidden}
-.section4{min-height:20px;padding:15px 0 15px 0;background-color:#f7f7f7;border-radius:8px}
+#page-action{min-height:20px;padding:15px 0 15px 0;border-bottom:2px solid #f8d575;border-top:2px solid #f8d575}
 #gallery{height:auto;padding-top:1px}
 #gallery .container{width:100px;height:77px;margin:3px;float:left;cursor:pointer;background:white;box-shadow:0 1px 3px rgba(34,25,25,0.4)}
 #gallery .container img{width:auto;height:auto;padding:1px;max-width:100px;max-height:75px}
@@ -1328,7 +1328,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #site-toolbar a{color:#222;font-weight:bold;text-shadow:0 1px 0 rgba(255,255,255,0.5)}
 #site-toolbar .dropdown-menu a{color:#333;font-weight:normal}
 #site-toolbar .dropdown-menu li>a:hover,#site-toolbar .dropdown-menu .active>a,#site-toolbar .dropdown-menu .active>a:hover{color:#222;font-weight:normal;text-decoration:underline;background-color:inherit}
-#submenu-col2{width:360px;display:block;overflow:hidden}
+#submenu-col2{width:400px;display:block;overflow:hidden}
 #submenu-col2 ul{float:left;width:50%;list-style:none;margin:0 auto}
 #site-navigator{font-size:13px;line-height:18px;padding:10px 20px 6px 20px;margin-bottom:6px}
 #site-navigator a{color:#444;cursor:pointer}

@@ -630,11 +630,11 @@
         overflow:hidden ;
     }
 
-    .section4 {
+    #page-action {
         min-height: 20px;
         padding:15px 0px 15px 0px;
-        background-color : #f7f7f7 ;
-        border-radius:8px;
+        border-bottom: 2px solid #F8D575 ;
+        border-top: 2px solid #F8D575 ;
     }
 
 
@@ -876,7 +876,7 @@
     } 
 
     #submenu-col2 {
-        width:360px;
+        width:380px;
         display : block ;
         overflow:hidden;
     }
