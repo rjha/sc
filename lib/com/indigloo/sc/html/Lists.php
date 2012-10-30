@@ -21,6 +21,24 @@ namespace com\indigloo\sc\html {
             $html = Template::render($template,$view);
             return $html ;
         }
+
+        static function getWidget($listDBRow) {
+            $view = self::createListView($listDBRow);
+            $template =  "/fragments/lists/user/widget.tmpl" ;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function createListView($listDBRow) {
+            $view = new \stdClass ;
+
+            $view->id = $listDBRow["id"];
+            $view->name = $listDBRow["name"];
+            $view->items = json_decode($listDBRow["items_json"]);
+
+            return $view ;
+
+        }
     }
 
 }

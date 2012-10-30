@@ -43,49 +43,43 @@
     </head>
 
     <body>
+
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-
             <div class="row">
                 <div class="span12">
                  <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
                 </div>
             </div>
             <div class="row">
-                <div class="span12">
-                    <div class="page-header">
-                        <h2>Lists</h2>
-                        
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="span2">
+                 <div class="span12">
                     <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
                 </div>
 
-                <div class="span8 mh600">
+            </div>
+            <?php FormMessage::render(); ?>
+            
+            <div class="row">
+                <div class="span9 offset1 mh600">
                     
-                <?php 
-                    FormMessage::render(); 
-                    $startId = NULL;
-                    $endId = NULL;
+                    <?php FormMessage::render(); ?>
+                    <div id="widgets">
+                    <?php 
+                        $startId = NULL;
+                        $endId = NULL;
 
-                    if (sizeof($listDBRows) > 0) {
-                        $startId = $listDBRows[0]["id"];
-                        $endId = $listDBRows[sizeof($listDBRows) - 1]["id"];
-                    }
+                        if (sizeof($listDBRows) > 0) {
+                            $startId = $listDBRows[0]["id"];
+                            $endId = $listDBRows[sizeof($listDBRows) - 1]["id"];
 
-                    foreach($listDBRows as $listDBRow) {
-                        print_r($listDBRow);
+                            foreach($listDBRows as $listDBRow) {
+                                echo \com\indigloo\sc\html\Lists::getWidget($listDBRow);
+                            }
 
-                    }
-                 ?>
+                        }
+                     ?>
+                     </div> <!-- widgets -->
                         
-                    
-                   
-
                 </div>
                
             </div>
@@ -100,6 +94,8 @@
             
             $(document).ready(function(){
                 webgloo.sc.toolbar.add();
+                //turn off border for last widget
+                $("#widgets .widget:last-child").css('border-bottom', 'none');
             });
 
         </script>

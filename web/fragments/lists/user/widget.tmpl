@@ -1,0 +1,17 @@
+
+<div class="widget">
+    <h5><a href="/list/~~$view->id~/">~~$view->name~</a></h5>
+    <div class="image-grid">
+    ~foreach($view->items as $item){~
+        <div class="box">
+            <a href="/item/~~$item->id~">
+                <img src="~~$item->thumbnail~" />
+            </a>
+        </div>
+    ~}~
+
+    </div>
+    <div class="clear"> </div>
+</div>
+
+
