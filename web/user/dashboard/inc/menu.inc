@@ -1,3 +1,22 @@
+<?php
+
+    //Active tab depends on rquest URI
+    $urlMap  = array(
+    "/user/dashboard/index.php" => "Dashboard",
+    "/user/dashboard/posts.php" => "My items",
+    "/user/dashboard/bookmark.php" => "Saved items",
+    "/user/dashboard/list/index.php" => "Lists",
+    "/user/dashboard/activities.php" => "Activity",
+    "/user/dashboard/mails.php" => "Settings"
+    );
+
+    $classMap = array("active" => "item1", "normal" => "item");
+    $template = "/fragments/ui/links/umenu.tmpl"; 
+    $umenuHtml =   \com\indigloo\sc\ui\Links::getHtml($urlMap,$template,$classMap);
+
+
+?>
+
 <style>
 
 #user-menu {
@@ -9,6 +28,7 @@
     background: white;
     /* border-bottom: 1px solid #E5E5E5; */
     margin-bottom: 10px;
+    border-bottom : 1px solid #e5e5e5 ;
 }
 
 #user-menu .item {
@@ -38,7 +58,7 @@
 }
 
 #page-action {
-    border-top : 1px solid #e5e5e5 ;
+    border-top : none ;
     border-bottom : 1px solid #e5e5e5 ;
 }
 
@@ -62,14 +82,7 @@
 </style>
 
 <div id="user-menu">
-    <div class="item"><a href="#">Dashboard</a></div>
-    <div class="item1"> <a href="/user/dashboard/posts.php">My items</a></div>
-    <div class="item"> <a href="/user/dashboard/posts.php">Saved items</a></div>
-    <div class="item"><a href="/user/dashboard/list/index.php">Lists</a></div>
-    
-    <div class="item"><a href="#">Activities</a></div>
-    <div class="item"><a href="#">Settings</a></div>
-
+    <?php echo $umenuHtml;  ?>
     <div class="item">
         <ul class="nav nav-pills">
             <li class="dropdown">

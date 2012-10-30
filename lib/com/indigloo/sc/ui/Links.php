@@ -6,9 +6,9 @@ namespace com\indigloo\sc\ui {
     use \com\indigloo\Url as Url;
     use com\indigloo\Template as Template;
 
-    class Tabs {
+    class Links {
         
-        static function getHtml($tabUrlMap) {
+        static function getHtml($map,$template,$classMap) {
             $currentUrl = Url::current() ;
             $pos = strpos($currentUrl, '?');
 
@@ -18,17 +18,16 @@ namespace com\indigloo\sc\ui {
             }
 
             $records = array();
-            foreach($tabUrlMap as $url => $name) {
+            foreach($map as $url => $name) {
                 $record = array();
                 $record["name"] = $name ;
                 $record["url"] = $url ;
-                $record["class"] = (strcmp($currentUrl,$url) == 0 ) ? "active" : "" ;
+                $record["class"] = (strcmp($currentUrl,$url) == 0 ) ? $classMap["active"] : $classMap["normal"] ;
                 $records[] = $record ;
             }
 
             $view = new \stdClass;
             $view->records = $records ;
-            $template = "/fragments/common/tabs.tmpl"  ;
             $html = Template::render($template,$view);
             return $html ;
         }
