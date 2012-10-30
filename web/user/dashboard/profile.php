@@ -47,19 +47,15 @@
                 </div>
             </div>
             <div class="row">
-                <div class="span12">
-                    <div class="page-header">
-                        <h2>Profile</h2>
-                    </div>
+                 <div class="span12">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
                 </div>
+
             </div>
 
             <div class="row">
-                <div class="span2">
-                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
-                </div>
-                <div class="span9">
-                    <div class="faded-text mb20">&nbsp;</div>
+                <div class="span8 offset1">
+                    <h3> <?php echo $userDBRow['name']; ?> </h3>
                     <?php echo \com\indigloo\sc\html\User::getProfile($gSessionLogin,$userDBRow) ; ?>
                 </div>
                

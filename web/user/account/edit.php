@@ -47,116 +47,128 @@
        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
             
-            <div class="row">
+              <div class="row">
                 <div class="span12">
-                    <div class="page-header">
-                        <h2> <?php echo $userDBRow['name']; ?> </h2>
-                    </div>
-
-                    <p class="help-text">
-                       Please update the details and click on Submit.  If you provide a nick name then your nick name
-                       will be displayed instead of your real name.
-                    </p>
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
                 </div>
-            </div> <!-- row -->
+            </div>
+            <div class="row">
+                 <div class="span12">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+
+            </div>
 
             <div class="row">
-                <div class="span6">
-                    <div class="wrapper" style="border-right:1px dotted #ccc;">
+
+                <div class="span8 offset1">
+                    
+                    <h3> <?php echo $userDBRow['name']; ?> </h3>
+                    
+                    
 
                     <?php FormMessage::render(); ?>
-
-                        <form id="web-form1"  name="web-form1" action="/user/account/form/edit.php" enctype="multipart/form-data"  method="POST">
-
-                            <div class="error">    </div>
-
-                            <table class="form-table">
-
-                                 <tr>
-                                    <td class="field">First Name<span class="red-label">*</span></td>
-                                    <td>
-                                        <input type="text" name="first_name" maxlength="32" class="required" title="&nbsp;First Name is required" value="<?php echo $sticky->get('first_name',$userDBRow['first_name']); ?>"/>
-                                    </td>
-                                 </tr>
-                                  <tr>
-                                    <td class="field">Last Name<span class="red-label">*</span></td>
-                                    <td>
-                                        <input type="text" name="last_name" maxlength="32" class="required" title="&nbsp;Last Name is required" value="<?php echo $sticky->get('last_name',$userDBRow['last_name']); ?>"/>
-                                    </td>
-                                 </tr>
-                                  <tr>
-                                    <td class="field">Nick Name</td>
-                                    <td>
-                                        <input type="text" name="nick_name" maxlength="32" value="<?php echo $sticky->get('nick_name',$userDBRow['nick_name']); ?>"/>
-                                    </td>
-                                 </tr>
-                                  <tr>
-                                    <td class="field">Email<span class="red-label">*</span></td>
-                                    <td>
-                                    <input type="text" name="email" maxlength="64" class="required" title="&nbsp;Email is required" value="<?php echo $sticky->get('email',$userDBRow['email']); ?>" <?php echo $emailExtra; ?> />
-                                    </td>
-                                 </tr>
-                                  <tr>
-                                    <td class="field">Website</td>
-                                    <td>
-                                        <input type="text" name="website" maxlength="128" value="<?php echo $sticky->get('website',$userDBRow['website']); ?>"/>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                  <td class="field">Blog</td>
-                                    <td>
-                                        <input type="text" name="blog" maxlength="128" value="<?php echo $sticky->get('blog',$userDBRow['blog']); ?>"/>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                  <td class="field">Location</td>
-                                    <td>
-                                        <input type="text" name="location" maxlength="32" value="<?php echo $sticky->get('location',$userDBRow['location']); ?>"/>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                  <td class="field">Age</td>
-                                    <td>
-                                        <input type="text" name="age" maxlength="2" value="<?php echo $sticky->get('age',$userDBRow['age']); ?>"/>
-                                    </td>
-                                 </tr>
-                                  <tr>
-                                      <td class="field">&nbsp;</td>
-                                      <td class="field">About me (512 characters)</td>
-                                 </tr>
-
-                                 <tr>
-                                  <td class="field">&nbsp;</td>
-                                   <td>
-                                    <textarea  id="about_me" maxlength="512" name="about_me" class="h130" cols="2" rows="4" ><?php echo $sticky->get('about_me',$userDBRow['about_me']); ?></textarea>
-                                    <br>
-                                   <span id="about_me_counter"></span>
-                                  </td>
-                                </tr>
-                            </table>
-
-                            <div class="form-actions">
-                                <button class="btn btn-primary" type="submit" name="save" value="Save"><span>Submit</span></button>
-                                <a href="<?php echo $qUrl;?>">
-                                    <button class="btn" type="button" name="cancel"><span>Cancel</span></button>
-                                </a>
-
+                    <div class="row">
+                        <div class="span5 section">
+                            <p class="help-text">
+                               Please update the details and click on Submit.  
+                               If you provide a nick name then your nick name
+                               will be displayed instead of your real name.
+                            </p>
+                            <div id="my-photo">
+                            <?php echo User::getPhoto($userDBRow['name'], $userDBRow['photo_url']); ?>
                             </div>
+                               
+                            <div id="image-uploader" class="p20"> </div>
+                            <div class="clear"> </div>
+                        </div>
 
-                            <div style="clear: both;"></div>
-                            <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
-                            <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
-                            <input type="hidden" name="photo_url" value="<?php echo $userDBRow['photo_url']; ?>" />
+                    </div> <!-- row:photo -->
 
-                        </form>
-                    </div> <!-- wrapper -->
-                </div>
-                <div class="span6">
-                    <div id="my-photo">
-                        <?php echo User::getPhoto($userDBRow['name'], $userDBRow['photo_url']); ?>
-                    </div>
-                    <div class="clear mb20"> </div>
-                    <div id="image-uploader" class="mt20"> </div>
+                    <form id="web-form1"  name="web-form1" action="/user/account/form/edit.php" enctype="multipart/form-data"  method="POST">
+
+                        <div class="error">    </div>
+
+                        <table class="form-table">
+
+                             <tr>
+                                <td class="field">First Name<span class="red-label">*</span></td>
+                                <td>
+                                    <input type="text" name="first_name" maxlength="32" class="required" title="&nbsp;First Name is required" value="<?php echo $sticky->get('first_name',$userDBRow['first_name']); ?>"/>
+                                </td>
+                             </tr>
+                              <tr>
+                                <td class="field">Last Name<span class="red-label">*</span></td>
+                                <td>
+                                    <input type="text" name="last_name" maxlength="32" class="required" title="&nbsp;Last Name is required" value="<?php echo $sticky->get('last_name',$userDBRow['last_name']); ?>"/>
+                                </td>
+                             </tr>
+                              <tr>
+                                <td class="field">Nick Name</td>
+                                <td>
+                                    <input type="text" name="nick_name" maxlength="32" value="<?php echo $sticky->get('nick_name',$userDBRow['nick_name']); ?>"/>
+                                </td>
+                             </tr>
+                              <tr>
+                                <td class="field">Email<span class="red-label">*</span></td>
+                                <td>
+                                <input type="text" name="email" maxlength="64" class="required" title="&nbsp;Email is required" value="<?php echo $sticky->get('email',$userDBRow['email']); ?>" <?php echo $emailExtra; ?> />
+                                </td>
+                             </tr>
+                              <tr>
+                                <td class="field">Website</td>
+                                <td>
+                                    <input type="text" name="website" maxlength="128" value="<?php echo $sticky->get('website',$userDBRow['website']); ?>"/>
+                                </td>
+                             </tr>
+                             <tr>
+                              <td class="field">Blog</td>
+                                <td>
+                                    <input type="text" name="blog" maxlength="128" value="<?php echo $sticky->get('blog',$userDBRow['blog']); ?>"/>
+                                </td>
+                             </tr>
+                             <tr>
+                              <td class="field">Location</td>
+                                <td>
+                                    <input type="text" name="location" maxlength="32" value="<?php echo $sticky->get('location',$userDBRow['location']); ?>"/>
+                                </td>
+                             </tr>
+                             <tr>
+                              <td class="field">Age</td>
+                                <td>
+                                    <input type="text" name="age" maxlength="2" value="<?php echo $sticky->get('age',$userDBRow['age']); ?>"/>
+                                </td>
+                             </tr>
+                              <tr>
+                                  <td class="field">&nbsp;</td>
+                                  <td class="field">About me (512 characters)</td>
+                             </tr>
+
+                             <tr>
+                              <td class="field">&nbsp;</td>
+                               <td>
+                                <textarea  id="about_me" maxlength="512" name="about_me" class="h130" cols="2" rows="4" ><?php echo $sticky->get('about_me',$userDBRow['about_me']); ?></textarea>
+                                <br>
+                               <span id="about_me_counter"></span>
+                              </td>
+                            </tr>
+                        </table>
+
+                        <div class="form-actions">
+                            <button class="btn btn-primary" type="submit" name="save" value="Save"><span>Submit</span></button>
+                            <a href="<?php echo $qUrl;?>">
+                                <button class="btn" type="button" name="cancel"><span>Cancel</span></button>
+                            </a>
+
+                        </div>
+
+                        <div style="clear: both;"></div>
+                        <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                        <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
+                        <input type="hidden" name="photo_url" value="<?php echo $userDBRow['photo_url']; ?>" />
+
+                    </form>
+                   
                 </div>
 
             </div> <!-- row -->
@@ -176,7 +188,7 @@
                     action: '/upload/image.php',
                     debug: false,
 
-                    labelOfButton : 'Change photo',
+                    uploadButtonText : 'Change photo',
                     allowedExtensions: ['png','gif','jpg','jpeg'],
 
                     onComplete: function(id, fileName, responseJSON) {

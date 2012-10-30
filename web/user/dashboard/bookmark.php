@@ -104,7 +104,7 @@
             </div>
 
             <div class="row">
-                <div class="span9 offset1 mh600">
+                <div class="span8 offset1 mh600">
                     <div class="row">
                         <div id="page-message" class="color-red ml20"> </div>
                         <div id="list-container" class="<?php echo $slclass; ?>">

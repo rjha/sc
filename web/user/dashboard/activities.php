@@ -51,18 +51,14 @@
                 </div>
             </div>
             <div class="row">
-                <div class="span12">
-                    <div class="page-header">
-                        <h2>Activities</h2>
-                    </div>
+                 <div class="span12">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
                 </div>
+
             </div>
 
             <div class="row">
-                <div class="span2">
-                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
-                </div>
-                <div class="span8">
+                <div class="span8 offset1">
                     <div class="faded-text mb20">&nbsp;</div>
                     <div class="feeds">
                         <?php

@@ -56,25 +56,23 @@
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
 
-            <div class="row">
+             <div class="row">
                 <div class="span12">
                  <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
                 </div>
             </div>
             <div class="row">
-                <div class="span12">
-                    <div class="page-header">
-                        <h2>Mail settings</h2>
-                    </div>
+                 <div class="span12">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
                 </div>
+
             </div>
 
             <div class="row">
-                <div class="span2">
-                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
-                </div>
-                <div class="span8 mh600">
-                        <div class="faded-text mb20"> change your preferences and click update</div>
+                <div class="span8 offset1 mh600">
+                    <div class="faded-text mb20"> 
+                        change your mail preferences and click update
+                    </div>
 
                     <?php FormMessage::render(); ?>
 
@@ -102,7 +100,7 @@
                                 </tbody>
                                 </table>
                                     <div class="form-actions2">
-                                        <button class="btn gBtnUp" type="submit" name="save" value="Save"><span>Update</span></button>
+                                        <button class="btn" type="submit" name="save" value="Save"><span>Update</span></button>
                                     </div>
                                 <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
                         </form>

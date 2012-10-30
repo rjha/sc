@@ -94,7 +94,7 @@
 
             <div class="row">
                
-                <div class="span9 mh600 offset1">
+                <div class="span8 offset1 mh600">
                     
                     <div class="row">
                         <div id="page-message" class="color-red ml20"> </div>
@@ -151,6 +151,9 @@
                         ?>
                     </div>
 
+                </div>
+                <div class="span3">
+                    
                 </div>
                
             </div>

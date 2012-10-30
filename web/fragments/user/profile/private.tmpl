@@ -1,35 +1,30 @@
-<div class="row">
-    <div class="span4">
-        <div class="widget">
-            <div class="photo"> <img src="~~$view->photoUrl~" alt="~~$view->name~" /> </div>
-        </div>
-    </div>
-    <div class="span5">
-        <h3>About me </h3>
-        <p class="comment-text"> ~~$view->aboutMe~ </p>
-    </div>
 
-</div> <!-- nested row -->
+<div class="section1">
+    <div class="photo"> <img src="~~$view->photoUrl~" alt="~~$view->name~" /> </div>
+</div>
+
+<div class="section">
+    <h3>About me </h3>
+    <p class="comment-text"> ~~$view->aboutMe~ </p>
+</div>
 
 
+<div class="section">
+    <table class="table table-condensed">
+        <tr> <td>Real name</td> <td>~~$view->name~</td> </tr>
+        <tr> <td>Nick name</td> <td>~~$view->nickName~</td> </tr>
+        <tr> <td>Email</td> <td>~~$view->email~</td> </tr>
+        <tr> <td>Website</td> <td>~~$view->website~</td> </tr>
+        <tr> <td>Blog</td> <td>~~$view->blog~</td> </tr>
+        <tr> <td>Location</td> <td>~~$view->location~</td> </tr>
+        <tr> <td>Age</td> <td> ~~$view->age~</td> </tr>
+        <tr> <td>Created on</td> <td>~~$view->createdOn~</td> </tr>
+    </table>
+</div>
 
-<div class="row">
-    <div class="span6 p20">
-        <table class="table table-condensed">
-            <tr> <td>Real name</td> <td>~~$view->name~</td> </tr>
-            <tr> <td>Nick name</td> <td>~~$view->nickName~</td> </tr>
-            <tr> <td>Email</td> <td>~~$view->email~</td> </tr>
-            <tr> <td>Website</td> <td>~~$view->website~</td> </tr>
-            <tr> <td>Blog</td> <td>~~$view->blog~</td> </tr>
-            <tr> <td>Location</td> <td>~~$view->location~</td> </tr>
-            <tr> <td>Age</td> <td> ~~$view->age~</td> </tr>
-            <tr> <td>Created on</td> <td>~~$view->createdOn~</td> </tr>
-        </table>
-    </div>
-
-</div> <!-- nested row -->
-
-<span> <a class="btn b" href="~~$view->editUrl~">Edit profile</a> </span>
+<div class="section">
+     <a class="btn b" href="~~$view->editUrl~">Edit profile</a> 
+ </div>
 
 
 
