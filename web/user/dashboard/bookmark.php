@@ -25,17 +25,6 @@
         trigger_error("Error : NULL or invalid login_id", E_USER_ERROR);
     }
 
-    $userDao = new \com\indigloo\sc\dao\User();
-    $userDBRow = $userDao->getOnLoginId($loginId);
-
-    if (empty($userDBRow)) {
-        trigger_error("No user record found for given login_id", E_USER_ERROR);
-    }
-
-    $tileOptions = ~UIConstants::TILE_ALL ;
-    $pageTitle = "Saved items on 3mik" ;
-    $tileOptions = UIConstants::TILE_REMOVE ;
-
     $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
 
     //add login_id and code filters
@@ -67,7 +56,7 @@
 <html>
 
     <head>
-        <title> <?php echo $pageTitle; ?> </title>
+        <title> saved items of <?php echo $gSessionLogin->name; ?> </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         
@@ -152,8 +141,8 @@
 
                                 }
                             } else {
-                                $message = "No posts found " ;
-                               echo \com\indigloo\sc\html\Site::getNoResult($message);
+                                $message = "No items found " ;
+                                echo \com\indigloo\sc\html\Site::getNoResult($message);
                             }
 
                             $strImageJson = json_encode($imageData);

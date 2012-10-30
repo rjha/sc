@@ -60,7 +60,7 @@
             <?php FormMessage::render(); ?>
             
             <div class="row">
-                <div class="span9 offset1 mh600">
+                <div class="span8 offset1 mh600">
                     
                     <?php FormMessage::render(); ?>
                     <div id="widgets">
@@ -84,7 +84,7 @@
                
             </div>
         </div> <!-- container -->
-        <div class="hr"> </div>
+        
         <?php $paginator->render('/user/dashboard/posts.php', $startId, $endId); ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
