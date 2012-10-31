@@ -24,7 +24,7 @@ namespace com\indigloo\sc\html {
 
         static function getWidget($listDBRow) {
             $view = self::createListView($listDBRow);
-            $template =  "/fragments/lists/user/widget.tmpl" ;
+            $template =  "/fragments/lists/user/summary.tmpl" ;
             $html = Template::render($template,$view);
             return $html ;
         }

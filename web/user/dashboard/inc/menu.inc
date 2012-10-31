@@ -6,6 +6,7 @@
     "/user/dashboard/posts.php" => "My items",
     "/user/dashboard/bookmark.php" => "Saved items",
     "/user/dashboard/list/index.php" => "Lists",
+    "/user/dashboard/list/detail.php" => "Lists",
     "/user/dashboard/activities.php" => "Activity",
     "/user/dashboard/mails.php" => "Settings"
     );
@@ -78,6 +79,8 @@
 .widget {
     border-bottom: 1px solid #f1f1f1 ;
 }
+
+.widget .options .links { float:right;}
 
 </style>
 

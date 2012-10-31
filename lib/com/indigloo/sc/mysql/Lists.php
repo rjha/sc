@@ -88,6 +88,75 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        static function getTotalItems($filters) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "select count(list.id) as count from sc_list list ";
+
+            $q = new MySQL\Query($mysqli);
+            $q->filter($filters);
+            $condition = $q->get();
+            $sql .= $condition ;
+
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+
+        static function getLatestItems($limit,$filters) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            settype($limit,"integer");
+
+            $sql = " select p.* from sc_post p,sc_list_item li" ;
+            
+            $q = new MySQL\Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\ListItem","li");
+            //raw condition
+            $q->addCondition("p.id = li.item_id");
+            $q->filter($filters);
+            $condition = $q->get();
+            $sql .= $condition;
+
+            $sql .= " order by li.id desc LIMIT %d " ;
+            $sql = sprintf($sql,$limit);
+            
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
+        static function getPagedItems($paginator,$filters) {
+
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            settype($start,"integer");
+            settype($limit,"integer");
+            $direction = $mysqli->real_escape_string($direction);
+
+            $sql = " select p.* from sc_post p,sc_list_item li" ;
+            
+            $q = new MySQL\Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\ListItem","li");
+            //raw condition
+            $q->addCondition("p.id = li.item_id");
+            $q->filter($filters);
+            $condition = $q->get();
+            $sql .= $condition;
+            $sql .= $q->getPagination($start,$direction,"li.id",$limit);
+            
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            
+            //reverse rows for 'before' direction
+            if($direction == 'before') {
+                $results = array_reverse($rows) ;
+                return $results ;
+            }
+
+            return $rows;
+        }
+         
+
         /*
          * Add more items to an existing list!
          * deleting items from list is a separate call.

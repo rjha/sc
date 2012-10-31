@@ -17,17 +17,30 @@ namespace com\indigloo\sc\ui {
                 $currentUrl = substr($currentUrl,0,$pos);
             }
 
-            $records = array();
+            $bucket = array();
+            $activeName = NULL ;
+
             foreach($map as $url => $name) {
-                $record = array();
-                $record["name"] = $name ;
-                $record["url"] = $url ;
-                $record["class"] = (strcmp($currentUrl,$url) == 0 ) ? $classMap["active"] : $classMap["normal"] ;
-                $records[] = $record ;
+                //links to store
+                if(!array_key_exists($name,$bucket)) {
+                    $record = array();
+                    $record["name"] = $name ;
+                    $record["url"] = $url ;
+                    $record["class"] = $classMap["normal"] ;
+                    $bucket[$name] = $record ;
+                    
+                }
+
+                if(strcmp($url, $currentUrl) == 0 ) {
+                    //name to highlight
+                    $activeName = $name ;
+                }
             }
 
+            $bucket[$activeName]["class"] = $classMap["active"];
+            
             $view = new \stdClass;
-            $view->records = $records ;
+            $view->records = array_values($bucket) ;
             $html = Template::render($template,$view);
             return $html ;
         }

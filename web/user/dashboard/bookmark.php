@@ -85,8 +85,7 @@
                     </div>
                     <div class="span7">
                         <a id="open-list-popup" href="#" class="b btn btn-small">Add to list</a>
-                        &nbsp;&nbsp;
-                        <a id="item-delete" href="#" class="b btn btn-small">Delete</a>
+                        
                     </div>
                 </div>
            
@@ -126,7 +125,7 @@
                                 $endId = $postDBRows[sizeof($postDBRows) - 1]['id'];
                                 foreach ($postDBRows as $postDBRow) {
                                     //output post widget html
-                                    echo \com\indigloo\sc\html\Post::getWidget($postDBRow,0);
+                                    echo \com\indigloo\sc\html\Post::getBookmarkWidget($postDBRow,0);
 
                                     //get id + images_json from postDBRows 
                                     
@@ -164,11 +163,21 @@
         <script type="text/javascript">
             /* column width = css width + margin */
             $(document).ready(function(){
+                $('.widget').mouseenter(function() {
+                    $(this).find('.options').css("visibility", "visible");
+                });
+
+                $('.widget').mouseleave(function() {
+                    $(this).find('.options').css("visibility", "hidden");
+                });
+
                 //fix twitter bootstrap alerts
                 webgloo.sc.util.fixAlert();
                 // initialize page level checkboxes
                 webgloo.sc.util.initPageCheckbox("#widgets");
                 webgloo.sc.toolbar.add();
+                webgloo.sc.item.addActions();
+
                 //initialize lists
                 webgloo.sc.Lists.init("#widgets");
                 webgloo.sc.Lists.debug = false ;

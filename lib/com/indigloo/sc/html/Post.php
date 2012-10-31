@@ -261,15 +261,14 @@ namespace com\indigloo\sc\html {
             if($view->hasImage) {
                 $template = '/fragments/widget/image.tmpl' ;
                 //Add thumbnail width and height
-                $td = Util::foldX($view->width,$view->height,100);
+                $td = Util::foldX($view->width,$view->height,190);
                 $view->twidth = $td["width"];
                 $view->theight = $td["height"];
 
             } else {
                 $template = '/fragments/widget/text.tmpl' ;
             }
-
-
+            
             if(is_null($options)) {
                 $options = UIConstants::WIDGET_EDIT | UIConstants::WIDGET_DELETE ;
             }
@@ -320,18 +319,40 @@ namespace com\indigloo\sc\html {
         static function getBookmarkWidget($postDBRow) {
 
             $html = NULL ;
-            $voptions = array("abbreviate" => true);
+            $voptions = array("group" => true);
             $view = self::createPostView($postDBRow,$voptions);
-
+          
              if($view->hasImage) {
                 $template = '/fragments/widget/bookmark/image.tmpl' ;
                 //Add thumbnail width and height
-                $td = Util::foldX($view->width,$view->height,100);
+                $td = Util::foldX($view->width,$view->height,190);
                 $view->twidth = $td["width"];
                 $view->theight = $td["height"];
 
             } else {
                 $template = '/fragments/widget/bookmark/text.tmpl' ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+        static function getListWidget($postDBRow) {
+
+            $html = NULL ;
+            $voptions = array("group" => true);
+            $view = self::createPostView($postDBRow,$voptions);
+          
+             if($view->hasImage) {
+                $template = '/fragments/widget/lists/image.tmpl' ;
+                //Add thumbnail width and height
+                $td = Util::foldX($view->width,$view->height,190);
+                $view->twidth = $td["width"];
+                $view->theight = $td["height"];
+
+            } else {
+                $template = '/fragments/widget/lists/text.tmpl' ;
             }
 
             $html = Template::render($template,$view);

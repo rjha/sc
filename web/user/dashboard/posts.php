@@ -85,12 +85,10 @@
                     </div>
                     <div class="span7">
                         <a id="open-list-popup" href="#" class="b btn btn-small">Add to list</a>
-                        &nbsp;&nbsp;
-                        <a id="item-delete" href="#" class="b btn btn-small">Delete</a>
                     </div>
                 </div>
            
-            </div>
+            </div> <!-- page actions -->
 
             <div class="row">
                
@@ -115,7 +113,7 @@
 
                         </div>
 
-                    </div>
+                    </div> <!-- page action popups -->
                     <div id="widgets">
                         <?php
                             $startId = NULL;
@@ -167,6 +165,14 @@
         <script>
             
             $(document).ready(function(){
+                $('.widget').mouseenter(function() {
+                    $(this).find('.options').css("visibility", "visible");
+                });
+
+                $('.widget').mouseleave(function() {
+                    $(this).find('.options').css("visibility", "hidden");
+                });
+
                 //fix twitter bootstrap alerts
                 webgloo.sc.util.fixAlert();
                 // initialize page level checkboxes

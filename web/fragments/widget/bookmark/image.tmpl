@@ -1,17 +1,30 @@
 <div class="widget">
-      <div class="options">
+    <div class="options">
         <div class="links">
-            <a id="~~$view->itemId~" class ="remove-post-link" href="">Remove&nbsp;<i class="icon-remove"></i></a> &nbsp;
+            <a id="~~$view->itemId~" class ="remove-post-link" href=""><i class="icon-remove"></i>&nbsp;Delete</a>
         </div>
     </div>
+    <div class="row">
+        <div class="span1">
+            <input type="checkbox" id="~~$view->itemId~" name="g[]" value="~~$view->id~" />
+        </div>
+        
+        <div class="span5">
+            <h5> <a href="/item/~~$view->itemId~">~~$view->title~</a> </h5>
+            <div class="p5">
+                ~if($view->hasGroups){
+                    foreach($view->groups as $group){~
+                    <a class="label" href="/group/~~$group["slug"]~">~~$group["display"]~</a>&nbsp;
+                ~}}~
+            </div>
+    
+            <div class="p5">~~$view->createdOn~ </div>
 
-    <div class="photo">
-            <a href="/item/~~$view->itemId~"> <img src="~~$view->thumbnail~" width="~~$view->twidth~" height="~~$view->theight~" class="alignleft" alt="~~$view->title~"/> </a>
+        </div>
+        <div class="span2"> 
+             <a href="/item/~~$view->itemId~"> <img src="~~$view->thumbnail~" width="~~$view->twidth~" height="~~$view->theight~" alt="~~$view->title~"/> </a>
+        </div>
 
-    </div>
-    <p> ~~$view->description~ </p>
-    <p> <span>~~$view->createdOn~ </span> </p>
+    </div> <!-- widget:row -->
 
-  
-
-</div>
+</div> <!-- widget -->

@@ -49,7 +49,32 @@ namespace com\indigloo\sc\dao {
             return $rows ;
         }
 
-        function getIdMergeItems($dbItemsJson, $frmItemsJson) {
+        function getTotalItems($filters) {
+            $row = mysql\Lists::getTotalItems($filters);
+            return $row['count'] ;
+        }
+
+        function getLatestItems($limit,$filters) {
+            $rows = mysql\Lists::getLatestItems($limit,$filters);
+            return $rows ;
+        }
+
+        function getPagedItems($paginator,$filters) {
+            $limit = $paginator->getPageSize();
+            
+            if($paginator->isHome()){
+                return $this->getLatestItems($limit,$filters);
+            } else {
+
+                $params = $paginator->getDBParams();
+                $start = $params["start"];
+                $direction = $params["direction"];
+                $rows = mysql\Post::getPagedItems($start,$direction,$limit,$filters);
+                return $rows ;
+            }
+        }
+
+        private function getIdMergeItems($dbItemsJson, $frmItemsJson) {
             $data = $this->getIdAndItems($frmItemsJson);
             $ids = $data["ids"];
             $items = $data["items"];
@@ -72,7 +97,7 @@ namespace com\indigloo\sc\dao {
             return $data;
         }
 
-        function getIdAndItems($frmItemsJson) {
+        private function getIdAndItems($frmItemsJson) {
             $frmItems = json_decode($frmItemsJson);
 
             $ids = array();

@@ -1,14 +1,6 @@
-<div class="widget">
-    <div class="options">
-        <div class="links">
-            <a id="~~$view->itemId~" class ="remove-post-link" href=""><i class="icon-remove"></i>&nbsp;Delete</a>
-        </div>
-    </div>
+<div class="widget pt10">
 
-     <div class="row">
-        <div class="span1">
-            <input type="checkbox" id="~~$view->itemId~" name="g[]" value="~~$view->id~" />
-        </div>
+    <div class="row">
         
         <div class="span5">
             <h5> <a href="/item/~~$view->itemId~">~~$view->title~</a> </h5>
@@ -20,11 +12,18 @@
             </div>
     
             <div class="p5">~~$view->createdOn~ </div>
-            
+            <div class="p5"> 
+                ~if($view->hasEdit){~
+                <a href="~~$view->editUrl~"><i class="icon-edit"></i>&nbsp;Edit</a>
+                ~}~
+           
+            </div>
+
         </div>
-        
+        <div class="span2"> 
+             <a href="/item/~~$view->itemId~"> <img src="~~$view->thumbnail~" width="~~$view->twidth~" height="~~$view->theight~" alt="~~$view->title~"/> </a>
+        </div>
 
     </div> <!-- widget:row -->
 
-</div>
-
+</div> <!-- widget -->
