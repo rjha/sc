@@ -1,22 +1,24 @@
-<div class="wrapper">
-        <div class="floatr">
-            <span><a href="#" id="close-list-popup">close&nbsp;x</a> </span>
+<div id="list-popup">
+    <div class="wrapper">
+            <div class="floatr">
+                <span><a href="#" id="close-list-container">close&nbsp;x</a> </span>
+            </div>
+            <div>
+                <span class="faded-text">Enter list name and click create</span>
+            </div>
         </div>
-        <div>
-            <span class="faded-text">Enter list name and click create</span>
-        </div>
-    </div>
 
-    <div id="list-form-wrapper">
-        <form  id="list-form1"  name="list-form1" action="/user/action/list/update.php"   method="POST">
-            
-            <input class="faded-text" id="new-list-name" name="new-list-name" maxlength="64" type="textbox" value="" />
-            &nbsp;&nbsp;
-            <button type="submit" id ="create-list" class="btn" name="create" value="Create"><span>Create</span></button>
-            <input type="hidden" name="items_json" value="" />
-            <input type="hidden" name="list_id" value="" />
-            <input type="hidden" name="is_new" value="1" />
-            <input type="hidden" name="image_error" value="0" />
-            <input type="hidden" name="qUrl" value="~~$view->qUrl~" />
-        </form>
-    </div>
+        <div id="list-form-wrapper">
+            <form  id="list-form1"  name="list-form1" action="/user/action/list/update.php"   method="POST">
+                
+                <input class="faded-text" id="new-list-name" name="new-list-name" maxlength="64" type="textbox" value="" />
+                &nbsp;&nbsp;
+                <button type="submit" id ="create-list" class="btn" name="create" value="Create"><span>Create</span></button>
+                <input type="hidden" name="items_json" value="" />
+                <input type="hidden" name="list_id" value="" />
+                <input type="hidden" name="is_new" value="1" />
+                <input type="hidden" name="image_error" value="0" />
+                <input type="hidden" name="qUrl" value="~~$view->qUrl~" />
+            </form>
+        </div>
+</div>

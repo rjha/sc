@@ -112,7 +112,7 @@
 
                         </div>
 
-                    </div> <!-- row:list -->
+                    </div> <!-- popups -->
 
                     <div id="widgets">
                         <?php

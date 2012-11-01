@@ -19118,7 +19118,7 @@ webgloo.sc.Lists = {
             // items selected
             $("#page-message").html('');
             $("#page-message").hide();
-            $("#list-container").show("slow");
+            $("#list-popup").show("slow");
 
         } else {
             var message = "You have not selected any item! Please select items.";
@@ -19131,11 +19131,37 @@ webgloo.sc.Lists = {
 
     init : function(containerId) {
         webgloo.sc.Lists.containerId = containerId ;
-        $("a#close-list-popup").click(function(event) {
+        $("a#close-list-container").click(function(event) {
             $("#list-container").hide("slow");
         });
 
-        $("a#open-list-popup").click(function(event) {
+        $("a#open-list-edit").click(function(event) {
+            $("#list-edit-form").show("slow");
+        }) ;
+
+        $("a#close-list-edit").click(function(event) {
+            $("#list-edit-form").hide("slow");
+        });
+
+        $("a#open-list-add").click(function(event) {
+            $("#list-add-form").show("slow");
+        }) ;
+
+        $("a#close-list-add").click(function(event) {
+            $("#list-add-form").hide("slow");
+        });
+
+        $("a#open-list-delete").click(function(event) {
+            $("#list-delete-form").show("slow");
+        }) ;
+
+        $("a#close-list-delete").click(function(event) {
+            $("#list-delete-form").hide("slow");
+        });
+
+
+
+        $("a#list-popup").click(function(event) {
             webgloo.sc.Lists.openPopup();
         }) ;
 
@@ -19163,6 +19189,13 @@ webgloo.sc.Lists = {
             }
 
         }) ;
+
+    },
+
+    initDetail : function() {
+
+       
+
 
     }
 }

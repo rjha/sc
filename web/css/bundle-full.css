@@ -7198,14 +7198,7 @@ button::-moz-focus-inner {
         padding:7px;
     }
 
-    .block{
-        border-bottom : 1px solid #E8E7E3;
-    }
-
-    .block h3{
-        font-size:18px;
-        color:#211922;
-    }
+    /* tag cloud styling - used in featured groups popup */
 
     .cloud {
         line-height:200%;
@@ -7234,11 +7227,7 @@ button::-moz-focus-inner {
         display :inline-block;
     }
 
-
-    #home-tile h1 {
-        margin : 0px 0px 0px 20px;
-    }
-
+    /* generic tiles */
     .stack {
         width:210px;
         float:left;
@@ -7246,24 +7235,6 @@ button::-moz-focus-inner {
         margin:4px;
         cursor: pointer;
 
-    }
-
-    .card1 {
-        color: #333 ;
-        border: 1px solid #DEE2E5;
-        border-bottom-color: white;
-        background-color: #E7EBEE;
-        font-size: 13.5px;
-        font-weight: bold;
-
-    }
-
-    .card2 {
-        color: #333 ;
-        border: 1px solid #D2D2D2;
-        background-color: white;
-        font-size: 13px;
-        font-weight: normal;
     }
 
     .stack .name {
@@ -7281,6 +7252,32 @@ button::-moz-focus-inner {
         color: #333 ;
         text-decoration: none;
     }
+
+    .stack .item a:hover {
+        text-decoration: underline;
+    }
+
+    /* cards to display a bunch of links - delicious style */
+    .card1 {
+        color: #333 ;
+        border: 1px solid #DEE2E5;
+        border-bottom-color: white;
+        background-color: #E7EBEE;
+        font-size: 13.5px;
+        font-weight: bold;
+        
+    }
+
+    .card2 {
+        color: #333 ;
+        border: 1px solid #D2D2D2;
+        background-color: white;
+        font-size: 13px;
+        font-weight: normal;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4),0 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+
 
     /* + Activity feeds */
 
@@ -7381,7 +7378,7 @@ button::-moz-focus-inner {
     #site-toolbar a {
         color:#222 ;
         font-weight:bold ;
-        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5)
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 
     }
 
@@ -7400,7 +7397,7 @@ button::-moz-focus-inner {
     } 
 
     #submenu-col2 {
-        width:400px;
+        width:380px;
         display : block ;
         overflow:hidden;
     }

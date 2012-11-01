@@ -82,11 +82,11 @@
                 <div id="page-action">
                     
                     <div class="span7 offset1">
-                        <a href="#" class="b btn btn-small">Edit list</a>
+                        <a id="open-list-edit" href="#" class="b btn btn-small">Edit list</a>
                         &nbsp;&nbsp;
-                        <a href="#" class="b btn btn-small">Add item</a>
+                        <a id="open-list-add" href="#" class="b btn btn-small">Add item</a>
                         &nbsp;&nbsp;
-                        <a href="#" class="b btn btn-small">Delete list</a>
+                        <a id="open-list-delete" href="#" class="b btn btn-small">Delete list</a>
                     </div>
                 </div>
            
@@ -97,9 +97,18 @@
                 <div class="span8 offset1">
                      <div class="row">
                         <div id="page-message" class="color-red ml20"> </div>
-                         
-
-                    </div> <!-- page action popups -->
+                        <div id="list-container">
+                            <div id="list-edit-form">
+                                List edit 
+                            </div>
+                            <div id="list-delete-form">
+                                List Delete 
+                            </div>
+                            <div id="list-add-form">
+                                List Add items
+                            </div>
+                        </div> <!-- container -->
+                    </div> <!-- popups -->
 
                     <h5> <?php echo $listDBRow["name"]; ?> </h5>
                     <div id="widgets">
@@ -132,6 +141,7 @@
         <?php $paginator->render($pageBaseUrl, $startId, $endId); ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+        <script src="/js/sc.js" type="text/javascript"> </script>
 
         <script type="text/javascript">
             /* column width = css width + margin */

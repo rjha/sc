@@ -1,5 +1,5 @@
 <?php
-    //sc/user/dashboard/following.php
+    //sc/user/dashboard/posts.php
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
     include(APP_WEB_DIR . '/inc/role/user.inc');
@@ -7,22 +7,23 @@
     use \com\indigloo\Util as Util;
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
+
     use \com\indigloo\sc\auth\Login as Login;
+    use \com\indigloo\Constants as Constants;
+    use \com\indigloo\ui\form\Message as FormMessage;
 
     use \com\indigloo\ui\Filter as Filter;
-     
+
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
-    $loginName = $gSessionLogin->name;
-
+    $loginName = $gSessionLogin->name ;
 
     if (is_null($loginId)) {
         trigger_error("Error : NULL login_id on user dashboard", E_USER_ERROR);
     }
 
-    $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
-    $followings = $socialGraphDao->getFollowing($loginId);
-
+    //$userDao = new \com\indigloo\sc\dao\User();
+    //$counters = $userDao->getCounters($loginId);
 
 ?>
 
@@ -31,7 +32,7 @@
 <html>
 
     <head>
-        <title> Following - <?php echo $loginName; ?>  </title>
+        <title>  Dashboard - <?php echo $loginName ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         
@@ -52,28 +53,33 @@
                 </div>
 
             </div>
+            <?php FormMessage::render(); ?>
+            
 
             <div class="row">
+               
                 <div class="span8 offset1">
-                    <h3> Followers </h3>
-                    <?php echo \com\indigloo\sc\html\SocialGraph::getFollowingHtml($loginId,$followings); ?>
+                     Tiles
                 </div>
-
+                <div class="span3">
+                    
+                </div>
+               
             </div>
         </div> <!-- container -->
-
+        
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
-
-        <script type="text/javascript">
-
+        s
+        <script>
+            
             $(document).ready(function(){
+                //fix twitter bootstrap alerts
+                webgloo.sc.util.fixAlert();
                 webgloo.sc.toolbar.add();
-                 webgloo.sc.item.addActions();
-
-            }) ;
-
+            });
 
         </script>
+
 
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
@@ -81,3 +87,6 @@
 
     </body>
 </html>
+
+
+

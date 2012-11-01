@@ -15,16 +15,10 @@
 
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
+    $loginName = $gSessionLogin->name;
 
     if (is_null($loginId)) {
         trigger_error("Error : NULL login_id on user dashboard", E_USER_ERROR);
-    }
-
-    $userDao = new \com\indigloo\sc\dao\User();
-    $userDBRow = $userDao->getOnLoginId($loginId);
-
-    if (empty($userDBRow)) {
-        trigger_error("No user record found for given login_id", E_USER_ERROR);
     }
 
     $postDao = new \com\indigloo\sc\dao\Post();
@@ -42,6 +36,8 @@
     $total = $postDao->getTotalCount($filters);
 
     $pageSize = Config::getInstance()->get_value("user.page.items");
+    $pageSize = 5 ;
+
     $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
     $postDBRows = $postDao->getPaged($paginator,$filters);
     
@@ -56,7 +52,7 @@
 <html>
 
     <head>
-        <title> 3mik.com - user <?php echo $userDBRow['name']; ?>  </title>
+        <title> items - <?php echo $loginName; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         
@@ -64,7 +60,7 @@
 
     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-        <div class="container">
+        <div class="container mh600">
 
             <div class="row">
                 <div class="span12">
@@ -92,7 +88,7 @@
 
             <div class="row">
                
-                <div class="span8 offset1 mh600">
+                <div class="span8 offset1">
                     
                     <div class="row">
                         <div id="page-message" class="color-red ml20"> </div>
@@ -113,7 +109,7 @@
 
                         </div>
 
-                    </div> <!-- page action popups -->
+                    </div> <!-- popups -->
                     <div id="widgets">
                         <?php
                             $startId = NULL;
@@ -156,7 +152,7 @@
                
             </div>
         </div> <!-- container -->
-        <div class="hr"> </div>
+        
         <?php $paginator->render('/user/dashboard/posts.php', $startId, $endId); ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>

@@ -88,8 +88,7 @@
         <?php $paginator->render('/user/dashboard/posts.php', $startId, $endId); ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
-        <script src="/js/sc.js" type="text/javascript"> </script>
-
+        
         <script>
             
             $(document).ready(function(){

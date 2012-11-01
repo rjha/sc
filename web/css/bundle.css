@@ -1290,8 +1290,6 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #gallery .container img{width:auto;height:auto;padding:1px;max-width:100px;max-height:75px}
 #gallery .zoom-info{padding-top:10px}
 #gallery .main-image img{width:auto;height:auto;max-width:550px;margin-bottom:20px;padding:7px}
-.block{border-bottom:1px solid #e8e7e3}
-.block h3{font-size:18px;color:#211922}
 .cloud{line-height:200%;font-weight:bold;text-align:left}
 .cloud a{text-decoration:none}
 .cloud a:hover{color:black}
@@ -1302,13 +1300,13 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .cloud .tag-size2{font-size:15px}
 .cloud .tag-size3{font-size:12px}
 .cloud-item{padding-left:7px;display:inline-block}
-#home-tile h1{margin:0 0 0 20px}
 .stack{width:210px;float:left;padding:4px;margin:4px;cursor:pointer}
-.card1{color:#333;border:1px solid #dee2e5;border-bottom-color:white;background-color:#e7ebee;font-size:13.5px;font-weight:bold}
-.card2{color:#333;border:1px solid #d2d2d2;background-color:white;font-size:13px;font-weight:normal}
 .stack .name{white-space:nowrap}
 .stack .item{padding:2px 0;list-style:square outside;margin-bottom:5px;overflow:hidden}
 .stack .item a{color:#333;text-decoration:none}
+.stack .item a:hover{text-decoration:underline}
+.card1{color:#333;border:1px solid #dee2e5;border-bottom-color:white;background-color:#e7ebee;font-size:13.5px;font-weight:bold}
+.card2{color:#333;border:1px solid #d2d2d2;background-color:white;font-size:13px;font-weight:normal;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1)}
 .feeds{font-size:12px;padding:0 0 0 10px;font-family:arial}
 .feeds a{color:#333}
 .feeds .item{width:100%;clear:both;padding-top:5px;border-top:1px solid #eee;padding-bottom:5px}
@@ -1328,7 +1326,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #site-toolbar a{color:#222;font-weight:bold;text-shadow:0 1px 0 rgba(255,255,255,0.5)}
 #site-toolbar .dropdown-menu a{color:#333;font-weight:normal}
 #site-toolbar .dropdown-menu li>a:hover,#site-toolbar .dropdown-menu .active>a,#site-toolbar .dropdown-menu .active>a:hover{color:#222;font-weight:normal;text-decoration:underline;background-color:inherit}
-#submenu-col2{width:400px;display:block;overflow:hidden}
+#submenu-col2{width:380px;display:block;overflow:hidden}
 #submenu-col2 ul{float:left;width:50%;list-style:none;margin:0 auto}
 #site-navigator{font-size:13px;line-height:18px;padding:10px 20px 6px 20px;margin-bottom:6px}
 #site-navigator a{color:#444;cursor:pointer}

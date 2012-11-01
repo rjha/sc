@@ -17,16 +17,10 @@
     $gWeb = \com\indigloo\core\Web::getInstance();
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
+    $loginName = $gSessionLogin->name;
 
     if (is_null($loginId)) {
         trigger_error("Error : NULL or invalid login_id", E_USER_ERROR);
-    }
-
-    $userDao = new \com\indigloo\sc\dao\User();
-    $userDBRow = $userDao->getOnLoginId($loginId);
-
-    if (empty($userDBRow)) {
-        trigger_error("No user exists with this login_id", E_USER_ERROR);
     }
 
     $fUrl = Url::current();
@@ -45,7 +39,7 @@
 <html>
 
     <head>
-        <title> 3mik.com - user <?php echo $userDBRow['name']; ?>  </title>
+        <title> mail settings- <?php echo $loginName; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
@@ -54,7 +48,7 @@
 
     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-        <div class="container">
+        <div class="container mh600">
 
              <div class="row">
                 <div class="span12">
@@ -69,7 +63,7 @@
             </div>
 
             <div class="row">
-                <div class="span8 offset1 mh600">
+                <div class="span8 offset1">
                     <div class="faded-text mb20"> 
                         change your mail preferences and click update
                     </div>
