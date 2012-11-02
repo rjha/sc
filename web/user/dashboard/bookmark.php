@@ -83,9 +83,8 @@
                     <div class="span1 offset1">
                         <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
                     </div>
-                    <div class="span7">
-                        <a id="open-list-popup" href="#" class="b btn btn-small">Add to list</a>
-                        
+                     <div class="span7">
+                        <a class="btn btn-small item-action" rel="list-popup" href="#" class="b btn btn-small">Add to list</a>
                     </div>
                 </div>
            
@@ -95,7 +94,7 @@
                 <div class="span8 offset1 mh600">
                     <div class="row">
                         <div id="page-message" class="color-red ml20"> </div>
-                        <div id="list-container" class="<?php echo $slclass; ?>">
+                        <div id="list-popup" class="<?php echo $slclass; ?>">
                             <?php
                                 
                                 //copy URL parameters
@@ -161,7 +160,7 @@
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
         <script type="text/javascript">
-            /* column width = css width + margin */
+           
             $(document).ready(function(){
                 $('.widget').mouseenter(function() {
                     $(this).find('.options').css("visibility", "visible");
@@ -171,15 +170,15 @@
                     $(this).find('.options').css("visibility", "hidden");
                 });
 
-                //fix twitter bootstrap alerts
-                webgloo.sc.util.fixAlert();
-                // initialize page level checkboxes
-                webgloo.sc.util.initPageCheckbox("#widgets");
+                
                 webgloo.sc.toolbar.add();
-                webgloo.sc.item.addActions();
 
-                //initialize lists
-                webgloo.sc.Lists.init("#widgets");
+                var containerId = "widgets" ;
+                webgloo.sc.dashboard.init(containerId);
+                //fix twitter bootstrap alerts
+                webgloo.sc.dashboard.fixAlert();
+
+                webgloo.sc.Lists.init(containerId);
                 webgloo.sc.Lists.debug = false ;
                 webgloo.sc.Lists.strImageJson = '<?php echo $strImageJson; ?>' ;
 

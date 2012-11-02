@@ -97,40 +97,6 @@ webgloo.sc.util = {
             var current = text.length;
             $(counterId).text(current + "/" + max);
         });
-    },
-
-    getCheckedItems : function(containerId) {
-        var checkBoxes =  $(containerId).find("input:checkbox");
-        var isChecked ;
-        var itemIds = [] ;
-
-        checkBoxes.each(function(i) {
-            isChecked = $(this).prop("checked");
-            if(isChecked) {
-                itemIds.push($(this).attr('id'));
-            }
-        
-        }) ;
-
-        return itemIds ;
-    },
-
-    initPageCheckbox : function(containerId) {
-        $('input:checkbox[id=page-checkbox]').click(function(event) {
-            //@imp donot event.preventDefault();
-            var checkBoxes =  $(containerId).find("input:checkbox");
-            var state =  $('input:checkbox[id=page-checkbox]').prop("checked");
-            checkBoxes.prop("checked", state);
-            
-        });
-    },
-
-    fixAlert : function () {
-        window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
-            });
-        }, 5000);
     }
 }
 
@@ -622,9 +588,88 @@ webgloo.sc.item = {
     }
 }
 
+
+webgloo.sc.dashboard = {
+
+    itemContainer : '' ,
+
+    init : function (containerId) {
+
+        webgloo.sc.dashboard.itemContainer = containerId ;
+
+        $("a.vanilla-action").click(function(event) {
+            //id of action DIV
+            var divId = '#' + $(this).attr("rel");
+            //hide page message
+            $("#page-message").html('');
+            $("#page-message").hide();
+            $(divId).show("slow");
+        });
+
+        $("a.item-action").click(function(event) {
+            //id of action DIV
+            var divId = '#' + $(this).attr("rel");
+            //any items clicked?
+            var itemIds = webgloo.sc.dashboard.getCheckedItems(webgloo.sc.dashboard.itemContainer);
+            if(itemIds.length > 0 ) {
+                $("#page-message").html('');
+                $("#page-message").hide();
+                $(divId).show("slow");
+
+            } else {
+                var message = "No items have been selected. Please select some items to do this action.";
+                $("#page-message").html(message);
+                $("#page-message").show("slow");
+                window.setTimeout(function () { $("#page-message").hide("slow");},5000);
+
+            }
+        });
+
+        $("a.close-action").click(function(event) {
+            //id of action DIV
+            var divId = '#' + $(this).attr("rel");
+            $(divId).hide("slow");
+        });
+
+        $('input:checkbox[id=page-checkbox]').click(function(event) {
+            //@imp donot event.preventDefault();
+            var checkBoxes =  $('#'+ webgloo.sc.dashboard.itemContainer).find("input:checkbox");
+            var state =  $('input:checkbox[id=page-checkbox]').prop("checked");
+            checkBoxes.prop("checked", state);
+            
+        });
+
+
+    },
+
+    getCheckedItems : function(containerId) {
+        var checkBoxes =  $('#'+containerId).find("input:checkbox");
+        var isChecked ;
+        var itemIds = [] ;
+
+        checkBoxes.each(function(i) {
+            isChecked = $(this).prop("checked");
+            if(isChecked) {
+                itemIds.push($(this).attr('id'));
+            }
+        
+        }) ;
+
+        return itemIds ;
+    },
+
+    fixAlert : function () {
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove(); 
+            });
+        }, 5000);
+    }
+}
+
 webgloo.sc.Lists = {
 
-    containerId : '' ,
+    itemContainer : '' ,
     debug : false,
     imageDataObj : {} ,
 
@@ -668,52 +713,12 @@ webgloo.sc.Lists = {
 
     },
 
-    openPopup : function() {
-        
-        var itemIds = webgloo.sc.util.getCheckedItems("#widgets");
-
-        if(itemIds.length > 0 ) {
-            // items selected
-            $("#page-message").html('');
-            $("#page-message").hide();
-            $("#list-popup").show("slow");
-
-        } else {
-            var message = "You have not selected any item! Please select items.";
-            $("#page-message").html(message);
-            $("#page-message").show("slow");
-            window.setTimeout(function () { $("#page-message").hide("slow");},5000);
-
-        }
-    },
-
     init : function(containerId) {
-        webgloo.sc.Lists.containerId = containerId ;
-        $("a#close-list-container").click(function(event) {
-            $("#list-container").hide("slow");
-        });
-
-        $("a#open-list-edit").click(function(event) {
-            $("#list-edit-form").show("slow");
-        }) ;
-
-
-        $("a#open-list-add").click(function(event) {
-            $("#list-add-form").show("slow");
-        }) ;
-
-
-        $("a#open-list-delete").click(function(event) {
-            $("#list-delete-form").show("slow");
-        }) ;
-
-        $("a#open-list-popup").click(function(event) {
-            webgloo.sc.Lists.openPopup();
-        }) ;
-
+        webgloo.sc.Lists.itemContainer = containerId ;
+       
         $("#lists li a").live("click", function(event){
             var listId = $(this).attr("id");
-            var itemIds = webgloo.sc.util.getCheckedItems(webgloo.sc.Lists.containerId);
+            var itemIds = webgloo.sc.dashboard.getCheckedItems(webgloo.sc.Lists.itemContainer);
 
             if(itemIds.length > 0 ) {
                 webgloo.sc.Lists.populateSubmitForm(itemIds,false,listId);
@@ -728,7 +733,7 @@ webgloo.sc.Lists = {
                 return ;
 
             var listId = $(this).attr("id");
-            var itemIds = webgloo.sc.util.getCheckedItems(webgloo.sc.Lists.containerId);
+            var itemIds = webgloo.sc.dashboard.getCheckedItems(webgloo.sc.Lists.itemContainer);
 
             if(itemIds.length > 0 ) {
                 webgloo.sc.Lists.populateSubmitForm(itemIds,true,'');
@@ -736,14 +741,8 @@ webgloo.sc.Lists = {
 
         }) ;
 
-    },
-
-    initDetail : function() {
-
-       
-
-
     }
+
 }
 
 webgloo.sc.admin = {

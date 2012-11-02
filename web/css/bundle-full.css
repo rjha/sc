@@ -7631,7 +7631,7 @@ button::-moz-focus-inner {
 
     /* list stuff */
     
-    #list-container {
+    #list-popup {
         padding-top :20px; 
         padding-left :40px;
         border-bottom: 2px solid #F8D575 ;
