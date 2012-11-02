@@ -10,9 +10,7 @@
 
             const WIDGET_EDIT = 1 ;
             const WIDGET_DELETE = 2 ;
-            const WIDGET_FEATURE = 4 ;
-            const WIDGET_UNFEATURE = 8 ;
-            const WIDGET_ALL = 15 ;
+            const WIDGET_ALL = 3 ;
 
             const COMMENT_USER = 1 ;
             const COMMENT_ALL = 1 ;

@@ -9,6 +9,7 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\Url as Url ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\auth\Login as Login ;
+    use \com\indigloo\sc\util\Formatter as Formatter ;
 
     class User {
 
@@ -45,7 +46,7 @@ namespace com\indigloo\sc\html {
             $view = new \stdClass;
 
             $view->name = $userDBRow['name'];
-            $view->createdOn = Util::formatDBTime($userDBRow['created_on']);
+            $view->createdOn = Formatter::convertDBTime($userDBRow['created_on']);
             $view->email = $userDBRow['email'];
             $view->aboutMe = $userDBRow['about_me'];
             $view->photoUrl = $userDBRow['photo_url'];
@@ -126,7 +127,7 @@ namespace com\indigloo\sc\html {
                 $labels["num_posts"] = "&nbsp;" ;
             }
 
-            $view->createdOn = Util::formatDBTime($userDBRow['created_on']);
+            $view->createdOn = Formatter::convertDBTime($userDBRow['created_on']);
             $view->columns = $columns;
             $view->data = $data;
             $view->labels = $labels ;
@@ -177,9 +178,7 @@ namespace com\indigloo\sc\html {
 
             //display fields
             $view->pubId = PseudoId::encode($row["login_id"]) ;
-            $format = "%d-%b, %Y / %H:%M" ;
-            $view->createdOn =  strftime($format, strtotime($row["created_on"]));
-
+            $view->createdOn =  Formatter::convertDBTime($row["created_on"]);
             $ts = Util::secondsInDBTimeFromNow($row["created_on"]);
             
             $span = 24*3600 ;
