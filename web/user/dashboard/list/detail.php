@@ -27,7 +27,8 @@
 
     $listDao = new \com\indigloo\sc\dao\Lists(); 
     $listDBRow = $listDao->getOnId($listId);
-    
+    $listName = $listDBRow["name"];
+
     //owner check
     if(!Login::isOwner($listDBRow["login_id"])) {
         header("Location: /site/error/403.html");
@@ -50,7 +51,7 @@
     $itemDBRows = $listDao->getPagedItems($paginator,array($filter2));
     
     $pageBaseUrl = "/user/dashboard/list/detail.php";
-    
+    $qUrl = Url::current();
 
 ?>
 
@@ -58,7 +59,7 @@
 <html>
 
     <head>
-        <title> <?php echo $listDBRow["name"]; ?> </title>
+        <title> <?php echo $listName; ?> </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         
@@ -88,7 +89,7 @@
                     <div class="span7">
                         <a class="btn btn-flat open-action" rel="list-add-item" href="#">Add +</a>
                         &nbsp;&nbsp;
-                        <a class="btn btn-flat item-action" rel="list-delete" href="#">Delete -</a>
+                        <a class="btn btn-flat item-action" rel="list-delete-item" href="#">Delete -</a>
                          &nbsp;&nbsp;
                         <a class="btn btn-flat open-action" rel="list-edit" href="#" >Edit list</a>
                         &nbsp;&nbsp;
@@ -106,14 +107,91 @@
                    <div class="row">
                         <div id="page-message" class="hide-me"> </div>
                         <div id="list-edit" class="action-form"> 
-                            List edit 
+                            <div class="wrapper">
+                                <div class="floatr">
+                                    <span><a href="#" class="close-action" rel="list-edit">close&nbsp;x</a> </span>
+                                </div>
+                             </div>
+
+                             <form  id="form1"  name="edit-form" action="/user/action/list/edit.php"   method="POST">
+                                <span class="faded-text">Name</span> <br>
+                                <input name="name" maxlength="64" type="textbox" value="<?php echo $listName; ?>" /> <br>
+                                <span class="faded-text">Description</span>  <br>
+                                <textarea name="description">description...</textarea> <br>
+                                <button type="submit" class="btn btn-small" name="save" value="Save"><span>Save</span></button>
+                                
+                                <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
+                                <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
+                            </form>
                         </div>
+
                         <div id="list-add-item" class="action-form">
-                            List add item
+                            <div class="wrapper">
+                                <div class="floatr">
+                                    <span><a href="#" class="close-action" rel="list-add-item">close&nbsp;x</a> </span>
+                                </div>
+                             </div>
+
+                             <form  id="form2"  name="add-item-form" action="/user/action/list/add-item-url.php"   method="POST">
+                                <span class="faded-text">
+                                    Please type the 3mik URL of item and click Save
+                                </span> 
+                               
+                                <br>
+                                <input name="name" maxlength="256" type="textbox" value="" /> <br>
+                                <br>
+                                <button type="submit" class="btn btn-small" name="save" value="Save"><span>Save</span></button>
+                                &nbsp;&nbsp;
+                                <a id="list-add-item-help" href="#">Need help to find item URL? click here</a>
+                                <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
+                                <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
+                            </form>
                         </div>
+
                         <div id="list-delete" class="action-form">
-                            List delete
+                            <div class="wrapper">
+                                <div class="floatr">
+                                    <span><a href="#" class="close-action" rel="list-delete">close&nbsp;x</a> </span>
+                                </div>
+                             </div>
+
+                             <form  id="form3"  name="delete-form" action="/user/action/list/delete.php"   method="POST">
+                                <p class="comment-text">
+                                    Are you sure you want to delete this list? 
+                                </p>
+                                <button type="submit" class="btn btn-small btn-danger" name="delete" value="Delete">
+                                    <span>Delete</span>
+                                </button>
+                                &nbsp;&nbsp;
+                                <a class="btn btn-small close-action" rel="list-delete">Cancel</a>
+                                
+                                <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
+                                <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
+                            </form>
                         </div>
+
+                        <div id="list-delete-item" class="action-form">
+                            <div class="wrapper">
+                                <div class="floatr">
+                                    <span><a href="#" class="close-action" rel="list-delete-item">close&nbsp;x</a> </span>
+                                </div>
+                             </div>
+
+                             <form  id="form4"  name="delete-item-form" action="/user/action/list/delete-item.php"   method="POST">
+                                <p class="comment-text">
+                                    Are you sure you want to delete the selected items? 
+                                </p>
+                                <button type="submit" id="delete-items" class="btn btn-small btn-danger" name="delete" value="Delete">
+                                    <span>Delete</span>
+                                </button>
+                                &nbsp;&nbsp;
+                                <a class="btn btn-small close-action" rel="list-delete-item">Cancel</a>
+                                
+                                <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
+                                <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
+                            </form>
+                        </div>
+
 
                     </div> <!-- popups -->
                     
@@ -173,6 +251,16 @@
                 webgloo.sc.dashboard.init(containerId);
                 //fix twitter bootstrap alerts
                 webgloo.sc.dashboard.fixAlert();
+                $("#list-add-item-help").click(function(event) {
+                    
+                    var message = "3mik item URL is the page address displayed " 
+                        + " in your browser on item details page, like http://www.3mik.com/item/307853" 
+                        + " copy and paste that item URL in the box";
+                    
+                    //@param 2 is auto close interval in milli seconds
+                    webgloo.sc.dashboard.showMessage(message,30000);
+
+                }) ;
 
             });
         </script>

@@ -594,6 +594,13 @@ webgloo.sc.dashboard = {
 
     itemContainer : '' ,
 
+    showMessage : function (message,interval) {
+        $("#page-message").html(message);
+        $("#page-message").show("slow");
+        
+        window.setTimeout(function () { $("#page-message").hide("slow");},interval);
+    },
+
     init : function (containerId) {
 
         webgloo.sc.dashboard.itemContainer = containerId ;

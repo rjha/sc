@@ -1112,13 +1112,23 @@
     }
     /* list stuff */
     
-    #list-popup {
+    .action-form {
         padding-top :20px; 
         padding-left :40px;
+        padding-bottom: 20px;
         border-bottom: 2px solid #F8D575 ;
 
     }
 
+    .action-form input {
+        width:75%;
+    }
+
+    .action-form textarea {
+        width:75%;
+        height:120px;
+    }
+    
     #lists {
         list-style: none;
         padding-left:10px;
@@ -1167,9 +1177,8 @@
         padding-bottom: 20px;
     }
 
-    #list-form-wrapper input {
-        width:75%;
-    }
+    
+
 
 
     /* @imp : last section - override 3rd party libraries */

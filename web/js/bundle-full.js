@@ -18928,6 +18928,7 @@ webgloo.sc.item = {
     },
 
     addActions : function() {
+        //@todo rename - remove link part at end - an anchor is a link!
         //add like & save callbacks
         $("a.like-post-link").live("click",function(event){
             event.preventDefault();
@@ -19035,12 +19036,18 @@ webgloo.sc.dashboard = {
 
     itemContainer : '' ,
 
+    showMessage : function (message,interval) {
+        $("#page-message").html(message);
+        $("#page-message").show("slow");
+        
+        window.setTimeout(function () { $("#page-message").hide("slow");},interval);
+    },
+
     init : function (containerId) {
 
         webgloo.sc.dashboard.itemContainer = containerId ;
 
         $("a.open-action").click(function(event) {
-            alert('yo baby');
             //id of action DIV
             var divId = '#' + $(this).attr("rel");
             //hide open action forms
