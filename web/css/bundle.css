@@ -1216,7 +1216,7 @@ div .form-error{margin-bottom:10px;margin-top:10px;color:red}
 div .form-message{margin-bottom:10px;margin-top:10px;color:green}
 div .error label{width:500px;text-align:left;display:block;margin-left:10px;color:red}
 .widget{width:100%;clear:both;border-bottom:1px solid #e6e6e6;min-height:60px;float:left;padding-bottom:7px}
-.widget .options{background:none repeat scroll 0 0 #f7f7f7;border-bottom:2px solid #f8d575;visibility:hidden;overflow:hidden;margin:0;padding:0}
+.widget .options{background-color:#f7f7f7;border-bottom:1px solid #ccc;visibility:hidden;overflow:hidden;margin:0;padding:0 20px 0 0}
 .widget .options .links{padding:5px 5px 5px 30px;font-size:12px;line-height:17px}
 .widget .options .links a{color:#333;cursor:pointer;font-size:1em}
 .widget .photo{padding:13px}
@@ -1284,7 +1284,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .section{min-height:20px;padding:15px 20px 15px 20px;margin-bottom:10px;margin-top:10px;border-top:1px solid rgba(0,0,0,0.03);overflow:hidden}
 .section1{min-height:20px;padding:15px 20px 15px 20px;margin-bottom:10px;margin-top:10px;overflow:hidden}
 .section3{min-height:20px;padding:15px 20px 1px 20px;margin-bottom:10px;margin-top:1px;overflow:hidden}
-#page-action{min-height:20px;padding:15px 0 15px 0;border-bottom:2px solid #f8d575;border-top:2px solid #f8d575}
+#page-action{padding:15px 0 15px 0;min-height:20px;border-bottom:1px solid #e5e5e5}
 #gallery{height:auto;padding-top:1px}
 #gallery .container{width:100px;height:77px;margin:3px;float:left;cursor:pointer;background:white;box-shadow:0 1px 3px rgba(34,25,25,0.4)}
 #gallery .container img{width:auto;height:auto;padding:1px;max-width:100px;max-height:75px}
@@ -1357,6 +1357,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #infscr-loading{text-align:center;position:fixed;left:45%;bottom:40px;width:200px;background:black;opacity:.8;color:white;border-radius:10px}
 #adrisya-wrapper{display:none}
 .flickr-color{color:#fe63bb}
+#page-message{background-color:#fefdf1;padding-left:20px;padding-bottom:10px;font-weight:bold}
 #list-popup{padding-top:20px;padding-left:40px;border-bottom:2px solid #f8d575}
 #lists{list-style:none;padding-left:10px;padding-right:0;padding-top:5px;padding-bottom:5px;margin:0}
 #list-wrapper{border-radius:8px;background-color:#eee;width:75%;height:auto;overflow:auto;overflow-x:auto;overflow-y:auto;max-height:210px;padding-top:10px;padding-bottom:10px}

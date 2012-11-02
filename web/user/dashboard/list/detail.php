@@ -9,12 +9,14 @@
     use \com\indigloo\Configuration as Config;
 
     use \com\indigloo\sc\auth\Login as Login;
+    use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\ui\Filter as Filter;
 
 
     $qparams = Url::getRequestQueryParams();
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
+    $loginName = $gSessionLogin->name ;
 
     if (is_null($loginId)) {
         trigger_error("Error : NULL or invalid login_id", E_USER_ERROR);
@@ -49,15 +51,14 @@
     
     $pageBaseUrl = "/user/dashboard/list/detail.php";
     
-    
-
 
 ?>
+
 <!DOCTYPE html>
 <html>
 
     <head>
-        <title> <?php echo $pageTitle; ?> </title>
+        <title> <?php echo $listDBRow["name"]; ?> </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         
@@ -78,15 +79,18 @@
 
             </div>
 
+            <?php FormMessage::render(); ?>
             <div class="row">
                 <div id="page-action">
-                    
-                    <div class="span7 offset1">
-                        <a id="open-list-edit" href="#" class="b btn btn-small">Edit list</a>
+                    <div class="span1 offset1">
+                        &nbsp;
+                    </div>
+                    <div class="span7">
+                        <a class="btn btn-flat open-action" rel="list-edit" href="#" >Edit list</a>
                         &nbsp;&nbsp;
-                        <a id="open-list-add" href="#" class="b btn btn-small">Add item</a>
+                        <a class="btn btn-flat open-action" rel="list-add-item" href="#">Add item</a>
                         &nbsp;&nbsp;
-                        <a id="open-list-delete" href="#" class="b btn btn-small">Delete list</a>
+                        <a class="btn btn-flat open-action" rel="list-delete" href="#">Delete list</a>
                     </div>
                 </div>
            
@@ -95,19 +99,18 @@
             <div class="row">
 
                 <div class="span8 offset1">
-                     <div class="row">
-                        <div id="page-message" class="color-red ml20"> </div>
-                        <div id="list-container">
-                            <div id="list-edit-form">
-                                List edit 
-                            </div>
-                            <div id="list-delete-form">
-                                List Delete 
-                            </div>
-                            <div id="list-add-form">
-                                List Add items
-                            </div>
-                        </div> <!-- container -->
+                   <div class="row">
+                        <div id="page-message" class="hide-me"> </div>
+                        <div id="list-edit" class="action-form"> 
+                            List edit 
+                        </div>
+                        <div id="list-add-item" class="action-form">
+                            List add item
+                        </div>
+                        <div id="list-delete" class="action-form">
+                            List delete
+                        </div>
+
                     </div> <!-- popups -->
 
                     <h5> <?php echo $listDBRow["name"]; ?> </h5>
@@ -146,7 +149,22 @@
         <script type="text/javascript">
             /* column width = css width + margin */
             $(document).ready(function(){
+                $('.widget').mouseenter(function() {
+                    $(this).find('.options').css("visibility", "visible");
+                });
+
+                $('.widget').mouseleave(function() {
+                    $(this).find('.options').css("visibility", "hidden");
+                });
+
+                
                 webgloo.sc.toolbar.add();
+
+                var containerId = "widgets" ;
+                webgloo.sc.dashboard.init(containerId);
+                //fix twitter bootstrap alerts
+                webgloo.sc.dashboard.fixAlert();
+
             });
         </script>
 

@@ -19039,9 +19039,12 @@ webgloo.sc.dashboard = {
 
         webgloo.sc.dashboard.itemContainer = containerId ;
 
-        $("a.vanilla-action").click(function(event) {
+        $("a.open-action").click(function(event) {
+            alert('yo baby');
             //id of action DIV
             var divId = '#' + $(this).attr("rel");
+            //hide open action forms
+            $('.action-form').hide();
             //hide page message
             $("#page-message").html('');
             $("#page-message").hide();
@@ -19051,6 +19054,7 @@ webgloo.sc.dashboard = {
         $("a.item-action").click(function(event) {
             //id of action DIV
             var divId = '#' + $(this).attr("rel");
+            $('.action-form').hide();
             //any items clicked?
             var itemIds = webgloo.sc.dashboard.getCheckedItems(webgloo.sc.dashboard.itemContainer);
             if(itemIds.length > 0 ) {

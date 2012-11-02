@@ -203,12 +203,12 @@
 
     .widget .options {
         /* position: absolute; */
-        background: none repeat scroll 0 0 #f7f7f7 ;
-        border-bottom: 2px solid #F8D575 ;
+        background-color: #f7f7f7 ;
+        border-bottom: 1px solid #ccc ;
         visibility: hidden; 
         overflow:hidden;
         margin:0px;
-        padding:0px;
+        padding: 0px 20px 0px 0px;
 
     }
 
@@ -631,10 +631,9 @@
     }
 
     #page-action {
-        min-height: 20px;
         padding:15px 0px 15px 0px;
-        border-bottom: 2px solid #F8D575 ;
-        border-top: 2px solid #F8D575 ;
+        min-height: 20px;
+        border-bottom : 1px solid #e5e5e5 ;
     }
 
 
@@ -1105,6 +1104,12 @@
 
     .flickr-color { color : #FE63BB;}
 
+    #page-message {
+        background-color : #FEFDF1;
+        padding-left:20px;
+        padding-bottom:10px;
+        font-weight: bold ;
+    }
     /* list stuff */
     
     #list-popup {

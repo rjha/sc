@@ -5526,12 +5526,15 @@ webgloo.sc.SimplePopup.post(a,{"dataType":"json","reload":true,"visible":false})
 });
 }};
 webgloo.sc.dashboard={itemContainer:"",init:function(a){webgloo.sc.dashboard.itemContainer=a;
-$("a.vanilla-action").click(function(c){var b="#"+$(this).attr("rel");
+$("a.open-action").click(function(c){alert("yo baby");
+var b="#"+$(this).attr("rel");
+$(".action-form").hide();
 $("#page-message").html("");
 $("#page-message").hide();
 $(b).show("slow");
 });
 $("a.item-action").click(function(e){var c="#"+$(this).attr("rel");
+$(".action-form").hide();
 var b=webgloo.sc.dashboard.getCheckedItems(webgloo.sc.dashboard.itemContainer);
 if(b.length>0){$("#page-message").html("");
 $("#page-message").hide();

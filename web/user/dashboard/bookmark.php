@@ -84,7 +84,7 @@
                         <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
                     </div>
                      <div class="span7">
-                        <a class="btn btn-small item-action" rel="list-popup" href="#" class="b btn btn-small">Add to list</a>
+                        <a class="btn btn-flat item-action" rel="list-popup" href="#" class="b btn btn-small">Add to list</a>
                     </div>
                 </div>
            
@@ -93,8 +93,8 @@
             <div class="row">
                 <div class="span8 offset1 mh600">
                     <div class="row">
-                        <div id="page-message" class="color-red ml20"> </div>
-                        <div id="list-popup" class="<?php echo $slclass; ?>">
+                        <div id="page-message" class="hide-me"> </div>
+                        <div id="list-popup" class="action-form">
                             <?php
                                 
                                 //copy URL parameters

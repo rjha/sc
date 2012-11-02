@@ -27,9 +27,8 @@
     position: relative;
     z-index: 102;
     background: white;
-    /* border-bottom: 1px solid #E5E5E5; */
     margin-bottom: 10px;
-    border-bottom : 1px solid #e5e5e5 ;
+    /* border-bottom : 1px solid #e5e5e5 ;  */
 }
 
 #user-menu .item {
@@ -59,9 +58,11 @@
 }
 
 #page-action {
-    border-top : none ;
-    border-bottom : 1px solid #e5e5e5 ;
+   
+    border-bottom : 1px solid #f1f1f1 ;
+    border-top: 1px solid #f1f1f1  ;
 }
+
 
 #top-unit a {
     color: #666;
@@ -81,6 +82,23 @@
 }
 
 .widget .options .links { float:right;}
+.action-form {
+    display: none ;
+}
+
+.btn-flat {
+
+    text-shadow: none;
+    padding: 2px 20px 2px 20px; 
+    border-radius: 5px;
+    color: #666;
+    background: white;
+    font-weight: bold;
+    font-family: arial,sans-serif;
+    font-size: 13px;
+    border: 1px solid #CECECE;
+
+}
 
 </style>
 
