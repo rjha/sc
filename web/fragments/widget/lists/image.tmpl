@@ -1,8 +1,11 @@
-<div class="widget pt10">
-
+<div class="widget">
+    
     <div class="row">
-        
+        <div class="span1">
+            <input type="checkbox" id="~~$view->itemId~" name="g[]" value="~~$view->id~" />
+        </div>
         <div class="span5">
+            
             <h5> <a href="/item/~~$view->itemId~">~~$view->title~</a> </h5>
             <div class="p5">
                 ~if($view->hasGroups){

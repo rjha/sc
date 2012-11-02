@@ -83,14 +83,18 @@
             <div class="row">
                 <div id="page-action">
                     <div class="span1 offset1">
-                        &nbsp;
+                        <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
                     </div>
                     <div class="span7">
+                        <a class="btn btn-flat open-action" rel="list-add-item" href="#">Add +</a>
+                        &nbsp;&nbsp;
+                        <a class="btn btn-flat item-action" rel="list-delete" href="#">Delete -</a>
+                         &nbsp;&nbsp;
                         <a class="btn btn-flat open-action" rel="list-edit" href="#" >Edit list</a>
                         &nbsp;&nbsp;
-                        <a class="btn btn-flat open-action" rel="list-add-item" href="#">Add item</a>
-                        &nbsp;&nbsp;
                         <a class="btn btn-flat open-action" rel="list-delete" href="#">Delete list</a>
+                       
+                       
                     </div>
                 </div>
            
@@ -112,13 +116,13 @@
                         </div>
 
                     </div> <!-- popups -->
-
-                    <h5> <?php echo $listDBRow["name"]; ?> </h5>
-                    <div id="widgets">
+                    
+                    <div id="widgets" class="mt20">
                     <?php
                         $startId = NULL;
                         $endId = NULL;
                         
+                        //@imp list cannot be created w/o items
                         if (sizeof($itemDBRows) > 0) {
                             $startId = $itemDBRows[0]['id'];
                             $endId = $itemDBRows[sizeof($itemDBRows)-1]['id'];
@@ -127,16 +131,21 @@
                                 echo \com\indigloo\sc\html\Post::getListWidget($itemDBRow,0);
                             }
 
-                        } else {
-                            $message = "No items found " ;
-                            echo \com\indigloo\sc\html\Site::getNoResult($message);
-                        }
+                        } 
 
                         ?>
                     </div> <!-- widgets -->
                 </div>
                 <div class="span3">
+                     <div class="section1">
+                        <span class="faded-text"> List Name </span> <br>
+                        <h4> <?php echo $listDBRow["name"]; ?> </h4>
+                        <span class="faded-text"> Items </span> <br>
+                        <h4> <?php echo $listDBRow["item_count"]; ?> </h4>
+                        <span class="faded-text"> created on </span> <br>
+                        <h4> <?php echo \com\indigloo\sc\util\Formatter::convertDBTime($listDBRow["created_on"]); ?> </h4>
 
+                    </div>
                 </div>
             </div>
 
