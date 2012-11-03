@@ -623,11 +623,10 @@ webgloo.sc.dashboard = {
 
     itemContainer : '' ,
 
-    showMessage : function (message,interval) {
+    showMessage : function (message) {
         $("#page-message").html(message);
         $("#page-message").show("slow");
         
-        window.setTimeout(function () { $("#page-message").hide("slow");},interval);
     },
 
     init : function (containerId) {
@@ -669,6 +668,9 @@ webgloo.sc.dashboard = {
             //id of action DIV
             var divId = '#' + $(this).attr("rel");
             $(divId).hide("slow");
+            //hide page message as well??
+            $("#page-message").html('');
+            $("#page-message").hide();
         });
 
         $('input:checkbox[id=page-checkbox]').click(function(event) {

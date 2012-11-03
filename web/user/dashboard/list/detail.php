@@ -115,14 +115,14 @@
 
                              <form  id="form1"  name="edit-form" action="/user/action/list/edit.php"   method="POST">
                                 <span class="faded-text">Name</span> <br>
-                                <input name="name" maxlength="64" type="textbox" value="<?php echo $listName; ?>" /> <br>
+                                <input name="name" class="required" maxlength="64" type="textbox" value="<?php echo $listName; ?>" /> <br>
                                 <span class="faded-text">Description</span>  <br>
                                 <textarea name="description">description...</textarea> <br>
                                 <button type="submit" class="btn btn-small" name="save" value="Save"><span>Save</span></button>
                                 
                                 <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
                                 <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
-                            </form>
+                            </form> <!-- form:1 -->
                         </div>
 
                         <div id="list-add-item" class="action-form">
@@ -138,14 +138,14 @@
                                 </span> 
                                
                                 <br>
-                                <input name="name" maxlength="256" type="textbox" value="" /> <br>
+                                <input name="link" class="required" maxlength="256" type="textbox" value="" /> <br>
                                 <br>
                                 <button type="submit" class="btn btn-small" name="save" value="Save"><span>Save</span></button>
                                 &nbsp;&nbsp;
-                                <a id="list-add-item-help" href="#">Need help to find item URL? click here</a>
+                                <a id="list-add-item-help" href="#">click here to get help on item URL</a>
                                 <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
                                 <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
-                            </form>
+                            </form> <!-- form:2 -->
                         </div>
 
                         <div id="list-delete" class="action-form">
@@ -167,7 +167,7 @@
                                 
                                 <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
                                 <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
-                            </form>
+                            </form> <!-- form:3 -->
                         </div>
 
                         <div id="list-delete-item" class="action-form">
@@ -177,7 +177,7 @@
                                 </div>
                              </div>
 
-                             <form  id="form4"  name="delete-item-form" action="/user/action/list/delete-item.php"   method="POST">
+                             <form  id="form4"  name="delete-item-form" action="/user/action/list/delete-items.php"   method="POST">
                                 <p class="comment-text">
                                     Are you sure you want to delete the selected items? 
                                 </p>
@@ -189,7 +189,7 @@
                                 
                                 <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
                                 <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
-                            </form>
+                            </form> <!-- form:4 -->
                         </div>
 
 
@@ -236,6 +236,13 @@
         <script type="text/javascript">
             /* column width = css width + margin */
             $(document).ready(function(){
+                $("#form1").validate({
+                       errorLabelContainer: $("#page-message")
+                });
+
+                $("#form2").validate({
+                       errorLabelContainer: $("#page-message")
+                });
 
                 $('.widget').mouseenter(function() {
                     $(this).find('.options').css("visibility", "visible");
@@ -256,7 +263,7 @@
                     
                     var message = webgloo.sc.message.HELP_LIST_ITEM_URL; 
                     //@param 2 is auto close interval in milli seconds
-                    webgloo.sc.dashboard.showMessage(message,30000);
+                    webgloo.sc.dashboard.showMessage(message);
 
                 }) ;
 
