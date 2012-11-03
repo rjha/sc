@@ -100,7 +100,7 @@
 
 }
 
-#list-edit .floatr {
+.action-form .floatr {
     border-bottom: 1px solid #28c ;
 }
 

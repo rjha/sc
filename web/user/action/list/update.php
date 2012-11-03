@@ -21,15 +21,15 @@
 
     try{
         
-        $fhandler = new Form\Handler('list-form-1', $_POST);
+        $fhandler = new Form\Handler("list-form-1", $_POST);
         //input rules
-        $fhandler->addRule('qUrl', 'qUrl', array('required' => 1, 'rawData' =>1));
-        $fhandler->addRule('items_json', 'items', array('required' => 1, 'rawData' =>1));
+        $fhandler->addRule("qUrl", "qUrl", array('required' => 1, 'rawData' =>1));
+        $fhandler->addRule("items_json", 'items', array('required' => 1, 'rawData' =>1));
 
         $fvalues = $fhandler->getValues();
         $gWeb = \com\indigloo\core\Web::getInstance();
 
-        $qUrl = $fvalues['qUrl'];
+        $qUrl = base64_decode($fvalues["qUrl"]);
         
         if ($fhandler->hasErrors()) {
             throw new UIException($fhandler->getErrors());
@@ -75,7 +75,6 @@
         $gWeb->store(Constants::STICKY_MAP, $fvalues);
         $message = "Error: something went wrong with database operation" ;
         $gWeb->store(Constants::FORM_ERRORS,array($message));
-        $qUrl = Url::addQueryParameters($qUrl, array('sl' => 1 ));
         header("Location: " . $qUrl);
         exit(1);
     }catch(\Exception $ex) {
@@ -84,7 +83,6 @@
         $gWeb->store(Constants::STICKY_MAP, $fvalues);
         $message = "Error: looks bad. something went wrong!" ;
         $gWeb->store(Constants::FORM_ERRORS, array($message));
-        $qUrl = Url::addQueryParameters($qUrl, array('sl' => 1 ));
         header("Location: " . $qUrl);
         exit(1);
     }

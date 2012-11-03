@@ -11,6 +11,7 @@
     
     use \com\indigloo\Constants as Constants;
     use \com\indigloo\ui\form\Message as FormMessage;
+    use \com\indigloo\ui\form\Sticky;
     use \com\indigloo\ui\Filter as Filter;
 
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
@@ -19,6 +20,16 @@
 
     if (is_null($loginId)) {
         trigger_error("Error : NULL login_id on user dashboard", E_USER_ERROR);
+    }
+
+    $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
+    $popupId = $sticky->get("popup_id");
+    $strPopupObj = '{}' ;
+
+    if(!Util::tryEmpty($popupId)) {
+        $popupObj = new \stdClass ;
+        $popupObj->id = $popupId ;
+        $strPopupObj = json_encode($popupObj);
     }
 
     $postDao = new \com\indigloo\sc\dao\Post();
@@ -35,14 +46,11 @@
     $postDBRows = array();
     $total = $postDao->getTotalCount($filters);
 
-    $pageSize = Config::getInstance()->get_value("user.page.items");
-    $pageSize = 5 ;
+    $pageSize = Config::getInstance()->get_value("user.page.items");    
 
     $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
     $postDBRows = $postDao->getPaged($paginator,$filters);
-    
-    $sl = Util::tryArrayKey($_GET,'sl');
-    $slclass = (!is_null($sl) && ($sl == 1 )) ? "" : "hide-me" ; 
+    $qUrl = base64_encode(Url::current());
 
 
 ?>
@@ -97,13 +105,6 @@
                         <div id="page-message" class="hide-me"> </div>
                         <div id="list-popup" class="action-form">
                             <?php
-                                
-                                //copy URL parameters
-                                $fparams = $qparams;
-                                // unset sl param
-                                unset($fparams["sl"]);
-                                $qUrl = Url::createUrl("/user/dashboard/posts.php",$fparams);
-
                                 $listDao = new \com\indigloo\sc\dao\Lists();
                                 $listRows = $listDao->getOnLoginId($loginId);
                                 $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$qUrl);
@@ -190,6 +191,16 @@
                 } catch(ex) {
                     console.log("error : not able to parse image data json string");
                     webgloo.sc.Lists.imageError = 1 ;
+                }
+
+                try{
+                    var popupObj = JSON.parse('<?php echo $strPopupObj; ?>') ;
+                    if(popupObj.hasOwnProperty("id")){
+                        $("#" + popupObj["id"]).show();
+                    }
+                    
+                } catch(ex) {
+                    console.log("error : parsing popup string");
                 }
 
             });

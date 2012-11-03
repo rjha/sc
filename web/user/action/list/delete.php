@@ -14,11 +14,11 @@
     use \com\indigloo\Url as Url ;
     use \com\indigloo\Logger as Logger ;
 
-    if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
+    if (isset($_POST["delete"]) && ($_POST["delete"] == "Delete")) {
         
         try{
             
-            $fhandler = new Form\Handler("edit-form", $_POST);
+            $fhandler = new Form\Handler("delete-form", $_POST);
             
             $fhandler->addRule("qUrl", "go back to URL", array('required' => 1, 'rawData' =>1));
             $fhandler->addRule("list_id", "list id", array('required' => 1));
@@ -35,16 +35,9 @@
 
             $loginId = Login::getLoginIdInSession();
             $listDao = new \com\indigloo\sc\dao\Lists();
-            $listDao->edit(
-                $loginId,
-                $fvalues["list_id"],
-                $fvalues["name"],
-                $fvalues["description"]);
-
-            $message = sprintf("success! list updated");
-            $gWeb->store(Constants::FORM_MESSAGES,array($message));
-
-            header("Location: " . $qUrl);
+            $listDao->delete($loginId,$listId); 
+            // list no longer there - Go to list index
+            header("Location: /user/dashboard/list/index.php");
 
 
         }catch(UIException $ex) {
@@ -62,6 +55,7 @@
             
             header("Location: " . $qUrl);
             exit(1);
+            
         }catch(\Exception $ex) {
             Logger::getInstance()->error($ex->getMessage());
             Logger::getInstance()->backtrace($ex->getTrace());

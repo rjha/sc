@@ -1,7 +1,7 @@
 
 <div class="wrapper">
     <div class="floatr">
-        <span><a href="#" class="close-action" rel="list-popup">close&nbsp;x</a> </span>
+        <span><a href="#" class="close-action" rel="list-popup">close</a> </span>
     </div>
     <div>
         <span class="faded-text">Enter list name and click create</span>
@@ -11,13 +11,17 @@
 <div id="list-form-wrapper">
     <form  id="list-form1"  name="list-form1" action="/user/action/list/update.php"   method="POST">
         
-        <input id="new-list-name" name="new-list-name" maxlength="64" type="textbox" value="" />
-        &nbsp;&nbsp;
+        <input id="new-list-name" name="new-list-name" maxlength="64" type="text" value="" />
+        <br>
         <button type="submit" id ="create-list" class="btn btn-small" name="create" value="Create"><span>Create</span></button>
+         &nbsp;
+        <a class="btn btn-small close-action" rel="list-popup">Cancel</a>
+                                
         <input type="hidden" name="items_json" value="" />
         <input type="hidden" name="list_id" value="" />
         <input type="hidden" name="is_new" value="1" />
         <input type="hidden" name="image_error" value="0" />
         <input type="hidden" name="qUrl" value="~~$view->qUrl~" />
+        <input type="hidden" name="popup_id" value="list-popup" />
     </form>
 </div>

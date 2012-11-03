@@ -62,7 +62,7 @@
     $itemDBRows = $listDao->getPagedItems($paginator,array($filter2));
     
     $pageBaseUrl = "/user/dashboard/list/detail.php";
-    $qUrl = Url::current();
+    $qUrl = base64_encode(Url::current());
 
 ?>
 
@@ -126,14 +126,14 @@
 
                              <form  id="form1"  name="edit-form" action="/user/action/list/edit.php"   method="POST">
                                 <span class="faded-text">Name</span> <br>
-                                <input name="name" class="required" maxlength="64" type="textbox" value="<?php echo $sticky->get('name',$listDBRow['name']); ?>" /> <br>
+                                <input name="name" class="required" maxlength="64" type="text" value="<?php echo $sticky->get('name',$listDBRow['name']); ?>" /> <br>
                                 <span class="faded-text">Description</span>  <br>
                                 <textarea name="description"><?php echo $sticky->get('description',$listDBRow['description']); ?></textarea> <br>
                                 <button type="submit" class="btn btn-small" name="save" value="Save"><span>Save</span></button>
                                 &nbsp;
                                 <a class="btn btn-small close-action" rel="list-edit">Cancel</a>
                                 
-                                <input type="hidden" name="qUrl" value="<?php echo base64_encode($qUrl) ?>"/>
+                                <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
                                 <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
                                 <input type="hidden" name="popup_id" value="list-edit"/>
 
@@ -143,22 +143,23 @@
                         <div id="list-add-item" class="action-form">
                             <div class="wrapper">
                                 <div class="floatr">
-                                    <span><a href="#" class="close-action" rel="list-add-item">close&nbsp;x</a> </span>
+                                    <span><a href="#" class="close-action" rel="list-add-item">close</a> </span>
                                 </div>
                              </div>
 
-                             <form  id="form2"  name="add-item-form" action="/user/action/list/add-item-url.php"   method="POST">
+                             <form  id="form2"  name="add-item-form" action="/user/action/list/add-item-link.php"   method="POST">
                                 <span class="faded-text">
                                     Please type the 3mik URL of item and click Save
                                 </span> 
-                               
+                                
                                 <br>
-                                <input name="link" class="required" maxlength="256" type="textbox" value="<?php echo $sticky->get('link'); ?>" /> <br>
-                                <br>
+                                <input name="link" class="required" maxlength="256" type="text" value="<?php echo $sticky->get('link'); ?>" /> <br>
                                 <button type="submit" class="btn btn-small" name="save" value="Save"><span>Save</span></button>
-                                &nbsp;&nbsp;
+                                &nbsp;
+                                <a class="btn btn-small close-action" rel="list-add-item">Cancel</a>
+                                &nbsp;
                                 <a id="list-add-item-help" href="#">click here to get help on item URL</a>
-                                <input type="hidden" name="qUrl" value="<?php echo base64_encode($qUrl); ?>"/>
+                                <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>"/>
                                 <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
                                 <input type="hidden" name="popup_id" value="list-add-item"/>
                             </form> <!-- form:2 -->
@@ -167,21 +168,21 @@
                         <div id="list-delete" class="action-form">
                             <div class="wrapper">
                                 <div class="floatr">
-                                    <span><a href="#" class="close-action" rel="list-delete">close&nbsp;x</a> </span>
+                                    <span><a href="#" class="close-action" rel="list-delete">close</a> </span>
                                 </div>
                              </div>
 
                              <form  id="form3"  name="delete-form" action="/user/action/list/delete.php"   method="POST">
-                                <p class="comment-text">
+                                <p class="faded-text">
                                     Are you sure you want to delete this list? 
                                 </p>
                                 <button type="submit" class="btn btn-small btn-danger" name="delete" value="Delete">
                                     <span>Delete</span>
                                 </button>
-                                &nbsp;&nbsp;
+                                &nbsp;
                                 <a class="btn btn-small close-action" rel="list-delete">Cancel</a>
                                 
-                                <input type="hidden" name="qUrl" value="<?php echo base64_encode($qUrl); ?>"/>
+                                <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>"/>
                                 <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
                             </form> <!-- form:3 -->
                         </div>
@@ -189,21 +190,21 @@
                         <div id="list-delete-item" class="action-form">
                             <div class="wrapper">
                                 <div class="floatr">
-                                    <span><a href="#" class="close-action" rel="list-delete-item">close&nbsp;x</a> </span>
+                                    <span><a href="#" class="close-action" rel="list-delete-item">close</a> </span>
                                 </div>
                              </div>
 
                              <form  id="form4"  name="delete-item-form" action="/user/action/list/delete-items.php"   method="POST">
-                                <p class="comment-text">
+                                <p class="faded-text">
                                     Are you sure you want to delete the selected items? 
                                 </p>
                                 <button type="submit" id="delete-items" class="btn btn-small btn-danger" name="delete" value="Delete">
                                     <span>Delete</span>
                                 </button>
-                                &nbsp;&nbsp;
+                                &nbsp;
                                 <a class="btn btn-small close-action" rel="list-delete-item">Cancel</a>
                                 
-                                <input type="hidden" name="qUrl" value="<?php echo base64_encode($qUrl); ?>"/>
+                                <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>"/>
                                 <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
                                 <input type="hidden" name="items_json" value=''/>
                             </form> <!-- form:4 -->
@@ -235,8 +236,9 @@
                      <div class="section1">
                         <span class="faded-text"> List Name </span> <br>
                         <h4> <?php echo $listDBRow["name"]; ?> </h4>
-                        <span class="faded-text"> Items </span> <br>
-                        <h4> <?php echo $listDBRow["item_count"]; ?> </h4>
+                        <p class="faded-text"> <?php echo $listDBRow["description"]; ?> </p>
+                        
+                        <h4> <?php echo $listDBRow["item_count"]; ?> items </h4>
                         <span class="faded-text"> created on </span> <br>
                         <h4> <?php echo \com\indigloo\sc\util\Formatter::convertDBTime($listDBRow["created_on"]); ?> </h4>
 

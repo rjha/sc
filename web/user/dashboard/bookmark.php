@@ -15,6 +15,7 @@
     use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\ui\Filter as Filter;
     use \com\indigloo\ui\form\Message as FormMessage;
+    use \com\indigloo\ui\form\Sticky;
 
     
     $qparams = Url::getRequestQueryParams();
@@ -23,6 +24,16 @@
 
     if (is_null($loginId)) {
         trigger_error("Error : NULL or invalid login_id", E_USER_ERROR);
+    }
+
+    $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
+    $popupId = $sticky->get("popup_id");
+    $strPopupObj = '{}' ;
+
+    if(!Util::tryEmpty($popupId)) {
+        $popupObj = new \stdClass ;
+        $popupObj->id = $popupId ;
+        $strPopupObj = json_encode($popupObj);
     }
 
     $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
@@ -46,10 +57,8 @@
     $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
     $postDBRows = $bookmarkDao->getPaged($paginator,$filters);
     $pageBaseUrl = "/user/dashboard/bookmark.php";
+    $qUrl = base64_encode(Url::current());
 
-
-    $sl = Util::tryArrayKey($_GET,'sl');
-    $slclass = (!is_null($sl) && ($sl == 1 )) ? "" : "hide-me" ; 
 
 ?>
 <!DOCTYPE html>
@@ -97,12 +106,6 @@
                         <div id="list-popup" class="action-form">
                             <?php
                                 
-                                //copy URL parameters
-                                $fparams = $qparams;
-                                // unset sl param
-                                unset($fparams["sl"]);
-                                $qUrl = Url::createUrl("/user/dashboard/bookmark.php",$fparams);
-
                                 $listDao = new \com\indigloo\sc\dao\Lists();
                                 $listRows = $listDao->getOnLoginId($loginId);
                                 $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$qUrl);
@@ -188,6 +191,16 @@
                 } catch(ex) {
                     console.log("error : not able to parse image data json string");
                     webgloo.sc.Lists.imageError = 1 ;
+                }
+
+                try{
+                    var popupObj = JSON.parse('<?php echo $strPopupObj; ?>') ;
+                    if(popupObj.hasOwnProperty("id")){
+                        $("#" + popupObj["id"]).show();
+                    }
+                    
+                } catch(ex) {
+                    console.log("error : parsing popup string");
                 }
 
             });
