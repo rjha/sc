@@ -236,6 +236,7 @@
         <script type="text/javascript">
             /* column width = css width + margin */
             $(document).ready(function(){
+
                 $('.widget').mouseenter(function() {
                     $(this).find('.options').css("visibility", "visible");
                 });
@@ -253,10 +254,7 @@
                 webgloo.sc.dashboard.fixAlert();
                 $("#list-add-item-help").click(function(event) {
                     
-                    var message = "3mik item URL is the page address displayed " 
-                        + " in your browser on item details page, like http://www.3mik.com/item/307853" 
-                        + " copy and paste that item URL in the box";
-                    
+                    var message = webgloo.sc.message.HELP_LIST_ITEM_URL; 
                     //@param 2 is auto close interval in milli seconds
                     webgloo.sc.dashboard.showMessage(message,30000);
 
