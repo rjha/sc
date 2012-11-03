@@ -161,6 +161,7 @@ namespace com\indigloo\sc\dao {
             return $count ;
         }
 
+        //@todo - add @param loginId
         function addItems($listId,$frmItemsJson){
             $row = $this->getOnId($listId);
             $dbItemsJson = $row["items_json"];
@@ -171,13 +172,19 @@ namespace com\indigloo\sc\dao {
             $itemsJson = json_encode($items);
             $itemsJson = Util::formSafeJson($itemsJson);
 
-
             if(empty($itemIds)) {
                 $message = " Not able to create List without items!";
                 throw new UIException(array($message));
             }
 
             mysql\Lists::addItems($listId,$itemsJson,$itemIds);
+        }
+
+        function deleteItems($loginId,$listId,$frmItemsJson) {
+            // @todo - look @ list.items_json
+            // if it contains items that are being deleted then
+            // we need to update list.items_json as well 
+            trigger_error("Not implemented",E_USER_ERROR);
         }
 
         function edit($loginId,$listId,$name,$description) {
@@ -194,6 +201,18 @@ namespace com\indigloo\sc\dao {
                 $bin_hash,
                 $description); 
         }
+
+        function delete($loginId,$listId) {
+            mysql\Lists::delete($loginId,$listId);
+        }
+
+        function addItemLink($loginId,$listId,$itemLink) {
+            // get item id from link
+
+        }
+
+        
+
 
     }
 }

@@ -369,6 +369,23 @@ namespace com\indigloo\sc\mysql {
             }
             
         }
+
+        static function delete($loginId,$listId) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = " delete from sc_list where id = ? and login_id = ?" ;
+
+            $stmt = $mysqli->prepare($sql);
+
+            if ($stmt) {
+                $stmt->bind_param("ii",$listId,$loginId) ;
+                $stmt->execute();
+                $stmt->close();
+
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
+
+        }
     }
 }
 ?>
