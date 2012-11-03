@@ -50,11 +50,24 @@
                 </div>
 
             </div>
+            <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h4> Followers </h4>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="span8 offset1">
-                    <h3> Followers </h3>
-                    <?php echo \com\indigloo\sc\html\SocialGraph::getFollowerHtml($loginId,$followers); ?>
+                    <div id="followers">
+                    <?php 
+                        foreach($followers as $follower){
+                            echo \com\indigloo\sc\html\SocialGraph::getFollowerTile($loginId,$follower); 
+                        }
+
+                    ?>
+                    </div>
                 </div>
 
             </div>

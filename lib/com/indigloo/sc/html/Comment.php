@@ -42,7 +42,7 @@ namespace com\indigloo\sc\html {
             $template = '/fragments/comment/summary.tmpl' ;
 
             $view->comment = $row['description'];
-            $view->createdOn = Format::convertDBTime($row['created_on']);
+            $view->createdOn = Formatter::convertDBTime($row['created_on']);
             $view->userName = $row['user_name'] ;
             $view->loginId = $row['login_id'];
             $view->pubUserId = PseudoId::encode($view->loginId);
@@ -69,7 +69,7 @@ namespace com\indigloo\sc\html {
             $view->itemId = PseudoId::encode($view->postId);
 
             $view->comment = $row['description'];
-            $view->createdOn = Format::convertDBTime($row['created_on']);
+            $view->createdOn = Formatter::convertDBTime($row['created_on']);
             $view->showUser = false ;
 
             if($options & UIConstants::COMMENT_USER) {

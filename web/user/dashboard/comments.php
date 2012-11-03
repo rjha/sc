@@ -62,10 +62,17 @@
                 </div>
 
             </div>
+            <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h4> Comments </h4>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="span8 offset1">
-                    <h3> Comments </h3>
+                    
                     
                     <?php
                         $startId = NULL ;

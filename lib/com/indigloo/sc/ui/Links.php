@@ -37,7 +37,9 @@ namespace com\indigloo\sc\ui {
                 }
             }
 
-            $bucket[$activeName]["class"] = $classMap["active"];
+            if(!is_null($activeName)) {
+                $bucket[$activeName]["class"] = $classMap["active"];
+            }
             
             $view = new \stdClass;
             $view->records = array_values($bucket) ;

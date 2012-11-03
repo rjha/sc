@@ -8,7 +8,52 @@ namespace com\indigloo\sc\html {
     
     class SocialGraph {
 
-        static function getFollowingHtml($loginId,$rows) {
+        static function getFollowerTile($loginId,$row) {
+            $view = new \stdClass;
+            $userId = $row["login_id"];
+            $pubUserId = PseudoId::encode($userId);
+            $pubUserUrl = "/pub/user/".$pubUserId ;
+            
+            $view->pubUserUrl = $pubUserUrl ;
+            $view->name = $row["name"];
+            $view->srcImage = $row["photo_url"];
+            
+            // This is for follow action on my follower's page.
+            // for follow action :- I start following 
+            // my follower. so following - is me.
+            $view->followingId = $userId ;
+            $view->followerId = $loginId ;
+
+            $template = "/fragments/graph/follower/tile.tmpl" ;
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+        static function getFollowingTile($loginId,$row) {
+            $view = new \stdClass;
+            $userId = $row["login_id"];
+            $pubUserId = PseudoId::encode($userId);
+            $pubUserUrl = "/pub/user/".$pubUserId ;
+            
+            $view->pubUserUrl = $pubUserUrl ;
+            $view->name = $row["name"];
+            $view->srcImage = $row["photo_url"];
+            
+            // This is for unfollow action on my followings page.
+            // I am the follower - me - loginId
+            // I am following - what is in row["login_id"]
+            
+            $view->followingId = $userId ;
+            $view->followerId = $loginId ;
+
+            $template = "/fragments/graph/following/tile.tmpl" ;
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+        static function getFollowingTable($loginId,$rows) {
             $html = NULL ;
             $view = new \stdClass;
             
@@ -37,12 +82,12 @@ namespace com\indigloo\sc\html {
             
             $view->records = $records ;
             
-            $template = "/fragments/graph/following-table.tmpl" ;
+            $template = "/fragments/graph/following/table.tmpl" ;
             $html = Template::render($template,$view);
             return $html ;
         }
         
-        static function getFollowerHtml($loginId,$rows) {
+        static function getFollowerTable($loginId,$rows) {
             $html = NULL ;
             $view = new \stdClass;
             
@@ -75,7 +120,7 @@ namespace com\indigloo\sc\html {
             
             $view->records = $records ;
             
-            $template = "/fragments/graph/follower-table.tmpl" ;
+            $template = "/fragments/graph/follower/table.tmpl" ;
             $html = Template::render($template,$view);
             return $html ;
         }

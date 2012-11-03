@@ -18542,6 +18542,38 @@ webgloo.sc.util = {
     }
 }
 
+webgloo.sc.message = {
+    get : function(key,data) {
+        var buffer = '' ;
+        if(webgloo.sc.message.hasOwnProperty(key)) {
+            buffer = webgloo.sc.message[key].supplant(data);
+        }
+
+        return buffer ;
+    }
+} 
+
+//define message constants
+webgloo.sc.message.HELP_LIST_ITEM_URL = "3mik item URL is the page address displayed " 
+                        + " in your browser on item details page, like http://www.3mik.com/item/307853" 
+                        + " copy and paste that item URL in the box";
+webgloo.sc.message.SELECT_ITEM = "No items have been selected. Please select some items to do this action.";
+webgloo.sc.message.SELECT_IMAGE = "Please select an image first.";
+webgloo.sc.message.FETCH_IMAGE = "fetching images from webpage..." ;
+webgloo.sc.message.FETCH_IMAGE_RESULT = "{total} images found.&nbsp;&nbsp;Place your mouse over an image to select it. "
+                                + "&nbsp;&nbsp;Click Next after selecting images." ;
+webgloo.sc.message.NO_IMAGE = " No images found! ";
+
+webgloo.sc.message.UPLOAD_IMAGE = "uploading {total} images " ;
+webgloo.IMAGE_UPLOAD_ERROR = " Error uploading image - {counter} : {message} " ;
+webgloo.sc.message.IMAGE_UPLOAD_RESULT = "image - {counter} : uploaded successfully. " ;
+webgloo.sc.message.IMAGE_SIZE_ERROR = "Error: No suitable images found";
+webgloo.sc.message.POPUP_WAIT = '<div> Please wait...</div> '
+            + '<div> <img src="/css/asset/sc/round_loader.gif" alt="loading ..." /> </div>' ;
+webgloo.sc.message.POPUP_LOGIN = '<div> Redirecting to login page... </div> ' +
+    '<div> <img src="/css/asset/sc/round_loader.gif" alt="loader" /> </div>' ;
+webgloo.sc.message.FB_SPINNER = '<div> <img src="/css/asset/sc/fb_loader.gif" alt="spinner"/></div>' ;
+
 webgloo.sc.toolbar = {
     add : function() {
         window.setTimeout(webgloo.sc.toolbar.closeOverlay,8000);
@@ -18670,8 +18702,7 @@ webgloo.sc.SimplePopup = {
     addSpinner : function() {
         this.close();
         $("#block-spinner").html('');
-        var content = '<div> Please wait...</div> '
-            + '<div> <img src="/css/asset/sc/round_loader.gif" alt="loading ..." /> </div>' ;
+        var content = webgloo.sc.message.POPUP_WAIT ;
         $("#block-spinner").html(content);
 
         /* show mask */
@@ -18743,9 +18774,7 @@ webgloo.sc.SimplePopup = {
                     +qUrl + '&g_session_action=' + g_action_data;
 
                 //change spinner message
-                var message = '<div> Redirecting to login page... </div> ' +
-                    '<div> <img src="/css/asset/sc/round_loader.gif" alt="loader" /> </div>' ;
-
+                var message = webgloo.sc.message.POPUP_LOGIN ;
                 $("#block-spinner").html(message);
                 window.setTimeout(this.redirect,3000);
 
@@ -18827,7 +18856,7 @@ webgloo.sc.item = {
 
     addAdminActions : function() {
         //feature posts
-        $("a.feature-post-link").click(function(event){
+        $("a.feature-post").click(function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -18850,7 +18879,7 @@ webgloo.sc.item = {
         }) ;
 
         //unfeature posts
-        $("a.unfeature-post-link").click(function(event){
+        $("a.unfeature-post").click(function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -18930,7 +18959,7 @@ webgloo.sc.item = {
     addActions : function() {
         //@todo rename - remove link part at end - an anchor is a link!
         //add like & save callbacks
-        $("a.like-post-link").live("click",function(event){
+        $("a.like-post").live("click",function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -18944,7 +18973,7 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
         }) ;
 
-        $("a.save-post-link").live("click", function(event){
+        $("a.save-post").live("click", function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -18959,7 +18988,7 @@ webgloo.sc.item = {
         }) ;
 
         //unsave
-        $("a.remove-post-link").live("click",function(event){
+        $("a.remove-post").live("click",function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -18978,7 +19007,7 @@ webgloo.sc.item = {
 
         }) ;
 
-        $("a.follow-user-link").live("click",function(event){
+        $("a.follow-user").live("click",function(event){
             event.preventDefault();
 
             var id = $(this).attr("id");
@@ -19000,7 +19029,7 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
         }) ;
 
-        $("a.unfollow-user-link").live("click",function(event){
+        $("a.unfollow-user").live("click",function(event){
 
             event.preventDefault();
 
@@ -19036,11 +19065,10 @@ webgloo.sc.dashboard = {
 
     itemContainer : '' ,
 
-    showMessage : function (message,interval) {
+    showMessage : function (message) {
         $("#page-message").html(message);
         $("#page-message").show("slow");
         
-        window.setTimeout(function () { $("#page-message").hide("slow");},interval);
     },
 
     init : function (containerId) {
@@ -19070,7 +19098,7 @@ webgloo.sc.dashboard = {
                 $(divId).show("slow");
 
             } else {
-                var message = "No items have been selected. Please select some items to do this action.";
+                var message = webgloo.sc.message.SELECT_ITEM ;
                 $("#page-message").html(message);
                 $("#page-message").show("slow");
                 window.setTimeout(function () { $("#page-message").hide("slow");},5000);
@@ -19082,6 +19110,9 @@ webgloo.sc.dashboard = {
             //id of action DIV
             var divId = '#' + $(this).attr("rel");
             $(divId).hide("slow");
+            //hide page message as well??
+            $("#page-message").html('');
+            $("#page-message").hide();
         });
 
         $('input:checkbox[id=page-checkbox]').click(function(event) {
@@ -19508,16 +19539,16 @@ webgloo.sc.ImageSelector = {
             }
 
             if(webgloo.sc.ImageSelector.num_selected == 0 ) {
-                webgloo.sc.ImageSelector.appendError("Please select an image first.");
+                var message = webgloo.sc.message.SELECT_IMAGE ;
+                webgloo.sc.ImageSelector.appendError(message);
                 return false;
 
             } else {
 
-                var tmpl = "uploading {total} images " ;
-                var message = tmpl.supplant({"total" : webgloo.sc.ImageSelector.num_selected});
+                var message = webgloo.sc.message.get("UPLOAD_IMAGE", {"total" : webgloo.sc.ImageSelector.num_selected});
                 webgloo.sc.ImageSelector.appendMessage(message,{});
 
-                var spinner = '<div> <img src="/css/asset/sc/fb_loader.gif" alt="spinner"/></div>' ;
+                var spinner = webgloo.sc.message.FB_SPINNER ;
                 webgloo.sc.ImageSelector.appendMessage(spinner,{});
 
                 $("#image-preview").find('.container').each(function(index) {
@@ -19688,7 +19719,7 @@ webgloo.sc.ImageSelector = {
         if(webgloo.sc.ImageSelector.num_added > 0 ) {
             $("#next-container").fadeIn("slow");
         }else {
-            var message = "Error: No suitable images found";
+            var message = webgloo.sc.message.IMAGE_SIZE_ERROR;
             webgloo.sc.ImageSelector.showError(message);
         }
 
@@ -19717,16 +19748,10 @@ webgloo.sc.ImageSelector = {
         webgloo.sc.ImageSelector.description = response.description;
         webgloo.sc.ImageSelector.website = $("#link-box").val();
 
-        var tmpl1, message ;
-
-        tmpl1 = " {total} images found.&nbsp;&nbsp;Place your mouse over an image to select it. "
-            + "&nbsp;&nbsp;Click Next after selecting images." ;
-
-        
         if(webgloo.sc.ImageSelector.num_total > 0 ) {
-            message = tmpl1.supplant({"total" : webgloo.sc.ImageSelector.num_total}) ;
+            message = webgloo.sc.message.get("FETCH_IMAGE_RESULT",{"total" : webgloo.sc.ImageSelector.num_total});
         } else {
-            message = "No images found!" ;
+            message = webgloo.sc.message.NO_IMAGE ;
         }
         
         webgloo.sc.ImageSelector.showMessage(message);
@@ -19776,8 +19801,8 @@ webgloo.sc.ImageSelector = {
 
         webgloo.sc.ImageSelector.init();
 
-        var message = "fetching images from webpage..." ;
-        var spinner = '<div> <img src="/css/asset/sc/fb_loader.gif" alt="spinner"/></div>' ;
+        var message = webgloo.sc.message.FETCH_IMAGE ;
+        var spinner = webgloo.sc.message.FB_SPINNER ;
 
         webgloo.sc.ImageSelector.clearMessage();
         webgloo.sc.ImageSelector.appendMessage(message,{});
@@ -19833,8 +19858,11 @@ webgloo.sc.ImageSelector = {
     processUploadError : function(response) {
 
         webgloo.sc.ImageSelector.upload_counter++;
-        var tmpl = " Error uploading image - {counter} : {message} " ;
-        var message = tmpl.supplant({"counter":webgloo.sc.ImageSelector.upload_counter, "message":response });
+        var message = webgloo.sc.message.get("IMAGE_UPLOAD_ERROR", {
+            "counter":webgloo.sc.ImageSelector.upload_counter, 
+            "message":response}
+            );
+
         webgloo.sc.ImageSelector.appendError(message);
 
         if(webgloo.sc.ImageSelector.debug) {
@@ -19847,8 +19875,7 @@ webgloo.sc.ImageSelector = {
 
     processUpload : function(response) {
         webgloo.sc.ImageSelector.upload_counter++;
-        var tmpl = "image - {counter} : uploaded successfully. " ;
-        var message = tmpl.supplant({"counter" : webgloo.sc.ImageSelector.upload_counter });
+        var message = webgloo.sc.message.get("IMAGE_UPLOAD_RESULT", {"counter":webgloo.sc.ImageSelector.upload_counter});
         webgloo.sc.ImageSelector.appendMessage(message);
 
         if(webgloo.sc.ImageSelector.debug) {

@@ -24,13 +24,13 @@
 
     //tokens for use in next screen
     $ftoken = Util::getMD5GUID();
-    $email = $userDBRow['email'];
+    $email = $userDBRow["email"];
     $femail = Util::encrypt($email);
     $gWeb = \com\indigloo\core\Web::getInstance();
     $gWeb->store("change.password.email",$femail);
     $gWeb->store("change.password.token",$ftoken);
 
-    $title = $userDBRow['email'];
+    $title = $userDBRow["email"];
 
 
     $qUrl = Url::current();

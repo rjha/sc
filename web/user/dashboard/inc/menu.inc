@@ -8,8 +8,7 @@
     "/user/dashboard/list/index.php" => "Lists",
     "/user/dashboard/list/detail.php" => "Lists",
     "/user/dashboard/activities.php" => "Activity",
-    "/user/dashboard/mails.php" => "Settings"
-    );
+    "/user/dashboard/mails.php" => "Settings");
 
     $classMap = array("active" => "item1", "normal" => "item");
     $template = "/fragments/ui/links/umenu.tmpl"; 

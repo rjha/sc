@@ -1216,8 +1216,8 @@ div .form-error{margin-bottom:10px;margin-top:10px;color:red}
 div .form-message{margin-bottom:10px;margin-top:10px;color:green}
 div .error label{width:500px;text-align:left;display:block;margin-left:10px;color:red}
 .widget{width:100%;clear:both;border-bottom:1px solid #e6e6e6;min-height:60px;float:left;padding-bottom:7px}
-.widget .options{background-color:#f7f7f7;border-bottom:1px solid #ccc;visibility:hidden;overflow:hidden;margin:0;padding:0 20px 0 0}
-.widget .options .links{padding:5px 5px 5px 30px;font-size:12px;line-height:17px}
+.widget .options{background-color:#fefdf1;visibility:hidden;overflow:hidden;margin:0;padding:0 20px 0 0}
+.widget .options .links{padding:5px 5px 5px 30px;font-size:12px;line-height:18px}
 .widget .options .links a{color:#333;cursor:pointer;font-size:1em}
 .widget .photo{padding:13px}
 .widget img{max-width:90%}
@@ -1238,6 +1238,8 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .hide-me{display:none}
 .image-grid .box{position:relative;float:left;padding:7px;height:125px;width:125px;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1);margin:4px}
 .image-grid .box img{width:auto;height:auto;max-width:100px;max-height:100px;padding:5px}
+.user-tile{position:relative;float:left;padding:10px;height:170px;width:200px;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1);margin:8px}
+.user-tile img{width:auto;height:100px;max-width:160px;max-height:120px;padding:5px}
 #link-preview a{font-size:10px;line-height:1.8;color:#444;text-decoration:underline}
 #image-preview .container{position:relative;float:left;padding:7px;height:160px;width:190px;box-shadow:0 1px 3px rgba(34,25,25,0.4);margin:4px}
 #image-preview .container img{width:auto;height:auto;max-width:180px;max-height:135px;margin-bottom:5px;padding:5px}
