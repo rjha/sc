@@ -414,7 +414,7 @@ webgloo.sc.item = {
 
     addAdminActions : function() {
         //feature posts
-        $("a.feature-post-link").click(function(event){
+        $("a.feature-post").click(function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -437,7 +437,7 @@ webgloo.sc.item = {
         }) ;
 
         //unfeature posts
-        $("a.unfeature-post-link").click(function(event){
+        $("a.unfeature-post").click(function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -517,7 +517,7 @@ webgloo.sc.item = {
     addActions : function() {
         //@todo rename - remove link part at end - an anchor is a link!
         //add like & save callbacks
-        $("a.like-post-link").live("click",function(event){
+        $("a.like-post").live("click",function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -531,7 +531,7 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
         }) ;
 
-        $("a.save-post-link").live("click", function(event){
+        $("a.save-post").live("click", function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -546,7 +546,7 @@ webgloo.sc.item = {
         }) ;
 
         //unsave
-        $("a.remove-post-link").live("click",function(event){
+        $("a.remove-post").live("click",function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -565,7 +565,7 @@ webgloo.sc.item = {
 
         }) ;
 
-        $("a.follow-user-link").live("click",function(event){
+        $("a.follow-user").live("click",function(event){
             event.preventDefault();
 
             var id = $(this).attr("id");
@@ -587,7 +587,7 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
         }) ;
 
-        $("a.unfollow-user-link").live("click",function(event){
+        $("a.unfollow-user").live("click",function(event){
 
             event.preventDefault();
 
