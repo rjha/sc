@@ -7,6 +7,7 @@ namespace com\indigloo\sc\mysql {
 
     use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException;
+    use \com\indigloo\sc\util\PseudoId ;
 
 
     class Lists {
@@ -126,7 +127,6 @@ namespace com\indigloo\sc\mysql {
 
         static function getPagedItems($paginator,$filters) {
 
-
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input
@@ -231,7 +231,53 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function create($loginId,$name,$hash, $bin_hash,$strItemsJson, $itemIds) {
+        static function edit( 
+                $loginId,
+                $listId,
+                $name,
+                $seoName,
+                $hash,
+                $bin_hash,
+                $description){
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = " update sc_list set name = ?, seo_name = ?, description=?,md5_name = ?, " ;
+            $sql .= " bin_md5_name = ? , version=version +1 , updated_on = now() ";
+            $sql .= " where id = ? and login_id = ?" ;
+
+            $stmt = $mysqli->prepare($sql);
+
+            if ($stmt) {
+                $stmt->bind_param("sssssii",
+                        $name,
+                        $seoName,
+                        $description,
+                        $hash,
+                        $bin_hash,
+                        $listId,
+                        $loginId);
+
+
+                $stmt->execute();
+
+                if ($mysqli->affected_rows != 1) {
+                    MySQL\Error::handle($stmt);
+                }
+                $stmt->close();
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
+
+        }
+
+        static function create(
+            $loginId,
+            $name,
+            $seoName,
+            $hash, 
+            $bin_hash,
+            $strItemsJson,
+            $itemIds) {
 
             try {
 
@@ -247,9 +293,9 @@ namespace com\indigloo\sc\mysql {
 
                 //list
                 // op_bit is offline_processing bit - set to zero on create
-                $sql1 = "insert into sc_list (login_id,name, md5_name, bin_md5_name, " ;
+                $sql1 = "insert into sc_list (login_id,name, seo_name,md5_name, bin_md5_name, " ;
                 $sql1 .= "items_json, version, op_bit , created_on) " ;
-                $sql1 .= " values (:login_id,:name, :hash, :bin_hash, :items_json,1,0,now()) " ;
+                $sql1 .= " values(:login_id,:name,:seo_name,:hash,:bin_hash,:items_json,1,0,now()) " ;
                 $flag = true ;
 
                 $dbh =  PDOWrapper::getHandle();
@@ -261,6 +307,7 @@ namespace com\indigloo\sc\mysql {
                 $stmt = $dbh->prepare($sql1);
                 $stmt->bindParam(":login_id", $loginId);
                 $stmt->bindParam(":name", $name);
+                $stmt->bindParam(":seo_name", $seoName);
                 $stmt->bindParam(":hash", $hash);
                 $stmt->bindParam(":bin_hash", $bin_hash);
                 $stmt->bindParam(":items_json", $strItemsJson);
@@ -290,11 +337,14 @@ namespace com\indigloo\sc\mysql {
 
                 $count = $dbh->exec($sql2);
 
-                // update item_count of list 
-                $sql3 = " update sc_list set item_count = :item_count where id = :list_id " ;
+                // update item_count + pseudo_id of list
+                $pseudoId =  PseudoId::encode($listId);
+                $sql3 = " update sc_list set item_count = :item_count, pseudo_id = :pseudo_id " ;
+                $sql3 .= " where id = :list_id " ;
                 $stmt3 = $dbh->prepare($sql3);
                 $stmt3->bindParam(":list_id", $listId);
-                $stmt3->bindParam(":item_count", $isize);
+                $stmt3->bindParam(":item_count", $count);
+                $stmt3->bindParam(":pseudo_id", $pseudoId);
                 $stmt3->execute();
                 $stmt3 = NULL ;
 

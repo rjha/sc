@@ -100,6 +100,10 @@
 
 }
 
+#list-edit .floatr {
+    border-bottom: 1px solid #28c ;
+}
+
 </style>
 
 <div id="user-menu">

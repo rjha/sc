@@ -7,11 +7,22 @@
     use \com\indigloo\Util as Util;
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
+    use \com\indigloo\Constants as Constants;
 
     use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\ui\form\Message as FormMessage;
+    use \com\indigloo\ui\form\Sticky;
     use \com\indigloo\ui\Filter as Filter;
 
+    $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
+    $popupId = $sticky->get('popup_id');
+    $strPopupObj = '{}' ;
+
+    if(!Util::tryEmpty($popupId)) {
+        $popupObj = new \stdClass ;
+        $popupObj->id = $popupId ;
+        $strPopupObj = json_encode($popupObj);
+    }
 
     $qparams = Url::getRequestQueryParams();
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
@@ -109,19 +120,23 @@
                         <div id="list-edit" class="action-form"> 
                             <div class="wrapper">
                                 <div class="floatr">
-                                    <span><a href="#" class="close-action" rel="list-edit">close&nbsp;x</a> </span>
+                                    <span><a href="#" class="close-action" rel="list-edit">close</a> </span>
                                 </div>
                              </div>
 
                              <form  id="form1"  name="edit-form" action="/user/action/list/edit.php"   method="POST">
                                 <span class="faded-text">Name</span> <br>
-                                <input name="name" class="required" maxlength="64" type="textbox" value="<?php echo $listName; ?>" /> <br>
+                                <input name="name" class="required" maxlength="64" type="textbox" value="<?php echo $sticky->get('name',$listDBRow['name']); ?>" /> <br>
                                 <span class="faded-text">Description</span>  <br>
-                                <textarea name="description">description...</textarea> <br>
+                                <textarea name="description"><?php echo $sticky->get('description',$listDBRow['description']); ?></textarea> <br>
                                 <button type="submit" class="btn btn-small" name="save" value="Save"><span>Save</span></button>
+                                &nbsp;
+                                <a class="btn btn-small close-action" rel="list-edit">Cancel</a>
                                 
-                                <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
+                                <input type="hidden" name="qUrl" value="<?php echo base64_encode($qUrl) ?>"/>
                                 <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
+                                <input type="hidden" name="popup_id" value="list-edit"/>
+
                             </form> <!-- form:1 -->
                         </div>
 
@@ -138,13 +153,14 @@
                                 </span> 
                                
                                 <br>
-                                <input name="link" class="required" maxlength="256" type="textbox" value="" /> <br>
+                                <input name="link" class="required" maxlength="256" type="textbox" value="<?php echo $sticky->get('link'); ?>" /> <br>
                                 <br>
                                 <button type="submit" class="btn btn-small" name="save" value="Save"><span>Save</span></button>
                                 &nbsp;&nbsp;
                                 <a id="list-add-item-help" href="#">click here to get help on item URL</a>
-                                <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
+                                <input type="hidden" name="qUrl" value="<?php echo base64_encode($qUrl); ?>"/>
                                 <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
+                                <input type="hidden" name="popup_id" value="list-add-item"/>
                             </form> <!-- form:2 -->
                         </div>
 
@@ -165,7 +181,7 @@
                                 &nbsp;&nbsp;
                                 <a class="btn btn-small close-action" rel="list-delete">Cancel</a>
                                 
-                                <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
+                                <input type="hidden" name="qUrl" value="<?php echo base64_encode($qUrl); ?>"/>
                                 <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
                             </form> <!-- form:3 -->
                         </div>
@@ -187,8 +203,9 @@
                                 &nbsp;&nbsp;
                                 <a class="btn btn-small close-action" rel="list-delete-item">Cancel</a>
                                 
-                                <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
+                                <input type="hidden" name="qUrl" value="<?php echo base64_encode($qUrl); ?>"/>
                                 <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
+                                <input type="hidden" name="items_json" value=''/>
                             </form> <!-- form:4 -->
                         </div>
 
@@ -206,7 +223,7 @@
                             $endId = $itemDBRows[sizeof($itemDBRows)-1]['id'];
                             foreach ($itemDBRows as $itemDBRow) {
                                 //output post widget html
-                                echo \com\indigloo\sc\html\Post::getListWidget($itemDBRow,0);
+                                echo \com\indigloo\sc\html\Post::getListWidget($itemDBRow);
                             }
 
                         } 
@@ -236,6 +253,7 @@
         <script type="text/javascript">
             /* column width = css width + margin */
             $(document).ready(function(){
+
                 $("#form1").validate({
                        errorLabelContainer: $("#page-message")
                 });
@@ -259,13 +277,23 @@
                 webgloo.sc.dashboard.init(containerId);
                 //fix twitter bootstrap alerts
                 webgloo.sc.dashboard.fixAlert();
+
                 $("#list-add-item-help").click(function(event) {
-                    
                     var message = webgloo.sc.message.HELP_LIST_ITEM_URL; 
-                    //@param 2 is auto close interval in milli seconds
                     webgloo.sc.dashboard.showMessage(message);
 
                 }) ;
+
+                try{
+                    var popupObj = JSON.parse('<?php echo $strPopupObj; ?>') ;
+                    if(popupObj.hasOwnProperty("id")){
+                        $("#" + popupObj["id"]).show();
+                    }
+                    
+                } catch(ex) {
+                    console.log("error : parsing popup string");
+                }
+
 
             });
         </script>

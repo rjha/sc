@@ -45,7 +45,7 @@
     <body>
 
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-        <div class="container">
+        <div class="container mh600">
             <div class="row">
                 <div class="span12">
                  <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
@@ -60,7 +60,7 @@
             <?php FormMessage::render(); ?>
             
             <div class="row">
-                <div class="span8 offset1 mh600">
+                <div class="span8 offset1">
                     
                     <?php FormMessage::render(); ?>
                     <div id="widgets">
@@ -76,6 +76,9 @@
                                 echo \com\indigloo\sc\html\Lists::getWidget($listDBRow);
                             }
 
+                        } else {
+                            $message = "No Lists found " ;
+                            echo \com\indigloo\sc\html\Site::getNoResult($message);
                         }
                      ?>
                      </div> <!-- widgets -->

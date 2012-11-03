@@ -4,7 +4,10 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\sc\mysql as mysql;
     use \com\indigloo\exception\UIException as UIException;
+
     use \com\indigloo\sc\util\PseudoId ;
+    use \com\indigloo\util\StringUtil as StringUtil ;
+
 
     /**
      * 
@@ -145,8 +148,16 @@ namespace com\indigloo\sc\dao {
             //md5 hash as hex string and bytes
             $hash = md5($name);
             $bin_hash = md5($name,TRUE); 
+            $seoName = StringUtil::convertNameToKey($name);
+            $count = mysql\Lists::create(
+                $loginId,
+                $name,
+                $seoName,
+                $hash,
+                $bin_hash,
+                $itemsJson,
+                $itemIds);
 
-            $count = mysql\Lists::create($loginId,$name,$hash,$bin_hash,$itemsJson,$itemIds);
             return $count ;
         }
 
@@ -167,6 +178,21 @@ namespace com\indigloo\sc\dao {
             }
 
             mysql\Lists::addItems($listId,$itemsJson,$itemIds);
+        }
+
+        function edit($loginId,$listId,$name,$description) {
+            //md5 hash as hex string and bytes
+            $hash = md5($name);
+            $bin_hash = md5($name,TRUE); 
+            $seoName = StringUtil::convertNameToKey($name);
+            mysql\Lists::edit(
+                $loginId,
+                $listId,
+                $name,
+                $seoName,
+                $hash,
+                $bin_hash,
+                $description); 
         }
 
     }

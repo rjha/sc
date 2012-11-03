@@ -139,7 +139,7 @@
                                 }
                             } else {
                                 $message = "No posts found " ;
-                               echo \com\indigloo\sc\html\Site::getNoResult($message);
+                                echo \com\indigloo\sc\html\Site::getNoResult($message);
                             }
 
                             $strImageJson = json_encode($imageData);
