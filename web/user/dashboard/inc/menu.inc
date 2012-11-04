@@ -103,6 +103,65 @@
     border-bottom: 1px solid #28c ;
 }
 
+    #uwidgets {
+        padding:10px;
+        width : 450px;
+        min-height:800px;
+    }
+
+   .uwidget {
+        width:450px;
+        margin-top : 20px;
+        background-color: white ;
+        
+    }
+
+    .uwidget .wrapper {
+        border-bottom : 1px solid #e6e6e6 ;
+        overflow:hidden;
+    }
+
+    .uwidget .wrapper .photo {
+        float :left ;
+    }
+
+    .uwidget .wrapper .photo img {
+        width: auto;
+        height: auto;
+        max-width: 120px;
+        max-height: 90px;
+        padding: 5px;
+
+    }
+
+    .uwidget .wrapper .name {
+        height : 80px;
+        overflow :hidden;
+        padding : 10px;
+        padding-left:30px;
+    }
+
+    .uwidget .wrapper .name .title {
+        color: #222;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 1em;
+        padding-bottom: 10px;
+        font-family: arial;
+    }
+
+    .uwidget .link {
+        padding-top : 5px;
+        padding-bottom :5px;
+        padding-left:160px; 
+    }
+
+    .uwidget a {
+        cursor: pointer ;
+    }
+    
+
+
 </style>
 
 <div id="user-menu">

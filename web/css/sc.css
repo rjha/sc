@@ -300,6 +300,19 @@
         padding:5px;
     }
 
+    .image-grid .box .title {
+        color: #222;
+        font-size: 15px;
+        font-weight: bold;
+        line-height: 1em;
+        padding-bottom: 5px;
+        font-family: arial;
+    }
+
+    .image-grid .box .title:hover {
+        color: #f5be00;
+    }
+    
     .user-tile {
         position :relative ;
         float : left;

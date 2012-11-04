@@ -1,12 +1,72 @@
-<div class="user-tile">
-    <span class="faded-text b">~~$view->name~</span>
-    <div class="photo">
-        <img src="~~$view->srcImage~" />
-    </div>
-    <div class="p5">
-        <a class="btn btn-flat" href="~~$view->pubUserUrl~">view</a>
-        &nbsp;
-        <a class="btn btn-flat" href="" id="~~$view->followerId~|~~$view->followingId~" class="unfollow-user">unfollow</a>
+<style>
+
+    .user-tile {
+       
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4),0 0 10px rgba(0, 0, 0, 0.1);
+        margin: 8px;
+    }
+
+    .user-tile .title {
+        color: #222;
+        font-size: 19px;
+        font-weight: bold;
+        line-height: 1em;
+        padding-bottom: 10px;
+        font-family: arial;
+    }
+
+    .user-tile .title:hover {
+        color: #f5be00;
+    }
+
+    .user-tile img {
+        width: auto;
+        height: 100px;
+        max-width: 160px;
+        max-height: 120px;
+        padding: 5px;
+
+    }
+
+    .user-tile a {
+        cursor: pointer ;
+    }
+
+    .user-tile .links {
+        padding-top:10px;
+        padding-left:10px;
+    }
+
+    .user-tile .links a {
+        color: #999 ;
+    }
+
+    .user-tile .links .square {
+        float:left;
+        height:12px;
+        width:12px;
+        margin-right:10px;
+        background-color: #DD4B39 ;
+        vertical-align: baseline;
+        /* border:1px solid #999; */
+    }
+
+    .user-tile .links a:hover {
+        text-decoration: underline ;
+    }
+
+</style>
+
+    <div class="user-tile">
+        <a href="~~$view->pubUserUrl~">
+            <div class="title">~~$view->name~</div>
+            <div class="photo">
+                <img src="~~$view->srcImage~" />
+            </div>
+            <div class="links">
+                <div class="square">&nbsp;</div>
+                <a class="unfollow-user" href="" id="~~$view->followerId~|~~$view->followingId~">unfollow &raquo;</a>
+            </div>
+        </a>
     </div>
 
-</div>

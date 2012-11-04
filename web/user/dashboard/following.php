@@ -62,16 +62,15 @@
 
             <div class="row">
                 <div class="span8 offset1">
-                    <div id="followers">
+                    <div id="uwidgets">
                     <?php 
                         foreach($followings as $following){
-                            echo \com\indigloo\sc\html\SocialGraph::getFollowingTile($loginId,$following); 
+                            echo \com\indigloo\sc\html\SocialGraph::getWidget($loginId,$following); 
                         }
+
 
                     ?>
                     </div>
-
-                    
                 </div>
 
             </div>
