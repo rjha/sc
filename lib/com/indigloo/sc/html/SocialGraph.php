@@ -4,50 +4,45 @@ namespace com\indigloo\sc\html {
 
     use \com\indigloo\Template as Template;
     use \com\indigloo\Util as Util ;
+    use \com\indigloo\Url as Url ;
     use \com\indigloo\sc\util\PseudoId ;
     
     class SocialGraph {
 
-        static function getFollowerTile($loginId,$row) {
+        static function getWidget($loginId,$row) {
+           
+            $view = self::createView($loginId,$row);
+            $template = "/fragments/graph/widget/image.tmpl" ;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function createView($loginId, $row) {
             $view = new \stdClass;
             $userId = $row["login_id"];
             $pubUserId = PseudoId::encode($userId);
-            $pubUserUrl = "/pub/user/".$pubUserId ;
+            $pubUserUrl = Url::base()."/pub/user/".$pubUserId ;
             
             $view->pubUserUrl = $pubUserUrl ;
             $view->name = $row["name"];
             $view->srcImage = $row["photo_url"];
             
             // This is for follow action on my follower's page.
-            // for follow action :- I start following 
-            // my follower. so following - is me.
+            // for follow action :- I will start following 
+            // so followerId - is me
+            // for unfollow action :- I was following the user
+            // so again, followerId is - me
+
             $view->followingId = $userId ;
             $view->followerId = $loginId ;
 
-            $template = "/fragments/graph/follower/tile.tmpl" ;
-            $html = Template::render($template,$view);
-            return $html ;
-
+            return $view ;
         }
 
-        static function getFollowingTile($loginId,$row) {
-            $view = new \stdClass;
-            $userId = $row["login_id"];
-            $pubUserId = PseudoId::encode($userId);
-            $pubUserUrl = "/pub/user/".$pubUserId ;
-            
-            $view->pubUserUrl = $pubUserUrl ;
-            $view->name = $row["name"];
-            $view->srcImage = $row["photo_url"];
-            
-            // This is for unfollow action on my followings page.
-            // I am the follower - me - loginId
-            // I am following - what is in row["login_id"]
-            
-            $view->followingId = $userId ;
-            $view->followerId = $loginId ;
 
-            $template = "/fragments/graph/following/tile.tmpl" ;
+        static function getTile($loginId,$row) {
+            $view =  self::createView($loginId,$row);
+            $template = "/fragments/graph/tile/image.tmpl" ;
             $html = Template::render($template,$view);
             return $html ;
 
@@ -82,7 +77,7 @@ namespace com\indigloo\sc\html {
             
             $view->records = $records ;
             
-            $template = "/fragments/graph/following/table.tmpl" ;
+            $template = "/fragments/graph/table/following.tmpl" ;
             $html = Template::render($template,$view);
             return $html ;
         }
@@ -120,7 +115,7 @@ namespace com\indigloo\sc\html {
             
             $view->records = $records ;
             
-            $template = "/fragments/graph/follower/table.tmpl" ;
+            $template = "/fragments/graph/table/follower.tmpl" ;
             $html = Template::render($template,$view);
             return $html ;
         }
