@@ -24,30 +24,32 @@ namespace com\indigloo\sc\mysql {
         }
         
         //@todo - pagination on following/followers queries
-        static function getFollowing($loginId) {
+        static function getFollowing($loginId,$limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
              
             //sanitize input
             settype($loginId,"integer");
-            
+            settype($limit,"integer");
+
             $sql = " select u.name, u.login_id, u.photo_url from sc_denorm_user u, " ;
-            $sql .= " sc_follow s  where u.login_id = s.following_id and s.follower_id = %d limit 50" ;
-            $sql = sprintf($sql,$loginId);
+            $sql .= " sc_follow s  where u.login_id = s.following_id and s.follower_id = %d limit %d " ;
+            $sql = sprintf($sql,$loginId,$limit);
             
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
         }
         
-        static function getFollowers($loginId) {
+        static function getFollowers($loginId,$limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
              
             //sanitize input
             settype($loginId,"integer");
-            
+            settype($limit,"integer");
+
             $sql = " select u.name, u.login_id, u.photo_url from sc_denorm_user u, " ;
-            $sql .= " sc_follow s  where u.login_id = s.follower_id and s.following_id = %d limit 50" ;
-            $sql = sprintf($sql,$loginId);
+            $sql .= " sc_follow s  where u.login_id = s.follower_id and s.following_id = %d limit %d " ;
+            $sql = sprintf($sql,$loginId,$limit);
             
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;

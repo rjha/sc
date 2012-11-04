@@ -1,0 +1,17 @@
+<div class="image-grid">
+   
+    ~foreach($view->records as $record){~
+
+      <div class="box">
+        <span class="title">~~$record['name']~</span>
+        <div class="photo">
+          ~if($record['hasImage']){~
+            <img src="~~$record['srcImage']~" />
+            ~}~
+        </div>
+
+      </div>
+
+     ~}~
+
+</div>

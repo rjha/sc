@@ -21,7 +21,7 @@
     }
 
     $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
-    $followings = $socialGraphDao->getFollowing($loginId);
+    $followings = $socialGraphDao->getFollowing($loginId,50);
     $total = sizeof($followings);
 
 ?>
@@ -65,7 +65,7 @@
                     <div id="uwidgets">
                     <?php 
                         foreach($followings as $following){
-                            echo \com\indigloo\sc\html\SocialGraph::getWidget($loginId,$following); 
+                            echo \com\indigloo\sc\html\SocialGraph::getWidget($loginId,$following,2); 
                         }
 
 

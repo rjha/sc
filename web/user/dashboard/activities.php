@@ -22,6 +22,11 @@
     $activityDao = new \com\indigloo\sc\dao\ActivityFeed() ;
     $feedDataObj = $activityDao->getUserFeeds($loginId,50);
 
+    $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
+    $followers = $socialGraphDao->getFollowers($loginId,5);
+    $followings = $socialGraphDao->getFollowing($loginId,5);
+
+
 ?>
 
 
@@ -52,17 +57,23 @@
             </div>
 
             <div class="row">
-                <div class="span8 offset1">
-                    <div class="faded-text mb20">&nbsp;</div>
+                <div class="span6">
+                    
                     <div class="feeds">
                         <?php
 
-                            $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
-                            $html = $htmlObj->getHtml($feedDataObj);
-                            echo $html ;
+                        $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+                        $html = $htmlObj->getHtml($feedDataObj);
+                        echo $html ;
 
                         ?>
                     </div>
+
+                </div>
+                <div class="span4 offset1">
+                    <?php echo \com\indigloo\sc\html\SocialGraph::getTable($loginId,$followers,1); ?>
+                    <?php echo \com\indigloo\sc\html\SocialGraph::getTable($loginId,$followings,2); ?>
+                  
 
                 </div>
             </div>

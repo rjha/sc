@@ -1,0 +1,23 @@
+<span class="comment-text">following</span>
+<table class="table table-condensed">
+  <thead>
+     
+  </thead>
+  <tbody>
+    
+    ~foreach($view->records as $record){~
+    <tr>
+      <td><b> <a href="~~$record['pubUserUrl']~" target="_blank"> ~~$record['name']~</a> </b></td>
+      <td> 
+        <a href="" id="~~$record['followerId']~|~~$record['followingId']~" class="b faded-text unfollow-user">Unfollow &raquo;</a>
+     </td>
+      
+    </tr>
+    
+
+    ~}~
+  </tbody>
+</table>
+<div class="section">
+  <a href="/user/dashboard/following.php" class="b">see all your followings &rArr;</a>
+</div>

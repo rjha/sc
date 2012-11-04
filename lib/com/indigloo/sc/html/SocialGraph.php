@@ -9,17 +9,37 @@ namespace com\indigloo\sc\html {
     
     class SocialGraph {
 
-        //@todo fix case when no profile image found.
-        static function getWidget($loginId,$row) {
+        private static function getTemplate($source,$typeOfUI,$hasImage) {
+            $prefix = "/fragments/graph" ;
+            settype($source, "integer");
+
+            switch($source) {
+                case 1 :
+                    $prefix = $prefix."/follower/" ;
+                    break ;
+                case 2 :
+                    $prefix = $prefix."/following/" ;
+                    break ;
+                default :
+                    trigger_error("unknown social graph source", E_USER_ERROR);
+            }
+
+            $tmpl = ($hasImage) ? "image.tmpl" : "noimage.tmpl";
+            $path = $prefix.$typeOfUI."/".$tmpl ;
+            return $path ;
+
+        }
+        /*
+         * @param $source kind of row - follower/following
+         * 1 - means follower , 2 - means following
+         * 
+         */
+
+        static function getWidget($loginId,$row,$source) {
             $view = self::createView($loginId,$row);
             $template = NULL;
-
-            if(Util::tryEmpty($view->srcImage)) {
-                $template = "/fragments/graph/widget/noimage.tmpl" ;
-            } else {
-                $template = "/fragments/graph/widget/image.tmpl" ;
-            }
-            
+            $hasImage = !Util::tryEmpty($view->srcImage);
+            $template =  self::getTemplate($source, "widget", $hasImage) ;
             $html = Template::render($template,$view);
             return $html ;
         }
@@ -47,18 +67,22 @@ namespace com\indigloo\sc\html {
         }
 
 
-        static function getTile($loginId,$row) {
-            $view =  self::createView($loginId,$row);
-            $template = "/fragments/graph/tile/image.tmpl" ;
+        static function getTile($loginId,$row,$source) {
+            $view = self::createView($loginId,$row);
+            $template = NULL;
+            $hasImage = Util::tryEmpty($view->srcImage);
+            $template =  self::getTemplate($source, "tile", $hasImage) ;
             $html = Template::render($template,$view);
             return $html ;
 
         }
 
-        static function getFollowingTable($loginId,$rows) {
+        //@todo - show help card when no valid rows?
+        static function getTable($loginId,$rows,$source,$withImage=false) {
             $html = NULL ;
             $view = new \stdClass;
             
+
             if(!is_array($rows) || empty($rows)) {
                 //no following
                 $message = "You are not following anyone!" ;
@@ -78,51 +102,20 @@ namespace com\indigloo\sc\html {
                 $record['name'] = $row['name'];
                 $record['followingId'] = $userId ;
                 $record['followerId']= $loginId ;
-                
+                $record['hasImage'] = false ;
+
+                if(!Util::tryEmpty($row["photo_url"])) {
+                    $record['srcImage'] = $row["photo_url"];
+                    $record['hasImage'] = true ;
+                }
+
                 $records[] = $record;
             }
             
             $view->records = $records ;
             
-            $template = "/fragments/graph/table/following.tmpl" ;
-            $html = Template::render($template,$view);
-            return $html ;
-        }
-        
-        static function getFollowerTable($loginId,$rows) {
-            $html = NULL ;
-            $view = new \stdClass;
-            
-            if(!is_array($rows) || empty($rows)) {
-                //no following
-                $message = "No one is following you!" ;
-                $html = Site::getNoResult($message);
-                return $html ;
-            }
-            
-            $records = array();
-            
-            foreach($rows as $row){
-                $record = array();
-                $userId = $row['login_id'];
-                $pubUserId = PseudoId::encode($userId);
-                $pubUserUrl = "/pub/user/".$pubUserId ;
-                
-                $record['pubUserUrl'] = $pubUserUrl ;
-                $record['name'] = $row['name'];
-                
-                // This is for follow action on my follower's page.
-                // for follow action :- I start following 
-                // my follower. 
-                $record['followingId'] = $userId ;
-                $record['followerId']= $loginId ;
-                
-                $records[] = $record;
-            }
-            
-            $view->records = $records ;
-            
-            $template = "/fragments/graph/table/follower.tmpl" ;
+            settype($source,"integer");
+            $template = self::getTemplate($source,"table",$withImage);
             $html = Template::render($template,$view);
             return $html ;
         }

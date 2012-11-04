@@ -1,4 +1,4 @@
-
+<span class="comment-text">followers</span>
 <table class="table table-condensed">
   <thead>
      
@@ -9,7 +9,7 @@
     <tr>
       <td><b> <a href="~~$record['pubUserUrl']~" target="_blank"> ~~$record['name']~ </a> </b></td>
       <td> 
-        <a href="" id="~~$record['followerId']~|~~$record['followingId']~" class="unfollow-user">Unfollow &raquo;</a>
+        <a href="" id="~~$record['followerId']~|~~$record['followingId']~" class="b faded-text follow-user">Follow &raquo;</a>
      </td>
       
     </tr>
@@ -18,3 +18,6 @@
     ~}~
   </tbody>
 </table>
+<div class="section">
+  <a href="/user/dashboard/follower.php" class="b">see all your followers &rArr;</a>
+</div>

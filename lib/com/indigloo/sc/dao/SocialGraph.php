@@ -32,13 +32,13 @@ namespace com\indigloo\sc\dao {
 
         }
         
-        function getFollowing($loginId) {
-            $rows = mysql\SocialGraph::getFollowing($loginId);
+        function getFollowing($loginId,$limit) {
+            $rows = mysql\SocialGraph::getFollowing($loginId,$limit);
             return $rows ;
         }
         
-        function getFollowers($loginId) {
-            $rows = mysql\SocialGraph::getFollowers($loginId);
+        function getFollowers($loginId,$limit) {
+            $rows = mysql\SocialGraph::getFollowers($loginId,$limit);
             return $rows ;
         }
 
