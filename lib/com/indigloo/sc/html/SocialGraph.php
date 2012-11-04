@@ -9,10 +9,17 @@ namespace com\indigloo\sc\html {
     
     class SocialGraph {
 
+        //@todo fix case when no profile image found.
         static function getWidget($loginId,$row) {
-           
             $view = self::createView($loginId,$row);
-            $template = "/fragments/graph/widget/image.tmpl" ;
+            $template = NULL;
+
+            if(Util::tryEmpty($view->srcImage)) {
+                $template = "/fragments/graph/widget/noimage.tmpl" ;
+            } else {
+                $template = "/fragments/graph/widget/image.tmpl" ;
+            }
+            
             $html = Template::render($template,$view);
             return $html ;
         }

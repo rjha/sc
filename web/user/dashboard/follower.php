@@ -21,7 +21,7 @@
     
     $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
     $followers = $socialGraphDao->getFollowers($loginId);
-
+    $total = sizeof($followers);
 
 ?>
 
@@ -30,7 +30,7 @@
 <html>
 
     <head>
-        <title> followers <?php echo $loginName; ?>  </title>
+        <title> followers of <?php echo $loginName; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         
@@ -53,7 +53,7 @@
             <div class="row">
                 <div class="span12">
                     <div class="page-header">
-                        <h4> Followers </h4>
+                        <h4> Followers (<?php echo $total; ?>)</h4>
                     </div>
                 </div>
             </div>

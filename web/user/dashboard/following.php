@@ -22,7 +22,7 @@
 
     $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
     $followings = $socialGraphDao->getFollowing($loginId);
-
+    $total = sizeof($followings);
 
 ?>
 
@@ -55,7 +55,7 @@
             <div class="row">
                 <div class="span12">
                     <div class="page-header">
-                        <h4> Following </h4>
+                        <h4> Following (<?php echo $total; ?>)</h4>
                     </div>
                 </div>
             </div>

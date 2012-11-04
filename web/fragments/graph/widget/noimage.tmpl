@@ -2,8 +2,8 @@
 <div class="uwidget">
     <a href="~~$view->pubUserUrl~">
         <div class="wrapper">
-            <div class="photo">
-                <img src="~~$view->srcImage~" />
+            <div class="nophoto">
+               &nbsp;
             </div>
             <div class="name">
                 <span class="title">~~$view->name~</span>
@@ -16,10 +16,11 @@
     <div class="clear"> </div>
 
     <div class="bottom">
+
+        <div class="square floatl">&nbsp;</div>
         <div class="link">
             <a class="btn btn-mini b" href="" id="~~$view->followerId~|~~$view->followingId~" class="follow-user">Follow</a>
         </div>
-
     </div>
     
 </div>
