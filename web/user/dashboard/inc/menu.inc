@@ -117,7 +117,6 @@
 
 .uwidget .wrapper {
     border-bottom : 1px solid #e6e6e6 ;
-    overflow:hidden;
 }
 
 .uwidget .wrapper .photo {
@@ -141,14 +140,19 @@
 
 }
 
-.uwidget .wrapper .name {
-    height : 80px;
-    overflow :hidden;
-    padding : 10px;
-    padding-left:30px;
+.uwidget .wrapper .detail{
+    /* height: 130px; */
+    margin-left:140px;
 }
 
-.uwidget .wrapper .name .title {
+
+.uwidget .wrapper .detail .name {
+    max-height : 70px;
+    overflow :hidden;
+    padding : 10px;
+}
+
+.uwidget .wrapper .detail .name .title {
     color: #222;
     font-size: 16px;
     font-weight: bold;
@@ -157,16 +161,19 @@
     font-family: arial;
 }
 
+.uwidget .wrapper .detail .link {
+    height: 30px;
+    padding-top:5px;
+    padding-bottom:5px;
+    padding-left:10px;
+}
+
 .uwidget .bottom {
     padding-top : 5px;
     padding-bottom :5px;
     
 }
 
-.uwidget .bottom .link {
-    margin-left:160px; 
-    margin-top:4px;
-}
 
 .uwidget .bottom .square {
     margin-left:10px;
