@@ -91,10 +91,21 @@ namespace com\indigloo\sc\dao {
             $rows = mysql\Post::getLatest($limit,$filters);
             return $rows ;
         }
-
+        /*
+         * used in monitor posts and random posts controller 
+         * use site counter when filters is empty
+         * 
+         */
         function getTotalCount($filters=array()) {
-            $row = mysql\Post::getTotalCount($filters);
-            return $row['count'] ;
+            if(empty($filters)) {
+                // no filter case
+                $row = mysql\Analytic::getSitePostCounter();
+            }else {
+                //get from table using where condition
+                $row = mysql\Post::getTotalCount($filters);
+            }
+           
+            return $row["count"] ;
         }
 
         function create($title,
@@ -194,11 +205,6 @@ namespace com\indigloo\sc\dao {
                 $rows = mysql\Post::getPagedOnCategory($start,$direction,$limit,$code);
                 return $rows ;
             }
-        }
-
-        function getTotalOnCategory($code) {
-            $row = mysql\Post::getTotalOnCategory($code);
-            return $row["count"] ;
         }
 
         function feature ($postId) {

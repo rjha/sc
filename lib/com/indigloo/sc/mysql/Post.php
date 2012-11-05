@@ -349,20 +349,6 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function getTotalOnCategory($code) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-
-            //sanitize input
-            $code = $mysqli->real_escape_string($code);
-
-            $sql = " select count(id) as count from sc_post where cat_code = '%s' " ;
-            $sql = sprintf($sql,$code);
-
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-
-        }
-
         static function getPagedOnCategory($start,$direction,$limit,$code) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 

@@ -47,12 +47,7 @@ namespace com\indigloo\sc\dao {
         function delete($bookmarkId) {
             mysql\Bookmark::delete($bookmarkId);
         }
-
-        function getTotal($filters=array()) {
-            $row = mysql\Bookmark::getTotal($filters);
-            return $row['count'];
-        }
-
+        
         // return latest posts that have been bookmarked
         function getLatest($limit,$filters) {
             $rows = mysql\Bookmark::getLatest($limit,$filters);
@@ -79,7 +74,7 @@ namespace com\indigloo\sc\dao {
             }
         }
 
-         function getTablePaged($paginator,$filters) {
+        function getTablePaged($paginator,$filters) {
             $limit = $paginator->getPageSize();
             if($paginator->isHome()){
                 return $this->getTableLatest($limit,$filters);

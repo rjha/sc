@@ -7,12 +7,14 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\html\Seo as SeoData ;
   
-    
+    //@todo performance fix 
+    // finding random rows from mysql is just too expensive
     class Random {
         
         function process($params,$options) {
             
             $postDao = new \com\indigloo\sc\dao\Post();
+
             $total = $postDao->getTotalCount();
             $rows1 = $postDao->getRandom(25);
 

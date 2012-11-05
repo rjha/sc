@@ -86,12 +86,13 @@
     $postDBRows = array();
     $postDao = new \com\indigloo\sc\dao\Post();
     $pageSize = Config::getInstance()->get_value("user.page.items");
+    $total = 0 ;
 
     if(empty($ft) && !empty($gtoken)) {
         
         $sphinx = new \com\indigloo\sc\search\SphinxQL();
         $total = $sphinx->getPostsCount($gtoken);
-        $paginator = new Pagination($qparams,$total,$pageSize);
+        $paginator = new Pagination($qparams,$pageSize);
         $ids = $sphinx->getPagedPosts($gtoken,$paginator);
         $sphinx->close();
 
@@ -104,7 +105,7 @@
     } else {
 
         $total = $postDao->getTotalCount($filters);
-        $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
+        $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
         $postDBRows = $postDao->getPaged($paginator,$filters);
     }
 

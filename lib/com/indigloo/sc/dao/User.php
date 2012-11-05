@@ -26,17 +26,43 @@ namespace com\indigloo\sc\dao {
             return $row ;
         }
 
-        function update($loginId,$firstName,$lastName,$nickName,$email,
-                                $website,$blog,$location,$age,$photoUrl,$aboutMe) {
+        function update(
+            $loginId,
+            $firstName,
+            $lastName,
+            $nickName,
+            $email,
+            $website,
+            $blog,
+            $location,
+            $age,
+            $photoUrl,
+            $aboutMe) {
 
-            mysql\User::update($loginId,$firstName,$lastName,$nickName,$email,
-                                $website,$blog,$location,$age,$photoUrl,$aboutMe);
-
-
+            mysql\User::update(
+                $loginId,
+                $firstName,
+                $lastName,
+                $nickName,
+                $email,
+                $website,
+                $blog,
+                $location,
+                $age,
+                $photoUrl,
+                $aboutMe);
         }
 
         function getTotal($filters=array()) {
-            $row = mysql\User::getTotal($filters);
+            if(empty($filters)) {
+                // no filters?
+                // get from site counter
+                $row = Analytic::getSiteUserCounter();
+            }else {
+                //get from user table using where condition
+                $row = mysql\User::getTotal($filters);
+            }
+             
             return $row["count"] ;
         }
 

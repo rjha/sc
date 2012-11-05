@@ -77,23 +77,6 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        // @todo fix expensive-query
-        // the count(id) query is examining all the rows (why?)
-        // innodb count(col) is doing an FTS
-        static function getTotalCount($filters){
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "select count(g.id) as count from sc_group_master g " ;
-
-            $q = new MySQL\Query($mysqli);
-            $q->setAlias("com\indigloo\sc\model\Group","g");
-            $q->filter($filters);
-            $condition = $q->get();
-
-            $sql .= $condition;
-
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-        }
 
         //@todo fix expensive-query
         static function getRandom($limit) {
@@ -159,20 +142,7 @@ namespace com\indigloo\sc\mysql {
             return $rows;
 
         }
-
-        static function getCountOnLoginId($loginId) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-
-            //sanitize input
-            settype($loginId,"integer");
-
-            $sql = "select count(id) as count from sc_user_group ug where ug.login_id = %d " ;
-            $sql = sprintf($sql,$loginId);
-
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-        }
-
+        
         static function process($postId,$loginId,$version,$catCode,$group_slug) {
 
             //sanitize input

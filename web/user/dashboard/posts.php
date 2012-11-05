@@ -44,11 +44,9 @@
     array_push($filters,$filter);
 
     $postDBRows = array();
-    $total = $postDao->getTotalCount($filters);
-
     $pageSize = Config::getInstance()->get_value("user.page.items");    
 
-    $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
+    $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $postDBRows = $postDao->getPaged($paginator,$filters);
     $qUrl = base64_encode(Url::current());
 

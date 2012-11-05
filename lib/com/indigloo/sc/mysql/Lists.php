@@ -28,18 +28,6 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function getTotalOnLoginId($loginId) {
-            
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            settype($loginId,"int");
-
-            $sql = "select list_count as count from sc_user_counter where login_id = %d ";
-            $sql = sprintf($sql,$loginId);
-
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-        }
-
         /**
          * @imp we do not expext a huge (# of lists/user). There should be a cap of
          * 50 or 100 lists/user. The pagination on login_id is sorted on name
@@ -89,43 +77,36 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function getTotalItems($filters) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "select count(list.id) as count from sc_list list ";
-
-            $q = new MySQL\Query($mysqli);
-            $q->filter($filters);
-            $condition = $q->get();
-            $sql .= $condition ;
-
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-        }
-
         static function getLatestItems($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input
             settype($limit,"integer");
 
-            $sql = " select p.* from sc_post p,sc_list_item li" ;
-            
+            $sql = "select login.name as user_name, post.* ".
+            " from sc_post post, sc_login login , ".
+            " sc_list list, sc_list_item li ".
+            " where list.login_id = login.id ".
+            " and li.list_id = list.id ".
+            " and li.item_id = post.id " ;
+
             $q = new MySQL\Query($mysqli);
-            $q->setAlias("com\indigloo\sc\model\ListItem","li");
-            //raw condition
-            $q->addCondition("p.id = li.item_id");
+            $q->setAlias("com\indigloo\sc\model\Lists","list");
+            //start filter conditions using AND operator
+            $q->setPrefixAnd();
+
             $q->filter($filters);
             $condition = $q->get();
             $sql .= $condition;
 
-            $sql .= " order by li.id desc LIMIT %d " ;
+            $sql .= " order by post.id desc LIMIT %d " ;
             $sql = sprintf($sql,$limit);
             
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
 
-        static function getPagedItems($paginator,$filters) {
+        static function getPagedItems($start,$direction,$limit,$filters) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -134,17 +115,24 @@ namespace com\indigloo\sc\mysql {
             settype($limit,"integer");
             $direction = $mysqli->real_escape_string($direction);
 
-            $sql = " select p.* from sc_post p,sc_list_item li" ;
-            
+            $sql = "select login.name as user_name, post.* ".
+            " from sc_post post, sc_login login , ".
+            " sc_list list, sc_list_item li ".
+            " where list.login_id = login.id ".
+            " and li.list_id = list.id ".
+            " and li.item_id = post.id " ;
+               
             $q = new MySQL\Query($mysqli);
-            $q->setAlias("com\indigloo\sc\model\ListItem","li");
-            //raw condition
-            $q->addCondition("p.id = li.item_id");
+            $q->setAlias("com\indigloo\sc\model\Lists","list");
+            //start filter conditions using AND operator
+            $q->setPrefixAnd();
+
             $q->filter($filters);
             $condition = $q->get();
             $sql .= $condition;
-            $sql .= $q->getPagination($start,$direction,"li.id",$limit);
+            $sql .= $q->getPagination($start,$direction,"post.id",$limit);
             
+
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             
             //reverse rows for 'before' direction

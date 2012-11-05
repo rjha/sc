@@ -28,11 +28,6 @@ namespace com\indigloo\sc\dao {
             return $rows ;
         }
 
-        function getTotalCount($filters=array()){
-            $row = mysql\Group::getTotalCount($filters);
-            return $row['count'] ;
-        }
-
         function getPaged($paginator,$filters=array()) {
             $limit = $paginator->getPageSize();
 
@@ -68,16 +63,6 @@ namespace com\indigloo\sc\dao {
                 return $rows ;
             }
 
-        }
-
-        function getCountOnLoginId($loginId) {
-            $count = 0 ;
-            $row = mysql\Group::getCountOnLoginId($loginId);
-            if(isset($row) && !empty($row)) {
-                $count = $row["count"];
-            }
-
-            return $count ;
         }
 
         function slugToGroupsMap($slug){

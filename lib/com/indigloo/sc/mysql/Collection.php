@@ -6,12 +6,16 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
 
+    /*
+     * @imp
+     * use keys (varchar 32) for lookup against BIN(16) of md5 hash
+     * this is just for convenience. if performance becomes an issue,
+     * consider using BIN(16) hash instead of hex(32) string key 
+     * 
+     */
+
     class Collection {
 
-        // @todo fix expensive queries
-        // create index on set_key here
-        // @todo do not use set_hash at all?
-        
         static function sadd($key,$member) {
 
             //hash of key and member

@@ -14,8 +14,7 @@
     $filters = array();
 
     $pageSize = 20 ;
-    $total = $bookmarkDao->getTotal($filters);
-    $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
+    $paginator = new \com\indigloo\ui\Pagination($qparams, $pageSize);
     $rows = $bookmarkDao->getTablePaged($paginator,$filters);
     //print_r($rows); exit ;
 

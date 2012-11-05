@@ -123,21 +123,6 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function getTotalCount($filters) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-
-            $sql = " select count(id) as count from sc_login ";
-            $q = new MySQL\Query($mysqli);
-            $q->filter($filters);
-            $condition = $q->get();
-
-            $sql .= $condition;
-
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-
-        }
-
         static function updateTokenIp($sessionId,$loginId, $access_token, $expires,$remoteIp) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();

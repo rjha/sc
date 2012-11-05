@@ -29,11 +29,10 @@ namespace com\indigloo\sc\controller{
             $catName = $zmember["name"];
 
             $postDao = new \com\indigloo\sc\dao\Post();
-            $total = $postDao->getTotalOnCategory($code);
-
+            
             $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("search.page.items");
-            $paginator = new Pagination($qparams,$total,$pageSize);
+            $paginator = new Pagination($qparams,$pageSize);
             $postDBRows = $postDao->getPagedOnCategory($paginator,$code);
             
             $pageHeader = $catName;

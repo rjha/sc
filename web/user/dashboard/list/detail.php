@@ -46,20 +46,17 @@
         exit ;
     }
     
-    //get total items in list from sc_list table
-    $model1 = new \com\indigloo\sc\model\Lists();
-    $filter1 = new Filter($model1);
-    $filter1->add($model1::LIST_ID,Filter::EQ,$listId);
-    $total = $listDao->getTotalItems(array($filter1));
-
     //get items from sc_list_item table
-    $model2 = new \com\indigloo\sc\model\ListItem();
-    $filter2 = new Filter($model2);
-    $filter2->add($model2::LIST_ID,Filter::EQ,$listId);
+    $model = new \com\indigloo\sc\model\Lists();
+    $filter = new Filter($model);
+    $filter->add($model::LIST_ID,Filter::EQ,$listId);
     
     $pageSize = Config::getInstance()->get_value("user.page.items");
-    $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
-    $itemDBRows = $listDao->getPagedItems($paginator,array($filter2));
+    $pageSize = 12 ;
+    $filters = array();
+    array_push($filters,$filter);
+    $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
+    $itemDBRows = $listDao->getPagedItems($paginator,$filters);
     
     $pageBaseUrl = "/user/dashboard/list/detail.php";
     $qUrl = base64_encode(Url::current());

@@ -79,7 +79,6 @@ namespace com\indigloo\sc\mysql {
             return $rows;
         }
 
-        
         static function getPaged($start,$direction,$limit,$filters) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -210,9 +209,6 @@ namespace com\indigloo\sc\mysql {
                 MySQL\Error::handle($mysqli);
             }
         }
-
-
-
 
     }
 }

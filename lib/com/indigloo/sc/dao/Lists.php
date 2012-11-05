@@ -37,11 +37,6 @@ namespace com\indigloo\sc\dao {
             return mysql\Lists::exists($listId);
         }
 
-        function getTotalOnLoginId($loginId) {
-            $row = mysql\Lists::getTotalOnLoginId($loginId);
-            return $row["count"] ;
-        }
-
         function getPagedOnLoginId($paginator,$loginId) {
 
             $limit = $paginator->getPageSize();
@@ -51,12 +46,7 @@ namespace com\indigloo\sc\dao {
             $rows = mysql\Lists::getPagedOnLoginId($loginId,$offset,$limit);
             return $rows ;
         }
-
-        function getTotalItems($filters) {
-            $row = mysql\Lists::getTotalItems($filters);
-            return $row['count'] ;
-        }
-
+        
         function getLatestItems($limit,$filters) {
             $rows = mysql\Lists::getLatestItems($limit,$filters);
             return $rows ;
@@ -67,12 +57,13 @@ namespace com\indigloo\sc\dao {
             
             if($paginator->isHome()){
                 return $this->getLatestItems($limit,$filters);
-            } else {
 
+            } else {
+                
                 $params = $paginator->getDBParams();
                 $start = $params["start"];
                 $direction = $params["direction"];
-                $rows = mysql\Post::getPagedItems($start,$direction,$limit,$filters);
+                $rows = mysql\Lists::getPagedItems($start,$direction,$limit,$filters);
                 return $rows ;
             }
         }

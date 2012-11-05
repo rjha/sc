@@ -48,10 +48,6 @@
     $groupDao = new \com\indigloo\sc\dao\Group();
     $group_names = $groupDao->tokenizeSlug($postDBRow['group_slug'],",",true);
 
-    $totalGroups = $groupDao->getCountOnLoginId($loginId);
-    $hasGroups = ($totalGroups > 0) ? true : false;
-
-
 ?>
 
 <!DOCTYPE html>

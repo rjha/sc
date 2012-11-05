@@ -25,10 +25,9 @@ namespace com\indigloo\sc\controller{
             // so we (exact) match this token against post_groups index.
 
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
-            $total = $sphinx->getPostCountByGroup($token);
             $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("search.page.items");
-            $paginator = new Pagination($qparams,$total,$pageSize);
+            $paginator = new Pagination($qparams,$pageSize);
 
             $ids = $sphinx->getPagedPostByGroup($token,$paginator);
             $sphinx->close();

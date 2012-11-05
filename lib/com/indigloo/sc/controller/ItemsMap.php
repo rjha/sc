@@ -17,11 +17,10 @@ namespace com\indigloo\sc\controller{
 
         function process($params,$options) {
             $postDao = new \com\indigloo\sc\dao\Post();
-            $total = $postDao->getTotalCount();
-
+            
             $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("main.page.items");
-            $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);    
+            $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);    
 
             $postDBRows = $postDao->getPaged($paginator);
 

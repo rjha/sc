@@ -31,12 +31,7 @@ namespace com\indigloo\sc\dao {
                 $remoteIp);
 
         }
-
-        function getTotalCount($filters=array()) {
-            $row = mysql\Login::getTotalCount($filters);
-            return $row['count'] ;
-        }
-
+        
         function getLatest($limit) {
             $rows = mysql\Login::getLatest($limit);
             return $rows;

@@ -52,9 +52,8 @@
     $filter->add($model::VERB_COLUMN,Filter::EQ,AppConstants::SAVE_VERB);
     array_push($filters,$filter);
 
-    $total = $bookmarkDao->getTotal($filters);
     $pageSize = Config::getInstance()->get_value("user.page.items");
-    $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
+    $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $postDBRows = $bookmarkDao->getPaged($paginator,$filters);
     $pageBaseUrl = "/user/dashboard/bookmark.php";
     $qUrl = base64_encode(Url::current());

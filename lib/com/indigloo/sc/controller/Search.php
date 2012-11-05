@@ -23,10 +23,10 @@ namespace com\indigloo\sc\controller{
             $gpage = empty($gpage) ? "1" : $gpage ;
 
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
-            $total = $sphinx->getPostsCount($token);
+           
             $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("search.page.items");
-            $paginator = new Pagination($qparams,$total,$pageSize);
+            $paginator = new Pagination($qparams,$pageSize);
 
             $ids = $sphinx->getPagedPosts($token,$paginator);
             

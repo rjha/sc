@@ -51,10 +51,8 @@ namespace com\indigloo\sc\controller{
             $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
             array_push($filters,$filter);
 
-            $total = $postDao->getTotalCount($filters);
-
             $pageSize = Config::getInstance()->get_value("main.page.items");
-            $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
+            $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
             $postDBRows = $postDao->getPaged($paginator,$filters);
 
             $template = APP_WEB_DIR. '/view/user/pub.php';

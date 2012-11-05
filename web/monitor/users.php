@@ -100,7 +100,7 @@
     $pageSize = Config::getInstance()->get_value("user.page.items");
 
     $total = $userDao->getTotal($filters);
-    $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
+    $paginator = new \com\indigloo\ui\Pagination($qparams, $pageSize);
     $userDBRows = $userDao->getPaged($paginator,$filters);
     $gtoken = "" ;
     

@@ -38,11 +38,6 @@ namespace com\indigloo\sc\dao {
             return $rows ;
         }
 
-        function getTotalCount($filters=array()) {
-            $row = mysql\Comment::getTotalCount($filters);
-            return $row['count'] ;
-        }
-
         function update($commentId,$comment) {
             $loginId = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
             mysql\Comment::update($commentId,$comment,$loginId) ;

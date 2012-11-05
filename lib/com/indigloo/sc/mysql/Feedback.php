@@ -21,13 +21,6 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function getTotalCount() {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " select count(id) as count from sc_feedback ";
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-        }
-
         static function getPaged($start,$direction,$limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 

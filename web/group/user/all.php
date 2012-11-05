@@ -22,10 +22,8 @@
     $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
     array_push($filters,$filter);
 
-
-    $total = $groupDao->getCountOnLoginId($loginId);
     $pageSize = 100;
-    $paginator = new Pagination($qparams,$total,$pageSize); 
+    $paginator = new Pagination($qparams,$pageSize); 
     $groups = $groupDao->getPagedUserGroups($paginator,$filters);
 
     $startId = NULL ;

@@ -23,10 +23,8 @@
     $listDao = new \com\indigloo\sc\dao\Lists();
     
     $qparams = Url::getRequestQueryParams();
-    $total = $listDao->getTotalOnLoginId($loginId);
-
     $pageSize = Config::getInstance()->get_value("user.page.items");
-    $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
+    $paginator = new \com\indigloo\ui\Pagination($qparams, $pageSize);
     $listDBRows = $listDao->getPagedOnLoginId($paginator,$loginId);
 
 ?>

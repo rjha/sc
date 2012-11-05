@@ -12,10 +12,9 @@
    
     $qparams = Url::getRequestQueryParams();
     $feedbackDao = new \com\indigloo\sc\dao\Feedback();
-
-    $total = $feedbackDao->getTotalCount();
+    
     $pageSize = 20;
-    $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
+    $paginator = new \com\indigloo\ui\Pagination($qparamss,$pageSize);
     $feedbackDBRows = $feedbackDao->getPaged($paginator);
 
 ?>

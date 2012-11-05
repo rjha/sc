@@ -13,10 +13,9 @@
     $qparams = Url::getRequestQueryParams();
 
     $commentDao = new \com\indigloo\sc\dao\Comment() ;
-    $total = $commentDao->getTotalCount();
-
+    
     $pageSize = Config::getInstance()->get_value("user.page.items");
-    $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
+    $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $commentDBRows = $commentDao->getPaged($paginator);
 ?>
 
