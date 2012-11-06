@@ -28,6 +28,16 @@
     $activityDao = new \com\indigloo\sc\dao\ActivityFeed() ;
     $feedDataObj = $activityDao->getUserFeeds($loginId,17);
 
+    //suggestions are editor picks right now
+    $postDao = new \com\indigloo\sc\dao\Post();
+    //post featured filter
+    $filters = array();
+    $model = new \com\indigloo\sc\model\Post();
+    $filter = new Filter($model);
+    $filter->add($model::FEATURED,Filter::EQ,TRUE);
+    array_push($filters,$filter);
+    $postDBRows = $postDao->getPosts(10,$filters);
+
 
 ?>
 
@@ -59,18 +69,55 @@
             </div>
             <?php FormMessage::render(); ?>
             
+            <div class="row">
+                <div class="span6 offset2">
+                    <div class="header-unit">
+                        <h2> Hello, <?php echo $loginName; ?> </h2>
+                        <p class="muted">
+                            Your dashboard provides a snapshot view of your account
+                            and what is happening in your network. Just click on your
+                            name in top toolbar and select account to access your dashboard
+                            from anywhere. 
+                            To go to main site please click 
+                            
+                             <a href="http://www.3mik.com" class="b flickr-color">
+                             www.3mik.com &rarr;
+                            </a>
+
+                        </p>
+                       
+
+                    </div>
+
+                </div>
+
+            </div>
 
             <div class="row">
                
                 <div class="span4">
-                    <?php echo \com\indigloo\sc\html\Site::getUserCounters($counters); ?>      
+                    <h5> Account</h5>
+                    <hr>
+                    <p class="muted">
+                        Account shows your data and settings on 3mik.com.
+                        click on any of the links to see details.
+                    </p>
+                    
+                    
+                    <?php echo \com\indigloo\sc\html\Site::getUserCounters($counters); ?> 
+                    <div class="clear"> </div>
+                    <div class="section">
+                        <span class="faded-text"> public URL</span>
+                        <br>
+                        <a href="#" class="b"> http://www.3mik.com/pub/user/11234</a>
+                    </div>
                 </div>
-                <div class="span4">
 
-                </div>
+               
 
                 <div class="span4">
                     <h5> what is happening?</h5>
+                    <hr>
                     <div class="feeds">
                     <?php
 
@@ -79,6 +126,34 @@
                         echo $html ;
 
                         ?>
+                    </div>
+                </div>
+                 <div class="span4">
+                    
+                    <h5> Help </h5>
+                    <hr>
+
+                    <ul class="unstyled">
+                        <li> <a href="#"> How to use the dashboard? </a> </li>
+                        <li> <a href="#"> How to add an item? </a> </li>
+                        <li> <a href="#"> How to add a comment? </a> </li>
+                        <li> <a href="#"> How to like/save an item? </a> </li>
+                        <li> <a href="#"> How to create a list? </a> </li>
+                        <li> <a href="#"> How to add items to a list? </a> </li>
+                        <li> <a href="#"> What is good about following a user? </a> </li>
+                        <li> <a href="#">see all help topics... </a> </li>
+                    </ul> 
+                    <div> 
+                        <h5> Suggestions </h5>
+                        <hr>
+                        <div id="tiles">
+                        <?php
+                            foreach($postDBRows as $postDBRow) {
+                                $html = \com\indigloo\sc\html\Post::getSmallTile($postDBRow);
+                                echo $html ;
+                            }
+                        ?>
+                        </div>
                     </div>
                 </div>
                
@@ -91,8 +166,18 @@
             
             $(document).ready(function(){
                 //fix twitter bootstrap alerts
-                webgloo.sc.util.fixAlert();
+                webgloo.sc.dashboard.fixAlert();
+                
                 webgloo.sc.toolbar.add();
+                var $container = $('#tiles');
+
+                $container.imagesLoaded(function(){
+                    $container.isotope({
+                        itemSelector : '.stamp',
+                        layoutMode : 'masonry'
+                    });
+
+                });
             });
 
         </script>

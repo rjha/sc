@@ -197,31 +197,25 @@
 .counter {
    
     color: #333 ;
-    color: white ;
-    color: #e09c15;
-    color: white ;
-
+    background-color: #eee ;
     border: 1px solid white;
-   
-    
-    background-color: #07823f;
-  
-    background-color: #fcfcfc;
-   
-    background-color: #b31e3b;
-    background-color: #9aa1b4;
-    
-
-    background-color: #35c2e0;
-    background-color: #57b20d;
-
     font-size: 13px;
     font-weight: normal;
     text-align: center;
     width : 120px;
 }
 
+.counter .name {
+    display:block;
+    padding:5px;
+    font-weight: bold ;
+}
 
+.header-unit {
+    padding: 40px;
+    margin-bottom: 30px;
+
+}
 
 </style>
 

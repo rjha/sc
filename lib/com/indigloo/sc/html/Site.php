@@ -136,7 +136,9 @@ namespace com\indigloo\sc\html {
                 "Likes" => "like_count",
                 "Saved" => "save_count",
                 "Followers" => "follower_count",
-                "Following" => "following_count");
+                "Following" => "following_count",
+                "Mail" => "",
+                "Profile" => "");
 
             $buffer = '' ;
             foreach($map as $name => $key) {
