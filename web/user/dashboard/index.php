@@ -25,6 +25,10 @@
     $analyticDao = new \com\indigloo\sc\dao\Analytic();
     $counters = $analyticDao->getUserCounters($loginId);
 
+    $activityDao = new \com\indigloo\sc\dao\ActivityFeed() ;
+    $feedDataObj = $activityDao->getUserFeeds($loginId,17);
+
+
 ?>
 
 
@@ -58,18 +62,31 @@
 
             <div class="row">
                
-                <div class="span8 offset1">
+                <div class="span4">
                     <?php echo \com\indigloo\sc\html\Site::getUserCounters($counters); ?>      
                 </div>
-                <div class="span3">
-                    
+                <div class="span4">
+
+                </div>
+
+                <div class="span4">
+                    <h5> what is happening?</h5>
+                    <div class="feeds">
+                    <?php
+
+                        $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+                        $html = $htmlObj->getHtml($feedDataObj);
+                        echo $html ;
+
+                        ?>
+                    </div>
                 </div>
                
             </div>
         </div> <!-- container -->
         
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
-        s
+        
         <script>
             
             $(document).ready(function(){

@@ -66,7 +66,7 @@ namespace com\indigloo\sc\dao {
             }else {
                 //get from user table using where condition
                 $row = mysql\User::getTotal($filters);
-                $count = $row["count"]
+                $count = $row["count"];
             }
              
             return $count ;

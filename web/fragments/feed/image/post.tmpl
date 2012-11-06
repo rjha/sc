@@ -1,5 +1,8 @@
-
 <div class="item">
+        ~if($view['hasImage']){~
+        <img src="~~$view['srcImage']~" alt="~~$view['nameImage']~" />
+        ~}~
+
         <div>
             <a href="~~$view['subjectUrl']~"><span  class="b">~~$view['subject']~</span></a>
             <span class="faded-text"> ~~$view['verb']~ </span>

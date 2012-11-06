@@ -350,8 +350,16 @@ namespace com\indigloo\sc\dao {
         }
         
         function getUserFeeds($loginId, $limit = 50) {
+            //try fetching user feed
             $key = Nest::feeds("user",$loginId);
-            return $this->getList($key, $limit);
+            $feedDataObj = $this->getList($key, $limit);
+            // no activity in user's network
+            // retun global feed
+            if(sizeof($feedDataObj->feeds) == 0 ) {
+                $feedDataObj = $this->getGlobalFeeds($limit);
+            }
+
+            return $feedDataObj;
         }
         
         function getPostFeeds($itemId, $limit = 10) {

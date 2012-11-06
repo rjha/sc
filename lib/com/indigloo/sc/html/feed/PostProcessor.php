@@ -33,8 +33,18 @@ namespace com\indigloo\sc\html\feed {
                 $pubId = PseudoId::encode($feedObj->subjectId);
                 $view['subjectUrl'] = sprintf("%s/pub/user/%s",Url::base(),$pubId);
                 $view['objectUrl'] = sprintf("%s/item/%s",Url::base(),$feedObj->objectId);
-                $view['srcImage'] = $feedObj->srcImage ;
-                $view['nameImage'] = $feedObj->nameImage ;
+                $view['hasImage'] = false ;
+
+                //image for feed
+                if(property_exists($feedObj, 'srcImage')) {
+                    if(!empty($feedObj->srcImage)) {
+                        $view['srcImage'] = $feedObj->srcImage ;
+                        $view['nameImage'] = $feedObj->nameImage ;
+                        $view['hasImage'] = true ;
+                    }
+                        
+                }
+               
                 $view['verb'] = $this->getVerb($feedObj->verb);
                 
                 if(isset($templates[$feedObj->type])) {
@@ -51,6 +61,7 @@ namespace com\indigloo\sc\html\feed {
                 }
 
                 $html = Template::render($template,$view);
+                
             }
 
             return $html ;

@@ -44,7 +44,7 @@
 
                         <ul class="dropdown-menu">
                            
-                            <li><a href="/user/dashboard/posts.php">Account</a></li>
+                            <li><a href="/user/dashboard/index.php">Account</a></li>
                              <li><a href="/pub/user/<?php echo $pubUserId; ?>">Public page</a></li>
                             <?php echo $monitorUrl; ?>
                        
