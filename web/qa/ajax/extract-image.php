@@ -10,14 +10,14 @@
     set_exception_handler('webgloo_ajax_exception_handler');
     $message = NULL ;
 
-    //use login is required for bookmarking
-    /*
+    //use login is required for image extraction
+    
     if(!Login::hasSession()) {
         $message = array("code" => 401 , "message" => "Authentication failure: You need to login!");
         $html = json_encode($message);
         echo $html;
         exit;
-    } */
+    }
 
     $target = $_POST["target"] ;
     $parser = new \com\indigloo\text\UrlParser();
