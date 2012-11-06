@@ -1,3 +1,7 @@
+#ssh
+to break an unresponsive ssh session  type ~. (tilde dot)
+
+
 #gvim
 mkdir ~/nuke/swap
 cp deploy/apps/vimrc  ~/.vimrc
