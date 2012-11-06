@@ -75,10 +75,10 @@
                         <h2> Hello, <?php echo $loginName; ?> </h2>
                         <p class="muted">
                             Your dashboard provides a snapshot view of your account
-                            and what is happening in your network. Just click on your
-                            name in top toolbar and select account to access your dashboard
-                            from anywhere. 
-                            To go to main site please click 
+                            and what is happening in your network. After sign in, just 
+                            click on your name in top toolbar and select account to access 
+                            your dashboard  from anywhere. 
+                            To go to 3mik site, please click 
                             
                              <a href="http://www.3mik.com" class="b flickr-color">
                              www.3mik.com &rarr;
