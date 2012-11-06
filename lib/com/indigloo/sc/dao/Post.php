@@ -97,15 +97,22 @@ namespace com\indigloo\sc\dao {
          * 
          */
         function getTotalCount($filters=array()) {
+            $count = 0 ;
+
             if(empty($filters)) {
                 // no filter case
-                $row = mysql\Analytic::getSitePostCounter();
+                $row = mysql\Analytic::getSiteCounters();
+                if(!empty($row)) {
+                    $count = $row["post_count"];
+                }
+
             }else {
                 //get from table using where condition
                 $row = mysql\Post::getTotalCount($filters);
+                $count = $row["count"];
             }
            
-            return $row["count"] ;
+            return $count ;
         }
 
         function create($title,

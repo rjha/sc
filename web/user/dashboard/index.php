@@ -22,8 +22,8 @@
         trigger_error("Error : NULL login_id on user dashboard", E_USER_ERROR);
     }
 
-    //$userDao = new \com\indigloo\sc\dao\User();
-    //$counters = $userDao->getCounters($loginId);
+    $analyticDao = new \com\indigloo\sc\dao\Analytic();
+    $counters = $analyticDao->getUserCounters($loginId);
 
 ?>
 
@@ -59,7 +59,7 @@
             <div class="row">
                
                 <div class="span8 offset1">
-                     Tiles
+                    <?php echo \com\indigloo\sc\html\Site::getUserCounters($counters); ?>      
                 </div>
                 <div class="span3">
                     

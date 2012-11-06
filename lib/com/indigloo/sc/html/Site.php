@@ -77,20 +77,6 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        static function renderList($listRows,$strItems,$qUrl) {
-            $view = new \stdClass;
-            $view->lists = array();
-            foreach($listRows as $row) {
-                $view->lists[$row['id']] = $row['name'] ;
-            }
-            
-            $view->strItems = $strItems ;
-            $view->qUrl = $qUrl;
-            $template = "/fragments/ui/list.tmpl" ;
-            $html = Template::render($template,$view);
-            return $html ;
-        }
-
         static function getBookmarkTable($rows) {
             
             for($i = 0 ; $i < count($rows); $i++) {
@@ -132,6 +118,38 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
+        static function getCounter($name,$value) {
+            $html = NULL ;
+            $template = '/fragments/site/counter.tmpl' ;
+            $view = new \stdClass;
+            $view->name = $name ;
+            $view->value = $value ;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function getUserCounters($data) {
+            $map = array(
+                "Posts" => "post_count",
+                "Comments" => "comment_count",
+                "Lists" => "list_count",
+                "Likes" => "like_count",
+                "Saved" => "save_count",
+                "Followers" => "follower_count",
+                "Following" => "following_count");
+
+            $buffer = '' ;
+            foreach($map as $name => $key) {
+                $value = $data[$key] ;
+                if($value == 0)
+                    $value = "N/A" ;
+                $buffer .= self::getCounter($name,$value);
+
+            }
+
+            return $buffer ;
+
+        }
 
     }
 

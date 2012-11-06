@@ -57,7 +57,7 @@
 }
 
 #page-action {
-   
+    padding: 10px 0 10px 0 ;
     border-bottom : 1px solid #f1f1f1 ;
     border-top: 1px solid #f1f1f1  ;
 }
@@ -88,16 +88,23 @@
 .btn-flat {
 
     text-shadow: none;
-    padding: 2px 20px 2px 20px; 
-    border-radius: 5px;
-    color: #666;
+    padding: 4px 12px 4px 12px; 
+    /* border-radius: 5px; */
+    color: #333;
     background: white;
-    font-weight: bold;
+    /* font-weight: bold; */
     font-family: arial,sans-serif;
     font-size: 13px;
-    border: 1px solid #CECECE;
-
+    /* border: 1px solid #CECECE; */
+    border:1px solid #ccc;
 }
+
+.btn-flat:hover {
+    background-color: #f7f7f7 ;
+    /* text-decoration: underline ; */
+    color: #222 ;
+}
+
 
 .action-form .floatr {
     border-bottom: 1px solid #28c ;
@@ -185,6 +192,15 @@
 
 .uwidget a {
     cursor: pointer ;
+}
+
+.counter {
+    color: #333 ;
+    border: 1px solid #D2D2D2;
+    background-color: white;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: center;
 }
 
 

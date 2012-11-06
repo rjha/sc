@@ -31,11 +31,16 @@ namespace com\indigloo\sc\html {
 
         }
 
+        /*
+         * @param card #1 is blue card, #2 is white card 
+         *
+         */
+
         static function getCard($groups,$card) {
             $html = NULL ;
             $view = new \stdClass;
             $view->groups = $groups ;
-            $view->card = $card;
+            $view->class = ($card == 1 ) ? "card-blue" : "card-white" ;
             $template = '/fragments/group/card.tmpl' ;
             $html = Template::render($template,$view);
             return $html;

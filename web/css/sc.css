@@ -300,36 +300,6 @@
         padding:5px;
     }
 
-    .image-grid .box .title {
-        color: #222;
-        font-size: 15px;
-        font-weight: bold;
-        line-height: 1em;
-        padding-bottom: 5px;
-        font-family: arial;
-    }
-
-    .image-grid .box .title:hover {
-        color: #f5be00;
-    }
-    
-    .user-tile {
-        position :relative ;
-        float : left;
-        padding:10px;
-        height:170px;
-        width:200px;
-        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4),0 0px 10px rgba(0, 0, 0, 0.1);
-        margin :8px;
-    }
-
-    .user-tile img {
-        width: auto;
-        height: 100px;
-        max-width: 160px;
-        max-height: 120px;
-        padding:5px;
-    }
 
     #link-preview  a{
         font-size:10px;
@@ -493,7 +463,6 @@
         text-decoration : none;
         color: #222;
         width:22px;
-
     }
 
     #feedback{
@@ -731,38 +700,39 @@
         display :inline-block;
     }
 
-    /* generic tiles */
+    /* generic left floating div */
     .stack {
         width:210px;
         float:left;
         padding:4px;
         margin:4px;
         cursor: pointer;
-
     }
 
-    .stack .name {
-        white-space: nowrap;
-    }
+    /* cards to display snippet of information */
+    /* card-white and card-blue display bunch of links - delicious style */
+    .card { }
 
-    .stack .item {
+    .card .link{
         padding: 2px 0;
         list-style: square outside;
         margin-bottom: 5px;
         overflow: hidden;
     }
 
-    .stack .item a {
+    .card .link a {
         color: #333 ;
         text-decoration: none;
     }
 
-    .stack .item a:hover {
+    .card .link a:hover {
         text-decoration: underline;
     }
 
-    /* cards to display a bunch of links - delicious style */
-    .card1 {
+    .card .link .name { white-space: nowrap;}
+    
+    .card-blue {
+
         color: #333 ;
         border: 1px solid #DEE2E5;
         border-bottom-color: white;
@@ -772,7 +742,7 @@
         
     }
 
-    .card2 {
+    .card-white {
         color: #333 ;
         border: 1px solid #D2D2D2;
         background-color: white;

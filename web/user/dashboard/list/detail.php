@@ -95,13 +95,13 @@
                         <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
                     </div>
                     <div class="span7">
-                        <a class="btn btn-flat open-action" rel="list-add-item" href="#">Add +</a>
+                        <a class="btn-flat open-action" rel="list-add-item" href="#">Add +</a>
                         &nbsp;&nbsp;
-                        <a class="btn btn-flat item-action" rel="list-delete-item" href="#">Delete -</a>
+                        <a class="btn-flat item-action" rel="list-delete-item" href="#">Delete -</a>
                          &nbsp;&nbsp;
-                        <a class="btn btn-flat open-action" rel="list-edit" href="#" >Edit list</a>
+                        <a class="btn-flat open-action" rel="list-edit" href="#" >Edit list</a>
                         &nbsp;&nbsp;
-                        <a class="btn btn-flat open-action" rel="list-delete" href="#">Delete list</a>
+                        <a class="btn-flat open-action" rel="list-delete" href="#">Delete list</a>
                        
                        
                     </div>

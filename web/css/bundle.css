@@ -1238,8 +1238,6 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .hide-me{display:none}
 .image-grid .box{position:relative;float:left;padding:7px;height:125px;width:125px;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1);margin:4px}
 .image-grid .box img{width:auto;height:auto;max-width:100px;max-height:100px;padding:5px}
-.user-tile{position:relative;float:left;padding:10px;height:170px;width:200px;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1);margin:8px}
-.user-tile img{width:auto;height:100px;max-width:160px;max-height:120px;padding:5px}
 #link-preview a{font-size:10px;line-height:1.8;color:#444;text-decoration:underline}
 #image-preview .container{position:relative;float:left;padding:7px;height:160px;width:190px;box-shadow:0 1px 3px rgba(34,25,25,0.4);margin:4px}
 #image-preview .container img{width:auto;height:auto;max-width:180px;max-height:135px;margin-bottom:5px;padding:5px}
@@ -1303,12 +1301,12 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .cloud .tag-size3{font-size:12px}
 .cloud-item{padding-left:7px;display:inline-block}
 .stack{width:210px;float:left;padding:4px;margin:4px;cursor:pointer}
-.stack .name{white-space:nowrap}
-.stack .item{padding:2px 0;list-style:square outside;margin-bottom:5px;overflow:hidden}
-.stack .item a{color:#333;text-decoration:none}
-.stack .item a:hover{text-decoration:underline}
-.card1{color:#333;border:1px solid #dee2e5;border-bottom-color:white;background-color:#e7ebee;font-size:13.5px;font-weight:bold}
-.card2{color:#333;border:1px solid #d2d2d2;background-color:white;font-size:13px;font-weight:normal;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1)}
+.card .link{padding:2px 0;list-style:square outside;margin-bottom:5px;overflow:hidden}
+.card .link a{color:#333;text-decoration:none}
+.card .link a:hover{text-decoration:underline}
+.card .link .name{white-space:nowrap}
+.card-blue{color:#333;border:1px solid #dee2e5;border-bottom-color:white;background-color:#e7ebee;font-size:13.5px;font-weight:bold}
+.card-white{color:#333;border:1px solid #d2d2d2;background-color:white;font-size:13px;font-weight:normal;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1)}
 .feeds{font-size:12px;padding:0 0 0 10px;font-family:arial}
 .feeds a{color:#333}
 .feeds .item{width:100%;clear:both;padding-top:5px;border-top:1px solid #eee;padding-bottom:5px}

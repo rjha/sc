@@ -54,16 +54,22 @@ namespace com\indigloo\sc\dao {
         }
 
         function getTotal($filters=array()) {
+            $count = 0 ;
+
             if(empty($filters)) {
-                // no filters?
-                // get from site counter
-                $row = Analytic::getSiteUserCounter();
+                // no filter case
+                $row = mysql\Analytic::getSiteCounters();
+                if(!empty($row)) {
+                    $count = $row["user_count"];
+                }
+
             }else {
                 //get from user table using where condition
                 $row = mysql\User::getTotal($filters);
+                $count = $row["count"]
             }
              
-            return $row["count"] ;
+            return $count ;
         }
 
         function getLatest($limit,$filters=array()) {

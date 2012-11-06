@@ -1,7 +1,7 @@
-<div class="stack card~~$view->card~">
+<div class="stack card ~~$view->class~">
     <ul>
         ~foreach($view->groups as $group) {~
-        <li class="item"> <a href="/group/~~$group['token']~"><span class="name">~~$group['name']~</span></a> </li>
+        <li class="link"> <a href="/group/~~$group['token']~"><span class="name">~~$group['name']~</span></a> </li>
         ~ }~
     </ul>
 </div>

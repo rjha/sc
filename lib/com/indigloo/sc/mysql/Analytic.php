@@ -16,16 +16,19 @@ namespace com\indigloo\sc\mysql {
             return $rows;
         }
 
-        static function getSitePostCounter() {
+        static function getSiteCounters() {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "select post_count as count from sc_site_counter " ;
+            $sql = "select * from sc_site_counter " ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
 
-        static function getSiteUserCounter() {
+        static function getUserCounters($loginId) {
+            settype($loginId,"integer");
+
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = "select user_count as count from sc_site_counter " ;
+            $sql = "select * from sc_user_counter where login_id = %d " ;
+            $sql = sprintf($sql,$loginId);
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
