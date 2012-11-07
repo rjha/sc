@@ -49,6 +49,7 @@
     $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $postDBRows = $postDao->getPaged($paginator,$filters);
     $qUrl = base64_encode(Url::current());
+    
 
 
 ?>
@@ -137,7 +138,8 @@
 
                                 }
                             } else {
-                                $message = "No posts found " ;
+                                 
+                                $message = "No items found" ;
                                 echo \com\indigloo\sc\html\Site::getNoResult($message);
                             }
 

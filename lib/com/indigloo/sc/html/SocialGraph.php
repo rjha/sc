@@ -82,14 +82,6 @@ namespace com\indigloo\sc\html {
             $html = NULL ;
             $view = new \stdClass;
             
-
-            if(!is_array($rows) || empty($rows)) {
-                //no following
-                $message = "You are not following anyone!" ;
-                $html = Site::getNoResult($message);
-                return $html ;
-            }
-            
             $records = array();
             
             foreach($rows as $row){

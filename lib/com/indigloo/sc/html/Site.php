@@ -24,25 +24,109 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        static function getNoResult($message) {
+        /*
+         * #1)
+         * if we are on page > 2 then user knows how to create 
+         * entity. in that case our pagination did not bring any 
+         * results. in that case we just want to show "no more results"
+         * 
+         * #2) 
+         * 
+         * if we get a help key 
+         * if we are on page #1 - and there is no content then 
+         * we would like to show the users help about how to 
+         * create entity. 
+         * 
+         * 
+         * 
+         */
+
+
+        static function getNoResult($message,$options=NULL) {
+
+            $defaults = array(
+                "hkey" => NULL ,
+                "form" => "vanilla");
+
+            if(is_array($options) && !empty($options)) {
+                //keys from options will override the ones
+                // in default as array
+                $settings = array_merge($defaults,$options);
+            } else {
+                $settings = $defaults ;
+            }
+
+            //empty strings are equivalent to NULL
+            foreach($settings as $key => $value) {
+                if(Util::tryEmpty($value)) {
+                    $settings[$key] = NULL ;
+                }
+            }
+
+            //get qparams from Url
+            $qparams = \com\indigloo\Url::getRequestQueryParams();
+            $gpage = -1 ;
+
+            //hkey supplied - means show help on page #1.
+            if(!empty($qparams) && (isset($qparams["gpage"]))) {  
+                $gpage = $qparams["gpage"];
+                $gpage = intval($gpage);
+            }
+
+            $html = NULL ;
+
+            if(($gpage == 1) && !is_null($settings["hkey"])) {
+                $html = self::getHelp($key);
+                if(!empty($html)) {
+                    return $html ;
+                }
+            }
+
             $html = NULL ;
             $view = new \stdClass;
-            $template = "/fragments/site/noresult/vanilla.tmpl" ;
+            
+            $template = NULL ;
+            $form = $settings["form"] ;
+
+            switch($form) {
+                case "tile" :
+                    $template = "/fragments/site/noresult/tile.tmpl" ;
+                    break ;
+                default :
+                    $template = "/fragments/site/noresult/vanilla.tmpl"  ;
+                    break ;
+            }
+            
             $view->message = $message ;
             $html = Template::render($template,$view);
             return $html ;
-        }
-
-        static function getNoResultTile($message) {
-            $html = NULL ;
-            $view = new \stdClass;
-            $template = "/fragments/site/noresult/tile.tmpl" ;
-            $view->message = $message ;
-            $html = Template::render($template,$view);
-            return $html ;
 
         }
 
+        static function getHelp($key) {
+            
+            $pos = strpos($key,"/");
+
+            //bad key
+            if($pos !== false) {
+                $message = "wrong help file key: it contains path separator" ;
+                trigger_error($message, E_USER_ERROR);
+            }
+
+            $name = str_replace(".","/",$key);
+            $path = sprintf("%s/site/help/%s.html",APP_WEB_DIR,$name) ;
+
+            //get buffered output
+
+            ob_start();
+            include ($path);
+            $buffer = ob_get_contents();
+            ob_end_clean();
+
+            return $buffer;
+
+        }
+        
         static function renderAddBox() {
             $html = NULL ;
             $view = new \stdClass;

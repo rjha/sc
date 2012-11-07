@@ -43,8 +43,10 @@
 
                                 }
                             }else {
+                                 
                                 $message = "No Posts" ;
-                                echo \com\indigloo\sc\html\Site::getNoResultTile($message);
+                                $options = array("form" => "tile");
+                                echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
 
                             }
 
