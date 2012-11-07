@@ -5,6 +5,7 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\Template as Template;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
+    use \com\indigloo\Logger as Logger ;
     
     use \com\indigloo\util\StringUtil as StringUtil ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
@@ -74,17 +75,23 @@ namespace com\indigloo\sc\html {
             }
 
             $html = NULL ;
+            $help_key = $settings["hkey"] ;
 
-            if(($gpage == 1) && !is_null($settings["hkey"])) {
-                $html = self::getHelp($key);
-                if(!empty($html)) {
+            if(($gpage <= 1) && !is_null($help_key)) {
+
+                try{
+                    $html = self::getHelp($help_key);
                     return $html ;
+                } catch(\Exception $ex) {
+                    $html = NULL ;
+                    $errorMsg = sprintf("Error retrieving help key :: %s ",$help_key);
+                    Logger::getInstance()->error($errorMsg);
+                    Logger::getInstance()->error($ex->getMessage());
                 }
+
             }
 
-            $html = NULL ;
-            $view = new \stdClass;
-            
+            $view = new \stdClass;            
             $template = NULL ;
             $form = $settings["form"] ;
 
