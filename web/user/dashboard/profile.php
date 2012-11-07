@@ -53,13 +53,27 @@
                 </div>
 
             </div>
+            <div class="row">
+                <div class="span11 offset1">
+                    <div class="page-header">
+                        <span style="padding-left:20px;padding-right:20px;">Profile </span>
+                        <span>
+                            <a class="btn-flat" href="/user/dashboard/mails.php">Mail preferences</a>
+                        </span>
+                        <span>
+                            <a class="btn-flat" href="/user/account/change-password.php">Change password</a>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
-                <div class="span8 offset1">
-                    <h3> <?php echo $userDBRow['name']; ?> </h3>
+                <div class="span6 offset1">
                     <?php echo \com\indigloo\sc\html\User::getProfile($gSessionLogin,$userDBRow) ; ?>
                 </div>
-               
+                
+
             </div> <!-- row -->
         </div> <!-- container -->
 

@@ -118,41 +118,6 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        static function getCounter($name,$value) {
-            $html = NULL ;
-            $template = '/fragments/site/counter.tmpl' ;
-            $view = new \stdClass;
-            $view->name = $name ;
-            $view->value = $value ;
-            $html = Template::render($template,$view);
-            return $html ;
-        }
-
-        static function getUserCounters($data) {
-            $map = array(
-                "Posts" => "post_count",
-                "Comments" => "comment_count",
-                "Lists" => "list_count",
-                "Likes" => "like_count",
-                "Saved" => "save_count",
-                "Followers" => "follower_count",
-                "Following" => "following_count",
-                "Mail" => "",
-                "Profile" => "");
-
-            $buffer = '' ;
-            foreach($map as $name => $key) {
-                $value = $data[$key] ;
-                if($value == 0)
-                    $value = "N/A" ;
-                $buffer .= self::getCounter($name,$value);
-
-            }
-
-            return $buffer ;
-
-        }
-
     }
 
 }

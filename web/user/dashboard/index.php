@@ -26,7 +26,7 @@
     $counters = $analyticDao->getUserCounters($loginId);
 
     $activityDao = new \com\indigloo\sc\dao\ActivityFeed() ;
-    $feedDataObj = $activityDao->getUserFeeds($loginId,17);
+    $feedDataObj = $activityDao->getUserFeeds($loginId,12);
 
     //suggestions are editor picks right now
     $postDao = new \com\indigloo\sc\dao\Post();
@@ -71,7 +71,7 @@
             
             <div class="row">
                 <div class="span6 offset2">
-                    <div class="header-unit">
+                    <div class="">
                         <h2> Hello, <?php echo $loginName; ?> </h2>
                         <p class="muted">
                             Your dashboard provides a snapshot view of your account
@@ -95,7 +95,7 @@
 
             <div class="row">
                
-                <div class="span4">
+                <div class="span6">
                     <h5> Account</h5>
                     <hr>
                     <p class="muted">
@@ -104,45 +104,24 @@
                     </p>
                     
                     
-                    <?php echo \com\indigloo\sc\html\Site::getUserCounters($counters); ?> 
+                    <?php echo \com\indigloo\sc\html\User::getCounters($counters); ?> 
                     <div class="clear"> </div>
                     <div class="section">
                         <span class="faded-text"> public URL</span>
                         <br>
                         <a href="#" class="b"> http://www.3mik.com/pub/user/11234</a>
                     </div>
-                </div>
-
-               
-
-                <div class="span4">
-                    <h5> what is happening?</h5>
-                    <hr>
-                    <div class="feeds">
-                    <?php
-
-                        $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
-                        $html = $htmlObj->getHtml($feedDataObj);
-                        echo $html ;
-
-                        ?>
-                    </div>
-                </div>
-                 <div class="span4">
                     
-                    <h5> Help </h5>
-                    <hr>
+                    <div class="ml20">
+                        <ul class="unstyled">
+                           
+                            <li> <a href="#"> How to add an item? </a> </li>
+                            <li> <a href="#"> How to like/save an item? </a> </li>
+                            <li> <a href="#"> How to create a list? </a> </li>
+                            <li> <a href="#">see all help topics &rarr; </a> </li>
+                        </ul> 
+                    </div>
 
-                    <ul class="unstyled">
-                        <li> <a href="#"> How to use the dashboard? </a> </li>
-                        <li> <a href="#"> How to add an item? </a> </li>
-                        <li> <a href="#"> How to add a comment? </a> </li>
-                        <li> <a href="#"> How to like/save an item? </a> </li>
-                        <li> <a href="#"> How to create a list? </a> </li>
-                        <li> <a href="#"> How to add items to a list? </a> </li>
-                        <li> <a href="#"> What is good about following a user? </a> </li>
-                        <li> <a href="#">see all help topics... </a> </li>
-                    </ul> 
                     <div> 
                         <h5> Suggestions </h5>
                         <hr>
@@ -156,6 +135,23 @@
                         </div>
                     </div>
                 </div>
+
+               
+
+                <div class="span4 offset2">
+                    <h5> what is happening?</h5>
+                    <hr>
+                    <div class="feeds">
+                    <?php
+
+                        $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+                        $html = $htmlObj->getHtml($feedDataObj);
+                        echo $html ;
+
+                        ?>
+                    </div>
+                </div>
+                
                
             </div>
         </div> <!-- container -->

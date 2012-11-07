@@ -58,20 +58,30 @@
                 </div>
 
             </div>
+             <div class="row">
+                <div class="span11 offset1">
+                    <div class="page-header">
+                        <span style="padding-left:20px;padding-right:20px;">Edit profile </span>
+                        <span>
+                            <a class="btn-flat" href="/user/dashboard/mails.php">Mail preferences</a>
+                        </span>
+                        <span>
+                            <a class="btn-flat" href="/user/account/change-password.php">Change password</a>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
 
                 <div class="span8 offset1">
                     
-                    <h3> <?php echo $userDBRow['name']; ?> </h3>
-                    
-                    
-
                     <?php FormMessage::render(); ?>
                     <div class="row">
-                        <div class="span5 section">
-                            <p class="help-text">
-                               Please update the details and click on Submit.  
+                        <div class="span6">
+                            <p class="muted">
+                               Please update the details and click on Save.  
                                If you provide a nick name then your nick name
                                will be displayed instead of your real name.
                             </p>
@@ -155,11 +165,7 @@
                         </table>
 
                         <div class="form-actions">
-                            <button class="btn btn-primary" type="submit" name="save" value="Save"><span>Submit</span></button>
-                            <a href="<?php echo $qUrl;?>">
-                                <button class="btn" type="button" name="cancel"><span>Cancel</span></button>
-                            </a>
-
+                            <button class="btn" type="submit" name="save" value="Save"><span>Save</span></button>
                         </div>
 
                         <div style="clear: both;"></div>

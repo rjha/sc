@@ -4,11 +4,14 @@
     $urlMap  = array(
     "/user/dashboard/index.php" => "Dashboard",
     "/user/dashboard/posts.php" => "My items",
-    "/user/dashboard/bookmark.php" => "Saved items",
+    "/user/dashboard/bookmark.php" => "Saved",
     "/user/dashboard/list/index.php" => "Lists",
     "/user/dashboard/list/detail.php" => "Lists",
     "/user/dashboard/activities.php" => "Activity",
-    "/user/dashboard/mails.php" => "Settings");
+    "/user/dashboard/mails.php" => "Settings",
+    "/user/dashboard/profile.php" => "Settings",
+     "/user/account/edit.php" => "Settings",
+    "/user/account/change-password.php" => "Settings");
 
     $classMap = array("active" => "item1", "normal" => "item");
     $template = "/fragments/ui/links/umenu.tmpl"; 
@@ -195,7 +198,6 @@
 }
 
 .counter {
-   
     color: #333 ;
     background-color: #eee ;
     border: 1px solid white;
@@ -211,11 +213,25 @@
     font-weight: bold ;
 }
 
-.header-unit {
-    padding: 40px;
-    margin-bottom: 30px;
-
+.counters{
+    background-color: #07823f ;
 }
+
+
+.metro-blue {background-color: #35c2e0; color:white;}
+.metro-orange { background-color: #ff7f00; color : white;}
+.metro-green {background-color: #57b20d; color : white;}
+
+
+.metro-dark-green {background-color: #07823f; color: white;}
+.metro-yellow {background-color: #e09c15; color : white;}
+
+.metro-red {background-color: #b31e3b; color: #ffcc11;}
+.metro-slate {background-color: #9aa1b4; color:white;}
+
+.metro { background-color: #eee ; color: #333;}
+
+
 
 </style>
 

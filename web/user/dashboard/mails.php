@@ -63,18 +63,31 @@
             </div>
 
             <div class="row">
-                <div class="span8 offset1">
-                    <div class="faded-text mb20"> 
-                        change your mail preferences and click update
-                    </div>
+                <div class="span11 offset1">
+                    <div class="page-header">
+                        <span style="padding-left:20px;padding-right:20px;">Mail preferences</span>
+                        <span>
+                            <a class="btn-flat" href="/user/dashboard/profile.php">Edit profile</a>
+                        </span>
+                        <span>
+                            <a class="btn-flat" href="/user/account/change-password.php">Change password</a>
+                        </span>
 
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span6 offset1">
+                    
                     <?php FormMessage::render(); ?>
 
                     <div id="form-wrapper">
                         <form id="web-form1"  name="web-form1" action="/user/form/mails-preference.php" method="POST">
-                            <table class="table table-striped">
+                            <table class="table table-condensed table-striped">
 
                                 <tbody>
+                                    
                                     <tr>
                                         <td><input type="checkbox" name="p[follow]" value="true" <?php echo $checked["follow"]; ?> /></td>
                                         <td> When people start following me</td>
@@ -87,19 +100,18 @@
                                         <td><input type="checkbox" name="p[bookmark]" value="true" <?php echo $checked["bookmark"]; ?>/></td>
                                         <td> When people like or save my post </td>
                                     </tr>
-                                     <tr>
-                                        <td>&nbsp;</td>
-                                        <td> &nbsp; </td>
-                                    </tr>
+                                      
                                 </tbody>
                                 </table>
                                     <div class="form-actions2">
-                                        <button class="btn" type="submit" name="save" value="Save"><span>Update</span></button>
+                                        <hr>
+                                        <button class="btn" type="submit" name="save" value="Save"><span>Save</span></button>
                                     </div>
                                 <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
                         </form>
                     </div>
                 </div>
+                
 
             </div> <!-- row -->
         </div> <!-- container -->

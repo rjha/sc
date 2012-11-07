@@ -33,9 +33,9 @@ namespace com\indigloo\sc\html {
             $template = '/fragments/user/profile/private.tmpl' ;
 
             $view = self::createUserView($userDBRow);
-            $params = array('q' => urlencode(Url::current()));
-            $view->passwordUrl = Url::createUrl("/user/account/change-password.php",$params);
-            $view->editUrl = Url::createUrl("/user/account/edit.php",$params);
+            
+            $view->passwordUrl = "/user/account/change-password.php" ;
+            $view->editUrl = "/user/account/edit.php" ;
 
             $html = Template::render($template,$view);
             return $html ;
@@ -192,6 +192,33 @@ namespace com\indigloo\sc\html {
             $template = "/fragments/user/admin/widget.tmpl" ;
             $html = Template::render($template,$view);
             return $html ;
+        }
+
+        static function getCounters($data) {
+            $view = new \stdClass ;
+            $zero = '-:-' ;
+
+            $view->posts =   $data["post_count"];
+            $view->comments =  $data["comment_count"];
+            $view->lists = $data["list_count"];
+            $view->likes =  $data["like_count"];
+            $view->saved =  $data["save_count"];
+            $view->followers = $data["follower_count"];
+            $view->following = $data["following_count"];
+
+            $variables = get_object_vars($view);
+
+            foreach($variables as $prop => $value) {
+                if(intval($view->{$prop})  ==  0 ) {
+                    $view->{$prop} = $zero ;
+                }
+            }
+
+            $html = NULL ;
+            $template = '/fragments/user/counter/private.tmpl' ;
+            $html = Template::render($template,$view);
+            return $html ;
+            
         }
 
     }

@@ -64,6 +64,20 @@
                 </div>
 
             </div>
+            <div class="row">
+                <div class="span11 offset1">
+                    <div class="page-header">
+                        <span style="padding-left:20px;padding-right:20px;">Change password</span>
+                        <span>
+                            <a class="btn-flat" href="/user/dashboard/mails.php">Mail preferences</a>
+                        </span>
+                        <span>
+                            <a class="btn-flat" href="/user/dashboard/profile.php">Edit profile</a>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="span8 offset1">
@@ -93,11 +107,8 @@
                         </table>
 
                         <div class="form-actions">
-                            <button class="btn btn-primary" type="submit" name="save" value="Save"><span>Submit</span></button>
-                             <a href="/">
-                                <button class="btn" type="button" name="cancel"><span>Cancel</span></button>
-                            </a>
-
+                            <button class="btn" type="submit" name="save" value="Save"><span>Save</span></button>
+                           
                         </div>
                         <input type="hidden" name="ftoken" value="<?php echo $ftoken; ?>" />
                         <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
