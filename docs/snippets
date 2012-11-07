@@ -44,5 +44,21 @@ include js in <head> </head> section of HTML page
                         </div>
 
 
+Metro UI like tiles
+------------------------
+
+
+.metro-blue {background-color: #35c2e0; color:white;}
+.metro-orange { background-color: #ff7f00; color : white;}
+.metro-green {background-color: #57b20d; color : white;}
+
+
+.metro-dark-green {background-color: #07823f; color: white;}
+.metro-yellow {background-color: #e09c15; color : white;}
+
+.metro-red {background-color: #b31e3b; color: #ffcc11;}
+.metro-slate {background-color: #9aa1b4; color:white;}
+
+.metro { background-color: #eee ; color: #333;}
 
 
