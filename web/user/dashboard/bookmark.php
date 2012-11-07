@@ -55,7 +55,7 @@
     $pageSize = Config::getInstance()->get_value("user.page.items");
     $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $postDBRows = $bookmarkDao->getPaged($paginator,$filters);
-    $pageBaseUrl = "/user/dashboard/bookmark.php";
+    $baseURI = "/user/dashboard/bookmark.php";
     $qUrl = base64_encode(Url::current());
 
 
@@ -72,7 +72,7 @@
 
      <body>
        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-        <div class="container">
+        <div class="container mh600">
 
             <div class="row">
                 <div class="span12">
@@ -92,14 +92,14 @@
                         <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
                     </div>
                      <div class="span7">
-                        <a class="btn btn-flat item-action" rel="list-popup" href="#" class="b btn btn-small">Add to list</a>
+                        <a class="btn-flat item-action" rel="list-popup" href="#" class="b btn btn-small">Add to list</a>
                     </div>
                 </div>
            
             </div>
 
             <div class="row">
-                <div class="span8 offset1 mh600">
+                <div class="span8 offset1">
                     <div class="row">
                         <div id="page-message" class="hide-me"> </div>
                         <div id="list-popup" class="action-form">
@@ -141,8 +141,10 @@
 
                                 }
                             } else {
-                                $message = "No items found " ;
-                                echo \com\indigloo\sc\html\Site::getNoResult($message);
+                                 
+                                $message = "No saved items found" ;
+                                $options = array("hkey" => "dashboard.item.save");
+                                echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
                             }
 
                             $strImageJson = json_encode($imageData);
@@ -156,9 +158,10 @@
             </div>
 
         </div>  <!-- container -->
-        
-        <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
-
+        <?php 
+            if(sizeof($postDBRows) >= $pageSize)
+                $paginator->render($baseURI,$startId,$endId); 
+        ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
         <script type="text/javascript">
@@ -174,7 +177,8 @@
 
                 
                 webgloo.sc.toolbar.add();
-
+                webgloo.sc.item.addActions();
+                
                 var containerId = "widgets" ;
                 webgloo.sc.dashboard.init(containerId);
                 //fix twitter bootstrap alerts

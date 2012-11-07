@@ -515,7 +515,7 @@ webgloo.sc.item = {
     },
 
     addActions : function() {
-        //@todo rename - remove link part at end - an anchor is a link!
+
         //add like & save callbacks
         $("a.like-post").live("click",function(event){
             event.preventDefault();

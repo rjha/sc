@@ -9,10 +9,7 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login;
     
-    use \com\indigloo\Constants as Constants;
-    use \com\indigloo\ui\form\Message as FormMessage;
     
-
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
 
@@ -26,6 +23,7 @@
     $pageSize = Config::getInstance()->get_value("user.page.items");
     $paginator = new \com\indigloo\ui\Pagination($qparams, $pageSize);
     $listDBRows = $listDao->getPagedOnLoginId($paginator,$loginId);
+    $baseURI = "/user/dashboard/list/index.php" ;
 
 ?>
 
@@ -55,12 +53,17 @@
                 </div>
 
             </div>
-            <?php FormMessage::render(); ?>
+            
+            <div class="row">
+                 <div class="span12">
+                   <div class="page-header">&nbsp;</div>
+                </div>
+
+            </div>
             
             <div class="row">
                 <div class="span8 offset1">
                     
-                    <?php FormMessage::render(); ?>
                     <div id="widgets">
                     <?php 
                         $startId = NULL;
@@ -85,8 +88,10 @@
                
             </div>
         </div> <!-- container -->
-        
-        <?php $paginator->render('/user/dashboard/posts.php', $startId, $endId); ?>
+        <?php 
+            if(sizeof($listDBRows) >= $pageSize)
+                $paginator->render($baseURI,$startId,$endId); 
+        ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
         

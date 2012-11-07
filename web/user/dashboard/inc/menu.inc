@@ -232,6 +232,16 @@
 .metro { background-color: #eee ; color: #333;}
 
 
+.noresults {
+    margin-top: 40px;
+    padding: 30px 0;
+    color: #999;
+    font-size: 24px;
+    line-height: 37px;
+    font-family: Georgia;
+     
+}
+
 
 </style>
 

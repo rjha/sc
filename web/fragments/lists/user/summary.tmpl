@@ -1,14 +1,16 @@
 
 <div class="widget">
-    <h5><a href="/user/dashboard/list/detail.php?list_id=~~$view->id~">~~$view->name~</a></h5>
-    <div class="image-grid">
-    ~foreach($view->items as $item){~
-        <div class="box">
-            <img src="~~$item->thumbnail~" />
-        </div>
-    ~}~
+    <a href="/user/dashboard/list/detail.php?list_id=~~$view->id~">
+        <h5>~~$view->name~</h5>
+        <div class="image-grid">
+        ~foreach($view->items as $item){~
+            <div class="box">
+                <img src="~~$item->thumbnail~" />
+            </div>
+        ~}~
 
-    </div>
+        </div>
+    </a>
     <div class="clear"> </div>
 </div>
 

@@ -58,7 +58,7 @@
     $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $itemDBRows = $listDao->getPagedItems($paginator,$filters);
     
-    $pageBaseUrl = "/user/dashboard/list/detail.php";
+    $baseURI = "/user/dashboard/list/detail.php";
     $qUrl = base64_encode(Url::current());
 
 ?>
@@ -229,22 +229,36 @@
                         ?>
                     </div> <!-- widgets -->
                 </div>
+
                 <div class="span3">
+
                      <div class="section1">
-                        <span class="faded-text"> List Name </span> <br>
-                        <h4> <?php echo $listDBRow["name"]; ?> </h4>
-                        <p class="faded-text"> <?php echo $listDBRow["description"]; ?> </p>
                         
-                        <h4> <?php echo $listDBRow["item_count"]; ?> items </h4>
-                        <span class="faded-text"> created on </span> <br>
-                        <h4> <?php echo \com\indigloo\sc\util\Formatter::convertDBTime($listDBRow["created_on"]); ?> </h4>
+                        <h4> <?php echo $listDBRow["name"]; ?> </h4>
+                        <p class="muted"> <?php echo $listDBRow["description"]; ?> </p>
+                        
+                        <div class="counter p10 mb10">            
+                            <span class="name">items</span>
+                            <span class="value"><?php echo $listDBRow["item_count"]; ?></span>
+                        </div>
+
+                        <div class="counter p10 mb10">            
+                            <span class="name">created on</span>
+                            <span class="value"><?php echo \com\indigloo\sc\util\Formatter::convertDBTime($listDBRow["created_on"]); ?></span>
+                        </div>
+
+                        
 
                     </div>
                 </div>
             </div>
 
         </div>  <!-- container -->
-        <?php $paginator->render($pageBaseUrl, $startId, $endId); ?>
+        
+        <?php 
+            if(sizeof($itemDBRows) >= $pageSize)
+                $paginator->render($baseURI, $startId, $endId); 
+        ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
          

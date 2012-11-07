@@ -49,7 +49,7 @@
     $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $postDBRows = $postDao->getPaged($paginator,$filters);
     $qUrl = base64_encode(Url::current());
-    
+    $baseURI = "/user/dashboard/posts.php" ;
 
 
 ?>
@@ -118,10 +118,11 @@
                             $startId = NULL;
                             $endId = NULL;
                             $imageData = array();
-
+                            
                             if (sizeof($postDBRows) > 0) {
                                 $startId = $postDBRows[0]['id'];
                                 $endId = $postDBRows[sizeof($postDBRows) - 1]['id'];
+
                                 foreach ($postDBRows as $postDBRow) {
                                     //output post widget html
                                     echo \com\indigloo\sc\html\Post::getWidget($postDBRow);
@@ -140,7 +141,8 @@
                             } else {
                                  
                                 $message = "No items found" ;
-                                echo \com\indigloo\sc\html\Site::getNoResult($message);
+                                $options = array("hkey" => "dashboard.item.create");
+                                echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
                             }
 
                             $strImageJson = json_encode($imageData);
@@ -157,7 +159,12 @@
             </div>
         </div> <!-- container -->
         
-        <?php $paginator->render('/user/dashboard/posts.php', $startId, $endId); ?>
+        <?php 
+            if(sizeof($postDBRows) >= $pageSize)
+                $paginator->render($baseURI,$startId,$endId); 
+            
+
+        ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
          
