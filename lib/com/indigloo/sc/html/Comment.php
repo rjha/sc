@@ -25,7 +25,7 @@ namespace com\indigloo\sc\html {
             foreach($rows as $row) {
                 $record = array();
                 $record['comment'] = $row['description'];
-                $record['createdOn'] = Format::convertDBTime($row['created_on']);
+                $record['createdOn'] = Formatter::convertDBTime($row['created_on']);
                 $record['userName'] = $row['user_name'] ;
                 $record['loginId'] = $row['login_id'];
                 $record['pubUserId'] = PseudoId::encode($row['login_id']);
