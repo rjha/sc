@@ -1256,7 +1256,7 @@ check_innodb_status () {
 		else
 		innodb_enabled=1
 		fi
-	elif [ "$major_version" -eq '5.5'] && [ "$mysql_version_num" -ge 050512 ] ; then
+	elif [ "$major_version"  = '5.5' ] && [ "$mysql_version_num" -ge 050512 ] ; then
 	mysql_variable \'ignore_builtin_innodb\' ignore_builtin_innodb
 		if [ "$ignore_builtin_innodb" = "ON" ] ; then
 		innodb_enabled=0
@@ -1270,7 +1270,7 @@ check_innodb_status () {
 		else
 		innodb_enabled=1
 		fi
-	elif [ "$major_version" -eq '5.6' ] && [ "$mysql_version_num" -ge 050603 ] ; then
+	elif [ "$major_version" = '5.6' ] && [ "$mysql_version_num" -ge 050603 ] ; then
 	mysql_variable \'ignore_builtin_innodb\' ignore_builtin_innodb
                 if [ "$ignore_builtin_innodb" = "ON" ] ; then
                 innodb_enabled=0
