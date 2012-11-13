@@ -85,7 +85,7 @@
             <div class="row">
                
                 <div class="span8 offset1">
-
+                    <div id="page-message" class="hide-me"> </div>
                     <div id="widgets">
                         <?php
                             $startId = NULL;
@@ -142,8 +142,7 @@
                 webgloo.sc.toolbar.add();
                 //fix twitter bootstrap alerts
                 webgloo.sc.dashboard.fixAlert();
-                webgloo.sc.Lists.initAction();
-                
+                webgloo.sc.Lists.init();
 
             });
 

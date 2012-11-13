@@ -728,11 +728,10 @@ webgloo.sc.dashboard = {
 
 webgloo.sc.Lists = {
 
-    itemContainer : '' ,
     debug : false,
-    imageDataObj : {} ,
     
-    initAction : function () {
+    init : function () {
+
         $("a.show-list").click(function(event){
             event.preventDefault();
 
@@ -759,59 +758,9 @@ webgloo.sc.Lists = {
 
         }) ;
 
-
-    },
-
-    populateSubmitForm : function(itemIds,isNew,listId) {
-
-        var frm = document.forms["list-form1"];
-        frm.image_error.value = 
-            (typeof webgloo.sc.Lists.imageError === 'undefined') ? 0 : webgloo.sc.Lists.imageError ;
-
-        var items = [] , itemObj;
-        for(var i = 0; i < itemIds.length; i++) {
-            itemObj = {"id" : itemIds[i]};
-            if(webgloo.sc.Lists.imageDataObj.hasOwnProperty(itemObj.id)) {
-                itemObj.thumbnail =  webgloo.sc.Lists.imageDataObj[itemObj.id].thumbnail;
-            }
-
-            items.push(itemObj);
-        }
-
-        frm.items_json.value = JSON.stringify(items) ;
-
-        
-        if(isNew){
-            //create new list
-            frm.list_id.value = '' ;
-            frm.is_new.value = 1 ;
-        } else {
-            frm.list_id.value = listId;
-            frm.is_new.value = 0 ;
-        }
-
-        if(webgloo.sc.Lists.debug) {
-            console.log("items json = " + frm.items_json.value);
-            console.log("list Id = " + frm.list_id.value);
-            console.log("is_new = " + frm.is_new.value);
-            console.log("image_error = " + frm.image_error.value);
-            return ;
-        }
-
-        $('#list-form1').submit();
-
-    },
-
-    init : function(containerId) {
-        webgloo.sc.Lists.itemContainer = containerId ;
-       
         $("#lists li a").live("click", function(event){
             var listId = $(this).attr("id");
-            var itemIds = webgloo.sc.dashboard.getCheckedItems(webgloo.sc.Lists.itemContainer);
-
-            if(itemIds.length > 0 ) {
-                webgloo.sc.Lists.populateSubmitForm(itemIds,false,listId);
-            }
+            webgloo.sc.Lists.submitList(listId);
 
         }) ;
 
@@ -820,16 +769,44 @@ webgloo.sc.Lists = {
             var name = jQuery.trim($("#new-list-name").val());
             if( name == '' )
                 return ;
-
-            var listId = $(this).attr("id");
-            var itemIds = webgloo.sc.dashboard.getCheckedItems(webgloo.sc.Lists.itemContainer);
-
-            if(itemIds.length > 0 ) {
-                webgloo.sc.Lists.populateSubmitForm(itemIds,true,'');
-            }
-
+            webgloo.sc.Lists.submitName();
         }) ;
 
+
+
+
+    },
+
+    submitList : function(listId) {
+
+        var frm = document.forms["list-form1"];
+        frm.list_id.value = listId;
+        frm.is_new.value = 0 ;
+
+        if(webgloo.sc.Lists.debug) {
+            console.log("item_id = " + frm.item_id.value);
+            console.log("list Id = " + frm.list_id.value);
+            console.log("is_new = " + frm.is_new.value);
+            return ;
+        }
+
+        $('#list-form1').submit();
+    },
+
+    submitName : function() {
+
+        var frm = document.forms["list-form1"];
+        frm.list_id.value = '';
+        frm.is_new.value = 1 ;
+
+        if(webgloo.sc.Lists.debug) {
+            console.log("item_id = " + frm.item_id.value);
+            console.log("list Id = " + frm.list_id.value);
+            console.log("is_new = " + frm.is_new.value);
+            return ;
+        }
+
+        $('#list-form1').submit();
     }
 
 }

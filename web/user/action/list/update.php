@@ -24,9 +24,11 @@
         $fhandler = new Form\Handler("list-form-1", $_POST);
         //input rules
         $fhandler->addRule("qUrl", "qUrl", array('required' => 1, 'rawData' =>1));
-        $fhandler->addRule("items_json", 'items', array('required' => 1, 'rawData' =>1));
+        $fhandler->addRule("item_id", 'item', array('required' => 1));
 
         $fvalues = $fhandler->getValues();
+        print_r($fvalues); exit ;
+        
         $gWeb = \com\indigloo\core\Web::getInstance();
 
         $qUrl = base64_decode($fvalues["qUrl"]);
@@ -36,25 +38,20 @@
         }
 
         $listId = $fvalues["list_id"] ;
-        $loginId = Login::getLoginIdInSession();
-        
+        $itemId = $fvalues["item_id"];
+        $loginId = Login::getLoginIdInSession(); 
         $flag = intval($fvalues["is_new"]);
-        // test against 1 
-        // null, empty, spaces and bad values convert to 0
-        $strItemsJson = $fvalues["items_json"];
-        if(empty($strItemsJson)) {
-            $strItemsJson = '[]' ;
-        }
 
         $listDao = new \com\indigloo\sc\dao\Lists();
 
         if( ($flag == 1) && empty($listId)) {
             //Add to new list 
             $name =  $fvalues["new-list-name"];
-            $listDao->create($loginId,$name,$strItemsJson);
+            $listDao->create($loginId,$name,$itemId);
+
         } else {
             //Add existing list 
-             $listDao->addItems($listId,$strItemsJson);
+            $listDao->addItem($listId,$itemId);
         }
 
         $message = sprintf("success! items added to list");
@@ -66,9 +63,9 @@
     }catch(UIException $ex) {
         $gWeb->store(Constants::STICKY_MAP, $fvalues);
         $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
-        $qUrl = Url::addQueryParameters($qUrl, array('sl' => 1 ));
         header("Location: " . $qUrl);
         exit(1);
+
     }catch(DBException $ex) {
         Logger::getInstance()->error($ex->getMessage());
         Logger::getInstance()->backtrace($ex->getTrace());
@@ -77,6 +74,7 @@
         $gWeb->store(Constants::FORM_ERRORS,array($message));
         header("Location: " . $qUrl);
         exit(1);
+
     }catch(\Exception $ex) {
         Logger::getInstance()->error($ex->getMessage());
         Logger::getInstance()->backtrace($ex->getTrace());
@@ -85,6 +83,7 @@
         $gWeb->store(Constants::FORM_ERRORS, array($message));
         header("Location: " . $qUrl);
         exit(1);
+
     }
     
 

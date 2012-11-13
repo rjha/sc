@@ -33,10 +33,12 @@
         header('location: '.$fwd);
     
     }
-    
+
     $loginId = Login::getLoginIdInSession();
+    $itemId = Util::getArrayKey($_POST, "itemId");
+
     $listDao = new \com\indigloo\sc\dao\Lists();
     $listRows = $listDao->getOnLoginId($loginId);
-    $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$qUrl);
+    $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$itemId,$qUrl);
     echo $html ;
 ?>

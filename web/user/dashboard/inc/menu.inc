@@ -59,13 +59,6 @@
     text-decoration: underline ;
 }
 
-#page-action {
-    padding: 10px 0 10px 0 ;
-    border-bottom : 1px solid #f1f1f1 ;
-    border-top: 1px solid #f1f1f1  ;
-}
-
-
 #top-unit a {
     color: #666;
     background: #F7F7F7;
@@ -184,7 +177,6 @@
     
 }
 
-
 .uwidget .bottom .square {
     margin-left:10px;
     height:12px;
@@ -276,7 +268,6 @@
     border-bottom: 1px solid #EEE;
 }
 
-
 .list-summary {
     margin-top :20px;
     border-bottom:1px solid #E6E6E6 ;
@@ -297,6 +288,87 @@
     float:right;
     padding-top:34px;
 }
+
+#page-message {
+    background-color : #FEFDF1;
+    padding-left:20px;
+    padding-bottom:10px;
+    font-weight: bold ;
+}
+/* list stuff */
+
+
+
+
+#list-wrapper {
+    border-radius: 8px;
+    background-color: #eee ;
+    width:75%;
+    height:auto;
+    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height:210px;
+    padding-top:10px;
+    padding-bottom:10px;
+
+}
+
+#lists {
+    list-style: none;
+    padding-left:10px;
+    padding-right:0px;
+    padding-top:5px;
+    padding-bottom:5px;
+    margin: 0;
+}
+
+#lists li {
+    padding-bottom: 5px;
+    padding-left:5px;
+    border-radius: 4px;
+}
+
+#lists li:hover {
+    background-color: #999 ;
+    
+}
+
+#lists li a {
+    color: #222;
+    font-weight:bold ;
+}
+
+#lists li a:hover {
+    color: white;
+    font-weight:bold ;
+}
+
+.list-form {
+    padding-top:10px;
+    padding-bottom: 20px;
+
+}
+
+.list-form2 {
+    padding-top :20px; 
+    padding-left :40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #F8D575 ;
+
+}
+
+.list-form input {
+    width:75%;
+}
+
+.list-form textarea {
+    width:75%;
+    height:120px;
+}
+
+    
+
 
 
 </style>

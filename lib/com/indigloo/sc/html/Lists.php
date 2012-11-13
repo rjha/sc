@@ -6,13 +6,14 @@ namespace com\indigloo\sc\html {
 
     class Lists {
 
-        static function getSelectPopup($listRows,$qUrl) {
+        static function getSelectPopup($listRows,$itemId,$qUrl) {
             $view = new \stdClass;
             $template =  (sizeof($listRows) > 0) ? "/fragments/lists/popup/select.tmpl" : "/fragments/lists/popup/select-0.tmpl"  ;
 
             $view->lists = array();
             $view->size = sizeof($listRows) ;
-
+            $view->itemId = $itemId ;
+            
             foreach($listRows as $row) {
                 $view->lists[$row['id']] = $row['name'] ;
             }
