@@ -228,9 +228,8 @@
 
 .metro-red {background-color: #b31e3b; color: #ffcc11;}
 .metro-slate {background-color: #9aa1b4; color:white;}
-
 .metro { background-color: #eee ; color: #333;}
-
+.metro-white {background-color: white ; }
 
 .noresults {
     margin-top: 40px;
@@ -240,6 +239,63 @@
     line-height: 37px;
     font-family: Georgia;
      
+}
+
+.page-header .title {
+    display : inline ;
+    padding-left:20px;
+    padding-right:20px;
+    color:#222;
+    font-size: 19px;
+    font-weight:bold;
+    line-height:1em ;
+
+}
+
+.name {
+    display : inline ;
+    color:#333;
+    font-size: 14px;
+    font-weight:bold;
+    line-height:1em ;
+
+}
+
+
+#dash-header {
+    padding-bottom: 9px;
+    margin-left:20px;
+}
+
+
+#dash-action {
+    margin: 20px 0 30px;
+    padding:11px 0px 11px 0px;
+    min-height: 20px;
+    border-top: 1px solid #EEE;
+    border-bottom: 1px solid #EEE;
+}
+
+
+.list-summary {
+    margin-top :20px;
+    border-bottom:1px solid #E6E6E6 ;
+}
+
+.list-summary img {
+    margin:3px;
+    max-width:62px;
+    max-height : 62px;
+}
+
+.list-summary .name {
+    padding-top : 14px;
+
+}
+
+.list-summary .action {
+    float:right;
+    padding-top:34px;
 }
 
 

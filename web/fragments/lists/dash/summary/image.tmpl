@@ -1,0 +1,32 @@
+<div class="list-summary">
+    <div class="row">
+        <a href="/user/dashboard/list/detail.php?list_id=~~$view->id~">
+            <div class="span4">
+              
+            ~foreach($view->items as $item){~
+                <img src="~~$item->thumbnail~" />
+            ~}~
+                 
+            </div>
+        </a>
+        <div class="span3">
+            <div class="name">
+                <a href="/user/dashboard/list/detail.php?list_id=~~$view->id~">
+                    ~~$view->name~
+                </a>
+            </div>
+            <div class="flickr-color b">
+                ~~$view->count~ items
+            </div>
+
+        </div>
+        <div class="span1">
+            <div class="action">
+                <a class="btn btn-small">Edit</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+

@@ -24,17 +24,25 @@ namespace com\indigloo\sc\html {
 
         static function getWidget($listDBRow) {
             $view = self::createListView($listDBRow);
-            $template =  "/fragments/lists/user/summary.tmpl" ;
+            $template =  "/fragments/lists/dash/summary/image.tmpl" ;
             $html = Template::render($template,$view);
             return $html ;
         }
 
-        static function createListView($listDBRow) {
+        static function createListView($row) {
             $view = new \stdClass ;
 
-            $view->id = $listDBRow["id"];
-            $view->name = $listDBRow["name"];
-            $view->items = json_decode($listDBRow["items_json"]);
+            $view->id = $row["id"];
+            $view->name = $row["name"];
+            $view->items = json_decode($row["items_json"]);
+            $view->count = $row["item_count"] ;
+            $view->hasImage = false ;
+
+            foreach($view->items as $item){
+                $view->srcImage = $item->thumbnail ;
+                $view->hasImage = true ;
+                break ;
+            }
 
             return $view ;
 

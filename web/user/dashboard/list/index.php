@@ -12,16 +12,22 @@
     
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
+    $loginName = $gSessionLogin->name;
 
     if (is_null($loginId)) {
         trigger_error("Error : NULL login_id on user dashboard", E_USER_ERROR);
     }
 
     $listDao = new \com\indigloo\sc\dao\Lists();
+    $analyticDao = new \com\indigloo\sc\dao\Analytic();
+    $counters = $analyticDao->getUserCounters($loginId);
+    $list_counter = $counters["list_count"];
     
+
     $qparams = Url::getRequestQueryParams();
     $pageSize = Config::getInstance()->get_value("user.page.items");
     $paginator = new \com\indigloo\ui\Pagination($qparams, $pageSize);
+
     $listDBRows = $listDao->getPagedOnLoginId($paginator,$loginId);
     $baseURI = "/user/dashboard/list/index.php" ;
 
@@ -32,7 +38,7 @@
 <html>
 
     <head>
-        <title> 3mik.com - user <?php echo $gSessionLogin->name ; ?>  </title>
+        <title> Lists - <?php echo $loginName ; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         
@@ -55,14 +61,21 @@
             </div>
             
             <div class="row">
-                 <div class="span12">
-                   <div class="page-header">&nbsp;</div>
-                </div>
+                <div class="span12">
+                    <div class="page-header">
+                        <span class="title">My lists</span>
+                        <span class="badge"><?php echo $list_counter; ?></span>
+                        <span class="ml40">
+                            <a class="btn-flat vanilla-action" rel="list-popup" href="#">+ Create new list</a>
+                        </span>
 
-            </div>
+                    </div>
+                </div>
+            </div> <!-- page:header -->
+           
             
             <div class="row">
-                <div class="span8 offset1">
+                <div class="span9 offset1">
                     
                     <div id="widgets">
                     <?php 
@@ -79,7 +92,8 @@
 
                         } else {
                             $message = "No Lists found " ;
-                            echo \com\indigloo\sc\html\Site::getNoResult($message);
+                            $options = array("hkey" => "dashboard.list.create");
+                            echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
                         }
                      ?>
                      </div> <!-- widgets -->

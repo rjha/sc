@@ -628,13 +628,6 @@
         overflow:hidden ;
     }
 
-    #page-action {
-        padding:15px 0px 15px 0px;
-        min-height: 20px;
-        border-bottom : 1px solid #e5e5e5 ;
-    }
-
-
     #gallery {
         height:auto;
         padding-top:1px;
@@ -1186,9 +1179,6 @@
 
     /* @imp : last section - override 3rd party libraries */
     /* bootstrap css */
-    .page-header {
-        padding-bottom: 7px;
-    }
     
     .carousel img {
         max-width :100% ;

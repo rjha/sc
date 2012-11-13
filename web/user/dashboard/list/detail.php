@@ -90,14 +90,14 @@
 
             <?php FormMessage::render(); ?>
             <div class="row">
-                <div id="page-action">
+                <div id="dash-action">
                     <div class="span1 offset1">
                         <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
                     </div>
                     <div class="span7">
-                        <a class="btn-flat open-action" rel="list-add-item" href="#">Add +</a>
+                        <a class="btn-flat open-action" rel="list-add-item" href="#">+ Add item by URL</a>
                         &nbsp;&nbsp;
-                        <a class="btn-flat item-action" rel="list-delete-item" href="#">Delete -</a>
+                        <a class="btn-flat item-action" rel="list-delete-item" href="#">Remove items</a>
                          &nbsp;&nbsp;
                         <a class="btn-flat open-action" rel="list-edit" href="#" >Edit list</a>
                         &nbsp;&nbsp;
@@ -237,12 +237,12 @@
                         <h4> <?php echo $listDBRow["name"]; ?> </h4>
                         <p class="muted"> <?php echo $listDBRow["description"]; ?> </p>
                         
-                        <div class="counter p10 mb10">            
+                        <div class="counter metro-white p10">            
                             <span class="name">items</span>
                             <span class="value"><?php echo $listDBRow["item_count"]; ?></span>
                         </div>
 
-                        <div class="counter p10 mb10">            
+                        <div class="counter metro-white p10">            
                             <span class="name">created on</span>
                             <span class="value"><?php echo \com\indigloo\sc\util\Formatter::convertDBTime($listDBRow["created_on"]); ?></span>
                         </div>
