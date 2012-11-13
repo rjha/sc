@@ -268,7 +268,7 @@
 }
 
 
-#dash-action {
+#page-action {
     margin: 20px 0 30px;
     padding:11px 0px 11px 0px;
     min-height: 20px;

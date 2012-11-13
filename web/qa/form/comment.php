@@ -28,7 +28,7 @@
 
             $fvalues = $fhandler->getValues();
             //redirect always happens to item details page.
-            $fUrl = $fvalues['fUrl'];
+            $fUrl = base64_decode($fvalues['fUrl']);
 
             // UI checks
             if ($fhandler->hasErrors()) {
@@ -68,7 +68,8 @@
 
                 //base64 encode to transfer as payload in URL
                 $gSessionAction = base64_encode(json_encode($actionObj));
-                $fwd = "/user/login.php?q=".urlencode($fUrl)."&g_session_action=".$gSessionAction;
+                //encode again for user login page
+                $fwd = "/user/login.php?q=".base64_encode($fUrl)."&g_session_action=".$gSessionAction;
                 header('location: '.$fwd);
                 exit ;
             }

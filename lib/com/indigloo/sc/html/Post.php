@@ -96,7 +96,7 @@ namespace com\indigloo\sc\html {
             $postView->isLoggedInUser = false ;
             if(!is_null($loginIdInSession) && ($loginIdInSession == $postView->loginId)) {
                 $postView->isLoggedInUser = true ;
-                $params = array('id' => $postView->itemId , 'q' => urlencode(Url::current()));
+                $params = array('id' => $postView->itemId , 'q' => base64_encode(Url::current()));
                 $postView->editUrl = Url::createUrl('/qa/edit.php',$params);
             }
 
@@ -160,14 +160,10 @@ namespace com\indigloo\sc\html {
 
         }
 
-        static function getTile($postDBRow,$options=NULL) {
+        static function getTile($postDBRow) {
 
             $html = NULL ;
             $template = NULL ;
-
-            if(is_null($options)) {
-                $options = UIConstants::TILE_ALL & ~UIConstants::TILE_REMOVE ;
-            }
 
             $voptions = array("abbreviate" => true ,"group" => true);
             $view = self::createPostView($postDBRow,$voptions);
@@ -182,13 +178,6 @@ namespace com\indigloo\sc\html {
             } else {
                 $template = '/fragments/tile/text.tmpl' ;
             }
-
-
-            //set action flags
-            $view->hasLike = $options & UIConstants::TILE_LIKE ;
-            $view->hasSave = $options & UIConstants::TILE_SAVE ;
-            $view->hasRemove = $options & UIConstants::TILE_REMOVE  ;
-            $view->hasMore = $options & UIConstants::TILE_MORE ;
 
             $html = Template::render($template,$view);
             return $html ;
@@ -254,7 +243,7 @@ namespace com\indigloo\sc\html {
 
         }
         
-        static function getWidget($postDBRow,$options=NULL) {
+        static function getWidget($postDBRow) {
 
             $html = NULL ;
             $voptions = array("abbreviate" => true, "group" => true);
@@ -271,31 +260,22 @@ namespace com\indigloo\sc\html {
                 $template = '/fragments/widget/text.tmpl' ;
             }
             
-            if(is_null($options)) {
-                $options = UIConstants::WIDGET_EDIT | UIConstants::WIDGET_DELETE ;
-            }
-
-            $view->hasEdit = $options & UIConstants::WIDGET_EDIT ;
-            $view->hasDelete = $options & UIConstants::WIDGET_DELETE ;
-            $params = array('id' => $view->itemId, 'q' => urlencode(Url::current()));
+            $params = array('id' => $view->itemId, 
+                            'q' => base64_encode(Url::current()));
             $view->editUrl = Url::createUrl('/qa/edit.php',$params);
             $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
-            
             $html = Template::render($template,$view);
             return $html ;
 
         }
 
-        static function getAdminWidget($postDBRow,$options=NULL) {
+        static function getAdminWidget($postDBRow) {
 
             $html = NULL ;
             $voptions = array("abbreviate" => true);
             $view = self::createPostView($postDBRow,$voptions);
-            if(is_null($options)) {
-                $options = UIConstants::WIDGET_ALL ;
-            }
-
-             if($view->hasImage) {
+            
+            if($view->hasImage) {
                 $template = '/fragments/widget/admin/image.tmpl' ;
                 //Add thumbnail width and height
                 $td = Util::foldX($view->width,$view->height,100);
@@ -306,7 +286,7 @@ namespace com\indigloo\sc\html {
                 $template = '/fragments/widget/admin/text.tmpl' ;
             }
 
-            $params = array('id' => $view->itemId, 'q' => Url::current());
+            $params = array('id' => $view->itemId, 'q' => base64_encode(Url::current()));
             $view->editUrl = Url::createUrl('/qa/edit.php',$params);
             $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
             

@@ -20,7 +20,7 @@
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     //qUrl and fUrl
     $qUrl = Url::tryQueryParam("q");
-    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $qUrl = is_null($qUrl) ? '/' : $qUrl ; 
     $fUrl = Url::current();
 
     $itemId = Url::getQueryParam("id");
@@ -145,7 +145,7 @@
                                 <td>
                                     <div class="form-actions">
                                         <button class="btn btn-primary" type="submit" name="save" value="Save"><span>Submit</span></button>
-                                        <a href="<?php echo $qUrl; ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
+                                        <a href="<?php echo base64_decode($qUrl); ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
                                     </div>
 
                                 </td>

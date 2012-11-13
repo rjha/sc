@@ -179,8 +179,7 @@ namespace com\indigloo\sc\controller{
                     $xrows = array_merge($xrows,$search_rows);
                 }
             }
-
-            $loginUrl = "/user/login.php?q=".Url::current();
+            
             $formErrors = FormMessage::render();
 
             $pageTitle = $itemObj->title;

@@ -1,19 +1,15 @@
 <div class="widget">
      <div class="options"> 
         <div class="links">
-            ~if($view->hasEdit){~
+             <a href="#" id="~~$view->loginId~|~~$view->itemId~" class="show-list"><i class="icon-plus-sign"></i> Add to list</a>
+            &nbsp;|&nbsp;
             <a href="~~$view->editUrl~"><i class="icon-edit"></i>&nbsp;Edit</a>
-            ~}~
-            ~if($view->hasDelete){~
             &nbsp;|&nbsp;
             <a href="~~$view->deleteUrl~"><i class="icon-remove"></i>&nbsp;Delete</a>
-            ~}~
+            
         </div>
     </div>
     <div class="row">
-        <div class="span1">
-            <input type="checkbox" id="~~$view->itemId~" name="g[]" value="~~$view->id~" />
-        </div>
         
         <div class="span5">
             <h5> <a href="/item/~~$view->itemId~">~~$view->title~</a> </h5>

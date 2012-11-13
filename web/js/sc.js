@@ -327,9 +327,8 @@ webgloo.sc.SimplePopup = {
                 
                 g_action_data =  encodeBase64(JSON.stringify(dataObj));
                 //encode for use in URL query string
-                qUrl = encodeURIComponent(window.location.href);
                 webgloo.sc.SimplePopup.gotoUrl = '/user/login.php?q='
-                    +qUrl + '&g_session_action=' + g_action_data;
+                    + encodeBase64(window.location.href) + '&g_session_action=' + g_action_data;
 
                 //change spinner message
                 var message = webgloo.sc.message.POPUP_LOGIN ;
@@ -531,6 +530,9 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
         }) ;
 
+        //@todo - remove from item actions after implementing
+        // list actions
+        //
         $("a.save-post").live("click", function(event){
             event.preventDefault();
 
@@ -546,13 +548,13 @@ webgloo.sc.item = {
         }) ;
 
         //unsave
-        $("a.remove-post").live("click",function(event){
+        $("a.unsave-post").live("click",function(event){
             event.preventDefault();
 
             var dataObj = {} ;
             dataObj.params = {} ;
             dataObj.params.itemId  = $(this).attr("id");
-            dataObj.params.action = "REMOVE" ;
+            dataObj.params.action = "UNSAVE" ;
             dataObj.endPoint = "/qa/ajax/bookmark.php";
 
             //open popup
@@ -627,6 +629,21 @@ webgloo.sc.dashboard = {
         $("#page-message").html(message);
         $("#page-message").show("slow");
         
+    },
+
+    showActionBox : function(boxInSession) {
+        try{
+            var strBoxObj = jQuery.trim(boxInSession);
+            if(strBoxObj == '' ) { return ; }
+
+            var boxObj = JSON.parse(strBoxObj) ;
+            if(boxObj.hasOwnProperty("id")){
+                $("#" + boxObj["id"]).show();
+            }
+        } catch(ex) {
+            console.log("error : parsing action box string");
+        }
+    
     },
 
     init : function (containerId) {
@@ -714,6 +731,36 @@ webgloo.sc.Lists = {
     itemContainer : '' ,
     debug : false,
     imageDataObj : {} ,
+    
+    initAction : function () {
+        $("a.show-list").click(function(event){
+            event.preventDefault();
+
+            var dataObj = {} ;
+            dataObj.params = {} ;
+            var id = $(this).attr("id");
+
+            //parse id to get loginId|itemId
+            var ids = id.split('|');
+            dataObj.params.loginId  = ids[0];
+            dataObj.params.itemId  = ids[1];
+
+            dataObj.params.action = "SHOW" ;
+            dataObj.params.qUrl = encodeBase64(window.location.href) ;
+            dataObj.endPoint = "/user/popup/lists.php";
+
+
+            //open popup
+            webgloo.sc.SimplePopup.init();
+            webgloo.sc.SimplePopup.post(dataObj,{
+                "dataType" : "text",
+                "reload" : false,
+                "visible" : true});
+
+        }) ;
+
+
+    },
 
     populateSubmitForm : function(itemIds,isNew,listId) {
 

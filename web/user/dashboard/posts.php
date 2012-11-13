@@ -83,41 +83,13 @@
             <?php FormMessage::render(); ?>
 
             <div class="row">
-                <div id="page-action">
-                    <div class="span1 offset1">
-                        <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
-                    </div>
-                    <div class="span7">
-                        <a class="btn-flat item-action" rel="list-popup" href="#" class="b btn btn-small">Add to list</a>
-                    </div>
-                    
-                
-                </div>
-
-            </div> <!-- page actions -->
-
-            <div class="row">
                
                 <div class="span8 offset1">
-                    
-                    <div class="row">
-                        <div id="page-message" class="hide-me"> </div>
-                        <div id="list-popup" class="action-form">
-                            <?php
-                                $listDao = new \com\indigloo\sc\dao\Lists();
-                                $listRows = $listDao->getOnLoginId($loginId);
-                                $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$qUrl);
-                                echo $html ;
-                            ?>
 
-                        </div>
-
-                    </div> <!-- popups -->
                     <div id="widgets">
                         <?php
                             $startId = NULL;
                             $endId = NULL;
-                            $imageData = array();
                             
                             if (sizeof($postDBRows) > 0) {
                                 $startId = $postDBRows[0]['id'];
@@ -126,27 +98,14 @@
                                 foreach ($postDBRows as $postDBRow) {
                                     //output post widget html
                                     echo \com\indigloo\sc\html\Post::getWidget($postDBRow);
-                                    //get id + images_json from postDBRows 
-                                    
-                                    $images = json_decode($postDBRow["images_json"]);
-                                    if( (!empty($images)) && (sizeof($images) > 0)) {
-                                        $image = $images[0];
-                                        $imgv = \com\indigloo\sc\html\Post::convertImageJsonObj($image);
-                                        //id vs. source,thumbnail
-                                        $imageData[$postDBRow["pseudo_id"]] = array("thumbnail" => $imgv["thumbnail"]) ;
-
-                                    }
-
                                 }
+
                             } else {
                                  
                                 $message = "No items found" ;
                                 $options = array("hkey" => "dashboard.item.create");
                                 echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
                             }
-
-                            $strImageJson = json_encode($imageData);
-                            $strImageJson = \com\indigloo\Util::formSafeJson($strImageJson);
 
                         ?>
                     </div>
@@ -181,33 +140,10 @@
 
                 
                 webgloo.sc.toolbar.add();
-
-                var containerId = "widgets" ;
-                webgloo.sc.dashboard.init(containerId);
                 //fix twitter bootstrap alerts
                 webgloo.sc.dashboard.fixAlert();
-
-                webgloo.sc.Lists.init(containerId);
-                webgloo.sc.Lists.debug = false ;
-                webgloo.sc.Lists.strImageJson = '<?php echo $strImageJson; ?>' ;
-
-                try{
-                    webgloo.sc.Lists.imageDataObj = JSON.parse(webgloo.sc.Lists.strImageJson) ;
-                    webgloo.sc.Lists.imageError = 0 ;
-                } catch(ex) {
-                    console.log("error : not able to parse image data json string");
-                    webgloo.sc.Lists.imageError = 1 ;
-                }
-
-                try{
-                    var popupObj = JSON.parse('<?php echo $strPopupObj; ?>') ;
-                    if(popupObj.hasOwnProperty("id")){
-                        $("#" + popupObj["id"]).show();
-                    }
-                    
-                } catch(ex) {
-                    console.log("error : parsing popup string");
-                }
+                webgloo.sc.Lists.initAction();
+                
 
             });
 

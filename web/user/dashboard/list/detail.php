@@ -289,23 +289,14 @@
                 webgloo.sc.dashboard.init(containerId);
                 //fix twitter bootstrap alerts
                 webgloo.sc.dashboard.fixAlert();
+                webgloo.sc.dashboard.showActionBox('<?php echo $strPopupObj; ?>') ;
 
                 $("#list-add-item-help").click(function(event) {
                     var message = webgloo.sc.message.HELP_LIST_ITEM_URL; 
                     webgloo.sc.dashboard.showMessage(message);
 
                 }) ;
-
-                try{
-                    var popupObj = JSON.parse('<?php echo $strPopupObj; ?>') ;
-                    if(popupObj.hasOwnProperty("id")){
-                        $("#" + popupObj["id"]).show();
-                    }
-                    
-                } catch(ex) {
-                    console.log("error : parsing popup string");
-                }
-
+                
 
             });
         </script>

@@ -5,10 +5,10 @@
     if(!Login::isAdmin()) {
         $qUrl = Url::tryQueryParam("q");
         if(is_null($qUrl)) {
-            $qUrl = $_SERVER['REQUEST_URI'];
+            $qUrl = base64_encode($_SERVER['REQUEST_URI']);
         }
 
-        $fwd = '/user/login.php?q='.$qUrl;
+        $fwd = '/user/login.php?q='. $qUrl ;
         header('location: '.$fwd);
         exit ;
   }

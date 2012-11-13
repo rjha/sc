@@ -36,7 +36,7 @@ namespace com\indigloo\sc\command {
                     $bookmarkDao->save($ownerId,$loginId,$name,$itemId,$title);
                     $message = sprintf("Success! Item %s added to saved list!",$title);
                     break;
-                case UIConstants::REMOVE_POST :
+                case UIConstants::UNSAVE_POST :
                     $bookmarkDao->unsave($loginId,$itemId);
                     $message = sprintf("Success! Item %s removed from saved list",$title);
                     break ;
