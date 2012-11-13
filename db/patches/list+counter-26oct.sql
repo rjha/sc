@@ -464,3 +464,13 @@ DELIMITER //
     END //
 DELIMITER ;
 
+
+DELIMITER //
+    CREATE TRIGGER trg_list_item_add  AFTER  INSERT ON sc_list_item
+    FOR EACH ROW
+    BEGIN
+      -- update counters
+      update sc_list set item_count = item_count + 1  where id = NEW.list_id;
+    END //
+DELIMITER ;
+
