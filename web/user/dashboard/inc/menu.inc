@@ -4,7 +4,7 @@
     $urlMap  = array(
     "/user/dashboard/index.php" => "Dashboard",
     "/user/dashboard/posts.php" => "My items",
-    "/user/dashboard/bookmark.php" => "Saved",
+    "/user/dashboard/bookmark.php" => "Favorites",
     "/user/dashboard/list/index.php" => "Lists",
     "/user/dashboard/list/detail.php" => "Lists",
     "/user/dashboard/activities.php" => "Activity",
@@ -286,7 +286,7 @@
 
 .list-summary .action {
     float:right;
-    padding-top:34px;
+    padding-top:14px;
 }
 
 #page-message {
