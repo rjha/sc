@@ -154,14 +154,12 @@ namespace com\indigloo\sc\mysql {
          * 
         */
 
-        static function addItems($listId,$strItemsJson,$itemIds) {
+        static function addItem($listId,$strItemsJson,$postId) {
 
             try{
                 // input check 
-                settype($loginId,"int");
-                if(!is_array($itemIds) || (sizeof($itemIds) <= 0 )) {
-                    trigger_error("Bad input: items array is empty",E_USER_ERROR);
-                } 
+                settype($listId,"integer"); 
+                settype($postId,"integer"); 
 
                 if(empty($listId) || !self::exists($listId)) {
                     $message = sprintf("Bad input: listId {%s} does not exists",$listId);
@@ -175,8 +173,8 @@ namespace com\indigloo\sc\mysql {
 
                 // list is changing -
                 // some offline processing is needed (set op_bit = 0)
-                $sql1 = " update sc_list set version = version + 1 , op_bit = 0 , items_json = :items_json " ;
-                $sql1 .= " where id = :list_id";
+                $sql1 = " update sc_list set version = version + 1 , op_bit = 0 ," ;
+                $sql1 .= " items_json = :items_json where id = :list_id";
 
                 $stmt = $dbh->prepare($sql1);
                 $stmt->bindParam(":list_id", $listId);
@@ -184,21 +182,11 @@ namespace com\indigloo\sc\mysql {
                 $stmt->execute();
                 $stmt = NULL ;
 
-                $sql2 = "insert into sc_list_item(list_id, item_id) values " ;
-
-                // mysql multiple rows insert using values
-                // insert size
-                $isize = sizeof($itemIds);
-                for($index = 0 ; $index < $isize ; $index++ ) {
-                    //last one?
-                    $suffix = ($index == ($isize-1)) ? "" : "," ;
-
-                    $itemId = $itemIds[$index];
-                    settype($itemId,"integer");
-                    $sql2 .= sprintf(" (%s,%s)%s ",$listId,$itemId,$suffix);
-                }
-
+                // @imp sc_list.item_count is updated via insert trigger
+                $sql2 = "insert into sc_list_item(list_id, item_id) values (%d,%d) " ;
+                $sql2 = sprintf($sql2,$listId,$postId);
                 $sql2 .= " on duplicate key update dup_bit = 1 " ;
+
                 $dbh->exec($sql2);
 
                 // *** Tx end *** 
@@ -265,19 +253,18 @@ namespace com\indigloo\sc\mysql {
             $hash, 
             $bin_hash,
             $strItemsJson,
-            $itemIds) {
+            $postId) {
 
             try {
 
                 //input check
 
+                settype($loginId,"integer"); 
+                settype($postId,"integer"); 
+
                 Util::isEmpty("name",$name);
                 Util::isEmpty("md5 hash of name",$hash);
                 Util::isEmpty("md5 bin hash of name",$bin_hash);
-
-                if(!is_array($itemIds) || (sizeof($itemIds) <= 0 )) {
-                    trigger_error("Bad input: items array is empty",E_USER_ERROR);
-                } 
 
                 //list
                 // op_bit is offline_processing bit - set to zero on create
@@ -307,35 +294,21 @@ namespace com\indigloo\sc\mysql {
                 settype($listId, "integer");
 
                 // list:item relationships
-                $sql2 = "insert into sc_list_item(list_id, item_id) values " ;
-
-                // mysql multiple rows insert using values
-                // insert size
-                $isize = sizeof($itemIds);
-                for($index = 0 ; $index < $isize ; $index++ ) {
-                    //last one?
-                    $suffix = ($index == ($isize-1)) ? "" : "," ;
-
-                    //never trust the user input
-                    // never ever!
-                    $itemId = $itemIds[$index];
-                    settype($itemId,"integer");
-                    $sql2 .= sprintf(" (%s,%s)%s ",$listId,$itemId,$suffix);
-                }
+                $sql2 = "insert into sc_list_item(list_id, item_id) values (%d,%d)" ;
+                $sql2 = sprintf($sql2,$listId,$postId);
 
                 $count = $dbh->exec($sql2);
 
                 // update item_count + pseudo_id of list
                 $pseudoId =  PseudoId::encode($listId);
-                $sql3 = " update sc_list set item_count = :item_count, pseudo_id = :pseudo_id " ;
+                $sql3 = " update sc_list set item_count = 1, pseudo_id = :pseudo_id " ;
                 $sql3 .= " where id = :list_id " ;
+
                 $stmt3 = $dbh->prepare($sql3);
                 $stmt3->bindParam(":list_id", $listId);
-                $stmt3->bindParam(":item_count", $count);
                 $stmt3->bindParam(":pseudo_id", $pseudoId);
                 $stmt3->execute();
                 $stmt3 = NULL ;
-
 
 
                 // *** Tx end ***

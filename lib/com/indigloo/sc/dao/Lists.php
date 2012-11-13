@@ -68,6 +68,7 @@ namespace com\indigloo\sc\dao {
             }
         }
 
+        /*
         private function getIdMergeItems($dbItemsJson, $frmItemsJson) {
             $data = $this->getIdAndItems($frmItemsJson);
             $ids = $data["ids"];
@@ -113,62 +114,79 @@ namespace com\indigloo\sc\dao {
 
             $data = array("ids" => $ids , "items" => $bucket );
             return $data;
-        }
+        } */
 
-        /**
-         *
-         * @param frmItemsJson is string representation of an array of json 
-         * objects. each object has attribute
-         *  - id
-         *  - thumbnail 
-         *
-         */
-        function create($loginId,$name,$frmItemsJson) {
 
-            $data = $this->getIdAndItems($frmItemsJson);
-            $itemIds = $data["ids"];
-            $items = $data["items"];
+        function create($loginId,$name,$itemId) {
+
+            //get item row
+            $postId = PseudoId::decode($itemId);
+            $postDao = new \com\indigloo\sc\dao\Post();
+            $imgv = $postDao->tryImageOnId($postId);
+            $items = array();
+
+            if(!is_null($imgv)) {
+                $json = new \stdClass ;
+                $json->id = $itemId ;
+                $json->thumbnail = $imgv["thumbnail"];
+                array_push($items,$json);
+            }
+
             $itemsJson = json_encode($items);
             $itemsJson = Util::formSafeJson($itemsJson);
-
-            if(empty($itemIds)) {
-                $message = " Not able to create List without items!";
-                throw new UIException(array($message));
-            }
 
             //md5 hash as hex string and bytes
             $hash = md5($name);
             $bin_hash = md5($name,TRUE); 
             $seoName = StringUtil::convertNameToKey($name);
-            $count = mysql\Lists::create(
+            mysql\Lists::create(
                 $loginId,
                 $name,
                 $seoName,
                 $hash,
                 $bin_hash,
                 $itemsJson,
-                $itemIds);
+                $postId);
 
-            return $count ;
+            return ;
         }
 
         //@todo - add @param loginId
-        function addItems($listId,$frmItemsJson){
+        function addItem($listId,$itemId){
+            $postId = PseudoId::decode($itemId);
             $row = $this->getOnId($listId);
             $dbItemsJson = $row["items_json"];
 
-            $data = $this->getIdMergeItems($dbItemsJson,$frmItemsJson);
-            $itemIds = $data["ids"];
-            $items = $data["items"];
-            $itemsJson = json_encode($items);
-            $itemsJson = Util::formSafeJson($itemsJson);
+            $dbItems = json_decode($dbItemsJson);
+            $dbItemIds = array();
 
-            if(empty($itemIds)) {
-                $message = " Not able to create List without items!";
-                throw new UIException(array($message));
+            foreach($dbItems as $dbItem) {
+                array_push($dbItemIds,$dbItem->id);
             }
 
-            mysql\Lists::addItems($listId,$itemsJson,$itemIds);
+            // update items_json summary only if
+            // #1 - the number of items < 4 
+            // #2 - we have not seen this item earlier
+
+            if( (sizeof($dbItemIds) < 4) && (!in_array($itemId,$dbItemIds))) {
+                //get item row
+                $postDao = new \com\indigloo\sc\dao\Post();
+                $imgv = $postDao->tryImageOnId($postId);
+                $items = array();
+
+                if(!is_null($imgv)) {
+                    $json = new \stdClass ;
+                    $json->id = $itemId ;
+                    $json->thumbnail = $imgv["thumbnail"];
+                    array_push($dbItems,$json);
+                }
+
+            }
+
+            $itemsJson = json_encode($dbItems);
+            $itemsJson = Util::formSafeJson($itemsJson);
+
+            mysql\Lists::addItem($listId,$itemsJson,$postId);
         }
 
         function deleteItems($loginId,$listId,$frmItemsJson) {

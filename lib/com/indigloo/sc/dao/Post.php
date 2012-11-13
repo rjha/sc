@@ -14,11 +14,45 @@ namespace com\indigloo\sc\dao {
             return $row ;
         }
 
+        /*
+         * @return imgv array containing following keys
+         *  - name
+            - tname
+            - source
+            - thumbnail
+            - width
+            - height 
+        * 
+        * if no image found then return a placeholder image.
+        * 
+        */
+
         function getImageOnId($postId){
              $row = mysql\Post::getOnId($postId);
              $json = $row["images_json"];
-             $imgv =  \com\indigloo\sc\html\Post::getTileImage($json);
+             $imgv =  \com\indigloo\sc\html\Post::getImageOrDefault($json);
              return $imgv ;
+        }
+
+        /* 
+         * @return imgv array containing image details
+         * or NULL if no image found 
+         *
+         */
+        function tryImageOnId($postId){
+            
+            $row = mysql\Post::getOnId($postId);
+            $json = $row["images_json"];
+            $images = json_decode($json);
+
+            if( !empty($images) && (sizeof($images) > 0)) {
+                $image = $images[0] ;
+                $imgv = \com\indigloo\sc\html\Post::convertImageJsonObj($image);
+                return $imgv ;
+            }
+
+            return NULL ;
+
         }
 
         /**
@@ -136,7 +170,7 @@ namespace com\indigloo\sc\dao {
             //Add to feed
             $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
             $verb = \com\indigloo\sc\Constants::POST_VERB ;
-            $image =  \com\indigloo\sc\html\Post::getTileImage($imagesJson);
+            $image =  \com\indigloo\sc\html\Post::getImageOrDefault($imagesJson);
             $feedDao->addPost($loginId, $name, $itemId, $title,$image,$verb);
 
             return $itemId ;

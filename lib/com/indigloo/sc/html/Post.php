@@ -436,7 +436,7 @@ namespace com\indigloo\sc\html {
             return $view ;
         }
 
-        static function getTileImage($json) {
+        static function getImageOrDefault($json) {
             $images = json_decode($json);
             $imgv = array();
 

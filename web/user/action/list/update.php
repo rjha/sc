@@ -27,12 +27,10 @@
         $fhandler->addRule("item_id", 'item', array('required' => 1));
 
         $fvalues = $fhandler->getValues();
-        print_r($fvalues); exit ;
-        
-        $gWeb = \com\indigloo\core\Web::getInstance();
 
+        $gWeb = \com\indigloo\core\Web::getInstance();
         $qUrl = base64_decode($fvalues["qUrl"]);
-        
+            
         if ($fhandler->hasErrors()) {
             throw new UIException($fhandler->getErrors());
         }
