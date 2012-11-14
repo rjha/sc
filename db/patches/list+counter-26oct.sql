@@ -30,8 +30,7 @@ CREATE TABLE  sc_list  (
     bin_md5_name BINARY(16) not null,
     items_json TEXT,
     item_count int default 0,
-    pseudo_id varchar(32) not null,
-
+    pseudo_id varchar(32) ,
     description varchar(512),
     version int not null,
     op_bit int not null,
@@ -41,6 +40,8 @@ CREATE TABLE  sc_list  (
 
 
 alter table sc_list add constraint unique uniq_name(login_id,bin_md5_name);
+alter table sc_list add constraint unique uniq_pid(pseudo_id);
+
 
 
 

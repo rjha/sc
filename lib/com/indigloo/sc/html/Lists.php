@@ -3,6 +3,7 @@
 namespace com\indigloo\sc\html {
 
     use \com\indigloo\Template as Template;
+    use \com\indigloo\sc\util\PseudoId ;
 
     class Lists {
 
@@ -25,7 +26,14 @@ namespace com\indigloo\sc\html {
 
         static function getWidget($listDBRow) {
             $view = self::createListView($listDBRow);
-            $template =  "/fragments/lists/dash/summary/image.tmpl" ;
+            $template = NULL ;
+
+            if($view->hasImage){
+                $template =  "/fragments/lists/dash/summary/image.tmpl" ;
+            } else {
+                $template =  "/fragments/lists/dash/summary/noimage.tmpl" ;
+            }
+
             $html = Template::render($template,$view);
             return $html ;
         }
@@ -34,6 +42,8 @@ namespace com\indigloo\sc\html {
             $view = new \stdClass ;
 
             $view->id = $row["id"];
+            $view->pseudoId = PseudoId::encode($view->id);
+            
             $view->name = $row["name"];
             $view->items = json_decode($row["items_json"]);
             $view->count = $row["item_count"] ;

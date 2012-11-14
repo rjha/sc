@@ -68,54 +68,19 @@ namespace com\indigloo\sc\dao {
             }
         }
 
-        /*
-        private function getIdMergeItems($dbItemsJson, $frmItemsJson) {
-            $data = $this->getIdAndItems($frmItemsJson);
-            $ids = $data["ids"];
-            $items = $data["items"];
-
-            $numImages = 5  - (sizeof($items));
-            $count = 0 ;
-
-            if($numImages > 0 ) { 
-                $dbItems = json_decode($dbItemsJson);
-                foreach($dbItems as $dbItem) {
-                    if($count >= $numImages) break ;
-                    if(property_exists($dbItem,"thumbnail")) { 
-                        array_push($items,$dbItem); $count++ ;
-                    }
-                }
-            }
-
-            //reassign
-            $data["items"] = $items ;
-            return $data;
+        function createNew($loginId,$name,$description) {
+            //md5 hash as hex string and bytes
+            $hash = md5($name);
+            $bin_hash = md5($name,TRUE); 
+            $seoName = StringUtil::convertNameToKey($name);
+            mysql\Lists::createNew(
+                $loginId,
+                $name,
+                $seoName,
+                $hash,
+                $bin_hash,
+                $description); 
         }
-
-        private function getIdAndItems($frmItemsJson) {
-            $frmItems = json_decode($frmItemsJson);
-
-            $ids = array();
-            $bucket = array();
-
-            $count = 0 ;
-            $numImages = 5 ;
-
-            foreach($frmItems as $item) {
-                if(ctype_digit($item->id)) {
-                    //all items
-                    array_push($ids, PseudoId::decode($item->id)) ;
-                    // numImages images
-                    if(($count < $numImages) && property_exists($item,"thumbnail")) { 
-                        array_push($bucket, $item) ; $count++ ;
-                    }
-                }
-            }
-
-            $data = array("ids" => $ids , "items" => $bucket );
-            return $data;
-        } */
-
 
         function create($loginId,$name,$itemId) {
 

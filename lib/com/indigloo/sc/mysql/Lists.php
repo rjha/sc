@@ -246,6 +246,87 @@ namespace com\indigloo\sc\mysql {
 
         }
 
+        static function createNew(
+            $loginId,
+            $name,
+            $seoName,
+            $hash,
+            $bin_hash,
+            $description) {
+
+            try {
+
+                //input check
+
+                settype($loginId,"integer"); 
+                Util::isEmpty("name",$name);
+              
+                //list
+                // op_bit is offline_processing bit - set to zero on create
+                $sql1 = " insert into sc_list (login_id,name, seo_name,md5_name, bin_md5_name, " ;
+                $sql1 .= " items_json, version, op_bit, created_on, pseudo_id) " ;
+                $sql1 .= " values(:login_id, :name, :seo_name, :hash, :bin_hash, :items_json, " ;
+                $sql1 .= " 1, 0, now(), :pseudo_id) " ;
+                
+                //items json is empty array
+                $strItemsJson = '[]' ;
+
+                $dbh =  PDOWrapper::getHandle();
+
+                // *** Tx start ***
+                $dbh->beginTransaction();
+                
+
+                $stmt = $dbh->prepare($sql1);
+                $stmt->bindParam(":login_id", $loginId);
+                $stmt->bindParam(":name", $name);
+                $stmt->bindParam(":seo_name", $seoName);
+                $stmt->bindParam(":hash", $hash);
+                $stmt->bindParam(":bin_hash", $bin_hash);
+                $stmt->bindParam(":items_json", $strItemsJson);
+                //explicitly set pseudo_id to NULL
+                // we have a unique constraint on pseudo_id and 
+                // we do not want to scan the table or hold the lock
+                // longer than necessary. 
+
+                $stmt->bindValue(":pseudo_id", null,\PDO::PARAM_STR);
+
+                $stmt->execute();
+                $stmt = NULL ;
+
+                $listId = $dbh->lastInsertId();
+                settype($listId, "integer");
+
+                // update pseudo_id of list
+                $pseudoId =  PseudoId::encode($listId);
+                $sql3 = " update sc_list set pseudo_id = :pseudo_id, item_count = 0 where id = :list_id " ;
+                
+                $stmt3 = $dbh->prepare($sql3);
+                $stmt3->bindParam(":list_id", $listId);
+                $stmt3->bindParam(":pseudo_id", $pseudoId);
+                $stmt3->execute();
+                $stmt3 = NULL ;
+
+                // *** Tx end ***
+                $dbh->commit();
+                $dbh = null;
+
+                return ;
+
+            }catch (PDOException $e) {
+                $dbh->rollBack();
+                $dbh = null;
+                throw new DBException($e->getMessage(),$e->getCode());
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
+            }
+            
+        }
+
         static function create(
             $loginId,
             $name,
@@ -269,10 +350,10 @@ namespace com\indigloo\sc\mysql {
                 //list
                 // op_bit is offline_processing bit - set to zero on create
                 $sql1 = "insert into sc_list (login_id,name, seo_name,md5_name, bin_md5_name, " ;
-                $sql1 .= "items_json, version, op_bit , created_on) " ;
-                $sql1 .= " values(:login_id,:name,:seo_name,:hash,:bin_hash,:items_json,1,0,now()) " ;
-                $flag = true ;
-
+                $sql1 .= "items_json, version, op_bit , created_on, pseudo_id) " ;
+                $sql1 .= " values(:login_id,:name,:seo_name,:hash,:bin_hash, " ;
+                $sql1 .= " :items_json, 1 , 0, now(), :pseudo_id ) " ;
+                
                 $dbh =  PDOWrapper::getHandle();
 
                 // *** Tx start ***
@@ -286,6 +367,10 @@ namespace com\indigloo\sc\mysql {
                 $stmt->bindParam(":hash", $hash);
                 $stmt->bindParam(":bin_hash", $bin_hash);
                 $stmt->bindParam(":items_json", $strItemsJson);
+                
+                //set pseudo_id to NULL explicitly
+                $stmt->bindValue(":pseudo_id", null,\PDO::PARAM_STR);
+
 
                 $stmt->execute();
                 $stmt = NULL ;

@@ -77,9 +77,7 @@
 }
 
 .widget .options .links { float:right;}
-.action-form {
-    display: none ;
-}
+
 
 .btn-flat {
 
@@ -99,11 +97,7 @@
     background-color: #f7f7f7 ;
     /* text-decoration: underline ; */
     color: #222 ;
-}
-
-
-.action-form .floatr {
-    border-bottom: 1px solid #28c ;
+    cursor:pointer ;
 }
 
 #uwidgets {
@@ -289,6 +283,13 @@
     padding-top:14px;
 }
 
+.list-summary .nophoto {
+    width:124px;
+    height:62px;
+    margin:3px;
+    border:1px dashed #ccc ; 
+}
+
 #page-message {
     background-color : #FEFDF1;
     padding-left:20px;
@@ -344,13 +345,8 @@
     font-weight:bold ;
 }
 
-.list-form {
-    padding-top:10px;
-    padding-bottom: 20px;
-
-}
-
-.list-form2 {
+.action-form {
+    display: none ;
     padding-top :20px; 
     padding-left :40px;
     padding-bottom: 20px;
@@ -358,18 +354,29 @@
 
 }
 
-.list-form input {
+.action-form .floatr {
+    border-bottom: 1px solid #28c ;
+}
+
+.action-form input {
     width:75%;
 }
 
-.list-form textarea {
+.action-form textarea {
     width:75%;
     height:120px;
 }
 
-    
 
+.list-form {
+    padding-top:10px;
+    padding-bottom: 20px;
 
+}
+
+.list-form input {
+    width:75%;
+}
 
 </style>
 
