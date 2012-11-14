@@ -96,20 +96,24 @@
             <?php FormMessage::render(); ?>
 
             <div class="row">
+                
                 <div id="page-action">
-                    <div class="span1 offset1">
-                        <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
-                    </div>
-                    <div class="span7">
-                        <a class="btn-flat open-action" rel="list-add-item" href="#">+ Add item by URL</a>
-                        &nbsp;&nbsp;
-                        <a class="btn-flat item-action" rel="list-delete-item" href="#">Remove items</a>
-                         &nbsp;&nbsp;
-                        <a class="btn-flat open-action" rel="list-edit" href="#" >Edit list</a>
-                        &nbsp;&nbsp;
-                        <a class="btn-flat open-action" rel="list-delete" href="#">Delete list</a>
-                       
-                       
+                    <div class="row">
+                        <div class="span1 offset1">
+                            <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
+                        </div>
+                        <div class="span7">
+                            <a class="btn-flat open-action" rel="list-add-item" href="#">+ Add item by URL</a>
+                            &nbsp;&nbsp;
+                            <a class="btn-flat item-action" rel="list-delete-item" href="#">Remove items</a>
+                             &nbsp;&nbsp;
+                            <a class="btn-flat open-action" rel="list-edit" href="#" >Edit list</a>
+                            &nbsp;&nbsp;
+                            <a class="btn-flat open-action" rel="list-delete" href="#">Delete list</a>
+                           
+                           
+                        </div>
+
                     </div>
                 </div>
            
@@ -212,9 +216,10 @@
                     </div>
                 </div> <!-- row:forms -->
                 <div class="row">
+
                     <div class="span8 offset1">
                     
-                        <div id="widgets" class="mt20">
+                        <div id="widgets">
                         <?php
                             $startId = NULL;
                             $endId = NULL;
@@ -290,6 +295,9 @@
                 webgloo.sc.dashboard.fixAlert();
                 webgloo.sc.dashboard.showActionBox('<?php echo $strPopupObj; ?>') ;
 
+                webgloo.sc.Lists.init();
+                webgloo.sc.Lists.setContainer("widgets");
+                
                 $("#list-add-item-help").click(function(event) {
                     var message = webgloo.sc.message.HELP_LIST_ITEM_URL; 
                     webgloo.sc.dashboard.showMessage(message);

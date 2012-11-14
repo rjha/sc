@@ -253,9 +253,8 @@
     margin-left:20px;
 }
 
-
 #page-action {
-    margin: 20px 0 30px;
+    margin-top: 20px;
     padding:11px 0px 11px 0px;
     min-height: 20px;
     border-top: 1px solid #EEE;

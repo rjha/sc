@@ -154,11 +154,28 @@ namespace com\indigloo\sc\dao {
             mysql\Lists::addItem($listId,$itemsJson,$postId);
         }
 
-        function deleteItems($loginId,$listId,$frmItemsJson) {
-            // @todo - look @ list.items_json
-            // if it contains items that are being deleted then
-            // we need to update list.items_json as well 
-            trigger_error("Not implemented",E_USER_ERROR);
+        function deleteItems($loginId,$listId,$itemsJson) {
+
+            $items = json_decode($itemsJson);
+            
+            //get all the itemIds
+            $itemIds = array();
+            foreach($items as $item) {
+                $itemId = PseudoId::decode($item);
+                array_push($itemIds,$itemId);
+            }
+
+            if(empty($itemIds)) {
+                //@todo - throw error?
+                return ;
+            }
+
+            //@todo check ownership of list 
+            //delete items
+            mysql\Lists::deleteItems($loginId,$listId,$itemIds);
+            //@todo - adjust items_json in DB
+
+             
         }
 
         function edit($loginId,$listId,$name,$description) {

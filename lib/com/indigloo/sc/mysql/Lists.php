@@ -432,6 +432,45 @@ namespace com\indigloo\sc\mysql {
             }
 
         }
+
+        static function deleteItems($loginId,$listId,$itemIds) {
+            //input
+            settype($loginId, "integer");
+            settype($listId, "integer");
+            
+            if(empty($itemIds)) {
+                return ;
+            }
+
+            try{ 
+                $dbh =  PDOWrapper::getHandle();
+                // *** Tx start ***
+                $dbh->beginTransaction();
+                $sqlt = " delete from sc_list_item where list_id = %d and item_id = %d " ;
+
+                foreach($itemIds as $itemId) {
+                    settype($itemId, "integer");
+                    $sql = sprintf($sqlt,$listId,$itemId);
+                    //fire SQL statement
+                    $dbh->exec($sql);
+                }
+
+                $dbh->commit();
+                $dbh = null;
+
+            }catch (PDOException $e) {
+                $dbh->rollBack();
+                $dbh = null;
+                throw new DBException($e->getMessage(),$e->getCode());
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
+            }
+
+        }
     }
 }
 ?>

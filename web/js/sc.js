@@ -729,7 +729,12 @@ webgloo.sc.dashboard = {
 webgloo.sc.Lists = {
 
     debug : false,
+    containerId : '' ,
     
+    setContainer : function(containerId) {
+        webgloo.sc.Lists.containerId = containerId ;
+    },
+
     init : function () {
 
         $("a.show-list").click(function(event){
@@ -772,9 +777,20 @@ webgloo.sc.Lists = {
             webgloo.sc.Lists.submitName();
         }) ;
 
+        $("#delete-items").click(function(event){
+            var itemIds = webgloo.sc.dashboard.getCheckedItems(webgloo.sc.Lists.containerId);
+            if(itemIds.length > 0 ) {
+                webgloo.sc.Lists.submitDeleteItems(itemIds);
+            }
 
+        });
 
+    },
 
+    submitDeleteItems : function(itemIds) {
+        var frm = document.forms["delete-item-form"];
+        frm.items_json.value = JSON.stringify(itemIds) ; 
+        $("#form4").submit();
     },
 
     submitList : function(listId) {
