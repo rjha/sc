@@ -261,11 +261,7 @@
     border-bottom:1px solid #E6E6E6 ;
 }
 
-.list-summary img {
-    margin:3px;
-    max-width:62px;
-    max-height : 62px;
-}
+
 
 .list-summary .name {
     padding-top : 14px;
@@ -277,9 +273,20 @@
     padding-top:14px;
 }
 
+.list-summary .photos{
+    height: 68px;
+    overflow:hidden ;
+}
+
+.list-summary img {
+    margin:3px;
+    max-width:62px;
+    max-height : 62px;
+}
+
 .list-summary .nophoto {
     width:124px;
-    height:62px;
+    height:60px;
     margin:3px;
     border:1px dashed #ccc ; 
 }

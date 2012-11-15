@@ -2,11 +2,11 @@
     <div class="row">
         <a href="/user/dashboard/list/detail.php?list_id=~~$view->pseudoId~">
             <div class="span4">
-              
-            ~foreach($view->items as $item){~
-                <img src="~~$item->thumbnail~" />
-            ~}~
-                 
+                <div class="photos">
+                ~foreach($view->items as $item){~
+                    <img src="~~$item->thumbnail~" />
+                ~}~
+                </div>
             </div>
         </a>
         <div class="span3">
