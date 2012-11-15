@@ -7,11 +7,13 @@
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\exception\UIException as UIException;
-    use \com\indigloo\exception\DBException as DBException;
 
+    use \com\indigloo\exception\DBException as DBException;
     use \com\indigloo\sc\mysql as mysql;
     use \com\indigloo\sc\auth\Login as Login;
+
     use \com\indigloo\Url as Url ;
+    use \com\indigloo\Util as Util ;
     use \com\indigloo\Logger as Logger ;
 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
@@ -24,19 +26,24 @@
             $fhandler->addRule("name", "Name", array('required' => 1));
 
             $fvalues = $fhandler->getValues();
-            $gWeb = \com\indigloo\core\Web::getInstance();
-
-            $qUrl = base64_decode($fvalues["qUrl"]);
             
+            $gWeb = \com\indigloo\core\Web::getInstance();
+            $qUrl = base64_decode($fvalues["qUrl"]);
+            $name = $fvalues["name"];
+
+            if(!Util::isAlphaNumeric($name)) {
+                $fhandler->addError("Bad name : only letters and numbers are allowed!") ;
+            }
+
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors());
             }
-
+            
             $loginId = Login::getLoginIdInSession();
             $listDao = new \com\indigloo\sc\dao\Lists();
             $listDao->createNew(
                 $loginId,
-                $fvalues["name"],
+                $name,
                 $fvalues["description"]);
 
             $message = sprintf("success! new list created");

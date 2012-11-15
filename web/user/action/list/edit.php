@@ -6,12 +6,15 @@
 
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
+
     use \com\indigloo\exception\UIException as UIException;
     use \com\indigloo\exception\DBException as DBException;
 
     use \com\indigloo\sc\mysql as mysql;
     use \com\indigloo\sc\auth\Login as Login;
+
     use \com\indigloo\Url as Url ;
+    use \com\indigloo\Util as Util ;
     use \com\indigloo\Logger as Logger ;
 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
@@ -24,15 +27,22 @@
             $fhandler->addRule("list_id", "list id", array('required' => 1));
 
             $fvalues = $fhandler->getValues();
+            
+            //qUrl is needed for redirect
             $gWeb = \com\indigloo\core\Web::getInstance();
-
             $qUrl = base64_decode($fvalues["qUrl"]);
-            $listId = $fvalues["list_id"];
-             
+            $name = $fvalues["name"];
+            
+            if(!Util::isAlphaNumeric($name)) {
+                $fhandler->addError("Bad name : only letters and numbers are allowed!") ;
+            }
+
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors());
             }
 
+            $listId = $fvalues["list_id"];
+            
             $loginId = Login::getLoginIdInSession();
             $listDao = new \com\indigloo\sc\dao\Lists();
             $listDao->edit(

@@ -130,7 +130,7 @@
                          </div>
 
                          <form  id="form1"  name="edit-form" action="/user/action/list/edit.php"   method="POST">
-                            <span class="faded-text">Name</span> <br>
+                            <span class="faded-text">Name (letters and numbers only)</span> <br>
                             <input name="name" class="required" maxlength="64" type="text" value="<?php echo $sticky->get('name',$listDBRow['name']); ?>" /> <br>
                             <span class="faded-text">Description</span>  <br>
                             <textarea name="description"><?php echo $sticky->get('description',$listDBRow['description']); ?></textarea> <br>
@@ -224,7 +224,7 @@
                             $startId = NULL;
                             $endId = NULL;
                             
-                            //@imp list cannot be created w/o items
+                            //@imp list can be created w/o items
                             if (sizeof($itemDBRows) > 0) {
                                 $startId = $itemDBRows[0]['id'];
                                 $endId = $itemDBRows[sizeof($itemDBRows)-1]['id'];
@@ -233,7 +233,12 @@
                                     echo \com\indigloo\sc\html\Post::getListWidget($itemDBRow);
                                 }
 
-                            } 
+                            } else {
+
+                                $message = "No items in list!" ;
+                                $options = array("hkey" => "dashboard.list.no-item");
+                                echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
+                            }
 
                             ?>
                         </div> <!-- widgets -->

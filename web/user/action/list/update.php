@@ -6,12 +6,15 @@
 
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
+
     use \com\indigloo\exception\UIException as UIException;
     use \com\indigloo\exception\DBException as DBException;
 
     use \com\indigloo\sc\mysql as mysql;
     use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\Url as Url ;
+
+    use \com\indigloo\Util as Util ;
     use \com\indigloo\Logger as Logger ;
 
     // @imp submit buttons are only considered successful controls 
@@ -25,12 +28,13 @@
         //input rules
         $fhandler->addRule("qUrl", "qUrl", array('required' => 1, 'rawData' =>1));
         $fhandler->addRule("item_id", 'item', array('required' => 1));
-
+        
         $fvalues = $fhandler->getValues();
 
+        //qUrl is needed for redirect
         $gWeb = \com\indigloo\core\Web::getInstance();
         $qUrl = base64_decode($fvalues["qUrl"]);
-            
+          
         if ($fhandler->hasErrors()) {
             throw new UIException($fhandler->getErrors());
         }
@@ -43,12 +47,17 @@
         $listDao = new \com\indigloo\sc\dao\Lists();
 
         if( ($flag == 1) && empty($listId)) {
-            //Add to new list 
+            // create new list 
             $name =  $fvalues["new-list-name"];
+            if(!Util::isAlphaNumeric($name)) {
+                $error = "Bad name : only letters and numbers are allowed!" ;
+                throw new UIException(array($error));
+            }
+
             $listDao->create($loginId,$name,$itemId);
 
         } else {
-            //Add existing list 
+            //Add to existing list 
             $listDao->addItem($listId,$itemId);
         }
 

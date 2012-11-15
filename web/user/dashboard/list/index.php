@@ -102,7 +102,7 @@
                          </div>
 
                          <form  id="form1"  name="create-form" action="/user/action/list/create.php"   method="POST">
-                            <span class="faded-text">Name</span> <br>
+                            <span class="faded-text">Name (letters and numbers only)</span> <br>
                             <input name="name" class="required" maxlength="64" type="text" value="<?php echo $sticky->get("name"); ?>" /> <br>
                             <span class="faded-text">Description</span>  <br>
                             <textarea name="description"><?php echo $sticky->get("description"); ?></textarea> <br>
