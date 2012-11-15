@@ -18,14 +18,7 @@
 
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
-    $popupId = $sticky->get('popup_id');
-    $strPopupObj = '{}' ;
-
-    if(!Util::tryEmpty($popupId)) {
-        $popupObj = new \stdClass ;
-        $popupObj->id = $popupId ;
-        $strPopupObj = json_encode($popupObj);
-    }
+    $panelId = $sticky->get("panel_id");
 
     $qparams = Url::getRequestQueryParams();
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
@@ -103,13 +96,13 @@
                             <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" />
                         </div>
                         <div class="span7">
-                            <a class="btn-flat open-action" rel="list-add-item" href="#">+ Add item by URL</a>
+                            <a class="btn-flat open-panel" rel="list-add-item" href="#">+ Add item by URL</a>
                             &nbsp;&nbsp;
                             <a class="btn-flat item-action" rel="list-delete-item" href="#">Remove items</a>
                              &nbsp;&nbsp;
-                            <a class="btn-flat open-action" rel="list-edit" href="#" >Edit list</a>
+                            <a class="btn-flat open-panel" rel="list-edit" href="#" >Edit list</a>
                             &nbsp;&nbsp;
-                            <a class="btn-flat open-action" rel="list-delete" href="#">Delete list</a>
+                            <a class="btn-flat open-panel" rel="list-delete" href="#">Delete list</a>
                            
                            
                         </div>
@@ -122,10 +115,10 @@
             <div class="row">
                 <div class="span8 offset1">
                     <div id="page-message" class="hide-me"> </div>
-                    <div id="list-edit" class="action-form"> 
+                    <div id="list-edit" class="panel panel-form"> 
                         <div class="wrapper">
                             <div class="floatr">
-                                <span><a href="#" class="close-action" rel="list-edit">close</a> </span>
+                                <span><a href="#" class="close-panel" rel="list-edit">close</a> </span>
                             </div>
                          </div>
 
@@ -136,19 +129,19 @@
                             <textarea name="description"><?php echo $sticky->get('description',$listDBRow['description']); ?></textarea> <br>
                             <button type="submit" class="btn btn-small" name="save" value="Save"><span>Save</span></button>
                             &nbsp;
-                            <a class="btn btn-small close-action" rel="list-edit">Cancel</a>
+                            <a class="btn btn-small close-panel" rel="list-edit">Cancel</a>
                             
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
                             <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
-                            <input type="hidden" name="popup_id" value="list-edit"/>
+                            <input type="hidden" name="panel_id" value="list-edit"/>
 
                         </form> <!-- form:1 -->
                     </div>
 
-                    <div id="list-add-item" class="action-form">
+                    <div id="list-add-item" class="panel panel-form">
                         <div class="wrapper">
                             <div class="floatr">
-                                <span><a href="#" class="close-action" rel="list-add-item">close</a> </span>
+                                <span><a href="#" class="close-panel" rel="list-add-item">close</a> </span>
                             </div>
                          </div>
 
@@ -161,19 +154,19 @@
                             <input name="link" class="required" maxlength="256" type="text" value="<?php echo $sticky->get('link'); ?>" /> <br>
                             <button type="submit" class="btn btn-small" name="save" value="Save"><span>Save</span></button>
                             &nbsp;
-                            <a class="btn btn-small close-action" rel="list-add-item">Cancel</a>
+                            <a class="btn btn-small close-panel" rel="list-add-item">Cancel</a>
                             &nbsp;
                             <a id="list-add-item-help" href="#">click here to get help on item URL</a>
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>"/>
                             <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
-                            <input type="hidden" name="popup_id" value="list-add-item"/>
+                            <input type="hidden" name="panel_id" value="list-add-item"/>
                         </form> <!-- form:2 -->
                     </div>
 
-                    <div id="list-delete" class="action-form">
+                    <div id="list-delete" class="panel panel-form">
                         <div class="wrapper">
                             <div class="floatr">
-                                <span><a href="#" class="close-action" rel="list-delete">close</a> </span>
+                                <span><a href="#" class="close-panel" rel="list-delete">close</a> </span>
                             </div>
                          </div>
 
@@ -185,17 +178,17 @@
                                 <span>Delete</span>
                             </button>
                             &nbsp;
-                            <a class="btn btn-small close-action" rel="list-delete">Cancel</a>
+                            <a class="btn btn-small close-panel" rel="list-delete">Cancel</a>
                             
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>"/>
                             <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
                         </form> <!-- form:3 -->
                     </div>
 
-                    <div id="list-delete-item" class="action-form">
+                    <div id="list-delete-item" class="panel panel-form">
                         <div class="wrapper">
                             <div class="floatr">
-                                <span><a href="#" class="close-action" rel="list-delete-item">close</a> </span>
+                                <span><a href="#" class="close-panel" rel="list-delete-item">close</a> </span>
                             </div>
                          </div>
 
@@ -207,7 +200,7 @@
                                 <span>Delete</span>
                             </button>
                             &nbsp;
-                            <a class="btn btn-small close-action" rel="list-delete-item">Cancel</a>
+                            <a class="btn btn-small close-panel" rel="list-delete-item">Cancel</a>
                             
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>"/>
                             <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
@@ -291,23 +284,26 @@
                     $(this).find('.options').css("visibility", "hidden");
                 });
 
-                
-                webgloo.sc.toolbar.add();
-
-                var containerId = "widgets" ;
-                webgloo.sc.dashboard.init(containerId);
-                //fix twitter bootstrap alerts
-                webgloo.sc.dashboard.fixAlert();
-                webgloo.sc.dashboard.showActionBox('<?php echo $strPopupObj; ?>') ;
-
-                webgloo.sc.Lists.init();
-                webgloo.sc.Lists.setContainer("widgets");
-                
                 $("#list-add-item-help").click(function(event) {
                     var message = webgloo.sc.message.HELP_LIST_ITEM_URL; 
                     webgloo.sc.dashboard.showMessage(message);
 
                 }) ;
+
+                webgloo.sc.toolbar.add();
+                webgloo.sc.util.initPanel('<?php echo $panelId; ?>');
+                
+                webgloo.sc.dashboard.init();
+                webgloo.sc.dashboard.setContainer("widgets");
+
+                webgloo.sc.Lists.init();
+                webgloo.sc.Lists.setContainer("widgets");
+                
+
+                //fix twitter bootstrap alerts
+                webgloo.sc.dashboard.fixAlert();
+                
+                
                 
 
             });

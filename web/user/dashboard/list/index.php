@@ -23,15 +23,7 @@
     }
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
-    
-    $popupId = $sticky->get('popup_id');
-    $strPopupObj = '{}' ;
-
-    if(!Util::tryEmpty($popupId)) {
-        $popupObj = new \stdClass ;
-        $popupObj->id = $popupId ;
-        $strPopupObj = json_encode($popupObj);
-    }
+    $panelId = $sticky->get("panel_id");
 
     $listDao = new \com\indigloo\sc\dao\Lists();
     $analyticDao = new \com\indigloo\sc\dao\Analytic();
@@ -82,7 +74,7 @@
                         <span class="title">My lists</span>
                         <span class="badge"><?php echo $list_counter; ?></span>
                         <span class="ml40">
-                            <a class="btn-flat open-action" rel="list-create" href="#">+ Create new list</a>
+                            <a class="btn-flat open-panel" rel="list-create" href="#">+ Create new list</a>
                         </span>
 
                     </div>
@@ -94,10 +86,10 @@
             <div class="row">
                 <div class="span7 offset1">
                     <div id="page-message" class="hide-me"> </div>
-                    <div id="list-create" class="action-form"> 
+                    <div id="list-create" class="panel panel-form">
                         <div class="wrapper">
                             <div class="floatr">
-                                <span><a href="#" class="close-action" rel="list-create">close</a> </span>
+                                <span><a href="#" class="close-panel" rel="list-create">close</a> </span>
                             </div>
                          </div>
 
@@ -108,10 +100,11 @@
                             <textarea name="description"><?php echo $sticky->get("description"); ?></textarea> <br>
                             <button type="submit" class="btn btn-small" name="save" value="Save"><span>Save</span></button>
                             &nbsp;
-                            <a class="btn btn-small close-action" rel="list-create">Cancel</a>
+                            <a class="btn btn-small close-panel" rel="list-create">Cancel</a>
                             
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
-                            
+                            <input type="hidden" name="panel_id" value="list-create"/>
+
                         </form> <!-- form:1 -->
                     </div>
                 </div>
@@ -162,13 +155,12 @@
                     errorLabelContainer: $("#page-message")
                 });
 
-                var containerId = "widgets" ;
-                webgloo.sc.dashboard.init(containerId);
                 //fix twitter bootstrap alerts
                 webgloo.sc.dashboard.fixAlert();
-                webgloo.sc.dashboard.showActionBox('<?php echo $strPopupObj; ?>') ;
-
                 webgloo.sc.toolbar.add();
+
+                webgloo.sc.util.initPanel('<?php echo $panelId; ?>');
+
                 //turn off border for last widget
                 $("#widgets .widget:last-child").css('border-bottom', 'none');
             });

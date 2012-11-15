@@ -347,7 +347,7 @@
     background-color: #999 ;
 }
 
-.action-form {
+.panel-form {
     display: none ;
     padding-top :20px; 
     padding-left :40px;
@@ -356,15 +356,15 @@
 
 }
 
-.action-form .floatr {
+.panel-form .floatr {
     border-bottom: 1px solid #28c ;
 }
 
-.action-form input {
+.panel-form input {
     width:75%;
 }
 
-.action-form textarea {
+.panel-form textarea {
     width:75%;
     height:120px;
 }

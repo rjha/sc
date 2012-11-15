@@ -18539,7 +18539,41 @@ webgloo.sc.util = {
             var current = text.length;
             $(counterId).text(current + "/" + max);
         });
-    }
+    },
+
+    initPanel : function(activePanelId) {
+
+        //show active panel on page load
+        var panelId = jQuery.trim(activePanelId);
+
+        if(panelId != '' ) { 
+            $("#" + panelId).show();
+        }
+
+        // bind events for panel open and close
+        // id of panel DIV is provided in rel attribute
+
+        $("a.open-panel").click(function(event) {
+            var divId = '#' + $(this).attr("rel");
+            //hide any open panels
+            $('.panel').hide();
+            //hide page message
+            $("#page-message").html('');
+            $("#page-message").hide();
+            // show target panel
+            $(divId).show("slow");
+        });
+
+        $("a.close-panel").click(function(event) {
+            var divId = '#' + $(this).attr("rel");
+            $(divId).hide("slow");
+            //hide page message as well
+            $("#page-message").html('');
+            $("#page-message").hide();
+        });
+
+    },
+
 }
 
 webgloo.sc.message = {
@@ -19065,7 +19099,11 @@ webgloo.sc.item = {
 
 webgloo.sc.dashboard = {
 
-    itemContainer : '' ,
+    containerId : '' ,
+    
+    setContainer : function(containerId) {
+        webgloo.sc.dashboard.containerId = containerId ;
+    },
 
     showMessage : function (message) {
         $("#page-message").html(message);
@@ -19073,25 +19111,9 @@ webgloo.sc.dashboard = {
         
     },
 
-    showActionBox : function(boxInSession) {
-        try{
-            var strBoxObj = jQuery.trim(boxInSession);
-            if(strBoxObj == '' ) { return ; }
+    init : function () {
 
-            var boxObj = JSON.parse(strBoxObj) ;
-            if(boxObj.hasOwnProperty("id")){
-                $("#" + boxObj["id"]).show();
-            }
-        } catch(ex) {
-            console.log("error : parsing action box string");
-        }
-    
-    },
-
-    init : function (containerId) {
-
-        webgloo.sc.dashboard.itemContainer = containerId ;
-
+        /*
         $("a.open-action").click(function(event) {
             //id of action DIV
             var divId = '#' + $(this).attr("rel");
@@ -19102,13 +19124,15 @@ webgloo.sc.dashboard = {
             $("#page-message").hide();
             $(divId).show("slow");
         });
+        */
 
         $("a.item-action").click(function(event) {
-            //id of action DIV
+            //id of target panel DIV is in rel 
             var divId = '#' + $(this).attr("rel");
-            $('.action-form').hide();
+            //hide all panels
+            $('.panel').hide();
             //any items clicked?
-            var itemIds = webgloo.sc.dashboard.getCheckedItems(webgloo.sc.dashboard.itemContainer);
+            var itemIds = webgloo.sc.dashboard.getCheckedItems(webgloo.sc.dashboard.containerId);
             if(itemIds.length > 0 ) {
                 $("#page-message").html('');
                 $("#page-message").hide();
@@ -19123,6 +19147,7 @@ webgloo.sc.dashboard = {
             }
         });
 
+        /*
         $("a.close-action").click(function(event) {
             //id of action DIV
             var divId = '#' + $(this).attr("rel");
@@ -19131,10 +19156,11 @@ webgloo.sc.dashboard = {
             $("#page-message").html('');
             $("#page-message").hide();
         });
+        */
 
         $('input:checkbox[id=page-checkbox]').click(function(event) {
             //@imp donot event.preventDefault();
-            var checkBoxes =  $('#'+ webgloo.sc.dashboard.itemContainer).find("input:checkbox");
+            var checkBoxes =  $('#'+ webgloo.sc.dashboard.containerId).find("input:checkbox");
             var state =  $('input:checkbox[id=page-checkbox]').prop("checked");
             checkBoxes.prop("checked", state);
             
