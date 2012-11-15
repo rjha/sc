@@ -10,7 +10,11 @@
 
     set_exception_handler('webgloo_ajax_exception_handler');
     
-    $fUrl = Url::current();
+    // list popup is called via javascript on pages
+    // so actual "form caller " is what is coming in as
+    // qUrl (original window.location.href) from javascript POST 
+
+    $qUrl = Util::getArrayKey($_POST, "qUrl");
 
     if(!Login::hasSession()) {
         // no login case
@@ -28,7 +32,7 @@
         
         // action payload in URL
         $gSessionAction = base64_encode(json_encode($actionObj));
-        $fwd = "/user/login.php?q=".$fUrl."&g_session_action=".$gSessionAction;
+        $fwd = "/user/login.php?q=".$qUrl."&g_session_action=".$gSessionAction;
         header('location: '.$fwd);
     
     }
@@ -38,6 +42,6 @@
 
     $listDao = new \com\indigloo\sc\dao\Lists();
     $listRows = $listDao->getOnLoginId($loginId);
-    $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$itemId,$fUrl);
+    $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$itemId,$qUrl);
     echo $html ;
 ?>
