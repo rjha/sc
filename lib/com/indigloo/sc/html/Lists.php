@@ -7,7 +7,7 @@ namespace com\indigloo\sc\html {
 
     class Lists {
 
-        static function getSelectPopup($listRows,$itemId,$fUrl) {
+        static function getSelectPopup($listRows,$itemId,$qUrl) {
             $view = new \stdClass;
             $template =  (sizeof($listRows) > 0) ? "/fragments/lists/popup/select.tmpl" : "/fragments/lists/popup/select-0.tmpl"  ;
 
@@ -19,7 +19,7 @@ namespace com\indigloo\sc\html {
                 $view->lists[$row['id']] = $row['name'] ;
             }
             
-            $view->fUrl = $fUrl;
+            $view->qUrl = $qUrl;
             $html = Template::render($template,$view);
             return $html ;
         }
