@@ -1,7 +1,7 @@
 
 <!-- include comment form -->
 <div class="section">
-    <?php echo $formErrors; ?>
+     <!-- errors from script are printed by ITEM controller -->
      <span class="faded-text">comments or questions? please type them here.</span>
         <form id="web-form1"  name="web-form1" action="/qa/form/comment.php" enctype="multipart/form-data"  method="POST">
 

@@ -6,10 +6,12 @@
     
     use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\Util as Util ;
+    use \com\indigloo\Logger ;
+
     use \com\indigloo\sc\ui\Constants as UIConstants ;
- 
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
+
     use \com\indigloo\exception\UIException as UIException;
 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
@@ -28,10 +30,9 @@
             $fhandler->addRule('fUrl', 'go back to page', array('required' => 1, 'rawData' =>1));
 
             $fvalues = $fhandler->getValues();
-            
             //original form URL
             $fUrl = $fvalues['fUrl'];
-
+            
             // UI checks
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors());
@@ -83,6 +84,16 @@
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
             header("Location: " . $fUrl);
             exit(1);
+
+        } catch(\Exception $ex) {
+            Logger::getInstance()->error($ex->getMessage());
+            Logger::getInstance()->backtrace($ex->getTrace());
+            $gWeb->store(Constants::STICKY_MAP, $fvalues);
+            $message = "Error: looks bad. something went wrong!" ;
+            $gWeb->store(Constants::FORM_ERRORS, array($message));
+            header("Location: " . $fUrl);
+            exit(1);
+
         }
 
     }
