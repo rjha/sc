@@ -30,7 +30,6 @@
     z-index: 102;
     background: white;
     margin-bottom: 10px;
-    /* border-bottom : 1px solid #e5e5e5 ;  */
 }
 
 #user-menu .item {
@@ -83,19 +82,16 @@
 
     text-shadow: none;
     padding: 4px 12px 4px 12px; 
-    /* border-radius: 5px; */
     color: #333;
     background: white;
-    /* font-weight: bold; */
     font-family: arial,sans-serif;
     font-size: 13px;
-    /* border: 1px solid #CECECE; */
-    border:1px solid #ccc;
+    border: 1px solid #CECECE; 
+    /* border:1px solid #ccc; */
 }
 
 .btn-flat:hover {
     background-color: #f7f7f7 ;
-    /* text-decoration: underline ; */
     color: #222 ;
     cursor:pointer ;
 }
@@ -141,7 +137,6 @@
     /* height: 130px; */
     margin-left:140px;
 }
-
 
 .uwidget .wrapper .detail .name {
     max-height : 70px;
@@ -303,8 +298,8 @@
 #list-wrapper {
     border-radius: 8px;
     background-color: #eee ;
-    width:75%;
-    height:auto;
+    width:80%;
+    height:120px;
     overflow: auto;
     overflow-x: auto;
     overflow-y: auto;
@@ -330,11 +325,11 @@
 }
 
 #lists li:hover {
-    background-color: #999 ;
-    
+    background-color: #999 ; 
 }
 
 #lists li a {
+    display:block;
     color: #222;
     font-weight:bold ;
 }
@@ -342,6 +337,7 @@
 #lists li a:hover {
     color: white;
     font-weight:bold ;
+    background-color: #999 ;
 }
 
 .action-form {
