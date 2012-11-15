@@ -153,7 +153,6 @@
 
                 webgloo.sc.toolbar.add();
                 webgloo.sc.item.addActions();
-                webgloo.sc.dashboard.fixAlert();
                 webgloo.sc.Lists.init();
 
             });
