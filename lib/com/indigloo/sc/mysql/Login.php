@@ -76,9 +76,9 @@ namespace com\indigloo\sc\mysql {
                 $email = strtolower(trim($email));
                 $password = trim($password);
 
-                $sql1 = "insert into sc_login (provider,name,ip_address,created_on) values(:provider,:name, :ip_address,now()) " ;
-                $flag = true ;
-
+                $sql1 = "insert into sc_login (provider,name,ip_address,created_on) " ;
+                $sql1 .= " values(:provider,:name, :ip_address,now()) " ;
+                
                 $dbh =  PDOWrapper::getHandle();
                 //Tx start
                 $dbh->beginTransaction();
@@ -88,14 +88,8 @@ namespace com\indigloo\sc\mysql {
                 $stmt->bindParam(":provider", $provider);
                 $stmt->bindParam(":ip_address", $remoteIp);
 
-                $flag = $stmt->execute();
-
-                if(!$flag){
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
-                    throw new DBException($message);
-                }
+                $stmt->execute();
+                $stmt = NULL ;
 
                 $loginId = $dbh->lastInsertId();
                 settype($loginId, "integer");
@@ -115,10 +109,16 @@ namespace com\indigloo\sc\mysql {
                 $dbh->commit();
                 $dbh = null;
 
-            }catch (PDOException $e) {
+            }catch (\PDOException $e) {
                 $dbh->rollBack();
                 $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
             }
 
         }

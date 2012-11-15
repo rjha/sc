@@ -141,52 +141,44 @@ namespace com\indigloo\sc\mysql {
         static function set_bu_bit($loginId,$value,$sessionId) {
             $dbh = NULL ;
             
-             try {
-               $sql1 = "update sc_denorm_user set updated_on = now(), bu_bit = :value where login_id = :login_id" ;
+            try {
+            
+                $sql1 = "update sc_denorm_user set updated_on = now(), bu_bit = :value " ;
+                $sql1 .= " where login_id = :login_id" ;
 
-                $flag = true ;
                 $dbh =  PDOWrapper::getHandle();
                 //Tx start
                 $dbh->beginTransaction();
-                $stmt = $dbh->prepare($sql1);
-                $stmt->bindParam(":login_id", $loginId);
-                $stmt->bindParam(":value", $value);
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":login_id", $loginId);
+                $stmt1->bindParam(":value", $value);
                 
-                $flag = $stmt->execute();
-
-                if(!$flag){
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("DB PDO Error : code is  %s",$stmt->errorCode());
-                    throw new DBException($message);
-                }
-
+                $stmt1->execute();
+                $stmt1 = NULL ;
+                
                 if(!empty($sessionId)) {
                     //clear banned user session immediately!
                     $sql2 = "delete from sc_php_session where session_id = :session_id ";
-                    $stmt = $dbh->prepare($sql2);
-                    $stmt->bindParam(":session_id", $sessionId);
-
-                    $flag = $stmt->execute();
-
-                    if(!$flag){
-                        $dbh->rollBack();
-                        $dbh = null;
-                        $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
-                        throw new DBException($message);
-                    }
-
+                    $stmt2 = $dbh->prepare($sql2);
+                    $stmt2->bindParam(":session_id", $sessionId);
+                    $stmt2->execute();
+                    $stmt2 = NULL ;
                 }
 
                 //Tx end
                 $dbh->commit();
                 $dbh = null;
                 
-            }catch (PDOException $e) {
+            } catch (\PDOException $e) {
                 $dbh->rollBack();
-                $dbh = NULL ;
+                $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());
 
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
             }
 
         }

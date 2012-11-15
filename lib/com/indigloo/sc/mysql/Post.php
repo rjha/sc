@@ -255,29 +255,22 @@ namespace com\indigloo\sc\mysql {
                 $sql1 .= "images_json,group_slug,cat_code,created_on) ";
                 $sql1 .= " values(?,?,?,?,?,?,?,now()) ";
 
-                $flag = true ;
                 $dbh = PDOWrapper::getHandle();
                 //Tx start
                 $dbh->beginTransaction();
 
                 //insert post
-                $stmt = $dbh->prepare($sql1);
-                $stmt->bindParam(1, $title);
-                $stmt->bindParam(2, $description);
-                $stmt->bindParam(3, $loginId);
-                $stmt->bindParam(4, $linksJson);
-                $stmt->bindParam(5, $imagesJson);
-                $stmt->bindParam(6, $groupSlug);
-                $stmt->bindParam(7, $categoryCode);
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(1, $title);
+                $stmt1->bindParam(2, $description);
+                $stmt1->bindParam(3, $loginId);
+                $stmt1->bindParam(4, $linksJson);
+                $stmt1->bindParam(5, $imagesJson);
+                $stmt1->bindParam(6, $groupSlug);
+                $stmt1->bindParam(7, $categoryCode);
 
-                $flag = $stmt->execute();
-
-                if(!$flag){
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
-                    throw new DBException($message);
-                }
+                $stmt1->execute();
+                $stmt1 = NULL ;
 
                 $postId = $dbh->lastInsertId();
                 settype($postId, "integer");
@@ -288,17 +281,10 @@ namespace com\indigloo\sc\mysql {
                 }
 
                 $sql2 = "update sc_post set pseudo_id = :item_id where id = :post_id " ;
-                $stmt = $dbh->prepare($sql2);
-                $stmt->bindParam(":item_id", $itemId);
-                $stmt->bindParam(":post_id", $postId);
-                $flag = $stmt->execute();
-
-                if(!$flag){
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("DB  Error : code is  %s",$stmt->errorCode());
-                    throw new DBException($message);
-                }
+                $stmt2 = $dbh->prepare($sql2);
+                $stmt2->bindParam(":item_id", $itemId);
+                $stmt2->bindParam(":post_id", $postId);
+                $stmt2->execute();
 
                 //Tx end
                 $dbh->commit();
@@ -306,10 +292,16 @@ namespace com\indigloo\sc\mysql {
 
                 return $itemId;
 
-            } catch (PDOException $e) {
+            } catch (\PDOException $e) {
                 $dbh->rollBack();
                 $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
             }
 
         }

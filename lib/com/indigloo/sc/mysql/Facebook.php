@@ -59,8 +59,8 @@ namespace com\indigloo\sc\mysql {
              try {
                 $sql1 = "insert into sc_login (provider,name,created_on,access_token,expire_on,ip_address) " ;
                 $sql1 .= " values(:provider,:name,now(),:access_token, %s, :ip_address) " ;
-                $flag = true ;
-
+                
+                
                 $dbh =  PDOWrapper::getHandle();
                 //Tx start
                 $dbh->beginTransaction();
@@ -68,21 +68,15 @@ namespace com\indigloo\sc\mysql {
                 $expiresOn = "(now() + interval ".$expires. " second)";
                 $sql1 = sprintf($sql1,$expiresOn);
 
-                $stmt = $dbh->prepare($sql1);
-                $stmt->bindParam(":name", $name);
-                $stmt->bindParam(":provider", $provider);
-                $stmt->bindParam(":access_token", $access_token);
-                $stmt->bindParam(":ip_address", $remoteIp);
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":name", $name);
+                $stmt1->bindParam(":provider", $provider);
+                $stmt1->bindParam(":access_token", $access_token);
+                $stmt1->bindParam(":ip_address", $remoteIp);
 
-                $flag = $stmt->execute();
-
-                if(!$flag){
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("DB PDO Error : code is  %s",$stmt->errorCode());
-                    throw new DBException($message);
-                }
-
+                $stmt1->execute();
+                $stmt1 = NULL ;
+                
                 $loginId = $dbh->lastInsertId();
                 settype($loginId, "integer");
 
@@ -90,37 +84,38 @@ namespace com\indigloo\sc\mysql {
                 $sql2 .= " email,login_id,ip_address,created_on) " ;
                 $sql2 .= " values(?,?,?,?,?,?,?,?,?,now()) ";
 
-                $stmt = $dbh->prepare($sql2);
-                $stmt->bindParam(1, $facebookId);
-                $stmt->bindParam(2, $name);
-                $stmt->bindParam(3, $firstName);
-                $stmt->bindParam(4, $lastName);
-                $stmt->bindParam(5, $link);
-                $stmt->bindParam(6, $gender);
-                $stmt->bindParam(7, $email);
-                $stmt->bindParam(8, $loginId);
-                $stmt->bindParam(9, $remoteIp);
+                $stmt2 = $dbh->prepare($sql2);
+                $stmt2->bindParam(1, $facebookId);
+                $stmt2->bindParam(2, $name);
+                $stmt2->bindParam(3, $firstName);
+                $stmt2->bindParam(4, $lastName);
+                $stmt2->bindParam(5, $link);
+                $stmt2->bindParam(6, $gender);
+                $stmt2->bindParam(7, $email);
+                $stmt2->bindParam(8, $loginId);
+                $stmt2->bindParam(9, $remoteIp);
 
-                $flag = $stmt->execute();
-
-                if(!$flag){
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
-                    throw new DBException($message);
-                }
+                $stmt2->execute();
+                $stmt2 = NULL ;
+                
 
                 //Tx end
                 $dbh->commit();
                 $dbh = null;
                 return $loginId;
 
-            }catch (PDOException $e) {
+            }catch (\PDOException $e) {
                 $dbh->rollBack();
-                $dbh = NULL ;
+                $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());
 
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
             }
+
 
         }
 

@@ -157,6 +157,7 @@ namespace com\indigloo\sc\mysql {
             $dbh = NULL ;
             
             try {
+                
                 $dbh =  PDOWrapper::getHandle();
                 //Tx start
                 $dbh->beginTransaction();
@@ -180,10 +181,17 @@ namespace com\indigloo\sc\mysql {
                 //Tx end
                 $dbh->commit();
                 $dbh = null;
-            } catch (PDOException $e) {
+
+            }catch (\PDOException $e) {
                 $dbh->rollBack();
                 $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());
+
+             } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
             }
 
         }
