@@ -20,7 +20,7 @@ namespace com\indigloo\sc\mysql {
 
             $sql = " select list.*, login.name as user_name" ;
             $sql .= " from sc_list list, sc_login login  where list.login_id = login.id  " ;
-            $sql .= " and  list.login_id = %d" ;
+            $sql .= " and  list.login_id = %d order by name" ;
             $sql = sprintf($sql,$loginId);
 
             $rows = MySQL\Helper::fetchRows($mysqli,$sql);
