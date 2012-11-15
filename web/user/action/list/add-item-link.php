@@ -28,7 +28,7 @@
             $fvalues = $fhandler->getValues();
             $gWeb = \com\indigloo\core\Web::getInstance();
 
-            $fUrl = $fvalues["fUrl"]);
+            $fUrl = $fvalues["fUrl"];
             $link = $fvalues["link"];
 
             if ($fhandler->hasErrors()) {
@@ -50,7 +50,7 @@
 
             //@todo check if we have a valid item
 
-            $listDao->addItem($fvalues["list_id"],$itemId) ;
+            $listDao->addItem($loginId,$fvalues["list_id"],$itemId) ;
             $message = sprintf("success! item added to list ");
             $gWeb->store(Constants::FORM_MESSAGES,array($message));
 
