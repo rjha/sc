@@ -180,8 +180,8 @@ namespace com\indigloo\sc\controller{
                 }
             }
             
-            $formErrors = FormMessage::render();
-
+            FormMessage::render();
+            
             $pageTitle = $itemObj->title;
             $metaDescription = Util::abbreviate($postDBRow["description"],160);
             $metaKeywords = SeoData::getMetaKeywords($group_names);

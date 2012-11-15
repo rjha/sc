@@ -27,15 +27,6 @@
     }
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
-    $popupId = $sticky->get("popup_id");
-    $strPopupObj = '{}' ;
-
-    if(!Util::tryEmpty($popupId)) {
-        $popupObj = new \stdClass ;
-        $popupObj->id = $popupId ;
-        $strPopupObj = json_encode($popupObj);
-    }
-
     $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
 
     //add login_id and code filters
@@ -137,7 +128,6 @@
                     $(this).find('.options').css("visibility", "hidden");
                 });
 
-                
                 webgloo.sc.toolbar.add();
                 webgloo.sc.item.addActions();
                 //fix twitter bootstrap alerts

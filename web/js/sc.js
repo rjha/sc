@@ -743,12 +743,9 @@ webgloo.sc.Lists = {
 
             var dataObj = {} ;
             dataObj.params = {} ;
-            var id = $(this).attr("id");
+            var itemId = $(this).attr("id");
 
-            //parse id to get loginId|itemId
-            var ids = id.split('|');
-            dataObj.params.loginId  = ids[0];
-            dataObj.params.itemId  = ids[1];
+            dataObj.params.itemId  = itemId;
 
             dataObj.params.action = "SHOW" ;
             dataObj.params.qUrl = encodeBase64(window.location.href) ;

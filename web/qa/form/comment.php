@@ -24,11 +24,11 @@
             $fhandler->addRule('post_id', 'post id', array('required' => 1));
             $fhandler->addRule('owner_id', 'owner id', array('required' => 1));
             $fhandler->addRule('post_title', 'post title', array('required' => 1));
-            $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
+            $fhandler->addRule('qUrl', 'go back to page', array('required' => 1, 'rawData' =>1));
 
             $fvalues = $fhandler->getValues();
             //redirect always happens to item details page.
-            $fUrl = base64_decode($fvalues['fUrl']);
+            $qUrl = base64_decode($fvalues['qUrl']);
 
             // UI checks
             if ($fhandler->hasErrors()) {
@@ -48,7 +48,7 @@
                                         $fvalues['comment']);
 
                 // go back to comment form
-                header("Location: " . $fUrl);
+                header("Location: " . $qUrl);
 
             } else {
                 
@@ -69,8 +69,8 @@
                 //base64 encode to transfer as payload in URL
                 $gSessionAction = base64_encode(json_encode($actionObj));
                 //encode again for user login page
-                $fwd = "/user/login.php?q=".base64_encode($fUrl)."&g_session_action=".$gSessionAction;
-                header('location: '.$fwd);
+                $fwd = "/user/login.php?q=".base64_encode($qUrl)."&g_session_action=".$gSessionAction;
+                header("location: ".$fwd);
                 exit ;
             }
 

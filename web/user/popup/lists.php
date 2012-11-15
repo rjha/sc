@@ -10,7 +10,7 @@
     
     //qurl is base64_encoded
     $qUrl = Util::tryArrayKey($_POST, "qUrl");
-    $qUrl = empty($qUrl) ? '/' : $qUrl ;
+    $qUrl = empty($qUrl) ? base64_encode('/') : $qUrl ;
 
      
     if(!Login::hasSession()) {

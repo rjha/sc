@@ -23,14 +23,6 @@
     }
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
-    $popupId = $sticky->get("popup_id");
-    $strPopupObj = '{}' ;
-
-    if(!Util::tryEmpty($popupId)) {
-        $popupObj = new \stdClass ;
-        $popupObj->id = $popupId ;
-        $strPopupObj = json_encode($popupObj);
-    }
 
     $postDao = new \com\indigloo\sc\dao\Post();
     

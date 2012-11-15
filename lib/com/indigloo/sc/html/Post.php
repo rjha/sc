@@ -92,10 +92,13 @@ namespace com\indigloo\sc\html {
 
         static function getHeader($postView,$loginIdInSession) {
             
-            //edit item
-            $postView->isLoggedInUser = false ;
+            //session has login
+            $postView->hasLoginInSession = (is_null($loginIdInSession)) ? false : true ;
+            $postView->isItemOwner = false ;
+
+            // session has login and session.login_id == item.login_id
             if(!is_null($loginIdInSession) && ($loginIdInSession == $postView->loginId)) {
-                $postView->isLoggedInUser = true ;
+                $postView->isItemOwner = true ;
                 $params = array('id' => $postView->itemId , 'q' => base64_encode(Url::current()));
                 $postView->editUrl = Url::createUrl('/qa/edit.php',$params);
             }

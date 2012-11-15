@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+    
+    <!-- @imp form messages would be rendered by controller -->
 
     <head>
         <title> <?php echo $itemObj->title; ?> - 3mik.com </title>
@@ -52,11 +54,12 @@
 
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
 
-        <div class="container mh800">
+        <div class="container mh600">
             <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
             
             <div class="row">
                 <div class="span9 wbg">
+                    <div id="page-message" class="hide-me"> </div>
                     <div id="item-page">
                     <?php
 
@@ -126,18 +129,14 @@
         </div> <!-- container -->
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+        <link rel="stylesheet" type="text/css" href="/css/extra.css" >
 
         <script type="text/javascript">
 
             $(document).ready(function(){
 
-                webgloo.sc.toolbar.add();
-                webgloo.sc.item.addActions();
-
-                $("a.gallery").fancybox();
-
+                //isotope masonry
                 var $container = $('#tiles');
-
                 $container.imagesLoaded(function(){
                     $container.isotope({
                         itemSelector : '.stamp',
@@ -149,6 +148,13 @@
                 $("#web-form1").validate({
                     errorLabelContainer: $("#web-form1 div.error")
                 });
+
+                $("a.gallery").fancybox();
+
+                webgloo.sc.toolbar.add();
+                webgloo.sc.item.addActions();
+                webgloo.sc.dashboard.fixAlert();
+                webgloo.sc.Lists.init();
 
             });
 
