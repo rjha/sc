@@ -257,10 +257,8 @@
 
         </div>  <!-- container -->
         
-        <?php 
-            if(sizeof($itemDBRows) >= $pageSize)
-                $paginator->render($baseURI, $startId, $endId); 
-        ?>
+        <?php if(sizeof($itemDBRows) >= $pageSize)
+                $paginator->render($baseURI, $startId, $endId); ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
          

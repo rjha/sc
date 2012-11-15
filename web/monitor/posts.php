@@ -109,6 +109,8 @@
         $postDBRows = $postDao->getPaged($paginator,$filters);
     }
 
+    $baseURI ="/monitor/posts.php" ;
+
 ?>
 
 
@@ -223,7 +225,10 @@
                  
             </div>
         </div> <!-- container -->
-        <?php $paginator->render('/monitor/posts.php', $startId, $endId); ?>
+        
+        <?php if(sizeof($postDBRows) >= $pageSize) 
+            $paginator->render($baseURI,$startId,$endId);  ?>
+
 
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

@@ -16,6 +16,8 @@
     $pageSize = 20;
     $paginator = new \com\indigloo\ui\Pagination($qparamss,$pageSize);
     $feedbackDBRows = $feedbackDao->getPaged($paginator);
+    $baseURI = "/monitor/feedback/view.php" ;
+
 
 ?>
 
@@ -98,7 +100,10 @@
                 
             </div>
         </div> <!-- container -->
-        <?php $paginator->render('/monitor/feedback/view.php', $startId, $endId); ?>
+       
+        <?php if(sizeof($feedbackDBRows) >= $pageSize) 
+            $paginator->render($baseURI,$startId,$endId);  ?>
+
 
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

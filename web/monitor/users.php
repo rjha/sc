@@ -103,7 +103,7 @@
     $paginator = new \com\indigloo\ui\Pagination($qparams, $pageSize);
     $userDBRows = $userDao->getPaged($paginator,$filters);
     $gtoken = "" ;
-    
+    $baseURI = "/monitor/users.php";
 
 ?>
 
@@ -211,7 +211,9 @@
             </div>
         </div> <!-- container -->
         <div class="mt20">
-            <?php $paginator->render('/monitor/users.php', $startId, $endId); ?>
+        <?php if(sizeof($userDBRows) >= $pageSize) 
+            $paginator->render($baseURI,$startId,$endId);  ?>
+
         </div>
 
         <script>

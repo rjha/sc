@@ -33,6 +33,8 @@
     $pageSize = Config::getInstance()->get_value("user.page.items");
     $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $commentDBRows = $commentDao->getPaged($paginator,$filters);
+    
+    $baseURI = "/user/dashboard/comments.php" ;
 
 ?>
 
@@ -96,8 +98,9 @@
             </div>
         </div> <!-- container -->
 
-        <?php $paginator->render('/user/dashboard/comments.php', $startId, $endId); ?>
-
+        <?php if(sizeof($commentDBRows) >= $pageSize)
+                $paginator->render($baseURI,$startId,$endId); ?>
+        
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
          <script>

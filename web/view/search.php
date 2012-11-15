@@ -61,7 +61,8 @@
 
         </div>  <!-- container -->
 
-        <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
+        <?php if(sizeof($postDBRows) >= $pageSize) 
+            $paginator->render($pageBaseUrl,$startId,$endId);  ?>
 
          <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
          <script type="text/javascript">

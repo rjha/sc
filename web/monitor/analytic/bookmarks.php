@@ -16,7 +16,7 @@
     $pageSize = 20 ;
     $paginator = new \com\indigloo\ui\Pagination($qparams, $pageSize);
     $rows = $bookmarkDao->getTablePaged($paginator,$filters);
-    //print_r($rows); exit ;
+    $baseURI = "/monitor/analytic/bookmarks.php";
 
 ?>
 
@@ -82,7 +82,8 @@
                  
             </div>
         </div> <!-- container -->
-        <?php $paginator->render('/monitor/analytic/bookmarks.php', $startId, $endId); ?>
+        <?php if(sizeof($rows) >= $pageSize) 
+            $paginator->render($baseURI,$startId,$endId);  ?>
 
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
