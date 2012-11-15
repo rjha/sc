@@ -180,13 +180,15 @@ namespace com\indigloo\sc\controller{
                 }
             }
             
-            FormMessage::render();
-            
             $pageTitle = $itemObj->title;
             $metaDescription = Util::abbreviate($postDBRow["description"],160);
             $metaKeywords = SeoData::getMetaKeywords($group_names);
             $pageUrl = Url::base().Url::current() ;
-            
+
+            // include form error messages right 
+            // at the top of the item page.
+            FormMessage::render();
+
             $file = APP_WEB_DIR. '/view/item.php' ;
             include($file);
         }
