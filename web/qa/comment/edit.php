@@ -18,9 +18,7 @@
     $encodedId = Url::getQueryParam("id");
     $commentId = PseudoId::decode($encodedId);
 
-
-    $qUrl = Url::tryQueryParam("q");
-    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = Url::current();
 
     $commentDao = new com\indigloo\sc\dao\Comment();
@@ -75,7 +73,7 @@
                         </table>
                         <div class="form-actions">
                             <button class="btn btn-primary" type="submit" name="save" value="Save"><span>Submit</span></button>
-                            <a href="<?php echo $qUrl; ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
+                            <a href="<?php echo base64_decode($qUrl); ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
                         </div>
 
 

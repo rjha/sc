@@ -3,16 +3,15 @@
     include(APP_WEB_DIR . '/inc/header.inc');
 
     use \com\indigloo\Util as Util;
+    use \com\indigloo\Url as Url ;
+
     use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\sc\ui\Constants as UIConstants;
 
     set_exception_handler('webgloo_ajax_exception_handler');
     
-    //qurl is base64_encoded
-    $qUrl = Util::tryArrayKey($_POST, "qUrl");
-    $qUrl = empty($qUrl) ? base64_encode('/') : $qUrl ;
+    $fUrl = Url::current();
 
-     
     if(!Login::hasSession()) {
         // no login case
         // add to favorites list - after login
@@ -29,7 +28,7 @@
         
         // action payload in URL
         $gSessionAction = base64_encode(json_encode($actionObj));
-        $fwd = "/user/login.php?q=".$qUrl."&g_session_action=".$gSessionAction;
+        $fwd = "/user/login.php?q=".$fUrl."&g_session_action=".$gSessionAction;
         header('location: '.$fwd);
     
     }
@@ -39,6 +38,6 @@
 
     $listDao = new \com\indigloo\sc\dao\Lists();
     $listRows = $listDao->getOnLoginId($loginId);
-    $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$itemId,$qUrl);
+    $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$itemId,$fUrl);
     echo $html ;
 ?>

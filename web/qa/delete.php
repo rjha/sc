@@ -15,8 +15,8 @@
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
-    $qUrl = Url::tryQueryParam("q");
-    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    //q is part of URL and base64 encoded
+    $qUrl = Url::tryBase64QueryParam("q","/");
     $fUrl = Url::current();
 
     $itemId = Url::getQueryParam("id");

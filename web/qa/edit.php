@@ -18,9 +18,12 @@
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
-    //qUrl and fUrl
-    $qUrl = Url::tryQueryParam("q");
-    $qUrl = is_null($qUrl) ? '/' : $qUrl ; 
+    
+    // qUrl is where control will go after success
+    // it is part of current URL params and base64 encoded
+    // fUrl is current form URL where redirect happens on error
+    // encode qUrl param is part of fURL 
+    $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = Url::current();
 
     $itemId = Url::getQueryParam("id");

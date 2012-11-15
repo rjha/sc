@@ -7,6 +7,7 @@
     use com\indigloo\Util;
     use com\indigloo\Url;
     use \com\indigloo\sc\auth\Login as Login ;
+
     use com\indigloo\ui\form\Sticky;
     use com\indigloo\Constants as Constants;
     use com\indigloo\ui\form\Message as FormMessage;
@@ -14,8 +15,7 @@
     $gWeb = \com\indigloo\core\Web::getInstance();
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
-    $qUrl = Url::tryQueryParam("q");
-    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = Url::current();
 
     //add security token to form
@@ -81,7 +81,7 @@
 
                         <div class="form-actions">
                             <button class="btn btn-primary" type="submit" name="save" value="Save"><span>Submit</span></button>
-                            <a href="<?php echo $qUrl; ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
+                            <a href="<?php echo base64_decode($qUrl); ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
                         </div>
                         <input type="hidden" name="token" value="<?php echo $formToken; ?>" />
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />

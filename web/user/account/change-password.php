@@ -33,7 +33,7 @@
     $title = $userDBRow["email"];
 
 
-    $qUrl = Url::current();
+    $qUrl = base64_encode(Url::current());
     $fUrl = Url::current();
     $submitUrl = "/user/account/form/change-password.php" ;
 

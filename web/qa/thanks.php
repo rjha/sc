@@ -3,11 +3,8 @@
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
 
-    use \com\indigloo\Url as Url ;
-
-    $qUrl = Url::tryQueryParam('q');
-    $qUrl = empty($qUrl) ? '/' : $qUrl;
-
+    $qUrl = \com\indigloo\Url::tryBase64QueryParam('q', '/');
+    $qUrl = base64_decode($qUrl);
 
 ?>
 

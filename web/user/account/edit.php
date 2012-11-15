@@ -15,10 +15,9 @@
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
-    $qUrl = Url::tryQueryParam("q");
-    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = Url::current();
-
+    
     $gSessionLogin = Login::getLoginInSession();
     $loginId = $gSessionLogin->id ;
 

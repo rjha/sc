@@ -22,7 +22,9 @@
             $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
 
             $fvalues = $fhandler->getValues();
-            $qUrl = $fvalues['qUrl'];
+
+            //decode q param to use in redirect
+            $qUrl = base64_decode($fvalues['qUrl']);
             $fUrl = $fvalues['fUrl'];
 
             if ($fhandler->hasErrors()) {

@@ -47,8 +47,6 @@
     $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $postDBRows = $bookmarkDao->getPaged($paginator,$filters);
     $baseURI = "/user/dashboard/bookmark.php";
-    $qUrl = base64_encode(Url::current());
-
 
 ?>
 <!DOCTYPE html>

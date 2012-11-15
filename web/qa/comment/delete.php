@@ -15,8 +15,7 @@
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
 
-    $qUrl = Url::tryQueryParam("q");
-    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = Url::current();
 
     $encodedId = Url::getQueryParam("id");
@@ -64,7 +63,7 @@
                     <form id="web-form1"  name="web-form1" action="/qa/comment/form/delete.php" method="POST">
                         <div>
                             <button class="btn btn-danger" type="submit" name="delete" value="Delete">Delete</button>
-                            <a href="<?php echo $qUrl; ?>"><button class="btn" type="button">Cancel</a></button></a>
+                            <a href="<?php echo base64_decode($qUrl); ?>"><button class="btn" type="button">Cancel</a></button></a>
                         </div>
                         <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />

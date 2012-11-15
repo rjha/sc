@@ -17,8 +17,10 @@
         try {
             
             $fhandler = new Form\Handler("web-form-1", $_POST);
+            $fhandler->addRule("fUrl", "go back to URL", array('required' => 1, 'rawData' =>1));
+
             $fvalues = $fhandler->getValues();
-            $qUrl = $fvalues["q"];
+            $fUrl = $fvalues["fUrl"];
             $gWeb = \com\indigloo\core\Web::getInstance();
 
             if ($fhandler->hasErrors()) {
@@ -45,12 +47,12 @@
 
             //success
             $gWeb->store(Constants::FORM_MESSAGES,array("featured groups list updated!"));
-            header("Location: ".$qUrl );
+            header("Location: ".$fUrl );
 
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
         }
 

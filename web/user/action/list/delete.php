@@ -20,13 +20,13 @@
             
             $fhandler = new Form\Handler("delete-form", $_POST);
             
-            $fhandler->addRule("qUrl", "go back to URL", array('required' => 1, 'rawData' =>1));
+            $fhandler->addRule("fUrl", "go back to URL", array('required' => 1, 'rawData' =>1));
             $fhandler->addRule("list_id", "list id", array('required' => 1));
 
             $fvalues = $fhandler->getValues();
             $gWeb = \com\indigloo\core\Web::getInstance();
 
-            $qUrl = base64_decode($fvalues["qUrl"]);
+            $fUrl = $fvalues["fUrl"];
             $listId = $fvalues["list_id"];
              
             if ($fhandler->hasErrors()) {
@@ -43,7 +43,7 @@
         }catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
 
         }catch(DBException $ex) {
@@ -53,7 +53,7 @@
             $message = "Error: something went wrong with database operation" ;
             $gWeb->store(Constants::FORM_ERRORS,array($message));
             
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
             
         }catch(\Exception $ex) {
@@ -63,7 +63,7 @@
             $message = "Error: looks bad. something went wrong!" ;
             $gWeb->store(Constants::FORM_ERRORS, array($message));
             
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
         }
         

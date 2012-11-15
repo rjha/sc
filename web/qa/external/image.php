@@ -11,9 +11,7 @@
     use com\indigloo\ui\form\Message as FormMessage;
 
     $fUrl = Url::current();
-    $qUrl = Url::tryQueryParam("q");
-    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
-
+    $qUrl = Url::tryBase64QueryParam("q","/");
 
 ?>
 

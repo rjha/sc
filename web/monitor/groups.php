@@ -72,7 +72,7 @@
                                 <?php echo \com\indigloo\sc\html\Site::renderAddBox(); ?>
                                 <?php echo \com\indigloo\sc\html\Site::renderSlugPanel($dbslug); ?>
                                 
-                                <input type="hidden" name="q" value="<?php echo Url::current(); ?>" />
+                                <input type="hidden" name="fUrl" value="<?php echo Url::current(); ?>" />
                                 <div class="p10">
                                     <button class="btn b" type="submit" name="save" value="Save"><span>Update</span></button>
                                  

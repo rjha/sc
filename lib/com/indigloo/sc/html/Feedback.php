@@ -14,7 +14,10 @@ namespace com\indigloo\sc\html {
             $template = '/fragments/monitor/feedback.tmpl' ;
 
             $view->id = $row['id'];
-            $view->qUrl = base64_encode(Url::current());
+            
+            $params = array("id" => $row['id'], "q" => base64_encode(Url::current()) );
+            $view->deleteUrl = Url::createUrl("/monitor/feedback/delete.php",$params);
+            
             $view->description = $row['feedback'];
             $view->name = $row['name'] ;
             $view->phone = $row['phone'] ;

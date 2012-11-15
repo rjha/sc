@@ -13,6 +13,8 @@
    
         $gWeb = \com\indigloo\core\Web::getInstance();
         $qparams = Url::getRequestQueryParams();
+        
+        //base64 decode to use in redirect
         $qUrl = base64_decode($qparams["q"]);
         $id = $qparams["id"];
         $feedbackDao = new \com\indigloo\sc\dao\Feedback();

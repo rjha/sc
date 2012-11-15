@@ -57,7 +57,7 @@
     $itemDBRows = $listDao->getPagedItems($paginator,$filters);
     
     $baseURI = "/user/dashboard/list/detail.php";
-    $qUrl = base64_encode(Url::current());
+    $fUrl = Url::current();
 
 ?>
 
@@ -131,7 +131,7 @@
                             &nbsp;
                             <a class="btn btn-small close-panel" rel="list-edit">Cancel</a>
                             
-                            <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
+                            <input type="hidden" name="fUrl" value="<?php echo $fUrl ?>"/>
                             <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
                             <input type="hidden" name="panel_id" value="list-edit"/>
 
@@ -157,7 +157,7 @@
                             <a class="btn btn-small close-panel" rel="list-add-item">Cancel</a>
                             &nbsp;
                             <a id="list-add-item-help" href="#">click here to get help on item URL</a>
-                            <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>"/>
+                            <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>"/>
                             <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
                             <input type="hidden" name="panel_id" value="list-add-item"/>
                         </form> <!-- form:2 -->
@@ -180,7 +180,7 @@
                             &nbsp;
                             <a class="btn btn-small close-panel" rel="list-delete">Cancel</a>
                             
-                            <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>"/>
+                            <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>"/>
                             <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
                         </form> <!-- form:3 -->
                     </div>
@@ -202,7 +202,7 @@
                             &nbsp;
                             <a class="btn btn-small close-panel" rel="list-delete-item">Cancel</a>
                             
-                            <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>"/>
+                            <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>"/>
                             <input type="hidden" name="list_id" value="<?php echo $listId ?>"/>
                             <input type="hidden" name="items_json" value=''/>
                         </form> <!-- form:4 -->

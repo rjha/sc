@@ -37,7 +37,7 @@
 
     $listDBRows = $listDao->getPagedOnLoginId($paginator,$loginId);
     $baseURI = "/user/dashboard/list/index.php" ;
-    $qUrl = base64_encode(Url::current());
+    $fUrl = Url::current();
 
 ?>
 
@@ -102,7 +102,7 @@
                             &nbsp;
                             <a class="btn btn-small close-panel" rel="list-create">Cancel</a>
                             
-                            <input type="hidden" name="qUrl" value="<?php echo $qUrl ?>"/>
+                            <input type="hidden" name="fUrl" value="<?php echo $fUrl ?>"/>
                             <input type="hidden" name="panel_id" value="list-create"/>
 
                         </form> <!-- form:1 -->

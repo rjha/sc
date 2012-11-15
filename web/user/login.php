@@ -15,9 +15,8 @@
         header("Location: / ");
     }
 
-    //qUrl and fUrl
-    $qUrl = Url::tryQueryParam("q");
-    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $qUrl = Url::tryBase64QueryParam("q", "/");
+    $fUrl = Url::current();
     
     // should login do some action?
     $gSessionAction = Url::tryQueryParam("g_session_action");

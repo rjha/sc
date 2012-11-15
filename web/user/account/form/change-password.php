@@ -24,7 +24,8 @@
 
             $fvalues = $fhandler->getValues();
 
-            $qUrl = $fvalues['qUrl'];
+            //decode q param for redirect
+            $qUrl = base64_decode($fvalues['qUrl']);
             $fUrl = $fvalues['fUrl'];
             $gWeb = \com\indigloo\core\Web::getInstance();
 

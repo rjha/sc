@@ -14,10 +14,13 @@
 
         try {
             $fhandler = new Form\Handler('web-form-1', $_POST);
+            
             $fhandler->addRule('email', 'Email', array('maxlength' => 64, 'required' =>1));
+            $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
+
             $fvalues = $fhandler->getValues();
 
-            $qUrl = $fvalues['q'];
+            $fUrl = $fvalues['fUrl'];
             $gWeb = \com\indigloo\core\Web::getInstance();
 
             if ($fhandler->hasErrors()) {
@@ -38,13 +41,13 @@
             $message = "Success! You will receive an email soon!";
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_MESSAGES,array($message));
-            header("Location: ".$qUrl);
+            header("Location: ".$fUrl);
             exit;
 
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
         }
     }

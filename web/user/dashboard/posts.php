@@ -40,7 +40,7 @@
 
     $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $postDBRows = $postDao->getPaged($paginator,$filters);
-    $qUrl = base64_encode(Url::current());
+    
     $baseURI = "/user/dashboard/posts.php" ;
 
 

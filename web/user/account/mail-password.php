@@ -70,7 +70,7 @@
 
                         </table>
 
-                        <input type="hidden" name="q" value="<?php echo Url::current(); ?>" />
+                        <input type="hidden" name="fUrl" value="<?php echo Url::current(); ?>" />
 
                     </form>
 

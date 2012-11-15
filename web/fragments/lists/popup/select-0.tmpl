@@ -12,12 +12,12 @@
         <br>
         <button type="submit" id ="create-list" class="btn btn-small" name="create" value="Create"><span>Create</span></button>
          &nbsp;
-        <a class="btn btn-small" href="~~base64_decode($view->qUrl)~" >Cancel</a>
+        <a class="btn btn-small" href="~~$view->fUrl~" >Cancel</a>
                                 
         <input type="hidden" name="item_id" value="~~$view->itemId~" />
         <input type="hidden" name="list_id" value="" />
         <input type="hidden" name="is_new" value="1" />
-        <input type="hidden" name="qUrl" value="~~$view->qUrl~" />
+        <input type="hidden" name="fUrl" value="~~$view->fUrl~" />
         
     </form>
 </div>
