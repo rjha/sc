@@ -17,7 +17,7 @@ namespace com\indigloo\sc\html{
 
         static function getMetaDescription($token) {
             $x = "%s - share and discover %s and other similar shopping items in India. " ;
-            $x .= " %s and other intersting stuff are shared by users of 3mik.com" ;
+            $x .= " %s and other interesting stuff are shared by users of 3mik.com" ;
             $x = sprintf($x,$token,$token,$token);
             return $x ;
         }
@@ -34,7 +34,7 @@ namespace com\indigloo\sc\html{
 
         static function getHomeMetaDescription() {
             $x = " share and discover cool shopping items in India. " ;
-            $x .= "All intersting stuff are shared by users of 3mik.com" ; 
+            $x .= "All interesting stuff are shared by users of 3mik.com" ; 
             return $x ;
         }
 
