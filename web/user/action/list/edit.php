@@ -30,7 +30,7 @@
             
             //fUrl is needed for redirect
             $gWeb = \com\indigloo\core\Web::getInstance();
-            $fUrl = base64_decode($fvalues["fUrl"]);
+            $fUrl = $fvalues["fUrl"];
             $name = $fvalues["name"];
             
             if(!Util::isAlphaNumeric($name)) {
