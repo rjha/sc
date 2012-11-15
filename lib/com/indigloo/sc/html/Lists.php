@@ -46,13 +46,14 @@ namespace com\indigloo\sc\html {
             
             $view->name = $row["name"];
             $view->items = json_decode($row["items_json"]);
+
             $view->count = $row["item_count"] ;
             $view->hasImage = false ;
 
-            foreach($view->items as $item){
-                $view->srcImage = $item->thumbnail ;
+            if(is_array($view->items)){
                 $view->hasImage = true ;
-                break ;
+            } else {
+                $view->items = array();
             }
 
             return $view ;

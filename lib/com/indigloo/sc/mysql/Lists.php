@@ -99,7 +99,7 @@ namespace com\indigloo\sc\mysql {
             $condition = $q->get();
             $sql .= $condition;
 
-            $sql .= " order by post.id desc LIMIT %d " ;
+            $sql .= " order by li.id desc LIMIT %d " ;
             $sql = sprintf($sql,$limit);
             
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
@@ -130,7 +130,7 @@ namespace com\indigloo\sc\mysql {
             $q->filter($filters);
             $condition = $q->get();
             $sql .= $condition;
-            $sql .= $q->getPagination($start,$direction,"post.id",$limit);
+            $sql .= $q->getPagination($start,$direction,"li.id",$limit);
             
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
@@ -193,7 +193,7 @@ namespace com\indigloo\sc\mysql {
                 $dbh->commit();
                 $dbh = null;
 
-            }catch (PDOException $e) {
+            }catch (\PDOException $e) {
                 $dbh->rollBack();
                 $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());
@@ -313,7 +313,7 @@ namespace com\indigloo\sc\mysql {
 
                 return ;
 
-            }catch (PDOException $e) {
+            }catch (\PDOException $e) {
                 $dbh->rollBack();
                 $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());
@@ -402,7 +402,7 @@ namespace com\indigloo\sc\mysql {
 
                 return $count ;
 
-            }catch (PDOException $e) {
+            }catch (\PDOException $e) {
                 $dbh->rollBack();
                 $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());
@@ -443,9 +443,13 @@ namespace com\indigloo\sc\mysql {
             }
 
             try{ 
+
                 $dbh =  PDOWrapper::getHandle();
+
                 // *** Tx start ***
                 $dbh->beginTransaction();
+
+                // #1 : delete items
                 $sqlt = " delete from sc_list_item where list_id = %d and item_id = %d " ;
 
                 foreach($itemIds as $itemId) {
@@ -455,10 +459,62 @@ namespace com\indigloo\sc\mysql {
                     $dbh->exec($sql);
                 }
 
+               
+                // #2: get items_json within this Tx
+                $sql2 = " select post.id, post.images_json from sc_post post, sc_list_item li " ;
+                $sql2 .= " where li.item_id = post.id  and li.list_id = %d  limit 4 " ;
+                $sql2 = sprintf($sql2,$listId);
+
+                $stmt2 = $dbh->prepare($sql2);
+                $stmt2->execute();
+                $rows = $stmt2->fetchAll();
+                $stmt2->closeCursor();
+                $stmt2 = NULL ;
+
+                $bucket = array();
+
+                foreach($rows as $row) {
+                    $itemId = $row["id"];
+                    $json = $row["images_json"];
+
+                    $images = json_decode($json);
+
+                    if( !empty($images) && (sizeof($images) > 0)) {
+                        $image = $images[0] ;
+                        $imgv = \com\indigloo\sc\html\Post::convertImageJsonObj($image);
+                        $view = new \stdClass ;
+                        $view->id = $row["id"];
+                        $view->thumbnail = $imgv["thumbnail"];
+                        array_push($bucket,$view);
+                    }
+                }
+
+                $items_json = json_encode($bucket);
+
+                if($items_json === FALSE || $items_json == NULL) {
+                    $items_json = '[]' ;
+                    $errorMsg = sprintf(" json encode error : list delete : id :: %d",$listId);
+                    Logger::getInstance()->error($errorMsg);
+
+                }
+
+                // #3 : update list.id.item_count and list.id.items_json
+                $sql3 = " update sc_list set items_json = :items_json, " ;
+                $sql3 .= " item_count = (select count(id) from sc_list_item where list_id = :list_id)" ;
+                $sql3 .= " where id = :list_id " ;
+                
+                $stmt3 = $dbh->prepare($sql3);
+                $stmt3->bindParam(":list_id", $listId);
+                $stmt3->bindParam(":items_json", $items_json);
+                $stmt3->execute();
+                $stmt3 = NULL ;
+
+                // **** Tx end ****
+
                 $dbh->commit();
                 $dbh = null;
 
-            }catch (PDOException $e) {
+            }catch (\PDOException $e) {
                 $dbh->rollBack();
                 $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());

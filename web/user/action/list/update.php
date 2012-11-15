@@ -58,7 +58,7 @@
 
         } else {
             //Add to existing list 
-            $listDao->addItem($listId,$itemId);
+            $listDao->addItem($loginId,$listId,$itemId);
         }
 
         $message = sprintf("success! items added to list");

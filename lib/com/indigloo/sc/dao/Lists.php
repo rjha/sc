@@ -37,6 +37,18 @@ namespace com\indigloo\sc\dao {
             return mysql\Lists::exists($listId);
         }
 
+        function isOwner($loginId,$listId) {
+            $row = $this->getOnId($listId);
+            $loginIdInDB = $row["login_id"];
+            settype($loginIdInDB, "integer");
+
+            if($loginIdInDB != $loginId) {
+                $error = "List ownership is in dispute!" ;
+                throw new UIException(array($error));
+            }
+
+        }
+
         function getPagedOnLoginId($paginator,$loginId) {
 
             $limit = $paginator->getPageSize();
@@ -116,8 +128,14 @@ namespace com\indigloo\sc\dao {
             return ;
         }
 
-        //@todo - add @param loginId
-        function addItem($listId,$itemId){
+        function addItem($loginId,$listId,$itemId){
+            // list ownership check is required
+            // when we do not pass the loginId to backend
+            // someone assuming a "fake" loginId is a problem
+            // that data layer cannot solve!
+
+            $this->isOwner($loginId,$listId);
+
             $postId = PseudoId::decode($itemId);
             $row = $this->getOnId($listId);
             $dbItemsJson = $row["items_json"];
@@ -150,8 +168,8 @@ namespace com\indigloo\sc\dao {
 
             $itemsJson = json_encode($dbItems);
             $itemsJson = Util::formSafeJson($itemsJson);
-
             mysql\Lists::addItem($listId,$itemsJson,$postId);
+
         }
 
         function deleteItems($loginId,$listId,$itemsJson) {
@@ -170,15 +188,12 @@ namespace com\indigloo\sc\dao {
                 return ;
             }
 
-            //@todo check ownership of list 
-            //delete items
             mysql\Lists::deleteItems($loginId,$listId,$itemIds);
-            //@todo - adjust items_json in DB
-
-             
+            
         }
 
         function edit($loginId,$listId,$name,$description) {
+
             //md5 hash as hex string and bytes
             $hash = md5($name);
             $bin_hash = md5($name,TRUE); 

@@ -30,7 +30,7 @@
 
             $fUrl = $fvalues["fUrl"];
             $link = $fvalues["link"];
-
+            
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors());
             }
