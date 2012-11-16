@@ -564,12 +564,11 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
         }) ;
 
-        //@todo - remove from item actions after implementing
-        // list actions
-        //
         $("a.save-post").live("click", function(event){
             event.preventDefault();
+            webgloo.sc.Lists.openPopup();
 
+            /*
             var dataObj = {} ;
             dataObj.params = {} ;
             dataObj.params.itemId  = $(this).attr("id");
@@ -579,6 +578,8 @@ webgloo.sc.item = {
             //open popup
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
+            */
+
         }) ;
 
         //unsave
@@ -736,28 +737,31 @@ webgloo.sc.Lists = {
         webgloo.sc.Lists.containerId = containerId ;
     },
 
+    openPopup : function(itemId) {
+
+        var dataObj = {} ;
+        dataObj.params = {} ;
+
+        dataObj.params.itemId  = itemId;
+        dataObj.params.action = "SHOW" ;
+        dataObj.params.qUrl = encodeBase64(window.location.href) ;
+        dataObj.endPoint = "/user/popup/lists.php";
+
+        //open popup
+        webgloo.sc.SimplePopup.init();
+        webgloo.sc.SimplePopup.post(dataObj,{
+                "dataType" : "text",
+                "reload" : false,
+                "visible" : true});
+
+    },
+
     init : function () {
 
         $("a.show-list").click(function(event){
             event.preventDefault();
-
-            var dataObj = {} ;
-            dataObj.params = {} ;
             var itemId = $(this).attr("id");
-
-            dataObj.params.itemId  = itemId;
-
-            dataObj.params.action = "SHOW" ;
-            dataObj.params.qUrl = encodeBase64(window.location.href) ;
-            dataObj.endPoint = "/user/popup/lists.php";
-
-
-            //open popup
-            webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(dataObj,{
-                "dataType" : "text",
-                "reload" : false,
-                "visible" : true});
+            webgloo.sc.Lists.openPopup(itemId);
 
         }) ;
 

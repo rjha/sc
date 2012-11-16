@@ -1,4 +1,9 @@
 <?php 
+    
+    // user/popup/list.php
+    // normal HTML output
+    // session pending action not possible.
+
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
 
@@ -13,28 +18,13 @@
     // list popup is called via javascript on pages
     // so actual "form caller " is what is coming in as
     // qUrl (original window.location.href) from javascript POST 
-
+    // this is base64 encoded
     $qUrl = Util::getArrayKey($_POST, "qUrl");
 
     if(!Login::hasSession()) {
-        // no login case
-        // add to favorites list - after login
-        // create data object representing pending session action
-        $actionObj = new \stdClass ;
-        $actionObj->endPoint = "/qa/ajax/bookmark.php" ;
-
-        $params = new \stdClass ;
-        //substitute the loginId
-        $params->loginId = "{loginId}" ;
-        $params->itemId = Util::getArrayKey($_POST, "itemId");
-        $params->action = UIConstants::SAVE_POST ;
-        $actionObj->params = $params ;
-        
-        // action payload in URL
-        $gSessionAction = base64_encode(json_encode($actionObj));
-        $fwd = "/user/login.php?q=".$qUrl."&g_session_action=".$gSessionAction;
-        header('location: '.$fwd);
-    
+        $message = "You need to login!";
+        echo $message ;
+        exit ;
     }
 
     $loginId = Login::getLoginIdInSession();

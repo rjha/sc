@@ -5,11 +5,20 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\mysql as mysql;
+
     use \com\indigloo\Logger as Logger;
+    use \com\indigloo\sc\util\PseudoId ;
 
     class Post {
 
         function getOnId($postId) {
+            $row = mysql\Post::getOnId($postId);
+            return $row ;
+        }
+
+        function getOnItemId($itemId) {
+
+            $postId = PseudoId::decode($itemId);
             $row = mysql\Post::getOnId($postId);
             return $row ;
         }

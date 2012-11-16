@@ -92,18 +92,27 @@ namespace com\indigloo\sc\html {
 
         static function getHeader($postView,$loginIdInSession) {
             
-            //session has login
-            $postView->hasLoginInSession = (is_null($loginIdInSession)) ? false : true ;
             $postView->isItemOwner = false ;
+            $postView->hasLoginInSession = is_null($loginIdInSession) ? false : true ;
 
             // session has login and session.login_id == item.login_id
             if(!is_null($loginIdInSession) && ($loginIdInSession == $postView->loginId)) {
                 $postView->isItemOwner = true ;
                 $params = array('id' => $postView->itemId , 'q' => base64_encode(Url::current()));
                 $postView->editUrl = Url::createUrl('/qa/edit.php',$params);
+
             }
 
             $template = '/fragments/item/header.tmpl' ;
+
+            if(!$postView->hasLoginInSession) {
+                
+                $params = array("item_id" => $postView->itemId);
+                $listUrl = "/user/dashboard/list/select.php" ;
+                $listUrl = Url::createUrl($listUrl,$params);
+                $postView->saveUrl = "/user/login.php?q=".base64_encode($listUrl) ;
+            }
+
             $html = Template::render($template,$postView);
             return $html;
         }
