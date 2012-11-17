@@ -13,13 +13,14 @@
 
     $mysqli = MySQL\Connection::getInstance()->getHandle();
 
-    $sql = " select login_id from sc_post " ;
+    $sql = "  select count(id) as count, login_id from sc_post group by login_id " ;
     $rows = MySQL\Helper::fetchRows($mysqli,$sql);
-    $t1 = " update sc_user_counter set post_count = post_count + 1 where login_id = %s ; " ;
+    $t1 = " update sc_user_counter set post_count = %d where login_id = %s ; " ;
 
     foreach($rows as $row) {
         $loginId = $row["login_id"];
-        $t1sql = sprintf($t1,$loginId) ;
+        $count = $row["count"];
+        $t1sql = sprintf($t1,$count,$loginId) ;
         printf("%s \n",$t1sql);
 
     }

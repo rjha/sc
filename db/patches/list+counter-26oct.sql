@@ -96,16 +96,13 @@ update sc_site_counter set list_count = 0  where id = 1 ;
 insert into sc_user_counter (login_id) 
     select id from sc_login ;
 
--- comments from sc_comment
--- like/save from sc_bookmark
--- follow/following from sc_follow
---
--- @todo run seed-counter.php script now
---
 
 insert into sc_post_counter(post_id)
     select id from sc_post ;
 
+--
+-- @run seed-counters.php script 
+-- 
 
 --
 -- update triggers to use counters
