@@ -266,9 +266,7 @@ CREATE TRIGGER trg_fb_user_cp  BEFORE INSERT ON sc_facebook
         insert into sc_user_counter (login_id) values(NEW.login_id);  
         update sc_site_counter set user_count = user_count + 1 ;  
 
-        --
-        -- default lists 
-        -- 
+        
         
 
     END //
@@ -480,4 +478,16 @@ DELIMITER //
       update sc_list set item_count = item_count + 1  where id = NEW.list_id;
     END //
 DELIMITER ;
+
+
+--
+-- @run move-favorites script to move data from 
+-- sc_bookmark table to sc_list_item table.
+-- set dl_bit
+-- update sc_list set dl_bit = 1 where name = 'Favorites' ;
+-- 
+-- after running the script - clean sc_bookmark.verb = 2 rows
+-- 
+-- delete from sc_bookmark where verb = 2 ;
+-- 
 
