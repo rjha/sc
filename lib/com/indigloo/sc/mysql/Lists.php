@@ -231,8 +231,7 @@ namespace com\indigloo\sc\mysql {
              } catch(\Exception $ex) {
                 $dbh->rollBack();
                 $dbh = null;
-                $message = $ex->getMessage();
-                throw new DBException($message);
+                throw new DBException($ex->getMessage(),$ex->getCode());
             }
 
         }
@@ -344,6 +343,7 @@ namespace com\indigloo\sc\mysql {
                 return ;
 
             }catch (\PDOException $e) {
+                Logger::getInstance()->error(" This is PDOException");
                 $dbh->rollBack();
                 $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());
@@ -351,8 +351,7 @@ namespace com\indigloo\sc\mysql {
             } catch(\Exception $ex) {
                 $dbh->rollBack();
                 $dbh = null;
-                $message = $ex->getMessage();
-                throw new DBException($message);
+                throw new DBException($ex->getMessage(),$ex->getCode());
             }
             
         }
@@ -442,8 +441,7 @@ namespace com\indigloo\sc\mysql {
             } catch(\Exception $ex) {
                 $dbh->rollBack();
                 $dbh = null;
-                $message = $ex->getMessage();
-                throw new DBException($message);
+                throw new DBException($ex->getMessage(),$ex->getCode());
             }
             
         }
@@ -554,8 +552,7 @@ namespace com\indigloo\sc\mysql {
             } catch(\Exception $ex) {
                 $dbh->rollBack();
                 $dbh = null;
-                $message = $ex->getMessage();
-                throw new DBException($message);
+                throw new DBException($ex->getMessage(),$ex->getCode());
             }
 
         }
