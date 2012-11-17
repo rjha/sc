@@ -76,7 +76,12 @@
         Logger::getInstance()->error($ex->getMessage());
         Logger::getInstance()->backtrace($ex->getTrace());
         $gWeb->store(Constants::STICKY_MAP, $fvalues);
+
         $message = "Error: something went wrong with database operation" ;
+        if($ex->getCode() == 23000) {
+            $message =  sprintf("Error: list name _%s_ is already in use!",$name);
+        }
+        
         $gWeb->store(Constants::FORM_ERRORS,array($message));
         header("Location: " . $qUrl);
         exit(1);
