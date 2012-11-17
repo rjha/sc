@@ -16,6 +16,8 @@
 
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Logger as Logger ;
+    use \com\indigloo\sc\util\PseudoId ;
+
 
     // @imp submit buttons are only considered successful controls 
     // if they are used to submit the form
@@ -44,23 +46,31 @@
         $flag = intval($fvalues["is_new"]);
 
         $listDao = new \com\indigloo\sc\dao\Lists();
+        $name =  $fvalues["new-list-name"];
 
         if( ($flag == 1) && empty($listId)) {
             // create new list 
-            $name =  $fvalues["new-list-name"];
             if(!Util::isAlphaNumeric($name)) {
                 $error = "Bad name : only letters and numbers are allowed!" ;
                 throw new UIException(array($error));
             }
 
-            $listDao->create($loginId,$name,$itemId);
-
+            $listId = $listDao->create($loginId,$name,$itemId);
+            $pListId = PseudoId::encode($listId);
         } else {
             //Add to existing list 
             $listDao->addItem($loginId,$listId,$itemId);
+            $pListId = PseudoId::encode($listId);
         }
 
-        $message = sprintf("success! items added to list");
+
+        $listUrl = str_replace(
+            "{listId}",
+            $pListId,
+            "<a href=\"/pub/list/{listId}\">view list &rarr;</a>") ;
+
+
+        $message = sprintf("success! items added to list. %s",$listUrl);
         $gWeb->store(Constants::FORM_MESSAGES,array($message));
 
         header("Location: " . $qUrl);
