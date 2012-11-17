@@ -431,7 +431,7 @@ namespace com\indigloo\sc\mysql {
                 $dbh->commit();
                 $dbh = null;
 
-                return $count ;
+                return $listId ;
 
             }catch (\PDOException $e) {
                 $dbh->rollBack();
