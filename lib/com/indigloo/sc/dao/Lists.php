@@ -24,12 +24,13 @@ namespace com\indigloo\sc\dao {
     class Lists {
 
         private  $defaults ;
-
+        private $defaultKeys ;
 
         function __construct() {
             // since we push this list onto db list rows 
             // the elements will appear in reverse order on UI
             $this->defaults = array("Wishlist" => "-1002", "Favorites" => "-1001");
+            $this->defaultKeys = array("wishlist", "favorites");
         }
 
         private function createListRow($name,$loginId) {
@@ -133,9 +134,15 @@ namespace com\indigloo\sc\dao {
 
         // create a new list w/o items
         function createNew($loginId,$name,$description) {
+
+            $seoName = StringUtil::convertNameToKey($name);
+            if(in_array($seoName,$this->defaultKeys)) {
+                $errorMsg = sprintf("Error: list name _%s_ is already in use!",$name);
+                throw new UIException(array($errorMsg));
+            }
+
             //md5 hash as hex string and bytes
             $hash = md5($name);
-            $seoName = StringUtil::convertNameToKey($name);
             //unique name constraint is on seo_name
             // that is used in pub URL
             $bin_hash = md5($seoName,TRUE); 
@@ -150,8 +157,14 @@ namespace com\indigloo\sc\dao {
         }
 
         // create a new list with items
-
         function create($loginId,$name,$itemId,$dl_bit = 0) {
+
+            $seoName = StringUtil::convertNameToKey($name);
+
+            if(in_array($seoName,$this->defaultKeys)) {
+                $errorMsg = sprintf("Error: list name _%s_ is already in use!",$name);
+                throw new UIException(array($errorMsg));
+            }
 
             //get item row
             $postId = PseudoId::decode($itemId);
@@ -171,7 +184,6 @@ namespace com\indigloo\sc\dao {
 
             //md5 hash as hex string and bytes
             $hash = md5($name);
-            $seoName = StringUtil::convertNameToKey($name);
             $bin_hash = md5($seoName,TRUE); 
 
             mysql\Lists::create(
