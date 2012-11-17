@@ -40,7 +40,7 @@
 
     //filter-2
     $filter = new Filter($model);
-    $filter->add($model::VERB_COLUMN,Filter::EQ,AppConstants::SAVE_VERB);
+    $filter->add($model::VERB_COLUMN,Filter::EQ,AppConstants::LIKE_VERB);
     array_push($filters,$filter);
 
     $pageSize = Config::getInstance()->get_value("user.page.items");
@@ -53,7 +53,7 @@
 <html>
 
     <head>
-        <title> saved items of <?php echo $gSessionLogin->name; ?> </title>
+        <title> Likes of <?php echo $gSessionLogin->name; ?> </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         

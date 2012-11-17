@@ -64,7 +64,6 @@ CREATE TABLE  sc_user_counter  (
    post_count int default 0,
    comment_count int default 0 ,
    like_count int default 0 ,
-   save_count int default 0 ,
    list_count int default 0,
    follower_count int default 0,
    following_count int default 0,
@@ -77,32 +76,10 @@ CREATE TABLE  sc_post_counter  (
    post_id  int NOT NULL,
    comment_count int default 0,
    like_count int  default 0,
-   save_count int  default 0 ,
    list_count int  default 0,
    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
--- 
--- seed counter tables 
---
-
-insert into sc_site_counter(id,post_count)
-    select 1 , count(id) from sc_post ;
-
-update sc_site_counter set comment_count = (select count(id) from sc_comment)  where id = 1 ;
-update sc_site_counter set user_count = (select count(id) from sc_login)  where id = 1 ;
-update sc_site_counter set list_count = 0  where id = 1 ;
-
-insert into sc_user_counter (login_id) 
-    select id from sc_login ;
-
-
-insert into sc_post_counter(post_id)
-    select id from sc_post ;
-
---
--- @run seed-counters.php script 
--- 
 
 --
 -- update triggers to use counters
@@ -417,10 +394,7 @@ DELIMITER //
               update sc_user_counter set like_count = like_count + 1 where login_id = NEW.subject_id ;
               update sc_post_counter set like_count = like_count + 1 where post_id = NEW.object_id ;
         END IF;
-        IF (NEW.verb = 2 ) THEN 
-              update sc_user_counter set save_count = save_count + 1 where login_id = NEW.subject_id ;
-              update sc_post_counter set save_count = save_count + 1 where post_id = NEW.object_id ;
-        END IF;
+        
 
     END //
 DELIMITER ;
@@ -436,10 +410,7 @@ DELIMITER //
               update sc_user_counter set like_count = like_count - 1 where login_id = OLD.subject_id ;
               update sc_post_counter set like_count = like_count - 1 where post_id = OLD.object_id ;
         END IF;
-        IF (OLD.verb = 2 ) THEN 
-              update sc_user_counter set save_count = save_count - 1 where login_id = OLD.subject_id ;
-              update sc_post_counter set save_count = save_count - 1 where post_id = OLD.object_id ;
-        END IF;
+        
 
     END //
 DELIMITER ;
@@ -486,8 +457,36 @@ DELIMITER ;
 -- set dl_bit
 -- update sc_list set dl_bit = 1 where name = 'Favorites' ;
 -- 
+
+
+
+
+-- 
+-- seed counter tables 
+--
+
+insert into sc_site_counter(id,post_count)
+    select 1 , count(id) from sc_post ;
+
+update sc_site_counter set comment_count = (select count(id) from sc_comment)  where id = 1 ;
+update sc_site_counter set user_count = (select count(id) from sc_login)  where id = 1 ;
+update sc_site_counter set list_count = 0  where id = 1 ;
+
+insert into sc_user_counter (login_id) 
+    select id from sc_login ;
+
+
+insert into sc_post_counter(post_id)
+    select id from sc_post ;
+
+--
+-- @run seed-counters.php script 
+-- 
+
+
+-- 
+-- cleanup
 -- after running the script - clean sc_bookmark.verb = 2 rows
 -- 
 -- delete from sc_bookmark where verb = 2 ;
 -- 
-

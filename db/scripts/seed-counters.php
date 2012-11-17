@@ -46,9 +46,8 @@
     $rows = MySQL\Helper::fetchRows($mysqli,$sql);
 
     $t11 = " update sc_user_counter set like_count = like_count + 1 where login_id = %s ; " ;
-    $t12 = " update sc_user_counter set save_count = save_count + 1 where login_id = %s ; " ;
     $t21 = " update sc_post_counter set like_count = like_count + 1 where post_id = %s ; " ;
-    $t22 = " update sc_post_counter set save_count = save_count + 1 where post_id = %s ; " ;
+    
 
     foreach($rows as $row) {
         $verb = $row["verb"];
@@ -56,13 +55,6 @@
         if($verb == 1 ) {
             $t1sql = sprintf($t11,$row["subject_id"]) ;
             $t2sql = sprintf($t21,$row["object_id"]) ;
-            printf("%s \n",$t1sql);
-            printf("%s \n",$t2sql);
-        }
-
-        if($verb == 2 ) {
-            $t1sql = sprintf($t12,$row["subject_id"]) ;
-            $t2sql = sprintf($t22,$row["object_id"]) ;
             printf("%s \n",$t1sql);
             printf("%s \n",$t2sql);
         }
