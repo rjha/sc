@@ -135,8 +135,11 @@ namespace com\indigloo\sc\dao {
         function createNew($loginId,$name,$description) {
             //md5 hash as hex string and bytes
             $hash = md5($name);
-            $bin_hash = md5($name,TRUE); 
             $seoName = StringUtil::convertNameToKey($name);
+            //unique name constraint is on seo_name
+            // that is used in pub URL
+            $bin_hash = md5($seoName,TRUE); 
+
             mysql\Lists::createNew(
                 $loginId,
                 $name,
@@ -168,8 +171,9 @@ namespace com\indigloo\sc\dao {
 
             //md5 hash as hex string and bytes
             $hash = md5($name);
-            $bin_hash = md5($name,TRUE); 
             $seoName = StringUtil::convertNameToKey($name);
+            $bin_hash = md5($seoName,TRUE); 
+
             mysql\Lists::create(
                 $loginId,
                 $name,
@@ -264,8 +268,9 @@ namespace com\indigloo\sc\dao {
 
             //md5 hash as hex string and bytes
             $hash = md5($name);
-            $bin_hash = md5($name,TRUE); 
             $seoName = StringUtil::convertNameToKey($name);
+            $bin_hash = md5($seoName,TRUE); 
+
             mysql\Lists::edit(
                 $loginId,
                 $listId,
