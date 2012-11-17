@@ -5,12 +5,12 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\Template as Template;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
+
     use \com\indigloo\Logger as Logger ;
-    
     use \com\indigloo\util\StringUtil as StringUtil ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
+
     use \com\indigloo\sc\Constants as AppConstants ;
-    
     use \com\indigloo\sc\ui\Constants as UIConstants ;
 
     class Site {
@@ -208,6 +208,24 @@ namespace com\indigloo\sc\html {
             $html = Template::render($template,$view);
             return $html ;
         }
+
+        static function formMessage() {
+            
+            $html = NULL ;
+            $template = '/fragments/ui/form-message.tmpl' ;
+            $view = new \stdClass;
+
+            $gWeb = \com\indigloo\core\Web::getInstance();
+            $messages = $gWeb->find(Constants::FORM_MESSAGES,true);
+            $errors = $gWeb->find(Constants::FORM_ERRORS,true);
+
+            $view->messages = $messages ;
+            $view->errors = $errors ;
+
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
 
     }
 

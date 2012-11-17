@@ -187,8 +187,7 @@ namespace com\indigloo\sc\controller{
 
             // include form error messages right 
             // at the top of the item page.
-            FormMessage::render();
-
+            $formMessage = \com\indigloo\sc\html\Site::formMessage(); 
             $file = APP_WEB_DIR. '/view/item.php' ;
             include($file);
         }

@@ -58,7 +58,9 @@
             <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
             
             <div class="row">
+                <?php echo $formMessage; ?>
                 <div class="span9 wbg">
+
                     <div id="page-message" class="hide-me"> </div>
                     <div id="item-page">
                     <?php
