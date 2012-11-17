@@ -23,8 +23,59 @@ namespace com\indigloo\sc\dao {
 
     class Lists {
 
+        private  $defaults ;
+
+
+        function __construct() {
+            // since we push this list onto db list rows 
+            // the elements will appear in reverse order on UI
+            $this->defaults = array("Wishlist" => "-1002", "Favorites" => "-1001");
+        }
+
+        private function createListRow($name,$loginId) {
+            $row = array();
+
+            $row["name"] = $name ;
+            $row["version"] = -1 ;
+            $row["login_id"] = $loginId ;
+            $row["id"] = $this->defaults[$name] ;
+
+            return $row ;
+
+        }
+
+        private function filterDefault($dlrows) {
+            
+            $dbKeys = array();
+            $names = array();
+
+            foreach($dlrows as $row) {
+                array_push($dbKeys,$row["seo_name"]);
+            }
+
+            foreach($this->defaults as $default => $id) {
+                $seoKey = StringUtil::convertNameToKey($default);
+
+                if(!in_array($seoKey,$dbKeys)){
+                    array_push($names,$default);
+                }
+            }
+
+            return $names ;
+        }
+
         function getOnLoginId($loginId) {
+
+            // all Rows
             $rows = mysql\Lists::getOnLoginId($loginId);
+            $dlrows = mysql\Lists::getDefaultOnLoginId($loginId);
+            $defaults = $this->filterDefault($dlrows);
+
+            // extra rows in front
+            foreach($defaults as $default) {
+                array_unshift($rows,$this->createListRow($default,$loginId));
+            }
+
             return $rows ;
         }
 
@@ -80,6 +131,7 @@ namespace com\indigloo\sc\dao {
             }
         }
 
+        // create a new list w/o items
         function createNew($loginId,$name,$description) {
             //md5 hash as hex string and bytes
             $hash = md5($name);
@@ -94,7 +146,9 @@ namespace com\indigloo\sc\dao {
                 $description); 
         }
 
-        function create($loginId,$name,$itemId) {
+        // create a new list with items
+
+        function create($loginId,$name,$itemId,$dl_bit = 0) {
 
             //get item row
             $postId = PseudoId::decode($itemId);
@@ -123,12 +177,26 @@ namespace com\indigloo\sc\dao {
                 $hash,
                 $bin_hash,
                 $itemsJson,
-                $postId);
+                $postId,
+                $dl_bit);
 
             return ;
         }
 
         function addItem($loginId,$listId,$itemId){
+
+            // transpose of defaults list
+            // 1 => favorites, 2 => wishlist etc.
+            $transpose = array_flip($this->defaults);
+
+            if(array_key_exists($listId, $transpose)) {
+
+                //create new list with dl_bit set to 1
+                $name = $transpose[$listId];
+                $this->create($loginId,$name,$itemId,1);
+                return ;
+            }
+
             // list ownership check is required
             // when we do not pass the loginId to backend
             // someone assuming a "fake" loginId is a problem

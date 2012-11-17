@@ -12,6 +12,36 @@ namespace com\indigloo\sc\mysql {
 
     class Lists {
 
+        static function get($filters) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "select list.* from sc_list list " ;
+
+            $q = new MySQL\Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\Lists","list");
+            $q->filter($filters);
+            $condition = $q->get();
+
+            $sql .= $condition;
+            $sql .= " order by list.id " ;  
+            
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
+        static function getDefaultOnLoginId($loginId) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            //input
+            settype($loginId,"int");
+
+            $sql = " select id, name, seo_name from sc_list where login_id = %d and dl_bit = 1" ;
+            $sql = sprintf($sql,$loginId);
+
+            $rows = MySQL\Helper::fetchRows($mysqli,$sql);
+            return $rows ;
+        }
+
         static function getOnLoginId($loginId) {
             
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -334,7 +364,8 @@ namespace com\indigloo\sc\mysql {
             $hash, 
             $bin_hash,
             $strItemsJson,
-            $postId) {
+            $postId,
+            $dl_bit) {
 
             try {
 
@@ -350,9 +381,9 @@ namespace com\indigloo\sc\mysql {
                 //list
                 // op_bit is offline_processing bit - set to zero on create
                 $sql1 = "insert into sc_list (login_id,name, seo_name,md5_name, bin_md5_name, " ;
-                $sql1 .= "items_json, version, op_bit , created_on, pseudo_id) " ;
+                $sql1 .= "items_json, version, op_bit , created_on, pseudo_id, dl_bit) " ;
                 $sql1 .= " values(:login_id,:name,:seo_name,:hash,:bin_hash, " ;
-                $sql1 .= " :items_json, 1 , 0, now(), :pseudo_id ) " ;
+                $sql1 .= " :items_json, 1 , 0, now(), :pseudo_id, :dl_bit) " ;
                 
                 $dbh =  PDOWrapper::getHandle();
 
@@ -370,6 +401,7 @@ namespace com\indigloo\sc\mysql {
                 
                 //set pseudo_id to NULL explicitly
                 $stmt->bindValue(":pseudo_id", null,\PDO::PARAM_STR);
+                $stmt->bindParam(":dl_bit", $dl_bit);
 
 
                 $stmt->execute();

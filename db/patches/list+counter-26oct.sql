@@ -258,12 +258,21 @@ CREATE TRIGGER trg_fb_user_cp  BEFORE INSERT ON sc_facebook
             NEW.ip_address,
             now()) ;
 
+        --
+        -- mail queue
+        -- 
         insert into sc_mail_queue(name,email,source,created_on)
         values(NEW.name,NEW.email,2,now());
-        -- update counters
+        --
+        -- counters
+        -- 
         insert into sc_user_counter (login_id) values(NEW.login_id);  
         update sc_site_counter set user_count = user_count + 1 ;  
 
+        --
+        -- default lists 
+        -- 
+        
 
     END //
 DELIMITER ;

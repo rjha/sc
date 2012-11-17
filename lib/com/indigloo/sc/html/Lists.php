@@ -20,6 +20,8 @@ namespace com\indigloo\sc\html {
             }
             
             $view->qUrl = $qUrl;
+            $view->pageUrl = base64_decode($qUrl);
+
             $html = Template::render($template,$view);
             return $html ;
         }

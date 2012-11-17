@@ -30,7 +30,7 @@
     $listDao = new \com\indigloo\sc\dao\Lists();
     $listRows = $listDao->getOnLoginId($loginId);
     $listHtml = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$itemId,$qUrl);
-     
+    
     //get widget html
     $postDao = new \com\indigloo\sc\dao\Post();
     $itemRow = $postDao->getOnItemId($itemId);

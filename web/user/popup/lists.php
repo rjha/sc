@@ -32,6 +32,10 @@
 
     $listDao = new \com\indigloo\sc\dao\Lists();
     $listRows = $listDao->getOnLoginId($loginId);
+
+    // Add default rows to top of lists
+    // 
+
     $html = \com\indigloo\sc\html\Lists::getSelectPopup($listRows,$itemId,$qUrl);
     echo $html ;
 ?>
