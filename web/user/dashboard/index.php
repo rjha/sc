@@ -13,9 +13,15 @@
     use \com\indigloo\ui\form\Message as FormMessage;
 
     use \com\indigloo\ui\Filter as Filter;
+    use \com\indigloo\sc\util\PseudoId;
 
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
+    $pubId = PseudoId::encode($loginId);
+    $homeUrl = Url::base();
+    $pubUrl = $homeUrl."/pub/user/".$pubId ;
+
+
     $loginName = $gSessionLogin->name ;
 
     if (is_null($loginId)) {
@@ -70,21 +76,9 @@
             <?php FormMessage::render(); ?>
             
             <div class="row">
-                <div class="span6 offset2">
+                <div class="span6 offset1">
                     <div class="">
                         <h2> Hello, <?php echo $loginName; ?> </h2>
-                        <p class="muted">
-                            Your dashboard provides a snapshot view of your account
-                            and what is happening in your network. After sign in, just 
-                            click on your name in top toolbar and select account to access 
-                            your dashboard  from anywhere. 
-                            To go to 3mik site, please click 
-                            
-                             <a href="http://www.3mik.com" class="b flickr-color">
-                             www.3mik.com &rarr;
-                            </a>
-
-                        </p>
                        
 
                     </div>
@@ -99,28 +93,23 @@
                     <h5> Account</h5>
                     <hr>
                     <p class="muted">
-                        Account shows your data and settings on 3mik.com.
-                        click on any of the links to see details.
+                        Your dashboard provides a snapshot of your account
+                        and what is happening in your network. Just click 
+                        on any of the links to see details.
                     </p>
                     
                     
                     <?php echo \com\indigloo\sc\html\User::getCounters($counters); ?> 
                     <div class="clear"> </div>
                     <div class="section">
-                        <span class="faded-text"> public URL</span>
-                        <br>
-                        <a href="#" class="b"> http://www.3mik.com/pub/user/11234</a>
+                        <span class="faded-text">check your public page  </span>
+                        <span style="padding-left:20px;">
+                        <a href="<?php echo $pubUrl ?>" class="b" target="_blank"><?php echo $pubUrl; ?></a>
+                        </span>
+
                     </div>
                     
-                    <div class="ml20">
-                        <ul class="unstyled">
-                           
-                            <li> <a href="#"> How to add an item? </a> </li>
-                            <li> <a href="#"> How to like/save an item? </a> </li>
-                            <li> <a href="#"> How to create a list? </a> </li>
-                            <li> <a href="#">see all help topics &rarr; </a> </li>
-                        </ul> 
-                    </div>
+                    
 
                     <div> 
                         <h5> Suggestions </h5>
@@ -139,7 +128,23 @@
                
 
                 <div class="span4 offset2">
-                    <h5> what is happening?</h5>
+                <div class="p10"> <a href="<?php echo $homeUrl; ?>">Go to www.3mik.com</a> </div> 
+                    <ul class="breadcrumb">
+                        <li class="active">Need help ?</li>
+                        <li>
+                            <a class="help-popup" rel = "dashboard.item.create" href="#">upload items</a> 
+                            <span class="divider">/</span>
+                        </li>
+                        <li>
+                            <a class="help-popup" rel = "dashboard.list.create" href="#">create lists</a> 
+                            <span class="divider">/</span>
+                        </li>
+                        <li>
+                            <a class="help-popup" rel = "dashboard.item.save" href="#">save items</a> 
+                        </li>
+                    </ul>
+
+                    
                     <hr>
                     <div class="feeds">
                     <?php
@@ -163,8 +168,15 @@
             $(document).ready(function(){
                 //fix twitter bootstrap alerts
                 webgloo.sc.dashboard.fixAlert();
-                
                 webgloo.sc.toolbar.add();
+
+                $("a.help-popup").click(function(event) {
+                    var helpKey = $(this).attr("rel");
+                    webgloo.sc.SimplePopup.init();
+                    targetUrl = "/site/help/popup.php?hkey=" + helpKey;
+                    webgloo.sc.SimplePopup.load(targetUrl);
+                });
+
                 var $container = $('#tiles');
 
                 $container.imagesLoaded(function(){
