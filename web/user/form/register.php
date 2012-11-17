@@ -17,21 +17,22 @@
 
     if (isset($_POST['register']) && ($_POST['register'] == 'Register')) {
 
+        $gWeb = \com\indigloo\core\Web::getInstance();
+        $fvalues = array();
+        $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
+
         try{
+
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('first_name', 'First Name', array('required' => 1, 'maxlength' => 32));
             $fhandler->addRule('last_name', 'Last Name', array('required' => 1, 'maxlength' => 32));
             $fhandler->addRule('email', 'Email', array('required' => 1, 'maxlength' => 64));
             $fhandler->addRule('password', 'Password', array('required' => 1 , 'maxlength' => 32));
-            $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
-
+            
              //check security token
             $fhandler->checkToken("token",$gWeb->find("form.token",true)) ;
-            
             $fvalues = $fhandler->getValues();
-            $fUrl = $fvalues['fUrl'];
-            $gWeb = \com\indigloo\core\Web::getInstance();
- 
+            
             if(!empty($fvalues["adrisya_number"])) {
                 $message = "unexpected error with form submission!" ;
                 $fhandler->addError($message) ;

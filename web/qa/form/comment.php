@@ -17,6 +17,9 @@
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
 
         $gWeb = \com\indigloo\core\Web::getInstance();
+        
+        $fvalues = array();
+        $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
 
         try{
 
@@ -26,12 +29,8 @@
             $fhandler->addRule('post_id', 'post id', array('required' => 1));
             $fhandler->addRule('owner_id', 'owner id', array('required' => 1));
             $fhandler->addRule('post_title', 'post title', array('required' => 1));
-            //do not process URL
-            $fhandler->addRule('fUrl', 'go back to page', array('required' => 1, 'rawData' =>1));
-
+            
             $fvalues = $fhandler->getValues();
-            //original form URL
-            $fUrl = $fvalues['fUrl'];
             
             // UI checks
             if ($fhandler->hasErrors()) {
