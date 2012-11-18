@@ -24,18 +24,19 @@
     // this form can be submitted using javascript also so do not include
     // submit_button_in_$_POST check.
 
+    $gWeb = \com\indigloo\core\Web::getInstance(); 
+    $fvalues = array();
+    $qUrl = \com\indigloo\Url::tryFormUrl("qUrl");
+
+
     try{
         
         $fhandler = new Form\Handler("list-form-1", $_POST);
-        //input rules
-        $fhandler->addRule("qUrl", "go back to URL", array('required' => 1, 'rawData' =>1));
         $fhandler->addRule("item_id", 'item', array('required' => 1));
         
         $fvalues = $fhandler->getValues();
-
-        $gWeb = \com\indigloo\core\Web::getInstance();
         $qUrl = base64_decode($fvalues["qUrl"]);
-          
+        
         if ($fhandler->hasErrors()) {
             throw new UIException($fhandler->getErrors());
         }

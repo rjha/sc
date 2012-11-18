@@ -19,18 +19,17 @@
 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
         
+        $gWeb = \com\indigloo\core\Web::getInstance(); 
+        $fvalues = array();
+        $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
+
+
         try{
             
             $fhandler = new Form\Handler("edit-form", $_POST);
-            
-            $fhandler->addRule("fUrl", "go back to URL", array('required' => 1, 'rawData' =>1));
             $fhandler->addRule("list_id", "list id", array('required' => 1));
 
             $fvalues = $fhandler->getValues();
-            
-            //fUrl is needed for redirect
-            $gWeb = \com\indigloo\core\Web::getInstance();
-            $fUrl = $fvalues["fUrl"];
             $name = $fvalues["name"];
             
             if(!Util::isAlphaNumeric($name)) {

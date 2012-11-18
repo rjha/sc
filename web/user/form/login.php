@@ -18,7 +18,6 @@
         $fvalues = array();
         $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
 
-
         try{
             
             $fhandler = new Form\Handler('web-form-1', $_POST);

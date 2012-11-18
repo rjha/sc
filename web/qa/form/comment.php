@@ -16,8 +16,7 @@
 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
 
-        $gWeb = \com\indigloo\core\Web::getInstance();
-        
+        $gWeb = \com\indigloo\core\Web::getInstance(); 
         $fvalues = array();
         $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
 

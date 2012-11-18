@@ -16,6 +16,12 @@
     use \com\indigloo\exception\UIException as UIException;
 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
+        
+        $gWeb = \com\indigloo\core\Web::getInstance(); 
+        $fvalues = array();
+        $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
+
+
         try{
             $fhandler = new Form\Handler('web-form-1', $_POST);
 
@@ -23,14 +29,11 @@
             $fhandler->addRule('images_json', 'images_json', array('rawData' => 1));
             $fhandler->addRule('group_names', 'Tags', array('maxlength' => 64,'rawData' => 1));
             $fhandler->addRule('qUrl', 'qUrl', array('required' => 1, 'rawData' =>1));
-            $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
-
+            
             $fvalues = $fhandler->getValues();
 
             $qUrl = base64_decode($fvalues['qUrl']);
-            $fUrl = $fvalues['fUrl'];
-            $gWeb = \com\indigloo\core\Web::getInstance();
-
+            
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors());
             }

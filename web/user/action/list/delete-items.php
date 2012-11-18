@@ -16,18 +16,18 @@
     
     // submitting via javascript
     // removed button value check 
+
+    $gWeb = \com\indigloo\core\Web::getInstance(); 
+    $fvalues = array();
+    $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
+
     try{
         
         $fhandler = new Form\Handler("delete-item-form", $_POST);
-        
-        $fhandler->addRule("fUrl", "go back to URL", array('required' => 1, 'rawData' =>1));
         $fhandler->addRule("list_id", "list id", array('required' => 1));
         $fhandler->addRule("items_json", "items", array('required' => 1,'rawData' =>1));
 
         $fvalues = $fhandler->getValues();
-        $gWeb = \com\indigloo\core\Web::getInstance();
-
-        $fUrl = $fvalues["fUrl"];
         
         if ($fhandler->hasErrors()) {
             throw new UIException($fhandler->getErrors());
