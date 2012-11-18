@@ -335,6 +335,18 @@ namespace com\indigloo\sc\html {
         static function getListWidget($postDBRow) {
 
             $html = NULL ;
+
+            // case when list_item.item_id is not null but post.id is NULL
+            if( empty($postDBRow["id"]) && !empty($postDBRow["item_id"]) ) {
+                $template = '/fragments/widget/lists/deleted-item.tmpl' ;
+                $view = new \stdClass;
+                $view->id = $postDBRow["item_id"];
+                $view->itemId = PseudoId::encode($postDBRow["item_id"]);
+                
+                $html = Template::render($template,$view);
+                return $html ;
+            }
+
             $voptions = array("group" => true);
             $view = self::createPostView($postDBRow,$voptions);
           

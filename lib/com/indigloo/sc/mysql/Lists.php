@@ -113,12 +113,11 @@ namespace com\indigloo\sc\mysql {
             //sanitize input
             settype($limit,"integer");
 
-            $sql = "select login.name as user_name, post.* ".
-            " from sc_post post, sc_login login , ".
-            " sc_list list, sc_list_item li ".
+            $sql = " select login.name as user_name, post.*, li.item_id ".
+            " from sc_list_item li left join sc_post post on li.item_id = post.id, ".
+            " sc_login login , sc_list list ".
             " where list.login_id = login.id ".
-            " and li.list_id = list.id ".
-            " and li.item_id = post.id " ;
+            " and li.list_id = list.id " ;
 
             $q = new MySQL\Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Lists","list");
@@ -145,12 +144,11 @@ namespace com\indigloo\sc\mysql {
             settype($limit,"integer");
             $direction = $mysqli->real_escape_string($direction);
 
-            $sql = "select login.name as user_name, post.* ".
-            " from sc_post post, sc_login login , ".
-            " sc_list list, sc_list_item li ".
+            $sql = "select login.name as user_name, post.*, li.item_id ".
+            " from sc_list_item li left join sc_post post on li.item_id = post.id, ".
+            " sc_login login , sc_list list ".
             " where list.login_id = login.id ".
-            " and li.list_id = list.id ".
-            " and li.item_id = post.id " ;
+            " and li.list_id = list.id " ;
                
             $q = new MySQL\Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Lists","list");
