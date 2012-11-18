@@ -29,9 +29,8 @@
         trigger_error("Error : NULL or invalid login_id", E_USER_ERROR);
     }
 
-
-    $listId = $qparams["list_id"];
-    $listId = PseudoId::decode($listId);
+    $plistId = Url::getQueryParam("list_id");
+    $listId = PseudoId::decode($plistId);
 
     settype($listId,"int");
 
@@ -45,6 +44,8 @@
         exit ;
     }
     
+    $listPubUrl = sprintf("%s/pub/list/%d/%s",Url::base(),$plistId,$listDBRow["seo_name"]);
+
     //get items from sc_list_item table
     $model = new \com\indigloo\sc\model\Lists();
     $filter = new Filter($model);
@@ -244,13 +245,18 @@
                             <h4> <?php echo $listDBRow["name"]; ?> </h4>
                             <p class="muted"> <?php echo $listDBRow["description"]; ?> </p>
                             <p class="text-info"> 
-                                <span>items: </span>
+                                <span>items </span>
                                 <span><?php echo $listDBRow["item_count"]; ?></span>
                             </p>
                             <p class="muted">         
-                                <span>created on: </span>
+                                <span>created on </span>
                                 <span><?php echo \com\indigloo\sc\util\Formatter::convertDBTime($listDBRow["created_on"]); ?></span>
                             </p>
+                            <p class="muted">         
+                                <span>public URL </span>
+                                <span><?php echo $listPubUrl; ?></span>
+                            </p>
+
                         </div>
                     </div>
                 </div>
