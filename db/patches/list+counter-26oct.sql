@@ -438,6 +438,7 @@ DELIMITER //
         -- update counters
         update sc_site_counter set list_count = list_count - 1 ;
         update sc_user_counter set list_count = list_count - 1 where login_id = OLD.login_id ;
+        delete from sc_list_item where list_id = old.id ;
     END //
 DELIMITER ;
 
