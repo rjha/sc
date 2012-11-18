@@ -27,7 +27,7 @@
     foreach($rows as $row) {
         $loginId = $row["subject_id"];
         // create a Favorites list for all loginId in sc_bookmark
-        $listDao->createNew($loginId,$listName,$listDescription);
+        $listDao->createNew($loginId,$listName,$listDescription,1);
         array_push($loginIds,$loginId);
 
     }

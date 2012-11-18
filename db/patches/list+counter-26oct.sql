@@ -34,6 +34,7 @@ CREATE TABLE  sc_list  (
     description varchar(512),
     version int not null,
     op_bit int not null,
+    dl_bit int default 0,
     created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
     updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -451,12 +452,6 @@ DELIMITER //
 DELIMITER ;
 
 
---
--- @run move-favorites script to move data from 
--- sc_bookmark table to sc_list_item table.
--- set dl_bit
--- update sc_list set dl_bit = 1 where name = 'Favorites' ;
--- 
 
 
 
@@ -478,6 +473,16 @@ insert into sc_user_counter (login_id)
 
 insert into sc_post_counter(post_id)
     select id from sc_post ;
+
+
+
+--
+-- @run move-favorites script to move data from 
+-- sc_bookmark table to sc_list_item table.
+-- set dl_bit
+-- update sc_list set dl_bit = 1 where name = 'Favorites' ;
+-- 
+
 
 --
 -- @run seed-counters.php script 

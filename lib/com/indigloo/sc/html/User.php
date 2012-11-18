@@ -202,7 +202,6 @@ namespace com\indigloo\sc\html {
             $view->comments =  $data["comment_count"];
             $view->lists = $data["list_count"];
             $view->likes =  $data["like_count"];
-            $view->saved =  $data["save_count"];
             $view->followers = $data["follower_count"];
             $view->following = $data["following_count"];
 

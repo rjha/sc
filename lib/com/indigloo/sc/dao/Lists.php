@@ -133,10 +133,10 @@ namespace com\indigloo\sc\dao {
         }
 
         // create a new list w/o items
-        function createNew($loginId,$name,$description) {
+        function createNew($loginId,$name,$description,$dl_bit=0) {
 
             $seoName = StringUtil::convertNameToKey($name);
-            if(in_array($seoName,$this->defaultKeys)) {
+            if( ($dl_bit == 0) && in_array($seoName,$this->defaultKeys)) {
                 $errorMsg = sprintf("Error: list name _%s_ is already in use!",$name);
                 throw new UIException(array($errorMsg));
             }
