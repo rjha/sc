@@ -366,6 +366,40 @@ namespace com\indigloo\sc\html {
 
         }
 
+        static function getListTile($postDBRow) {
+
+            $html = NULL ;
+
+            // case when list_item.item_id is not null but post.id is NULL
+            if( empty($postDBRow["id"]) && !empty($postDBRow["item_id"]) ) {
+                $template = '/fragments/tile/lists/deleted-item.tmpl' ;
+                $view = new \stdClass;
+                $view->id = $postDBRow["item_id"];
+                $view->itemId = PseudoId::encode($postDBRow["item_id"]);
+                
+                $html = Template::render($template,$view);
+                return $html ;
+            }
+
+            $voptions = array("group" => true);
+            $view = self::createPostView($postDBRow,$voptions);
+          
+             if($view->hasImage) {
+                $template = '/fragments/tile/image.tmpl' ;
+                //Add thumbnail width and height
+                $td = Util::foldX($view->width,$view->height,190);
+                $view->twidth = $td["width"];
+                $view->theight = $td["height"];
+
+            } else {
+                $template = '/fragments/tile/text.tmpl' ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
         static function createPostView($row,$voptions=NULL) {
 
             $voptions = empty($voptions) ? array() : $voptions ;
