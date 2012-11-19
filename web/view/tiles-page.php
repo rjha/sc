@@ -28,9 +28,11 @@
                         <?php
                             $startId = NULL;
                             $endId = NULL ;
-                            if(sizeof($postDBRows) > 0 ) {
+                            $gNumRecords = sizeof($postDBRows);
+
+                            if($gNumRecords> 0 ) {
                                 $startId = $postDBRows[0]['id'] ;
-                                $endId =   $postDBRows[sizeof($postDBRows)-1]['id'] ;
+                                $endId =   $postDBRows[$gNumRecords-1]['id'] ;
                                 foreach($postDBRows as $postDBRow) {
                                     $html = \com\indigloo\sc\html\Post::getTile($postDBRow);
                                     echo $html ;
@@ -54,8 +56,7 @@
 
         </div>  <!-- container -->
 
-        <?php if(sizeof($postDBRows) >= $pageSize) 
-            $paginator->render($pageBaseUrl,$startId,$endId);  ?>
+        <?php $paginator->render($pageBaseUrl,$startId,$endId,$gNumRecords);  ?>
 
          <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
          <script type="text/javascript">

@@ -119,10 +119,11 @@
                     <?php 
                         $startId = NULL;
                         $endId = NULL;
+                        $gNumRecords = sizeof($listDBRows);
 
-                        if (sizeof($listDBRows) > 0) {
+                        if ( $gNumRecords > 0) {
                             $startId = $listDBRows[0]["id"];
-                            $endId = $listDBRows[sizeof($listDBRows) - 1]["id"];
+                            $endId = $listDBRows[$gNumRecords-1]["id"];
 
                             foreach($listDBRows as $listDBRow) {
                                 echo \com\indigloo\sc\html\Lists::getWidget($listDBRow);
@@ -140,8 +141,7 @@
                
             </div>
         </div> <!-- container -->
-        <?php if(sizeof($listDBRows) >= $pageSize)
-                $paginator->render($baseURI,$startId,$endId); ?>
+        <?php $paginator->render($baseURI,$startId,$endId,$gNumRecords); ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
         

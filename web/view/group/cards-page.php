@@ -24,7 +24,9 @@
                 <div class="span12 mt20">
                         <?php
                             //make slices
-                            $numCards = ceil((sizeof($groups)/10.0)) ;
+                            $gNumRecords = sizeof($groups);
+                            $numCards = ceil($gNumRecords/10.0) ;
+                            
 
                             for($i = 0 ; $i < $numCards ; $i++ ) {
                                 $offset = $i*10 ;
@@ -42,8 +44,7 @@
             </div>
         </div> <!-- container -->
         <div class="mt20"> </div>
-         <?php if(sizeof($groups) >= $pageSize) 
-            $paginator->render($pageBaseUrl,$startId,$endId);  ?>
+        <?php  $paginator->render($pageBaseUrl,$startId,$endId,$gNumRecords);  ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 

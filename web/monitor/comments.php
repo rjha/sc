@@ -80,10 +80,11 @@
                         <?php
                             $startId = NULL ;
                             $endId = NULL ;
+                            $gNumRecords = sizeof($commentDBRows);
 
-                            if(sizeof($commentDBRows) > 0 ) {
+                            if( $gNumRecords > 0 ) {
                                 $startId = $commentDBRows[0]['id'] ;
-                                $endId =   $commentDBRows[sizeof($commentDBRows)-1]['id'] ;
+                                $endId =   $commentDBRows[$gNumRecords-1]['id'] ;
                             }
 
                             foreach($commentDBRows as $commentDBRow){
@@ -96,8 +97,7 @@
             </div>
         </div> <!-- container -->
         
-         <?php if(sizeof($commentDBRows) >= $pageSize) 
-            $paginator->render($baseURI,$startId,$endId);  ?>
+         <?php $paginator->render($baseURI,$startId,$endId,$gNumRecords);  ?>
 
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

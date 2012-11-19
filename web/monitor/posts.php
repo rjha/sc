@@ -211,9 +211,11 @@
                         <?php
                             $startId = NULL;
                             $endId = NULL;
-                            if (sizeof($postDBRows) > 0) {
+                            $gNumRecords = sizeof($postDBRows) ;
+
+                            if ( $gNumRecords > 0) {
                                 $startId = $postDBRows[0]["id"];
-                                $endId = $postDBRows[sizeof($postDBRows) - 1]["id"];
+                                $endId = $postDBRows[$gNumRecords - 1]["id"];
                             }
 
                             foreach ($postDBRows as $postDBRow) {
@@ -226,10 +228,8 @@
             </div>
         </div> <!-- container -->
         
-        <?php if(sizeof($postDBRows) >= $pageSize) 
-            $paginator->render($baseURI,$startId,$endId);  ?>
-
-
+        <?php $paginator->render($baseURI,$startId,$endId,$gNumRecords);  ?>
+        
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
         </div>

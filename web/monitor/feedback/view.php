@@ -84,10 +84,11 @@
                         <?php
                             $startId = NULL ;
                             $endId = NULL ;
+                            $gNumRecords = sizeof($feedbackDBRows) ;
 
-                            if(sizeof($feedbackDBRows) > 0 ) {
+                            if( $gNumRecords > 0 ) {
                                 $startId = $feedbackDBRows[0]['id'];
-                                $endId = $feedbackDBRows[sizeof($feedbackDBRows)-1]['id'];
+                                $endId = $feedbackDBRows[$gNumRecords-1]['id'];
                             }
 
                             foreach($feedbackDBRows as $feedbackDBRow) {
@@ -101,8 +102,7 @@
             </div>
         </div> <!-- container -->
        
-        <?php if(sizeof($feedbackDBRows) >= $pageSize) 
-            $paginator->render($baseURI,$startId,$endId);  ?>
+        <?php  $paginator->render($baseURI,$startId,$endId,$gNumRecords);  ?>
 
 
         <div id="ft">

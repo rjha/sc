@@ -217,11 +217,12 @@
                         <?php
                             $startId = NULL;
                             $endId = NULL;
-                            
+                            $gNumRecords = sizeof($itemDBRows);
+
                             //@imp list can be created w/o items
-                            if (sizeof($itemDBRows) > 0) {
+                            if (  $gNumRecords > 0) {
                                 $startId = $itemDBRows[0]['sort_id'];
-                                $endId = $itemDBRows[sizeof($itemDBRows)-1]['sort_id'];
+                                $endId = $itemDBRows[$gNumRecords-1]['sort_id'];
                                 foreach ($itemDBRows as $itemDBRow) {
                                     //output post widget html
                                     echo \com\indigloo\sc\html\Post::getListWidget($itemDBRow);
@@ -263,8 +264,7 @@
 
         </div>  <!-- container -->
         
-        <?php if(sizeof($itemDBRows) >= $pageSize)
-                $paginator->render($baseURI, $startId, $endId); ?>
+        <?php $paginator->render($baseURI, $startId, $endId, $gNumRecords); ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
          

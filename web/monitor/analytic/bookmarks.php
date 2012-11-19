@@ -70,9 +70,11 @@
                         <?php
                             $startId = NULL;
                             $endId = NULL;
-                            if (sizeof($rows) > 0) {
+                            $gNumRecords = sizeof($rows) ;
+
+                            if ( $gNumRecords > 0) {
                                 $startId = $rows[0]["id"];
-                                $endId = $rows[sizeof($rows) - 1]["id"];
+                                $endId = $rows[$gNumRecords - 1]["id"];
                             }
 
                             echo \com\indigloo\sc\html\Site::getBookmarkTable($rows);
@@ -82,8 +84,7 @@
                  
             </div>
         </div> <!-- container -->
-        <?php if(sizeof($rows) >= $pageSize) 
-            $paginator->render($baseURI,$startId,$endId);  ?>
+        <?php  $paginator->render($baseURI,$startId,$endId,$gNumRecords);  ?>
 
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

@@ -193,10 +193,11 @@
 
                             $startId = NULL;
                             $endId = NULL;
+                            $gNumRecords = sizeof($userDBRows) ;
 
-                            if (sizeof($userDBRows) > 0) {
+                            if ($gNumRecords > 0) {
                                 $startId = $userDBRows[0]['id'];
-                                $endId = $userDBRows[sizeof($userDBRows) - 1]['id'];
+                                $endId = $userDBRows[$gNumRecords - 1]['id'];
                             }
                             
                             foreach ($userDBRows as $userDBRow) {
@@ -211,8 +212,7 @@
             </div>
         </div> <!-- container -->
         <div class="mt20">
-        <?php if(sizeof($userDBRows) >= $pageSize) 
-            $paginator->render($baseURI,$startId,$endId);  ?>
+        <?php $paginator->render($baseURI,$startId,$endId, $gNumRecords);  ?>
 
         </div>
 
