@@ -49,6 +49,11 @@ namespace com\indigloo\sc\controller{
             $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
             $itemDBRows = $listDao->getPagedItems($paginator,$filters);
 
+            $loginId = $listDBRow["login_id"];
+            $userDao = new \com\indigloo\sc\dao\User();
+            $userDBRow = $userDao->getOnLoginId($loginId);
+
+
             $template = APP_WEB_DIR. '/view/list/pub.php';
 
             //page variables
