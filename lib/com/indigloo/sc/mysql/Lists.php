@@ -113,7 +113,7 @@ namespace com\indigloo\sc\mysql {
             //sanitize input
             settype($limit,"integer");
 
-            $sql = " select login.name as user_name, post.*, li.item_id ".
+            $sql = " select login.name as user_name, post.*, li.item_id, li.id as sort_id ".
             " from sc_list_item li left join sc_post post on li.item_id = post.id, ".
             " sc_login login , sc_list list ".
             " where list.login_id = login.id ".
@@ -143,8 +143,8 @@ namespace com\indigloo\sc\mysql {
             settype($start,"integer");
             settype($limit,"integer");
             $direction = $mysqli->real_escape_string($direction);
-
-            $sql = "select login.name as user_name, post.*, li.item_id ".
+            
+            $sql = "select login.name as user_name, post.*, li.item_id, li.id as sort_id".
             " from sc_list_item li left join sc_post post on li.item_id = post.id, ".
             " sc_login login , sc_list list ".
             " where list.login_id = login.id ".
@@ -160,7 +160,6 @@ namespace com\indigloo\sc\mysql {
             $sql .= $condition;
             $sql .= $q->getPagination($start,$direction,"li.id",$limit);
             
-
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             
             //reverse rows for 'before' direction
@@ -341,7 +340,6 @@ namespace com\indigloo\sc\mysql {
                 return ;
 
             }catch (\PDOException $e) {
-                Logger::getInstance()->error(" This is PDOException");
                 $dbh->rollBack();
                 $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());

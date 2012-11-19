@@ -220,8 +220,8 @@
                             
                             //@imp list can be created w/o items
                             if (sizeof($itemDBRows) > 0) {
-                                $startId = $itemDBRows[0]['id'];
-                                $endId = $itemDBRows[sizeof($itemDBRows)-1]['id'];
+                                $startId = $itemDBRows[0]['sort_id'];
+                                $endId = $itemDBRows[sizeof($itemDBRows)-1]['sort_id'];
                                 foreach ($itemDBRows as $itemDBRow) {
                                     //output post widget html
                                     echo \com\indigloo\sc\html\Post::getListWidget($itemDBRow);

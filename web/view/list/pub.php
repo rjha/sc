@@ -34,9 +34,11 @@
 
                         $startId = NULL;
                         $endId = NULL ;
-                        if(sizeof($itemDBRows) > 0 ) {
-                            $startId = $itemDBRows[0]['id'] ;
-                            $endId =   $itemDBRows[sizeof($itemDBRows)-1]['id'] ;
+                        $gNumRecords = sizeof($itemDBRows);
+
+                        if( $gNumRecords> 0 ) {
+                            $startId = $itemDBRows[0]["sort_id"] ;
+                            $endId =   $itemDBRows[$gNumRecords-1]["sort_id"] ;
                             foreach($itemDBRows as $itemDBRow) {
                                 $html = \com\indigloo\sc\html\Post::getListTile($itemDBRow);
                                 echo $html ;
@@ -63,8 +65,7 @@
 
         </div>  <!-- container -->
 
-        <?php if(sizeof($itemDBRows) >= $pageSize) 
-            $paginator->render($pageBaseUrl,$startId,$endId);  ?>
+        <?php $paginator->render($pageBaseUrl,$startId,$endId,$gNumRecords);  ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
