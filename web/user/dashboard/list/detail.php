@@ -1,5 +1,5 @@
 <?php
-    //sc/user/dashboard/bookmark.php
+    //sc/user/dashboard/list/detail.php
     include ('sc-app.inc');
     include(APP_WEB_DIR . '/inc/header.inc');
     include(APP_WEB_DIR . '/inc/role/user.inc');
@@ -245,7 +245,7 @@
                             
                             <h4> <?php echo $listDBRow["name"]; ?> </h4>
                             <p class="muted"> <?php echo $listDBRow["description"]; ?> </p>
-                            <p class="text-info"> 
+                            <p class="muted"> 
                                 <span>items </span>
                                 <span><?php echo $listDBRow["item_count"]; ?></span>
                             </p>
@@ -255,7 +255,9 @@
                             </p>
                             <p class="muted">         
                                 <span>public URL </span>
-                                <span><?php echo $listPubUrl; ?></span>
+                                <span>
+                                    <a href="<?php echo $listPubUrl ?>" target="_blank"> <?php echo $listPubUrl; ?></a>
+                                </span>
                             </p>
 
                         </div>
