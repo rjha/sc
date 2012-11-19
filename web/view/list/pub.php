@@ -18,10 +18,23 @@
             <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
 
             <div class="row">
-                <div class="span12">
-                    <div class="page-header">
-                        <span class="title"><?php echo $listName; ?> </span>
-                        
+                <div class="span6">
+                    <div class="wbg">
+                        <div class="section3">
+                            <div class="item">
+                                <div class="title">
+                                    <?php echo $listDBRow["name"]; ?>
+                                </div>
+                                <div class="p5">
+                                    
+                                    <span class="badge badge-warning"> <?php echo $listDBRow["item_count"]; ?></span>
+                                    <span class="faded-text">&nbsp;items</span>
+
+                                </div>
+                               
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div> <!-- page:header -->
