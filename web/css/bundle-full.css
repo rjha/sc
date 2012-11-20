@@ -7460,22 +7460,35 @@ button::-moz-focus-inner {
 
 
    /* + simple popup */
+   /* position is fixed : popup should scroll down with page */
+   /* overflow  auto is to get  scrollbar when content is more than 
+      height of popup */
+   /* control popup dimensions via max-height / height/ width / max-width */
+   /* control popup position via top/left and margins */
 
     #simple-popup {
+
+        display:none;
         position: fixed;
+        z-index: 1009;
         width: 600px;
+        max-width:810px;
+        max-height:380px;
+        overflow: auto;
+        overflow-x: auto;
+        overflow-y: auto;
+
         top: 50%;
         left: 50%;
-        margin-top:-140px;
+        margin-top:-170px;
         margin-left:-300px;
+
         background : white;
         color: black;
-        z-index: 1009;
+       
         border:4px solid #ccc;
         border-radius:10px;
         padding:7px 11px 7px 11px;
-        display:none;
-        overflow:hidden;
         box-shadow: 0 4px 23px 5px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.15);
     }
 
