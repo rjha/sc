@@ -19009,19 +19009,6 @@ webgloo.sc.item = {
         $("a.save-post").live("click", function(event){
             event.preventDefault();
             webgloo.sc.Lists.openPopup();
-
-            /*
-            var dataObj = {} ;
-            dataObj.params = {} ;
-            dataObj.params.itemId  = $(this).attr("id");
-            dataObj.params.action = "SAVE" ;
-            dataObj.endPoint = "/qa/ajax/bookmark.php";
-
-            //open popup
-            webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
-            */
-
         }) ;
 
         //unsave

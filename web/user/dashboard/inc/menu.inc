@@ -36,8 +36,7 @@
                 <li> <a href="/user/dashboard/comments.php">Comments</a></li>
                 <li><a href="/user/dashboard/follower.php">Followers</a></li>
                 <li><a href="/user/dashboard/following.php">Following</a></li>
-                <li><a href="/user/dashboard/profile.php">Edit profile</a></li>
-                <?php echo $passwordUrl; ?>
+                
             </ul>
           </li>
 

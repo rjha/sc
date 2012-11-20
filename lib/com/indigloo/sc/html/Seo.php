@@ -38,6 +38,11 @@ namespace com\indigloo\sc\html{
             return $x ;
         }
 
+        static function thisOrHomeDescription($value) {
+            if(!empty($value)) { return $value ; }
+            else { return self::getHomeMetaDescription(); }
+
+        }
 
 
     }

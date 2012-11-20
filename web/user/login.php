@@ -15,7 +15,7 @@
         header("Location: / ");
     }
 
-    $qUrl = Url::tryBase64QueryParam("q", "/");
+    $qUrl = Url::tryBase64QueryParam("q", "/user/dashboard/index.php");
     $fUrl = Url::current();
     
     // should login do some action?

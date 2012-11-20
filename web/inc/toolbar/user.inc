@@ -1,7 +1,7 @@
 <?php
 
     $gWeb = \com\indigloo\core\Web::getInstance();
-    $params = array('q' => urlencode(\com\indigloo\Url::current()));
+    $params = array('q' => base64_encode(\com\indigloo\Url::current()));
     $shareUrl = \com\indigloo\Url::createUrl('/share/new.php',$params);
     $externalPageUrl = \com\indigloo\Url::createUrl('/qa/external/image.php',$params);
     

@@ -54,7 +54,7 @@
 
             //success - always go to item details
             $location = "/item/".$itemId;
-            header("Location: /qa/thanks.php?q=".$location );
+            header("Location: /qa/thanks.php?q=". base64_encode($location));
 
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);

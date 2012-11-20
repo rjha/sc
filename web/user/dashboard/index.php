@@ -78,8 +78,13 @@
             <div class="row">
                 <div class="span6 offset1">
                     <div class="">
-                        <h2> Hello, <?php echo $loginName; ?> </h2>
-                       
+                        <h3> Hello, <?php echo $loginName; ?> </h3>
+                         <p class="muted">
+                        Your dashboard provides a snapshot of your account
+                        and what is happening in your network. Just click 
+                        on your name in top toolbar and select Account to view this page
+                        from anywhere.
+                    </p>
 
                     </div>
 
@@ -92,11 +97,7 @@
                 <div class="span6">
                     <h5> Account</h5>
                     <hr>
-                    <p class="muted">
-                        Your dashboard provides a snapshot of your account
-                        and what is happening in your network. Just click 
-                        on any of the links to see details.
-                    </p>
+
                     
                     
                     <?php echo \com\indigloo\sc\html\User::getCounters($counters); ?> 
@@ -130,7 +131,7 @@
                 <div class="span4 offset2">
                 <div class="p10"> <a href="<?php echo $homeUrl; ?>">Go to www.3mik.com</a> </div> 
                     <ul class="breadcrumb">
-                        <li class="active">Need help ?</li>
+                        <li class="active">How to?</li>
                         <li>
                             <a class="help-popup" rel = "dashboard.item.create" href="#">upload items</a> 
                             <span class="divider">/</span>

@@ -16,7 +16,8 @@
      <body>
         <style>
         /* @inpage @hardcoded css */
-        .tile { border: 1px solid #ccc ;}
+            .tile { border: 1px solid #ccc ;}
+
         </style>
 
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
@@ -25,7 +26,11 @@
 
             <div class="row">
                 <div class="span12">
-                   <?php echo \com\indigloo\sc\html\Lists::getPubHeader($listDBRow,$userDBRow); ?>
+                   <?php 
+                    if($gpage == 1 ) {
+                        echo \com\indigloo\sc\html\Lists::getPubHeader($listDBRow,$userDBRow); 
+                    }
+                    ?>
                 </div>
             </div> <!-- page:header -->
 
@@ -98,7 +103,6 @@
 
                 });
 
-                /*
                 $container.infinitescroll(
                     {
                         navSelector     : '.pager',
@@ -127,7 +131,7 @@
                         });
 
                     }
-                ); */
+                ); 
 
 
                 //Add item toolbar actions

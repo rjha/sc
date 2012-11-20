@@ -56,7 +56,9 @@ namespace com\indigloo\sc\html {
             $view->userPubUrl = Url::base()."/pub/user/".$encodedId ;
             $view->createdOn = Formatter::convertDBTime($listDBRow['created_on']);
 
-
+            $view->description = $listDBRow["description"];
+            $view->count = $listDBRow["item_count"];
+            
             $template = NULL ;
             $template =  "/fragments/lists/pub/header.tmpl" ;
 

@@ -42,10 +42,10 @@ namespace com\indigloo\sc\controller{
             $filter->add($model::LIST_ID,Filter::EQ,$listId);
             
             $pageSize = Config::getInstance()->get_value("user.page.items");
-            $pageSize = 2 ;
-            
+
             $filters = array();
             array_push($filters,$filter);
+            
             $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
             $itemDBRows = $listDao->getPagedItems($paginator,$filters);
 
@@ -58,10 +58,11 @@ namespace com\indigloo\sc\controller{
 
             //page variables
             $pageBaseUrl = $listPubUrl ;
-            $pageTitle = SeoData::getHomePageTitle();
+            $pageTitle = $listDBRow["name"];
+            
+            $metaDescription = SeoData::thisOrHomeDescription($listDBRow["description"]);
             $metaKeywords = SeoData::getHomeMetaKeywords();
-            $metaDescription = SeoData::getHomeMetaDescription();
-
+            
             include($template);
 
         }

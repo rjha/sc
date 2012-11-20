@@ -22,8 +22,7 @@
         $gWeb = \com\indigloo\core\Web::getInstance(); 
         $fvalues = array();
         $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
-
-
+        
         try{
             
             $fhandler = new Form\Handler("edit-form", $_POST);

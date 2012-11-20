@@ -4,7 +4,7 @@
             <h4> Share and Discover with 3mik </h4>
         </div>
         <div class="span6">
-            <a id="nav-popup-share" class="btn">Add+&nbsp;/&nbsp;Upload</a>
+            <a id="nav-popup-share" class="btn">+ Add&nbsp;/&nbsp;Upload</a>
         </div>
     </div>
 

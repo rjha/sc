@@ -34,18 +34,6 @@
     text-decoration: underline ;
 }
 
-#top-unit a {
-    color: #666;
-    background: #F7F7F7;
-    font-weight: bold;
-    font-family: arial,sans-serif;
-    font-size: 13px;
-    border: 1px solid #CECECE;
-}
-
-#top-unit {
-    background-color: #F7F7F7;
-}
 
 .widget {
     border-bottom: 1px solid #f1f1f1 ;
@@ -269,7 +257,7 @@
 
 #list-wrapper {
     border-radius: 8px;
-    background-color: #eee ;
+    border: 1px solid #a1a1a1 ;
     width:80%;
     height:120px;
     overflow: auto;
@@ -297,19 +285,18 @@
 }
 
 #lists li:hover {
-    background-color: #999 ; 
+    background-color: #28c ; 
 }
 
 #lists li a {
     display:block;
     color: #222;
-    font-weight:bold ;
 }
 
 #lists li a:hover {
     color: white;
     font-weight:bold ;
-    background-color: #999 ;
+    background-color: #28c ;
 }
 
 .panel-form {
@@ -350,7 +337,10 @@
     min-height: 100px ; 
     margin-left:40px;
     padding-top:20px;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
+    border-top : 1px solid #e5e5e5;
+    border-bottom : 1px solid #e5e5e5;
+    margin-bottom:30px;
 }
 
 .list-header .user {
@@ -373,7 +363,4 @@
     border:5px solid #f7f7f7;
 }
 
-.list-header .title {
-    margin-left:340px;
-}
 

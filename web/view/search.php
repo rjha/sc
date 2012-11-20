@@ -12,7 +12,7 @@
         
     </head>
 
-     <body class="dark-body">
+     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
             <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
