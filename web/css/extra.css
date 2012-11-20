@@ -86,6 +86,7 @@
     height:70px;
     margin:10px;
     border:1px solid #ccc ;
+    background-color: #f7f7f7;
 }
 
 .uwidget .wrapper .photo img {
@@ -135,7 +136,7 @@
     height:12px;
     width:12px ;
     /* background-color: #f5be00 ; */
-    background-color: #DD4B39;
+    background-color: #FE63BB;
 }
 
 .uwidget a {
