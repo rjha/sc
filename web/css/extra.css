@@ -209,15 +209,6 @@
 
 }
 
-.name {
-    display : inline ;
-    font-size: 14px;
-    font-weight:bold;
-    line-height:1em ;
-
-}
-
-
 #dash-header {
     padding-bottom: 9px;
     margin-left:20px;
@@ -240,7 +231,8 @@
 
 .list-summary .name {
     padding-top : 14px;
-
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .list-summary .action {
@@ -352,3 +344,36 @@
 .list-form input {
     width:75%;
 }
+
+/* pub list styles */
+.list-header {
+    min-height: 100px ; 
+    margin-left:40px;
+    padding-top:20px;
+    padding-bottom: 20px;
+}
+
+.list-header .user {
+    float:left ;
+    width:300px;
+}
+
+.list-header .user .photo {
+    padding:5px;
+
+}
+
+.list-header .user .description {
+    padding-left:10px;
+}
+
+.list-header .user img{
+    max-height: 62px;
+    max-width:62px;
+    border:5px solid #f7f7f7;
+}
+
+.list-header .title {
+    margin-left:340px;
+}
+

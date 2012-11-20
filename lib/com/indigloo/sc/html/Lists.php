@@ -4,6 +4,8 @@ namespace com\indigloo\sc\html {
 
     use \com\indigloo\Template as Template;
     use \com\indigloo\sc\util\PseudoId ;
+    use \com\indigloo\Url ;
+    use \com\indigloo\sc\util\Formatter as Formatter ;
 
     class Lists {
 
@@ -35,6 +37,28 @@ namespace com\indigloo\sc\html {
             } else {
                 $template =  "/fragments/lists/dash/summary/noimage.tmpl" ;
             }
+
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function getPubHeader($listDBRow,$userDBRow) {
+            $view = self::createListView($listDBRow);
+
+            $view->userName = $userDBRow["name"];
+            $view->photoUrl = $userDBRow["photo_url"];
+            if(empty($view->photoUrl)) {
+                // @hardcoded
+                $view->photoUrl = '/css/asset/sc/twitter-icon.png' ;
+            }
+            
+            $encodedId = PseudoId::encode($listDBRow["login_id"]);
+            $view->userPubUrl = Url::base()."/pub/user/".$encodedId ;
+            $view->createdOn = Formatter::convertDBTime($listDBRow['created_on']);
+
+
+            $template = NULL ;
+            $template =  "/fragments/lists/pub/header.tmpl" ;
 
             $html = Template::render($template,$view);
             return $html ;

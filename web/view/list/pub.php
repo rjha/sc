@@ -9,36 +9,27 @@
         <meta name="description" content="<?php echo $metaDescription;  ?>">
 
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
-        
+        <link rel="stylesheet" type="text/css" href="/css/extra.css" >  
+
     </head>
 
-     <body class="dark-body">
+     <body>
+        <style>
+        /* @inpage @hardcoded css */
+        .tile { border: 1px solid #ccc ;}
+        </style>
+
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container mh600">
             <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
 
             <div class="row">
-                <div class="span6">
-                    <div class="wbg">
-                        <div class="section3">
-                            <div class="item">
-                                <div class="title">
-                                    <?php echo $listDBRow["name"]; ?>
-                                </div>
-                                <div class="p5">
-                                    
-                                    <span class="badge badge-warning"> <?php echo $listDBRow["item_count"]; ?></span>
-                                    <span class="faded-text">&nbsp;items</span>
-
-                                </div>
-                               
-
-                            </div>
-                        </div>
-                    </div>
+                <div class="span12">
+                   <?php echo \com\indigloo\sc\html\Lists::getPubHeader($listDBRow,$userDBRow); ?>
                 </div>
             </div> <!-- page:header -->
 
+            
             <div class="row">
 
                 <div class="span12">
