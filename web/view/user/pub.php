@@ -38,11 +38,21 @@
                 <div class="span7">
                     <?php echo  $htmlHeader; ?>
                     <div class="p10">
-                        <h5>Posts (<?php echo $ucounters["post_count"] ?>)
+                        <h5>
+                            Items (<?php echo $ucounters["post_count"] ?>)
+                            &nbsp;&nbsp;
+                            <a class="b" href="<?php echo $pageBaseUrl?>?show=items">view all items</a>
+                        </h5>
                         <?php echo  $htmlPosts; ?>
+                        
                     </div>
+
                     <div class="p10">
-                        <h5>Likes (<?php echo $ucounters["like_count"] ?>)
+                        <h5>
+                            Likes (<?php echo $ucounters["like_count"] ?>) 
+                            &nbsp;&nbsp;
+                            <a class="b" href="<?php echo $pageBaseUrl?>?show=likes">view all likes</a>
+                        </h5>
                         <?php echo  $htmlLikes; ?>
                     </div>
 

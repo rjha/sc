@@ -107,6 +107,7 @@ namespace com\indigloo\sc\html {
                 trigger_error($message, E_USER_ERROR);
             }
 
+            //@todo : check if the file exists or not!
             $name = str_replace(".","/",$key);
             $path = sprintf("%s/site/help/%s.html",APP_WEB_DIR,$name) ;
 

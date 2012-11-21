@@ -22,19 +22,47 @@ namespace com\indigloo\sc\controller{
                 exit;
             }
 
-            $pubUserId = Util::getArrayKey($params,"login_id");
-            $loginId = PseudoId::decode($pubUserId);
-            $qparams = Url::getRequestQueryParams();
+            $gTab = Url::tryQueryParam("show");
+            $gTab = empty($gTab) ? "index" : $gTab ;
 
-            $userDao = new \com\indigloo\sc\dao\User();
-            $userDBRow = $userDao->getOnLoginId($loginId);
+            //routing based on tab
+            switch($gTab) {
+                case "index" :
+                    $this->processIndex($params,$options);
+                    break ;
+                case "items" :
+                    $this->processItems($params,$options);
+                    break ;
+                case "likes" :
+                    $this->processLikes($params,$options);
+                    break ;
+                default :
+                    $this->processIndex($params,$options);
+                    break ;
+            }
 
+            return ;
+        }
+
+        private function isValidUser($userDBRow) {
             if(empty($userDBRow)) {
                 //not found
                 $controller = new \com\indigloo\sc\controller\Http404();
                 $controller->process();
                 exit;
             }
+        }
+
+        private function processIndex($params,$options) {
+
+
+            $pubUserId = Util::getArrayKey($params,"login_id");
+            $loginId = PseudoId::decode($pubUserId);
+            $qparams = Url::getRequestQueryParams();
+            
+            $userDao = new \com\indigloo\sc\dao\User();
+            $userDBRow = $userDao->getOnLoginId($loginId);
+            $this->isValidUser($userDBRow);
 
             $analyticDao = new \com\indigloo\sc\dao\Analytic();
             $ucounters = $analyticDao->getUserCounters($loginId);
@@ -85,25 +113,6 @@ namespace com\indigloo\sc\controller{
 
             $likeDBRows = $bookmarkDao->getLatest(8,$filters);
 
-            /*
-            $gpage = Url::tryQueryParam("gpage");
-            $gpage = empty($gpage) ? "1" : $gpage ;
-
-           
-            $postDao = new \com\indigloo\sc\dao\Post() ;
-
-            //create filter
-            $model = new \com\indigloo\sc\model\Post();
-            $filters = array();
-            $filter = new Filter($model);
-            $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
-            array_push($filters,$filter);
-
-            $pageSize = Config::getInstance()->get_value("main.page.items");
-            $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
-            $postDBRows = $postDao->getPaged($paginator,$filters);
-            */
-
             $template = APP_WEB_DIR. '/view/user/pub.php';
 
             //page variables
@@ -115,6 +124,95 @@ namespace com\indigloo\sc\controller{
             include($template);
 
         }
+
+        private function processItems($params,$options){
+
+            $pubUserId = Util::getArrayKey($params,"login_id");
+            $loginId = PseudoId::decode($pubUserId);
+            $qparams = Url::getRequestQueryParams();
+            
+            $userDao = new \com\indigloo\sc\dao\User();
+            $userDBRow = $userDao->getOnLoginId($loginId);
+            $this->isValidUser($userDBRow);
+           
+            $gpage = Url::tryQueryParam("gpage");
+            $gpage = empty($gpage) ? "1" : $gpage ;
+
+            $postDao = new \com\indigloo\sc\dao\Post() ;
+
+            //create filter
+            $model = new \com\indigloo\sc\model\Post();
+            $filters = array();
+            $filter = new Filter($model);
+            $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
+            array_push($filters,$filter);
+
+            $pageSize = Config::getInstance()->get_value("main.page.items");
+            //@debug
+            $pageSize = 10 ;
+
+            $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
+            $postDBRows = $postDao->getPaged($paginator,$filters);
+
+            $template = APP_WEB_DIR. '/view/user/items.php';
+
+            //page variables
+            $pageBaseUrl = "/pub/user/".$pubUserId ;
+            $pageTitle = sprintf("items by %s",$userDBRow["name"]);
+            $metaKeywords = SeoData::getHomeMetaKeywords();
+            $metaDescription = SeoData::getHomeMetaDescription();
+
+            include($template);
+
+        }
+
+        private function processLikes($params,$options){
+
+            $pubUserId = Util::getArrayKey($params,"login_id");
+            $loginId = PseudoId::decode($pubUserId);
+            $qparams = Url::getRequestQueryParams();
+            
+            $userDao = new \com\indigloo\sc\dao\User();
+            $userDBRow = $userDao->getOnLoginId($loginId);
+            $this->isValidUser($userDBRow);
+           
+            $gpage = Url::tryQueryParam("gpage");
+            $gpage = empty($gpage) ? "1" : $gpage ;
+
+            $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
+
+            //add login_id and code filters
+            $model = new \com\indigloo\sc\model\Bookmark();
+            $filters = array();
+
+            //filter-1
+            $filter = new Filter($model);
+            $filter->add($model::SUBJECT_ID_COLUMN,Filter::EQ,$loginId);
+            array_push($filters,$filter);
+
+            //filter-2
+            $filter = new Filter($model);
+            $filter->add($model::VERB_COLUMN,Filter::EQ,AppConstants::LIKE_VERB);
+            array_push($filters,$filter);
+
+            $pageSize = Config::getInstance()->get_value("user.page.items");
+            //@debug
+            $pageSize = 10 ;
+            $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
+            $postDBRows = $bookmarkDao->getPaged($paginator,$filters);
+            
+            $template = APP_WEB_DIR. '/view/user/items.php';
+
+            //page variables
+            $pageBaseUrl = "/pub/user/".$pubUserId ;
+            $pageTitle = sprintf("Likes by %s",$userDBRow["name"]);
+            $metaKeywords = SeoData::getHomeMetaKeywords();
+            $metaDescription = SeoData::getHomeMetaDescription();
+
+            include($template);
+
+        }
+
     }
 }
 ?>
