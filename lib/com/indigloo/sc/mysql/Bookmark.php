@@ -42,8 +42,9 @@ namespace com\indigloo\sc\mysql {
             $q->filter($filters);
             $sql .= $q->get();
 
-            $sql .= "order by id desc LIMIT %d ";
+            $sql .= "order by q.id desc LIMIT %d ";
             $sql = sprintf($sql,$limit);
+
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
@@ -63,7 +64,7 @@ namespace com\indigloo\sc\mysql {
             $q->filter($filters);
             $sql .= $q->get();
 
-            $sql .= "order by id desc LIMIT %d ";
+            $sql .= "order by a.id desc LIMIT %d ";
             $sql = sprintf($sql,$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
@@ -89,9 +90,9 @@ namespace com\indigloo\sc\mysql {
             $q->filter($filters);
             $sql .= $q->get();
 
-            $sql .= $q->getPagination($start,$direction,"a.id",$limit);
+            $sql .= $q->getPagination($start,$direction,"q.id",$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-
+            
             //reverse rows for 'before' direction
             if($direction == 'before') {
                 $results = array_reverse($rows) ;
