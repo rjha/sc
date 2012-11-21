@@ -148,9 +148,6 @@ namespace com\indigloo\sc\controller{
             array_push($filters,$filter);
 
             $pageSize = Config::getInstance()->get_value("main.page.items");
-            //@debug
-            $pageSize = 10 ;
-
             $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
             $postDBRows = $postDao->getPaged($paginator,$filters);
 
@@ -196,8 +193,6 @@ namespace com\indigloo\sc\controller{
             array_push($filters,$filter);
 
             $pageSize = Config::getInstance()->get_value("user.page.items");
-            //@debug
-            $pageSize = 10 ;
             $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
             $postDBRows = $bookmarkDao->getPaged($paginator,$filters);
             

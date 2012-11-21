@@ -96,7 +96,7 @@
 
                 });
 
-                /*
+                
                 $container.infinitescroll(
                     {
                         navSelector     : '.pager',
@@ -125,7 +125,7 @@
                         });
 
                     }
-                ); */
+                );
 
 
                 //Add item toolbar actions
