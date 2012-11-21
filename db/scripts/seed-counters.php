@@ -10,6 +10,18 @@
     error_reporting(-1);
     set_exception_handler('offline_exception_handler');
     //@prereq: run the insert queries in patch file
+    /*
+
+    + reset counters
+
+    update sc_user_counter set post_count = 0 ;
+    update sc_user_counter set comment_count = 0 ;
+    update sc_user_counter set like_count = 0 ;
+    update sc_user_counter set follower_count = 0 ;
+    update sc_user_counter set following_count = 0 ;
+    update sc_post_counter set comment_count = 0 , like_count = 0 ;
+
+    */
 
     $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -41,8 +53,15 @@
 
     printf("\n\n");
 
+    /*  
+        Do not select items that were liked but deleted in the iterim
+        select subject_id, object_id, verb  from sc_bookmark b,sc_post p 
+        where b.object_id = p.pseudo_id ;
+        */
 
-    $sql = "select subject_id, object_id, verb  from sc_bookmark " ;
+    $sql = "select subject_id, object_id  from sc_bookmark b,sc_post p " ;
+    $sql .= " where b.object_id = p.pseudo_id and b.verb = 1 " ;
+
     $rows = MySQL\Helper::fetchRows($mysqli,$sql);
 
     $t11 = " update sc_user_counter set like_count = like_count + 1 where login_id = %s ; " ;
@@ -50,20 +69,16 @@
     
 
     foreach($rows as $row) {
-        $verb = $row["verb"];
-        settype($verb,"int");
-        if($verb == 1 ) {
-            $t1sql = sprintf($t11,$row["subject_id"]) ;
-            $t2sql = sprintf($t21,$row["object_id"]) ;
-            printf("%s \n",$t1sql);
-            printf("%s \n",$t2sql);
-        }
-
+        $t1sql = sprintf($t11,$row["subject_id"]) ;
+        $t2sql = sprintf($t21,$row["object_id"]) ;
+        printf("%s \n",$t1sql);
+        printf("%s \n",$t2sql);
     }
 
 
     printf("\n\n");
 
+    /* no concept of deleting the user in system as on 22 nov. 2012 */
     $sql = " select follower_id, following_id from sc_follow " ;
     $rows = MySQL\Helper::fetchRows($mysqli,$sql);
 
