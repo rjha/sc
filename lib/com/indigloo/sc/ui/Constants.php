@@ -19,7 +19,11 @@
             const BAN_USER = "BAN" ;
             const UNBAN_USER = "UNBAN" ;
             const TAINT_USER = "TAINT" ;
-            
+           
+            const PH1_PIC = "/css/asset/sc/twitter-icon.png" ;
+            const PH2_PIC = "/css/asset/sc/twitter-icon2.png" ;
+            const PH3_PIC = "/css/asset/sc/twitter-icon3.png" ;
+
         }
 }
 ?>

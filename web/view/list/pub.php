@@ -14,11 +14,6 @@
     </head>
 
      <body>
-        <style>
-        /* @inpage @hardcoded css */
-            .tile { border: 1px solid #ccc ;}
-
-        </style>
 
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container mh600">

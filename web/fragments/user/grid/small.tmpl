@@ -1,0 +1,12 @@
+<div class="image-grid">
+~foreach($view->users as $user){~
+    <div class="box">
+        <a href="~~$user->publicUrl~">
+            <img src="~~$user->photoUrl~" title="~~$user->name~" alt="~~$user->name~" />
+        </a>
+    </div>
+~}~
+
+</div>
+
+<div class="clear"> </div>

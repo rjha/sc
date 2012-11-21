@@ -5,10 +5,12 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\Util as Util;
     use com\indigloo\Url;
     use \com\indigloo\Configuration as Config ;
+
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\html\Seo as SeoData ;
     use \com\indigloo\ui\Filter as Filter;
 
+    use \com\indigloo\sc\Constants as AppConstants;
 
     class User {
 
@@ -34,14 +36,60 @@ namespace com\indigloo\sc\controller{
                 exit;
             }
 
+            $analyticDao = new \com\indigloo\sc\dao\Analytic();
+            $ucounters = $analyticDao->getUserCounters($loginId);
+            
+
+            $postDao = new \com\indigloo\sc\dao\Post() ;
+
+            //create filter
+            $model = new \com\indigloo\sc\model\Post();
+            $filters = array();
+            $filter = new Filter($model);
+            $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
+            array_push($filters,$filter);
+
+            $postDBRows = $postDao->getLatest(8,$filters);
+            
+            $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
+            $followers = $socialGraphDao->getFollowers($loginId,5);
+            $followings = $socialGraphDao->getFollowing($loginId,5);
+
+            $followerUIOptions = array(
+                "ui" => "feed",
+                "more" => "#");
+
+            $followingUIOptions = array(
+                "ui" => "feed",
+                "more" => "#", "image" => false);
+
+            $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
+            $feedDataObj = $activityDao->getUserActivities($loginId,20);
+            
+            //likes of user
+            $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
+
+            //add login_id and code filters
+            $model = new \com\indigloo\sc\model\Bookmark();
+            $filters = array();
+
+            //filter-1
+            $filter = new Filter($model);
+            $filter->add($model::SUBJECT_ID_COLUMN,Filter::EQ,$loginId);
+            array_push($filters,$filter);
+
+            //filter-2
+            $filter = new Filter($model);
+            $filter->add($model::VERB_COLUMN,Filter::EQ,AppConstants::LIKE_VERB);
+            array_push($filters,$filter);
+
+            $likeDBRows = $bookmarkDao->getLatest(8,$filters);
+
+            /*
             $gpage = Url::tryQueryParam("gpage");
             $gpage = empty($gpage) ? "1" : $gpage ;
 
-            //meta data about user - #groups/#posts/#comments/#followers etc.
-            // user feeds
-            $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
-            $feedDataObj = $activityDao->getUserActivities($loginId,10);
-
+           
             $postDao = new \com\indigloo\sc\dao\Post() ;
 
             //create filter
@@ -54,6 +102,7 @@ namespace com\indigloo\sc\controller{
             $pageSize = Config::getInstance()->get_value("main.page.items");
             $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
             $postDBRows = $postDao->getPaged($paginator,$filters);
+            */
 
             $template = APP_WEB_DIR. '/view/user/pub.php';
 

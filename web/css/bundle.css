@@ -1236,7 +1236,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .fancybox-container{display:none}
 .fancybox-container input{width:400px}
 .hide-me{display:none}
-.image-grid .box{position:relative;float:left;padding:7px;height:125px;width:125px;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1);margin:4px}
+.image-grid .box{position:relative;float:left;padding:3px;height:125px;width:125px}
 .image-grid .box img{width:auto;height:auto;max-width:100px;max-height:100px;padding:5px}
 #link-preview a{font-size:10px;line-height:1.8;color:#444;text-decoration:underline}
 #image-preview .container{position:relative;float:left;padding:7px;height:160px;width:190px;box-shadow:0 1px 3px rgba(34,25,25,0.4);margin:4px}
@@ -1311,7 +1311,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .feeds .item{width:100%;clear:both;padding-top:5px;border-top:1px solid #eee;padding-bottom:5px}
 .feeds .item:hover{background-color:#f2f0f0}
 .feeds .item:first-child{border-top:0}
-.feeds .item img{padding:5px;float:left;width:auto;height:auto;max-width:60px;max-height:60px}
+.feeds .item img{padding:3px;float:left;width:auto;height:auto;max-width:60px;max-height:60px}
 .feeds .item .message{color:#8c7e7e}
 .noresults{width:640px;margin:0 auto;padding:30px 0;color:#AAA;font-size:2.9em;line-height:32px}
 .clicked-tile{background-color:#eee}

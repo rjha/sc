@@ -1,0 +1,18 @@
+<h5>Followings</h5>
+<div class="feeds">
+
+  ~foreach($view->records as $record){~
+  <div class="item">
+    <img src="~~$record['srcImage']~" class="imgw40" alt="~~$record['name']~">
+          
+    <div>
+        <a href="~~$record['pubUserUrl']~"><span class="faded-text" style="padding-left:10px;">~~$record['name']~</span></a>
+    </div>
+    <div class="clear"> </div>
+  </div>
+  ~}~
+
+</div>
+<div class="ml20">
+  <a class="b faded-text" href="~~$view->moreLink~">more &rarr;</a>
+</div>

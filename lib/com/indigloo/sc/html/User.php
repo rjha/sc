@@ -9,7 +9,9 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\Url as Url ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\auth\Login as Login ;
+
     use \com\indigloo\sc\util\Formatter as Formatter ;
+    use \com\indigloo\sc\ui\Constants as UIConstants ;
 
     class User {
 
@@ -45,13 +47,13 @@ namespace com\indigloo\sc\html {
         static function createUserView($userDBRow) {
             $view = new \stdClass;
 
-            $view->name = $userDBRow['name'];
+            $view->name = (empty($userDBRow['nick_name'])) ? $userDBRow['name'] : $userDBRow['nick_name'] ;
             $view->createdOn = Formatter::convertDBTime($userDBRow['created_on']);
             $view->email = $userDBRow['email'];
             $view->aboutMe = $userDBRow['about_me'];
             $view->photoUrl = $userDBRow['photo_url'];
             if(empty($view->photoUrl)) {
-                $view->photoUrl = '/css/asset/sc/twitter-icon2.png' ;
+                $view->photoUrl =  UIConstants::PH2_PIC ;
             }
 
             $loginId = $userDBRow['login_id'];
@@ -76,7 +78,7 @@ namespace com\indigloo\sc\html {
             $view->name = $name;
             $view->photoUrl = $photoUrl;
             if(empty($view->photoUrl)) {
-                $view->photoUrl = '/css/asset/sc/twitter-icon2.png' ;
+                $view->photoUrl = UIConstants::PH2_PIC ;
             }
 
             $html = Template::render($template,$view);
@@ -84,12 +86,40 @@ namespace com\indigloo\sc\html {
 
         }
 
-        static function getPublic($userDBRow,$feedDataObj,$total) {
+        static function getGrid($rows) {
+            $html = NULL ;
+            $view = new \stdClass;
+            $view->users = array();
+
+            $template = '/fragments/user/grid/small.tmpl' ;
+
+            foreach($rows as $row){
+                $user = self::createUserView($row);
+                array_push($view->users,$user);
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+        static function getPublic($userDBRow) {
 
             $html = NULL ;
             $view = new \stdClass;
             $template = '/fragments/user/public.tmpl' ;
 
+            $view = self::createUserView($userDBRow);
+            $view->followingId = $userDBRow["login_id"];
+              
+            //userId in session is follower
+            $loginId = Login::tryLoginIdInSession();
+            $view->followerId = (empty($loginId)) ? "{loginId}" : $loginId ;
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+            /*
             $data = array();
 
             //what properties are actually set in DB
@@ -118,35 +148,15 @@ namespace com\indigloo\sc\html {
             $data['photo_url'] = $userDBRow['photo_url'];
 
             if(empty($data['photo_url'])) {
-                $data['photo_url'] = '/css/asset/sc/twitter-icon2.png' ;
+                $data['photo_url'] = UIConstants::PH2_PIC ;
             }
 
-            if($total > 0 ) {
-                array_push($columns,"num_posts");
-                $data["num_posts"] = $total.' posts &rarr;' ;
-                $labels["num_posts"] = "&nbsp;" ;
-            }
 
             $view->createdOn = Formatter::convertDBTime($userDBRow['created_on']);
             $view->columns = $columns;
             $view->data = $data;
             $view->labels = $labels ;
-
-            //feeds html
-            $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
-            $feedHtml = $htmlObj->getHtml($feedDataObj);
-            $view->feedHtml = empty($feedHtml) ? '' : $feedHtml ;
-            $view->total = $total ;
-
-            $view->followingId = $userDBRow["login_id"];
-            $encodedId = PseudoId::encode($view->followingId);
-            $view->publicUrl = "/pub/user/".$encodedId ;
-            //userId in session is follower
-            $loginId = Login::tryLoginIdInSession();
-            $view->followerId = (empty($loginId)) ? "{loginId}" : $loginId ;
-
-            $html = Template::render($template,$view);
-            return $html ;
+            */
 
         }
 

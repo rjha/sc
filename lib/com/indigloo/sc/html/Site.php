@@ -49,21 +49,8 @@ namespace com\indigloo\sc\html {
                 "hkey" => NULL ,
                 "form" => "vanilla");
 
-            if(is_array($options) && !empty($options)) {
-                //keys from options will override the ones
-                // in default as array
-                $settings = array_merge($defaults,$options);
-            } else {
-                $settings = $defaults ;
-            }
-
-            //empty strings are equivalent to NULL
-            foreach($settings as $key => $value) {
-                if(Util::tryEmpty($value)) {
-                    $settings[$key] = NULL ;
-                }
-            }
-
+            $settings = Util::getSettings($options,$defaults);
+            
             //get qparams from Url
             $qparams = \com\indigloo\Url::getRequestQueryParams();
             $gpage = -1 ;

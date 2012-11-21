@@ -1,24 +1,39 @@
-<div id="pubuser">
-    <img class="avatar"  src="~~$view->data['photo_url']~" alt ="~~$view->data['name']~" />
+<div class="uwidget">
+        <div class="wrapper">
+            <div class="photo">
+                <img src="~~$view->photoUrl~" />
+            </div>
+            <div class="detail">
+                <div class="name">
+                    <span class="title">~~$view->name~</span>
+                    <p>~~$view->aboutMe~</p>
+                </div>
+                <div class="link">
+                    <a class="btn btn-small" href="" id="~~$view->followerId~|~~$view->followingId~" class="follow-user">Follow</a>
+                </div>
+            </div>
+            <div class="clear"> </div>
+        </div>
+        
+    <div class="bottom ml20">
 
-    <h3>~~$view->data['name']~</h3>
+       <dl class="dl-horizontal">
+            <dt>Location</dt>
+            <dd>~~$view->location~ </dd>
+            
+            <dt>Blog</li>
+            <dd> 
+                <a href="~~$view->blog~" class="b" target="_blank">~~$view->blog~</a> 
+            </dd>
+           
+            <dt>Website</dt>
+            <dd> 
+                <a href="~~$view->website~" class="b" target="_blank">~~$view->website~</a>  
+            </dd>
+           
 
-    <div class="section">
-        <a href="" id="~~$view->followerId~|~~$view->followingId~" class="btn follow-user">Follow user</a>
-        <p class="about-me"> ~~$view->data['about_me']~ </p>
+       </dl>
     </div>
-    <div class="section">
-        <ul class="unstyled">
-            ~foreach($view->columns as $key){ ~
-                <li class="header"> ~~$view->labels[$key]~ </li>
-                <li class="data"> ~~$view->data[$key]~ </li>
-            ~}~
-
-        </ul>
-
-    </div>
-    <div>
-        <div class="feeds"> ~~$view->feedHtml~ </div>
-    </div>
-
+    
+    
 </div>

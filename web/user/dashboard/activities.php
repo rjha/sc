@@ -26,6 +26,16 @@
     $followers = $socialGraphDao->getFollowers($loginId,5);
     $followings = $socialGraphDao->getFollowing($loginId,5);
 
+    $followerUIOptions = array(
+        "ui" => "feed",
+        "more" => "/user/dashboard/follower.php", 
+        "image" => true);
+
+    $followingUIOptions = array(
+        "ui" => "feed",
+        "more" => "/user/dashboard/following.php", 
+        "image" => true);
+
 
 ?>
 
@@ -71,9 +81,9 @@
 
                 </div>
                 <div class="span4 offset1">
-                    <?php echo \com\indigloo\sc\html\SocialGraph::getTable($loginId,$followers,1); ?>
-                    <?php echo \com\indigloo\sc\html\SocialGraph::getTable($loginId,$followings,2); ?>
-                  
+                <?php echo \com\indigloo\sc\html\SocialGraph::getTable($loginId,$followers,1,$followerUIOptions); ?>
+                <?php echo \com\indigloo\sc\html\SocialGraph::getTable($loginId,$followings,2,$followingUIOptions); ?>
+              
 
                 </div>
             </div>

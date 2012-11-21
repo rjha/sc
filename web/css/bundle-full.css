@@ -6808,11 +6808,9 @@ button::-moz-focus-inner {
     .image-grid .box{
         position :relative ;
         float : left;
-        padding:7px;
+        padding:3px;
         height:125px;
         width:125px;
-        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4),0 0px 10px rgba(0, 0, 0, 0.1);
-        margin :4px;
     }
 
     .image-grid .box img {
@@ -7299,7 +7297,7 @@ button::-moz-focus-inner {
     }
 
     .feeds .item img {
-        padding:5px;
+        padding:3px;
         float:left ;
         width:auto;
         height:auto;

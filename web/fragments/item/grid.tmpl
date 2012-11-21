@@ -1,0 +1,16 @@
+
+<div class="image-grid">
+~foreach($view->posts as $post){~
+    <div class="box">
+        <a href="/item/~~$post->itemId~">
+            <img src="~~$post->thumbnail~" title="~~$post->title~" alt="~~$post->title~" />
+        </a>
+    </div>
+~}~
+
+</div>
+
+<div class="clear"> </div>
+
+
+

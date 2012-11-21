@@ -5,8 +5,10 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\Template as Template;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
+
     use \com\indigloo\sc\util\PseudoId ;
-    
+    use \com\indigloo\sc\ui\Constants as UIConstants;
+
     class SocialGraph {
 
         private static function getTemplate($source,$typeOfUI,$hasImage) {
@@ -76,12 +78,17 @@ namespace com\indigloo\sc\html {
             return $html ;
 
         }
-
-        //@todo - show help card when no valid rows?
-        static function getTable($loginId,$rows,$source,$withImage=false) {
+        
+        static function getTable($loginId,$rows,$source,$options=array()) {
             $html = NULL ;
             $view = new \stdClass;
             
+            $defaults = array(
+                "ui" => "table",
+                "more" => NULL,
+                "image" => false);
+            
+            $settings = Util::getSettings($options,$defaults);
             $records = array();
             
             foreach($rows as $row){
@@ -96,18 +103,27 @@ namespace com\indigloo\sc\html {
                 $record['followerId']= $loginId ;
                 $record['hasImage'] = false ;
 
+                /*
                 if(!Util::tryEmpty($row["photo_url"])) {
                     $record['srcImage'] = $row["photo_url"];
                     $record['hasImage'] = true ;
-                }
+                }else {
+                     $record['srcImage'] = UIConstants::PH2_PIC;
+                } */
+                
+                //@hardcoded image to small user placeholder image.
+                $record['srcImage'] = UIConstants::PH3_PIC;
 
                 $records[] = $record;
             }
             
             $view->records = $records ;
             
+            //view specific properties
+            $view->moreLink = empty($settings["more"])? "" : $settings["more"] ;
+
             settype($source,"integer");
-            $template = self::getTemplate($source,"table",$withImage);
+            $template = self::getTemplate($source,$settings["ui"],$settings["image"]);
             $html = Template::render($template,$view);
             return $html ;
         }

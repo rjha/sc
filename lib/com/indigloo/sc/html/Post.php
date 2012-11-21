@@ -5,10 +5,11 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\Template as Template;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
+
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\util\StringUtil as StringUtil ;
-
     use \com\indigloo\sc\util\PseudoId as PseudoId;
+    
     use \com\indigloo\sc\ui\Constants as UIConstants ;
     use \com\indigloo\sc\Constants as AppConstants ;
     use \com\indigloo\sc\util\Formatter as Formatter ;
@@ -223,6 +224,25 @@ namespace com\indigloo\sc\html {
             $template = '/fragments/item/user-panel.tmpl' ;
             $html = Template::render($template,$postView);
             return $html ;
+        }
+        
+        static function getImageGrid($rows,$options=array()) {
+            $html = NULL ;
+            $view = new \stdClass;
+            $view->posts = array();
+
+            $template = '/fragments/item/grid.tmpl' ;
+
+            foreach($rows as $row){
+                $post = self::createPostView($row);
+                if($post->hasImage){
+                    array_push($view->posts,$post);
+                }
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
         }
 
         static function getSitePanel($siteMetaRow,$sitePostRows) {
@@ -509,8 +529,8 @@ namespace com\indigloo\sc\html {
             } else {
                 $imgv["name"] = "placeholder" ;
                 $imgv["tname"] = "placeholder" ;
-                $imgv["source"] = "/css/asset/sc/twitter-icon.png" ;
-                $imgv["thumbnail"] = "/css/asset/sc/twitter-icon.png" ;
+                $imgv["source"] = UIConstants::PH1_PIC ;
+                $imgv["thumbnail"] = UIConstants::PH1_PIC ;
                 $imgv["width"] = 48;
                 $imgv["height"] = 48;
                 $imgv["twidth"] = 40;

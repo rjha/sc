@@ -1,3 +1,18 @@
+<?php
+
+    $htmlHeader = \com\indigloo\sc\html\User::getPublic($userDBRow);
+    $htmlPosts = \com\indigloo\sc\html\Post::getImageGrid($postDBRows);
+    $htmlFollowers = \com\indigloo\sc\html\SocialGraph::getTable($loginId,$followers,1,$followerUIOptions);
+    $htmlFollowings = \com\indigloo\sc\html\SocialGraph::getTable($loginId,$followings,2,$followingUIOptions);
+
+    $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+    $htmlActivity  = $htmlObj->getHtml($feedDataObj);
+    $htmlLikes = \com\indigloo\sc\html\Post::getImageGrid($likeDBRows);
+
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 
@@ -9,7 +24,8 @@
         <meta name="description" content="<?php echo $metaDescription;  ?>">
 
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
-        
+        <link rel="stylesheet" type="text/css" href="/css/extra.css" >  
+
     </head>
 
      <body>
@@ -19,47 +35,32 @@
             
             <div class="row">
 
-                <div class="span12">
+                <div class="span7">
+                    <?php echo  $htmlHeader; ?>
+                    <div class="p10">
+                        <h5>Posts (<?php echo $ucounters["post_count"] ?>)
+                        <?php echo  $htmlPosts; ?>
+                    </div>
+                    <div class="p10">
+                        <h5>Likes (<?php echo $ucounters["like_count"] ?>)
+                        <?php echo  $htmlLikes; ?>
+                    </div>
 
-                    <div id="tiles" class="mh600">
-
-                        <?php
-
-                            //include user information tile on page#1 only!
-                            if($gpage == 1 ) {
-                                echo '<div class="tile">' ;
-                                echo \com\indigloo\sc\html\User::getPublic($userDBRow,$feedDataObj,$total);
-                                echo '</div>' ;
-                            }
-
-                            $startId = NULL;
-                            $endId = NULL ;
-                            $gNumRecords = sizeof($postDBRows);
-
-                            if( $gNumRecords > 0 ) {
-                                $startId = $postDBRows[0]['id'] ;
-                                $endId =   $postDBRows[$gNumRecords-1]['id'] ;
-                                foreach($postDBRows as $postDBRow) {
-                                    $html = \com\indigloo\sc\html\Post::getTile($postDBRow);
-                                    echo $html ;
-
-                                }
-                            }else {
-                                 
-                                $message = "No Posts" ;
-                                $options = array("form" => "tile");
-                                echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
-
-                            }
-
-                        ?>
-
-                    </div><!-- tiles -->
-
-                    <hr>
-
+                    <div class="row">
+                        <div class="span6">
+                            <?php echo  $htmlFollowers ;  ?>
+                            <?php echo  $htmlFollowings; ?>
+                        </div>
+                    </div>
 
                 </div>
+
+                <div class="span3 offset1">
+                    <div class="feeds">
+                        <?php  echo  $htmlActivity; ?>
+                    </div>
+                </div>
+
             </div> <!-- row -->
 
 
@@ -67,65 +68,12 @@
 
         </div>  <!-- container -->
 
-        <?php $paginator->render($pageBaseUrl,$startId,$endId,$gNumRecords);  ?>
+        
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
         <script type="text/javascript">
-            /* column width = css width + margin */
+             
             $(function(){
-
-                //show options on hover
-                $('.tile .options').hide();
-
-                function add_tile_options () {
-                    $('.tile').live("mouseenter", function() {$(this).find('.options').show();});
-                    $('.tile').live("mouseleave", function() {$(this).find('.options').hide();});
-                }
-
-                var $container = $('#tiles');
-
-                $container.imagesLoaded(function(){
-                    $container.isotope({
-                        itemSelector : '.tile',
-                        layoutMode : 'masonry',
-                        onLayout : function( $elems, instance ) {
-                            add_tile_options();
-                        }                   
-                    });
-
-                });
-
-
-                $container.infinitescroll(
-                    {
-                        navSelector     : '.pager',
-                        nextSelector    : '.pager a[rel="next"]',
-                        itemSelector : '.tile',
-                        bufferPx : 80,
-
-                        loading : {
-                            selector : "#scroll-loading",
-                            img : "/css/asset/sc/round_loader.gif",
-                            msgText: "<em>Please wait. Loading more items...</em>",
-                            finishedMsg : "<b> You have reached the end of this page </b>",
-                            speed: "slow"
-
-                        }
-
-                    },
-
-                    function( newElements ) {
-                         // hide new items while they are loading
-                        var $newElems = $(newElements).css({ opacity: 0 });
-                        $newElems.imagesLoaded(function(){
-                            $newElems.css({ opacity: 1 });
-                            $container.isotope('appended', $newElems);
-                            $("#infscr-loading").fadeOut("slow");
-                        });
-
-                    }
-                );
-
 
                 //Add item toolbar actions
                 webgloo.sc.item.addActions();

@@ -5,7 +5,9 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\Template as Template;
     use \com\indigloo\sc\util\PseudoId ;
     use \com\indigloo\Url ;
+
     use \com\indigloo\sc\util\Formatter as Formatter ;
+    use \com\indigloo\sc\ui\Constants as UIConstants;
 
     class Lists {
 
@@ -49,7 +51,7 @@ namespace com\indigloo\sc\html {
             $view->photoUrl = $userDBRow["photo_url"];
             if(empty($view->photoUrl)) {
                 // @hardcoded
-                $view->photoUrl = '/css/asset/sc/twitter-icon.png' ;
+                $view->photoUrl = UIConstants::PH2_PIC ;
             }
             
             $encodedId = PseudoId::encode($listDBRow["login_id"]);
