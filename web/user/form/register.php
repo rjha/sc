@@ -81,7 +81,7 @@
             //add overlay message
             $message = "success! Thanks for joining ".$fvalues['first_name'];
             $gWeb->store("global.overlay.message", $message);
-            header("Location: /");
+            header("Location: /user/dashboard/index.php");
 
             exit ;
 
