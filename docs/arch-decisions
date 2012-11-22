@@ -1,0 +1,24 @@
+
+Default list implementation
+--------------------------------
+
+if user has no lists store then we show from a harcoded set.
+Here the list.id is some MAGIC_NUMBER (-ve to distinguish from DB PK)
+    like:
+
+    -1 Favorites
+    -2 wishlist
+
+
+when the user clicks and actually selects these lists then we insert them into DB
+but with dl_bit = 1. Normal lists have dl_bit = 0
+
+when we bring the lists next time then all dl_bit  = 1 names will be excluded from 
+the default set. That means if we had previously selected Favorites then it has been now
+inserted as a "real list" but with dl_bit = 1. so only wishlist is copied from default set.
+
+When creating a list - we do not allow people to create lists in default set if dl_bit is not set. so if you intend to create a "Favorites" list then you have to set dl_bit = 1.
+we skip the is_part_of_default_set check when dl_bit is 1.
+
+The alternative (cleaner) would have been to insert lists on user creation. problem is our lists
+require PHP processing (e.g. seo_name) that cannot be done via a trigger alone.
