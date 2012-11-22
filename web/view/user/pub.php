@@ -3,6 +3,7 @@
     use \com\indigloo\sc\html\User as UserHtml ;
     use \com\indigloo\sc\html\Post as PostHtml ;
     use \com\indigloo\sc\html\SocialGraph as GraphHtml ;
+    use \com\indigloo\sc\html\Lists as ListHtml ;
     
 
     $headerHtml = UserHtml::getPubHeader($userDBRow);
@@ -29,9 +30,21 @@
     $options = array ("title" => "Followings", "tab" => "followings");
     $followingsHtml = UserHtml::getPubWrapper($pageBaseUrl,$count,$content,$options);
 
+
     $htmlActivityObj = new \com\indigloo\sc\html\ActivityFeed();
     $activityHtml  = $htmlActivityObj->getHtml($feedDataObj);
     
+    //reset content
+    $content = "" ;
+
+    foreach($listDBRows as $listDBRow) {
+        $content .= ListHtml::getPubWidget($listDBRow);
+    }
+
+    $count = $ucounters["list_count"];
+    $options = array ("title" => "Lists", "tab" => "lists");
+    $listHtml = UserHtml::getPubWrapper($pageBaseUrl,$count,$content,$options);
+
 
 ?>
 
@@ -58,10 +71,11 @@
             
             <div class="row">
 
-                <div class="span7">
+                <div class="span8">
                     <?php 
                         echo  $headerHtml; 
                         echo  $itemsHtml;  
+                        echo $listHtml ;
                         echo  $likesHtml;  
                        
                     ?>

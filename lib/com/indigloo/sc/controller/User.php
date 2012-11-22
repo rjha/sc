@@ -40,8 +40,12 @@ namespace com\indigloo\sc\controller{
                     $this->processGraph($params,$options,1);
                     break ;
                 case "followings" :
-                $this->processGraph($params,$options,2);
-                break ;
+                    $this->processGraph($params,$options,2);
+                    break ;
+                case "lists" :
+                    $this->processLists($params,$options);
+                    break ;
+
                 default :
                     $this->processIndex($params,$options);
                     break ;
@@ -61,22 +65,23 @@ namespace com\indigloo\sc\controller{
 
         private function processIndex($params,$options) {
 
-
             $pubUserId = Util::getArrayKey($params,"login_id");
             $loginId = PseudoId::decode($pubUserId);
             $qparams = Url::getRequestQueryParams();
             
+            //data:1:user
             $userDao = new \com\indigloo\sc\dao\User();
             $userDBRow = $userDao->getOnLoginId($loginId);
             $this->isValidUser($userDBRow);
 
+            //data:2:counters
             $analyticDao = new \com\indigloo\sc\dao\Analytic();
             $ucounters = $analyticDao->getUserCounters($loginId);
             
 
+            //data:3:items
             $postDao = new \com\indigloo\sc\dao\Post() ;
 
-            //create filter
             $model = new \com\indigloo\sc\model\Post();
             $filters = array();
             $filter = new Filter($model);
@@ -85,6 +90,7 @@ namespace com\indigloo\sc\controller{
 
             $postDBRows = $postDao->getLatest(8,$filters);
             
+            //data:social graph
             $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
             $followers = $socialGraphDao->getFollowers($loginId,5);
             $followings = $socialGraphDao->getFollowing($loginId,5);
@@ -97,28 +103,30 @@ namespace com\indigloo\sc\controller{
                 "ui" => "feed",
                 "more" => "#", "image" => false);
 
+            //data:4:activity
             $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
             $feedDataObj = $activityDao->getUserActivities($loginId,20);
             
-            //likes of user
+            // data:5:likes
             $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
 
-            //add login_id and code filters
             $model = new \com\indigloo\sc\model\Bookmark();
             $filters = array();
 
-            //filter-1
             $filter = new Filter($model);
             $filter->add($model::SUBJECT_ID_COLUMN,Filter::EQ,$loginId);
             array_push($filters,$filter);
 
-            //filter-2
             $filter = new Filter($model);
             $filter->add($model::VERB_COLUMN,Filter::EQ,AppConstants::LIKE_VERB);
             array_push($filters,$filter);
 
             $likeDBRows = $bookmarkDao->getLatest(8,$filters);
 
+            //data:6:lists
+            $listDao = new \com\indigloo\sc\dao\Lists();
+            $listDBRows = $listDao->getLatestOnLoginId($loginId,4);
+             
             $template = APP_WEB_DIR. '/view/user/pub.php';
 
             //page variables
@@ -248,6 +256,38 @@ namespace com\indigloo\sc\controller{
             //page variables
             $pageBaseUrl = "/pub/user/".$pubUserId ;
             $pageTitle = sprintf("%s of %s",$graphName,$userDBRow["name"]);
+            $metaKeywords = SeoData::getHomeMetaKeywords();
+            $metaDescription = SeoData::getHomeMetaDescription();
+
+            include($template);
+
+        }
+
+        private function processLists($params,$options){
+
+            $pubUserId = Util::getArrayKey($params,"login_id");
+            $loginId = PseudoId::decode($pubUserId);
+            $qparams = Url::getRequestQueryParams();
+            
+            $userDao = new \com\indigloo\sc\dao\User();
+            $userDBRow = $userDao->getOnLoginId($loginId);
+            $this->isValidUser($userDBRow);
+           
+            $gpage = Url::tryQueryParam("gpage");
+            $gpage = empty($gpage) ? "1" : $gpage ;
+
+            $listDao = new \com\indigloo\sc\dao\Lists();
+
+            $qparams = Url::getRequestQueryParams();
+            $pageSize = Config::getInstance()->get_value("user.page.items");
+            $paginator = new \com\indigloo\ui\Pagination($qparams, $pageSize);
+            $listDBRows = $listDao->getPagedOnLoginId($paginator,$loginId);
+                    
+            $template = APP_WEB_DIR. '/view/user/lists.php';
+
+            //page variables
+            $pageBaseUrl = "/pub/user/".$pubUserId ;
+            $pageTitle = sprintf("All lists");
             $metaKeywords = SeoData::getHomeMetaKeywords();
             $metaDescription = SeoData::getHomeMetaDescription();
 

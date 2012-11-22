@@ -65,6 +65,9 @@ namespace com\indigloo\sc\dao {
             return $names ;
         }
 
+        // @todo @expensive-query
+        // either we should limit users to a certain # of lists/user
+        // or we should fix the logic here.
         function getOnLoginId($loginId) {
 
             // all Rows
@@ -99,6 +102,11 @@ namespace com\indigloo\sc\dao {
                 throw new UIException(array($error));
             }
 
+        }
+
+        function getLatestOnLoginId($loginId,$limit) {
+            $rows = mysql\Lists::getLatestOnLoginId($loginId,$limit);
+            return $rows ;
         }
 
         function getPagedOnLoginId($paginator,$loginId) {

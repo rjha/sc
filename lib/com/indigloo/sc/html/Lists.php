@@ -44,6 +44,20 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
+        static function getPubWidget($row) {
+            $view = self::createListView($row);
+            $template = NULL ;
+
+            if($view->hasImage){
+                $template =  "/fragments/lists/pub/widget/image.tmpl" ;
+            } else {
+                $template =  "/fragments/lists/pub/widget/noimage.tmpl" ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
         static function getPubHeader($listDBRow,$userDBRow) {
             $view = self::createListView($listDBRow);
 
@@ -75,6 +89,7 @@ namespace com\indigloo\sc\html {
             $view->pseudoId = PseudoId::encode($view->id);
             
             $view->name = $row["name"];
+            $view->seoName = $row["seo_name"];
             $view->items = json_decode($row["items_json"]);
 
             $view->count = $row["item_count"] ;
