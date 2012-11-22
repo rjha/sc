@@ -1,8 +1,16 @@
 
-Redis
----------------
+Redis max memory
+--------------------
 
 1) redis max memory size is 64 MB - if keys take more than 64 MB then we will run out of memory
 check redis memory consumption using info command on redis-cli
+
+
+session Tx
+---------------
+The PHP session is a mysql backed session. for default implementation of _SESSION what this means is that 
+we open a Tx at top and commit it at the end. Hence long running scripts can result in deadlocks.
+
+
 
 

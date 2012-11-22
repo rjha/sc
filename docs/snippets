@@ -1,6 +1,7 @@
 
-To add facebook like
-=========================
+facebook like button
+--------------------------
+
 
 1) add this markup immediately after body opening
 
@@ -17,7 +18,8 @@ To add facebook like
 <div class="fb-like p5" data-href="<?php echo $itemObj->netLink;?>" data-send="false" data-layout="button_count" data-width="220" data-show-faces="false"></div>
 
 
-2) g+1 button
+ g+1 button
+--------------
 
 <!-- g+1 button -->
                         <div class="g-plusone" data-size="tall" data-href="<?php echo $itemObj->netLink;?>" data-annotation="none" data-width="200"></div>
@@ -37,28 +39,46 @@ include js in <head> </head> section of HTML page
         </script>
 
 
-3) Twitter button 
+Twitter button 
+---------------------
 
 <div>
                             <a href="https://twitter.com/share" class="twitter-share-button" data-via="3mikindia" data-count="none">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                         </div>
 
 
-Metro UI like tiles
-------------------------
+
+General exception handling in forms?
+---------------------------------------
+
+Q) Do we need to add an exception handler for generic exceptions (\Exception $ex)
+in all our form scripts?
+
+A) Not needed. This is only required when we want to process error and show a custom message.
+As it is, the exception will be finally handled by error handler and a 500 error page will be 
+shown. (sort of catch-all error page)
 
 
-.metro-blue {background-color: #35c2e0; color:white;}
-.metro-orange { background-color: #ff7f00; color : white;}
-.metro-green {background-color: #57b20d; color : white;}
+Why do we get a blank (white) screen on form submit
+----------------------------------------------------------
+
+1) one reason could be a PHP parsing error. we do not (and should not) catch parsing errors.
+ so this means the script execution halts at that point.
+
+2) when an error happens and we want to do a redirect to form page.
+now if form page itself is undefined then redirect will not happen. To fix this problem 
+we need to ensure that redirect URL is always defined. So it should be first thing we extract
+out of _POST parameters in form processing script
 
 
-.metro-dark-green {background-color: #07823f; color: white;}
-.metro-yellow {background-color: #e09c15; color : white;}
+  * add   $fvalues = array(); 
+  * $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
 
-.metro-red {background-color: #b31e3b; color: #ffcc11;}
-.metro-slate {background-color: #9aa1b4; color:white;}
+  
+Add user_name column to entity tables , e.g. post?
+------------------------------------------------------
 
-.metro { background-color: #eee ; color: #333;}
-
+    - This may add more complexity
+    - joins are not necessarily evil!
+    - performance should be acceptable.
 

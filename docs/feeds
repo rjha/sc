@@ -16,7 +16,7 @@ feeds data in mysql
 	+ object - more like object_type , say "post" or "comment" etc.
 	+ object_id
 	+ object_title - 
-	+ verb - 
+	+ verb - 1: is like
 
 
 feeds data in redis
@@ -126,65 +126,3 @@ post deleted from DB
 * delete post feed from global feeds (how to do that?)
 
 
-
-
-
-
-
-
-
-
-3mik registration notice to Facebook
-------------------------------------------
-
-- on successful facebook login - create a JOB 
-- JOB should be of type 3MIK_NEW_LOGIN_TO_FACEBOOK
-
-option A
------------
-
- - Before storing LIKE
- - FIND user preference for this Notification
- - If user wants to send this to FACEBOOK
- 	+ THEN he should have an accesss token - valid for atleast 1 more DAY
- - If not then we redirect to login page.
- - if we have a valid access token - log the JOB 
- - we will clear the JOB within a day.
- - JOB cannot find right access token - Donot clear it in the queue
- - save access token for this user 
- - Next run of JOB - should see if access_token has changed - if not then do not attempt to send it anyway
- - delete the JOB after 3 days anyway.
-
-
-Option B 
------------
-
-- store the LIKE
-- A JOB for like is created
-- The GUY who liked this item has a login_id
-
-- when clearing this JOB 
-	+ see if we want to send this to FB 
-	+ see if we have a valid access token for login_id
-
-- if yes, use graph API to post the LIKE to his wall
-- otherwise just drop it
-
-====================================
-
-
-our login - valid for 7 days
-FB token valid for 60 days
-so after 3mik login - 3mik token should always be valid!
-Go for option B 
-
-
-
-
-
-
-Before sending an FB notification 
-
- - find login_id
- - find access_token using login_id 
- - access token expired? 

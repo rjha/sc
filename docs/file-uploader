@@ -1,5 +1,16 @@
 
 
+IE issue with file upload
+----------------------------
+
+Turns out it was actually a PHP issue. (The way we handle data coming from file uploader in PHP script)
+https://github.com/valums/file-uploader/issues/352
+it is better to use the code from github now as it is being maintained.
+https://github.com/valums/file-uploader
+
+version update
+----------------
+
 The sc code will 18 oct. 2012 was using valums file uploader downloaded from old site.
 
 19th Oct. 2012 - we planned to move to the version of file uploader maintained on github
