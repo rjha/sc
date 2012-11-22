@@ -41,6 +41,10 @@
                 <div class="span12">
                     <div class="page-header">
                         <ul class="breadcrumb">
+                             <li>
+                                <a href="<?php echo $pageBaseUrl; ?>">&larr; Back</a> 
+                                <span class="divider">/</span>
+                            </li>
                             <li>
                                 <a href="<?php echo $pageBaseUrl; ?>"><?php echo $userDBRow["name"]; ?></a> 
                                 <span class="divider">/</span>

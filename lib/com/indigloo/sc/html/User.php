@@ -60,13 +60,14 @@ namespace com\indigloo\sc\html {
             $encodedId = PseudoId::encode($loginId);
             $view->publicUrl = "/pub/user/".$encodedId ;
 
-            $view->website = $userDBRow['website'];
-            $view->blog = $userDBRow['blog'];
-            $view->location = $userDBRow['location'];
             $view->nickName = $userDBRow['nick_name'];
             $view->age = $userDBRow['age'];
             $view->aboutMe = $userDBRow['about_me'];
 
+            $view->website = empty($userDBRow['website']) ? "-:-" : $userDBRow['website'] ;
+            $view->blog = empty($userDBRow['blog']) ? "-:-" : $userDBRow['blog'] ;
+            $view->location = empty($userDBRow['location']) ? "-:-" : $userDBRow['location'] ;
+            
             return $view ;
         }
 
@@ -86,28 +87,11 @@ namespace com\indigloo\sc\html {
 
         }
 
-        static function getGrid($rows) {
-            $html = NULL ;
-            $view = new \stdClass;
-            $view->users = array();
-
-            $template = '/fragments/user/grid/small.tmpl' ;
-
-            foreach($rows as $row){
-                $user = self::createUserView($row);
-                array_push($view->users,$user);
-            }
-
-            $html = Template::render($template,$view);
-            return $html ;
-
-        }
-
-        static function getPublic($userDBRow) {
+        static function getPubHeader($userDBRow) {
 
             $html = NULL ;
             $view = new \stdClass;
-            $template = '/fragments/user/public.tmpl' ;
+            $template = '/fragments/user/pub/header.tmpl' ;
 
             $view = self::createUserView($userDBRow);
             $view->followingId = $userDBRow["login_id"];
@@ -118,21 +102,28 @@ namespace com\indigloo\sc\html {
 
             $html = Template::render($template,$view);
             return $html ;
-
         }
 
-        static function getTable($rows) {
-            //Add user profile to rows
-            for($i = 0 ; $i < count($rows); $i++) {
-                $rows[$i]["pubUrl"]  = "/pub/user/".PseudoId::encode($rows[$i]["login_id"]);
+        static function getPubWrapper($baseUrl,$count,$content,$options) {
+            
+            $template = NULL ;
+            $view = new \stdClass ;
+            $view->baseUrl = $baseUrl ;
+            $view->count = $count ;
+            $view->title = $options["title"];
+            $view->tab = $options["tab"];
+
+            if($count > 0 ) {
+                $template =  "/fragments/user/pub/wrapper/content.tmpl" ;
+                $view->content = $content ;
+            } else {
+                $template =  "/fragments/user/pub/wrapper/nocontent.tmpl" ;
+                $view->content = $content ;
             }
 
-            $html = NULL ;
-            $template = '/fragments/user/table.tmpl' ;
-            $view = new \stdClass;
-            $view->rows = $rows ;
             $html = Template::render($template,$view);
             return $html ;
+
         }
 
         static function getAdminWidget($row) {

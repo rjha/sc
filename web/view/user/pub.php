@@ -1,14 +1,37 @@
 <?php
 
-    $htmlHeader = \com\indigloo\sc\html\User::getPublic($userDBRow);
-    $htmlPosts = \com\indigloo\sc\html\Post::getImageGrid($postDBRows);
-    $htmlFollowers = \com\indigloo\sc\html\SocialGraph::getTable($loginId,$followers,1,$followerUIOptions);
-    $htmlFollowings = \com\indigloo\sc\html\SocialGraph::getTable($loginId,$followings,2,$followingUIOptions);
+    use \com\indigloo\sc\html\User as UserHtml ;
+    use \com\indigloo\sc\html\Post as PostHtml ;
+    use \com\indigloo\sc\html\SocialGraph as GraphHtml ;
+    
 
-    $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
-    $htmlActivity  = $htmlObj->getHtml($feedDataObj);
-    $htmlLikes = \com\indigloo\sc\html\Post::getImageGrid($likeDBRows);
+    $headerHtml = UserHtml::getPubHeader($userDBRow);
 
+
+    $content = PostHtml::getImageGrid($postDBRows);
+    $count = $ucounters["post_count"]; 
+    $options = array ("title" => "Items", "tab" => "items");
+    $itemsHtml = UserHtml::getPubWrapper($pageBaseUrl,$count,$content,$options);
+
+    $content = PostHtml::getImageGrid($likeDBRows);
+    $count = $ucounters["like_count"];
+    $options = array ("title" => "Likes", "tab" => "likes");
+    $likesHtml = UserHtml::getPubWrapper($pageBaseUrl,$count,$content,$options);
+
+    
+    $content = GraphHtml::getTable($loginId,$followers,1,$followerUIOptions);
+    $count = $ucounters["follower_count"];
+    $options = array ("title" => "Followers", "tab" => "followers");
+    $followersHtml = UserHtml::getPubWrapper($pageBaseUrl,$count,$content,$options);
+
+    $content = GraphHtml::getTable($loginId,$followings,2,$followingUIOptions);
+    $count = $ucounters["following_count"];
+    $options = array ("title" => "Followings", "tab" => "followings");
+    $followingsHtml = UserHtml::getPubWrapper($pageBaseUrl,$count,$content,$options);
+
+    $htmlActivityObj = new \com\indigloo\sc\html\ActivityFeed();
+    $activityHtml  = $htmlActivityObj->getHtml($feedDataObj);
+    
 
 ?>
 
@@ -36,30 +59,19 @@
             <div class="row">
 
                 <div class="span7">
-                    <?php echo  $htmlHeader; ?>
-                    <div class="p10">
-                        <h5>
-                            Items (<?php echo $ucounters["post_count"] ?>)
-                            &nbsp;&nbsp;
-                            <a class="b" href="<?php echo $pageBaseUrl?>?show=items">view all items</a>
-                        </h5>
-                        <?php echo  $htmlPosts; ?>
-                        
-                    </div>
-
-                    <div class="p10">
-                        <h5>
-                            Likes (<?php echo $ucounters["like_count"] ?>) 
-                            &nbsp;&nbsp;
-                            <a class="b" href="<?php echo $pageBaseUrl?>?show=likes">view all likes</a>
-                        </h5>
-                        <?php echo  $htmlLikes; ?>
-                    </div>
-
+                    <?php 
+                        echo  $headerHtml; 
+                        echo  $itemsHtml;  
+                        echo  $likesHtml;  
+                       
+                    ?>
+                    
                     <div class="row">
                         <div class="span6">
-                            <?php echo  $htmlFollowers ;  ?>
-                            <?php echo  $htmlFollowings; ?>
+                            <?php
+                                echo $followersHtml ;
+                                echo $followingsHtml ;
+                            ?>
                         </div>
                     </div>
 
@@ -67,7 +79,7 @@
 
                 <div class="span3 offset1">
                     <div class="feeds">
-                        <?php  echo  $htmlActivity; ?>
+                        <?php  echo  $activityHtml; ?>
                     </div>
                 </div>
 

@@ -10,7 +10,8 @@
     use \com\indigloo\sc\auth\Login as Login;
 
     use \com\indigloo\ui\Filter as Filter;
-    
+    use \com\indigloo\sc\html\SocialGraph as GraphHtml ;
+
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
     $loginName = $gSessionLogin->name;
@@ -36,6 +37,8 @@
         "more" => "/user/dashboard/following.php", 
         "image" => true);
 
+     $followersHtml = GraphHtml::getTable($loginId,$followers,1,$followerUIOptions);
+     $followingsHtml = GraphHtml::getTable($loginId,$followings,2,$followingUIOptions);
 
 ?>
 
@@ -81,9 +84,19 @@
 
                 </div>
                 <div class="span4 offset1">
-                <?php echo \com\indigloo\sc\html\SocialGraph::getTable($loginId,$followers,1,$followerUIOptions); ?>
-                <?php echo \com\indigloo\sc\html\SocialGraph::getTable($loginId,$followings,2,$followingUIOptions); ?>
-              
+                    <div>
+                        <span class="flickr-color b"> Followers </span>
+                        <?php echo $followersHtml ; ?> 
+                        <a href="/user/dashboard/follower.php"> view all &rarr; </a>
+                    </div>
+                    <div class="mt20">
+                        <span class="flickr-color b"> Followings </span>
+                        <?php echo $followingsHtml ; ?> 
+                        <a href="/user/dashboard/following.php"> view all &rarr; </a>
+                    </div>
+
+                       
+                
 
                 </div>
             </div>
