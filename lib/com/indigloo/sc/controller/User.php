@@ -36,6 +36,12 @@ namespace com\indigloo\sc\controller{
                 case "likes" :
                     $this->processLikes($params,$options);
                     break ;
+                case "followers" :
+                    $this->processGraph($params,$options,1);
+                    break ;
+                case "followings" :
+                $this->processGraph($params,$options,2);
+                break ;
                 default :
                     $this->processIndex($params,$options);
                     break ;
@@ -207,6 +213,48 @@ namespace com\indigloo\sc\controller{
             include($template);
 
         }
+
+        private function processGraph($params,$options,$source){
+
+            $pubUserId = Util::getArrayKey($params,"login_id");
+            $loginId = PseudoId::decode($pubUserId);
+            $qparams = Url::getRequestQueryParams();
+            
+            $userDao = new \com\indigloo\sc\dao\User();
+            $userDBRow = $userDao->getOnLoginId($loginId);
+            $this->isValidUser($userDBRow);
+           
+            $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
+            settype($source, "integer");
+            
+            $graphDBRows = array();
+            $graphName = NULL ;
+
+            switch($source) {
+                case 1 :
+                    $graphDBRows = $socialGraphDao->getFollowers($loginId,50);
+                    $graphName = "followers" ;
+                    break ;
+                case 2 :
+                    $graphDBRows = $socialGraphDao->getFollowing($loginId,50);
+                    $graphName = "followings" ;
+                    break ;
+                default :
+                    trigger_error("unknown source for social graph", E_USER_ERROR);
+            }
+
+            $template = APP_WEB_DIR. '/view/user/graph.php';
+
+            //page variables
+            $pageBaseUrl = "/pub/user/".$pubUserId ;
+            $pageTitle = sprintf("%s of %s",$graphName,$userDBRow["name"]);
+            $metaKeywords = SeoData::getHomeMetaKeywords();
+            $metaDescription = SeoData::getHomeMetaDescription();
+
+            include($template);
+
+        }
+
 
     }
 }

@@ -119,45 +119,6 @@ namespace com\indigloo\sc\html {
             $html = Template::render($template,$view);
             return $html ;
 
-            /*
-            $data = array();
-
-            //what properties are actually set in DB
-            $columns = array();
-            // labels for properties
-            $labels = array('website' => 'Website' ,
-                            'blog' => 'Blog' ,
-                            'location' => 'Location');
-
-            foreach($labels as $key => $label ) {
-                //for label key, the row in DB is set
-                if(!empty($userDBRow[$key])) {
-                    $value = $userDBRow[$key];
-                    //mark column
-                    array_push($columns,$key);
-                    //push value in data
-                    if(strcasecmp($key,'website') == 0 || strcasecmp($key,'blog') == 0 )
-                        $data[$key] = '<a href="'.Url::addHttp($value).'" target="_blank">'.$value.'</a>' ;
-                    else
-                        $data[$key] = $value ;
-                }
-            }
-
-            $data['name'] = (empty($userDBRow['nick_name'])) ? $userDBRow['name'] : $userDBRow['nick_name'] ;
-            $data['about_me'] = $userDBRow['about_me'];
-            $data['photo_url'] = $userDBRow['photo_url'];
-
-            if(empty($data['photo_url'])) {
-                $data['photo_url'] = UIConstants::PH2_PIC ;
-            }
-
-
-            $view->createdOn = Formatter::convertDBTime($userDBRow['created_on']);
-            $view->columns = $columns;
-            $view->data = $data;
-            $view->labels = $labels ;
-            */
-
         }
 
         static function getTable($rows) {

@@ -8,6 +8,7 @@ namespace com\indigloo\sc\html {
 
     use \com\indigloo\sc\util\PseudoId ;
     use \com\indigloo\sc\ui\Constants as UIConstants;
+    use \com\indigloo\sc\auth\Login  as Login ;
 
     class SocialGraph {
 
@@ -31,6 +32,36 @@ namespace com\indigloo\sc\html {
             return $path ;
 
         }
+
+        static function getPubWidget($row) {
+            $view = new \stdClass;
+            $template = NULL ;
+
+            $userId = $row["login_id"];
+            $pubUserId = PseudoId::encode($userId);
+            $pubUserUrl = Url::base()."/pub/user/".$pubUserId ;
+            
+            $view->pubUserUrl = $pubUserUrl ;
+            $view->name = $row["name"];
+            $view->srcImage = $row["photo_url"];
+            $hasImage = !Util::tryEmpty($view->srcImage);
+
+            // whoever is browsing this widget will become the follower
+            // and follow the user of this widget
+            $loginIdInSession = Login::tryLoginIdInSession();
+            $view->followerId = (empty($loginIdInSession)) ? "{loginId}" : $loginIdInSession ;
+            $view->followingId = $userId ;
+
+            //template depends on image availabality
+            $template = ($view->hasImage) ? "/fragments/graph/pub/widget/image.tmpl" :
+                "/fragments/graph/pub/widget/noimage.tmpl" ;
+
+            $html = Template::render($template,$view);
+            return $html ;
+            
+
+        }
+
         /*
          * @param $source kind of row - follower/following
          * 1 - means follower , 2 - means following

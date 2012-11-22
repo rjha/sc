@@ -3,6 +3,8 @@
     $startId = NULL;
     $endId = NULL ;
     $gNumRecords = sizeof($postDBRows);
+    
+
     $htmlItems = "" ;
 
     if($gNumRecords > 0 ) {
@@ -13,7 +15,8 @@
         }
     }else {
         $message = "No items found!" ;
-        $htmlItems = \com\indigloo\sc\html\Site::getNoResult($message);
+        $options = array("form" => "tile");
+        $htmlItems = \com\indigloo\sc\html\Site::getNoResult($message,$options);
     }
 
 ?>
@@ -42,12 +45,15 @@
             <div class="row">
                 <div class="span12">
                     <div class="page-header">
-                        <h4 style="display:inline;margin-right:30px;"> <?php echo $pageTitle; ?> </h4>
-                        <span>
-                            <a class="btn-flat" href="<?php echo $pageBaseUrl; ?>">
-                             <i class="icon icon-home"></i> View profile
-                            </a>
-                        </span>
+                        <ul class="breadcrumb">
+                            <li>
+                                <a href="<?php echo $pageBaseUrl; ?>"><?php echo $userDBRow["name"]; ?></a> 
+                                <span class="divider">/</span>
+                            </li>
+                           
+                            <li class="active"><?php echo $pageTitle; ?></li>
+                        </ul>
+
                     </div>
                 </div>
             </div>
