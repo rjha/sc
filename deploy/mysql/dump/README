@@ -3,6 +3,11 @@
  changelog
 --------------
 
+23 Nov. 2011
+ fixed issues with counters in DB
+ Do not count posts in like/favorites if they have been deleted
+ commit 83aa3b8015fbf3865482684bb4510a58c3dd6a55
+ 
 18 Nov. 2011
  commit 8cb49e07b60a3f89c84112432f930c6a41c42398
 
