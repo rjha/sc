@@ -1,3 +1,5 @@
+/* + user dashboard menu styles */
+
 #user-menu {
     height: 40px;
     line-height: 37px;
@@ -34,13 +36,7 @@
     text-decoration: underline ;
 }
 
-
-.widget {
-    border-bottom: 1px solid #f1f1f1 ;
-}
-
-.widget .options .links { float:right;}
-
+/* +flat button used on dashboard */
 
 .btn-flat {
 
@@ -51,7 +47,7 @@
     font-family: arial,sans-serif;
     font-size: 13px;
     border: 1px solid #CECECE; 
-    /* border:1px solid #ccc; */
+  
 }
 
 .btn-flat:hover {
@@ -61,7 +57,11 @@
 }
 
 
-/* +user widget */
+/* +user widget 
+   1) used on user pub page 
+   2)  dash follower/following pages 
+*/
+
 .uwidget a {
     cursor: pointer ;
 }
@@ -132,8 +132,9 @@
 }
 
 
+/* + metro UI style tiles to display counters */
 
-.counter {
+.metro-tile {
     color: #333 ;
     background-color: #eee ;
     border: 1px solid white;
@@ -143,16 +144,11 @@
     width : 120px;
 }
 
-.counter .name {
+.metro-tile .name {
     display:block;
     padding:5px;
     font-weight: bold ;
 }
-
-.counters{
-    background-color: #07823f ;
-}
-
 
 .metro-blue {background-color: #35c2e0; color:white;}
 .metro-orange { background-color: #ff7f00; color : white;}
@@ -167,15 +163,6 @@
 .metro { background-color: #eee ; color: #333;}
 .metro-white {background-color: white ; }
 
-.noresults {
-    margin-top: 40px;
-    padding: 30px 0;
-    color: #999;
-    font-size: 24px;
-    line-height: 37px;
-    font-family: Georgia;
-     
-}
 
 .page-header .title {
     display : inline ;
@@ -188,10 +175,6 @@
 
 }
 
-#dash-header {
-    padding-bottom: 9px;
-    margin-left:20px;
-}
 
 #page-action {
     margin-top: 20px;
@@ -201,12 +184,22 @@
     border-bottom: 1px solid #EEE;
 }
 
+#page-message {
+    background-color : #FEFDF1;
+    padding-left:20px;
+    padding-bottom:10px;
+    font-weight: bold ;
+}
+
+
+/* + list styles for displaying 
+    1) summary of lists on dash 
+     2) user lists on pub page  */
+
 .list-summary {
     margin-top :20px;
     border-bottom:1px solid #E6E6E6 ;
 }
-
-
 
 .list-summary .name {
     padding-top : 14px;
@@ -237,14 +230,9 @@
     border:1px dashed #ccc ; 
 }
 
-#page-message {
-    background-color : #FEFDF1;
-    padding-left:20px;
-    padding-bottom:10px;
-    font-weight: bold ;
-}
 
-/* list stuff */
+
+/* +list in popup stuff */
 
 #list-wrapper {
     border-radius: 8px;
@@ -323,7 +311,7 @@
     width:75%;
 }
 
-/* pub list styles */
+/* +pub list styles */
 .list-header {
     min-height: 100px ; 
     margin-left:40px;

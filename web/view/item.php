@@ -131,8 +131,7 @@
         </div> <!-- container -->
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
-        <link rel="stylesheet" type="text/css" href="/css/extra.css" >
-
+        
         <script type="text/javascript">
 
             $(document).ready(function(){

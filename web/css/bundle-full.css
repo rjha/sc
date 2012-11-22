@@ -6718,7 +6718,7 @@ button::-moz-focus-inner {
 
         width: 100%;
         clear: both;
-        border-bottom:1px solid #E6E6E6 ;
+        border-bottom: 1px solid #f1f1f1 ;
         min-height:60px;
         float: left ;
         padding-bottom:7px;
@@ -6739,6 +6739,7 @@ button::-moz-focus-inner {
         padding : 5px 5px 5px 30px;
         font-size:12px;
         line-height:18px;
+        float:right;
     }
 
     .widget .options .links a {
@@ -7309,13 +7310,15 @@ button::-moz-focus-inner {
         color: #8c7e7e ;
     }
 
+
     .noresults {
-        width: 640px;
-        margin: 0 auto;
+        margin-top: 40px;
         padding: 30px 0;
-        color: #AAA;
-        font-size: 2.9em;
-        line-height:32px;
+        color: #999;
+        font-size: 24px;
+        line-height: 37px;
+        font-family: Georgia;
+         
     }
 
     .clicked-tile {
@@ -7588,31 +7591,6 @@ button::-moz-focus-inner {
         font-size: 12px;
         font-weight: normal;
     }
-
-    #pubuser .avatar {
-        width:auto;
-        height:auto;
-        max-width:200px;
-        max-height :150px;
-        text-align:center ;
-    }
-
-    #pubuser .follow-user-link {
-        width:120px;
-        height:20px;
-        font-weight:bold;
-    }
-
-    #pubuser .data {
-        padding-bottom:5px;
-        font-weight:bold;
-        word-wrap:break-word;
-
-    }
-
-    #pubuser .about-me {
-        padding-top:10px; 
-    }
     
     /* paul iris infinite scroll plugin */
     #infscr-loading{
@@ -7632,6 +7610,350 @@ button::-moz-focus-inner {
     }
 
     .flickr-color { color : #FE63BB;}
+
+    /* + user dashboard menu styles */
+
+    #user-menu {
+        height: 40px;
+        line-height: 37px;
+        padding: 0;
+        position: relative;
+        z-index: 102;
+        background: white;
+        margin-bottom: 10px;
+    }
+
+    #user-menu .item {
+        float:left ;
+        padding-left:10px;
+        padding-right:10px;
+    }
+
+    #user-menu .item1 {
+        float:left ;
+        border-bottom: 3px solid #DD4B39;
+        padding: 0 4px;
+        margin: 1px 12px 0;
+        font-weight: bold;
+    }
+
+    #user-menu .item1 a {
+          color: #DD4B39;
+    }
+
+    #user-menu .item a {
+        color: #333;
+    }
+
+    #user-menu .item a:hover {
+        text-decoration: underline ;
+    }
+
+    /* +flat button used on dashboard */
+
+    .btn-flat {
+
+        text-shadow: none;
+        padding: 4px 12px 4px 12px; 
+        color: #333;
+        background: white;
+        font-family: arial,sans-serif;
+        font-size: 13px;
+        border: 1px solid #CECECE; 
+      
+    }
+
+    .btn-flat:hover {
+        background-color: #f7f7f7 ;
+        color: #222 ;
+        cursor:pointer ;
+    }
+
+
+    /* +user widget 
+       1) used on user pub page 
+       2)  dash follower/following pages 
+    */
+
+    .uwidget a {
+        cursor: pointer ;
+    }
+
+    .uwidget .wrapper {
+        border-bottom : 1px solid #e6e6e6 ;
+    }
+
+    .uwidget .wrapper .photo {
+        float :left ;
+    }
+
+    .uwidget .wrapper .nophoto {
+        float :left ;
+        width:100px;
+        height:70px;
+        margin:10px;
+        border:1px solid #e5e5e5 ;
+        
+    }
+
+    .uwidget .wrapper .photo img {
+        width: auto;
+        height: auto;
+        max-width: 120px;
+        max-height: 90px;
+        padding: 5px;
+
+    }
+
+    .uwidget .wrapper .detail{
+        margin-left:140px;
+    }
+
+    .uwidget .wrapper .detail .name {
+        max-height : 70px;
+        overflow :hidden;
+        padding : 10px;
+    }
+
+    .uwidget .wrapper .detail .name .title {
+        color: #222;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 1em;
+        padding-bottom: 10px;
+        font-family: arial;
+    }
+
+    .uwidget .wrapper .detail .link {
+        height: 30px;
+        padding-top:5px;
+        padding-bottom:5px;
+        padding-left:10px;
+    }
+
+    .uwidget .bottom {
+        padding-top : 5px;
+        padding-bottom :5px;
+        
+    }
+
+    .uwidget .bottom .square {
+        margin-left:10px;
+        height:12px;
+        width:12px ;
+        background-color: #FE63BB;
+    }
+
+
+    /* + metro UI style tiles to display counters */
+
+    .metro-tile {
+        color: #333 ;
+        background-color: #eee ;
+        border: 1px solid white;
+        font-size: 13px;
+        font-weight: normal;
+        text-align: center;
+        width : 120px;
+    }
+
+    .metro-tile .name {
+        display:block;
+        padding:5px;
+        font-weight: bold ;
+    }
+
+    .metro-blue {background-color: #35c2e0; color:white;}
+    .metro-orange { background-color: #ff7f00; color : white;}
+    .metro-green {background-color: #57b20d; color : white;}
+
+
+    .metro-dark-green {background-color: #07823f; color: white;}
+    .metro-yellow {background-color: #e09c15; color : white;}
+
+    .metro-red {background-color: #b31e3b; color: #ffcc11;}
+    .metro-slate {background-color: #9aa1b4; color:white;}
+    .metro { background-color: #eee ; color: #333;}
+    .metro-white {background-color: white ; }
+
+
+    .page-header .title {
+        display : inline ;
+        padding-left:20px;
+        padding-right:20px;
+        color:#222;
+        font-size: 19px;
+        font-weight:bold;
+        line-height:1em ;
+
+    }
+
+
+    #page-action {
+        margin-top: 20px;
+        padding:11px 0px 11px 0px;
+        min-height: 20px;
+        border-top: 1px solid #EEE;
+        border-bottom: 1px solid #EEE;
+    }
+
+    #page-message {
+        background-color : #FEFDF1;
+        padding-left:20px;
+        padding-bottom:10px;
+        font-weight: bold ;
+    }
+
+
+    /* + list styles for displaying 
+        1) summary of lists on dash 
+         2) user lists on pub page  */
+
+    .list-summary {
+        margin-top :20px;
+        border-bottom:1px solid #E6E6E6 ;
+    }
+
+    .list-summary .name {
+        padding-top : 14px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .list-summary .action {
+        float:right;
+        padding-top:14px;
+    }
+
+    .list-summary .photos{
+        height: 68px;
+        overflow:hidden ;
+    }
+
+    .list-summary img {
+        margin:3px;
+        max-width:62px;
+        max-height : 62px;
+    }
+
+    .list-summary .nophoto {
+        width:124px;
+        height:60px;
+        margin:3px;
+        border:1px dashed #ccc ; 
+    }
+
+
+
+    /* +list in popup stuff */
+
+    #list-wrapper {
+        border-radius: 8px;
+        border: 1px solid #a1a1a1 ;
+        width:80%;
+        height:120px;
+        overflow: auto;
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height:210px;
+        padding-top:10px;
+        padding-bottom:10px;
+
+    }
+
+    #lists {
+        list-style: none;
+        padding-left:10px;
+        padding-right:0px;
+        padding-top:5px;
+        padding-bottom:5px;
+        margin: 0;
+    }
+
+    #lists li {
+        padding-bottom: 5px;
+        padding-left:5px;
+        border-radius: 4px;
+    }
+
+    #lists li:hover {
+        background-color: #28c ; 
+    }
+
+    #lists li a {
+        display:block;
+        color: #222;
+    }
+
+    #lists li a:hover {
+        color: white;
+        font-weight:bold ;
+        background-color: #28c ;
+    }
+
+    .panel-form {
+        display: none ;
+        padding-top :20px; 
+        padding-left :40px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #F8D575 ;
+
+    }
+
+    .panel-form .floatr {
+        border-bottom: 1px solid #28c ;
+    }
+
+    .panel-form input {
+        width:75%;
+    }
+
+    .panel-form textarea {
+        width:75%;
+        height:80px;
+    }
+
+    .list-form {
+        padding-top:10px;
+        padding-bottom: 20px;
+
+    }
+
+    .list-form input {
+        width:75%;
+    }
+
+    /* +pub list styles */
+    .list-header {
+        min-height: 100px ; 
+        margin-left:40px;
+        padding-top:20px;
+        padding-bottom: 10px;
+        border-top : 1px solid #e5e5e5;
+        border-bottom : 1px solid #e5e5e5;
+        margin-bottom:30px;
+    }
+
+    .list-header .user {
+        float:left ;
+        width:300px;
+    }
+
+    .list-header .user .photo {
+        padding:5px;
+
+    }
+
+    .list-header .user .description {
+        padding-left:10px;
+    }
+
+    .list-header .user img{
+        max-height: 62px;
+        max-width:62px;
+        border:5px solid #f7f7f7;
+    }
+
 
 
     /* @imp : last section - override 3rd party libraries */

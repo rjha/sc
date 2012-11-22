@@ -28,8 +28,7 @@
         <meta name="description" content="<?php echo $metaDescription;  ?>">
 
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
-        <link rel="stylesheet" type="text/css" href="/css/extra.css" >  
-
+        
     </head>
 
      <body>

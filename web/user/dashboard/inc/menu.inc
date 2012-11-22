@@ -20,7 +20,6 @@
 
 ?>
 
-<link rel="stylesheet" type="text/css" href="/css/extra.css" >
 <div id="user-menu">
     <?php echo $umenuHtml;  ?>
     <div class="item">

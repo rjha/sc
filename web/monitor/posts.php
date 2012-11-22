@@ -18,9 +18,7 @@
     //url decoded parameters
    
     $qparams = Url::getRequestQueryParams();
-    $options = UIConstants::WIDGET_ALL ;
-
-
+    
     //copy URL parameters
     $fparams = $qparams;
     // unset extra ft params and search token param
@@ -219,7 +217,7 @@
                             }
 
                             foreach ($postDBRows as $postDBRow) {
-                                echo \com\indigloo\sc\html\Post::getAdminWidget($postDBRow,$options);
+                                echo \com\indigloo\sc\html\Post::getAdminWidget($postDBRow);
                             }
                         ?>
                     </div>

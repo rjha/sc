@@ -14,7 +14,7 @@
     $feedbackDao = new \com\indigloo\sc\dao\Feedback();
     
     $pageSize = 20;
-    $paginator = new \com\indigloo\ui\Pagination($qparamss,$pageSize);
+    $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $feedbackDBRows = $feedbackDao->getPaged($paginator);
     $baseURI = "/monitor/feedback/view.php" ;
 
