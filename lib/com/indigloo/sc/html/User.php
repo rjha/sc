@@ -44,6 +44,15 @@ namespace com\indigloo\sc\html {
 
         }
 
+        static function getDashProfile($userDBRow) {
+
+            $html = NULL ;
+            $template = '/fragments/user/profile/dash.tmpl' ;
+            $view = self::createUserView($userDBRow);
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
         static function createUserView($userDBRow) {
             $view = new \stdClass;
 

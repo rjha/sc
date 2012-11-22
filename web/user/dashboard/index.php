@@ -21,6 +21,10 @@
     $homeUrl = Url::base();
     $pubUrl = $homeUrl."/pub/user/".$pubId ;
 
+    //data:1:user
+    $userDao = new \com\indigloo\sc\dao\User();
+    $userDBRow = $userDao->getOnLoginId($loginId);
+    
 
     $loginName = $gSessionLogin->name ;
 
@@ -42,7 +46,9 @@
     $filter = new Filter($model);
     $filter->add($model::FEATURED,Filter::EQ,TRUE);
     array_push($filters,$filter);
-    $postDBRows = $postDao->getPosts(10,$filters);
+
+    // pick 12 posts from editor picks
+    $postDBRows = $postDao->getPosts(12,$filters);
 
 
 ?>
@@ -73,91 +79,82 @@
                 </div>
 
             </div>
-            <?php FormMessage::render(); ?>
-            
             <div class="row">
-                <div class="span6 offset1">
-                    <div class="">
-                        <h3> Hello, <?php echo $loginName; ?> </h3>
-                         <p class="muted">
-                        Your dashboard provides a snapshot of your account
-                        and what is happening in your network. Just click 
-                        on your name in top toolbar and select Account to view this page
-                        from anywhere.
-                    </p>
-
-                    </div>
+                 <div class="span12">
+                    <div class="page-header"> &nbsp;</div>
 
                 </div>
 
             </div>
 
-            <div class="row">
-               
-                <div class="span6">
-                    <h5> Account</h5>
-                    <hr>
+            <?php FormMessage::render(); ?>
+            
 
-                    
-                    
-                    <?php echo \com\indigloo\sc\html\User::getCounters($counters); ?> 
-                    <div class="clear"> </div>
-                    <div class="section">
+            <div class="row">
+
+                <div class="span3">
+                    <?php echo \com\indigloo\sc\html\User::getDashProfile($userDBRow); ?>
+                    <div>
                         <span class="faded-text">check your public page  </span>
-                        <span style="padding-left:20px;">
-                        <a href="<?php echo $pubUrl ?>" class="b" target="_blank"><?php echo $pubUrl; ?></a>
+                        <span>
+                            <a href="<?php echo $pubUrl ?>" class="b" target="_blank"><?php echo $pubUrl; ?></a>
                         </span>
 
                     </div>
-                    
-                    
 
-                    <div> 
-                        <h5> Suggestions </h5>
-                        <hr>
-                        <div id="tiles">
-                        <?php
-                            foreach($postDBRows as $postDBRow) {
-                                $html = \com\indigloo\sc\html\Post::getSmallTile($postDBRow);
-                                echo $html ;
-                            }
-                        ?>
-                        </div>
+                </div> <!-- left -->
+
+                <div class="span6">
+                    <div class="section1">
+                        <?php echo \com\indigloo\sc\html\User::getCounters($counters); ?>
+                        <div class="clear"> </div>
                     </div>
-                </div>
 
-               
+                    <div class="section">
+                        <p class="muted">
+                        To view this page
+                        from anywhere, just click 
+                        on your name in top toolbar and select Account. 
+                        </p>
+                        <!-- @inpage @hardcoded style -->
+                        <ul class="breadcrumb" style="background-color:white;">
+                            <li class="active">How to?</li>
+                            <li>
+                                <a class="help-popup" rel = "dashboard.item.create" href="#">upload items</a> 
+                                <span class="divider">/</span>
+                            </li>
+                            <li>
+                                <a class="help-popup" rel = "dashboard.list.create" href="#">create lists</a> 
+                                <span class="divider">/</span>
+                            </li>
+                            <li>
+                                <a class="help-popup" rel = "dashboard.item.save" href="#">save items</a> 
+                            </li>
+                        </ul>
 
-                <div class="span4 offset2">
-                <div class="p10"> <a href="<?php echo $homeUrl; ?>">Go to www.3mik.com</a> </div> 
-                    <ul class="breadcrumb">
-                        <li class="active">How to?</li>
-                        <li>
-                            <a class="help-popup" rel = "dashboard.item.create" href="#">upload items</a> 
-                            <span class="divider">/</span>
-                        </li>
-                        <li>
-                            <a class="help-popup" rel = "dashboard.list.create" href="#">create lists</a> 
-                            <span class="divider">/</span>
-                        </li>
-                        <li>
-                            <a class="help-popup" rel = "dashboard.item.save" href="#">save items</a> 
-                        </li>
-                    </ul>
-
-                    
-                    <hr>
-                    <div class="feeds">
-                    <?php
-
-                        $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
-                        $html = $htmlObj->getHtml($feedDataObj);
-                        echo $html ;
-
-                        ?>
                     </div>
-                </div>
+
+                    <div class="section">
+                        <strong>You may like</strong>
+                        <?php echo \com\indigloo\sc\html\Post::getImageGrid($postDBRows); ?>
+                    </div>
+
+                   
+
+                </div> <!-- center -->
                 
+                <div class="span3">
+                   
+                    
+                     
+                    <div class="feeds mt20">
+                        <?php
+                            $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+                            $html = $htmlObj->getHtml($feedDataObj);
+                            echo $html ;
+                        ?>
+                    </div> <!-- buzz -->
+                </div> <!-- right -->
                
             </div>
         </div> <!-- container -->
@@ -178,15 +175,7 @@
                     webgloo.sc.SimplePopup.load(targetUrl);
                 });
 
-                var $container = $('#tiles');
-
-                $container.imagesLoaded(function(){
-                    $container.isotope({
-                        itemSelector : '.stamp',
-                        layoutMode : 'masonry'
-                    });
-
-                });
+                
             });
 
         </script>
