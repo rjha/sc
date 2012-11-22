@@ -111,10 +111,12 @@
                     </div>
 
                     <div class="section">
+                        
+                        <img src="/site/images/help/dash.png" alt= "select dash"/>
                         <p class="muted">
-                        To view this page
-                        from anywhere, just click 
-                        on your name in top toolbar and select Account. 
+                            To view this page
+                            from anywhere, just click 
+                            on your name in top toolbar and select Account. 
                         </p>
                         <!-- @inpage @hardcoded style -->
                         <ul class="breadcrumb" style="background-color:white;">
