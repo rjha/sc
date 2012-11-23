@@ -247,7 +247,6 @@ namespace com\indigloo\sc\dao {
                 //get item row
                 $postDao = new \com\indigloo\sc\dao\Post();
                 $imgv = $postDao->tryImageOnId($postId);
-                $items = array();
 
                 if(!is_null($imgv)) {
                     $json = new \stdClass ;
@@ -306,6 +305,7 @@ namespace com\indigloo\sc\dao {
         }
 
         function addItemLink($loginId,$listId,$itemLink) {
+            // @todo - do we need this method?
             // get item id from link
 
         }

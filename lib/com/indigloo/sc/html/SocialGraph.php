@@ -44,7 +44,7 @@ namespace com\indigloo\sc\html {
             $view->pubUserUrl = $pubUserUrl ;
             $view->name = $row["name"];
             $view->srcImage = $row["photo_url"];
-            $hasImage = !Util::tryEmpty($view->srcImage);
+            $view->hasImage = !Util::tryEmpty($view->srcImage);
 
             // whoever is browsing this widget will become the follower
             // and follow the user of this widget

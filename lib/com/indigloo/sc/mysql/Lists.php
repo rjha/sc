@@ -308,9 +308,9 @@ namespace com\indigloo\sc\mysql {
                 //list
                 // op_bit is offline_processing bit - set to zero on create
                 $sql1 = " insert into sc_list (login_id,name, seo_name,md5_name, bin_md5_name, " ;
-                $sql1 .= " items_json, version, op_bit, created_on, pseudo_id) " ;
+                $sql1 .= " items_json, version, op_bit, created_on, pseudo_id, description) " ;
                 $sql1 .= " values(:login_id, :name, :seo_name, :hash, :bin_hash, :items_json, " ;
-                $sql1 .= " 1, 0, now(), :pseudo_id) " ;
+                $sql1 .= " 1, 0, now(), :pseudo_id, :description) " ;
                 
                 //items json is empty array
                 $strItemsJson = '[]' ;
@@ -334,6 +334,7 @@ namespace com\indigloo\sc\mysql {
                 // longer than necessary. 
 
                 $stmt->bindValue(":pseudo_id", null,\PDO::PARAM_STR);
+                $stmt->bindParam(":description", $description);
 
                 $stmt->execute();
                 $stmt = NULL ;
@@ -427,7 +428,7 @@ namespace com\indigloo\sc\mysql {
                 $sql2 = "insert into sc_list_item(list_id, item_id) values (%d,%d)" ;
                 $sql2 = sprintf($sql2,$listId,$postId);
 
-                $count = $dbh->exec($sql2);
+                $dbh->exec($sql2);
 
                 // update item_count + pseudo_id of list
                 $pseudoId =  PseudoId::encode($listId);

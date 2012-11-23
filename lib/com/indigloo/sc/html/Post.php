@@ -226,7 +226,7 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
         
-        static function getImageGrid($rows,$options=array()) {
+        static function getImageGrid($rows) {
             $html = NULL ;
             $view = new \stdClass;
             $view->posts = array();

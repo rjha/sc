@@ -91,6 +91,12 @@ namespace com\indigloo\sc\mysql {
             $sql = " select u.* from sc_denorm_user u " ;
 
             $q = new MySQL\Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\User","u");
+            $q->filter($filters);
+            $condition = $q->get();
+            $sql .= $condition;
+
+
             $sql .= $q->getPagination($start,$direction,"u.id",$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
 
