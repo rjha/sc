@@ -177,4 +177,14 @@ sample #1 - RAM bar + CPU Bar + customized fonts
 ------------ end --------------------
 
 
+# Removing a package (e.g. ocaml)
+----------------------------------
+$dpkg -l | grep -i ocaml
+$ sudo aptitude remove <package-name-from-above>
+
+# unused packages
+------------------
+install deborphan tool
+$sudo aptitude install deborphan
+$deborphan
 
