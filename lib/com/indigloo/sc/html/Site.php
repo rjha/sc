@@ -189,9 +189,7 @@ namespace com\indigloo\sc\html {
                     case AppConstants::LIKE_VERB :
                         $rows[$i]["action"] = UIConstants::LIKE_POST ;
                         break ;
-                    case AppConstants::SAVE_VERB :
-                        $rows[$i]["action"] = UIConstants::SAVE_POST ;
-                        break ;
+                    
                     default :
                         break ;
                 }

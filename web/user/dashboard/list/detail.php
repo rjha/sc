@@ -244,21 +244,25 @@
                         <div class="section1">
                             
                             <h4> <?php echo $listDBRow["name"]; ?> </h4>
-                            <p class="muted"> <?php echo $listDBRow["description"]; ?> </p>
-                            <p class="muted"> 
-                                <span>items </span>
-                                <span><?php echo $listDBRow["item_count"]; ?></span>
-                            </p>
-                            <p class="muted">         
-                                <span>created on </span>
-                                <span><?php echo \com\indigloo\sc\util\Formatter::convertDBTime($listDBRow["created_on"]); ?></span>
-                            </p>
-                            <p class="muted">         
-                                <span>public URL </span>
-                                <span>
-                                    <a href="<?php echo $listPubUrl ?>" target="_blank"> <?php echo $listPubUrl; ?></a>
+                            <div class="wrap-it">
+                                <span class="badge badge-warning">
+                                    <?php echo $listDBRow["item_count"]; ?> items
                                 </span>
+                                <br>
+                                <ul class="unstyled pt10">
+                                    <li class="faded-text"> Public URL</li>
+                                    <li>
+                                        <a href="<?php echo $listPubUrl ?>" target="_blank"> <?php echo $listPubUrl; ?></a>
+                                    </li>
+
+
+                                </ul>
+                            </div>
+
+                            <p class="comment-text"> 
+                                <?php echo $listDBRow["description"]; ?> 
                             </p>
+                           
 
                         </div>
                     </div>

@@ -24,7 +24,7 @@
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
        
         <style>
-            
+            /* @inpage  @hardcoded styles */
             #link-box {width:100%; }
             #ajax-message .error { color:red ; }
             #image-preview { padding-top:10px; }

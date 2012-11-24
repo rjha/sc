@@ -106,7 +106,7 @@
                     <?php echo \com\indigloo\sc\html\Post::getUserPanel($postView,$loginIdInSession); ?>
                     <?php echo \com\indigloo\sc\html\Post::getGroups($postView); ?>
 
-
+                    <!-- @hardcoded @inpage hack -->
                     <div class="section" style="overflow:visible">
                         <div class="fb-like pb10" data-href="<?php echo $itemObj->netLink;?>" data-send="false" data-layout="button_count" data-width="225" data-show-faces="false">
                         </div>

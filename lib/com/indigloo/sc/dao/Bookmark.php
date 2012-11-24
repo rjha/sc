@@ -33,17 +33,7 @@ namespace com\indigloo\sc\dao {
             $verb = \com\indigloo\sc\Constants::LIKE_VERB ;
             $this->add($ownerId,$loginId,$name,$itemId,$title,$verb);
         }
-
-        function save($ownerId,$loginId,$name,$itemId,$title) {
-             $verb = \com\indigloo\sc\Constants::SAVE_VERB ;
-             $this->add($ownerId,$loginId,$name,$itemId,$title,$verb);
-        }
-
-        function unsave($loginId,$itemId) {
-            $verb = \com\indigloo\sc\Constants::SAVE_VERB ;
-            mysql\Bookmark::remove($loginId,$itemId,$verb);
-        }
-
+        
         function delete($bookmarkId) {
             mysql\Bookmark::delete($bookmarkId);
         }

@@ -6591,6 +6591,8 @@ button::-moz-focus-inner {
         word-wrap: break-word;
     }
 
+    .wrap-it { word-wrap : break-word;}
+    
     .floatl {float:left;}
     .floatr {float:right;}
 

@@ -31,7 +31,7 @@ CREATE TABLE  sc_list  (
     items_json TEXT,
     item_count int default 0,
     pseudo_id varchar(32) ,
-    description varchar(512),
+    description text,
     version int not null,
     op_bit int not null,
     dl_bit int default 0,
@@ -496,3 +496,8 @@ insert into sc_post_counter(post_id)
 -- 
 -- delete from sc_bookmark where verb = 2 ;
 -- 
+-- 24 nov.
+-- for aws.3mik.com
+-- alter table sc_list modify column description text ;
+-- 
+

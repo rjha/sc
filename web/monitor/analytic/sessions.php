@@ -25,6 +25,7 @@
 
     <body>
         <style>
+         /* @inpage @hardcoded hack */
             .name { width:120px;}
         </style>
         <div class="container">

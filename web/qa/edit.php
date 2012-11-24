@@ -67,7 +67,7 @@
 
     <body>
         <style>
-            /* @todo remove hack */
+            /* @inpage @hardcoded hack */
             .form-table {width:90%;}
 
         </style>

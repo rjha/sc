@@ -3,8 +3,9 @@ namespace com\indigloo\sc\controller{
 
 
     use \com\indigloo\Util as Util;
-    use com\indigloo\Url;
+    use \com\indigloo\Url;
     use \com\indigloo\Configuration as Config ;
+
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\html\Seo as SeoData ;
     use \com\indigloo\ui\Filter as Filter;
@@ -60,7 +61,8 @@ namespace com\indigloo\sc\controller{
             $pageBaseUrl = $listPubUrl ;
             $pageTitle = $listDBRow["name"];
             
-            $metaDescription = SeoData::thisOrHomeDescription($listDBRow["description"]);
+            $description = Util::abbreviate($listDBRow["description"],160);
+            $metaDescription = SeoData::thisOrHomeDescription($description);
             $metaKeywords = SeoData::getHomeMetaKeywords();
             
             include($template);
