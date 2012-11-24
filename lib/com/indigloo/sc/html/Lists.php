@@ -91,8 +91,8 @@ namespace com\indigloo\sc\html {
             $view->name = $row["name"];
             $view->seoName = $row["seo_name"];
             $view->items = json_decode($row["items_json"]);
+            $view->count = ($row["item_count"] == 0 )? "no" : $row["item_count"]  ;
 
-            $view->count = $row["item_count"] ;
             $view->hasImage = false ;
 
             if(is_array($view->items)){

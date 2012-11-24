@@ -214,6 +214,19 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
+        static function getDashItemHelp($count) {
+
+            if($count > 0 ) { return "" ; }
+
+            $html = NULL ;
+            $view = new \stdClass ;
+
+            $template = '/fragments/dash/item-help.tmpl' ;
+            $html = Template::render($template,$view);
+            return $html ;
+            
+
+        }
 
     }
 

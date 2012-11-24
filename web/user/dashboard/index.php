@@ -15,7 +15,7 @@
     use \com\indigloo\ui\Filter as Filter;
     use \com\indigloo\sc\util\PseudoId;
 
-    $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
+    $gSessionLogin = Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
     $pubId = PseudoId::encode($loginId);
     $homeUrl = Url::base();
@@ -49,7 +49,7 @@
 
     // pick 12 posts from editor picks
     $postDBRows = $postDao->getPosts(12,$filters);
-
+    $dashItemHelp = \com\indigloo\sc\html\Site::getDashItemHelp($counters["post_count"]);
 
 ?>
 
@@ -65,6 +65,12 @@
     </head>
 
     <body>
+        
+        <style>
+            /* @inpage @hardcoded override graph widget border */
+            .uwidget .wrapper { border-bottom: 0 ; }
+        </style>
+
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container mh600">
 
@@ -95,46 +101,42 @@
                 <div class="span3">
                     <?php echo \com\indigloo\sc\html\User::getDashProfile($userDBRow); ?>
                     <div>
-                        <span class="faded-text">check your public page  </span>
+                        <span class="faded-text">public page  </span>
                         <span>
                             <a href="<?php echo $pubUrl ?>" class="b" target="_blank"><?php echo $pubUrl; ?></a>
                         </span>
 
                     </div>
+                   
 
                 </div> <!-- left -->
 
                 <div class="span6">
+
+                    <?php echo $dashItemHelp ; ?>
+                     <div class="wbg" style="padding-left:20px">
+                        <span>How to? </span>
+                        <a class="help-popup" rel = "dashboard.item.create" href="#">upload items</a>
+                        &nbsp;/&nbsp;
+                        <a class="help-popup" rel = "dashboard.list.create" href="#">create lists</a>
+                        &nbsp;/&nbsp;
+                        <a class="help-popup" rel = "dashboard.item.save" href="#">save items</a> 
+                    </div>
+
                     <div class="section1">
                         <?php echo \com\indigloo\sc\html\User::getCounters($counters); ?>
                         <div class="clear"> </div>
                     </div>
+                
+                    <!--
+                    <img src="/site/images/help/dash.png" alt= "select dash"/>
+                    <p class="muted">
+                        To view this page
+                        from anywhere, just click 
+                        on your name in top toolbar and select Account. 
+                    </p>
+                    -->
 
-                    <div class="section">
-                        
-                        <img src="/site/images/help/dash.png" alt= "select dash"/>
-                        <p class="muted">
-                            To view this page
-                            from anywhere, just click 
-                            on your name in top toolbar and select Account. 
-                        </p>
-                        <!-- @inpage @hardcoded style -->
-                        <ul class="breadcrumb" style="background-color:white;">
-                            <li class="active">How to?</li>
-                            <li>
-                                <a class="help-popup" rel = "dashboard.item.create" href="#">upload items</a> 
-                                <span class="divider">/</span>
-                            </li>
-                            <li>
-                                <a class="help-popup" rel = "dashboard.list.create" href="#">create lists</a> 
-                                <span class="divider">/</span>
-                            </li>
-                            <li>
-                                <a class="help-popup" rel = "dashboard.item.save" href="#">save items</a> 
-                            </li>
-                        </ul>
-
-                    </div>
 
                     <div class="section">
                         <strong>You may like</strong>
@@ -147,9 +149,14 @@
                 
                 <div class="span3">
                    
-                    
-                     
-                    <div class="feeds mt20">
+                   <div class="adbox adbox-user">
+                    <p class="comment-text">
+                        Tell a friend about 3mik!
+                    </p>
+                    <a class="btn-adbox" href="/">invite your friends</a>
+                   </div>
+
+                    <div class="feeds" style="margin-top:40px;">
                         <?php
                             $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
                             $html = $htmlObj->getHtml($feedDataObj);
@@ -177,6 +184,21 @@
                     webgloo.sc.SimplePopup.load(targetUrl);
                 });
 
+
+                //share popup in item adbox
+                $("a#adbox-popup-share").click(function(event) {
+                    event.preventDefault();
+                    //get content of nav-share
+                    var content = $("#nav-share").html();
+                    webgloo.sc.SimplePopup.init();
+                    webgloo.sc.SimplePopup.show(content);
+                });
+
+                <?php if($counters["post_count"] == 0 ) { ?>
+                    // hide the top-unit share popup
+                    // because we are already showing a big upload button
+                    $("#nav-popup-share").hide();
+                <?php } ?> 
                 
             });
 

@@ -130,6 +130,7 @@
                             }
 
                         } else {
+                            
                             $message = "No Lists found " ;
                             $options = array("hkey" => "dashboard.list.create");
                             echo \com\indigloo\sc\html\Site::getNoResult($message,$options);

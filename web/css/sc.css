@@ -922,17 +922,21 @@
         margin-bottom:15px;
     }
 
-
     #top-unit .btn {
-        text-shadow : none ;
-        padding-left:19px;
-        padding-right:19px;
+       
+        background: #FF555D;
+        padding-left: 19px;
+        padding-right: 19px;
+        border-radius: 0px;
+        border: 0px;
+        box-shadow:none;
+        text-shadow: none;
+        outline: 0 ;
     }
 
     #top-unit a {
-        color: #666;
-        font-family: arial,sans-serif;
-        font-size: 13px;
+        color: white;
+        font-weight: bold;
     }
 
 
@@ -1225,7 +1229,7 @@
 
     .metro-tile {
         color: #333 ;
-        background-color: #eee ;
+        background-color: #f7f7f7 ;
         border: 1px solid white;
         font-size: 13px;
         font-weight: normal;
@@ -1430,7 +1434,37 @@
         border:5px solid #f7f7f7;
     }
 
+    .adbox-item { 
+        width:60% ;
+        padding: 10px 20px 40px 10px;
+    }
 
+    .adbox-user {
+        border:1px solid #e5e5e5;
+        padding: 20px 20px 40px 20px;
+    }
+
+    .adbox p {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .btn-adbox {
+        text-shadow: none;
+        padding: 10px 20px 10px 20px;
+        color: white;
+        /* red : #FF555D blue : #5A86DE  green : #5C2; */
+        background: #5C2;
+        font-family: arial,sans-serif;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        line-height: 21px;
+        font-size: 16px;
+    }
+
+    .btn-adbox:hover {
+        color: white ;
+    }
 
     /* @imp : last section - override 3rd party libraries */
     /* bootstrap css */
