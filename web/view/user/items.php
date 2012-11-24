@@ -64,6 +64,7 @@
             <div class="row">
 
                 <div class="span12">
+                    <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
                     <div id="tiles">
                         <?php echo $htmlItems ;?>
                     </div>
@@ -140,6 +141,8 @@
                 //Add item toolbar actions
                 webgloo.sc.item.addActions();
                 webgloo.sc.toolbar.add();
+                webgloo.sc.dashboard.fixAlert();
+                webgloo.sc.Lists.init();
 
             });
 

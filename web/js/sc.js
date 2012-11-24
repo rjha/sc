@@ -566,7 +566,8 @@ webgloo.sc.item = {
 
         $("a.save-post").live("click", function(event){
             event.preventDefault();
-            webgloo.sc.Lists.openPopup();
+            var itemId = $(this).attr("id");
+            webgloo.sc.Lists.openPopup(itemId);
         }) ;
 
         //unsave
@@ -752,7 +753,17 @@ webgloo.sc.Lists = {
 
         }) ;
 
+        /*
+         $("a.select-list").live("click", function(event){
+            event.preventDefault();
+            var listId = $(this).attr("id");
+            webgloo.sc.Lists.submitList(listId);
+
+        }) ;
+        */
+
         $("#lists li a").live("click", function(event){
+            event.preventDefault();
             var listId = $(this).attr("id");
             webgloo.sc.Lists.submitList(listId);
 

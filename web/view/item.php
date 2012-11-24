@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
     
-    <!-- @imp form messages would be rendered by controller -->
-
     <head>
         <title> <?php echo $itemObj->title; ?> - 3mik.com </title>
 
@@ -58,7 +56,7 @@
             <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
             
             <div class="row">
-                <?php echo $formMessage; ?>
+                <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
                 <div class="span9 wbg">
 
                     <div id="page-message" class="hide-me"> </div>
@@ -154,6 +152,7 @@
 
                 webgloo.sc.toolbar.add();
                 webgloo.sc.item.addActions();
+                webgloo.sc.dashboard.fixAlert();
                 webgloo.sc.Lists.init();
 
             });

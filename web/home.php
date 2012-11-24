@@ -24,6 +24,7 @@
             <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
             <div class="row">
                 <div class="span12">
+                    <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
                     <div id="tiles">
 
                         <?php
@@ -52,15 +53,6 @@
                 </div>
             </div> <!-- row -->
             
-            <!-- feedback 
-            <div id="feedback" class="vertical">
-                <a href="/site/contact.php">
-                    <br>
-                    F e e d b a c k
-                </a>
-            </div>  -->
-
-
             <div id="scroll-loading"> </div>
 
         </div>  <!-- container -->
@@ -128,6 +120,8 @@
                 //Add item toolbar actions
                 webgloo.sc.item.addActions();
                 webgloo.sc.toolbar.add();
+                webgloo.sc.dashboard.fixAlert();
+                webgloo.sc.Lists.init();
 
             });
 

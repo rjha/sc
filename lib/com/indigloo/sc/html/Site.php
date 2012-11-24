@@ -25,6 +25,23 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
+        static function formMessage() {
+            
+            $html = NULL ;
+            $template = '/fragments/ui/form-message.tmpl' ;
+            $view = new \stdClass;
+
+            $gWeb = \com\indigloo\core\Web::getInstance();
+            $messages = $gWeb->find(Constants::FORM_MESSAGES,true);
+            $errors = $gWeb->find(Constants::FORM_ERRORS,true);
+
+            $view->messages = (is_null($messages)) ? array() : $messages ;
+            $view->errors = (is_null($errors)) ? array() : $errors ;
+            
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+        
         /*
          * #1)
          * if we are on page > 2 then user knows how to create 
@@ -59,6 +76,8 @@ namespace com\indigloo\sc\html {
             if(!empty($qparams) && (isset($qparams["gpage"]))) {  
                 $gpage = $qparams["gpage"];
                 $gpage = intval($gpage);
+            }else {
+                $gpage = 1 ;
             }
 
             $html = NULL ;
@@ -193,23 +212,6 @@ namespace com\indigloo\sc\html {
             $template = '/fragments/site/analytic/session.tmpl' ;
             $view = new \stdClass;
             $view->rows = $rows ;
-            $html = Template::render($template,$view);
-            return $html ;
-        }
-
-        static function formMessage() {
-            
-            $html = NULL ;
-            $template = '/fragments/ui/form-message.tmpl' ;
-            $view = new \stdClass;
-
-            $gWeb = \com\indigloo\core\Web::getInstance();
-            $messages = $gWeb->find(Constants::FORM_MESSAGES,true);
-            $errors = $gWeb->find(Constants::FORM_ERRORS,true);
-
-            $view->messages = $messages ;
-            $view->errors = $errors ;
-
             $html = Template::render($template,$view);
             return $html ;
         }

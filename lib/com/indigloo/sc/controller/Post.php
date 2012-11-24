@@ -184,10 +184,7 @@ namespace com\indigloo\sc\controller{
             $metaDescription = Util::abbreviate($postDBRow["description"],160);
             $metaKeywords = SeoData::getMetaKeywords($group_names);
             $pageUrl = Url::base().Url::current() ;
-
-            // include form error messages right 
-            // at the top of the item page.
-            $formMessage = \com\indigloo\sc\html\Site::formMessage(); 
+             
             $file = APP_WEB_DIR. '/view/item.php' ;
             include($file);
         }

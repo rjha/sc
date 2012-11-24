@@ -23,8 +23,8 @@
                     <div class="page-header">
                         <h2> <?php echo $pageHeader; ?> </h2>
                     </div>
-
-                    <div id="tiles" class="mh800">
+                    <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
+                    <div id="tiles" class="mh600">
                         <?php
                             $startId = NULL;
                             $endId = NULL ;
@@ -119,6 +119,9 @@
                 //Add item toolbar actions
                 webgloo.sc.item.addActions();
                 webgloo.sc.toolbar.add();
+                webgloo.sc.dashboard.fixAlert();
+                webgloo.sc.Lists.init();
+
             });
 
         </script>

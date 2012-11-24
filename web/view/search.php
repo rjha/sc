@@ -26,7 +26,8 @@
             </div>
 
             <div class="row">
-                <div class="span12 mh800">
+                <div class="span12 mh600">
+                    <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
                     <div id="tiles">
                         <?php
                             if(($gpage == 1) && !empty($groupDBRows)) {
@@ -46,7 +47,8 @@
                                 }
                             }else {
                                 $message = "No results found " ;
-                                echo \com\indigloo\sc\html\Site::getNoResult($message);
+                                $options = array("hkey" => "pub.search");
+                                echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
                             }
 
 
@@ -126,6 +128,9 @@
                 //Add item toolbar actions
                 webgloo.sc.item.addActions();
                 webgloo.sc.toolbar.add();
+                webgloo.sc.dashboard.fixAlert();
+                webgloo.sc.Lists.init();
+
             });
 
         </script>

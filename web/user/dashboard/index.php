@@ -10,8 +10,7 @@
 
     use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\Constants as Constants;
-    use \com\indigloo\ui\form\Message as FormMessage;
-
+    
     use \com\indigloo\ui\Filter as Filter;
     use \com\indigloo\sc\util\PseudoId;
 
@@ -92,9 +91,6 @@
                 </div>
 
             </div>
-
-            <?php FormMessage::render(); ?>
-            
 
             <div class="row">
 

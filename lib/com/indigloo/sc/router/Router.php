@@ -30,7 +30,9 @@ namespace com\indigloo\sc\router{
             
             $this->createRule('^pub/user/(?P<login_id>\d+)$','com\indigloo\sc\controller\User');
             $this->createRule('^pub/list/(?P<list_id>\d+)/(?P<name>[-\w]+)$','com\indigloo\sc\controller\Lists');
-            
+            $this->createRule('^pub/list/(?P<list_id>\d+)$','com\indigloo\sc\controller\Lists');
+           
+
             $this->createRule('^search/location/(?P<location>\w+)$','com\indigloo\sc\controller\Location');
             $this->createRule('^surprise/me$','com\indigloo\sc\controller\Random');
             

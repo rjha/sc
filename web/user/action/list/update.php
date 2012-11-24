@@ -17,7 +17,7 @@
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\sc\util\PseudoId ;
-
+    use \com\indigloo\sc\html\Lists as ListHtml ;
 
     // @imp submit buttons are only considered successful controls 
     // if they are used to submit the form
@@ -64,14 +64,8 @@
             $pListId = PseudoId::encode($listId);
         }
 
-
-        $listUrl = str_replace(
-            "{listId}",
-            $pListId,
-            "<a href=\"/pub/list/{listId}\">view list &rarr;</a>") ;
-
-
-        $message = sprintf("success! items added to list. %s",$listUrl);
+        $listUrl = ListHtml::getPubLink($pListId);
+        $message = sprintf("success! items added to list %s",$listUrl);
         $gWeb->store(Constants::FORM_MESSAGES,array($message));
 
         header("Location: " . $qUrl);

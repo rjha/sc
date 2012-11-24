@@ -30,6 +30,15 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
+        static function getPubLink($listId) {
+            $view = new \stdClass;
+            $template = "/fragments/lists/pub/link.tmpl" ;
+            $view->listId = $listId;
+
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
         static function getWidget($listDBRow) {
             $view = self::createListView($listDBRow);
             $template = NULL ;
