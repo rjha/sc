@@ -90,7 +90,7 @@ namespace com\indigloo\sc\html {
                     return $html ;
                 } catch(\Exception $ex) {
                     $html = NULL ;
-                    $errorMsg = sprintf("Error retrieving help key :: %s ",$help_key);
+                    $errorMsg = $ex->getMessage();
                     Logger::getInstance()->error($errorMsg);
                     Logger::getInstance()->error($ex->getMessage());
                 }
@@ -122,13 +122,17 @@ namespace com\indigloo\sc\html {
 
             //bad key
             if($pos !== false) {
-                $message = "wrong help file key: it contains path separator" ;
-                trigger_error($message, E_USER_ERROR);
+                $message = sprintf("wrong format for help file key: {%s} ",$key) ;
+                throw new \Exception($message);
             }
 
-            //@todo : check if the file exists or not!
             $name = str_replace(".","/",$key);
             $path = sprintf("%s/site/help/%s.html",APP_WEB_DIR,$name) ;
+
+            if(!file_exists($path)) {
+                $message = sprintf("unable to locate help file {%s}",$path);
+                throw new \Exception($message);
+            }
 
             //get buffered output
 
