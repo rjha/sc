@@ -143,7 +143,7 @@
                    
                    <div class="adbox adbox-user">
                     <p class="comment-text">
-                        <i class="icon icon-bullhorn"></i>&nbsp;Tell a friend about 3mik!
+                        Tell a friend about 3mik!
                     </p>
                     <a class="btn-adbox" href="<?php echo $linkInvitation; ?>">send invitations</a>
                    </div>
