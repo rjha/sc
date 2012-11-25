@@ -13,6 +13,15 @@
             const FOLLOWING_VERB = 3 ;
             const COMMENT_VERB = 4 ;
             const POST_VERB = 5 ;
+            const UNFOLLOWING_VERB = 6 ;
+
+            const STR_LIKE = "like" ;
+            const STR_SAVE = "save" ;
+            const STR_FOLLOW = "follow" ;
+            const STR_UNFOLLOW = "unfollow";
+            const STR_COMMENT = "comment";
+            const STR_POST = "post" ;
+
 
             //Activity feed types
             const FOLLOW_FEED = "feed:follow" ;

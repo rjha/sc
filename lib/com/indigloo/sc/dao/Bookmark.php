@@ -15,16 +15,7 @@ namespace com\indigloo\sc\dao {
             $count = $row['count'] ;
 
             if($count == 0 ) {
-                // get image from item.
-                $postDao = new \com\indigloo\sc\dao\Post();
-                $postId = PseudoId::decode($itemId);
-                $image = $postDao->getImageOnId($postId);
-                //actually insert
                 mysql\Bookmark::add($ownerId,$loginId,$name,$itemId,"post",$title,$verb);
-                //Add to activity feed
-                $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
-                $feedDao->addBookmark($ownerId,$loginId,$name,$itemId,$title,$image,$verb);
-
             }
 
         }

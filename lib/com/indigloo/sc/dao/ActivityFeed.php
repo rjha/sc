@@ -18,8 +18,83 @@ namespace com\indigloo\sc\dao {
 
     use \com\indigloo\sc\util\Nest as Nest;
     use \com\indigloo\connection\Redis as Redis;
+    use \com\indigloo\sc\util\PseudoId ;
 
-    class ActivityFeed {
+    class ActivityFeed {    
+
+        function create($row) {
+            $verb = $row["verb"] ;
+
+            switch($verb) {
+                //no fallthrough!
+                case AppConstants::LIKE_VERB :
+                    $postDao = new \com\indigloo\sc\dao\Post();
+
+                    $itemId = $row["object_id"];
+                    $postId = PseudoId::decode($itemId);
+                    $image = $postDao->getImageOnId($postId);
+                    $this->addBookmark(
+                        $row["owner_id"],
+                        $row["subject_id"],
+                        $row["subject"],
+                        $row["object_id"],
+                        $row["object"],
+                        $image,
+                        $verb);
+                    break ;
+
+                case AppConstants::POST_VERB :
+                    $postDao = new \com\indigloo\sc\dao\Post();
+
+                    $itemId = $row["object_id"];
+                    $postId = PseudoId::decode($itemId);
+                    $image = $postDao->getImageOnId($postId);
+
+                    $this->addPost(
+                        $row["subject_id"], 
+                        $row["subject"], 
+                        $row["object_id"], 
+                        $row["object"],
+                        $image,
+                        $verb);
+                    break ;
+
+                case AppConstants::COMMENT_VERB :
+                    // @imp: activity row for comment stores 
+                    // post_id as object_id and not item_id
+                    $postId = $row["object_id"];
+                    $itemId = PseudoId::encode($postId);
+                    $postDao = new \com\indigloo\sc\dao\Post();
+                    $image = $postDao->getImageOnId($postId);
+                    
+                    $this->addComment(
+                        $row["owner_id"],
+                        $row["subject_id"],
+                        $row["subject"],
+                        $itemId,
+                        $row["object"],
+                        $row["content"],
+                        $image,
+                        $verb);
+                    break ;
+
+                case AppConstants::FOLLOWING_VERB :
+                    $this->addFollower(
+                        $row["subject_id"], 
+                        $row["subject"], 
+                        $row["object_id"], 
+                        $row["object"],
+                        $verb);
+                    break ;
+                case AppConstants::UNFOLLOWING_VERB :
+                    $this->removeFollower($row["subject_id"],$row["object_id"]);
+                    break ;
+                default :
+                    $message = "Unknown activity verb : aborting! "
+                    trigger_error($message,E_USER_ERROR);
+            }
+
+        }
 
         function addFollower($followerId, $followerName, $followingId, $followingName, $verb) {
 

@@ -5,11 +5,13 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
+
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
-
     use \com\indigloo\mysql\PDOWrapper;
+
     use \com\indigloo\exception\DBException;
+    use \com\indigloo\sc\Constants as AppConstants;
 
     class Post {
 
@@ -240,34 +242,46 @@ namespace com\indigloo\sc\mysql {
         }
 
         static function create($title,
-                               $description,
-                               $loginId,
-                               $linksJson,
-                               $imagesJson,
-                               $groupSlug,
-                               $categoryCode) {
+                                $description,
+                                $loginId,
+                                $name,
+                                $linksJson,
+                                $imagesJson,
+                                $groupSlug,
+                                $categoryCode) {
 
 
             $dbh = NULL ;
 
             try {
                 $sql1 = " insert into sc_post(title,description,login_id,links_json, " ;
-                $sql1 .= "images_json,group_slug,cat_code,created_on) ";
-                $sql1 .= " values(?,?,?,?,?,?,?,now()) ";
+                $sql1 .= " images_json,group_slug,cat_code, pseudo_id,created_on) ";
+                $sql1 .= " values (:title,:description,:login_id,:links_json,:images_json, " ;
+                $sql1 .= " :group_slug, :cat_code, :pseudo_id, now()) ";
 
                 $dbh = PDOWrapper::getHandle();
                 //Tx start
                 $dbh->beginTransaction();
 
-                //insert post
+                //insert into sc_post, change counters via trigger
                 $stmt1 = $dbh->prepare($sql1);
-                $stmt1->bindParam(1, $title);
-                $stmt1->bindParam(2, $description);
-                $stmt1->bindParam(3, $loginId);
-                $stmt1->bindParam(4, $linksJson);
-                $stmt1->bindParam(5, $imagesJson);
-                $stmt1->bindParam(6, $groupSlug);
-                $stmt1->bindParam(7, $categoryCode);
+
+                $stmt1->bindParam(":title", $title);
+                $stmt1->bindParam(":description", $description);
+                $stmt1->bindParam(":login_id", $loginId);
+                $stmt1->bindParam(":links_json", $linksJson);
+                $stmt1->bindParam(":images_json", $imagesJson);
+                $stmt1->bindParam(":group_slug", $groupSlug);
+                $stmt1->bindParam("cat_code", $categoryCode);
+
+                // @see http://drupal.org/node/1369332
+                // pseudo_id is part of a UNIQUE index and mysql has to lock
+                // the index attached to pseudo_id if we do not insert anything
+                // NULL not being comparable to anything, it doesn't participate 
+                // in uniqueness constraints and MySQL doesn't have to lock the index.
+                // $pseudoId = NULL ;
+                // $stmt1->bindParam(":pseudo_id", $pseudoId);
+                $stmt1->bindValue(":pseudo_id", null,\PDO::PARAM_STR);
 
                 $stmt1->execute();
                 $stmt1 = NULL ;
@@ -285,6 +299,30 @@ namespace com\indigloo\sc\mysql {
                 $stmt2->bindParam(":item_id", $itemId);
                 $stmt2->bindParam(":post_id", $postId);
                 $stmt2->execute();
+                $stmt2 = NULL ;
+
+                $sql3 = " insert into sc_activity(owner_id,subject_id,subject,object_id, " ;
+                $sql3 .= " object,verb, verb_name, op_bit, created_on) " ;
+                $sql3 .= " values(:owner_id, :subject_id, :subject, :object_id, " ;
+                $sql3 .= " :object, :verb, :verb_name, :op_bit, now()) ";
+               
+                $verb =  AppConstants::POST_VERB ;
+                $op_bit = 0 ;
+                $verbName = AppConstants::STR_POST ;
+
+                $stmt3 = $dbh->prepare($sql3);
+                $stmt3->bindParam(":owner_id", $loginId);
+                $stmt3->bindParam(":subject_id", $loginId);
+                $stmt3->bindParam(":object_id", $itemId);
+                $stmt3->bindParam(":subject", $name);
+                $stmt3->bindParam(":object", $title);
+                $stmt3->bindParam(":verb", $verb);
+                $stmt3->bindParam(":verb_name", $verbName);
+                $stmt3->bindParam(":op_bit", $op_bit);
+
+                $stmt3->execute();
+                $stmt3 = NULL ;
+                
 
                 //Tx end
                 $dbh->commit();
@@ -296,12 +334,13 @@ namespace com\indigloo\sc\mysql {
                 $dbh->rollBack();
                 $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());
+                 
 
             } catch(\Exception $ex) {
                 $dbh->rollBack();
                 $dbh = null;
-                $message = $ex->getMessage();
-                throw new DBException($message);
+                throw new DBException($ex->getMessage());
+                 
             }
 
         }

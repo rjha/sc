@@ -396,7 +396,6 @@ DELIMITER //
               update sc_post_counter set like_count = like_count + 1 where post_id = NEW.object_id ;
         END IF;
         
-
     END //
 DELIMITER ;
 
@@ -500,4 +499,31 @@ insert into sc_post_counter(post_id)
 -- for aws.3mik.com
 -- alter table sc_list modify column description varchar(2048) ;
 -- 
+
+
+
+DROP TABLE IF EXISTS  sc_activity ;
+CREATE TABLE  sc_activity  (
+   id  int NOT NULL AUTO_INCREMENT,
+   subject_id int not NULL,
+   object_id  int NOT NULL,
+   owner_id int ,
+   subject varchar(128),
+   object varchar(128),
+   verb_name varchar(16) not null,
+   verb int not null,
+   source varchar(16),
+   content varchar(512) ,
+   op_bit int default 0,
+   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY ( id )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- let pseudo_id be null
+--
+alter table sc_post modify column pseudo_id varchar(32) ;
+
 

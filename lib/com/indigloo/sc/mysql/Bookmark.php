@@ -5,6 +5,7 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\sc\Constants as AppConstants ;
 
     class Bookmark {
 
@@ -157,31 +158,74 @@ namespace com\indigloo\sc\mysql {
                 $title,
                 $verb){
 
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " insert into sc_bookmark(owner_id,subject_id,subject,object_id, " ;
-            $sql .= " object, object_title, verb,created_on) " ;
-            $sql .= " values(?,?,?,?,?,?,?,now()) ";
 
-            $stmt = $mysqli->prepare($sql);
+            $dbh = NULL ;
+             
+            try {
 
-            if ($stmt) {
-                $stmt->bind_param("iisissi",
-                        $ownerId,
-                        $subjectId,
-                        $subject,
-                        $objectId,
-                        $objectType,
-                        $title,
-                        $verb);
+                //@todo column object should be renamed to object_type
+                //@todo column object_title should be renamed to object 
+                // insert into sc_bookmark, adjust counters via trigger
+                $sql1 = " insert into sc_bookmark(owner_id,subject_id,subject,object_id, " ;
+                $sql1 .= " object, object_title, verb,created_on) " ;
+                $sql1 .= " values(:owner_id, :subject_id, :subject, :object_id, :object_type, " ;
+                $sql1 .= " :object, :verb, now()) ";
+                
+                $dbh =  PDOWrapper::getHandle();
+                //Tx start
+                $dbh->beginTransaction();
 
-                $stmt->execute();
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":owner_id", $ownerId);
+                $stmt1->bindParam(":subject_id", $subjectId);
+                $stmt1->bindParam(":object_id", $objectId);
+                $stmt1->bindParam(":subject", $subject);
+                $stmt1->bindParam(":object", $title);
+                $stmt1->bindParam(":object_type", $objectType);
+                $stmt1->bindParam(":verb", $verb);
 
-                if ($mysqli->affected_rows != 1) {
-                    MySQL\Error::handle($stmt);
-                }
-                $stmt->close();
-            } else {
-                MySQL\Error::handle($mysqli);
+                $stmt1->execute();
+                $stmt1 = NULL ;
+                
+                $sql2 = " insert into sc_activity(owner_id,subject_id,subject,object_id, " ;
+                $sql2 .= " object,verb, verb_name, op_bit, created_on) " ;
+                $sql2 .= " values(:owner_id, :subject_id, :subject, :object_id, " ;
+                $sql2 .= " :object, :verb, :verb_name, :op_bit, now()) ";
+               
+                $verb =  AppConstants::LIKE_VERB ;
+                $op_bit = 0 ;
+                $verbName = AppConstants::STR_LIKE ;
+
+                $stmt2 = $dbh->prepare($sql2);
+                $stmt2->bindParam(":owner_id", $ownerId);
+                $stmt2->bindParam(":subject_id", $subjectId);
+                $stmt2->bindParam(":object_id", $objectId);
+                $stmt2->bindParam(":subject", $subject);
+                $stmt2->bindParam(":object", $title);
+                $stmt2->bindParam(":verb", $verb);
+                $stmt2->bindParam(":verb_name", $verbName);
+                $stmt2->bindParam(":op_bit", $op_bit);
+
+
+                $stmt2->execute();
+                $stmt2 = NULL ;
+                
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+                
+
+            }catch (\PDOException $e) {
+                $dbh->rollBack();
+                $dbh = null;
+                throw new DBException($e->getMessage(),$e->getCode());
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
             }
 
         }
