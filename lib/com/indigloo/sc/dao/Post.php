@@ -16,6 +16,12 @@ namespace com\indigloo\sc\dao {
             return $row ;
         }
 
+        function exists($itemId) {
+            $row = $this->getOnItemId($itemId);
+            $flag = (!is_null($row) && !empty($row["name"])) ? true : false ;
+            return $flag ;
+        }
+
         function getOnItemId($itemId) {
 
             $postId = PseudoId::decode($itemId);
