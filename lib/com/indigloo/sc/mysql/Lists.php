@@ -116,15 +116,7 @@ namespace com\indigloo\sc\mysql {
             return $row ;
 
         }
-
-        static function exists($listId) {
-            settype($listId,"int");
-            $row = self::getOnId($listId);
-            $flag = (!is_null($row) && !empty($row["name"])) ? true : false ;
-            return $flag ;
-
-        }
-
+        
         static function getLatestItems($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 

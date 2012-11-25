@@ -89,7 +89,10 @@ namespace com\indigloo\sc\dao {
         }
 
         function exists($listId) {
-            return mysql\Lists::exists($listId);
+            
+            $row = $this->getOnId($listId);
+            $flag = (!is_null($row) && !empty($row["name"])) ? true : false ;
+            return $flag ;
         }
 
         function isOwner($loginId,$listId) {
