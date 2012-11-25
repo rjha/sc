@@ -110,13 +110,37 @@ namespace com\indigloo\sc\html {
 
         }
         
-        static function getTable($loginId,$rows,$source,$options=array()) {
+        static function getDashWrapper($content,$options=NULL) {
+            $defaults = array(
+                "size" => 1,
+                "title" => "default",
+                "link" => "default");
+
+            $settings = Util::getSettings($options,$defaults);
+
+            $size = $settings["size"];
+            settype($size,"integer");
+            if($size == 0 ) {
+                return "" ;
+            }
+
+            $html = NULL ;
+            $view = new \stdClass;
+            $view->content = $content ;
+            $view->title = $settings["title"];
+            $view->link = $settings["link"];
+
+            $template =  "/fragments/graph/dash/wrapper.tmpl" ;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function getTable($loginId,$rows,$source,$options) {
             $html = NULL ;
             $view = new \stdClass;
             
             $defaults = array(
                 "ui" => "table",
-                "more" => NULL,
                 "image" => false);
             
             $settings = Util::getSettings($options,$defaults);
@@ -142,7 +166,7 @@ namespace com\indigloo\sc\html {
                      $record['srcImage'] = UIConstants::PH2_PIC;
                 } */
                 
-                //@hardcoded image to small user placeholder image.
+                
                 $record['srcImage'] = UIConstants::PH3_PIC;
 
                 $records[] = $record;
@@ -150,9 +174,6 @@ namespace com\indigloo\sc\html {
             
             $view->records = $records ;
             
-            //view specific properties
-            $view->moreLink = empty($settings["more"])? "" : $settings["more"] ;
-
             settype($source,"integer");
             $template = self::getTemplate($source,$settings["ui"],$settings["image"]);
             $html = Template::render($template,$view);

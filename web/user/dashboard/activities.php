@@ -27,18 +27,28 @@
     $followers = $socialGraphDao->getFollowers($loginId,5);
     $followings = $socialGraphDao->getFollowing($loginId,5);
 
-    $followerUIOptions = array(
-        "ui" => "feed",
-        "more" => "/user/dashboard/follower.php", 
-        "image" => true);
 
-    $followingUIOptions = array(
-        "ui" => "feed",
-        "more" => "/user/dashboard/following.php", 
-        "image" => true);
 
-     $followersHtml = GraphHtml::getTable($loginId,$followers,1,$followerUIOptions);
-     $followingsHtml = GraphHtml::getTable($loginId,$followings,2,$followingUIOptions);
+    $options = array("ui" => "feed","image" => true);
+    $followersData = GraphHtml::getTable($loginId,$followers,1,$options);
+    $options = array(
+        "link" => "/user/dashboard/follower.php",
+        "size" => sizeof($followers),
+        "title" => "Followers");
+    $followersHtml = GraphHtml::getDashWrapper($followersData,$options);
+
+
+    $options = array("ui" => "feed","image" => true);
+    $followingsData = GraphHtml::getTable($loginId,$followings,2,$options);
+    $options = array(
+        "link" => "/user/dashboard/following.php",
+        "size" => sizeof($followings),
+        "title" => "Followings");
+
+    $followingsHtml = GraphHtml::getDashWrapper($followingsData,$options);
+
+    $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+    $activityHtml = $htmlObj->getHtml($feedDataObj);
 
 ?>
 
@@ -71,32 +81,15 @@
 
             <div class="row">
                 <div class="span6">
-                    
                     <div class="feeds">
-                        <?php
-
-                        $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
-                        $html = $htmlObj->getHtml($feedDataObj);
-                        echo $html ;
-
-                        ?>
+                        <?php echo $activityHtml ; ?>
                     </div>
 
                 </div>
-                <div class="span4 offset1">
-                    <div>
-                        <span class="flickr-color b"> Followers </span>
-                        <?php echo $followersHtml ; ?> 
-                        <a href="/user/dashboard/follower.php"> view all &rarr; </a>
-                    </div>
-                    <div class="mt20">
-                        <span class="flickr-color b"> Followings </span>
-                        <?php echo $followingsHtml ; ?> 
-                        <a href="/user/dashboard/following.php"> view all &rarr; </a>
-                    </div>
 
-                       
-                
+                <div class="span4 offset1">
+                    <?php echo $followersHtml ; ?> 
+                    <?php echo $followingsHtml ; ?> 
 
                 </div>
             </div>
