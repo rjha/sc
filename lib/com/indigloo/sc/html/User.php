@@ -10,7 +10,7 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\auth\Login as Login ;
 
-    use \com\indigloo\sc\util\Formatter as Formatter ;
+    use \com\indigloo\sc\Util as AppUtil;
     use \com\indigloo\sc\ui\Constants as UIConstants ;
 
     class User {
@@ -57,7 +57,7 @@ namespace com\indigloo\sc\html {
             $view = new \stdClass;
 
             $view->name = (empty($userDBRow['nick_name'])) ? $userDBRow['name'] : $userDBRow['nick_name'] ;
-            $view->createdOn = Formatter::convertDBTime($userDBRow['created_on']);
+            $view->createdOn = AppUtil::convertDBTime($userDBRow['created_on']);
             $view->email = $userDBRow['email'];
             $view->aboutMe = $userDBRow['about_me'];
             $view->photoUrl = $userDBRow['photo_url'];
@@ -149,7 +149,7 @@ namespace com\indigloo\sc\html {
 
             //display fields
             $view->pubId = PseudoId::encode($row["login_id"]) ;
-            $view->createdOn =  Formatter::convertDBTime($row["created_on"]);
+            $view->createdOn =  AppUtil::convertDBTime($row["created_on"]);
             $ts = Util::secondsInDBTimeFromNow($row["created_on"]);
             
             $span = 24*3600 ;

@@ -12,8 +12,7 @@ namespace com\indigloo\sc\html {
     
     use \com\indigloo\sc\ui\Constants as UIConstants ;
     use \com\indigloo\sc\Constants as AppConstants ;
-    use \com\indigloo\sc\util\Formatter as Formatter ;
-
+    use \com\indigloo\sc\Util as AppUtil;
 
     class Post {
 
@@ -463,7 +462,7 @@ namespace com\indigloo\sc\html {
             
 
             $view->userName = $row['user_name'];
-            $view->createdOn = Formatter::convertDBTime($row['created_on']);
+            $view->createdOn = AppUtil::convertDBTime($row['created_on']);
             $view->pubUserId = PseudoId::encode($row['login_id']);
             $view->loginId = $row['login_id'];
             $view->userPageURI = "/pub/user/".$view->pubUserId;

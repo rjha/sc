@@ -4,7 +4,7 @@ namespace com\indigloo\sc\html {
 
     use com\indigloo\Template as Template;
     use com\indigloo\Util as Util ;
-    use \com\indigloo\sc\util\Formatter as Formatter ;
+    use \com\indigloo\sc\Util as AppUtil;
 
     class Login {
 
@@ -14,7 +14,7 @@ namespace com\indigloo\sc\html {
             $template = '/fragments/ui/login/view.tmpl' ;
             $view->name = $row['name'];
             $view->provider = $row['provider'];
-            $view->createdOn = Formatter::convertDBTime($row['created_on']);
+            $view->createdOn = AppUtil::convertDBTime($row['created_on']);
             $html = Template::render($template,$view);
             return $html ;
         }

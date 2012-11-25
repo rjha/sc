@@ -6,7 +6,7 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\sc\util\PseudoId ;
     use \com\indigloo\Url ;
 
-    use \com\indigloo\sc\util\Formatter as Formatter ;
+    use \com\indigloo\sc\Util as AppUtil ;
     use \com\indigloo\sc\ui\Constants as UIConstants;
 
     class Lists {
@@ -79,7 +79,7 @@ namespace com\indigloo\sc\html {
             
             $encodedId = PseudoId::encode($listDBRow["login_id"]);
             $view->userPubUrl = Url::base()."/pub/user/".$encodedId ;
-            $view->createdOn = Formatter::convertDBTime($listDBRow['created_on']);
+            $view->createdOn = AppUtil::convertDBTime($listDBRow['created_on']);
 
             $view->description = $listDBRow["description"];
             $view->count = $listDBRow["item_count"];
