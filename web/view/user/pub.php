@@ -11,23 +11,23 @@
 
     $content = PostHtml::getImageGrid($postDBRows);
     $count = $ucounters["post_count"]; 
-    $options = array ("title" => "Items", "tab" => "items");
+    $options = array ("title" => "Items","tab" => "items","max" => 8,"size" => $gNumDBRows["items"]);
     $itemsHtml = UserHtml::getPubWrapper($pageBaseUrl,$count,$content,$options);
 
     $content = PostHtml::getImageGrid($likeDBRows);
     $count = $ucounters["like_count"];
-    $options = array ("title" => "Likes", "tab" => "likes");
+    $options = array ("title" =>"Likes","tab" =>"likes","max" => 8, "size" => $gNumDBRows["likes"] );
     $likesHtml = UserHtml::getPubWrapper($pageBaseUrl,$count,$content,$options);
 
     
     $content = GraphHtml::getTable($loginId,$followers,1,$followerUIOptions);
     $count = $ucounters["follower_count"];
-    $options = array ("title" => "Followers", "tab" => "followers");
+    $options = array ("title" => "Followers", "tab" => "followers","max" => 5,"size" => $gNumDBRows["followers"]);
     $followersHtml = UserHtml::getPubWrapper($pageBaseUrl,$count,$content,$options);
 
     $content = GraphHtml::getTable($loginId,$followings,2,$followingUIOptions);
     $count = $ucounters["following_count"];
-    $options = array ("title" => "Followings", "tab" => "followings");
+    $options = array ("title" => "Followings", "tab" => "followings","max" => 5,"size" => $gNumDBRows["followings"]);
     $followingsHtml = UserHtml::getPubWrapper($pageBaseUrl,$count,$content,$options);
 
 
@@ -42,7 +42,7 @@
     }
 
     $count = $ucounters["list_count"];
-    $options = array ("title" => "Lists", "tab" => "lists");
+    $options = array ("title" => "Lists", "tab" => "lists","max" => 4,"size" => $gNumDBRows["lists"]);
     $listHtml = UserHtml::getPubWrapper($pageBaseUrl,$count,$content,$options);
 
 

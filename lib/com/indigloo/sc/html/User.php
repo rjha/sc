@@ -113,6 +113,16 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
+        /*
+         * @param options can have following attributes
+         *    - title : what to display on top of wrapper
+         *    - tab : the value of show request parameter
+         *      e.g. /pub/user/1234?show=lists
+         *    - size : the size of actual items in wrapper 
+         *    - max : maximum number of items to display in wrapper
+         * 
+         */
+
         static function getPubWrapper($baseUrl,$count,$content,$options) {
             
             $template = NULL ;
@@ -121,6 +131,17 @@ namespace com\indigloo\sc\html {
             $view->count = $count ;
             $view->title = $options["title"];
             $view->tab = $options["tab"];
+            $view->hasMore = false ;
+
+            $maxItems = $options["max"];
+            $actualItems = $options["size"];
+
+            settype($maxItems, "integer");
+            settype($actualItems, "integer");
+
+            if($actualItems >= $maxItems) {
+                $view->hasMore = true ;
+            }
 
             if($count > 0 ) {
                 $template =  "/fragments/user/pub/wrapper/content.tmpl" ;

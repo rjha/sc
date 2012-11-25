@@ -68,7 +68,8 @@ namespace com\indigloo\sc\controller{
             $pubUserId = Util::getArrayKey($params,"login_id");
             $loginId = PseudoId::decode($pubUserId);
             $qparams = Url::getRequestQueryParams();
-            
+            $gNumDBRows = array();
+
             //data:1:user
             $userDao = new \com\indigloo\sc\dao\User();
             $userDBRow = $userDao->getOnLoginId($loginId);
@@ -89,11 +90,15 @@ namespace com\indigloo\sc\controller{
             array_push($filters,$filter);
 
             $postDBRows = $postDao->getLatest(8,$filters);
-            
+            $gNumDBRows["items"] = sizeof($postDBRows);
+
             //data:social graph
             $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
             $followers = $socialGraphDao->getFollowers($loginId,5);
             $followings = $socialGraphDao->getFollowing($loginId,5);
+
+            $gNumDBRows["followers"] = sizeof($followers);
+            $gNumDBRows["followings"] = sizeof($followings);
 
             $followerUIOptions = array(
                 "ui" => "feed",
@@ -122,11 +127,14 @@ namespace com\indigloo\sc\controller{
             array_push($filters,$filter);
 
             $likeDBRows = $bookmarkDao->getLatest(8,$filters);
+            $gNumDBRows["likes"] = sizeof($likeDBRows);
 
             //data:6:lists
             $listDao = new \com\indigloo\sc\dao\Lists();
             $listDBRows = $listDao->getLatestOnLoginId($loginId,4);
-             
+            $gNumDBRows["lists"] = sizeof($listDBRows);
+
+
             $template = APP_WEB_DIR. '/view/user/pub.php';
 
             //page variables

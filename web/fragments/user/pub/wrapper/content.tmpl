@@ -2,7 +2,10 @@
     <h5>
         ~~$view->title~
         &nbsp;&nbsp;
-        <a class="b" href="~~$view->baseUrl~?show=~~$view->tab~">view ~~$view->count~ ~~$view->tab~</a>
+        ~if($view->hasMore){~
+        <a class="b" href="~~$view->baseUrl~?show=~~$view->tab~">view all &rarr;</a>
+        ~}~
+
     </h5>
     ~~$view->content~
 </div>
