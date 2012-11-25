@@ -1409,7 +1409,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .list-header .user .photo{padding:5px}
 .list-header .user .description{padding-left:10px}
 .list-header .user img{max-height:62px;max-width:62px;border:5px solid #f7f7f7}
-.adbox-item{width:60%;padding:10px 20px 40px 10px}
+.adbox-item{width:60%;padding:10px 20px 40px 10px;border-bottom:1px solid #CCC;margin-bottom:20px;background:whiteSmoke}
 .adbox-user{border:1px solid #e5e5e5;padding:20px 20px 40px 20px}
 .adbox p{padding-top:20px;padding-bottom:20px}
 .btn-adbox{text-shadow:none;padding:10px 20px 10px 20px;color:white;background:#5C2;font-family:arial,sans-serif;border:1px solid #ccc;border-radius:6px;line-height:21px;font-size:16px}

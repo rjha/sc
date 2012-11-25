@@ -7962,8 +7962,11 @@ button::-moz-focus-inner {
     }
 
     .adbox-item { 
-        width:60% ;
+        width: 60%;
         padding: 10px 20px 40px 10px;
+        border-bottom: 1px solid #CCC;
+        margin-bottom: 20px;
+        background: whiteSmoke;
     }
 
     .adbox-user {

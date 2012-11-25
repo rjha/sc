@@ -498,6 +498,6 @@ insert into sc_post_counter(post_id)
 -- 
 -- 24 nov.
 -- for aws.3mik.com
--- alter table sc_list modify column description text ;
+-- alter table sc_list modify column description varchar(2048) ;
 -- 
 

@@ -70,7 +70,7 @@
                 <div class="span6">
                    
                     <form  id="web-form1"  name="web-form1" action="/qa/form/new.php" enctype="multipart/form-data"  method="POST">
-                       
+                      
                         <table class="form-table">
                             <tr>
                                 <td> <label>Category</label>

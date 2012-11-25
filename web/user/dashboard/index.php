@@ -13,6 +13,8 @@
     
     use \com\indigloo\ui\Filter as Filter;
     use \com\indigloo\sc\util\PseudoId;
+    use \com\indigloo\ui\form\Message as FormMessage;
+
 
     $gSessionLogin = Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
@@ -49,6 +51,9 @@
     // pick 12 posts from editor picks
     $postDBRows = $postDao->getPosts(12,$filters);
     $dashItemHelp = \com\indigloo\sc\html\Site::getDashItemHelp($counters["post_count"]);
+
+    $params = array("q" => base64_encode(Url::current()));
+    $linkInvitation = Url::createUrl("/user/invite.php",$params);
 
 ?>
 
@@ -91,7 +96,8 @@
                 </div>
 
             </div>
-
+            <?php FormMessage::render(); ?>
+            
             <div class="row">
 
                 <div class="span3">
@@ -123,16 +129,6 @@
                         <?php echo \com\indigloo\sc\html\User::getCounters($counters); ?>
                         <div class="clear"> </div>
                     </div>
-                
-                    <!--
-                    <img src="/site/images/help/dash.png" alt= "select dash"/>
-                    <p class="muted">
-                        To view this page
-                        from anywhere, just click 
-                        on your name in top toolbar and select Account. 
-                    </p>
-                    -->
-
 
                     <div class="section">
                         <strong>You may like</strong>
@@ -147,9 +143,9 @@
                    
                    <div class="adbox adbox-user">
                     <p class="comment-text">
-                        Tell a friend about 3mik!
+                        <i class="icon icon-bullhorn"></i>&nbsp;Tell a friend about 3mik!
                     </p>
-                    <a class="btn-adbox" href="/">invite your friends</a>
+                    <a class="btn-adbox" href="<?php echo $linkInvitation; ?>">send invitations</a>
                    </div>
 
                     <div class="feeds" style="margin-top:40px;">
