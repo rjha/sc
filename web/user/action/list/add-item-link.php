@@ -14,6 +14,8 @@
     use \com\indigloo\Url as Url ;
     use \com\indigloo\Logger as Logger ;
 
+    use \com\indigloo\sc\Util as AppUtil ;
+
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
         
         $gWeb = \com\indigloo\core\Web::getInstance(); 
@@ -36,18 +38,18 @@
 
             $loginId = Login::getLoginIdInSession();
             $listDao = new \com\indigloo\sc\dao\Lists();
+            $itemId = AppUtil::getItemIdInUrl($link);
 
-            //get itemId from URL
-            $path = parse_url($link, \PHP_URL_PATH);
-            //path should be /item/<itemno>
-            $itemId = substr($path,6);
-            /*
-            if(!is_int($itemId)) {
-                $message = sprintf(" invalid item URL : itemId is : %s",$itemId);
+            if(is_null($itemId)) {
+                $message = "invalid item URL : please add a valid item URL " ;
                 throw new UIException(array($message));
-            } */
-
-            //@todo check if we have a valid item
+            }
+            
+            $postDao = new \com\indigloo\sc\dao\Post();
+            if(!$postDao->exists($itemId)) {
+                $message = sprintf("item {%s} does not exists",$itemId) ;
+                throw new UIException(array($message));
+            }
 
             $listDao->addItem($loginId,$fvalues["list_id"],$itemId) ;
             $message = sprintf("success! item added to list ");
