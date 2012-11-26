@@ -273,6 +273,22 @@ namespace com\indigloo\sc\dao {
 
         }
 
+        function logIt($feed) {
+            //write to bad.feed log file
+            $fhandle = NULL;
+            $logfile = Config::getInstance()->get_value("bad.feed.log");
+            if (!file_exists($logfile)) {
+                //create the file
+                $fhandle = fopen($logfile, "x+");
+            } else {
+                $fhandle = fopen($logfile, "a+");
+            }
+
+            fwrite($fhandle, $feed);
+            fwrite($fhandle, "\n\n");
+            fclose($fhandle);
+        }
+
 
     }
 

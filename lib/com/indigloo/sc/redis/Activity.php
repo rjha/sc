@@ -13,11 +13,9 @@ namespace com\indigloo\sc\redis{
 
     class Activity {
 
-        function __construct() {}
+       
 
-        function addGlobalFeed($subjectId,$feed) {
-            //@todo implementation
-        }
+        function __construct() {}
 
         function addFollower($followerId,$followingId,$feed) {
 
@@ -103,6 +101,7 @@ namespace com\indigloo\sc\redis{
             $key3 = Nest::subscribers("post",$itemId);
             
             $redis->pipeline()
+                    ->lpush($key1,$feed)
                     ->lpush($key2, $feed)
                     ->sadd($key3, $loginId)
                     ->uncork();
@@ -133,6 +132,39 @@ namespace com\indigloo\sc\redis{
         
         }
         
+        function addGlobalFeed($subjectId,$feed) {
+            $redis = Redis::getInstance()->connection();
+            $strPop = $redis->rpop(Nest::global_feeds());
+
+            $popObj = new \stdClass ;
+            $popObj->subjectId = -1 ;
+            
+            if(!empty($strPop)) {
+                $popObj = json_encode($strPop);
+                //encoding issues
+                if($popObj === FALSE ) {
+                    $popObj = new \stdClass ;
+                }
+
+            }
+
+            if((property_exists($popObj, 'subjectId')) && ($popObj->subjectId == $subjectId)) {
+                //push only the new one
+                $redis->pipeline()
+                    ->lpush(Nest::global_feeds(), $feed)
+                    ->ltrim(Nest::global_feeds(), 0, 1000)
+                    ->uncork();
+            }else {
+                //push both
+                $redis->pipeline()
+                    ->lpush(Nest::global_feeds(),$strPop)
+                    ->lpush(Nest::global_feeds(), $feed)
+                    ->ltrim(Nest::global_feeds(), 0, 1000)
+                    ->uncork();
+            }
+             
+        }
+
         function fanoutOnPost($redis, $itemId, $feed) {
             //fan-out to followers
             $key = Nest::subscribers("post",$itemId) ;
@@ -156,7 +188,7 @@ namespace com\indigloo\sc\redis{
                 $redis->lpush($key, $feed);
             }
         }
-        
+
         function getList($key, $limit) {
             $feedDataObj = NULL;
 
@@ -208,20 +240,5 @@ namespace com\indigloo\sc\redis{
             return $this->getList($key, $limit);
         }
 
-        function logIt($strFeedVO) {
-            //write to bad.feed log file
-            $fhandle = NULL;
-            $logfile = Config::getInstance()->get_value("bad.feed.log");
-            if (!file_exists($logfile)) {
-                //create the file
-                $fhandle = fopen($logfile, "x+");
-            } else {
-                $fhandle = fopen($logfile, "a+");
-            }
-
-            fwrite($fhandle, $strFeedVO);
-            fwrite($fhandle, "\n\n");
-            fclose($fhandle);
-        }
     }
 }
