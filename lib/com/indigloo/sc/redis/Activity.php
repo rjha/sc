@@ -132,6 +132,15 @@ namespace com\indigloo\sc\redis{
         
         }
         
+        function lrem($key,$index) {
+            $redis = Redis::getInstance()->connection();
+            $redis->pipeline()
+                ->lset($key,$index,AppConstants::REDIS_MAGIC_COOKIE)
+                ->lrem($key,1,AppConstants::REDIS_MAGIC_COOKIE)
+                ->uncork();
+
+        }
+
         function addGlobalFeed($subjectId,$feed) {
             $redis = Redis::getInstance()->connection();
             $strPop = $redis->lpop(Nest::global_feeds());

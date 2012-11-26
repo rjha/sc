@@ -22,7 +22,8 @@
             const STR_COMMENT = "comment";
             const STR_POST = "post" ;
 
-
+            const REDIS_MAGIC_COOKIE = "__REDIS_4D41474943__";
+            
             //Activity feed types
             const FOLLOW_FEED = "feed:follow" ;
             const BOOKMARK_FEED = "feed:bookmark" ;
