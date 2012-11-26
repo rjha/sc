@@ -7,7 +7,7 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\sc\redis as redis ;
 
     use \com\indigloo\Logger;
-    
+
     class ActivityFeed {    
         
         private $proxy ;
@@ -210,13 +210,8 @@ namespace com\indigloo\sc\dao {
             return $flag ;
         }
 
-        function sendMail($rowId,$ownerId,$text,$html,$mode) {
-            if($mode == 1 ) {
-                $message = sprintf("\n\n Activity mail for id :: %s \n %s \n\n",$rowId,$text);
-                Logger::getInstance()->info($message);
-                //do not send actual mail
-                return ;
-            }
+        function sendMail($rowId,$ownerId,$text,$html) {
+            
             settype($ownerId, "integer");
             $userDao = new \com\indigloo\sc\dao\User();
             $row = $userDao->getOnLoginId($ownerId);
@@ -235,7 +230,7 @@ namespace com\indigloo\sc\dao {
 
         }
 
-        function process($row, $preferenceObj,$mode=0) {
+        function process($row, $preferenceObj) {
             //push this activity row into redis
             $feed = $this->pushToRedis($row);
 
@@ -273,7 +268,7 @@ namespace com\indigloo\sc\dao {
                     }else {
                         $text = $emailData["text"];
                         $html = $emailData["html"];
-                        $this->sendMail($row["id"],$ownerId,$text,$html,$mode);
+                        $this->sendMail($row["id"],$ownerId,$text,$html);
                     }
 
 
