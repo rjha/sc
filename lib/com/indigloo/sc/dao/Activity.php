@@ -215,7 +215,7 @@ namespace com\indigloo\sc\dao {
             return $flag ;
         }
 
-        function sendMail($row,$feed,$preferenceObj) {
+        function sendMail($row,$feed) {
             
             // determine if we want to send mail for this feed
             // #1 - who is the target for this mail?

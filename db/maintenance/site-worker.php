@@ -108,8 +108,9 @@
 
         foreach($rows as $row) {
             try{
+                
                 $feed = $activityDao->pushToRedis($row);
-                $activityDao->sendMail($row,$feed,$preferenceObj);
+                $activityDao->sendMail($row,$feed);
 
                 //flip the op_bit for this activity
                 $sql2 = sprintf($sql2,$row["id"]);

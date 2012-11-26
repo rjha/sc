@@ -33,9 +33,6 @@
         $pages = ceil($total / $pageSize);
         $count = 0 ;
 
-
-        $userDao = new \com\indigloo\sc\dao\User();
-        $postDao = new \com\indigloo\sc\dao\Post();
         $activityDao = new \com\indigloo\sc\dao\Activity();
 
         while($count  <= $pages ){
@@ -144,8 +141,7 @@
 
                 $subject = $userDBRow['name'];
                 $ownerId = $postDBRow['login_id'];
-                $itemId = PseudoId::encode($postId);
-
+                
                 $object = $row['title'] ;
                 $object = Util::filterBadUtf8($object);
 
@@ -176,8 +172,7 @@
 
         $userDao = new \com\indigloo\sc\dao\User();
         $activityDao = new \com\indigloo\sc\dao\Activity();
-        $postDao = new \com\indigloo\sc\dao\Post();
-
+        
         while($count  <= $pages ){
 
             $start =  ($count * $pageSize ) + 1 ;
@@ -194,7 +189,7 @@
                 $postId = $row['id'];
                 $objectId = PseudoId::encode($postId);
     
-                $userDBRow = $userDao->getOnLoginId($loginId);
+                $userDBRow = $userDao->getOnLoginId($subjectId);
                 $subject = $userDBRow['name'];
 
                 $object = $row['title'] ;
