@@ -7,6 +7,10 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\Constants as AppConstants;
 
+    use \com\indigloo\mysql\PDOWrapper;
+    use \com\indigloo\exception\DBException as DBException;
+
+
     class Comment {
 
         static function getOnPostId($postId) {
