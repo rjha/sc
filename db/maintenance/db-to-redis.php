@@ -2,30 +2,6 @@
 <?php
 
     /*  
-
-        * 
-        Before running the script
-        -----------------------------
-        + sc_bookmark, sc_post, sc_comment, sc_follow table should exist
-        
-        After running the script
-        -------------------------------
-        + remove global job queue and jobs.
-        
-        del  sc:global:queue:new 
-        del  sc:global:jobs
-        del sc:global:nextJobId
-
-        + verify using
-        
-        exists sc:global:nextJobId
-        exists sc:global:jobs
-        exists sc:global:queue:new
-
-        + turn on cron job
-        @todo- do we need to reset sc:global:nextJobId ?
-
-
         purpose
             - script to load all sc_activity data into redis store
 
