@@ -6,7 +6,9 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\sc\util\PseudoId ;
     use \com\indigloo\sc\redis as redis ;
 
+    use \com\indigloo\sc\Mail as WebMail ;
     use \com\indigloo\Logger;
+    use \com\indigloo\sc\mysql as mysql;
 
     class ActivityFeed {    
         
@@ -14,6 +16,10 @@ namespace com\indigloo\sc\dao {
 
         function __construct() {
             $this->proxy = new redis\Activity();
+        }
+
+        function addRow($ownerId,$subjectId,$objectId,$subject,$object,$verb,$content='') {
+            mysql\Activity::addRow($ownerId,$subjectId,$objectId,$subject,$object,$verb,$content);
         }
 
         function getFollowingFeed($row) {
