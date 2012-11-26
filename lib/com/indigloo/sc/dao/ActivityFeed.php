@@ -6,7 +6,8 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\sc\util\PseudoId ;
     use \com\indigloo\sc\redis as redis ;
 
-
+    use \com\indigloo\Logger;
+    
     class ActivityFeed {    
         
         private $proxy ;
@@ -131,6 +132,7 @@ namespace com\indigloo\sc\dao {
 
         function pushToRedis($row) {
             $verb = $row["verb"] ;
+            $feed = NULL ;
 
             switch($verb) {
 
@@ -161,7 +163,7 @@ namespace com\indigloo\sc\dao {
                     $this->proxy->addComment($row["subject_id"], $itemId,$feed);
                     $this->proxy->addGlobalFeed($row["subject_id"],$feed);
                     break ;
-                    
+
                 case AppConstants::UNFOLLOWING_VERB :
                     $this->proxy->removeFollower($row["subject_id"],$row["object_id"]);
                     break ;
@@ -170,8 +172,10 @@ namespace com\indigloo\sc\dao {
                     trigger_error($message,E_USER_ERROR);
             }
 
+            return $feed ;
         }
 
+        /* @todo remove from DAO interface */
         function getList($key, $limit) {
             $feedDataObj =  $this->proxy->getList($key, $limit);
             return $feedDataObj;
@@ -193,6 +197,92 @@ namespace com\indigloo\sc\dao {
         function getPostFeeds($itemId, $limit = 10) {
             return $this->proxy->getPostFeeds($itemId,$limit);
         }
+
+        function getMailflag($preferenceObj, $verb) {
+            $flag = false ;
+            if($verb ==  AppConstants::FOLLOWING_VERB )
+                $flag = $preferenceObj->follow ;
+            if($verb ==  AppConstants::COMMENT_VERB )
+                $flag = $preferenceObj->comment ;
+            if($verb ==  AppConstants::LIKE_VERB )
+                $flag = $preferenceObj->bookmark ;
+
+            return $flag ;
+        }
+
+        function sendMail($rowId,$ownerId,$text,$html,$mode) {
+            if($mode == 1 ) {
+                $message = sprintf("\n\n Activity mail for id :: %s \n %s \n\n",$rowId,$text);
+                Logger::getInstance()->info($message);
+                //do not send actual mail
+                return ;
+            }
+            settype($ownerId, "integer");
+            $userDao = new \com\indigloo\sc\dao\User();
+            $row = $userDao->getOnLoginId($ownerId);
+
+            $name = $row["name"];
+            $email = $row["email"];
+
+            if(!empty($email)) {
+                 
+                $code = WebMail::sendActivityMail($name,$email,$text,$html);
+                if($code > 0 ) {
+                    $message = sprintf("ACTIVITY_ERROR : sending mail : id %d ",$rowId);
+                    throw new \Exception($message);
+                }
+            }
+
+        }
+
+        function process($row, $preferenceObj,$mode=0) {
+            //push this activity row into redis
+            $feed = $this->pushToRedis($row);
+
+            // determine if we want to send mail for this feed
+            // #1 - who is the target for this mail?
+            // the guy who is the "owner", e.g when I create a post 
+            // and you LIKE it, I should get a notification. 
+            // so "owner of entity" is the target of our mails.
+            // if X created a post and Y liked it then X gets a mail
+            // if Z likes the same post then also only X gets a mail
+            // Y will not receive a mail.
+            
+            $verb = $row["verb"];
+            $ownerId = $row["owner_id"] ;
+            if($verb ==  AppConstants::FOLLOWING_VERB) {
+                $ownerId = $row["object_id "];
+            }
+
+            // #2 : I am not interested in receiving mails where
+            // I am the subject or doer of deed!
+            if(!empty($ownerId) && ($ownerId != $row["subject_id"])) {
+                // #3 - get my preference for this feed
+                $preferenceDao = new \com\indigloo\sc\dao\Preference();
+                $preferenceObj = $preferenceDao->get($ownerId);
+                $flag = $this->getMailflag($preferenceObj,$verb);
+
+                if($flag) {
+                    $activityHtml = new com\indigloo\sc\html\ActivityFeed();
+                    $emailData = $activityHtml->getEmailData($feed);
+
+                    if(empty($emailData)) {
+                        $message = sprintf("ACTIVITY_ERROR : getting email data :id %d ",$row["id"]);
+                        throw new \Exception($message);
+                    
+                    }else {
+                        $text = $emailData["text"];
+                        $html = $emailData["html"];
+                        $this->sendMail($row["id"],$ownerId,$text,$html,$mode);
+                    }
+
+
+                } //mail:flag
+
+            }//mail:owner
+
+        }
+
 
     }
 

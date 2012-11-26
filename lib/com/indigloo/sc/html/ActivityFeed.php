@@ -103,6 +103,54 @@ namespace com\indigloo\sc\html {
 
         }
 
+        function getEmailData($feed) {
+
+            $feedText = NULL ;
+            $feedHtml = NULL ;
+            $processor = NULL ;
+            $data = array();
+
+            $feedObj = json_decode($feed);
+
+            if($feedObj === FALSE || $feedObj ===  TRUE || $feedObj == NULL ) {
+                //decoding failed.
+                return $data ;
+            }
+
+            $processor1 = new \com\indigloo\sc\html\feed\PostProcessor();
+            $processor2 = new \com\indigloo\sc\html\feed\GraphProcessor();
+            $processor3 = new \com\indigloo\sc\html\feed\TextProcessor();
+
+            $templates = array(
+                        AppConstants::BOOKMARK_FEED => "/fragments/feed/email/post.tmpl",
+                        AppConstants::COMMENT_FEED => "/fragments/feed/email/comment.tmpl",
+                        AppConstants::POST_FEED => "/fragments/feed/email/post.tmpl",
+                        AppConstants::FOLLOW_FEED => "/fragments/feed/email/vanilla.tmpl");
+
+            $mapHtmlProcessor = array(AppConstants::FOLLOW_FEED => $processor2,
+                                    AppConstants::COMMENT_FEED => $processor1,
+                                    AppConstants::BOOKMARK_FEED => $processor1,
+                                    AppConstants::POST_FEED => $processor1);
+
+            $mapTextProcessor = array(AppConstants::FOLLOW_FEED => $processor3,
+                                    AppConstants::COMMENT_FEED => $processor3,
+                                    AppConstants::BOOKMARK_FEED => $processor3,
+                                    AppConstants::POST_FEED => $processor3);
+
+
+
+            $processor = $mapHtmlProcessor[$feedObj->type];
+            $html = $processor->process($feedObj,$templates);
+            
+            $processor = $mapTextProcessor[$feedObj->type];
+            $text = $processor->process($feedObj);
+            $data["text"] = $text ;
+            $data["html"] = $html ;
+            return $data ;
+
+        }
+
+
     }
 
 }
