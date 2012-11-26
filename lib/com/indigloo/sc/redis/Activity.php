@@ -134,7 +134,7 @@ namespace com\indigloo\sc\redis{
         
         function addGlobalFeed($subjectId,$feed) {
             $redis = Redis::getInstance()->connection();
-            $strPop = $redis->rpop(Nest::global_feeds());
+            $strPop = $redis->lpop(Nest::global_feeds());
 
             $popObj = new \stdClass ;
             $popObj->subjectId = -1 ;
