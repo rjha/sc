@@ -210,30 +210,8 @@ namespace com\indigloo\sc\dao {
             return $flag ;
         }
 
-        function sendMail($rowId,$ownerId,$text,$html) {
+        function sendMail($row,$feed,$preferenceObj) {
             
-            settype($ownerId, "integer");
-            $userDao = new \com\indigloo\sc\dao\User();
-            $row = $userDao->getOnLoginId($ownerId);
-
-            $name = $row["name"];
-            $email = $row["email"];
-
-            if(!empty($email)) {
-                 
-                $code = WebMail::sendActivityMail($name,$email,$text,$html);
-                if($code > 0 ) {
-                    $message = sprintf("ACTIVITY_ERROR : sending mail : id %d ",$rowId);
-                    throw new \Exception($message);
-                }
-            }
-
-        }
-
-        function process($row, $preferenceObj) {
-            //push this activity row into redis
-            $feed = $this->pushToRedis($row);
-
             // determine if we want to send mail for this feed
             // #1 - who is the target for this mail?
             // the guy who is the "owner", e.g when I create a post 
@@ -264,17 +242,28 @@ namespace com\indigloo\sc\dao {
                     if(empty($emailData)) {
                         $message = sprintf("ACTIVITY_ERROR : getting email data :id %d ",$row["id"]);
                         throw new \Exception($message);
-                    
-                    }else {
-                        $text = $emailData["text"];
-                        $html = $emailData["html"];
-                        $this->sendMail($row["id"],$ownerId,$text,$html);
+                    }
+                   
+                    $text = $emailData["text"];
+                    $html = $emailData["html"];
+                    $userDao = new \com\indigloo\sc\dao\User();
+                    $row = $userDao->getOnLoginId($ownerId);
+
+                    $name = $row["name"];
+                    $email = $row["email"];
+
+                    if(!empty($email)) {
+                         
+                        $code = WebMail::sendActivityMail($name,$email,$text,$html);
+                        if($code > 0 ) {
+                            $message = sprintf("ACTIVITY_ERROR : sending mail : id %d ",$rowId);
+                            throw new \Exception($message);
+                        }
                     }
 
+                } //condition:mail_flag
 
-                } //mail:flag
-
-            }//mail:owner
+            }//condition:owner
 
         }
 
