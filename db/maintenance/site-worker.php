@@ -99,7 +99,7 @@
         $mysql_session->close();
     }
 
-    function process_activities($mysqli) {
+    function process_activities($mysqli,$mode=0) {
         //process activities data 
         $sql = " select * from sc_activity where op_bit = 0 order by id desc limit 50";
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
@@ -108,9 +108,15 @@
 
         foreach($rows as $row) {
             try{
-                // mode = 0 for production
-                // mode = 1 for development
-                $activityDao->process($row,$preferenceObj,1);
+                $feed = $activityDao->pushToRedis($row);
+                // comment out in DEV mode
+                if($mode == 1){
+                    $activityDao->sendMail($row,$feed,$preferenceObj);
+                }else {
+                    $message = sprintf("\n\n activity_id = %s \n mail = %s \n\n",$row["id"],$feed);
+                    Logger::getInstance()->info($message);
+                }
+
                 //flip the op_bit for this activity
                 $sql2 = sprintf($sql2,$row["id"]);
                 MySQL\Helper::executeSQL($mysqli, $sql2);
@@ -140,6 +146,8 @@
     }
 
     sleep(1);
+
+    //mode = 1 for sending actual mails
     process_activities($mysqli);
 
     //release resources
