@@ -20,7 +20,7 @@
         trigger_error("Error : NULL login_id on user dashboard", E_USER_ERROR);
     }
 
-    $activityDao = new \com\indigloo\sc\dao\ActivityFeed() ;
+    $activityDao = new \com\indigloo\sc\dao\Activity() ;
     $feedDataObj = $activityDao->getUserFeeds($loginId,50);
 
     $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
@@ -47,7 +47,7 @@
 
     $followingsHtml = GraphHtml::getDashWrapper($followingsData,$options);
 
-    $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+    $htmlObj = new \com\indigloo\sc\html\Activity();
     $activityHtml = $htmlObj->getHtml($feedDataObj);
 
 ?>

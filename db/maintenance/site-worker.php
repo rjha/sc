@@ -103,7 +103,7 @@
         //process activities data 
         $sql = " select * from sc_activity where op_bit = 0 order by id desc limit 50";
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-        $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
+        $activityDao = new \com\indigloo\sc\dao\Activity();
         $sql2 = " update sc_activity set op_bit = 1 where id = %d " ;
 
         foreach($rows as $row) {

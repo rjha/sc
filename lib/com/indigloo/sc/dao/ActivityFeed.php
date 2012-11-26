@@ -10,7 +10,7 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\Logger;
     use \com\indigloo\sc\mysql as mysql;
 
-    class ActivityFeed {    
+    class Activity {    
         
         private $proxy ;
 
@@ -242,7 +242,7 @@ namespace com\indigloo\sc\dao {
                 $flag = $this->getMailflag($preferenceObj,$verb);
 
                 if($flag) {
-                    $activityHtml = new com\indigloo\sc\html\ActivityFeed();
+                    $activityHtml = new com\indigloo\sc\html\Activity();
                     $emailData = $activityHtml->getEmailData($feed);
 
                     if(empty($emailData)) {

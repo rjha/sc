@@ -43,7 +43,7 @@
         $count = 0 ;
 
 
-        $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
+        $activityDao = new \com\indigloo\sc\dao\Activity();
 
         while($count  <= $pages ){
 

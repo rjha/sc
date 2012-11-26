@@ -7,7 +7,7 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\Logger as Logger ;
 
 
-    class ActivityFeed {
+    class Activity {
 
         function getHomeTile($feedDataObj) {
             $content = $this->getHtml($feedDataObj);

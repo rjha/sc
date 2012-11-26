@@ -109,7 +109,7 @@ namespace com\indigloo\sc\controller{
                 "more" => "#", "image" => false);
 
             //data:4:activity
-            $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
+            $activityDao = new \com\indigloo\sc\dao\Activity();
             $feedDataObj = $activityDao->getUserActivities($loginId,20);
             
             // data:5:likes

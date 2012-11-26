@@ -8,7 +8,7 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
 
-    $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
+    $feedDao = new \com\indigloo\sc\dao\Activity();
     $feedDataObj = $feedDao->getGlobalFeeds(50);
 
 ?>
@@ -38,7 +38,7 @@
                 <div class="span9">
                     <div class="feeds">
                         <?php
-                            $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+                            $htmlObj = new \com\indigloo\sc\html\Activity();
                             $html = $htmlObj->getHtml($feedDataObj);
                             echo $html ;
 

@@ -36,7 +36,7 @@
 
         $userDao = new \com\indigloo\sc\dao\User();
         $postDao = new \com\indigloo\sc\dao\Post();
-        $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
+        $activityDao = new \com\indigloo\sc\dao\Activity();
 
         while($count  <= $pages ){
 
@@ -79,7 +79,7 @@
         $count = 0 ;
 
         $userDao = new \com\indigloo\sc\dao\User();
-        $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
+        $activityDao = new \com\indigloo\sc\dao\Activity();
 
 
         while($count  <= $pages ){
@@ -122,7 +122,7 @@
         $count = 0 ;
 
         $userDao = new \com\indigloo\sc\dao\User();
-        $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
+        $activityDao = new \com\indigloo\sc\dao\Activity();
         $postDao = new \com\indigloo\sc\dao\Post();
 
         while($count  <= $pages ){
@@ -175,7 +175,7 @@
         $count = 0 ;
 
         $userDao = new \com\indigloo\sc\dao\User();
-        $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
+        $activityDao = new \com\indigloo\sc\dao\Activity();
         $postDao = new \com\indigloo\sc\dao\Post();
 
         while($count  <= $pages ){

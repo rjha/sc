@@ -33,9 +33,9 @@
                                 $count++ ;
                                 if($count == 1) {
                                     //inject activity tile
-                                    $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
+                                    $activityDao = new \com\indigloo\sc\dao\Activity();
                                     $feedDataObj = $activityDao->getGlobalFeeds(10);
-                                    $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+                                    $htmlObj = new \com\indigloo\sc\html\Activity();
                                     $html = $htmlObj->getHomeTile($feedDataObj);
                                     echo $html ;
                                 }

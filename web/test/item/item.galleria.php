@@ -65,9 +65,9 @@
                         echo \com\indigloo\sc\html\Post::getToolbar($loginIdInSession,$postDBRow['login_id'],$itemId);
 
                         //inject activity tile
-                        $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
+                        $activityDao = new \com\indigloo\sc\dao\Activity();
                         $feedDataObj = $activityDao->getPostFeeds($itemId, 10);
-                        $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+                        $htmlObj = new \com\indigloo\sc\html\Activity();
                         $feedHtml = $htmlObj->getPostTile($feedDataObj);
                         echo \com\indigloo\sc\html\Post::getActivity($feedHtml);
 

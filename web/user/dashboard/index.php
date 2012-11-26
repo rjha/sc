@@ -36,7 +36,7 @@
     $analyticDao = new \com\indigloo\sc\dao\Analytic();
     $counters = $analyticDao->getUserCounters($loginId);
 
-    $activityDao = new \com\indigloo\sc\dao\ActivityFeed() ;
+    $activityDao = new \com\indigloo\sc\dao\Activity() ;
     $feedDataObj = $activityDao->getUserFeeds($loginId,12);
 
     //suggestions are editor picks right now
@@ -150,7 +150,7 @@
 
                     <div class="feeds" style="margin-top:40px;">
                         <?php
-                            $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+                            $htmlObj = new \com\indigloo\sc\html\Activity();
                             $html = $htmlObj->getHtml($feedDataObj);
                             echo $html ;
                         ?>

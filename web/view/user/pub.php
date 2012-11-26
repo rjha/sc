@@ -31,7 +31,7 @@
     $followingsHtml = UserHtml::getPubWrapper($pageBaseUrl,$count,$content,$options);
 
 
-    $htmlActivityObj = new \com\indigloo\sc\html\ActivityFeed();
+    $htmlActivityObj = new \com\indigloo\sc\html\Activity();
     $activityHtml  = $htmlActivityObj->getHtml($feedDataObj);
     
     //reset content
