@@ -107,7 +107,6 @@ namespace com\indigloo\sc\dao {
             // @imp: activity row for comment stores 
             // post_id as object_id and not item_id
             $postId = $row["object_id"];
-            $itemId = PseudoId::encode($postId);
             $postDao = new \com\indigloo\sc\dao\Post();
             $image = $postDao->getImageOnId($postId);
 
@@ -262,7 +261,7 @@ namespace com\indigloo\sc\dao {
                          
                         $code = WebMail::sendActivityMail($name,$email,$text,$html);
                         if($code > 0 ) {
-                            $message = sprintf("ACTIVITY_ERROR : sending mail : id %d ",$rowId);
+                            $message = sprintf("ACTIVITY_ERROR : sending mail : id %d ",$row["id"]);
                             throw new \Exception($message);
                         }
                     }

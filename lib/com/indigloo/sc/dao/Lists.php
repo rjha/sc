@@ -306,16 +306,7 @@ namespace com\indigloo\sc\dao {
         function delete($loginId,$listId) {
             mysql\Lists::delete($loginId,$listId);
         }
-
-        function addItemLink($loginId,$listId,$itemLink) {
-            // @todo - do we need this method?
-            // get item id from link
-
-        }
-
         
-
-
     }
 }
 ?>

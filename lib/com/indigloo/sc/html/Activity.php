@@ -104,9 +104,7 @@ namespace com\indigloo\sc\html {
         }
 
         function getEmailData($feed) {
-
-            $feedText = NULL ;
-            $feedHtml = NULL ;
+            
             $processor = NULL ;
             $data = array();
 
