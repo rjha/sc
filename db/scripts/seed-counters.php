@@ -6,6 +6,7 @@
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\Util as Util;
+    use \com\indigloo\sc\util\PseudoId ;
        
     error_reporting(-1);
     set_exception_handler('offline_exception_handler');
@@ -19,7 +20,8 @@
     update sc_user_counter set like_count = 0 ;
     update sc_user_counter set follower_count = 0 ;
     update sc_user_counter set following_count = 0 ;
-    update sc_post_counter set comment_count = 0 , like_count = 0 ;
+    update sc_post_counter set comment_count = 0 ;
+    update sc_post_counter set like_count = 0 ;
 
     */
 
@@ -56,7 +58,7 @@
     /*  
         Do not select items that were liked but deleted in the iterim
         select subject_id, object_id, verb  from sc_bookmark b,sc_post p 
-        where b.object_id = p.pseudo_id ;
+        where b.object_id = p.pseudo_id and b.verb = 1 ;
         */
 
     $sql = "select subject_id, object_id  from sc_bookmark b,sc_post p " ;
@@ -70,7 +72,9 @@
 
     foreach($rows as $row) {
         $t1sql = sprintf($t11,$row["subject_id"]) ;
-        $t2sql = sprintf($t21,$row["object_id"]) ;
+        //sc_bookmark.object_id is pseudo_id
+        $postId = PseudoId::decode($row["object_id"]);
+        $t2sql = sprintf($t21,$postId) ;
         printf("%s \n",$t1sql);
         printf("%s \n",$t2sql);
     }

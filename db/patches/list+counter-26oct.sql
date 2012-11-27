@@ -56,8 +56,6 @@ CREATE TABLE  sc_site_counter  (
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
-
-
 DROP TABLE IF EXISTS  sc_user_counter ;
 CREATE TABLE  sc_user_counter  (
    id  int NOT NULL AUTO_INCREMENT,
@@ -168,8 +166,6 @@ DELIMITER //
 
     END //
 DELIMITER ;
-
-
 
 
 DELIMITER //
@@ -386,6 +382,7 @@ DELIMITER ;
 
 
 
+drop trigger if exists trg_bookmark_add ;
 DELIMITER //
     CREATE TRIGGER trg_bookmark_add  AFTER  INSERT ON sc_bookmark
     FOR EACH ROW
@@ -393,14 +390,15 @@ DELIMITER //
         -- update counters
         IF (NEW.verb = 1 ) THEN 
               update sc_user_counter set like_count = like_count + 1 where login_id = NEW.subject_id ;
-              update sc_post_counter set like_count = like_count + 1 where post_id = NEW.object_id ;
+              update sc_post_counter set like_count = like_count + 1 
+                  where post_id = ( select p.id from sc_post p where p.pseudo_id = NEW.object_id ) ;
         END IF;
         
     END //
 DELIMITER ;
 
 
-
+drop trigger if exists trg_bookmark_del ;
 DELIMITER //
     CREATE TRIGGER trg_bookmark_del  BEFORE DELETE  ON sc_bookmark
     FOR EACH ROW
@@ -408,7 +406,12 @@ DELIMITER //
         -- update counters
         IF (OLD.verb = 1 ) THEN 
               update sc_user_counter set like_count = like_count - 1 where login_id = OLD.subject_id ;
-              update sc_post_counter set like_count = like_count - 1 where post_id = OLD.object_id ;
+              --
+              -- for LIKE sc_bookmark.object_id is sc_post.pseudo_id
+              -- 
+
+              update sc_post_counter set like_count = like_count - 1 
+                where post_id = ( select id from sc_post where pseudo_id = OLD.object_id ) ;
         END IF;
         
 
