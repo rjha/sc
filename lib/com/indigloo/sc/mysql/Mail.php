@@ -79,6 +79,30 @@ namespace com\indigloo\sc\mysql {
             MySQL\Helper::executeSQL($mysqli,$sql);
         }
 
+        static function capture($emails,$message) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = " insert into sc_email_capture(email,message,created_on) values " ;
+            
+            //sanitize message
+            $message = $mysqli->real_escape_string($message);
+
+            $isize = sizeof($emails);
+            if($isize == 0 ) { return ; }
+
+            for($index = 0 ; $index < $isize ; $index++ ) {
+                //last one?
+                $suffix = ($index == ($isize-1)) ? "" : "," ;
+                $email = $emails[$index];
+                //sanitize email
+                $email = $mysqli->real_escape_string($email);
+                $sql .= sprintf(" ('%s','%s',now())%s ",$email,$message,$suffix);
+            }
+            
+            MySQL\Helper::executeSQL($mysqli,$sql);
+            
+        }
+
     }
 
 }

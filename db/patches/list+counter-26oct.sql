@@ -527,3 +527,14 @@ CREATE TABLE  sc_activity  (
 alter table sc_post modify column pseudo_id varchar(32) ;
 
 
+DROP TABLE IF EXISTS  sc_email_capture ;
+CREATE TABLE  sc_email_capture  (
+   id  int NOT NULL AUTO_INCREMENT,
+   email varchar(64),
+   message varchar(512) ,
+   op_bit int default 0,
+   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY ( id )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

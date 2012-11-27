@@ -29,7 +29,6 @@
             $fhandler->addRule('message', 'Message', array('required' => 1));
             $fhandler->addRule('qUrl', 'qUrl', array('required' => 1, 'rawData' =>1));
             
-        
             //check security token
             $fhandler->checkToken("token",$gWeb->find("form.token",true)) ;
             $fvalues = $fhandler->getValues();
@@ -42,24 +41,11 @@
             $userDao = new \com\indigloo\sc\dao\User();
             $userDBRow = $userDao->getOnLoginId($loginId);
            
-            // save data to email.invitation.log
-            $data = sprintf(" \n %s send invites to [%s] with message \n %s \n\n",
-                $userDBRow["name"],
-                $fvalues["email"],
-                $fvalues["message"]);
+            $emails = explode(",",$fvalues["email"]);
+            $message = $fvalues["message"];
 
-            $fhandle = NULL ;
-            $logfile = Config::getInstance()->get_value("email.invitation.log");
-            if (!file_exists($logfile)) {
-                //create the file
-                $fhandle = fopen($logfile, "x+");
-            } else {
-                $fhandle = fopen($logfile, "a+");
-            }
-
-            fwrite($fhandle,$data);
-            fclose($fhandle);
-
+            $mailDao = new \com\indigloo\sc\dao\Mail();
+            $mailDao->capture($emails,$message);
 
             $qUrl = base64_decode($fvalues['qUrl']);
             $message = sprintf("success! invitations sent!");

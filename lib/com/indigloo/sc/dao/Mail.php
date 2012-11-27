@@ -42,6 +42,10 @@ namespace com\indigloo\sc\dao {
             mysql\Mail::add($name,$email,$token,AppConstants::RESET_PASSWORD_MAIL);
 
         }
+
+        function capture($emails,$message) {
+            mysql\Mail::capture($emails,$message);
+        }
         
     }
 
