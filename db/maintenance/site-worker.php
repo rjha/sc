@@ -100,20 +100,24 @@
     }
 
     function process_activities($mysqli) {
-        //process activities data 
-        $sql = " select * from sc_activity where op_bit = 0 order by id desc limit 50";
+        /* 
+         * process activities data 
+         * @imp activities should be brought in the order that they have happened
+         * so sort on id ASC 
+         */
+
+        $sql = " select * from sc_activity where op_bit = 0 order by id limit 50";
         $rows = MySQL\Helper::fetchRows($mysqli, $sql);
         $activityDao = new \com\indigloo\sc\dao\Activity();
-        $sql2 = " update sc_activity set op_bit = 1 where id = %d " ;
-
+       
         foreach($rows as $row) {
             try{
                 
+                $sql2 = " update sc_activity set op_bit = 1 where id = ".$row["id"] ;
                 $feed = $activityDao->pushToRedis($row);
                 $activityDao->sendMail($row,$feed);
 
                 //flip the op_bit for this activity
-                $sql2 = sprintf($sql2,$row["id"]);
                 MySQL\Helper::executeSQL($mysqli, $sql2);
 
             } catch(\Exception $ex) {

@@ -31,16 +31,16 @@ namespace com\indigloo\sc\redis{
             $key1 = Nest::following("user",$followerId);
             $key2 = Nest::activities("user", $followerId);
             $key3 = Nest::followers("user",$followingId);
-            $key4 = Nest::activities("user", $followingId);
-            $key5 = Nest::feeds("user",$followerId);
+            /* do not push to following activities */
+            /* $key4 = Nest::activities("user", $followingId); */
+            /* do not push to follower's feed */
+            /* $key5 = Nest::feeds("user",$followerId); */
             $key6 = Nest::feeds("user",$followingId);
 
             $redis->pipeline()
                     ->sadd($key1, $followingId)
                     ->lpush($key2, $feed)
                     ->sadd($key3, $followerId)
-                    ->lpush($key4, $feed)
-                    ->lpush($key5, $feed)
                     ->lpush($key6, $feed)
                     ->uncork();
         }
@@ -53,7 +53,6 @@ namespace com\indigloo\sc\redis{
             }
 
             $redis = Redis::getInstance()->connection();
-
             $key1 = Nest::following("user",$followerId);
             $key2 = Nest::followers("user",$followingId);
 
@@ -70,6 +69,10 @@ namespace com\indigloo\sc\redis{
 
             $redis = Redis::getInstance()->connection();
 
+            //notify post subscribers + subject's followers
+            $this->fanoutOnPost($redis, $itemId, $feed);
+            $this->fanoutOnSubject($redis, $loginId, $feed);
+
             $key1 = Nest::feeds("post",$itemId);
             $key2 = Nest::subscribers("post",$itemId);
             $key3 = Nest::activities("user",$loginId);
@@ -79,41 +82,33 @@ namespace com\indigloo\sc\redis{
                     ->sadd($key2, $loginId)
                     ->lpush($key3, $feed)
                     ->uncork();
-
-
-            //fanout to subscribers of this post!
-            // subscribers include the post creator 
-            // and anyone who commented on or bookmarked this item
-            $this->fanoutOnPost($redis, $itemId, $feed);
-
-            //fanout to feeds of subject's (doer's) followers
-            $this->fanoutOnSubject($redis, $loginId, $feed);
-            
             
         }
 
         function addPost($loginId,$itemId,$feed) {
 
             $redis = Redis::getInstance()->connection();
+            // notify subject's followers
+            $this->fanoutOnSubject($redis, $loginId, $feed);
 
             $key1 = Nest::activities("user",$loginId);
-            $key2 = Nest::feeds("user",$loginId);
+            /* do not add post to my feed */
+            /* $key2 = Nest::feeds("user",$loginId); */
             $key3 = Nest::subscribers("post",$itemId);
             
             $redis->pipeline()
                     ->lpush($key1,$feed)
-                    ->lpush($key2, $feed)
                     ->sadd($key3, $loginId)
                     ->uncork();
-
-            // send to post creator followers
-            $this->fanoutOnSubject($redis, $loginId, $feed);
-
         }
 
         function addComment($loginId,$itemId,$feed) {
 
             $redis = Redis::getInstance()->connection();
+
+            //notify post subscribers + subject's followers
+            $this->fanoutOnPost($redis, $loginId, $feed);
+            $this->fanoutOnSubject($redis, $loginId, $feed);
 
             $key1 = Nest::subscribers("post",$itemId);
             $key2 = Nest::activities("user",$loginId);
@@ -124,11 +119,6 @@ namespace com\indigloo\sc\redis{
                     ->lpush($key2, $feed)
                     ->lpush($key3, $feed)
                     ->uncork();
-
-             // send to post subscribers
-            $this->fanoutOnPost($redis, $loginId, $feed);
-            //send to subject's (doer) followers
-            $this->fanoutOnSubject($redis, $loginId, $feed);
         
         }
         
@@ -143,30 +133,31 @@ namespace com\indigloo\sc\redis{
 
         function addGlobalFeed($subjectId,$feed) {
             $redis = Redis::getInstance()->connection();
-            $strPop = $redis->lpop(Nest::global_feeds());
-
-            $popObj = new \stdClass ;
-            $popObj->subjectId = -1 ;
             
-            if(!empty($strPop)) {
-                $popObj = json_encode($strPop);
-                //encoding issues
-                if($popObj === FALSE ) {
-                    $popObj = new \stdClass ;
-                }
+            $duplicate = false ;
+            settype($subjectId, "integer");
 
+            $strPop = $redis->lpop(Nest::global_feeds());
+            if(!empty($strPop)) { 
+                $popObj = json_decode($strPop);
+                //no encoding issues
+                if( ($popObj !== FALSE)
+                    && ($popObj != NULL)
+                    && (property_exists($popObj, "subjectId"))
+                    && ($popObj->subjectId == $subjectId)) {
+
+                    $duplicate = true ;
+                }
             }
 
-            if((property_exists($popObj, 'subjectId')) && ($popObj->subjectId == $subjectId)) {
-                //push only the new one
+            if(!empty($strPop) && !$duplicate) {
                 $redis->pipeline()
+                    ->lpush(Nest::global_feeds(),$strPop)
                     ->lpush(Nest::global_feeds(), $feed)
                     ->ltrim(Nest::global_feeds(), 0, 1000)
                     ->uncork();
             }else {
-                //push both
                 $redis->pipeline()
-                    ->lpush(Nest::global_feeds(),$strPop)
                     ->lpush(Nest::global_feeds(), $feed)
                     ->ltrim(Nest::global_feeds(), 0, 1000)
                     ->uncork();
@@ -228,7 +219,13 @@ namespace com\indigloo\sc\redis{
 
         function getUserActivities($loginId,$limit) {
             $key = Nest::activities("user",$loginId);
-            return $this->getList($key, $limit);
+            $feedDataObj =  $this->getList($key, $limit);
+            if(sizeof($feedDataObj->feeds) == 0 ) {
+                $feedDataObj = $this->getGlobalFeeds($limit);
+            }
+
+            return $feedDataObj;
+
         }
         
         function getUserFeeds($loginId, $limit) {

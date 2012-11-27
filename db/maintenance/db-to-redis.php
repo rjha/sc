@@ -12,8 +12,11 @@
 
         after running this script
             - turn ON op_bit of sc_activity rows
-        precautions
+        @warnings 
             - make sure we are not sending mails 
+                sendgrid.mail.mode="development"
+            - this script will process all activities
+                irrespective of op_bit flag.
             
 
 

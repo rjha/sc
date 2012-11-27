@@ -22,6 +22,30 @@ namespace com\indigloo\sc\dao {
             mysql\Activity::addRow($ownerId,$subjectId,$objectId,$subject,$object,$verb,$content);
         }
 
+        function getFeed($row) {
+            $verb = $row["verb"];
+            $feed = NULL ;
+            switch($verb) {
+                case AppConstants::LIKE_VERB :
+                    $feed = $this->getBookmarkFeed($row);
+                    break ;
+                case AppConstants::COMMENT_VERB :
+                    $feed = $this->getCommentFeed($row);
+                    break ;
+                case AppConstants::FOLLOWING_VERB :
+                    $feed = $this->getFollowingFeed($row);
+                    break ;
+                case AppConstants::POST_VERB :
+                    $feed = $this->getPostFeed($row);
+                    break ;
+                default :
+                    $message = "Unknown activity verb : aborting! ";
+                    trigger_error($message,E_USER_ERROR);
+            }
+            
+            return $feed ;
+        }
+
         function getFollowingFeed($row) {
 
             $feedVO = new \stdClass;
@@ -102,7 +126,7 @@ namespace com\indigloo\sc\dao {
             return $feed ;
         }
 
-         function getCommentFeed($row) {
+        function getCommentFeed($row) {
             
             // @imp: activity row for comment stores 
             // post_id as object_id and not item_id
@@ -229,7 +253,8 @@ namespace com\indigloo\sc\dao {
             $verb = $row["verb"];
             $ownerId = $row["owner_id"] ;
             if($verb ==  AppConstants::FOLLOWING_VERB) {
-                $ownerId = $row["object_id "];
+                //mail target is the guy you are following
+                $ownerId = $row["object_id"];
             }
 
             // #2 : I am not interested in receiving mails where
@@ -241,7 +266,7 @@ namespace com\indigloo\sc\dao {
                 $flag = $this->getMailflag($preferenceObj,$verb);
 
                 if($flag) {
-                    $activityHtml = new com\indigloo\sc\html\Activity();
+                    $activityHtml = new \com\indigloo\sc\html\Activity();
                     $emailData = $activityHtml->getEmailData($feed);
 
                     if(empty($emailData)) {

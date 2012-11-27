@@ -99,6 +99,10 @@ namespace com\indigloo\sc\html {
                 }
             }
 
+            if(empty($html)) {
+                $html = "No data found!" ;
+            }
+
             return $html ;
 
         }
