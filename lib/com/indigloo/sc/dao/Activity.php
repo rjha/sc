@@ -32,7 +32,7 @@ namespace com\indigloo\sc\dao {
                 case AppConstants::COMMENT_VERB :
                     $feed = $this->getCommentFeed($row);
                     break ;
-                case AppConstants::FOLLOWING_VERB :
+                case AppConstants::FOLLOW_VERB :
                     $feed = $this->getFollowingFeed($row);
                     break ;
                 case AppConstants::POST_VERB :
@@ -49,7 +49,7 @@ namespace com\indigloo\sc\dao {
         function getFollowingFeed($row) {
 
             $feedVO = new \stdClass;
-            $feedVO->type = AppConstants::FOLLOW_FEED;
+            
             $feedVO->subjectId = $row["subject_id"];
             $feedVO->objectId = $row["object_id"];
             $feedVO->subject = $row["subject"];
@@ -75,7 +75,7 @@ namespace com\indigloo\sc\dao {
             $image = $postDao->getImageOnId($postId);
             
             $feedVO = new \stdClass;
-            $feedVO->type = AppConstants::BOOKMARK_FEED;
+            
             $feedVO->ownerId = $row["owner_id"];
             $feedVO->subject = $row["subject"];
             $feedVO->subjectId = $row["subject_id"];
@@ -105,7 +105,7 @@ namespace com\indigloo\sc\dao {
             $image = $postDao->getImageOnId($postId);
 
             $feedVO = new \stdClass;
-            $feedVO->type = AppConstants::POST_FEED;
+           
             $feedVO->subject = $row["subject"];
             $feedVO->subjectId = $row["subject_id"];
             $feedVO->object = "post";
@@ -135,7 +135,7 @@ namespace com\indigloo\sc\dao {
             $image = $postDao->getImageOnId($postId);
 
             $feedVO = new \stdClass;
-            $feedVO->type = AppConstants::COMMENT_FEED;
+            
             $feedVO->ownerId = $row["owner_id"];
             $feedVO->subject = $row["subject"];
             $feedVO->subjectId = $row["subject_id"];
@@ -165,7 +165,7 @@ namespace com\indigloo\sc\dao {
 
             switch($verb) {
 
-                case AppConstants::FOLLOWING_VERB :
+                case AppConstants::FOLLOW_VERB :
                     $feed = $this->getFollowingFeed($row);
                     $this->proxy->addFollower($row["subject_id"], $row["object_id"],$feed);
                     $this->proxy->addGlobalFeed($row["subject_id"],$feed);
@@ -193,7 +193,7 @@ namespace com\indigloo\sc\dao {
                     $this->proxy->addGlobalFeed($row["subject_id"],$feed);
                     break ;
 
-                case AppConstants::UNFOLLOWING_VERB :
+                case AppConstants::UNFOLLOW_VERB :
                     $this->proxy->removeFollower($row["subject_id"],$row["object_id"]);
                     break ;
                 default :
@@ -229,7 +229,7 @@ namespace com\indigloo\sc\dao {
 
         function getMailflag($preferenceObj, $verb) {
             $flag = false ;
-            if($verb ==  AppConstants::FOLLOWING_VERB )
+            if($verb ==  AppConstants::FOLLOW_VERB )
                 $flag = $preferenceObj->follow ;
             if($verb ==  AppConstants::COMMENT_VERB )
                 $flag = $preferenceObj->comment ;
@@ -252,7 +252,7 @@ namespace com\indigloo\sc\dao {
             
             $verb = $row["verb"];
             $ownerId = $row["owner_id"] ;
-            if($verb ==  AppConstants::FOLLOWING_VERB) {
+            if($verb ==  AppConstants::FOLLOW_VERB) {
                 //mail target is the guy you are following
                 $ownerId = $row["object_id"];
             }

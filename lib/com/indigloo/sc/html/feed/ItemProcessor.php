@@ -2,7 +2,6 @@
 
 namespace com\indigloo\sc\html\feed {
 
-    use \com\indigloo\sc\Constants as AppConstants;
     use com\indigloo\Template as Template;
     use \com\indigloo\sc\util\PseudoId as PseudoId;
     use \com\indigloo\Url as Url ;

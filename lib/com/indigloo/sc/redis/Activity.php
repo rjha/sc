@@ -13,8 +13,6 @@ namespace com\indigloo\sc\redis{
 
     class Activity {
 
-       
-
         function __construct() {}
 
         function addFollower($followerId,$followingId,$feed) {

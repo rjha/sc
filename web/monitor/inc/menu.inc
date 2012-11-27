@@ -12,16 +12,15 @@
         
         <li class="divider"> </li>
         <li class="nav-header">Analytic</li>
-        <ul class="nav nav-list">
-            <li> <a href="/monitor/analytic/bookmarks.php">Bookmarks</a> </li>
-            <li> <a href="/monitor/analytic/sessions.php">Sessions</a> </li>
-        </ul>
-
+         
+        <li> <a href="/monitor/analytic/bookmarks.php">Bookmarks</a> </li>
+        <li> <a href="/monitor/analytic/sessions.php">Sessions</a> </li>
+    
         <li class="divider"> </li>
         <li class="nav-header">SEO</li>
-        <ul class="nav nav-list">
-            <li><a href="/monitor/groups.php">Featured Groups</a></li>
-        </ul>
+        
+        <li><a href="/monitor/groups.php">Featured Groups</a></li>
+        
     </ul>
 </div>
 

@@ -13,7 +13,7 @@ namespace com\indigloo\sc\html\feed {
 
             $this->map = array(AppConstants::COMMENT_VERB => 'commented on',
                 AppConstants::SAVE_VERB => 'saved',
-                AppConstants::FOLLOWING_VERB => 'is following',
+                AppConstants::FOLLOW_VERB => 'is following',
                 AppConstants::LIKE_VERB => 'likes',
                 AppConstants::POST_VERB => "posted");
         }

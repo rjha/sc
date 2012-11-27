@@ -86,7 +86,7 @@ namespace com\indigloo\sc\mysql {
                 $sql2 .= " values(:owner_id, :subject_id, :subject, :object_id, " ;
                 $sql2 .= " :object, :verb, :verb_name, :op_bit, now()) ";
                
-                $verb =  AppConstants::FOLLOWING_VERB ;
+                $verb =  AppConstants::FOLLOW_VERB ;
                 $op_bit = 0 ;
                 $verbName = AppConstants::STR_FOLLOW ;
                 $ownerId = -1 ;
@@ -149,7 +149,7 @@ namespace com\indigloo\sc\mysql {
                 $sql2 .= " values(:owner_id, :subject_id, :subject, :object_id, " ;
                 $sql2 .= " :object, :verb, :verb_name, :op_bit, now()) ";
                
-                $verb =  AppConstants::UNFOLLOWING_VERB ;
+                $verb =  AppConstants::UNFOLLOW_VERB ;
                 $op_bit = 0 ;
                 $verbName = AppConstants::STR_UNFOLLOW ;
                 $ownerId = -1 ; 

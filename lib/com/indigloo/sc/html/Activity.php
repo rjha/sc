@@ -19,6 +19,17 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
+        function getAdminWidget($index,$content) {
+
+            $html = NULL ;
+            $view = new \stdClass;
+            $view->index = $index ;
+            $view->content = $content ;
+            $template = '/fragments/feed/admin/widget.tmpl' ;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
         function getPostTile($feedDataObj) {
             $html = '' ;
 
@@ -28,17 +39,14 @@ namespace com\indigloo\sc\html {
             }
 
             foreach($feedDataObj->feeds as $feed) {
-
                 //create object out of string
                 $feedObj = json_decode($feed);
-                if(!property_exists($feedObj, 'type')) {
-                    trigger_error("feed is missing type information", E_USER_ERROR);
+                if(!property_exists($feedObj, "verb")) {
+                    trigger_error("bad feed: verb is missing from feed",E_USER_ERROR);
                 }
 
-                $feedObj->type = trim($feedObj->type);
-
                 //ignore comments for a post
-                if($feedObj->type != AppConstants::COMMENT_FEED) {
+                if($feedObj->verb != AppConstants::COMMENT_VERB) {
                     //get basic feed processor
                     $processor = new feed\ItemProcessor();
                     $options = array();
@@ -78,20 +86,21 @@ namespace com\indigloo\sc\html {
                 return $error ;
             }
 
+            $processor1 = new feed\PostProcessor();
+            $processor2 = new feed\GraphProcessor();
+            $processor = NULL ;
+
             foreach($feedDataObj->feeds as $feed) {
+
                 try{
                     //create object out of string
                     $feedObj = json_decode($feed);
-                    if(!property_exists($feedObj, 'type')) {
-                        throw new \Exception("bad feed : missing type information");
+                    if(!property_exists($feedObj, "verb")) {
+                        throw new \Exception("bad feed: verb is missing from feed!");
                     }
 
-                    $feedObj->type = trim($feedObj->type);
-                    $processor = new feed\PostProcessor();
-                    if($feedObj->type == AppConstants::FOLLOW_FEED) {
-                        $processor = new feed\GraphProcessor();
-                    }
-                    
+                    $processor = 
+                    ($feedObj->verb == AppConstants::FOLLOW_VERB) ? $processor2 : $processor1 ;
                     $html .= $processor->process($feedObj);
 
                 } catch(\Exception $ex) {
@@ -107,8 +116,8 @@ namespace com\indigloo\sc\html {
 
         }
 
-        function getEmailData($feed) {
-            
+        function getEmailData($feed) { 
+
             $processor = NULL ;
             $data = array();
 
@@ -124,34 +133,27 @@ namespace com\indigloo\sc\html {
             $processor3 = new \com\indigloo\sc\html\feed\TextProcessor();
 
             $templates = array(
-                        AppConstants::BOOKMARK_FEED => "/fragments/feed/email/post.tmpl",
-                        AppConstants::COMMENT_FEED => "/fragments/feed/email/comment.tmpl",
-                        AppConstants::POST_FEED => "/fragments/feed/email/post.tmpl",
-                        AppConstants::FOLLOW_FEED => "/fragments/feed/email/vanilla.tmpl");
+                        AppConstants::LIKE_VERB => "/fragments/feed/email/post.tmpl",
+                        AppConstants::COMMENT_VERB => "/fragments/feed/email/comment.tmpl",
+                        AppConstants::POST_VERB => "/fragments/feed/email/post.tmpl",
+                        AppConstants::FOLLOW_VERB => "/fragments/feed/email/vanilla.tmpl");
 
-            $mapHtmlProcessor = array(AppConstants::FOLLOW_FEED => $processor2,
-                                    AppConstants::COMMENT_FEED => $processor1,
-                                    AppConstants::BOOKMARK_FEED => $processor1,
-                                    AppConstants::POST_FEED => $processor1);
-
-            $mapTextProcessor = array(AppConstants::FOLLOW_FEED => $processor3,
-                                    AppConstants::COMMENT_FEED => $processor3,
-                                    AppConstants::BOOKMARK_FEED => $processor3,
-                                    AppConstants::POST_FEED => $processor3);
+            $mapHtmlProcessor = array(AppConstants::FOLLOW_VERB => $processor2,
+                                    AppConstants::COMMENT_VERB => $processor1,
+                                    AppConstants::LIKE_VERB => $processor1,
+                                    AppConstants::POST_VERB => $processor1);
 
 
 
-            $processor = $mapHtmlProcessor[$feedObj->type];
+            $processor = $mapHtmlProcessor[$feedObj->verb];
             $html = $processor->process($feedObj,$templates);
-            
-            $processor = $mapTextProcessor[$feedObj->type];
-            $text = $processor->process($feedObj);
+            $text = $processor3->process($feedObj);
+
             $data["text"] = $text ;
             $data["html"] = $html ;
             return $data ;
 
         }
-
 
     }
 

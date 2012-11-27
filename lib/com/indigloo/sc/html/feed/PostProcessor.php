@@ -21,10 +21,10 @@ namespace com\indigloo\sc\html\feed {
 
             if(empty($templates)) {
                 $templates = array(
-                    AppConstants::BOOKMARK_FEED => "/fragments/feed/image/post.tmpl",
-                    AppConstants::COMMENT_FEED => "/fragments/feed/image/comment.tmpl",
-                    AppConstants::POST_FEED => "/fragments/feed/image/post.tmpl",
-                    AppConstants::FOLLOW_FEED => NULL);
+                    AppConstants::LIKE_VERB => "/fragments/feed/image/post.tmpl",
+                    AppConstants::COMMENT_VERB => "/fragments/feed/image/comment.tmpl",
+                    AppConstants::POST_VERB => "/fragments/feed/image/post.tmpl",
+                    AppConstants::FOLLOW_VERB => NULL);
             }
 
             if($flag){
@@ -47,14 +47,14 @@ namespace com\indigloo\sc\html\feed {
                
                 $view['verb'] = $this->getVerb($feedObj->verb);
                 
-                if(isset($templates[$feedObj->type])) {
-                    $template = $templates[$feedObj->type];
+                if(isset($templates[$feedObj->verb])) {
+                    $template = $templates[$feedObj->verb];
                 } else {
                     trigger_error("invalid feed template", E_USER_ERROR);
                 }
 
                 //extra processing for comments.
-                if(strcmp($feedObj->type,AppConstants::COMMENT_FEED) == 0 ) {
+                if(strcmp($feedObj->verb,AppConstants::COMMENT_VERB) == 0 ) {
                     if(property_exists($feedObj, 'content')) {
                         $view['content'] = $feedObj->content ;
                     }

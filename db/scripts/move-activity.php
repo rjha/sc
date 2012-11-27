@@ -96,7 +96,7 @@
                 $row2 = $userDao->getOnLoginId($objectId);
                 $subject = $row1['name'];
                 $object = $row2['name'];
-                $verb = AppConstants::FOLLOWING_VERB ;
+                $verb = AppConstants::FOLLOW_VERB ;
 
                 $ownerId  = -1 ;
                 $activityDao->addRow($ownerId,$subjectId,$objectId,$subject,$object,$verb);

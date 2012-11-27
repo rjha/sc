@@ -41,10 +41,10 @@ namespace com\indigloo\sc\mysql {
                     case AppConstants::COMMENT_VERB :
                         $verbName = AppConstants::STR_COMMENT ;
                         break ;
-                    case AppConstants::FOLLOWING_VERB :
+                    case AppConstants::FOLLOW_VERB :
                         $verbName = AppConstants::STR_FOLLOW ;
                         break ;
-                    case AppConstants::UNFOLLOWING_VERB :
+                    case AppConstants::UNFOLLOW_VERB :
                         $verbName = AppConstants::STR_UNFOLLOW ;
                         break ;
                     case AppConstants::POST_VERB :
