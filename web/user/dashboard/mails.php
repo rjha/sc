@@ -81,7 +81,9 @@
                 <div class="span6 offset1">
                     
                     <?php FormMessage::render(); ?>
-
+                    <p class="text-info">
+                        send me mails
+                    </p>
                     <div id="form-wrapper">
                         <form id="web-form1"  name="web-form1" action="/user/form/mails-preference.php" method="POST">
                             <table class="table table-condensed table-striped">
@@ -98,7 +100,7 @@
                                      </tr>
                                      <tr>
                                         <td><input type="checkbox" name="p[bookmark]" value="true" <?php echo $checked["bookmark"]; ?>/></td>
-                                        <td> When people like or save my post </td>
+                                        <td> When people like my post </td>
                                     </tr>
                                       
                                 </tbody>
@@ -121,6 +123,7 @@
         <script>
             $(document).ready(function(){
                 webgloo.sc.toolbar.add();
+                webgloo.sc.dashboard.fixAlert();
             });
 
         </script>
