@@ -69,6 +69,7 @@
 
             }
             
+            flush();
             sleep(1);
             $count++ ;
 
@@ -112,6 +113,7 @@
 
             }
 
+            flush();
             sleep(1);
             $count++ ;
         }
@@ -164,6 +166,7 @@
 
             }
 
+            flush();
             sleep(1);
             $count++ ;
         }
@@ -208,13 +211,14 @@
                 $activityDao->addRow($ownerId,$subjectId,$objectId,$subject,$object,$verb);
 
             }
-
+            flush();
             sleep(1);
             $count++ ;
         }
 
     }
 
+    ob_end_clean();
 
     $mysqli = MySQL\Connection::getInstance()->getHandle();
     

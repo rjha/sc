@@ -58,11 +58,15 @@
                 $activityDao->pushToRedis($row);
             }
             
+            printf("processed rows between %s and %s \n",$start,$end);
+            flush();
             sleep(1);
             $count++ ;
 
         }
     }
+
+    ob_end_clean();
 
     $mysqli = MySQL\Connection::getInstance()->getHandle();
     load_in_redis($mysqli);

@@ -11,6 +11,8 @@
     set_exception_handler('offline_exception_handler');
     //@prereq: run the insert queries in patch file
 
+    ob_end_clean();
+
     $mysqli = MySQL\Connection::getInstance()->getHandle();
     
     // get all login_id from sc_bookmark
