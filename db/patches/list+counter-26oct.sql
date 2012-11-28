@@ -6,6 +6,14 @@
 -- 
 --
 
+--
+-- let pseudo_id be null
+-- fix for potential deadlock due to unique constraint
+-- on pseudo_id issues
+-- 
+--
+alter table sc_post modify column pseudo_id varchar(32) ;
+
 
 DROP TABLE IF EXISTS  sc_list_item ;
 CREATE TABLE  sc_list_item  (
@@ -31,7 +39,7 @@ CREATE TABLE  sc_list  (
     items_json TEXT,
     item_count int default 0,
     pseudo_id varchar(32) ,
-    description text,
+    description varchar(2048),
     version int not null,
     op_bit int not null,
     dl_bit int default 0,
@@ -498,46 +506,5 @@ insert into sc_post_counter(post_id)
 -- 
 -- delete from sc_bookmark where verb = 2 ;
 -- 
--- 24 nov.
--- for aws.3mik.com
--- alter table sc_list modify column description varchar(2048) ;
--- 
 
-
-
-DROP TABLE IF EXISTS  sc_activity ;
-CREATE TABLE  sc_activity  (
-   id  int NOT NULL AUTO_INCREMENT,
-   subject_id int not NULL,
-   object_id  int NOT NULL,
-   owner_id int ,
-   subject varchar(128),
-   object varchar(128),
-   verb_name varchar(16) not null,
-   verb int not null,
-   source varchar(16),
-   content varchar(512) ,
-   op_bit int default 0,
-   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id )
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
---
--- let pseudo_id be null
---
-alter table sc_post modify column pseudo_id varchar(32) ;
-
-
-DROP TABLE IF EXISTS  sc_email_capture ;
-CREATE TABLE  sc_email_capture  (
-   id  int NOT NULL AUTO_INCREMENT,
-   email varchar(64),
-   message varchar(512) ,
-   op_bit int default 0,
-   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id )
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
