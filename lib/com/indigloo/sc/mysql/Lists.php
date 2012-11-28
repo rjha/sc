@@ -181,6 +181,13 @@ namespace com\indigloo\sc\mysql {
             return $rows;
         }
          
+        static function exists($listId) {
+            //sanitize input
+            settype($listId,"int");
+            $row = self::getOnId($listId);
+            $flag = (!is_null($row) && !empty($row["name"])) ? true : false ;
+            return $flag ;
+        }
 
         /*
          * Add more items to an existing list!

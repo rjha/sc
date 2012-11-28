@@ -89,4 +89,3 @@ namespace com\indigloo\sc\mysql {
     }
 }
 ?>
-
