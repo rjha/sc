@@ -13,7 +13,7 @@
         <li class="divider"> </li>
         <li class="nav-header">Analytic</li>
          
-        <li> <a href="/monitor/analytic/bookmarks.php">Bookmarks</a> </li>
+        <li> <a href="/monitor/analytic/popular.php">Popular</a> </li>
         <li> <a href="/monitor/analytic/sessions.php">Sessions</a> </li>
     
         <li class="divider"> </li>

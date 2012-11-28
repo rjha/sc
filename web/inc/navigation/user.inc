@@ -80,8 +80,8 @@
                     </ul>
                 </li> <!-- whats new -->
 
-                <li><a href="/surprise/me">Surprise me!</a></li>
-                <li><a href="/editor/picks">Editor's pick</a></li>
+                <li><a href="/pub/popular">most popular</a></li>
+
                 <li>  </li>
             </ul>
         </div>

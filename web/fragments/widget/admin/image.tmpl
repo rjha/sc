@@ -1,6 +1,5 @@
 <div class="widget">
-     
-     <div class="options">
+    <div class="options">
         <div class="links">
             <a href="~~$view->editUrl~"><i class="icon-edit"></i> Edit</a>
             &nbsp;|&nbsp;
@@ -18,19 +17,33 @@
         </div>
     </div> <!-- options -->
 
-    <div class="photo">
-        <a href="/item/~~$view->itemId~"> <img src="~~$view->thumbnail~" class="alignleft" width="~~$view->twidth~" height="~~$view->theight~" class="alignleft" alt="~~$view->title~"/> </a>
-    </div>
+    <div class="row">
+        
+        <div class="span5">
+            <h5> <a href="/item/~~$view->itemId~">~~$view->title~</a> </h5>
+           
+            <div class="description">
+                <div id="fps-~~$view->id~">
+                    ~if($view->unfeature){~
+                     <span class="badge">F</span>
+                    ~}~
+                </div>
+                <p> ~~$view->description~ </p>
+                <p> <span>~~$view->createdOn~ </span> </p>
+            </div> 
 
-    <div class="description">
-        <div id="fps-~~$view->id~">
-            ~if($view->unfeature){~
-             <span class="badge">F</span>
-            ~}~
+            <div class="p5">
+                ~if($view->hasGroups){
+                    foreach($view->groups as $group){~
+                    <a class="label" href="/group/~~$group["slug"]~">~~$group["display"]~</a>&nbsp;
+                ~}}~
+            </div>
+
         </div>
-        <p> ~~$view->description~ </p>
-        <p> <span>~~$view->createdOn~ </span> </p>
-    </div>
-   
+        <div class="span2"> 
+             <a href="/item/~~$view->itemId~"> <img src="~~$view->thumbnail~" width="~~$view->twidth~" height="~~$view->theight~" alt="~~$view->title~"/> </a>
+        </div>
 
-</div>
+    </div> <!-- widget:row -->
+
+</div> <!-- widget -->

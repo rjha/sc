@@ -303,7 +303,7 @@ namespace com\indigloo\sc\html {
         static function getAdminWidget($postDBRow) {
 
             $html = NULL ;
-            $voptions = array("abbreviate" => true);
+            $voptions = array("abbreviate" => true, "group" => true);
             $view = self::createPostView($postDBRow,$voptions);
             
             if($view->hasImage) {

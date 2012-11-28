@@ -286,5 +286,18 @@ namespace com\indigloo\sc\redis{
             return $this->getList($key, $limit);
         }
 
+        function getPagedZSet($key,$paginator) {
+            // get start/end using paginator
+            $pageNo = $paginator->getPageNo() ;
+            $pageSize = $paginator->getPageSize();
+
+            $start =  ($pageNo-1) * $pageSize ; 
+            $end = ($start + $pageSize ) -1 ;
+            
+            $redis = Redis::getInstance()->connection();
+            $members = $redis->zrevrange($key,$start,$end,"withscores");
+            return $members ;
+
+        }
     }
 }
