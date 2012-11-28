@@ -11,6 +11,15 @@
             - shut down the site (no new rows)
             - clean sc_activity table (if required)
             - run this script
+            
+        @warning @big assumption
+        This script assumes that activity_id is the right sort 
+        column or that activity data is sorted on time and primary 
+        key ID is right proxy for that. This argument breaks down if 
+        we populate sc_activity w/o preserving the base tables created_on
+        column.
+
+
     */
 
     include('sc-app.inc');
@@ -208,13 +217,15 @@
 
 
     $mysqli = MySQL\Connection::getInstance()->getHandle();
-    user_bookmark_to_activity($mysqli);
-    sleep(1);
-    follower_to_activity($mysqli);
+    
+    post_to_activity($mysqli);
     sleep(1);
     comment_to_activity($mysqli);
     sleep(1);
-    post_to_activity($mysqli);
+    follower_to_activity($mysqli);
+    sleep(1);
+    user_bookmark_to_activity($mysqli);
+    
 
     //close resources
     $mysqli->close();

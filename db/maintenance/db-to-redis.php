@@ -18,10 +18,6 @@
             - this script will process all activities
                 irrespective of op_bit flag.
             
-
-
-
-
     */
 
     include('sc-app.inc');
