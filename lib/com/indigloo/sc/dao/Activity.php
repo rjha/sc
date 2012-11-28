@@ -110,7 +110,7 @@ namespace com\indigloo\sc\dao {
             $feedVO->subjectId = $row["subject_id"];
             $feedVO->object = "post";
             $feedVO->objectId = $row["object_id"];
-            $feedVO->title = $row["object_id"];
+            $feedVO->title = $row["object"];
             $feedVO->verb = $row["verb"];
             $feedVO->srcImage = $image["thumbnail"];
             $feedVO->nameImage = $image["name"];
