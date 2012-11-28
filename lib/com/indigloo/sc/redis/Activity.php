@@ -112,7 +112,7 @@ namespace com\indigloo\sc\redis{
             $redis->pipeline()
                     ->lpush($key1,$feed)
                     ->sadd($key3, $loginId)
-                    ->zincrby($key4,1,$itemId)
+                    ->zincrby($key4,1,$loginId)
                     ->uncork();
         }
 
