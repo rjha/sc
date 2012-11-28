@@ -19,7 +19,7 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        function getAdminWidget($index,$content) {
+        static function getAdminWidget($index,$content) {
 
             $html = NULL ;
             $view = new \stdClass;
