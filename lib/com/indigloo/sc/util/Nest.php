@@ -10,6 +10,10 @@ namespace com\indigloo\sc\util{
     class Nest {
 
         //redis keys
+        static function score($entity,$variable) {
+            return sprintf("sc:%s:score:%s",$entity,$variable);
+        }
+
         static function following($entity,$id) {
             return sprintf("sc:%s:%s:following",$entity,$id);
         }

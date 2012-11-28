@@ -34,12 +34,16 @@ namespace com\indigloo\sc\redis{
             /* do not push to follower's feed */
             /* $key5 = Nest::feeds("user",$followerId); */
             $key6 = Nest::feeds("user",$followingId);
+            $key7 = Nest::score("user","followers");
+            $key8 = Nest::score("user", "followings");
 
             $redis->pipeline()
                     ->sadd($key1, $followingId)
                     ->lpush($key2, $feed)
                     ->sadd($key3, $followerId)
                     ->lpush($key6, $feed)
+                    ->zincrby($key7,1,$followingId)
+                    ->zincrby($key8,1,$followerId)
                     ->uncork();
         }
 
@@ -53,12 +57,17 @@ namespace com\indigloo\sc\redis{
             $redis = Redis::getInstance()->connection();
             $key1 = Nest::following("user",$followerId);
             $key2 = Nest::followers("user",$followingId);
+            $key3 = Nest::score("user","followers");
+            $key4 = Nest::score("user", "followings");
+
 
             // remove $followerId from $followingId's followers set
             // remove $followingId from $followerId's following set
             $redis->pipeline()
                     ->srem($key1, $followingId)
                     ->srem($key2, $followerId)
+                    ->zincrby($key3,-1,$followingId)
+                    ->zincrby($key4,-1,$followerId)
                     ->uncork();
             
         }
@@ -74,11 +83,15 @@ namespace com\indigloo\sc\redis{
             $key1 = Nest::feeds("post",$itemId);
             $key2 = Nest::subscribers("post",$itemId);
             $key3 = Nest::activities("user",$loginId);
-         
+            $key4 = Nest::score("user","likes");
+            $key5 = Nest::score("post","likes");
+
             $redis->pipeline()
                     ->lpush($key1, $feed)
                     ->sadd($key2, $loginId)
                     ->lpush($key3, $feed)
+                    ->zincrby($key4,1,$loginId)
+                    ->zincrby($key5,1,$itemId)
                     ->uncork();
             
         }
@@ -93,10 +106,13 @@ namespace com\indigloo\sc\redis{
             /* do not add post to my feed */
             /* $key2 = Nest::feeds("user",$loginId); */
             $key3 = Nest::subscribers("post",$itemId);
-            
+            $key4 = Nest::score("user","posts");
+
+
             $redis->pipeline()
                     ->lpush($key1,$feed)
                     ->sadd($key3, $loginId)
+                    ->zincrby($key4,1,$itemId)
                     ->uncork();
         }
 
@@ -111,11 +127,15 @@ namespace com\indigloo\sc\redis{
             $key1 = Nest::subscribers("post",$itemId);
             $key2 = Nest::activities("user",$loginId);
             $key3 = Nest::feeds("post",$itemId);
+            $key4 = Nest::score("post","comments");
+            $key5 = Nest::score("user","comments");
 
             $redis->pipeline()
                     ->sadd($key1, $loginId)
                     ->lpush($key2, $feed)
                     ->lpush($key3, $feed)
+                    ->zincrby($key4,1,$itemId)
+                    ->zincrby($key5,1,$loginId)
                     ->uncork();
         
         }
@@ -184,6 +204,28 @@ namespace com\indigloo\sc\redis{
                 //push to follower's feeds
                 $key = Nest::feeds("user",$followerId);
                 $redis->lpush($key, $feed);
+            }
+        }
+
+        function zincr($key,$entityId,$count) {
+            $redis = Redis::getInstance()->connection();
+            $redis->zincrby($key,$count,$entityId);
+           
+        }
+
+        /* helper function to keep a redis sorted set to a certain size
+         * 
+         * get size of sorted set, if above limit then remove the 
+         * _extra_ low-score members 
+         *
+         */
+
+        function ztrim($key,$limit) {
+            $redis = Redis::getInstance()->connection();
+            $size = $redis->zcard($key);
+            if($size > $limit) {
+                $delta = ($size - $limit) ;
+                $redis->zremrangebyrank($key,0,$delta-1);
             }
         }
 
