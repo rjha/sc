@@ -16,7 +16,6 @@ namespace com\indigloo\sc\html {
 
     class Post {
 
-
         static function getGalleria($title,$images) {
             if(empty($images) || (sizeof($images) == 0)) { return '' ; }
 
@@ -300,7 +299,7 @@ namespace com\indigloo\sc\html {
 
         }
 
-        static function getAdminWidget($postDBRow) {
+        static function getAdminWidget($postDBRow,$score=0) {
 
             $html = NULL ;
             $voptions = array("abbreviate" => true, "group" => true);
@@ -323,7 +322,10 @@ namespace com\indigloo\sc\html {
             
             $view->feature = ($postDBRow['fp_bit'] == 0 ) ? true : false ;
             $view->unfeature = ($postDBRow['fp_bit'] == 1 ) ? true : false ;
+            
             $view->status = ($view->unfeature) ? "F" : "" ;
+            $view->score = ($score > 0 ) ? $score : "" ;
+
             $html = Template::render($template,$view);
             return $html ;
 

@@ -42,22 +42,27 @@
     $zsetKey = Nest::score("post", $sortVariable);
     $members = $redis->getPagedZSet($zsetKey,$paginator);
 
-    //first one is id, second one is score
     $count = 0 ;
     $scores = array();
     $ids = array();
 
-    for($i = 1 ; $i < sizeof($members); $i++) {
-        if($i % 2 == 0) {
-            array_push($scores,$members[$i-1]);
-        }else {
-            $itemId = $members[$i-1];
-            $postId = PseudoId::decode($itemId);
-            array_push($ids,$postId);
-        }
+    if(sizeof($members) >= 2 ){
+        for($i = 1 ; $i < sizeof($members); $i++) {
+            // odd ones are members
+            // evens are scores
 
+            if($i % 2 != 0) {
+                $itemId = $members[$i-1];
+                $postId = PseudoId::decode($itemId);
+                array_push($ids,$postId);
+
+                //score is next one
+                $scores[$itemId] = (isset($members[$i])) ? $members[$i] : 0 ;
+            }
+
+        }
     }
-     
+
     $rows = $postDao->getOnSearchIds($ids);
      
     $pageNo = $paginator->getPageNo();
@@ -68,7 +73,9 @@
     $gNumRecords = sizeof($rows) ;
 
     foreach ($rows as $row) {
-        $rowsHtml .= \com\indigloo\sc\html\Post::getAdminWidget($row);
+        $score =  isset($scores[$row["pseudo_id"]]) ? $scores[$row["pseudo_id"]] : 0 ;
+        $rowsHtml .= \com\indigloo\sc\html\Post::getAdminWidget($row,$score);
+
     }
                         
 

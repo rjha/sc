@@ -27,9 +27,14 @@
                     ~if($view->unfeature){~
                      <span class="badge">F</span>
                     ~}~
+
                 </div>
                 <p> ~~$view->description~ </p>
-                <p> <span>~~$view->createdOn~ </span> </p>
+                <p> 
+                    <span>~~$view->createdOn~ </span> 
+                    &nbsp;&nbsp;
+                    <span class="b flickr-color">~~$view->score~ </span> 
+                </p>
             </div> 
 
             <div class="p5">

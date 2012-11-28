@@ -156,7 +156,7 @@ namespace com\indigloo\sc\html {
 
         }
 
-        static function getAdminWidget($row) {
+        static function getAdminWidget($row,$score=0) {
             $view = new \stdClass ;
             
             //db fields
@@ -179,6 +179,7 @@ namespace com\indigloo\sc\html {
             $view->ban = ($row["bu_bit"] == 0 ) ? true : false ;
             $view->unban = ($row["bu_bit"] == 1 ) ? true : false ;
             $view->taint = ($row["tu_bit"] == 0 ) ? true : false ;
+            $view->score = ($score > 0 ) ? $score : "" ;
 
             $html = NULL ;
             $template = "/fragments/user/admin/widget.tmpl" ;

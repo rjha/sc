@@ -52,21 +52,23 @@
     $zsetKey = Nest::score("user", $sortVariable);
     $members = $redis->getPagedZSet($zsetKey,$paginator);
 
-    //first one is id, second one is score
     $count = 0 ;
     $scores = array();
     $ids = array();
 
-    for($i = 1 ; $i < sizeof($members); $i++) {
-        if($i % 2 == 0) {
-            array_push($scores,$members[$i-1]);
-        }else {
-            $loginId = $members[$i-1];
-            array_push($ids,$loginId);
-        }
+    if(sizeof($members) >= 2 ){
+        // odd one is login_id
+        // next one is score.
+        for($i = 1 ; $i < sizeof($members); $i++) {
+            if($i % 2 != 0) {
+                $loginId = $members[$i-1];
+                array_push($ids,$loginId);
+                $scores[$loginId] = (isset($members[$i])) ? $members[$i] : 0 ;
+            }
 
+        }
     }
-    
+
     $rows = $userDao->getOnSearchLoginIds($ids);
      
     $pageNo = $paginator->getPageNo();
@@ -77,7 +79,9 @@
     $gNumRecords = sizeof($rows) ;
 
     foreach ($rows as $row) {
-        $rowsHtml .= \com\indigloo\sc\html\User::getAdminWidget($row);
+        $score =  isset($scores[$row["login_id"]]) ? $scores[$row["login_id"]] : 0 ;
+        $rowsHtml .= \com\indigloo\sc\html\User::getAdminWidget($row,$score);
+
     }
                         
 
