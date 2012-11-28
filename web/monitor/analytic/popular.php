@@ -70,8 +70,6 @@
         <title> 3mik.com - what is popular </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
-        
         
     </head>
 
@@ -113,6 +111,26 @@
             </div>
         </div> <!-- container -->
         
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+        <script>
+            $(document).ready(function(){
+                //show options on widget hover
+                $('.widget').mouseenter(function() {
+                    $(this).find('.options').css("visibility", "visible");
+                    $(this).css("background-color", "#FEFDF1");
+                });
+                $('.widget').mouseleave(function() {
+                    $(this).find('.options').css("visibility", "hidden");
+                    $(this).css("background-color", "#FFFFFF");
+                }); 
+
+                webgloo.sc.item.addAdminActions();
+
+
+            });
+
+        </script>
+
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
         </div>

@@ -29,23 +29,7 @@
         <title> 3mik.com - All Comments  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
-
-        <script>
-            $(document).ready(function(){
-                //show options on widget hover
-                
-                $('.widget').mouseenter(function() {
-                    $(this).find('.options').css("visibility", "visible");
-                    $(this).css("background-color", "#FEFDF1");
-                });
-                $('.widget').mouseleave(function() {
-                    $(this).find('.options').css("visibility", "hidden");
-                    $(this).css("background-color", "#FFFFFF");
-                });
-            });
-
-        </script>
+      
 
     </head>
 
@@ -96,8 +80,25 @@
                  
             </div>
         </div> <!-- container -->
-        
-         <?php $paginator->render($baseURI,$startId,$endId,$gNumRecords);  ?>
+          <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+
+        <script>
+            $(document).ready(function(){
+                //show options on widget hover
+                
+                $('.widget').mouseenter(function() {
+                    $(this).find('.options').css("visibility", "visible");
+                    $(this).css("background-color", "#FEFDF1");
+                });
+                $('.widget').mouseleave(function() {
+                    $(this).find('.options').css("visibility", "hidden");
+                    $(this).css("background-color", "#FFFFFF");
+                });
+            });
+
+        </script>
+
+        <?php $paginator->render($baseURI,$startId,$endId,$gNumRecords);  ?>
 
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

@@ -26,14 +26,7 @@
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
-        
-        <script>
-            $(document).ready(function(){
-                 webgloo.sc.admin.addSlugPanelEvents();
-            });
-
-        </script>
+       
 
     </head>
 
@@ -83,6 +76,15 @@
                 
             </div>
         </div> <!-- container -->
+
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+        
+        <script>
+            $(document).ready(function(){
+                 webgloo.sc.admin.addSlugPanelEvents();
+            });
+
+        </script>
 
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

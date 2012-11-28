@@ -18,8 +18,7 @@
         <title> 3mik.com - Sessions </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
-        
+       
         
     </head>
 
@@ -66,6 +65,8 @@
                  
             </div>
         </div> <!-- container -->
+        
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
         
         <div id="ft">
         <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>
