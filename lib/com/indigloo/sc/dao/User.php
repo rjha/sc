@@ -26,6 +26,14 @@ namespace com\indigloo\sc\dao {
             return $row ;
         }
 
+        function getOnSearchLoginIds($arrayIds) {
+            if(empty($arrayIds)) { return array(); }
+
+            $strIds = implode(",",$arrayIds);
+            $rows = mysql\User::getOnSearchLoginIds($strIds);
+            return $rows ;
+        }
+
         function update(
             $loginId,
             $firstName,

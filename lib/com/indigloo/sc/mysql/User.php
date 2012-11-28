@@ -46,6 +46,18 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
+        static function getOnSearchLoginIds($strIds) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            $strIds = $mysqli->real_escape_string($strIds);
+
+            $sql = " select * from sc_denorm_user where login_id in (".$strIds. ") " ;
+            $sql .= " ORDER BY FIELD(login_id,".$strIds. ") " ;
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
         static function getOnLoginId($loginId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
