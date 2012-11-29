@@ -42,8 +42,10 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        //@todo fix expensive-query
-        //@see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/
+        // @todo fix expensive-query
+        // @see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/
+        // @examined This query is used on thanks page after logout 
+        // and Random posts controller.
         static function getRandom($limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 

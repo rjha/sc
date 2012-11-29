@@ -61,7 +61,7 @@ namespace com\indigloo\sc\mysql {
         /**
          * @todo @expensive-query
          * 
-         * @imp we do not expext a huge (# of lists/user). There should be a cap of
+         * @examined we do not expext a huge (# of lists/user). There should be a cap of
          * 50 or 100 lists/user. The pagination on login_id is sorted on name
          * and we assume that LIMIT OFFSET,N  kind of queries work fine in this 
          * case.

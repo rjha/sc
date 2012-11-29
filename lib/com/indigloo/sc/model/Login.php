@@ -17,7 +17,7 @@ namespace com\indigloo\sc\model {
          }
 
          public function getValue($alias,$column,$condition,$value) {
-            //@todo fix expensive-query
+            
             if(strcmp($column,"created_on") == 0) {
                 //special case: all processing in this block
                 //value comes in as 24 HOUR / 1 WEEK / 1 MONTH etc.

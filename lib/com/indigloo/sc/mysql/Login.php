@@ -13,7 +13,9 @@ namespace com\indigloo\sc\mysql {
 
         // @todo fix expensive query
         // mysql does not have function indexes - so you need to compute
-        // the values that you want to index.
+        // the values that you want to index
+        // @examined : used by plot on user page. 
+        // @todo remove the plot on monitor-users and this query.
 
         static function getAggregate() {
             $mysqli = MySQL\Connection::getInstance()->getHandle();

@@ -53,27 +53,6 @@ namespace com\indigloo\sc\mysql {
             return $rows;
         }
 
-        // This method gets you the latest entries from sc_bookmark table
-        // itself - no post information is fetched here
-        // @todo expensive-query
-        static function getTableLatest($limit,$filters) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-
-            //sanitize input
-            settype($limit,"integer");
-
-            $sql = " select a.* from  sc_bookmark a " ;
-            $q = new MySQL\Query($mysqli);
-            $q->setAlias("com\indigloo\sc\model\Bookmark","a");
-            $q->filter($filters);
-            $sql .= $q->get();
-
-            $sql .= "order by a.id desc LIMIT %d ";
-            $sql = sprintf($sql,$limit);
-            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-            return $rows;
-        }
-
         // for historical reasons this method is used to fetch the posts that 
         // have been bookmarked
         
@@ -97,35 +76,6 @@ namespace com\indigloo\sc\mysql {
             $sql .= $q->getPagination($start,$direction,"q.id",$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             
-            //reverse rows for 'before' direction
-            if($direction == 'before') {
-                $results = array_reverse($rows) ;
-                return $results ;
-            }
-
-            return $rows;
-        }
-
-        // This method gets you the latest entries from sc_bookmark table
-        // itself - no post information is fetched here
-        //@todo expensive-query ?
-        static function getTablePaged($start,$direction,$limit,$filters) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-
-            //sanitize input
-            settype($start,"integer");
-            settype($limit,"integer");
-            $direction = $mysqli->real_escape_string($direction);
-
-            $sql = " select a.* from  sc_bookmark a " ;
-
-            $q = new MySQL\Query($mysqli);
-            $q->setAlias("com\indigloo\sc\model\Bookmark","a");
-            $q->filter($filters);
-            $sql .= $q->get();
-            $sql .= $q->getPagination($start,$direction,"a.id",$limit);
-            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-
             //reverse rows for 'before' direction
             if($direction == 'before') {
                 $results = array_reverse($rows) ;

@@ -77,24 +77,6 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-
-        //@todo fix expensive-query
-        static function getRandom($limit) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-
-            //sanitize input
-            settype($limit,"integer");
-
-            $sql = " SELECT g.*  FROM sc_group_master g where " ;
-            $sql .=" RAND()<(SELECT ((%d/COUNT(*))*4) FROM sc_group_master g2) ";
-            $sql .= " ORDER BY RAND() LIMIT %d";
-            $sql = sprintf($sql,$limit,$limit);
-
-            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-            return $rows;
-
-        }
-
         static function getLatestUserGroups($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 

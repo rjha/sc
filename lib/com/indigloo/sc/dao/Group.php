@@ -23,11 +23,6 @@ namespace com\indigloo\sc\dao {
             return $rows ;
         }
 
-        function getRandom($limit) {
-            $rows = mysql\Group::getRandom($limit);
-            return $rows ;
-        }
-
         function getPaged($paginator,$filters=array()) {
             $limit = $paginator->getPageSize();
 
