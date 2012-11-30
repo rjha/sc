@@ -37,7 +37,7 @@
     $counters = $analyticDao->getUserCounters($loginId);
 
     $activityDao = new \com\indigloo\sc\dao\Activity() ;
-    $feedDataObj = $activityDao->getUserFeeds($loginId,12);
+    $feedDataObj = $activityDao->getUserFeeds($loginId,20);
 
     //suggestions are editor picks right now
     $postDao = new \com\indigloo\sc\dao\Post();
