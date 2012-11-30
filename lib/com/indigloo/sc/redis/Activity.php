@@ -260,6 +260,7 @@ namespace com\indigloo\sc\redis{
         function getUserActivities($loginId,$limit) {
             $key = Nest::activities("user",$loginId);
             $feedDataObj =  $this->getList($key, $limit);
+            
             if(sizeof($feedDataObj->feeds) == 0 ) {
                 $feedDataObj = $this->getGlobalFeeds($limit);
             }
