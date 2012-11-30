@@ -23,7 +23,7 @@ namespace com\indigloo\sc\controller{
             $postDBRows = $postDao->getPosts(50,$filters);
 
             $pageHeader = 'Editor\'s Pick';
-            $pageTitle = SeoData::getHomePageTitle(); 
+            $pageTitle = "items on 3mik selected by our editors ";
             $metaDescription = SeoData::getHomeMetaDescription();
             $metaKeywords = SeoData::getHomeMetaKeywords();
 

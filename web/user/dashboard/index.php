@@ -116,9 +116,10 @@
                 <div class="span6">
 
                     <?php echo $dashItemHelp ; ?>
+
                      <div class="wbg" style="padding-left:20px">
                         <span>How to? </span>
-                        <a class="help-popup" rel = "dashboard.item.create" href="#">upload items</a>
+                        <a class="help-popup" rel = "dashboard.item.create" href="#">add items</a>
                         &nbsp;/&nbsp;
                         <a class="help-popup" rel = "dashboard.list.create" href="#">create lists</a>
                         &nbsp;/&nbsp;

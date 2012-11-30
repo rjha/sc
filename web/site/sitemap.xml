@@ -12,21 +12,15 @@
     <priority>.9</priority>
   </url>
   
-  <url>
-    <loc>http://www.3mik.com/editor/picks</loc>
+
+   <url>
+    <loc>http://www.3mik.com/pub/popular</loc>
     <changefreq>daily</changefreq>
     <priority>.9</priority>
   </url>
 
-
   <url>
-    <loc>http://www.3mik.com/recent</loc>
-    <changefreq>hourly</changefreq>
-    <priority>.8</priority>
-  </url>
-
-  <url>
-    <loc>http://www.3mik.com/groups/recent</loc>
+    <loc>http://www.3mik.com/editor/picks</loc>
     <changefreq>daily</changefreq>
     <priority>.8</priority>
   </url>
@@ -34,12 +28,25 @@
   <url>
     <loc>http://www.3mik.com/site/about.php</loc>
     <changefreq>monthly</changefreq>
-    <priority>.5</priority>
+    <priority>.8</priority>
   </url>
 
   <url>
     <loc>http://blog.3mik.com</loc>
     <changefreq>weekly</changefreq>
+    <priority>.8</priority>
+  </url>
+
+
+  <url>
+    <loc>http://www.3mik.com/recent</loc>
+    <changefreq>hourly</changefreq>
+    <priority>.5</priority>
+  </url>
+
+  <url>
+    <loc>http://www.3mik.com/groups/recent</loc>
+    <changefreq>daily</changefreq>
     <priority>.5</priority>
   </url>
 

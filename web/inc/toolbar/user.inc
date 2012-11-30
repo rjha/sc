@@ -38,7 +38,7 @@
             <div class="nav-collapse">
                 <ul class="nav">
                     <li> <a href="/"><i class="icon-home"></i>&nbsp;Home</a></li>
-                    <li> <a href="/site/help.php">Help</a> </li>
+                   
                      <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $gSessionLogin->name; ?><b class="caret"></b> </a>
 
@@ -61,6 +61,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li> <a href="/site/about.php">what is 3mik</a> </li>
+                            <li> <a href="/site/help.php">Help</a> </li>
                             <li> <a href="http://blog.3mik.com">Blog</a> </li>
                             <li> <a href="/site/contact.php">Contact</a> </li>
                             <li> <a href="/site/copyright.php">Copyright</a> </li>

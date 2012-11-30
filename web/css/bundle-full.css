@@ -6963,9 +6963,10 @@ button::-moz-focus-inner {
         float:left ;
         padding:4px;
         background-color: #fff;
-        border:1px solid #eee ;
-        /*  box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4); */
-        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4),0 0px 10px rgba(0, 0, 0, 0.1);
+        
+        /* box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4); */
+        /* box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4),0 0px 10px rgba(0, 0, 0, 0.1); */
+        /* border:1px solid #eee ; */
     }
 
     .stamp .photo {
@@ -7044,6 +7045,10 @@ button::-moz-focus-inner {
     }
 
     /* +item page styles */
+
+    #item-page {
+        box-shadow: 0 4px 23px 5px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
 
     #item-page .feeds .item {
         border-top : 0px ;
@@ -7411,10 +7416,14 @@ button::-moz-focus-inner {
     #site-navigator {
         font-size:13px ;
         line-height: 18px ;
-        padding: 10px 20px 6px 20px;
-        margin-bottom: 6px;
-        /* border-bottom: 1px solid whiteSmoke ; */
+        padding: 10px 20px 10px 20px;
+        margin-bottom: 20px;
+        background-color: white ;
+    }
 
+    #site-navigator .explore {
+        color: #FF555D;
+        font-size: 15px;
     }
 
     #site-navigator a {
@@ -7449,21 +7458,18 @@ button::-moz-focus-inner {
         margin-bottom:15px;
     }
 
-    #top-unit .btn {
+    #top-unit .btn-red {
        
         background: #FF555D;
-        padding-left: 19px;
-        padding-right: 19px;
+        padding-left: 9px;
+        padding-right: 9px;
+        line-height:28px;
         border-radius: 0px;
         border: 0px;
         box-shadow:none;
         text-shadow: none;
         outline: 0 ;
-    }
-
-    #top-unit a {
-        color: white;
-        font-weight: bold;
+        color:white;
     }
 
 
@@ -7800,8 +7806,8 @@ button::-moz-focus-inner {
         margin-top: 20px;
         padding:11px 0px 11px 0px;
         min-height: 20px;
-        border-top: 1px solid #EEE;
-        border-bottom: 1px solid #EEE;
+        border-top: 1px solid #E5E5E5;
+        border-bottom: 1px solid #E5E5E5;
     }
 
     #page-message {

@@ -37,7 +37,7 @@
 
     </head>
 
-    <body class="dark-body">
+    <body>
         <div id="fb-root"></div>
 
         <script>
@@ -55,6 +55,15 @@
         <div class="container mh600">
             <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
             
+             <div>
+                <span>How to? </span>
+                <a class="help-popup" rel = "dashboard.item.create" href="#">add items</a>
+                &nbsp;/&nbsp;
+                <a class="help-popup" rel = "dashboard.list.create" href="#">create lists</a>
+                &nbsp;/&nbsp;
+                <a class="help-popup" rel = "dashboard.item.save" href="#">save items</a> 
+            </div> <!-- help -->
+
             <div class="row">
                 <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
                 <div class="span9 wbg">
@@ -119,10 +128,7 @@
 
                     </div>
                    
-
-
                 </div>
-
 
             </div>
 
@@ -154,6 +160,13 @@
                 webgloo.sc.item.addActions();
                 webgloo.sc.dashboard.fixAlert();
                 webgloo.sc.Lists.init();
+
+                $("a.help-popup").click(function(event) {
+                    var helpKey = $(this).attr("rel");
+                    webgloo.sc.SimplePopup.init();
+                    targetUrl = "/site/help/popup.php?hkey=" + helpKey;
+                    webgloo.sc.SimplePopup.load(targetUrl);
+                });
 
             });
 

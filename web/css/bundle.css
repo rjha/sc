@@ -1256,7 +1256,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .tile .user{font-weight:bold;margin-top:4px}
 .tile .groups{font-size:12px;margin-top:4px}
 .tile .groups a{color:#333}
-.stamp{width:110px;margin:2px;float:left;padding:4px;background-color:#fff;border:1px solid #eee;box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1)}
+.stamp{width:110px;margin:2px;float:left;padding:4px;background-color:#fff}
 .stamp .photo{padding:3px}
 .stamp .photo img{max-width:100px;margin:0}
 .vertical{width:1em;text-transform:uppercase;letter-spacing:40px}
@@ -1268,6 +1268,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #slug-panel{width:90%}
 #slug-panel label{display:inline}
 #slug-panel .item{padding:4px;height:auto;width:auto;margin:4px;border-bottom:1px solid #eee}
+#item-page{box-shadow:0 4px 23px 5px rgba(0,0,0,0.2),0 2px 6px rgba(0,0,0,0.15)}
 #item-page .feeds .item{border-top:0}
 #item-page .form-table{width:610px}
 #item-page .form-table textarea{width:100%;height:60px}
@@ -1328,14 +1329,14 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 #site-toolbar .dropdown-menu li>a:hover,#site-toolbar .dropdown-menu .active>a,#site-toolbar .dropdown-menu .active>a:hover{color:#222;font-weight:normal;text-decoration:underline;background-color:inherit}
 #submenu-col2{width:380px;display:block;overflow:hidden}
 #submenu-col2 ul{float:left;width:50%;list-style:none;margin:0 auto}
-#site-navigator{font-size:13px;line-height:18px;padding:10px 20px 6px 20px;margin-bottom:6px}
+#site-navigator{font-size:13px;line-height:18px;padding:10px 20px 10px 20px;margin-bottom:20px;background-color:white}
+#site-navigator .explore{color:#ff555d;font-size:15px}
 #site-navigator a{color:#444;cursor:pointer}
 #site-toolbar .caret{border-top-color:black}
 #site-navigator .dropdown-menu a{color:#333;font-weight:normal}
 #site-navigator .dropdown-menu li>a:hover,#site-navigator .dropdown-menu .active>a,#site-navigator .dropdown-menu .active>a:hover{color:#333;font-weight:normal;text-decoration:underline;background-color:inherit;background-image:none}
 #top-unit{padding:40px 25px 20px 25px;background-color:#feffc5;margin-top:-10px;border-radius:5px;margin-bottom:15px}
-#top-unit .btn{background:#ff555d;padding-left:19px;padding-right:19px;border-radius:0;border:0;box-shadow:none;text-shadow:none;outline:0}
-#top-unit a{color:white;font-weight:bold}
+#top-unit .btn-red{background:#ff555d;padding-left:9px;padding-right:9px;line-height:28px;border-radius:0;border:0;box-shadow:none;text-shadow:none;outline:0;color:white}
 #simple-popup{display:none;position:fixed;z-index:1009;width:600px;max-width:810px;max-height:380px;overflow:auto;overflow-x:auto;overflow-y:auto;top:50%;left:50%;margin-top:-170px;margin-left:-300px;background:white;color:black;border:4px solid #ccc;border-radius:10px;padding:7px 11px 7px 11px;box-shadow:0 4px 23px 5px rgba(0,0,0,0.2),0 2px 6px rgba(0,0,0,0.15)}
 #popup-mask{position:absolute;z-index:900;background:url(/css/asset/fancybox/2.1.2/fancybox_overlay.png);display:none;top:0;left:0;opacity:.8}
 #block-spinner{text-align:center;position:fixed;width:200px;background:black;opacity:.8;color:white;border-radius:10px;top:50%;left:50%;margin-top:-40px;margin-left:-80px;z-index:1090;padding:10px;display:none;overflow:hidden}
@@ -1384,7 +1385,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .metro{background-color:#eee;color:#333}
 .metro-white{background-color:white}
 .page-header .title{display:inline;padding-left:20px;padding-right:20px;color:#222;font-size:19px;font-weight:bold;line-height:1em}
-#page-action{margin-top:20px;padding:11px 0 11px 0;min-height:20px;border-top:1px solid #EEE;border-bottom:1px solid #EEE}
+#page-action{margin-top:20px;padding:11px 0 11px 0;min-height:20px;border-top:1px solid #e5e5e5;border-bottom:1px solid #e5e5e5}
 #page-message{background-color:#fefdf1;padding-left:20px;padding-bottom:10px;font-weight:bold}
 .list-summary{margin-top:20px;border-bottom:1px solid #e6e6e6}
 .list-summary .name{padding-top:14px;font-size:16px;font-weight:bold}

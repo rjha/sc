@@ -1,13 +1,17 @@
-<div id="top-unit">
-    <div class="row">
-        <div class="span4 offset1">
-            <h4> Share and Discover with 3mik </h4>
-        </div>
-        <div class="span6">
-            <a id="nav-popup-share" class="btn">+ Add&nbsp;/&nbsp;Upload</a>
-            &nbsp;&nbsp;
-            <a id="nav-popup-join" class="btn">Join 3mik &raquo;</a>
-            
+
+<div class="row">
+    <div class="span8 offset1">
+        <div id="top-unit">
+            <div class="floatl">
+                <h5 class="faded-text">3mik is the place to discover shops and products in India</h5>
+            </div>
+            <div class="floatr">
+                <a id="nav-popup-share" class="btn b">Upload</a>
+                &nbsp;&nbsp;
+                <a id="nav-popup-join" class="btn btn-red b">Join 3mik</a>
+                
+            </div>
+            <div class="clear"> </div>
         </div>
     </div>
 
@@ -15,11 +19,12 @@
 
 
 <div id="site-navigator">
-
-
      <div class="row">
         <div class="span12">
+
             <ul class="nav nav-pills">
+                <li ><a class="explore" href="#">Explore</a></li>
+                <li><a href="/pub/popular">most popular</a></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         Category
@@ -83,8 +88,8 @@
                     </ul>
                 </li> <!-- whats new -->
 
-                <li><a href="/pub/popular">most popular</a></li>
-                <li>  </li>
+                
+               
             </ul>
         </div>
      </div> <!-- row -->
