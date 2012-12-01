@@ -118,28 +118,28 @@ namespace com\indigloo\sc\html {
 
         static function getHelp($key) {
             
-            $pos = strpos($key,"/");
+            $pos = \strpos($key,"/");
 
             //bad key
             if($pos !== false) {
-                $message = sprintf("wrong format for help file key: {%s} ",$key) ;
+                $message = \sprintf("wrong format for help file key: {%s} ",$key) ;
                 throw new \Exception($message);
             }
 
-            $name = str_replace(".","/",$key);
-            $path = sprintf("%s/site/help/%s.html",APP_WEB_DIR,$name) ;
+            $name = \str_replace(".","/",$key);
+            $path = \sprintf("%s/site/help/%s.html",APP_WEB_DIR,$name) ;
 
-            if(!file_exists($path)) {
+            if(!\file_exists($path)) {
                 $message = sprintf("unable to locate help file {%s}",$path);
                 throw new \Exception($message);
             }
 
             //get buffered output
 
-            ob_start();
+            \ob_start();
             include ($path);
-            $buffer = ob_get_contents();
-            ob_end_clean();
+            $buffer = \ob_get_contents();
+            \ob_end_clean();
 
             return $buffer;
 
