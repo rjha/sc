@@ -1,0 +1,21 @@
+
+
+rackspace CDN
+----------------
++ Go to rackspace cloud management console
++ Add a container (say asset)
++ upload files to this container
++ select container :- properties :- publish to CDN
+ - it should show a URL like
+    - http://1bc329ebfad9f1765d0e-9ba607580a0b71ed80bb793f9b970750.r44.cf2.rackcdn.com
+
++ inside your domain control panel, add a CNAME, like
+
+cdn1.3mik.com 1bc329ebfad9f1765d0e-9ba607580a0b71ed80bb793f9b970750.r44.cf2.rackcdn.com
+
+The URL would be of form :- 
+    http://cdn1.3mik.com/bundle-v1.x.js
+
+
+
+
