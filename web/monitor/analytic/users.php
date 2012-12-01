@@ -169,6 +169,8 @@
         </div> <!-- container -->
         
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+        <script language="javascript" type="text/javascript" src="/js/monitor.js"></script>
+
         <script>
             $(document).ready(function(){
                 //show options on widget hover

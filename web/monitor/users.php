@@ -115,10 +115,8 @@
         <title> 3mik.com - users in system</title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+       
         <link rel="stylesheet" type="text/css" href="/3p/jquery/jqplot/jquery.jqplot.min.css" />
-        <script language="javascript" type="text/javascript" src="/3p/jquery/jqplot/jquery.jqplot.min.js"></script>
-
 
     </head>
 
@@ -211,10 +209,13 @@
                  
             </div>
         </div> <!-- container -->
-        <div class="mt20">
+        
         <?php $paginator->render($baseURI,$startId,$endId, $gNumRecords);  ?>
 
-        </div>
+        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
+        <script language="javascript" type="text/javascript" src="/js/monitor.js"></script>
+        <script language="javascript" type="text/javascript" src="/3p/jquery/jqplot/jquery.jqplot.min.js"></script>
+
 
         <script>
             $(document).ready(function(){
