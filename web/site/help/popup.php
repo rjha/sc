@@ -11,14 +11,6 @@
     use \com\indigloo\sc\ui\Constants as UIConstants;
 
     set_exception_handler('webgloo_ajax_exception_handler');
-    
-
-    if(!Login::hasSession()) {
-        $message = "You need to login!";
-        echo $message ;
-        exit ;
-    }
-
 
     $hkey = Util::getArrayKey($_GET, "hkey");
     $html = \com\indigloo\sc\html\Site::getHelp($hkey);
