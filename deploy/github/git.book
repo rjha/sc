@@ -124,11 +124,13 @@ git checkout xyz
 
 Tracking branch
 ---------------
-To create a local branch for origin/xyzworld  branch (pushed by someone else)
- git checkout -b myxyz origin/xyzworld
- Now myxyz points to origin/xyzworld branch
- How to push from local myxyz -> origin xyzworld branch
- This is a tracking branch so any push from myxyz -> goes to origin/xyzworld 
+To create a local branch for origin/xyz_world  branch (pushed by someone else)
+
+ $git checkout -b myxyz origin/xyz_world
+ Now myxyz points to origin/xyz_world branch
+
+ How to push from local myxyz -> origin/xyz_world branch
+ This is a tracking branch so any push from myxyz -> goes to origin/xyz_world 
 
 + To see your local branches
 git branch (the one you are working on will be starred)
@@ -144,6 +146,7 @@ git branch -d xyz
 
 + How to push your branch to origin server?
     git push origin xyz
+    
 when you local branch name is different from origin branch name 
 (e.g. say for local tracking branches)
     git push origin xyz:xyzworld
