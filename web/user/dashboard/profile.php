@@ -25,6 +25,11 @@
         trigger_error("No user exists with this login_id", E_USER_ERROR);
     }
 
+    $passwordUrl = '' ;
+    if(Login::hasMikLogin()) {
+        $passwordUrl = '<a class="btn-flat" href="/user/account/change-password.php">Change password</a>';
+    }
+
 ?>
 
 
@@ -61,7 +66,7 @@
                             <a class="btn-flat" href="/user/dashboard/mails.php">Mail preferences</a>
                         </span>
                         <span>
-                            <a class="btn-flat" href="/user/account/change-password.php">Change password</a>
+                          <?php echo $passwordUrl; ?>
                         </span>
 
                     </div>
