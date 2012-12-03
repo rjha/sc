@@ -11,6 +11,8 @@
 
     use \com\indigloo\sc\mysql as mysql;
     use \com\indigloo\sc\auth\Login as Login ;
+    use \com\indigloo\sc\Constants as AppConstants ;
+
 
     if (isset($_POST['login']) && ($_POST['login'] == 'Login')) {
 
@@ -60,7 +62,7 @@
             mysql\Login::updateIp(session_id(),$loginId,$remoteIp);
             $code = Login::startOAuth2Session($loginId,Login::MIK);
             
-            $location = ($code == Login::FORBIDDEN_CODE) ? "/site/error/403.html"  : $qUrl ;
+            $location = ($code == Login::FORBIDDEN_CODE) ? AppConstants::ERROR_403_URL : $qUrl ;
             header("Location: ".$location);
             exit ;
 

@@ -30,6 +30,9 @@
             const RESET_PASSWORD_MAIL = 1 ;
             const NEW_ACCOUNT_MAIL = 2 ;
 
+            const DASHBOARD_URL = "/user/dashboard/index.php" ;
+            const ERROR_403_URL = "/site/error/403.html" ;
+
         }
 }
 ?>
