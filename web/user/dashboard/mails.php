@@ -32,11 +32,7 @@
     $checked["comment"] = ($pData->comment) ? "checked" : "" ;
     $checked["bookmark"] = ($pData->bookmark) ? "checked" : "" ;
 
-    $passwordUrl = '' ;
-    if(Login::hasMikLogin()) {
-        $passwordUrl = '<a class="btn-flat" href="/user/account/change-password.php">Change password</a>';
-    }
-
+    
 ?>
 
 
@@ -75,7 +71,11 @@
                             <a class="btn-flat" href="/user/dashboard/profile.php">Edit profile</a>
                         </span>
                         <span>
-                            <?php echo $passwordUrl; ?>
+                            <?php 
+                                if(\com\indigloo\sc\auth\Login::hasMikLogin()) {
+                                    echo '<a class="btn-flat" href="/user/account/change-password.php">Change password</a>';
+                                }
+                            ?>
                             
                         </span>
 

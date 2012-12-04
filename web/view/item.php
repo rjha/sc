@@ -59,7 +59,7 @@
                 <span>How to? </span>
                 <a class="help-popup" rel = "dashboard.item.create" href="#">add items</a>
                 &nbsp;/&nbsp;
-                <a class="help-popup" rel = "dashboard.list.create" href="#">create lists</a>
+                <a class="help-popup" rel = "pub.list.create" href="#">create lists</a>
                 &nbsp;/&nbsp;
                 <a class="help-popup" rel = "dashboard.item.save" href="#">save items</a> 
             </div> <!-- help -->

@@ -186,12 +186,6 @@
                     webgloo.sc.SimplePopup.init();
                     webgloo.sc.SimplePopup.show(content);
                 });
-
-                <?php if($counters["post_count"] == 0 ) { ?>
-                    // hide the top-unit share popup
-                    // because we are already showing a big upload button
-                    $("#nav-popup-share").hide();
-                <?php } ?> 
                 
             });
 

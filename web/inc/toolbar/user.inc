@@ -3,19 +3,8 @@
     $gWeb = \com\indigloo\core\Web::getInstance();
     $params = array('q' => base64_encode(\com\indigloo\Url::current()));
     $shareUrl = \com\indigloo\Url::createUrl('/share/new.php',$params);
-    $externalPageUrl = \com\indigloo\Url::createUrl('/qa/external/image.php',$params);
     
-    $monitorUrl = '' ;
-    $passwordUrl = '' ;
-
-    if(\com\indigloo\sc\auth\Login::hasMikLogin()) {
-        $passwordUrl = '<li><a href="/user/account/change-password.php">Change password</a></li>' ;
-    }
-
-    if(\com\indigloo\sc\auth\Login::isAdmin()) {
-        $monitorUrl = '<li><a href="/monitor/users.php">Monitor App</a></li>';
-    }
-
+    $externalPageUrl = \com\indigloo\Url::createUrl('/qa/external/image.php',$params);
     $pubUserId = \com\indigloo\sc\util\PseudoId::encode($gSessionLogin->id) ;
 
     $gomInSession = $gWeb->find("global.overlay.message",true);
@@ -46,9 +35,19 @@
                            
                             <li><a href="/user/dashboard/index.php">Account</a></li>
                              <li><a href="/pub/user/<?php echo $pubUserId; ?>">Public page</a></li>
-                            <?php echo $monitorUrl; ?>
-                       
-                            <?php echo $passwordUrl ; ?>
+                            <?php 
+                                if(\com\indigloo\sc\auth\Login::isAdmin()) {
+                                    echo 
+                                    '<li><a href="/monitor/users.php">'.
+                                    'Monitor App</a></li>';
+                                }
+                                if(\com\indigloo\sc\auth\Login::hasMikLogin()) {
+                                    echo  
+                                    '<li><a href="/user/account/change-password.php">'.
+                                    'Change password</a></li>' ;
+                                }
+                            ?>
+
                             <li><a href="/user/logout.php">Logout</a></li>
                                    
                         </ul>
