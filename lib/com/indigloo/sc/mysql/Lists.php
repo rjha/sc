@@ -126,7 +126,7 @@ namespace com\indigloo\sc\mysql {
             $sql = " select login.name as user_name, post.*, li.item_id, li.id as sort_id ".
             " from sc_list_item li left join sc_post post on li.item_id = post.id, ".
             " sc_login login , sc_list list ".
-            " where list.login_id = login.id ".
+            " where post.login_id = login.id ".
             " and li.list_id = list.id " ;
 
             $q = new MySQL\Query($mysqli);
@@ -157,7 +157,7 @@ namespace com\indigloo\sc\mysql {
             $sql = "select login.name as user_name, post.*, li.item_id, li.id as sort_id".
             " from sc_list_item li left join sc_post post on li.item_id = post.id, ".
             " sc_login login , sc_list list ".
-            " where list.login_id = login.id ".
+            " where post.login_id = login.id ".
             " and li.list_id = list.id " ;
                
             $q = new MySQL\Query($mysqli);
