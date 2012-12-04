@@ -228,8 +228,15 @@ namespace com\indigloo\sc\html {
             $template = '/fragments/dash/item-help.tmpl' ;
             $html = Template::render($template,$view);
             return $html ;
-            
+        }
 
+        static function getInvitationMessage() {
+            $html = NULL ;
+            $view = new \stdClass ;
+
+            $template = '/fragments/site/invitation.tmpl' ;
+            $html = Template::render($template,$view);
+            return $html ;
         }
 
     }
