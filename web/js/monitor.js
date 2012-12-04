@@ -2,12 +2,12 @@
 /* we do not want this on CDN */
 /* declare required namespaces */
 
-webgloo = window.webgloo || {}
+webgloo = window.webgloo || {};
 webgloo.sc = webgloo.sc || {};
-webgloo.sc.item = webgloo.sc.item || {}
+webgloo.sc.item = webgloo.sc.item || {};
 
 
-webgloo.sc.item.addAdminActions : function() {
+webgloo.sc.item.addAdminActions = function() {
     //feature posts
     $("a.feature-post").click(function(event){
         event.preventDefault();

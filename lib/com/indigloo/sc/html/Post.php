@@ -190,6 +190,17 @@ namespace com\indigloo\sc\html {
                 $template = '/fragments/tile/text.tmpl' ;
             }
 
+            $loginIdInSession = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
+            $view->hasLoginInSession = is_null($loginIdInSession) ? false : true ;
+
+            if(!$view->hasLoginInSession) {
+                
+                $params = array("item_id" => $view->itemId);
+                $listUrl = "/user/dashboard/list/select.php" ;
+                $listUrl = Url::createUrl($listUrl,$params);
+                $view->saveUrl = "/user/login.php?q=".base64_encode($listUrl) ;
+            }
+
             $html = Template::render($template,$view);
             return $html ;
 
