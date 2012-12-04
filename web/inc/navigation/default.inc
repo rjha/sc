@@ -23,7 +23,7 @@
         <div class="span12">
 
             <ul class="nav nav-pills">
-                <li ><a class="explore" href="#">Explore</a></li>
+                <li ><span class="label label-info">Explore</span></li>
                 <li><a href="/pub/popular">most popular</a></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
