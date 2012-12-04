@@ -116,18 +116,61 @@ namespace com\indigloo\sc\html {
             return $html;
         }
 
-        static function getActivity($feedHtml,$commentHtml) {
-      
-            if(Util::tryEmpty($feedHtml) && Util::tryEmpty($commentHtml)) { 
+        static function getComments($rows){
+
+            $html = NULL ;
+            $view = new \stdClass;
+            $template = '/fragments/item/comments.tmpl' ;
+            $view->records = array();
+
+            foreach($rows as $row) {
+                $record = array();
+                $record['comment'] = $row['description'];
+                $record['createdOn'] = AppUtil::convertDBTime($row['created_on']);
+                $record['userName'] = $row['user_name'] ;
+                $record['loginId'] = $row['login_id'];
+                $record['pubUserId'] = PseudoId::encode($row['login_id']);
+                $view->records[] = $record ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+         static function getLikes($rows){
+
+            $html = NULL ;
+            $view = new \stdClass;
+            $template = '/fragments/item/likes.tmpl' ;
+            $view->records = array();
+
+            foreach($rows as $row) {
+                $record = array();
+                
+                $record['userName'] = $row['user_name'] ;
+                $record['loginId'] = $row['login_id'];
+                $record['pubUserId'] = PseudoId::encode($row['login_id']);
+                $view->records[] = $record ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+        static function getActivity($likeHtml,$commentHtml) {
+             
+            if(Util::tryEmpty($likeHtml) && Util::tryEmpty($commentHtml)) { 
                 return "" ; 
             }
 
             $view = new \stdClass;
-            $view->feedHtml = $feedHtml;
+            $view->likeHtml = $likeHtml;
             $view->commentHtml = $commentHtml;
             $template = '/fragments/item/activity.tmpl' ;
             $html = Template::render($template,$view);
-
+            
             return $html;
         }
 

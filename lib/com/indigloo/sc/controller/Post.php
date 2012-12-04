@@ -94,6 +94,10 @@ namespace com\indigloo\sc\controller{
             $commentDao = new \com\indigloo\sc\dao\Comment();
             $commentDBRows = $commentDao->getOnPostId($postId);
 
+            /* likes data */
+            $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
+            $likeDBRows = $bookmarkDao->getLikeOnItemId($itemId);
+            
             $gWeb = \com\indigloo\core\Web::getInstance();
             $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
             $loginIdInSession = \com\indigloo\sc\auth\Login::tryLoginIdInSession();

@@ -1,0 +1,10 @@
+~foreach($view->records as $record) {~
+<div class="item">
+    <div>
+        <a href="/pub/user/~~$record['pubUserId']~"><span  class="b">~~$record['userName']~</span></a>
+        <span class="faded-text">likes this item</span>
+       
+    </div>
+
+</div>
+~}~

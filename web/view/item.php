@@ -75,14 +75,10 @@
                         echo \com\indigloo\sc\html\Post::getHeader($postView,$loginIdInSession);
                         echo \com\indigloo\sc\html\Post::getFancybox($itemObj->title,$postView->images);
                         echo \com\indigloo\sc\html\Post::getDetail($postView,$links);
-
-                        //inject activity tile
-                        $activityDao = new \com\indigloo\sc\dao\Activity();
-                        $feedDataObj = $activityDao->getPostFeeds($itemId, 10);
-                        $htmlObj = new \com\indigloo\sc\html\Activity();
-                        $feedHtml = $htmlObj->getPostTile($feedDataObj);
-                        $commentHtml = \com\indigloo\sc\html\Comment::getFeedHtml($commentDBRows);
-                        echo \com\indigloo\sc\html\Post::getActivity($feedHtml,$commentHtml);
+                       
+                        $likeHtml = \com\indigloo\sc\html\Post::getLikes($likeDBRows);
+                        $commentHtml = \com\indigloo\sc\html\Post::getComments($commentDBRows);
+                        echo \com\indigloo\sc\html\Post::getActivity($likeHtml,$commentHtml);
 
                         include(APP_WEB_DIR . '/qa/inc/comment.inc');
 

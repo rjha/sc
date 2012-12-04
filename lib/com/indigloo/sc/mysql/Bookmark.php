@@ -102,6 +102,21 @@ namespace com\indigloo\sc\mysql {
             return $rows;
         }
 
+        static function getLikeOnItemId($itemId) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            settype($itemId,"integer");
+            //@todo change UI if num_likes > 10
+            $sql = " select l.id as login_id, l.name as user_name " ;
+            $sql .= " from sc_bookmark b , sc_login l " ;
+            $sql .= " where  b.subject_id = l.id and b.object_id = %d limit 10 ";
+            
+            $sql = sprintf($sql,$itemId);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
         static function add(
                 $ownerId,
                 $subjectId,
