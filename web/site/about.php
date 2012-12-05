@@ -16,16 +16,16 @@
 
      <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-        <div class="container mh800">
-            
+        <div class="container mh600">
+             <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
             <div class="row">
                 <div class="span4 offset1 mt20">
-                    <h1> 3mik is a sharing and discovery platform in India.</h1>
+                    <h1> 3mik is a sharing and discovery platform</h1>
                     <blockquote class="pull-right">
                         <p>
-                            3mik lets you share interesting and unique things in India. 
+                            3mik lets you share shops and products in India. 
                             You can use 3mik to discover your interests and 
-                            see stuff shared by others. Move around and see what you like!
+                            share stuff that you like with others. Start exploring!
                         </p>
                     </blockquote>
                     <div class="p20">
@@ -93,13 +93,9 @@
                 </div> <!-- col:1 -->
 
                 <div class="span6 offset1 ">
-                    <div class="section">
-                        <a class="btn b" href="/user/register.php">Join 3mik</a>
-                        <br>
-                        <small>Free and takes only a min.</small>
-                    </div>
-                 <!-- collage -->
-                    <div class="section">
+                    
+                 
+                    <div class="section1">
                     </div>
 
                     <div class="photo">
@@ -107,7 +103,7 @@
                     </div>
                     <div class="photo">
                         <img src="/site/images/collage/part-2.png" />
-                    </div>
+                    </div><!-- collage -->
 
 
 

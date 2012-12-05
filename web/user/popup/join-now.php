@@ -81,7 +81,7 @@
     
     <ul>
         <li>Avail our offers and deals</li>
-        <li>Get our action packed newsletter about latest trends and happenings</li>
+        <li>Get our action packed newsletter about latest trends and cool products</li>
     </ul>
 </div>
 <div class="clear"> </div>
