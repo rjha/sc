@@ -7,9 +7,7 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\Configuration as Config ;
 
     use \com\indigloo\Constants as Constants;
-    use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\ui\form\Sticky;
-
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\html\Seo as SeoData ;
 
@@ -99,8 +97,30 @@ namespace com\indigloo\sc\controller{
             $likeDBRows = $bookmarkDao->getLikeOnItemId($itemId);
             
             $gWeb = \com\indigloo\core\Web::getInstance();
+            /* sticky is used by comment form */
             $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
+            $gRegistrationPopup = false ;
+
             $loginIdInSession = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
+            
+            if(is_null($loginIdInSession)) {
+                //show registration popup  to browsing users
+                $item_views = $gWeb->find("sc:browser:item:views");
+                $register_popup =  $gWeb->find("sc:browser:registration:popup");
+
+                $item_views = (is_null($item_views)) ? 0 : $item_views ;
+                settype($item_views, "integer");
+                $register_popup = (is_null($register_popup)) ? false : $register_popup ;
+                
+                if(!$register_popup && $item_views >= 2 ) {
+                    $gRegistrationPopup = true ;
+                    $gWeb->store("sc:browser:registration:popup", true);
+                }
+
+                if(!$register_popup){
+                    $gWeb->store("sc:browser:item:views", $item_views+1);
+                }
+            }
 
             $xids = array($postId);
             $xrows = array();

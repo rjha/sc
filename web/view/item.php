@@ -164,6 +164,12 @@
                     webgloo.sc.SimplePopup.load(targetUrl);
                 });
 
+                <?php if($gRegistrationPopup) { ?>
+                    var targetUrl = "/user/popup/join-now.php" ;
+                    webgloo.sc.SimplePopup.init();
+                    webgloo.sc.SimplePopup.load(targetUrl);
+                <?php } ?>
+
             });
 
 
