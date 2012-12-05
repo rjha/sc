@@ -287,9 +287,8 @@ namespace com\indigloo\sc\html {
 
             foreach($rows as $row){
                 $post = self::createPostView($row);
-                if($post->hasImage){
-                    array_push($view->posts,$post);
-                }
+                $post->thumbnail = ($post->hasImage) ? $post->thumbnail : UIConstants::PH4_PIC ;
+                array_push($view->posts,$post);
             }
 
             $html = Template::render($template,$view);
