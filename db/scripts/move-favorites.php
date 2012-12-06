@@ -12,12 +12,16 @@
 
     /* 
         @prereq: run the insert queries in patch file
+        @before 
         delete from sc_list ;
         delete from sc_list_item ;
         update sc_site_counter set list_count = 0 ;
         update sc_user_counter set list_count = 0 ;
         update sc_post_counter set list_count = 0 ;
         
+        @after
+        update sc_list set dl_bit = 1 where name = 'Favorites' ;
+  
 
     */
 
