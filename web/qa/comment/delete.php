@@ -24,7 +24,7 @@
     $commentDao = new \com\indigloo\sc\dao\Comment();
     $commentDBRow = $commentDao->getOnId($commentId);
     
-    if( (!Login::isOwner($commentDBRow['login_id']) || Login::isAdmin())) {
+    if(! (Login::isOwner($commentDBRow['login_id']) || Login::isAdmin())) {
         header("Location: /site/error/403.html");
         exit ;
     }
@@ -63,7 +63,7 @@
                     <form id="web-form1"  name="web-form1" action="/qa/comment/form/delete.php" method="POST">
                         <div>
                             <button class="btn btn-danger" type="submit" name="delete" value="Delete">Delete</button>
-                            <a href="<?php echo base64_decode($qUrl); ?>"><button class="btn" type="button">Cancel</a></button></a>
+                            <a href="<?php echo base64_decode($qUrl); ?>" class="btn"s>Cancel</a>
                         </div>
                         <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />

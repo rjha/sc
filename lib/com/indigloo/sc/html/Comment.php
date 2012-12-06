@@ -60,7 +60,7 @@ namespace com\indigloo\sc\html {
             }
 
             $encodedId = PseudoId::encode($view->id);
-            $params = array('id' => $encodedId, 'q' => urlencode(Url::current()));
+            $params = array('id' => $encodedId, 'q' => base64_encode(Url::current()));
             $view->editUrl = Url::createUrl('/qa/comment/edit.php',$params);
             $view->deleteUrl = Url::createUrl('/qa/comment/delete.php',$params);
 

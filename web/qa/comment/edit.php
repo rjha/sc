@@ -23,8 +23,8 @@
 
     $commentDao = new com\indigloo\sc\dao\Comment();
     $commentDBRow = $commentDao->getOnId($commentId);
-
-    if( (!Login::isOwner($commentDBRow['login_id']) || Login::isAdmin())) {
+    
+    if(! ( Login::isOwner($commentDBRow['login_id']) || Login::isAdmin())) {
         header("Location: /site/error/403.html");
         exit ;
     }
