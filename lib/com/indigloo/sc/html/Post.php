@@ -410,7 +410,7 @@ namespace com\indigloo\sc\html {
 
             $html = NULL ;
 
-            // case when list_item.item_id is not null but post.id is NULL
+            // case when list_item.item_id is not Tnull but post.id is NULL
             if( empty($postDBRow["id"]) && !empty($postDBRow["item_id"]) ) {
                 $template = '/fragments/widget/lists/deleted-item.tmpl' ;
                 $view = new \stdClass;
@@ -455,23 +455,8 @@ namespace com\indigloo\sc\html {
                 return $html ;
             }
 
-            $voptions = array("group" => true);
-            $view = self::createPostView($postDBRow,$voptions);
-          
-             if($view->hasImage) {
-                $template = '/fragments/tile/image.tmpl' ;
-                //Add thumbnail width and height
-                $td = Util::foldX($view->width,$view->height,190);
-                $view->twidth = $td["width"];
-                $view->theight = $td["height"];
-
-            } else {
-                $template = '/fragments/tile/text.tmpl' ;
-            }
-
-            $html = Template::render($template,$view);
+            $html = self::getTile($postDBRow);
             return $html ;
-
         }
 
         static function createPostView($row,$voptions=NULL) {
