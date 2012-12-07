@@ -110,7 +110,7 @@ namespace com\indigloo\sc\mysql {
             //@todo change UI if num_likes > 10
             $sql = " select l.id as login_id, l.name as user_name " ;
             $sql .= " from sc_bookmark b , sc_login l " ;
-            $sql .= " where  b.subject_id = l.id and b.object_id = %d limit 10 ";
+            $sql .= " where  b.subject_id = l.id and b.verb = 1 and b.object_id = %d limit 10 ";
             
             $sql = sprintf($sql,$itemId);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
