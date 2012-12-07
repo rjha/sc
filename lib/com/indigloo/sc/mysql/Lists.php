@@ -135,15 +135,12 @@ namespace com\indigloo\sc\mysql {
             $sql = " select login.name as user_name, post.*, li.item_id, li.id as sort_id ". 
             " from sc_list_item li ".
             " left join sc_post post on li.item_id = post.id ".
-            " left join sc_login login on login.id = post.login_id, ".
-            " sc_list list ".
-            " where li.list_id = list.id ";
+            " left join sc_login login on login.id = post.login_id ";
+            
 
             $q = new MySQL\Query($mysqli);
-            $q->setAlias("com\indigloo\sc\model\Lists","list");
-            //start filter conditions using AND operator
-            $q->setPrefixAnd();
-
+            $q->setAlias("com\indigloo\sc\model\ListItem","li");
+            
             $q->filter($filters);
             $condition = $q->get();
             $sql .= $condition;
@@ -167,16 +164,11 @@ namespace com\indigloo\sc\mysql {
             $sql = " select login.name as user_name, post.*, li.item_id, li.id as sort_id ". 
             " from sc_list_item li ".
             " left join sc_post post on li.item_id = post.id ".
-            " left join sc_login login on login.id = post.login_id, ".
-            " sc_list list ".
-            " where li.list_id = list.id " ;
-
+            " left join sc_login login on login.id = post.login_id " ;
                
             $q = new MySQL\Query($mysqli);
-            $q->setAlias("com\indigloo\sc\model\Lists","list");
-            //start filter conditions using AND operator
-            $q->setPrefixAnd();
-
+            $q->setAlias("com\indigloo\sc\model\ListItem","li");
+            
             $q->filter($filters);
             $condition = $q->get();
             $sql .= $condition;
