@@ -116,6 +116,15 @@ namespace com\indigloo\sc\mysql {
             return $row ;
 
         }
+
+        /*
+         * we need two outer joins 
+         * first outer join with sc_post is needed because items can be deleted 
+         * by owners and we do not want to update lists on item delete.
+         * second join is needed because list.login_is is for list creator
+         * whereas we want post.login_id for list.items.user_name
+         * 
+         */
         
         static function getLatestItems($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -123,11 +132,12 @@ namespace com\indigloo\sc\mysql {
             //sanitize input
             settype($limit,"integer");
 
-            $sql = " select login.name as user_name, post.*, li.item_id, li.id as sort_id ".
-            " from sc_list_item li left join sc_post post on li.item_id = post.id, ".
-            " sc_login login , sc_list list ".
-            " where post.login_id = login.id ".
-            " and li.list_id = list.id " ;
+            $sql = " select login.name as user_name, post.*, li.item_id, li.id as sort_id ". 
+            " from sc_list_item li ".
+            " left join sc_post post on li.item_id = post.id ".
+            " left join sc_login login on login.id = post.login_id, ".
+            " sc_list list ".
+            " where li.list_id = list.id ";
 
             $q = new MySQL\Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Lists","list");
@@ -140,7 +150,7 @@ namespace com\indigloo\sc\mysql {
 
             $sql .= " order by li.id desc LIMIT %d " ;
             $sql = sprintf($sql,$limit);
-            
+
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
@@ -154,11 +164,13 @@ namespace com\indigloo\sc\mysql {
             settype($limit,"integer");
             $direction = $mysqli->real_escape_string($direction);
             
-            $sql = "select login.name as user_name, post.*, li.item_id, li.id as sort_id".
-            " from sc_list_item li left join sc_post post on li.item_id = post.id, ".
-            " sc_login login , sc_list list ".
-            " where post.login_id = login.id ".
-            " and li.list_id = list.id " ;
+            $sql = " select login.name as user_name, post.*, li.item_id, li.id as sort_id ". 
+            " from sc_list_item li ".
+            " left join sc_post post on li.item_id = post.id ".
+            " left join sc_login login on login.id = post.login_id, ".
+            " sc_list list ".
+            " where li.list_id = list.id " ;
+
                
             $q = new MySQL\Query($mysqli);
             $q->setAlias("com\indigloo\sc\model\Lists","list");
