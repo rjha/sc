@@ -34,6 +34,14 @@ namespace com\indigloo\sc\controller{
 
             $listDao = new \com\indigloo\sc\dao\Lists(); 
             $listDBRow = $listDao->getOnId($listId);
+            
+            if(empty($listDBRow)) {
+                //not found
+                $controller = new \com\indigloo\sc\controller\Http404();
+                $controller->process();
+                exit;
+            }
+
             $listName = $listDBRow["name"];
             $listPubUrl = sprintf("%s/pub/list/%d/%s",Url::base(),$plistId,$listDBRow["seo_name"]);
 
