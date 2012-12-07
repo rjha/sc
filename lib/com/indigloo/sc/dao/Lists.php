@@ -220,8 +220,8 @@ namespace com\indigloo\sc\dao {
 
                 //create new list with dl_bit set to 1
                 $name = $transpose[$listId];
-                $this->create($loginId,$name,$itemId,1);
-                return ;
+                $listId = $this->create($loginId,$name,$itemId,1);
+                return $listId;
             }
 
             // list ownership check is required
@@ -263,7 +263,7 @@ namespace com\indigloo\sc\dao {
             $itemsJson = json_encode($dbItems);
             $itemsJson = Util::formSafeJson($itemsJson);
             mysql\Lists::addItem($listId,$itemsJson,$postId);
-
+            return $listId ;
         }
 
         function deleteItems($loginId,$listId,$itemsJson) {
