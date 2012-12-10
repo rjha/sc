@@ -28,6 +28,16 @@ namespace com\indigloo\sc\html\feed {
             }
 
             if($flag){
+                // extra processing for comments
+                // @imp: activity row for comment stores 
+                // post_id as object_id and not item_id
+                if(strcmp($feedObj->verb,AppConstants::COMMENT_VERB) == 0 ) {
+                    if(property_exists($feedObj, 'content')) {
+                        $view['content'] = $feedObj->content ;
+                    }
+                    $feedObj->objectId = PseudoId::encode($feedObj->objectId);
+                }
+
                 $view['subject'] = $feedObj->subject;
                 $view['object'] = $feedObj->title;
                 $pubId = PseudoId::encode($feedObj->subjectId);
@@ -53,12 +63,7 @@ namespace com\indigloo\sc\html\feed {
                     trigger_error("invalid feed template", E_USER_ERROR);
                 }
 
-                //extra processing for comments.
-                if(strcmp($feedObj->verb,AppConstants::COMMENT_VERB) == 0 ) {
-                    if(property_exists($feedObj, 'content')) {
-                        $view['content'] = $feedObj->content ;
-                    }
-                }
+                
 
                 $html = Template::render($template,$view);
                 
