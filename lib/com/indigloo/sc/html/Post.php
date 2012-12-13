@@ -5,6 +5,7 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\Template as Template;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
+    use \com\indigloo\Configuration as Config ;
 
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\util\StringUtil as StringUtil ;
@@ -597,16 +598,28 @@ namespace com\indigloo\sc\html {
                     $fileName = $jsonObj->storeName ;
                 }
 
-                $view["source"] = $prefix.$jsonObj->bucket.'/'.$jsonObj->storeName;
-                $view["thumbnail"] = $prefix.$jsonObj->bucket.'/'.$fileName ;
+                // s3 buckets can be mapped to cloud-front cname
+                $m_bucket = $jsonObj->bucket ;
+                // format is store.bucket.mapto=<mapped-bucket>
+                $mapKey = sprintf("%s.%s.mapto",$jsonObj->store,$m_bucket) ;
+                $bucket = Config::getInstance()->get_value($mapKey,$m_bucket);
+
+                $view["source"] = $prefix.$bucket.'/'.$jsonObj->storeName;
+                $view["thumbnail"] = $prefix.$bucket.'/'.$fileName ;
                 $view["width"] = $jsonObj->width ;
                 $view["height"] = $jsonObj->height;
                 //@todo add thumbnail width and height to image json data
 
             } else {
 
-                $message = sprintf("Unknown image store %s ", $jsonObj->store);
-                trigger_error($message,E_USER_ERROR);
+                $view["name"] = "placeholder" ;
+                $view["tname"] = "placeholder" ;
+                $view["source"] = UIConstants::PH1_PIC ;
+                $view["thumbnail"] = UIConstants::PH1_PIC ;
+                $view["width"] = 48;
+                $view["height"] = 48;
+                $view["twidth"] = 40;
+                $view["theight"] = 40;
             }
 
             return $view ;
