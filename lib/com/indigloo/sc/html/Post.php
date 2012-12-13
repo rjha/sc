@@ -598,7 +598,7 @@ namespace com\indigloo\sc\html {
                     $fileName = $jsonObj->storeName ;
                 }
 
-                // s3 buckets can be mapped to cloud-front cname
+                // aws s3 bucket mapping for cloud front
                 $m_bucket = $jsonObj->bucket ;
                 // format is store.bucket.mapto=<mapped-bucket>
                 $mapKey = sprintf("%s.%s.mapto",$jsonObj->store,$m_bucket) ;
