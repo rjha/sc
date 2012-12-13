@@ -96,7 +96,7 @@
 
                             } else {
                                  
-                                $message = "No favorites found" ;
+                                $message = "No likes found" ;
                                 $options = array("hkey" => "dashboard.item.like");
                                 echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
                             }
