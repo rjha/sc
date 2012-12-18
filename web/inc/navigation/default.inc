@@ -4,6 +4,7 @@
         <div id="top-unit">
             <div class="floatl">
                 <h5 class="faded-text">3mik is the place to discover shops and products in India</h5>
+                <a onclick="alert('Drag me to the bookmarks bar'); return false;" href="javascript:void((function(){var e=document.createElement('script');e.setAttribute('type','text/javascript');e.setAttribute('charset','UTF-8');e.setAttribute('src','http://<?php echo $_SERVER["HTTP_HOST"] ; ?>/js/bookmarklet.js?r='+Math.random()*99999999);document.body.appendChild(e)})());" title="Bookmark it" class="snatchit-button ui-button ui-state-default ui-corner-all ui-state-active ui-button-text-icon-secondary"><strong>Bookmark It</strong><span class="ui-button-icon-secondary ui-icon ui-icon-arrowreturnthick-1-n"></span></a>
             </div>
             <div class="floatr">
                 <a id="nav-popup-share" class="btn b">Upload</a>
