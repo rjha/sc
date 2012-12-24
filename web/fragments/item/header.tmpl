@@ -1,38 +1,16 @@
-
+ ~if($view->isItemOwner){~
 <div class="section3">
     <div class="item">
-        
         <div class="toolbar">
-       
             <ul class="tools unstyled">
-                ~if($view->isItemOwner){~
                     <li>
                         <a href="~~$view->editUrl~"><i class="icon icon-edit"></i>&nbsp;Edit</a>
                     </li>
-                ~}~
-
-                <li>
-                    <a href="" id="~~$view->itemId~" class="like-post"><i class="icon icon-thumbs-up"></i>&nbsp;Like</a>
-                </li>
-
-                ~if($view->hasLoginInSession){~
-
-                    <li>
-                        <a href="" id="~~$view->itemId~" class="show-list"><i class="icon icon-heart"></i>&nbsp;Save</a> 
-                    </li>
-                ~ } else { ~
-                    <li>
-                        <a href="~~$view->saveUrl~"><i class="icon icon-heart"></i>&nbsp;Save</a>
-                    </li>
-
-                ~ } ~
-
             </ul>
             <div class="clear"> </div>
         </div>
-   
     </div>
 
 </div>
-
+ ~}~
 

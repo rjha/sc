@@ -23,18 +23,6 @@
         <meta property="og:description" content="<?php echo $itemObj->description; ?>"/>
 
 
-        <script>
-
-            (function() {
-                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-                po.src = 'https://apis.google.com/js/plusone.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-            })();
-
-        </script>
-
-
-
     </head>
 
     <body>
@@ -57,10 +45,13 @@
              
             <div class="row">
                 <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
-                <div class="span9 wbg">
 
+                <div class="span9 wbg">
+                    <div class="fb-like p10" data-send="true" data-href="<?php echo $itemObj->netLink;?>" data-layout="button_count" data-width="225" data-show-faces="true" data-action="recommend"></div>
+                    
                     <div id="page-message" class="hide-me"> </div>
                     <div id="item-page">
+                   
                     <?php
 
                         echo \com\indigloo\sc\html\Post::getHeader($postView,$loginIdInSession);
@@ -80,19 +71,6 @@
                     
                     <?php echo \com\indigloo\sc\html\Post::getUserPanel($postView,$loginIdInSession); ?>
                     <?php echo \com\indigloo\sc\html\Post::getGroups($postView); ?>
-
-                    <!-- @hardcoded @inpage hack -->
-                    <div class="section" style="overflow:visible">
-                        <div class="fb-like pb10" data-href="<?php echo $itemObj->netLink;?>" data-send="false" data-layout="button_count" data-width="225" data-show-faces="false">
-                        </div>
-                        <div class="pb10">
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-via="3mikindia" data-count="none">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-                        </div>
-
-                        <!-- g+1 button -->
-                        <div class="g-plusone" data-size="tall" data-href="<?php echo $itemObj->netLink;?>" data-annotation="none" data-width="200"></div>
-
-                    </div>
                    
                 </div>
 
