@@ -54,16 +54,7 @@
 
         <div class="container mh600">
             <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
-            
-             <div>
-                <span>How to? </span>
-                <a class="help-popup" rel = "dashboard.item.create" href="#">add items</a>
-                &nbsp;/&nbsp;
-                <a class="help-popup" rel = "pub.list.create" href="#">create lists</a>
-                &nbsp;/&nbsp;
-                <a class="help-popup" rel = "dashboard.item.save" href="#">save items</a> 
-            </div> <!-- help -->
-
+             
             <div class="row">
                 <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
                 <div class="span9 wbg">
@@ -77,33 +68,12 @@
                         echo \com\indigloo\sc\html\Post::getDetail($postView,$links);
                        
                         $likeHtml = \com\indigloo\sc\html\Post::getLikes($likeDBRows);
-                        $commentHtml = \com\indigloo\sc\html\Post::getComments($commentDBRows);
+                        $commentHtml = '' ;
                         echo \com\indigloo\sc\html\Post::getActivity($likeHtml,$commentHtml);
-
-                        include(APP_WEB_DIR . '/qa/inc/comment.inc');
 
                     ?>
                     </div>
-                    <div class="section1">
-
-                        <?php echo \com\indigloo\sc\html\Post::getSitePanel($siteMetaRow,$sitePostRows); ?>
-                        
-                        <div class="mt20">
-                            <blockquote>
-                                 <span class="faded-text">Related items</span>
-                            </blockquote>
-
-
-                            <div id="tiles">
-                                <?php
-                                foreach ($xrows as $xrow) {
-                                    echo \com\indigloo\sc\html\Post::getSmallTile($xrow);
-                                }
-                                ?>
-                            </div> <!-- item:tiles -->
-                        </div>
-                    </div>
-
+                    
 
                 </div>
                 <div class="span3 wbg">
@@ -156,13 +126,6 @@
                 webgloo.sc.item.addActions();
                 webgloo.sc.dashboard.fixAlert();
                 webgloo.sc.Lists.init();
-
-                $("a.help-popup").click(function(event) {
-                    var helpKey = $(this).attr("rel");
-                    webgloo.sc.SimplePopup.init();
-                    targetUrl = "/site/help/popup.php?hkey=" + helpKey;
-                    webgloo.sc.SimplePopup.load(targetUrl);
-                });
 
                 <?php if($gRegistrationPopup) { ?>
                     var targetUrl = "/user/popup/join-now.php" ;

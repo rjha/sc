@@ -44,10 +44,10 @@ namespace com\indigloo\sc\controller{
             $postDao = new \com\indigloo\sc\dao\Post();
             $postDBRows = $postDao->getOnSearchIds($ids);
             
-            $pageHeader = 'Most popular';
-            $pageBaseUrl = '/pub/popular' ;
+            $pageHeader = '';
+            $pageBaseUrl = '/' ;
 
-            $pageTitle =  "Most popular items on 3mik sorted by user likes";
+            $pageTitle =  "Home page of 3mik";
             $metaKeywords = SeoData::getHomeMetaKeywords();
             $metaDescription = SeoData::getHomeMetaDescription();
 

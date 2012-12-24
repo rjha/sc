@@ -11,6 +11,7 @@
     $params = array('q' => base64_encode("/qa/external/image.php"));
     $externalPageUrl = \com\indigloo\Url::createUrl('/qa/external/image.php',$params);
     
+    
 
 ?>
 

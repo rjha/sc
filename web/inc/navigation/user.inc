@@ -21,8 +21,7 @@
         <div id="site-navigator">
 
             <ul class="nav nav-pills">
-                <li ><span class="label label-info">Explore</span></li>
-                <li><a href="/pub/popular">most popular</a></li>
+                
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         Category
@@ -56,34 +55,7 @@
 
                     </ul>
                 </li> <!-- category -->
-
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        City
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/search/location/bangalore">Bangalore</a></li>
-                        <li><a href="/search/location/chennai">Chennai</a></li>
-                        <li><a href="/search/location/delhi">Delhi</a></li>
-                        <li><a href="/search/location/hyderabad">Hyderabad</a></li>
-                        <li><a href="/search/location/kolkata">Kolkata</a></li>
-                        <li><a href="/search/location/mumbai">Mumbai</a></li>
-                        <li><a href="/search/location/pune">Pune</a></li>
-                    </ul>
-                </li> <!-- location -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        what's new?
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/recent">New items</a></li>
-                        <li><a href="/groups/recent">New Groups</a></li>
-                        <li><a id="nav-popup-group" href="">Featured Groups</a></li>
-
-                    </ul>
-                </li> <!-- whats new -->
+                <li><a id="nav-popup-group" href="">Featured Groups</a></li>
 
             </ul>
         </div> <!-- site:navigator -->
