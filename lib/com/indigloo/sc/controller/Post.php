@@ -82,7 +82,12 @@ namespace com\indigloo\sc\controller{
             // also used in item images alt text
             // item description should be 160 chars.
             $itemObj->title = Util::abbreviate($postView->title,70);
+            $itemObj->title = sprintf("item %s - %s",$itemId,$itemObj->title);
+
             $itemObj->description = Util::abbreviate($postView->description,160);
+            $itemObj->description = sprintf("item %s - %s by user %s",
+                $itemId,$itemObj->description,$postView->userName) ;
+           
 
             $strItemObj = json_encode($itemObj);
             //make the item json string form safe
@@ -111,8 +116,12 @@ namespace com\indigloo\sc\controller{
                 
             }
             
+            $group_slug = $postDBRow["group_slug"];
+            $groupDao = new \com\indigloo\sc\dao\Group();
+            $group_names = $groupDao->tokenizeSlug($group_slug,",",true);
+
+
             $pageTitle = $itemObj->title;
-            $metaDescription = Util::abbreviate($postDBRow["description"],160);
             $metaKeywords = SeoData::getMetaKeywords($group_names);
             $pageUrl = Url::base().Url::current() ;
              
