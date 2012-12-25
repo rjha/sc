@@ -47,8 +47,17 @@
                 <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
 
                 <div class="span9 wbg">
-                    <div class="fb-like p10" data-send="true" data-href="<?php echo $itemObj->netLink;?>" data-layout="button_count" data-width="225" data-show-faces="true" data-action="recommend"></div>
-                    
+                    <div class="wrapper pb10">
+                        <div class="fb-like floatr" 
+                            data-send="true" 
+                            data-href="<?php echo $itemObj->netLink;?>" 
+                            data-layout="button_count" 
+                            data-width="450" 
+                            data-show-faces="true">
+                        </div>
+                        <div class="clear"> </div>
+                    </div>
+
                     <div id="page-message" class="hide-me"> </div>
                     <div id="item-page">
                    

@@ -10,16 +10,7 @@
             </div>
             <div class="clear"> </div>
         </div>
-    </div>
-
-</div>
-
-
-
-<div class="row">
-    <div class="span12">
         <div id="site-navigator">
-
             <ul class="nav nav-pills">
                 
                 <li class="dropdown">
@@ -58,7 +49,6 @@
                 <li><a id="nav-popup-group" href="">Featured Groups</a></li>
 
             </ul>
-        </div> <!-- site:navigator -->
-     </div> 
-
+        </div> <!-- navigation -->
+    </div>
 </div>

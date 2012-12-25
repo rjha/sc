@@ -13,15 +13,8 @@
             </div>
             <div class="clear"> </div>
         </div>
-    </div>
 
-</div>
-
-
-<div id="site-navigator">
-     <div class="row">
-        <div class="span12">
-
+        <div id="site-navigator">
             <ul class="nav nav-pills">
                 
                 <li class="dropdown">
@@ -59,9 +52,17 @@
                 </li> <!-- category -->
                 <li><a id="nav-popup-group" href="">Featured Groups</a></li>
                 
-               
             </ul>
-        </div>
-     </div> <!-- row -->
+        </div> <!-- navigation -->
+
+
+    </div>
 
 </div>
+
+
+
+    
+
+            
+      

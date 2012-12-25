@@ -7,7 +7,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="keywords" content="<?php echo $metaKeywords; ?>">
         <meta name="description" content="<?php echo $metaDescription;  ?>">
-
+        <meta property="fb:app_id" content="282966715106633" />
+    
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
     </head>
@@ -20,10 +21,10 @@
             
             <div class="row">
                 <div class="span12">
-                    <div class="page-header">
-                        <h2> <?php echo $pageHeader; ?> </h2>
-                    </div>
+
+                    <?php echo \com\indigloo\sc\html\Site::pageHeader($pageHeader); ?>
                     <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
+
                     <div id="tiles" class="mh600">
                         <?php
                             $startId = NULL;

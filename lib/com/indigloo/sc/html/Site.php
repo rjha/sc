@@ -25,6 +25,13 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
+        static function pageHeader($content) {
+            if(!Util::tryEmpty($content)) { 
+                return  '<div class="page-header"><h2>'.$content.'</h2></div>' ;
+            }
+            
+        }
+
         static function formMessage() {
             
             $html = NULL ;
