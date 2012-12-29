@@ -49,7 +49,7 @@
 
 <p class="comment-text">
     You can use your existing facebook, google or twitter account to sign up.
-    You can also sign up using your email. Advantages of registration are
+    Advantages of registration are
 </p>
 
 
@@ -104,18 +104,14 @@
              <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">&nbsp;&nbsp;Google</a>&nbsp;
         </div>
 
-        <div class="column">
-            <a class="btn" href="/user/register.php">Email Sign up&nbsp;&raquo;</a>
+        <div class="column"> 
+
+         Already have a 3mik account?
+            <a href="/user/login.php">click to login</a> 
+        &nbsp; 
         </div>
     </div>
     <div class="clear"> </div>
-
-    <div class="grid-row"> 
-        <div class="column2">
-            Already have a 3mik account?
-            <a href="/user/login.php">click to login</a>
-        </div>
-    </div>
 
 </div> <!-- zocial-grid -->
 
