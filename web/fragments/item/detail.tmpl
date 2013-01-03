@@ -1,5 +1,13 @@
 <div class="item">
     <div class="section1">
+    	 ~if(sizeof($view->links) > 0 ) {~
+            <ul class="unstyled">
+            ~foreach($view->links as $link){ ~
+                <li><a href="~~$link~" class="link b" target="_blank">~~$link~</a></li>
+            ~}~
+            </ul>
+
+        ~}~
         <p class="comment-text"> ~~$view->description~</p>
     </div>
 

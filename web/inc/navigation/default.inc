@@ -50,7 +50,8 @@
 
                     </ul>
                 </li> <!-- category -->
-                <li><a id="nav-popup-group" href="">Featured Groups</a></li>
+                <li><a  href="/pub/popular">Popular</a></li>
+                <li><a id="nav-popup-group" href="">Featured</a></li>
                 
             </ul>
         </div> <!-- navigation -->

@@ -14,8 +14,8 @@ namespace com\indigloo\sc\router{
 
         function initTable() {
             //show popular items on home page
-            $this->createRule('^/$', 'com\indigloo\sc\controller\Popular');
-            $this->createRule('^home/page/(?P<gpage>\d+)$', 'com\indigloo\sc\controller\Popular');
+            $this->createRule('^/$', 'com\indigloo\sc\controller\Home');
+            $this->createRule('^home/page/(?P<gpage>\d+)$', 'com\indigloo\sc\controller\Home');
             
             $this->createRule('^item/(?P<item_id>\d+)$','com\indigloo\sc\controller\Post');
             //rule for item folder. @imp do not use /item/ inside our htdocs
@@ -37,6 +37,7 @@ namespace com\indigloo\sc\router{
             $this->createRule('^search/location/(?P<location>\w+)$','com\indigloo\sc\controller\Location');
              
             $this->createRule('^editor/picks$','com\indigloo\sc\controller\Editor');
+            $this->createRule('^pub/popular$','com\indigloo\sc\controller\Popular');
             $this->createRule('^site/(?P<site_id>\d+)$','com\indigloo\sc\controller\Site');
         }
     }

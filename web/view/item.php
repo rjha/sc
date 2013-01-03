@@ -26,18 +26,7 @@
     </head>
 
     <body>
-        <div id="fb-root"></div>
-
-        <script>
-
-            (function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return;
-                js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-                fjs.parentNode.insertBefore(js, fjs);
-                }(document, 'script', 'facebook-jssdk'));
-
-        </script>
-
+       
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
 
         <div class="container mh600">
@@ -47,17 +36,7 @@
                 <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
 
                 <div class="span9 wbg">
-                    <div class="wrapper pb10">
-                        <div class="fb-like floatr" 
-                            data-send="true" 
-                            data-href="<?php echo $itemObj->netLink;?>" 
-                            data-layout="button_count" 
-                            data-width="450" 
-                            data-show-faces="true">
-                        </div>
-                        <div class="clear"> </div>
-                    </div>
-
+                   
                     <div id="page-message" class="hide-me"> </div>
                     <div id="item-page">
                    

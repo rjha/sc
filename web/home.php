@@ -29,21 +29,10 @@
                     <div id="tiles">
 
                         <?php
-                            $count = 0 ;
+                            
                             foreach($this->homeDBRows as $postDBRow) {
-                                $count++ ;
-                                if($count == 1) {
-                                    //inject activity tile
-                                    $activityDao = new \com\indigloo\sc\dao\Activity();
-                                    $feedDataObj = $activityDao->getGlobalFeeds(10);
-                                    $htmlObj = new \com\indigloo\sc\html\Activity();
-                                    $html = $htmlObj->getHomeTile($feedDataObj);
-                                    echo $html ;
-                                }
-
                                 $html = \com\indigloo\sc\html\Post::getTile($postDBRow);
                                 echo $html ;
-
                             }
 
                         ?>
