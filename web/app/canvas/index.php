@@ -9,7 +9,7 @@
     use com\indigloo\Constants as Constants;
     use com\indigloo\Configuration as Config;
    
-   	/*
+   	
 	$fbAppId = Config::getInstance()->get_value("facebook.app.id");
 	$host = Url::base();
     $callbackUrl = $host."/app/canvas/index.php" ;
@@ -24,8 +24,7 @@
 	 	echo("<script> top.location.href='" . $auth_url . "'</script>");
 	} else {
 		 include(APP_WEB_DIR. '/app/canvas/main.inc');
-	} */
+	}
 
 
 ?>
-<h2> Bobo </h2>
