@@ -21,12 +21,18 @@
         <meta property="og:title" content="<?php echo $itemObj->title ?>"/>
         <meta property="og:image" content="<?php echo $itemObj->picture ?>"/>
         <meta property="og:description" content="<?php echo $itemObj->description; ?>"/>
-
+        <style>
+            /* @hardcoded @inpage */
+            .toolbar {
+                border-top : 0px;
+                border-bottom : 1px solid #d5d5d5;
+            }
+        </style>
 
     </head>
 
     <body>
-       
+        
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
 
         <div class="container mh600">

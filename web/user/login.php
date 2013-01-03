@@ -136,7 +136,7 @@
 
                         </form>
                     </div> <!-- form wrapper -->
-                    <p class="text-error"> <span> Note for spammers : Absolutely No backlinks provided from this site</span> </p>
+                    
             </div> 
 
         </div> <!-- row:2 -->
