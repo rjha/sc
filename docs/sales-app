@@ -1,0 +1,159 @@
+
+
++ Facebook Sign In - 
+with permissions :- email, manage_pages, publish_stream
+store access_token of the user
+
+
++ issue /me/accounts for this user
+get page_id and page_access_token
+
+
+"category": "Community", 
+"name": "3miktest", 
+"access_token": "AAACEdEose0cBAFkPPfYfG6DHD3QXbfARGUxYzdjE1Cd2uPZCLsCACNtcvGrvg1U4LXaWZAF8l4ZA09jEND1i9foPuSL6ZAZCCA4A6NWCjFOz1tmmuZCaZBMY2qXYacxIJkZD"
+"id": "128056117357365"
+
+
+"category": "Website" 
+"name": "3mik" 
+"access_token": "AAACEdEose0cBADXf5D8V8NBwqhZAyoUdsmUQi1ydjDBW9wXMZClhcOjlOV5Gw1RQsfQbaoYvFkOdp1HTIII9z7n2N3ZAryxQxbHS3euohnyW2Qse2dit44LCyAFeQwZD", 
+"id": "332362053467901" 
+
++ store 
+
+facebook_id vs. page_id (source_id) for retrieval
+page_id (source_id) vs. last_updated_time
+
+* post - appears in stream - with an updated_time
+* so we can check stream of source_id for all posts 
+ with ( stream.post.updated_time > login.source_id.last_updated_time )
+* gather all posts that are >= last_updated_time
+* foreach new post in stream
+    get comments of post 
+    foreach comments 
+      if comment.time > login.source_id.stream.post.last_comment_time
+        store data
+        update login.source_id.stream.post.lastest_comment_time
+
+
+
+* Data
+
++ who made this comment / when?
+comment_list
+ - fromid  : user? 100001842355230
+ - time : 
+ - text : whatever is written
+ - 
+
++ on what page?
+
++ what post?
+created_time
+impressions - # of impressions for this post
+(requires read_insight permissions)
+message - message written in the post
+permalink - URL of the post
+post_id : id of the post
+share_count
+type
+
+
+
+
+use FQL to read photos from stream
+-----------------------------------------
+
+select post_id,permalink,created_time, updated_time, 
+share_count, type, impressions, message, comments 
+from stream 
+where source_id = 332362053467901 
+and type=247
+and created_time > 1257070517
+order by updated_time desc LIMIT 50 
+
+Post data
+------------
+graph API with post_id gives detail of the picture
+/332362053467901_468185363218902 
+w/o this - we can show
+
+
+- stream.message
+- stream.permalink as URL 
+
+
+User
+------
+comment.fromID
+/100001842355230
+gives full user details
+
+w/o this also - we can show link
+http://www.facebook.com/profile.php?id=100001842355230
+where id is comment.fromid
+
+
+comment
+------------
+comment.text
+
+user + comment
+---------------
+comment.id
+332362053467901_468185363218902_1148244
+
+
+
+{
+  "data": [
+    {
+      "post_id": "332362053467901_468185363218902", 
+      "permalink": "http://www.facebook.com/photo.php?fbid=468185346552237&set=a.468185329885572.94780.332362053467901&type=1", 
+      "created_time": 1357070052, 
+      "updated_time": 1357070517, 
+      "share_count": 0, 
+      "type": 247, 
+      "impressions": null, 
+      "message": "Shoes by Swati Modo", 
+      "comments": {
+        "can_remove": true, 
+        "can_post": true, 
+        "count": 1, 
+        "comment_list": [
+          {
+            "fromid": 100001842355230, 
+            "time": 1357070517, 
+            "text": "love this. size 7, red sold!  rjha.x1234@gmail.com", 
+            "text_tags": [
+            ], 
+            "id": "332362053467901_468185363218902_1148244", 
+            "likes": 0, 
+            "user_likes": false, 
+            "post_fbid": 468188536551918
+          }
+        ]
+      }
+    }
+  ]
+}
+
+
+
+Read from comment table
+-------------------------
+
+select text, time from comment 
+where object_id  = 468185346552237 (object_id is photo_id  => see permalink above)
+
+
+{
+  "data": [
+    {
+      "text": "love this. size 7, red sold!  rjha.x1234@gmail.com", 
+      "time": 1357070517
+    }
+  ]
+}
+
