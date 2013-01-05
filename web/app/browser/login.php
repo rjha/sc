@@ -41,7 +41,8 @@
         <div class="container mh600">
             <?php include(APP_WEB_DIR . '/app/inc/top-unit.inc'); ?>
         	<div class="row">
-        		<div class="span6 offset3">
+        		<div class="span8 offset1">
+                    <?php FormMessage::render() ?>
         			<h2> Browser Sign in page </h2>
                     <div class="p10"> <?php FormMessage::render(); ?> </div>
         			<a href="<?php echo $fbDialogUrl; ?>" class="btn-adbox"> Sign in</a>

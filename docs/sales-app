@@ -209,8 +209,13 @@ we have long lived user tokens - with 60 Days validity
 we need to check if we can actually work with page tokens
 page tokens may never expire!
 
-+ Before fetching data - see if access token has expired
-+ 
++ JOB - Before fetching data - see if access token has expired
+
+
+# Access token expiry should move when querying the next day
+
+"Again, calling this multiple times during the same day will result only in the first call extending the expiration time." - so atleast first call on a day should work.
+
 
 Rate limits
 ------------

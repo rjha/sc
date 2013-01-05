@@ -7,6 +7,31 @@ namespace com\indigloo\app\mysql {
 
     class Login {
 
+        static function getValidToken($loginId) {
+            // @todo - read from config file
+            // a valid token should have 24 more hours to go!
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            settype($loginId, "integer");
+            $sql = "select access_token from app_login where id = %d and expire_on > (now() + interval 1 DAY )" ;
+            $sql = sprintf($sql,$loginId);
+
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+
+        }
+
+        static function getToken($loginId) {
+            
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            settype($loginId, "integer");
+            $sql = "select access_token from app_login where id = %d " ;
+            $sql = sprintf($sql,$loginId);
+            
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+
+        }
+
         static function updateTokenIp($sessionId,$loginId, $access_token, $expires,$remoteIp) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();

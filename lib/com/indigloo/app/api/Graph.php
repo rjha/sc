@@ -47,7 +47,7 @@ namespace com\indigloo\app\api {
         	CoreUtil::isEmpty("Access token", $token);
             $params = array("access_token" => $token);
             
-            //https when passing access tokens
+            // use https when passing access tokens
             $graphAPI = "https://graph.facebook.com/me/accounts" ;
             $graphUrl = Url::createUrl($graphAPI,$params);
             
