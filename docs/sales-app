@@ -4,9 +4,24 @@
 with permissions :- email, manage_pages, publish_stream
 store access_token of the user
 
+current jha.rajeev access token
+
+AAAEBW1KJhUkBALWYhohwanjZCZCQJIPiV0QvKXolZC8hoeCaCrKBPobNNVg5j4DMDiXylfsHjOepzILQMOYmDz7jQsE9N3GHl6iMvCIfwZDZD
+
 
 + issue /me/accounts for this user
 get page_id and page_access_token
+
+app_source
+
+id
+login_id
+source_id
+name
+token
+last_crawl_time (on creation insert unix_timestamp(now()))
+
+
 
 
 "category": "Community", 
@@ -25,9 +40,27 @@ get page_id and page_access_token
 facebook_id vs. page_id (source_id) for retrieval
 page_id (source_id) vs. last_updated_time
 
+cron script - wake up 
+go through the app_source table
+get login_id + source_id + login.access_token
+ 
+Loop
+  fire FQL using source_id + login.access_token + last_crawl_time
+  process posts where updated_time > last_crawl_time
+  updated_time < last_crawl_time 
+     put new last_crawl_time into app_source
+     break:loop
+
++ JOB to bring in new comments data
++ JOB to fetch post details
++ JOB to fetch user details
+
+
+
 * post - appears in stream - with an updated_time
 * so we can check stream of source_id for all posts 
  with ( stream.post.updated_time > login.source_id.last_updated_time )
+
 * gather all posts that are >= last_updated_time
 * foreach new post in stream
     get comments of post 
@@ -71,7 +104,9 @@ from stream
 where source_id = 332362053467901 
 and type=247
 and created_time > 1257070517
-order by updated_time desc LIMIT 50 
+order by updated_time desc LIMIT 10 
+
+
 
 Post data
 ------------
@@ -143,17 +178,41 @@ comment.id
 
 Read from comment table
 -------------------------
+select username, fromid, text, time from comment 
+where object_id =  468185346552237
 
-select text, time from comment 
-where object_id  = 468185346552237 (object_id is photo_id  => see permalink above)
+object_id  = 468185346552237 (object_id is photo_id  => see permalink above)
+object_id = you can also get from /post_id above
 
 
 {
   "data": [
     {
+      "username": "Anonymous User", 
+      "fromid": 100001842355230, 
       "text": "love this. size 7, red sold!  rjha.x1234@gmail.com", 
       "time": 1357070517
     }
   ]
 }
 
+comments + app_id
+---------------------
+soldsie app id
+110295729053397
+you cannot query on app_id from comment table because 
+app_id is not indexable.
+
+Access token 
+---------------
+we have long lived user tokens - with 60 Days validity
+we need to check if we can actually work with page tokens
+page tokens may never expire!
+
++ Before fetching data - see if access token has expired
++ 
+
+Rate limits
+------------
+
+check for rate limit errors

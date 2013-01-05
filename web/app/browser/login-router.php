@@ -143,7 +143,7 @@
         mysql\Login::updateTokenIp(session_id(),$loginId,$access_token,$expires,$remoteIp);
         $code = Login::startOAuth2Session($loginId,$name);
 
-        $location = ($signup) ? "/app/info.php" : "/app/dashboard.php" ;
+        $location = ($signup) ? "/app/show-page.php" : "/app/dashboard.php" ;
         header("Location: ".$location);
 	        
     }

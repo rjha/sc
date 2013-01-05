@@ -48,9 +48,7 @@
         		</div>
         	</div>
         </div>
-
-                    
-
+        
         <?php include(APP_WEB_DIR . '/app/inc/footer.inc'); ?>
 
     </body>
