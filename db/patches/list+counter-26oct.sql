@@ -134,7 +134,7 @@ CREATE TRIGGER trg_post_del  BEFORE DELETE ON sc_post
         
         -- update counters
         delete from sc_post_counter where post_id = OLD.id ;
-        update sc_user_counter set post_count = post_count + 1 where login_id = OLD.login_id ;
+        update sc_user_counter set post_count = post_count - 1 where login_id = OLD.login_id ;
         update sc_site_counter set post_count = post_count - 1 ;
 
         insert into sc_post_archive(title,
@@ -459,9 +459,20 @@ DELIMITER //
     BEGIN
       -- update counters
       update sc_list set item_count = item_count + 1  where id = NEW.list_id;
+      update sc_post_counter set list_count = list_count + 1 where post_id = NEW.item_id ; 
     END //
 DELIMITER ;
 
+DELIMITER //
+    CREATE TRIGGER trg_list_item_del  BEFORE  DELETE ON sc_list_item
+    FOR EACH ROW
+    BEGIN
+        -- list.item_count can be updated in one shot
+        -- so we do that as part of deleteItems Tx in php code
+        -- post.list_count needs to be updated individually! 
+        update sc_post_counter set list_count = list_count - 1 where post_id = OLD.item_id ; 
+    END //
+DELIMITER ;
 
 
 

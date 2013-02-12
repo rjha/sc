@@ -1,0 +1,38 @@
+/var/www/log/sc-app.log {
+	size 2M
+	weekly	
+	missingok
+	rotate 3
+	compress
+	delaycompress
+	notifempty
+	create 640 www-data www-data
+}
+
+/var/www/log/php-cgi.log {
+	size 2M
+	weekly	
+	missingok
+	rotate 3
+	compress
+	delaycompress
+	notifempty
+	create 640 www-data www-data
+}
+
+/var/www/log/cron.log {
+	size 2M
+	weekly	
+	missingok
+	rotate 3
+	compress
+	delaycompress
+	notifempty
+	create 640 www-data www-data
+}
+
+# do not rotate bad.url.log
+# do not rotate bad.feed.log
+# include sphinx if installed from source
+
+

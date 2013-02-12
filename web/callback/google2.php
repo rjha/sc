@@ -16,6 +16,8 @@
     use \com\indigloo\sc\auth\Login as Login ;
 
     use \com\indigloo\sc\mysql as mysql ;
+    use \com\indigloo\sc\Constants as AppConstants ;
+
 
     function raiseUIError() {
         $uimessage = "something went wrong with the signup process. Please try again." ;
@@ -171,7 +173,7 @@
         mysql\Login::updateIp(session_id(),$loginId,$remoteIp);
         $code = Login::startOAuth2Session($loginId,Login::GOOGLE);
         
-        $location = ($code == Login::FORBIDDEN_CODE) ? "/site/error/403.html"  : "/" ;
+        $location = ($code == Login::FORBIDDEN_CODE) ? AppConstants::ERROR_403_URL  : AppConstants::DASHBOARD_URL ;
         header("Location: ".$location);
         
     }

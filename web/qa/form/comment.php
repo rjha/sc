@@ -14,11 +14,15 @@
 
     use \com\indigloo\exception\UIException as UIException;
 
+    
+
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
 
         $gWeb = \com\indigloo\core\Web::getInstance(); 
         $fvalues = array();
         $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
+
+       
 
         try{
 
@@ -36,6 +40,9 @@
                 throw new UIException($fhandler->getErrors());
             }
 
+            //trim comments to 512 chars
+            $fvalues["comment"] = substr($fvalues["comment"],0,512);
+            
             //use login is required for comments
             if(Login::hasSession()) {
 
@@ -71,7 +78,8 @@
                 $gSessionAction = base64_encode(json_encode($actionObj));
                 //encode again for user login page
                 $fwd = "/user/login.php?q=".base64_encode($fUrl)."&g_session_action=".$gSessionAction;
-                header("location: ".$fwd);
+                
+                header("Location: ".$fwd);
                 exit ;
             }
 

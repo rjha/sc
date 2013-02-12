@@ -49,8 +49,42 @@
 
 <p class="comment-text">
     You can use your existing facebook, google or twitter account to sign up.
-    You can also sign up using your email.
+    Advantages of registration are
 </p>
+
+
+<style>
+    /* @inpage @hardcoded  styles */
+    .half-left {
+        width:50% ;
+        float:left ;
+        margin-bottom:20px;
+        color: #666;
+    }
+
+    #zocial-grid .column {
+        padding: 0px;
+        padding-left:20px;
+    }
+
+</style>
+
+<div class="half-left">
+    <ul>
+
+        <li>Unrestricted access to all items</li>
+        <li>Show your cool stuff to this world</li>
+        <li>Organize items and publish lists</li>
+    </ul>
+</div>
+<div class="half-left">
+    
+    <ul>
+        <li>Avail our offers and deals</li>
+        <li>Get our action packed newsletter about latest trends and cool products</li>
+    </ul>
+</div>
+<div class="clear"> </div>
 
 <div id="zocial-grid">
     <div class="grid-row"> 
@@ -70,20 +104,17 @@
              <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">&nbsp;&nbsp;Google</a>&nbsp;
         </div>
 
-        <div class="column">
-            <a class="btn" href="/user/register.php">Email Sign up&nbsp;&raquo;</a>
+        <div class="column"> 
+
+         Already have a 3mik account?
+            <a href="/user/login.php">click to login</a> 
+        &nbsp; 
         </div>
     </div>
     <div class="clear"> </div>
 
-    <div class="grid-row"> 
-        <div class="column2">
-            Already have a 3mik account?
-            <a href="/user/login.php">login</a>
-        </div>
-    </div>
-
 </div> <!-- zocial-grid -->
+
 
 
 

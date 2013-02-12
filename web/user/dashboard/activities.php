@@ -88,8 +88,16 @@
                 </div>
 
                 <div class="span4 offset1">
-                    <?php echo $followersHtml ; ?> 
-                    <?php echo $followingsHtml ; ?> 
+                    <?php 
+                        echo $followersHtml ; 
+                        echo $followingsHtml ;
+                        if(sizeof($followings) == 0 ) {
+                            $message = "No followings in your network" ;
+                            $options = array("hkey" => "dashboard.graph.add");
+                            echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
+                        }
+                        
+                        ?> 
 
                 </div>
             </div>

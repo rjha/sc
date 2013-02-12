@@ -5,6 +5,13 @@
     $gomInSession = $gWeb->find("global.overlay.message",true);
     $goverlay = \com\indigloo\sc\html\Site::getOverlay($gomInSession);
 
+    $params = array('q' => base64_encode("/share/new.php"));
+    $shareUrl = \com\indigloo\Url::createUrl('/share/new.php',$params);
+
+    $params = array('q' => base64_encode("/qa/external/image.php"));
+    $externalPageUrl = \com\indigloo\Url::createUrl('/qa/external/image.php',$params);
+    
+    
 
 ?>
 
@@ -74,13 +81,13 @@
 <!-- site simple popup -->
 
 <div id="nav-share">
-    <a href="/share/new.php">
+    <a href="<?php echo $shareUrl ?>">
         <div class="stack">
             <div class="header">Upload from computer</div>
             <p>&nbsp;</p>
         </div>
     </a>
-    <a href="/qa/external/image.php">
+    <a href="<?php echo $externalPageUrl ?>">
         <div class="stack">
             <div class="header">Share a web page</div>
             <p> select this option if you want to share images from a web page </p>

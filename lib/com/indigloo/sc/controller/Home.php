@@ -38,34 +38,49 @@ namespace com\indigloo\sc\controller{
 
         }
 
-        private function getFeaturedPosts($postDao) {
+        private function getFeaturedPosts($postDao,$limit) {
             //33 featured posts
             $filters = array();
             $model = new \com\indigloo\sc\model\Post();
             $filter = new Filter($model);
             $filter->add($model::FEATURED,Filter::EQ,TRUE);
             array_push($filters,$filter);
-            $rows = $postDao->getPosts(33,$filters);
+            $rows = $postDao->getPosts($limit,$filters);
             return $rows ;
         }
 
+        /*
+         * Home page mixing
+         * 
+         * limit to - 04 user posts - To cover user session
+         * limit to - 23 featured posts 
+         * minimum 10 latest posts 
+         * - To cover global feeds and latest arrivals
+         * - still not pageSize?
+         * - fetch more latest DB rows
+         *
+         */
         private function loadHomePage() {
-
+            $pageSize = Config::getInstance()->get_value("main.page.items");
             $postDao = new \com\indigloo\sc\dao\Post();
-            $featuredDBRows = $this->getFeaturedPosts($postDao);
+            $fp_size = $pageSize - 14 ;
+            $fp_size = ($fp_size <= 4 ) ? 4 : $fp_size ; 
+            
+            $featuredDBRows = $this->getFeaturedPosts($postDao,$fp_size);
             $userDBRows = array();
 
-            // Do we have a login session?
+            // Do we have a login session? 4 user posts
             $loginId = Login::tryLoginIdInSession();
             if($loginId != null ) {
                 $userDBRows = $postDao->getOnLoginId($loginId,4);
             }
 
-            // how many are still missing?
-            $pageSize = Config::getInstance()->get_value("main.page.items");
-            //rest are random rows.
             $short = $pageSize - (sizeof($featuredDBRows) + sizeof($userDBRows)) ; 
-            //20 latest posts
+            // if page size is less than feature + user DB rows 
+            // even then we need to fetch few latest DB rows to make the 
+            // pagination right.
+            $short = ($short <= 4) ? 4 : $short ;
+            // atleast 4 latest items, at max page size of latest items
             $latestDBRows = $postDao->getLatest($short);
 
             $bucket = array_merge($userDBRows,$featuredDBRows);

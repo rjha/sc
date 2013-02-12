@@ -67,6 +67,12 @@
                             echo \com\indigloo\sc\html\SocialGraph::getWidget($loginId,$follower,1); 
                         }
 
+                        if($total == 0){
+                            $message = "No followers in your network" ;
+                            $options = array("hkey" => "dashboard.graph.add");
+                            echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
+                        }
+
                     ?>
                     </div>
                 </div>

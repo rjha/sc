@@ -7,7 +7,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="keywords" content="<?php echo $metaKeywords; ?>">
         <meta name="description" content="<?php echo $metaDescription;  ?>">
-
+        <meta property="fb:app_id" content="282966715106633" />
+    
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -28,21 +29,10 @@
                     <div id="tiles">
 
                         <?php
-                            $count = 0 ;
+                            
                             foreach($this->homeDBRows as $postDBRow) {
-                                $count++ ;
-                                if($count == 1) {
-                                    //inject activity tile
-                                    $activityDao = new \com\indigloo\sc\dao\Activity();
-                                    $feedDataObj = $activityDao->getGlobalFeeds(10);
-                                    $htmlObj = new \com\indigloo\sc\html\Activity();
-                                    $html = $htmlObj->getHomeTile($feedDataObj);
-                                    echo $html ;
-                                }
-
                                 $html = \com\indigloo\sc\html\Post::getTile($postDBRow);
                                 echo $html ;
-
                             }
 
                         ?>

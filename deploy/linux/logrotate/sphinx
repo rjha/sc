@@ -1,0 +1,17 @@
+
+# sphinx logrotate is needed if you installed sphinx from source.
+# @see http://sphinxsearch.com/bugs/view.php?id=221
+# @see http://sphinxsearch.com/wiki/doku.php?id=tips_and_tricks
+# 
+/usr/local/sphinx/var/log/*.log {
+    size 2M 
+    weekly	
+	rotate 3
+	missingok
+    compress
+    delaycompress
+	create 640 root root
+    postrotate
+        killall -SIGUSR1 searchd 
+    endscript
+}

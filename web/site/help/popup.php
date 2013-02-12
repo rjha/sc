@@ -12,7 +12,13 @@
 
     set_exception_handler('webgloo_ajax_exception_handler');
 
-    $hkey = Util::getArrayKey($_GET, "hkey");
+    $hkey = Util::tryArrayKey($_GET, "hkey");
+    if(empty($hkey)) {
+        echo "No help key supplied" ;
+        exit ;
+    }
+
     $html = \com\indigloo\sc\html\Site::getHelp($hkey);
     echo $html ;
+
 ?>

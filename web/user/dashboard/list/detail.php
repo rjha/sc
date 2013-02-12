@@ -47,7 +47,7 @@
     $listPubUrl = sprintf("%s/pub/list/%d/%s",Url::base(),$plistId,$listDBRow["seo_name"]);
 
     //get items from sc_list_item table
-    $model = new \com\indigloo\sc\model\Lists();
+    $model = new \com\indigloo\sc\model\ListItem();
     $filter = new Filter($model);
     $filter->add($model::LIST_ID,Filter::EQ,$listId);
     

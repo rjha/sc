@@ -61,7 +61,11 @@
                             <a class="btn-flat" href="/user/dashboard/mails.php">Mail preferences</a>
                         </span>
                         <span>
-                            <a class="btn-flat" href="/user/account/change-password.php">Change password</a>
+                          <?php 
+                                if(\com\indigloo\sc\auth\Login::hasMikLogin()) {
+                                    echo '<a class="btn-flat" href="/user/account/change-password.php">Change password</a>';
+                                }
+                            ?>
                         </span>
 
                     </div>

@@ -1,7 +1,0 @@
-
-#when is logrotate run?
-lgorotate is a cron daily job, as included in /etc/cron.daily dir
-#when is cron.daily jobs run?
-That information is in /etc/crontab file
-#The default logrotate conf is /etc/logrotate.conf file
-

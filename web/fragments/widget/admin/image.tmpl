@@ -1,16 +1,16 @@
 <div class="widget">
     <div class="options">
         <div class="links">
-            <a href="~~$view->editUrl~"><i class="icon-edit"></i> Edit</a>
+            <a href="~~$view->editUrl~"><i class="icon-edit"></i>Edit</a>
             &nbsp;|&nbsp;
-            <a href="~~$view->deleteUrl~"><i class="icon-trash"></i> Delete</a>
+            <a href="~~$view->deleteUrl~"><i class="icon-trash"></i>Delete</a>
             ~if($view->feature){~
                 &nbsp;|&nbsp;
-                <a id="~~$view->id~" class ="feature-post" href=""> Feature</a>
+                <a id="~~$view->id~" class ="feature-post" href=""><i class="icon-star"></i> Feature</a>
             ~}~
             ~if($view->unfeature){~
                 &nbsp;|&nbsp;
-                <a id="~~$view->id~" class ="unfeature-post" href=""> Unfeature</a>
+                <a id="~~$view->id~" class ="unfeature-post" href=""><i class="icon-star-empty"></i>Unfeature</a>
             ~}~
              
 

@@ -1,11 +1,13 @@
 
 # create a VM
-Ubuntu (unity) as well as Debian (xfce) default choice of Desktop manager leaves a lot to desire.
-Also  a lot of desktop tweaking may be required to get a a nice looking (working) desktop 
-vmware fusion with linux 3.x kernels - no hardware acceleration support so it is better
-to use linux mint 13 (based on Ubuntu precise 12.04 LTS) with MATE desktop.
- 
-install mint13 iso.
+Ubuntu (unity) as well as Debian (xfce) default choice of Desktop manager leaves
+a lot to desire.  Also  a lot of desktop tweaking may be required to get a a nice 
+looking (working) desktop vmware fusion with linux 3.x kernels - no hardware 
+acceleration support.
+
+for a clean VM - use crunchbang - openbox + debian testing
+with linux 3.x kernels we need to install open-vm-tools support
+
 
 #install build essential compilers and headers
 
@@ -44,6 +46,24 @@ if the kernel modules are not installed then we have to install them manually
 Last number in red is the module version, you can get that by using  
 sudo aptitude show open-vm-tools and look for version string (after + sign)
 
+# After a kernel update 
+# see if your modules are still loaded
+
+$sudo modfinfo vmxnet
+if not then 
+    - fetch new kernel headers
+    - build dkms module
+    - install dkms module
+    - verify that module is loaded.
+
+    sudo aptitude install  linux-headers-`uname -r`
+    sudo aptitude show  open-vm-tools
+    sudo dkms build open-vm-tools/2012.05.21
+    sudo dkms install  open-vm-tools/2012.05.21
+    sudo modinfo vmxnet
+
+ 
+
 # Mount shared folders 
 # shut down VM
 # Add a folder (Public) in this case for sharing on VM
@@ -56,6 +76,22 @@ chmod +x mount.sh
 $./mount.sh
 
 This will mount content of Public/ folder on host at /mnt/hgfs/
+
+# automatic mount - add an entry to fstab
+.host:/vm       /mnt/hgfs       vmhgfs  rw,ttl=5,uid=1000,gid=1000    0     0
+
+explanation
+------------
+ A) .host:/vm
+ $vmware-hgfsclient 
+ should tell you about the host folder (vm in this case)
+ B) /mnt/hgfs is our mount point for host folder
+ C) vmhgfs is the file system type.
+ D) uid and gid can be found via
+ $id -u rjha
+ $id -g rjha
+ where rjha is the user login
+ 
 
 
 #Install MS CORE fonts 

@@ -1,0 +1,263 @@
+
+xdebug install
+------------------
+Windows - You can download xDebug DLL from xdebug.org.
+On linux machines you can just do
+$sudo aptitude install php5-xdebug
+
+The xdebug.ini file is in /etc/php5/cgi/conf.d or /etc/php5/fpm/conf.d folder.
+On Ubuntu (and debian) PHP is compiled to load .ini files from conf.d dir
+You can verify this by looking at output of phpinfo().
+
+1. Download xdebug from xdebug.org. To know whether your php is thread safe or not
+look @ phpinfo() output
+
+xdebug.ini
+---------------------------------------------
+zend_extension=/usr/lib/php5/20090626/xdebug.so
+xdebug.trace_output_dir=/home/rjha/web
+xdebug.collect_includes=1
+xdebug.show_mem_delta=1
+xdebug.profile_enable=0
+xdebug.remote_enable=0
+xdebug.auto_trace=0
+
+if auto trace is off then you have to add it manually.
+
+Enable following for debugging purposes. Do not turn them On by default as they
+slow things down.
+
+xdebug.remote_host=localhost
+xdebug.remote_port=9000
+xdebug.remote_handler=dbgp
+
+
+Manually trace a script with xdebug
+------------------------------------
+
+wrap the script in xdebug calls. Like for index.php page
+
+
+xdebug_start_trace('/home/rjha/web/index.trace');
+
+//original index.php script
+
+xdebug_stop_trace();
+
+
+This will produce an index.trace file with execution time/memory and memory delta columns.
+
+
+
+
+3. Using xdebug with netbeans
+==============================
+- Do the above changes in xDebug
+- Put a break point in source code, right click and select Debug
+- F7/CTRL+F7 to step through/step in
+
+xDebug profiling (selective profiling)
+@see also http://xdebug.org/docs/profiler
+
+rjha@rjha-desktop:/etc/php5/conf.d$ cat xdebug.ini
+zend_extension=/usr/lib/php5/20060613+lfs/xdebug.so
+xdebug.profiler_enable=0
+xdebug.profiler_enable_trigger=1
+xdebug.profiler_output_dir=/tmp
+
+restart php (sudo initctl restart fastcgi)
+Append to GET parameters
+http://www.ubuntu2.com/small-business-market/list?XDEBUG_PROFILE
+
+APC
+====
+On windows you can download the APC DLL from
+http://downloads.php.net/pierre/
+(We need thread safe _ts version)
+
+on linux machine just do
+aptitude install php-apc (no php5!!)
+
+@see also http://www.php.net/manual/en/apc.configuration.php
+
+APC configuration:-
+==================
+Copy apc.php file
+
+rjha@rjha-desktop:/usr/share$ cd /var/www/htdocs
+rjha@rjha-desktop:/var/www/htdocs$ sudo cp /usr/share/doc/php-apc/apc.php.gz .
+[sudo] password for rjha:
+rjha@rjha-desktop:/var/www/htdocs$ gunzip apc.php.gz
+
+extension=apc.so
+apc.enabled=1
+apc.stat=0
+
+
+
+
+
+
+kCacheGrind
+===========
+sudo aptitude install kcachegrind
+
+
+FastCGI
+========
+One PHP request takes 0.2 seconds
+We have 8 PHP processes
+so we should be able to process 40 requests/second
+
+Suppose all PHP processes are kept busy for more than 5 seconds and concurrent
+load is again 40, then what happens?
+Do we have hanging PHP processes?
+
+http://wherethebitsroam.com/blogs/jeffw/apache-php-fastcgi-and-phpfcgichildren
+
+
+Nginx event module
+------------------
+Q. How do I find out the event module used by Nginx?
+in nginx.conf file
+error_log /usr/local/nginx/logs/error.log notice;
+
+
+Nginx configuration
+---------------------
+
+tcp_nodelay on;
+tcp_nopush  on;
+
+ ## Compression
+  gzip              on;
+  gzip_static       on;
+  gzip_buffers      16 8k;
+  gzip_comp_level   9;
+  gzip_http_version 1.0;
+  gzip_min_length   0;
+  gzip_types        text/plain text/html text/css image/x-icon image/bmp;
+  gzip_vary         on;
+
+keepalive_timeoouts
+keepalive_requests
+
+worker processes => Rule of thumb is = Number of CPU
+for compression and SSL = Number of CPU x 2
+
+compression - compile nginx with gzip_static module, higher gzip levels will take
+more CPU time. Level 6 should be good enough!
+
+nginx log_format request_time can tell you how long the server took to process the
+request!
+
+@todo
+=========
+shut down the php/mysql processes and then tune Nginx alone!
+httpperf (some other load generation tool) - look @ WCAT also
+
+worker_processes  8;
+worker_rlimit_nofile 10240;
+events {
+    worker_connections  8024;
+    use eventport;
+}
+http {
+    keepalive_timeout  20;
+    server_names_hash_bucket_size 64;
+    sendfile        on;
+    tcp_nopush     on;
+    client_max_body_size 150m;
+
+    gzip  on;
+    gzip_comp_level  5;
+    gzip_vary       on;
+    gzip_proxied    any;
+    gzip_types      text text/plain text/css text/xml application/xml text/javascript text/html application/x-javascript;
+}
+
+Nginx - Turn On Gzip
+
+
+How to verify PHP_FCGI children ?
+==================================
+PHP script with sleep() looks like the best bet!
+
+
+
+xCache
+========
+The Ubuntu i have does not come with APC. so I am using xCache.
+
+1. How to install xCache on Ubuntu box?
+There is a package called php5-xcache.
+
+2. How to enable/disable  xCache with PHP?
+
+Standard way. Go to /etc/php5/cgi/conf.d and see if you have xcache.ini there or not
+You can remove xcache.ini and restart PHP if you do not want it.
+
+rjha@indigloo3:/var/www/vhosts$ sudo initctl stop php-fastcgi
+rjha@indigloo3:/var/www/vhosts$ sudo initctl start php-fastcgi
+
+
+3. How do I verify that I am actually loading xCache?
+check output of http://live.indigloo.net/test/echo.php
+
+4. xCache admin location
+
+xCache stats can be accessed from location
+http://xcache.indigloo.net/admin/index.php
+we have mapped a separate vHost for xCache, password is set in xcache.ini file
+login/password is gloo/8L
+
+
+Links
+=======
+http://wiki.nginx.org/NginxFcgiExample
+mod_perl performance guide
+http://perl.apache.org/docs/1.0/guide/performance.html
+Nginx config full example.
+http://wiki.nginx.org/NginxFullExample2
+Good explanation about Nginx.
+https://calomel.org/nginx.html
+Lighty Labs link
+http://redmine.lighttpd.net/wiki/1/Docs:PerformanceFastCGI
+AB output as GnuPlot
+http://www.yolinux.com/TUTORIALS/WebServerBenchmarking.html
+
+
+
+
+
+ xcache
+ =======
+
+ yes
+ ttl=0 means never expire, gc=0 means don't do gc
+ this is recommended if you don't update *.php often
+
+ xcache.size = 32M - should be size of allowed shared memory on your system
+ for our case we want ttl=0, we can restart PHP when we redeploy the code
+ we do not do GC
+ Let me cache each page used in opcode cache.
+
+ rjha@indigloo-beta:/etc/php5/conf.d$ pstree -p
+ init(1) cron(2335)
+        getty(2380)
+        mysqld(5565)- {mysqld}(5571)
+        ?               --{mysqld}(5573)
+        ?               -- {mysqld}(5771)
+        nginx(2363)--nginx(2364)
+        php-cgi(6720)---php-cgi(6722)
+        ?               --php-cgi(6723)
+        ?               --php-cgi(6724)
+        ?               --php-cgi(6725)
+
+ our php-cgi processes are running under one group.
+
+ xcache.stat=Off # in production
+
+
+
+

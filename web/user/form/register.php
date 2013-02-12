@@ -14,6 +14,8 @@
 
     use \com\indigloo\sc\mysql as mysql;
     use \com\indigloo\sc\auth\Login as Login ;
+    use \com\indigloo\sc\Constants as AppConstants ;
+
 
     if (isset($_POST['register']) && ($_POST['register'] == 'Register')) {
 
@@ -81,7 +83,7 @@
             //add overlay message
             $message = "success! Thanks for joining ".$fvalues['first_name'];
             $gWeb->store("global.overlay.message", $message);
-            header("Location: /user/dashboard/index.php");
+            header("Location: ". AppConstants::DASHBOARD_URL);
 
             exit ;
 

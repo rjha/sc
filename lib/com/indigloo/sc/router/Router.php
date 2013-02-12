@@ -13,6 +13,7 @@ namespace com\indigloo\sc\router{
         }
 
         function initTable() {
+            //show popular items on home page
             $this->createRule('^/$', 'com\indigloo\sc\controller\Home');
             $this->createRule('^home/page/(?P<gpage>\d+)$', 'com\indigloo\sc\controller\Home');
             

@@ -68,6 +68,11 @@
                             echo \com\indigloo\sc\html\SocialGraph::getWidget($loginId,$following,2); 
                         }
 
+                        if($total == 0){
+                            $message = "No followings in your network" ;
+                            $options = array("hkey" => "dashboard.graph.add");
+                            echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
+                        }
 
                     ?>
                     </div>

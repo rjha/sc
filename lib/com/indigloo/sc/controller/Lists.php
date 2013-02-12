@@ -34,16 +34,23 @@ namespace com\indigloo\sc\controller{
 
             $listDao = new \com\indigloo\sc\dao\Lists(); 
             $listDBRow = $listDao->getOnId($listId);
+            
+            if(empty($listDBRow)) {
+                //not found
+                $controller = new \com\indigloo\sc\controller\Http404();
+                $controller->process();
+                exit;
+            }
+
             $listName = $listDBRow["name"];
             $listPubUrl = sprintf("%s/pub/list/%d/%s",Url::base(),$plistId,$listDBRow["seo_name"]);
 
             //get items from sc_list_item table
-            $model = new \com\indigloo\sc\model\Lists();
+            $model = new \com\indigloo\sc\model\ListItem();
             $filter = new Filter($model);
             $filter->add($model::LIST_ID,Filter::EQ,$listId);
             
             $pageSize = Config::getInstance()->get_value("user.page.items");
-
             $filters = array();
             array_push($filters,$filter);
             

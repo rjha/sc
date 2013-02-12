@@ -18,7 +18,7 @@ namespace com\indigloo\sc\dao {
 
         function exists($itemId) {
             $row = $this->getOnItemId($itemId);
-            $flag = (!is_null($row) && !empty($row["name"])) ? true : false ;
+            $flag = (!empty($row) && ($row["pseudo_id"] == $itemId)) ? true : false ;
             return $flag ;
         }
 

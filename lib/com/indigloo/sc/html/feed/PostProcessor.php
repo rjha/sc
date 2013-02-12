@@ -3,9 +3,11 @@
 namespace com\indigloo\sc\html\feed {
 
     use \com\indigloo\sc\Constants as AppConstants;
-    use com\indigloo\Template as Template;
+    use \com\indigloo\Template as Template;
     use \com\indigloo\sc\util\PseudoId as PseudoId;
+
     use \com\indigloo\Url as Url ;
+    use \com\indigloo\Configuration as Config ;
 
     class PostProcessor extends Processor{
 
@@ -28,6 +30,16 @@ namespace com\indigloo\sc\html\feed {
             }
 
             if($flag){
+                // extra processing for comments
+                // @imp: activity row for comment stores 
+                // post_id as object_id and not item_id
+                if(strcmp($feedObj->verb,AppConstants::COMMENT_VERB) == 0 ) {
+                    if(property_exists($feedObj, 'content')) {
+                        $view['content'] = $feedObj->content ;
+                    }
+                    $feedObj->objectId = PseudoId::encode($feedObj->objectId);
+                }
+
                 $view['subject'] = $feedObj->subject;
                 $view['object'] = $feedObj->title;
                 $pubId = PseudoId::encode($feedObj->subjectId);
@@ -38,7 +50,16 @@ namespace com\indigloo\sc\html\feed {
                 //image for feed
                 if(property_exists($feedObj, 'srcImage')) {
                     if(!empty($feedObj->srcImage)) {
-                        $view['srcImage'] = $feedObj->srcImage ;
+                        $srcImage = $feedObj->srcImage ;
+                        
+                        $m_bucket = \parse_url($srcImage,\PHP_URL_HOST);
+                        // aws s3 bucket mapping for cloud front
+                        // host is a CNAME mapped to amazon s3 bucket
+                        // format is store.bucket.mapto=<mapped-bucket>
+                        $mapKey = sprintf("s3.%s.mapto",$m_bucket) ;
+                        $bucket = Config::getInstance()->get_value($mapKey,$m_bucket);
+                        $view['srcImage'] = str_replace($m_bucket,$bucket,$srcImage);
+
                         $view['nameImage'] = $feedObj->nameImage ;
                         $view['hasImage'] = true ;
                     }
@@ -53,12 +74,7 @@ namespace com\indigloo\sc\html\feed {
                     trigger_error("invalid feed template", E_USER_ERROR);
                 }
 
-                //extra processing for comments.
-                if(strcmp($feedObj->verb,AppConstants::COMMENT_VERB) == 0 ) {
-                    if(property_exists($feedObj, 'content')) {
-                        $view['content'] = $feedObj->content ;
-                    }
-                }
+                
 
                 $html = Template::render($template,$view);
                 

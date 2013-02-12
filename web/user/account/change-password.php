@@ -15,8 +15,10 @@
 
     $gSessionLogin = Login::getLoginInSession();
     $loginId = $gSessionLogin->id ;
+
     if(strcmp($gSessionLogin->provider,Login::MIK) != 0 ) {
-        throw new UIException("change password only works for 3mik logins!");
+        $message = "change password only works for 3mik logins!" ;
+        throw new UIException(array($message));
     }
 
     $userDao = new \com\indigloo\sc\dao\User() ;

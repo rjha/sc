@@ -19,6 +19,7 @@
             <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
 
             <div class="row">
+                <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
                 <div class="span12">
                    <?php 
                     if($gpage == 1 ) {
@@ -131,6 +132,9 @@
                 //Add item toolbar actions
                 webgloo.sc.item.addActions();
                 webgloo.sc.toolbar.add();
+
+                webgloo.sc.dashboard.fixAlert();
+                webgloo.sc.Lists.init();
 
             });
 

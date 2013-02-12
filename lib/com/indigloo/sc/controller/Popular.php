@@ -47,7 +47,7 @@ namespace com\indigloo\sc\controller{
             $pageHeader = 'Most popular';
             $pageBaseUrl = '/pub/popular' ;
 
-            $pageTitle =  "Most popular items on 3mik sorted by user likes";
+            $pageTitle =  "Most popular items on 3mik voted by users";
             $metaKeywords = SeoData::getHomeMetaKeywords();
             $metaDescription = SeoData::getHomeMetaDescription();
 

@@ -16,26 +16,6 @@ namespace com\indigloo\sc\html {
 
     class Comment {
 
-        static function getFeedHtml($rows) {
-            $html = NULL ;
-            $view = new \stdClass;
-            $template = '/fragments/comment/summary-all.tmpl' ;
-            $view->records = array();
-
-            foreach($rows as $row) {
-                $record = array();
-                $record['comment'] = $row['description'];
-                $record['createdOn'] = AppUtil::convertDBTime($row['created_on']);
-                $record['userName'] = $row['user_name'] ;
-                $record['loginId'] = $row['login_id'];
-                $record['pubUserId'] = PseudoId::encode($row['login_id']);
-                $view->records[] = $record ;
-            }
-
-            $html = Template::render($template,$view);
-            return $html ;
-        }
-
         static function getSummary($row) {
             $html = NULL ;
             $view = new \stdClass;
@@ -80,7 +60,7 @@ namespace com\indigloo\sc\html {
             }
 
             $encodedId = PseudoId::encode($view->id);
-            $params = array('id' => $encodedId, 'q' => urlencode(Url::current()));
+            $params = array('id' => $encodedId, 'q' => base64_encode(Url::current()));
             $view->editUrl = Url::createUrl('/qa/comment/edit.php',$params);
             $view->deleteUrl = Url::createUrl('/qa/comment/delete.php',$params);
 

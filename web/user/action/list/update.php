@@ -59,8 +59,10 @@
             $listId = $listDao->create($loginId,$name,$itemId);
             $pListId = PseudoId::encode($listId);
         } else {
-            //Add to existing list 
-            $listDao->addItem($loginId,$listId,$itemId);
+            // Add to existing list 
+            // this can also be defaults lists
+            // so we should get listId from addItem call
+            $listId = $listDao->addItem($loginId,$listId,$itemId);
             $pListId = PseudoId::encode($listId);
         }
 

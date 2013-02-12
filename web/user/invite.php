@@ -24,6 +24,8 @@
     $formToken = Util::getBase36GUID();
     $gWeb->store("form.token",$formToken);
 
+    $defaultMessage = \com\indigloo\sc\html\Site::getInvitationMessage();
+    
 
 ?>
 
@@ -74,7 +76,7 @@
                             <tr>
                                 <td>
                                     <label>Message*&nbsp;(max 512 chars)</label>
-                                    <textarea  id="message" maxlength="512" name="message" class="required h130 wp100" cols="50" rows="4" ><?php echo $sticky->get('message'); ?></textarea>
+                                    <textarea  id="message" maxlength="512" name="message" class="required h130 wp100" cols="50" rows="4" ><?php echo $sticky->get('message',$defaultMessage); ?></textarea>
                                     <br>
                                    <span id="message_counter"></span>
                                 </td>

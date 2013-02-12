@@ -7,9 +7,7 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\Configuration as Config ;
 
     use \com\indigloo\Constants as Constants;
-    use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\ui\form\Sticky;
-
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\html\Seo as SeoData ;
 
@@ -84,104 +82,46 @@ namespace com\indigloo\sc\controller{
             // also used in item images alt text
             // item description should be 160 chars.
             $itemObj->title = Util::abbreviate($postView->title,70);
+            $itemObj->title = sprintf("item %s - %s",$itemId,$itemObj->title);
+
             $itemObj->description = Util::abbreviate($postView->description,160);
+            $itemObj->description = sprintf("item %s - %s by user %s",
+                $itemId,$itemObj->description,$postView->userName) ;
+           
 
             $strItemObj = json_encode($itemObj);
             //make the item json string form safe
             $strItemObj = Util::formSafeJson($strItemObj);
 
-            /* comments data */
-            $commentDao = new \com\indigloo\sc\dao\Comment();
-            $commentDBRows = $commentDao->getOnPostId($postId);
-
+            /* likes data */
+            $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
+            $likeDBRows = $bookmarkDao->getLikeOnItemId($itemId);
+            
             $gWeb = \com\indigloo\core\Web::getInstance();
+            /* sticky is used by comment form */
             $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
+            $gRegistrationPopup = false ;
+
             $loginIdInSession = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
-
-            $xids = array($postId);
-            $xrows = array();
-            $limit = 10 ;
-
-            /* site metadata and posts */ 
-            $siteDao = new \com\indigloo\sc\dao\Site();
-            $siteMetaRow = $siteDao->getOnPostId($postId);
-            $siteId = $siteMetaRow["id"];
-            $site_rows = $siteDao->getPostsOnId($siteId,8);
-            $sitePostRows = array();
-
-            foreach($site_rows as $row) {
-                if(!in_array($row["id"],$xids)) {
-                    array_push($sitePostRows,$row);
-                    array_push($xids,$row["id"]);
-                    if(sizeof($sitePostRows) > 4 ) { break ;}
+            
+            //show registration popup
+            if(is_null($loginIdInSession)) {
+                $register_popup =  $gWeb->find("sc:browser:registration:popup");
+                $register_popup = (is_null($register_popup)) ? false : $register_popup ;
+                
+                if(!$register_popup) {
+                    $gRegistrationPopup = true ;
+                    $gWeb->store("sc:browser:registration:popup", true);
                 }
+                
             }
-
-            /* related to item : via groups */
+            
             $group_slug = $postDBRow["group_slug"];
             $groupDao = new \com\indigloo\sc\dao\Group();
-            //@imp for display purpose only
-            // convert tokens to names and join by comma
             $group_names = $groupDao->tokenizeSlug($group_slug,",",true);
-            $sphinx = new \com\indigloo\sc\search\SphinxQL();
-            $searchToken = NULL ;
-            
-            /* 
-             * recipe for fetching related posts
-             * ------------------------------------------
-             * 
-             * 1) groups (tags) are priority #1 for matching
-             * do exact match against sc_post.group_slug index 
-             * (not polluted by other data like description etc.)
-             * 
-             * 2) Next try to do a "related items" match via quorum operator
-             * use sc_post.title against posts index - # of hits is 3
-             * 
-             * 
-             */
 
-            if(!Util::tryEmpty($group_slug)) {
-                $ids = $sphinx->getPostByGroup($group_slug,0,16);
-                
-                //unique ids?
-                //@imp order matters for array_diff
-                // bucket should be the second argument
-                $ids = Util::fast_array_diff($ids,$xids);
-                //xids for next iteration
-                $xids = array_merge($xids,$ids);    
 
-                if(!empty($ids)) {
-                    $xrows = $postDao->getOnSearchIds($ids);
-                }
-
-            }
-
-            if(sizeof($xrows) < 20 ) {
-                
-                $limit = 20 - (sizeof($xrows)) ;
-                $limit = ($limit > 4 ) ? 4 : $limit ;
-
-                $searchToken = $itemObj->title ;
-                $sphinx = new \com\indigloo\sc\search\SphinxQL();
-                //@todo - number of hits based on number of words in token
-                $searchIds = $sphinx->getRelatedPosts($searchToken,3,0,$limit);
-                //unique search ids?
-                //@imp order matters for array_diff
-
-                $searchIds = Util::fast_array_diff($searchIds,$xids);
-
-                //xids for next iteration
-                $xids = array_merge($searchIds,$xids);
-
-                if(!empty($searchIds)) {
-                    $search_rows = $postDao->getOnSearchIds($searchIds);
-                    //collect in rows bucket
-                    $xrows = array_merge($xrows,$search_rows);
-                }
-            }
-            
             $pageTitle = $itemObj->title;
-            $metaDescription = Util::abbreviate($postDBRow["description"],160);
             $metaKeywords = SeoData::getMetaKeywords($group_names);
             $pageUrl = Url::base().Url::current() ;
              

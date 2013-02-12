@@ -32,6 +32,7 @@
     $checked["comment"] = ($pData->comment) ? "checked" : "" ;
     $checked["bookmark"] = ($pData->bookmark) ? "checked" : "" ;
 
+    
 ?>
 
 
@@ -70,7 +71,12 @@
                             <a class="btn-flat" href="/user/dashboard/profile.php">Edit profile</a>
                         </span>
                         <span>
-                            <a class="btn-flat" href="/user/account/change-password.php">Change password</a>
+                            <?php 
+                                if(\com\indigloo\sc\auth\Login::hasMikLogin()) {
+                                    echo '<a class="btn-flat" href="/user/account/change-password.php">Change password</a>';
+                                }
+                            ?>
+                            
                         </span>
 
                     </div>

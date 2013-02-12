@@ -70,7 +70,7 @@
      <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         
-        <div class="container mh800">
+        <div class="container mh600">
 
             <div style="margin-top:100px;"> &nbsp; </div> <!-- top:padding -->
                 
@@ -136,9 +136,7 @@
 
                         </form>
                     </div> <!-- form wrapper -->
-                    <div class="mt20">
-                        <a href="/user/register.php">Register for a new 3mik account</a>&nbsp;(&nbsp;Free and takes only a minute! )
-                    </div>
+                    
             </div> 
 
         </div> <!-- row:2 -->

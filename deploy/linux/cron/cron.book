@@ -1,0 +1,60 @@
+
+To list cron jobs
+$sudo crontab -l
+
+To install a cron job
+$sudo crontab -e
+
++ existing cron jobs
+
+*/15 * * * * /home/rjha/cron/site-worker.sh >> /home/rjha/web/log/cron.log 2>&1 
+19,49  * * * * /usr/local/sphinx/bin/indexer --quiet --all --rotate >> /usr/local/sphinx/var/log/cron.log 2>&1 
+
+
+
+sudo chmod +x ~/cron/site-worker.php 
+sudo chmod +x ~/cron/site-worker.sh 
+
+
+# Make sure that scripts have execute permissions
+
+
+To send every 30 mins
+*/30 * * * * 
+
+
+https://help.ubuntu.com/community/CronHowto
+
+string
+meaning
+@reboot
+Run once, at startup.
+@yearly
+Run once a year, "0 0 1 1 *".
+@annually
+(same as @yearly)
+@monthly
+Run once a month, "0 0 1 * *".
+@weekly
+Run once a week, "0 0 * * 0".
+@daily
+Run once a day, "0 0 * * *".
+@midnight
+(same as @daily)
+@hourly
+Run once an hour, "0 * * * *".
+
+To change crontab editor
+------------------------------
+A. sudo update-alternatives --config editor
+B. sudo select-editor
+C. Add 
+EDITOR=vim 
+export EDITOR
+to your .bashrc
+
+B worked for sudo, A works for normal user account.
+
+
+
+

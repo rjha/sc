@@ -25,6 +25,13 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
+        static function pageHeader($content) {
+            if(!Util::tryEmpty($content)) { 
+                return  '<div class="page-header"><h2>'.$content.'</h2></div>' ;
+            }
+            
+        }
+
         static function formMessage() {
             
             $html = NULL ;
@@ -228,8 +235,15 @@ namespace com\indigloo\sc\html {
             $template = '/fragments/dash/item-help.tmpl' ;
             $html = Template::render($template,$view);
             return $html ;
-            
+        }
 
+        static function getInvitationMessage() {
+            $html = NULL ;
+            $view = new \stdClass ;
+
+            $template = '/fragments/site/invitation.tmpl' ;
+            $html = Template::render($template,$view);
+            return $html ;
         }
 
     }

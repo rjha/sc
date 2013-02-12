@@ -49,6 +49,11 @@ namespace com\indigloo\sc\dao {
             }
         }
 
+        function getLikeOnItemId($itemId) {
+            $rows = mysql\Bookmark::getLikeOnItemId($itemId);
+            return $rows ;
+        }
+
     }
 
 }

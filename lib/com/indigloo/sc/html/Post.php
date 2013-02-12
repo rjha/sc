@@ -5,6 +5,7 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\Template as Template;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
+    use \com\indigloo\Configuration as Config ;
 
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\util\StringUtil as StringUtil ;
@@ -116,18 +117,61 @@ namespace com\indigloo\sc\html {
             return $html;
         }
 
-        static function getActivity($feedHtml,$commentHtml) {
-      
-            if(Util::tryEmpty($feedHtml) && Util::tryEmpty($commentHtml)) { 
+        static function getComments($rows){
+
+            $html = NULL ;
+            $view = new \stdClass;
+            $template = '/fragments/item/comments.tmpl' ;
+            $view->records = array();
+
+            foreach($rows as $row) {
+                $record = array();
+                $record['comment'] = $row['description'];
+                $record['createdOn'] = AppUtil::convertDBTime($row['created_on']);
+                $record['userName'] = $row['user_name'] ;
+                $record['loginId'] = $row['login_id'];
+                $record['pubUserId'] = PseudoId::encode($row['login_id']);
+                $view->records[] = $record ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+         static function getLikes($rows){
+
+            $html = NULL ;
+            $view = new \stdClass;
+            $template = '/fragments/item/likes.tmpl' ;
+            $view->records = array();
+
+            foreach($rows as $row) {
+                $record = array();
+                
+                $record['userName'] = $row['user_name'] ;
+                $record['loginId'] = $row['login_id'];
+                $record['pubUserId'] = PseudoId::encode($row['login_id']);
+                $view->records[] = $record ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+        static function getActivity($likeHtml,$commentHtml) {
+             
+            if(Util::tryEmpty($likeHtml) && Util::tryEmpty($commentHtml)) { 
                 return "" ; 
             }
 
             $view = new \stdClass;
-            $view->feedHtml = $feedHtml;
+            $view->likeHtml = $likeHtml;
             $view->commentHtml = $commentHtml;
             $template = '/fragments/item/activity.tmpl' ;
             $html = Template::render($template,$view);
-
+            
             return $html;
         }
 
@@ -190,6 +234,17 @@ namespace com\indigloo\sc\html {
                 $template = '/fragments/tile/text.tmpl' ;
             }
 
+            $loginIdInSession = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
+            $view->hasLoginInSession = is_null($loginIdInSession) ? false : true ;
+
+            if(!$view->hasLoginInSession) {
+                
+                $params = array("item_id" => $view->itemId);
+                $listUrl = "/user/dashboard/list/select.php" ;
+                $listUrl = Url::createUrl($listUrl,$params);
+                $view->saveUrl = "/user/login.php?q=".base64_encode($listUrl) ;
+            }
+
             $html = Template::render($template,$view);
             return $html ;
 
@@ -233,9 +288,8 @@ namespace com\indigloo\sc\html {
 
             foreach($rows as $row){
                 $post = self::createPostView($row);
-                if($post->hasImage){
-                    array_push($view->posts,$post);
-                }
+                $post->thumbnail = ($post->hasImage) ? $post->thumbnail : UIConstants::PH4_PIC ;
+                array_push($view->posts,$post);
             }
 
             $html = Template::render($template,$view);
@@ -357,7 +411,7 @@ namespace com\indigloo\sc\html {
 
             $html = NULL ;
 
-            // case when list_item.item_id is not null but post.id is NULL
+            // case when list_item.item_id is not Tnull but post.id is NULL
             if( empty($postDBRow["id"]) && !empty($postDBRow["item_id"]) ) {
                 $template = '/fragments/widget/lists/deleted-item.tmpl' ;
                 $view = new \stdClass;
@@ -402,23 +456,8 @@ namespace com\indigloo\sc\html {
                 return $html ;
             }
 
-            $voptions = array("group" => true);
-            $view = self::createPostView($postDBRow,$voptions);
-          
-             if($view->hasImage) {
-                $template = '/fragments/tile/image.tmpl' ;
-                //Add thumbnail width and height
-                $td = Util::foldX($view->width,$view->height,190);
-                $view->twidth = $td["width"];
-                $view->theight = $td["height"];
-
-            } else {
-                $template = '/fragments/tile/text.tmpl' ;
-            }
-
-            $html = Template::render($template,$view);
+            $html = self::getTile($postDBRow);
             return $html ;
-
         }
 
         static function createPostView($row,$voptions=NULL) {
@@ -559,16 +598,28 @@ namespace com\indigloo\sc\html {
                     $fileName = $jsonObj->storeName ;
                 }
 
-                $view["source"] = $prefix.$jsonObj->bucket.'/'.$jsonObj->storeName;
-                $view["thumbnail"] = $prefix.$jsonObj->bucket.'/'.$fileName ;
+                // aws s3 bucket mapping for cloud front
+                $m_bucket = $jsonObj->bucket ;
+                // format is store.bucket.mapto=<mapped-bucket>
+                $mapKey = sprintf("%s.%s.mapto",$jsonObj->store,$m_bucket) ;
+                $bucket = Config::getInstance()->get_value($mapKey,$m_bucket);
+
+                $view["source"] = $prefix.$bucket.'/'.$jsonObj->storeName;
+                $view["thumbnail"] = $prefix.$bucket.'/'.$fileName ;
                 $view["width"] = $jsonObj->width ;
                 $view["height"] = $jsonObj->height;
                 //@todo add thumbnail width and height to image json data
 
             } else {
 
-                $message = sprintf("Unknown image store %s ", $jsonObj->store);
-                trigger_error($message,E_USER_ERROR);
+                $view["name"] = "placeholder" ;
+                $view["tname"] = "placeholder" ;
+                $view["source"] = UIConstants::PH1_PIC ;
+                $view["thumbnail"] = UIConstants::PH1_PIC ;
+                $view["width"] = 48;
+                $view["height"] = 48;
+                $view["twidth"] = 40;
+                $view["theight"] = 40;
             }
 
             return $view ;
