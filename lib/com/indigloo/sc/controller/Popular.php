@@ -17,6 +17,9 @@ namespace com\indigloo\sc\controller{
         function process($params,$options) {
             
             $qparams = Url::getRequestQueryParams();
+            $gpage = Url::tryQueryParam("gpage");
+            $gpage = empty($gpage) ? "1" : $gpage ;
+
             $redis = new redis\Activity();
 
             $pageSize = Config::getInstance()->get_value("main.page.items");
@@ -46,10 +49,11 @@ namespace com\indigloo\sc\controller{
             
             $pageHeader = 'Most popular';
             $pageBaseUrl = '/pub/popular' ;
-
-            $pageTitle =  "Most popular items on 3mik voted by users";
+            
+            $pageTitle = SeoData::getPageTitleWithNumber($gpage,"popular items");
             $metaKeywords = SeoData::getHomeMetaKeywords();
-            $metaDescription = SeoData::getHomeMetaDescription();
+            $metaDescription = SeoData::getMetaDescriptionWithNumber($gpage,"popular items");
+
 
             $file = APP_WEB_DIR. '/view/tiles-page.php' ;
             include ($file);

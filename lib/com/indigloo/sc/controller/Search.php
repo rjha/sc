@@ -53,9 +53,9 @@ namespace com\indigloo\sc\controller{
              
             $sphinx->close();
             
-            $pageTitle = SeoData::getPageTitle($token);
+            $pageTitle = SeoData::getPageTitleWithNumber($gpage,$token);
             $metaKeywords = SeoData::getMetaKeywords($token);
-            $metaDescription = SeoData::getMetaDescription($token);
+            $metaDescription = SeoData::getMetaDescriptionWithNumber($gpage,$token);
 
             include($template);
         }

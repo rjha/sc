@@ -19,6 +19,9 @@ namespace com\indigloo\sc\controller{
             $postDao = new \com\indigloo\sc\dao\Post();
             
             $qparams = Url::getRequestQueryParams();
+            $gpage = Url::tryQueryParam("gpage");
+            $gpage = empty($gpage) ? "1" : $gpage ;
+
             $pageSize = Config::getInstance()->get_value("main.page.items");
             $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);    
 
@@ -27,9 +30,9 @@ namespace com\indigloo\sc\controller{
             $pageHeader = '';
             $pageBaseUrl = $options["path"];
 
-            $pageTitle = SeoData::getHomePageTitle();
+            $pageTitle = SeoData::getPageTitleWithNumber($gpage,"recent items");
             $metaKeywords = SeoData::getHomeMetaKeywords();
-            $metaDescription = SeoData::getHomeMetaDescription();
+            $metaDescription = SeoData::getMetaDescriptionWithNumber($gpage,"recent items");
 
             $file = APP_WEB_DIR. '/view/tiles-page.php' ;
             include ($file);

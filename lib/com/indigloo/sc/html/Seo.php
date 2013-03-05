@@ -4,8 +4,14 @@ namespace com\indigloo\sc\html{
     class Seo {
 
         static function getPageTitle($token) {
-            $x = "%s - Share and discover %s and other stuff at 3mik.com" ;
+            $x = "%s - Share and discover %s and other items at 3mik.com" ;
             $x = sprintf($x,$token,$token);
+            return $x ;
+        }
+
+        static function getPageTitleWithNumber($gpage,$token) {
+            $x = "page %d of %s - Share and discover %s and other items at 3mik.com" ;
+            $x = sprintf($x,$gpage,$token,$token);
             return $x ;
         }
 
@@ -17,13 +23,26 @@ namespace com\indigloo\sc\html{
 
         static function getMetaDescription($token) {
             $x = "%s - share and discover %s and other similar shopping items in India. " ;
-            $x .= " %s and other interesting stuff are shared by users of 3mik.com" ;
-            $x = sprintf($x,$token,$token,$token);
+            $x .= " all interesting items are shared by users of 3mik.com" ;
+            $x = sprintf($x,$token,$token);
             return $x ;
         }
         
-       static function getHomePageTitle() {
+        static function getMetaDescriptionWithNumber($gpage,$token) {
+            $x = " page %d of %s - share and discover %s and other similar shopping items in India. " ;
+            $x .= " all interesting items are shared by users of 3mik.com" ;
+            $x = sprintf($x,$gpage,$token,$token);
+            return $x ;
+        }
+
+        static function getHomePageTitle() {
             $x = " Share and discover shopping items in India - 3mik.com" ;
+            return $x ;
+        }
+
+        static function getHomePageTitleWithNumber($gpage) {
+            $x = " page %d of Share and discover shopping items in India - 3mik.com" ;
+            $x = sprintf($x,$gpage);
             return $x ;
         }
 
@@ -34,7 +53,14 @@ namespace com\indigloo\sc\html{
 
         static function getHomeMetaDescription() {
             $x = " share and discover cool shopping items in India. " ;
-            $x .= "All interesting stuff are shared by users of 3mik.com" ; 
+            $x .= " all interesting items are shared by users of 3mik.com" ; 
+            return $x ;
+        }
+
+        static function getHomeMetaDescriptionWithNumber($gpage) {
+            $x = " page %d of share and discover cool shopping items in India. " ;
+            $x .= " all interesting items are shared by users of 3mik.com" ; 
+            $x = sprintf($x,$gpage);
             return $x ;
         }
 

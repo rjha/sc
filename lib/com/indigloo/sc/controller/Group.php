@@ -26,6 +26,10 @@ namespace com\indigloo\sc\controller{
 
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
             $qparams = Url::getRequestQueryParams();
+            
+            $gpage = Url::tryQueryParam("gpage");
+            $gpage = empty($gpage) ? "1" : $gpage ;
+
             $pageSize = Config::getInstance()->get_value("search.page.items");
             $paginator = new Pagination($qparams,$pageSize);
 
@@ -49,9 +53,9 @@ namespace com\indigloo\sc\controller{
                 $template = APP_WEB_DIR. '/view/notiles.php';
             }
 
-            $pageTitle = SeoData::getPageTitle($groupName);
+            $pageTitle = SeoData::getPageTitleWithNumber($gpage,$groupName);
             $metaKeywords = SeoData::getMetaKeywords($groupName);
-            $metaDescription = SeoData::getMetaDescription($groupName);
+            $metaDescription = SeoData::getMetaDescriptionWithNumber($gpage,$groupName);
 
             include($template);
         }

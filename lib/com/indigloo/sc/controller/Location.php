@@ -30,6 +30,9 @@ namespace com\indigloo\sc\controller{
             $sphinx = new \com\indigloo\sc\search\SphinxQL();
             
             $qparams = Url::getRequestQueryParams();
+            $gpage = Url::tryQueryParam("gpage");
+            $gpage = empty($gpage) ? "1" : $gpage ;
+
             $pageSize = Config::getInstance()->get_value("search.page.items");
             $paginator = new Pagination($qparams,$pageSize);
             $ids = $sphinx->getPagedPosts($token,$paginator);
@@ -52,9 +55,9 @@ namespace com\indigloo\sc\controller{
 
             }
 
-            $pageTitle = SeoData::getPageTitle($token);
+            $pageTitle = SeoData::getPageTitleWithNumber($gpage,$token);
             $metaKeywords = SeoData::getMetaKeywords($token);
-            $metaDescription = SeoData::getMetaDescription($token);
+            $metaDescription = SeoData::getMetaDescriptionWithNumber($gpage,$token);
 
             include($template);
         }

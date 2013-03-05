@@ -66,7 +66,7 @@ namespace com\indigloo\sc\controller{
 
             //page variables
             $pageBaseUrl = $listPubUrl ;
-            $pageTitle = $listDBRow["name"];
+            $pageTitle = sprintf("page %d of %s", $gpage,$listDBRow["name"]);
             
             $description = Util::abbreviate($listDBRow["description"],160);
             $metaDescription = SeoData::thisOrHomeDescription($description);

@@ -31,6 +31,9 @@ namespace com\indigloo\sc\controller{
             $postDao = new \com\indigloo\sc\dao\Post();
             
             $qparams = Url::getRequestQueryParams();
+            $gpage = Url::tryQueryParam("gpage");
+            $gpage = empty($gpage) ? "1" : $gpage ;
+
             $pageSize = Config::getInstance()->get_value("search.page.items");
             $paginator = new Pagination($qparams,$pageSize);
             $postDBRows = $postDao->getPagedOnCategory($paginator,$code);
@@ -38,9 +41,9 @@ namespace com\indigloo\sc\controller{
             $pageHeader = $catName;
 
             $pageBaseUrl = "/category/$seoKey";
-            $pageTitle = SeoData::getPageTitle($catName);
+            $pageTitle = SeoData::getPageTitleWithNumber($gpage,$catName);
             $metaKeywords = SeoData::getMetaKeywords($catName);
-            $metaDescription = SeoData::getMetaDescription($catName);
+            $metaDescription = SeoData::getMetaDescriptionWithNumber($gpage,$catName);
 
             $file = APP_WEB_DIR. '/view/tiles-page.php' ;
             include ($file);

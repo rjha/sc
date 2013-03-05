@@ -31,7 +31,7 @@ namespace com\indigloo\sc\controller{
             $gpage = Url::tryQueryParam("gpage");
             $gpage = empty($gpage) ? "1" : $gpage ;
             if($gpage == "1") {
-                $this->loadHomePage();
+                $this->loadHomePage($gpage);
             } else {
                 $this->loadNextPage($gpage);
             }
@@ -60,7 +60,7 @@ namespace com\indigloo\sc\controller{
          * - fetch more latest DB rows
          *
          */
-        private function loadHomePage() {
+        private function loadHomePage($gpage) {
             $pageSize = Config::getInstance()->get_value("main.page.items");
             $postDao = new \com\indigloo\sc\dao\Post();
             $fp_size = $pageSize - 14 ;
@@ -104,9 +104,9 @@ namespace com\indigloo\sc\controller{
             $nparams = array('gpa' => $endId, 'gpage' => 2) ;
             $nextPageUrl = Url::addQueryParameters("/",$nparams);
 
-            $pageTitle = SeoData::getHomePageTitle();
+            $pageTitle = SeoData::getHomePageTitleWithNumber($gpage);
             $metaKeywords = SeoData::getHomeMetaKeywords();
-            $metaDescription = SeoData::getHomeMetaDescription();
+            $metaDescription = SeoData::getHomeMetaDescriptionWithNumber($gpage);
 
             $file = APP_WEB_DIR. '/home.php' ;
             include ($file);
@@ -124,9 +124,9 @@ namespace com\indigloo\sc\controller{
             $pageHeader = '';
             $pageBaseUrl = '/' ;
 
-            $pageTitle = SeoData::getHomePageTitle();
+            $pageTitle = SeoData::getHomePageTitleWithNumber($gpage);
             $metaKeywords = SeoData::getHomeMetaKeywords();
-            $metaDescription = SeoData::getHomeMetaDescription();
+            $metaDescription = SeoData::getHomeMetaDescriptionWithNumber($gpage);
 
             $file = APP_WEB_DIR. '/view/tiles-page.php' ;
             include ($file);
