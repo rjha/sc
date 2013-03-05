@@ -153,6 +153,9 @@ namespace com\indigloo\sc\controller{
             $loginId = PseudoId::decode($pubUserId);
             $qparams = Url::getRequestQueryParams();
             
+            $gpage = Url::tryQueryParam("gpage");
+            $gpage = empty($gpage) ? "1" : $gpage ;
+
             $userDao = new \com\indigloo\sc\dao\User();
             $userDBRow = $userDao->getOnLoginId($loginId);
             $this->isValidUser($userDBRow);
@@ -177,7 +180,7 @@ namespace com\indigloo\sc\controller{
 
             //page variables
             $pageBaseUrl = "/pub/user/".$pubUserId ;
-            $pageTitle = sprintf("items by %s",$userDBRow["name"]);
+            $pageTitle = sprintf("page %d of items by %s",$gpage,$userDBRow["name"]);
             $metaKeywords = SeoData::getHomeMetaKeywords();
             $metaDescription = SeoData::getHomeMetaDescription();
 
@@ -222,7 +225,7 @@ namespace com\indigloo\sc\controller{
 
             //page variables
             $pageBaseUrl = "/pub/user/".$pubUserId ;
-            $pageTitle = sprintf("Likes by %s",$userDBRow["name"]);
+            $pageTitle = sprintf("page %d of likes by %s",$gpage,$userDBRow["name"]);
             $metaKeywords = SeoData::getHomeMetaKeywords();
             $metaDescription = SeoData::getHomeMetaDescription();
 
@@ -295,7 +298,7 @@ namespace com\indigloo\sc\controller{
 
             //page variables
             $pageBaseUrl = "/pub/user/".$pubUserId ;
-            $pageTitle = sprintf("All lists");
+            $pageTitle = sprintf("page %d of lists by %s",$gpage,$userDBRow["name"]);
             $metaKeywords = SeoData::getHomeMetaKeywords();
             $metaDescription = SeoData::getHomeMetaDescription();
 
