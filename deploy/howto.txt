@@ -5,26 +5,86 @@ we know our RAM usage and we would like no swapping
 # New server deployment checklist
 -------------------------------------
 
-0. Save a snapshot of existing deployment?
++ Create backup
+
+* create a backup of code
+* create a backup of DB
+
++ Make sure you are on right branch
+
+* switch to branch <branch-name>
+
++ update config files
+
+* sc_config.ini changes
+* sphinx.conf changes
+* redis.conf changes
+* mysql my.cnf changes
+* php.ini changes
+* Nginx.conf changes
+
++ DB patching
+  - run sql patches
+  - run one time db scripts
++ redis 
+    - Do we need to flushdb?
+    - Do we need to run scripts?
+
++ sphinx new indexes?
+
++ install new cron script
++ verify that new cron script is fine.
+  - site processing flags are OK
+  sc_site_tracker.site_flag = 1 
+  sc_site_tracker.group_flag = 1
+  sc_mail_queue.flag = 1 
+  sc_activity.op_bit = 1 
+
+=====================================================
+
+1. Backup: 
     - code snapshot
     - DB snapshot
     - config files :
-         my.cnf /redis.conf/sphinx.conf/php.ini / sc-app.inc/ sc_config.ini
-1. Nginx - Any configuration changes for vHost or main file?
-2. MySQL - Any my.cnf changes? 
-3. MySQL - DB backup done?
-4. MySQL - DB patching done?  
-5. MySQL - check mysql host/password/db name in sc_config.ini
-6. Sphinx - check sphinx.conf for connection string and index definitions.
-7. Sphinx - check port and DSN in sc_config.ini
-8. Sphinx - create indexes - reindex
-9. Redis - check redis.conf for settings
-10. Redis - check DSN in sc_config.ini
-11. CRON - install our cron jobs.
-12. logrotate - install our logrotate script
-13. Xcache
-14. New code from github
- 
+        + nginx.conf
+        + my.cnf 
+        + redis.conf
+        + sphinx.conf
+        + php.ini 
+        + sc-app.inc
+        + sc_config.ini
+
+2. Nginx  
+    + Any configuration changes for vHost file
+    + Any config changes for  main config file
+
+3. MySQL - 
+    - backup done
+    - my.cnf changes done
+    - db patching done
+    - check mysql host/password/db name in sc_config.ini
+
+4. Sphinx 
+    - check sphinx.conf / connection string and index definitions
+    - check port and DSN in sc_config.ini
+    - need to create indexes - reindex?
+
+5.Redis 
+    - Need to flushdb?
+    - check redis.conf for settings
+    - run new scripts?
+    - check DSN in sc_config.ini
+6. CRON 
+    - install new site-worker cron job.
+    - Test new site-worker cron job
+    - Make sure DB has right flags for next cron processing
+
+7. logrotate - install our logrotate script
+8. Xcache
+9. New code from github
+    - do a backup
+    - make sure about the branch
+    - pull from right branch
 
 
 RAM Calculation

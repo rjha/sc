@@ -13,17 +13,12 @@
    
     $qparams = Url::getRequestQueryParams();
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
+
     $loginId = $gSessionLogin->id;
+    $loginName = $gSessionLogin->name;
 
     if (is_null($loginId)) {
         trigger_error("Error : NULL login_id on user dashboard", E_USER_ERROR);
-    }
-
-    $userDao = new \com\indigloo\sc\dao\User();
-    $userDBRow = $userDao->getOnLoginId($loginId);
-
-    if (empty($userDBRow)) {
-        trigger_error("No user record found for given login_id", E_USER_ERROR);
     }
 
     $commentDao = new \com\indigloo\sc\dao\Comment() ;
@@ -35,10 +30,11 @@
     $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
     array_push($filters,$filter);
 
-    $total = $commentDao->getTotalCount($filters);
     $pageSize = Config::getInstance()->get_value("user.page.items");
-    $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
+    $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $commentDBRows = $commentDao->getPaged($paginator,$filters);
+    
+    $baseURI = "/user/dashboard/comments.php" ;
 
 ?>
 
@@ -47,7 +43,7 @@
 <html>
 
     <head>
-        <title> 3mik.com - user <?php echo $userDBRow['name']; ?>  </title>
+        <title> comments <?php echo $loginName; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         
@@ -55,57 +51,69 @@
 
     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-        <div class="container">
-            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+        <div class="container mh600">
             <div class="row">
-                <div class="span9 mh800">
+                <div class="span12">
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                 <div class="span12">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="span12">
                     <div class="page-header">
-                        <div class="faded-text">
-                            All your comments are shown here. Do mouse over a comment to get 
-                            edit and remove links.
-                        </div>
+                        <h4> Comments </h4>
                     </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span8 offset1">
+                    
                     
                     <?php
                         $startId = NULL ;
                         $endId = NULL ;
+                        $gNumRecords = sizeof($commentDBRows);
 
-                        if(sizeof($commentDBRows) > 0 ) {
+                        if( $gNumRecords > 0 ) {
                             $startId = $commentDBRows[0]['id'] ;
-                            $endId =   $commentDBRows[sizeof($commentDBRows)-1]['id'] ;
+                            $endId =   $commentDBRows[$gNumRecords -1]['id'] ;
                             foreach($commentDBRows as $commentDBRow){
                                 echo \com\indigloo\sc\html\Comment::getWidget($commentDBRow);
                             }
                         } else {
                             $message = "No comments found " ;
-                            echo \com\indigloo\sc\html\NoResult::get($message);
+                            echo \com\indigloo\sc\html\Site::getNoResult($message);
                         }
 
                     ?>
 
 
                 </div>
-                <div class="span3">
-                </div>
+                
             </div>
         </div> <!-- container -->
 
-        <?php $paginator->render('/user/dashboard/comments.php', $startId, $endId); ?>
-
+        <?php $paginator->render($baseURI,$startId,$endId,$gNumRecords); ?>
+        
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
          <script>
             $(document).ready(function(){
-                //show options on widget hover
-                $('.widget .options').hide();
-                $('.widget').mouseenter(function() {
-                    $(this).find('.options').toggle();
+            
+               $('.widget').mouseenter(function() {
+                    $(this).find('.options').css("visibility", "visible");
                     /* @todo move colors to a css style */
                     $(this).css("background-color", "#FEFDF1");
                 });
 
                 $('.widget').mouseleave(function() {
-                    $(this).find('.options').toggle();
+                    $(this).find('.options').css("visibility", "hidden");
                     $(this).css("background-color", "#FFFFFF");
                 });
 

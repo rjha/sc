@@ -2,83 +2,92 @@
 # Minimal Sphinx configuration sample (clean, simple, functional)
 #
 
-source mydb {
+source mydb 
+{
     type            = mysql
     sql_host        = localhost
-    sql_user        = mysql_user
-    sql_pass        = mysql_password
-    sql_db          = mysql_db
+    sql_user        = user
+    sql_pass        = password
+    sql_db          = scdb1
     sql_port        = 3306  
 }
 
-source posts : mydb
+source posts : mydb 
 {
 
-    sql_query       =  SELECT id,group_slug,description, unix_timestamp(created_on) as created_on, \
-                       is_feature , login_id from sc_post
-
+    sql_query       =  SELECT id,group_slug,description,links_json, unix_timestamp(created_on) as created_on, \
+    login_id from sc_post
     sql_attr_uint = login_id
-    sql_attr_uint = is_feature
     sql_attr_timestamp = created_on
-
     # debug only
     sql_query_info      = SELECT * FROM sc_post  WHERE id=$id
 }
 
-source comments : mydb
+source post_groups : mydb 
 {
-    sql_query       =  SELECT id,description,post_id,login_id,unix_timestamp(created_on) as created_on  from sc_comment
-
+    sql_query       =  SELECT id,group_slug ,login_id from sc_post
     sql_attr_uint = login_id
-    sql_attr_uint = post_id
-    sql_attr_timestamp = created_on
-
-    # debug
-    sql_query_info      = SELECT * FROM sc_comment  WHERE id=$id
-
-}
-
-source groups : mydb
-
-{
-    sql_query = select id,group_slug,login_id,unix_timestamp(created_on) as created_on from sc_post 
-
-    sql_attr_uint = login_id
-    sql_attr_timestamp = created_on
-
-    # debug 
+    # debug only
     sql_query_info      = SELECT * FROM sc_post  WHERE id=$id
+}
+
+
+source groups : mydb 
+{
+    sql_query = select id,name,cat_code from sc_group_master
+    sql_attr_uint = cat_code
+    # debug 
+    sql_query_info      = SELECT * FROM sc_group_master  WHERE id=$id
 
 }
+
+# main posts index
+#prefix indexing for wildcard searching 
 
 index posts
 {
     source          = posts
     path            = /usr/local/sphinx/var/data/posts
     min_word_len = 3 
-    min_prefix_len = 3
-    charset_type = utf-8
+    min_prefix_len=3
+    charset_type        = utf-8
 }
 
-index comments : posts
+# index to match sc_post.groups
+# created against group_slug only
+# soft hyphen  is added to ignore_chars list, so we index nyv-studio as [nyvstudio]
+# without ignore_char, hyphen acts as word breaker so nyv-studio will be indexed
+# as [nyv studio] 
+# for internal matching (DB vs DB) only
+# do not use this index against user supplied tokens.
+
+index post_groups 
 {
-    source          = comments
-    path            = /usr/local/sphinx/var/data/comments
+    source          = post_groups
+    path            = /usr/local/sphinx/var/data/post_groups
+    charset_type        = utf-8
+    ignore_chars = U+002D
 }
+
+# index against groups master 
+# for group lookup
+# here we let hyphen break words
+# so nyt-studio becomes [nyt studio]
+# we also need token* capability so we want prefix as well.
 
 index groups 
 {
     source = groups
     path            = /usr/local/sphinx/var/data/groups
-    charset_type    = utf-8
-    ignore_chars = U+002D
+    min_word_len = 3 
+    min_prefix_len=3
+    charset_type        = utf-8
 }
 
 indexer
 {
     mem_limit       = 32M
 }
-
 
 searchd
 {

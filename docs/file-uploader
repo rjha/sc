@@ -1,0 +1,52 @@
+
+
+IE issue with file upload
+----------------------------
+
+Turns out it was actually a PHP issue. (The way we handle data coming from file uploader in PHP script)
+https://github.com/valums/file-uploader/issues/352
+it is better to use the code from github now as it is being maintained.
+https://github.com/valums/file-uploader
+
+version update
+----------------
+
+The sc code will 18 oct. 2012 was using valums file uploader downloaded from old site.
+
+19th Oct. 2012 - we planned to move to the version of file uploader maintained on github
+https://github.com/valums/file-uploader
+This is in hope to fix bug fixes etc.
+we are deploying version 2.1.1
+
+However working with file uploader means making some changes to the default release.
+Unfortunately ful is not very plug-in like. so we hack the core library itself.
+This may be a good thing or this may be a bad thing. The original files are left in repo
+so you can take a diff anytime and see the changes. (Use meld to see the diff)
+
+css changes
+---------------
+
+- removed qq-upload-button style
+- removed qq-upload-drop-area style
+- qq-upload-list : copied from old valums plugin (basically no background and smaller fonts)
+- qq-upload-success and qq-upload-fail styles changes
+(we want black on white and red on white styles)
+
+sc.css - no overriding is required for file uploader.
+
+js changes
+------------------
+
+* old valums - we changed the template used to create upload button
+    - add bootstrap style "btn" to qq-upload-button
+    - added a custom label 
+
+* 2.1.1 release from github
+    - Button name can be supplied as an option (uploadButtonText)
+    - removed progress bar rendering code (Not needed and I believe the computation is also off)
+    - progress bar interferes with rendering of cancel button 
+    - As usual added btn class to upload button template
+
+
+
+    

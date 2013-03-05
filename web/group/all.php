@@ -13,10 +13,8 @@
     $filters = array();
 
     $groupDao = new \com\indigloo\sc\dao\Group();
-    $total = $groupDao->getTotalCount($filters);
-
     $pageSize = 100;
-    $paginator = new Pagination($qparams,$total,$pageSize); 
+    $paginator = new Pagination($qparams,$pageSize); 
     $groups = $groupDao->getPaged($paginator,$filters);
 
     $startId = NULL ;
@@ -29,10 +27,6 @@
 
     $pageBaseUrl = "/group/all.php" ;
     $title = "All groups";
-
-    $hasPagination = true ;
-    $hasNavigation = true ;
-    $hasAlpha = false ;
-
-    include(APP_WEB_DIR.'/group/inc/body.inc');
+    $file = APP_WEB_DIR. "/view/group/cards-page.php" ;
+    include ($file);
 ?>

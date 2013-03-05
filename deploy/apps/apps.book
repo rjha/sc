@@ -1,3 +1,7 @@
+#ssh
+to break an unresponsive ssh session  type ~. (tilde dot)
+
+
 #gvim
 mkdir ~/nuke/swap
 cp deploy/apps/vimrc  ~/.vimrc
@@ -144,5 +148,92 @@ search for soda
 install Soda-Theme package
 
 
+misc
+--------
+To load your vimrc when doing sudo vim <file>
+use $sudo vim -u /home/rjha/.vimrc <file>
+
+
+
+gVim
+----------
+
+#reload vimrc file
+
+:source ~/.vimrc
+
+#nerdtree
+copy deploy/apps/vim/autoload/pathogen.vim to ~/.vim/
+cd ~/.vim/bundle
+git clone https://github.com/scrooloose/nerdtree.git
+
+ 
+
+facebook pfff
+----------------
+
+
+#install ocaml + dependencies - via debian package 
+
+less install.txt 
+sudo aptitude install ocaml
+#separate package on debian systems
+sudo aptitude install ocaml-compiler-libs
+
+sudo aptitude install libpcre3-dev
+sudo aptitude install binutils-gold
+
+
+# install ocaml + dependencies - godi way
+
+The debian package way is fraught with issues. The ocaml version on my m/c
+(Debian testing) is 3.1.11 whereas the version used by facebook/pfff is 4.0
+(They are using bin-annot in Makefile)
+
+A better way to maintain Ocaml is to use godi package manager that compiles
+the latest ocaml from sources. (http://godi.camlcity.org/godi/index.html)
+You can install pcre and binutils via debian packages/
+
+The godi install for ocaml is pretty straight forward.
+
+
+
+#whatever is latest version
+$wget http://download.camlcity.org/download/godi-skylift-20121022.tar.gz
+
+$tar -zxvf godi-skylift-20121022.tar.gz 
+$cd godi-skylift-20121022/
+$sudo ./bootstrap
+
+# take all default options
+# After install add /opt/godi/bin:/opt/godi/sbin to PATH.
+$ocaml -version
+
+#get and compile pfff
+
+git clone git://github.com/facebook/pfff.git
+cd pfff/
+
+./configure -nogui -novisual --prefix=/home/rjha/sw/pfff
+make clean
+make depend
+make 
+
+#usage
+./scheck  ~/code/github/sc/lib/com/indigloo/sc/html/
+./pfff -dump_php demos/foo.php
+
+pfff does not have namespace support yet! 
+@see https://github.com/facebook/pfff/issues/17
+
+
+google closure compiler
+-------------------------
+
+Download or copy from ~/macbook/common/sw area
+google project: http://code.google.com/p/closure-compiler/
+To run on our bundle-full js script
+
+$java -jar compiler.jar --js=/home/rjha/code/github/sc/web/js/bundle-full.js    --js_output_file=out.js
 
 

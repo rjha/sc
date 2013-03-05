@@ -40,66 +40,71 @@ namespace com\indigloo\sc\mysql {
          *
          *
          */
-        static function create($googleId,$email,$name,$firstName,$lastName,$photo,$provider){
+        static function create(
+            $googleId,
+            $email,
+            $name,
+            $firstName,
+            $lastName,
+            $photo,
+            $provider,
+            $remoteIp){
             
              $dbh = NULL ;
              
              try {
-                $sql1 = "insert into sc_login (provider,name,created_on) values(:provider,:name,now()) " ;
-                $flag = true ;
-
+                $sql1 = "insert into sc_login(provider,name,ip_address,created_on) " ;
+                $sql1 .= " values(:provider,:name, :ip_address,now()) " ;
+                
                 $dbh =  PDOWrapper::getHandle();
+
                 //Tx start
                 $dbh->beginTransaction();
 
-                $stmt = $dbh->prepare($sql1);
-                $stmt->bindParam(":name", $name);
-                $stmt->bindParam(":provider", $provider);
-                $flag = $stmt->execute();
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":name", $name);
+                $stmt1->bindParam(":provider", $provider);
+                $stmt1->bindParam(":ip_address", $remoteIp);
 
-                if(!$flag){
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
-                    throw new DBException($message);
-                }
-
+                $stmt1->execute();
+                $stmt1 = NULL ;
+                
                 $loginId = $dbh->lastInsertId();
                 settype($loginId, "integer");
 
                 $sql2 = " insert into sc_google_user(google_id,email,name,first_name,last_name," ;
-                $sql2 .= " photo,login_id,created_on) " ;
-                $sql2 .= " values(?,?,?,?,?,?,?,now()) ";
+                $sql2 .= " photo,login_id,ip_address,created_on) " ;
+                $sql2 .= " values(?,?,?,?,?,?,?,?,now()) ";
 
-                $stmt = $dbh->prepare($sql2);
-                $stmt->bindParam(1, $googleId);
-                $stmt->bindParam(2, $email);
-                $stmt->bindParam(3, $name);
-                $stmt->bindParam(4, $firstName);
-                $stmt->bindParam(5, $lastName);
-                $stmt->bindParam(6, $photo);
-                $stmt->bindParam(7, $loginId);
+                $stmt2 = $dbh->prepare($sql2);
+                $stmt2->bindParam(1, $googleId);
+                $stmt2->bindParam(2, $email);
+                $stmt2->bindParam(3, $name);
+                $stmt2->bindParam(4, $firstName);
+                $stmt2->bindParam(5, $lastName);
+                $stmt2->bindParam(6, $photo);
+                $stmt2->bindParam(7, $loginId);
+                $stmt2->bindParam(8, $remoteIp);
 
-                $flag = $stmt->execute();
-
-                if(!$flag){
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
-                    throw new DBException($message);
-                }
-
+                $stmt2->execute();
+                $stmt2 = NULL ;
+                
                 //Tx end
                 $dbh->commit();
                 $dbh = null;
 
                 return $loginId;
 
-            }catch (PDOException $e) {
+            } catch (\PDOException $e) {
                 $dbh->rollBack();
                 $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());
 
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
             }
 
         }

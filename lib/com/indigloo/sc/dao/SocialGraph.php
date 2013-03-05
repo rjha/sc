@@ -10,35 +10,27 @@ namespace com\indigloo\sc\dao {
 
         function follow($followerId,$followerName,$followingId,$followingName) {
             $row = mysql\SocialGraph::find($followerId,$followingId);
-            $count = $row['count'] ;
+            $count = $row["count"] ;
 
             if($count == 0 ) {
                 //actually insert
-                mysql\SocialGraph::addFollower($followerId,$followingId);
-                //Add to feed
-                $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
-                $verb = \com\indigloo\sc\Constants::FOLLOWING_VERB ;
-                $feedDao->addFollower($followerId, $followerName, $followingId, $followingName, $verb);
-
+                mysql\SocialGraph::addFollower($followerId,$followerName,$followingId,$followingName);
+              
             }
 
         }
         
         function unfollow($followerId,$followingId) {
             mysql\SocialGraph::removeFollower($followerId,$followingId);
-            //remove from following/follower sets.
-            $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
-            $feedDao->removeFollower($followerId,$followingId);
-
         }
         
-        function getFollowing($loginId) {
-            $rows = mysql\SocialGraph::getFollowing($loginId);
+        function getFollowing($loginId,$limit) {
+            $rows = mysql\SocialGraph::getFollowing($loginId,$limit);
             return $rows ;
         }
         
-        function getFollowers($loginId) {
-            $rows = mysql\SocialGraph::getFollowers($loginId);
+        function getFollowers($loginId,$limit) {
+            $rows = mysql\SocialGraph::getFollowers($loginId,$limit);
             return $rows ;
         }
 

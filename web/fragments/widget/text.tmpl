@@ -1,26 +1,31 @@
-<div class="widget separator1">
-    <p>
-        <i class="icon-asterisk"></i>&nbsp;
-        ~~$view->description~
-        <br/>
-        <span class="ml20">
-            ~~$view->createdOn~
-            &nbsp; <a href="/item/~~$view->itemId~">more...</a>
-        </span>
-
-    </p>
-
-    <div class="options">
+<div class="widget">
+     <div class="options"> 
         <div class="links">
-                ~if($view->hasEdit){~
-                <a href="~~$view->editUrl~"><i class="icon-edit"></i>&nbsp;Edit</a>
-            ~}~
-            &nbsp;
-            ~if($view->hasDelete){~
-                <a href="~~$view->deleteUrl~"><i class="icon-remove"></i>&nbsp;Delete</a>
-            ~}~
+             <a href="#" id="~~$view->itemId~" class="show-list"><i class="icon-list"></i> Add to list</a>
+            &nbsp;|&nbsp;
+            <a href="~~$view->editUrl~"><i class="icon-edit"></i> Edit item</a>
+            &nbsp;|&nbsp;
+            <a href="~~$view->deleteUrl~"><i class="icon-trash"></i> Delete item</a>
+            
         </div>
     </div>
+    <div class="row">
+        
+        <div class="span5">
+            <h5> <a href="/item/~~$view->itemId~">~~$view->title~</a> </h5>
+            <div class="p5">
+                ~if($view->hasGroups){
+                    foreach($view->groups as $group){~
+                    <a class="label" href="/group/~~$group["slug"]~">~~$group["display"]~</a>&nbsp;
+                ~}}~
+            </div>
+    
+            <div class="p5">~~$view->createdOn~ </div>
+            
+        </div>
+        
+
+    </div> <!-- widget:row -->
 
 </div>
 

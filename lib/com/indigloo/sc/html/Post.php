@@ -5,15 +5,17 @@ namespace com\indigloo\sc\html {
     use \com\indigloo\Template as Template;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
+    use \com\indigloo\Configuration as Config ;
+
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\util\StringUtil as StringUtil ;
-
     use \com\indigloo\sc\util\PseudoId as PseudoId;
+    
     use \com\indigloo\sc\ui\Constants as UIConstants ;
     use \com\indigloo\sc\Constants as AppConstants ;
+    use \com\indigloo\sc\Util as AppUtil;
 
     class Post {
-
 
         static function getGalleria($title,$images) {
             if(empty($images) || (sizeof($images) == 0)) { return '' ; }
@@ -89,37 +91,87 @@ namespace com\indigloo\sc\html {
         }
 
         static function getHeader($postView,$loginIdInSession) {
+            
+            $postView->isItemOwner = false ;
+            $postView->hasLoginInSession = is_null($loginIdInSession) ? false : true ;
 
-            //toolbar stuff
-
-            $postView->followerId = $loginIdInSession;
-            $postView->followingId = $postView->loginId;
-
-            //edit item
-            $postView->isLoggedInUser = false ;
+            // session has login and session.login_id == item.login_id
             if(!is_null($loginIdInSession) && ($loginIdInSession == $postView->loginId)) {
-                $postView->isLoggedInUser = true ;
-                $params = array('id' => $postView->itemId , 'q' => urlencode(Url::current()));
+                $postView->isItemOwner = true ;
+                $params = array('id' => $postView->itemId , 'q' => base64_encode(Url::current()));
                 $postView->editUrl = Url::createUrl('/qa/edit.php',$params);
+
             }
 
             $template = '/fragments/item/header.tmpl' ;
+
+            if(!$postView->hasLoginInSession) {
+                
+                $params = array("item_id" => $postView->itemId);
+                $listUrl = "/user/dashboard/list/select.php" ;
+                $listUrl = Url::createUrl($listUrl,$params);
+                $postView->saveUrl = "/user/login.php?q=".base64_encode($listUrl) ;
+            }
+
             $html = Template::render($template,$postView);
             return $html;
         }
 
-        static function getActivity($feedHtml,$commentHtml) {
-      
-            if(Util::tryEmpty($feedHtml) && Util::tryEmpty($commentHtml)) { 
+        static function getComments($rows){
+
+            $html = NULL ;
+            $view = new \stdClass;
+            $template = '/fragments/item/comments.tmpl' ;
+            $view->records = array();
+
+            foreach($rows as $row) {
+                $record = array();
+                $record['comment'] = $row['description'];
+                $record['createdOn'] = AppUtil::convertDBTime($row['created_on']);
+                $record['userName'] = $row['user_name'] ;
+                $record['loginId'] = $row['login_id'];
+                $record['pubUserId'] = PseudoId::encode($row['login_id']);
+                $view->records[] = $record ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+         static function getLikes($rows){
+
+            $html = NULL ;
+            $view = new \stdClass;
+            $template = '/fragments/item/likes.tmpl' ;
+            $view->records = array();
+
+            foreach($rows as $row) {
+                $record = array();
+                
+                $record['userName'] = $row['user_name'] ;
+                $record['loginId'] = $row['login_id'];
+                $record['pubUserId'] = PseudoId::encode($row['login_id']);
+                $view->records[] = $record ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+        static function getActivity($likeHtml,$commentHtml) {
+             
+            if(Util::tryEmpty($likeHtml) && Util::tryEmpty($commentHtml)) { 
                 return "" ; 
             }
 
             $view = new \stdClass;
-            $view->feedHtml = $feedHtml;
+            $view->likeHtml = $likeHtml;
             $view->commentHtml = $commentHtml;
             $template = '/fragments/item/activity.tmpl' ;
             $html = Template::render($template,$view);
-
+            
             return $html;
         }
 
@@ -137,25 +189,6 @@ namespace com\indigloo\sc\html {
             }
 
             $template = '/fragments/item/links.tmpl' ;
-            $html = Template::render($template,$view);
-            return $html;
-        }
-
-        static function getToolbar($loginIdInSession,$postLoginId, $itemId) {
-            $view = new \stdClass;
-            $view->itemId = $itemId;
-            $view->followerId = $loginIdInSession;
-            $view->followingId = $postLoginId;
-
-            //edit item
-            $view->isLoggedInUser = false ;
-            if(!is_null($loginIdInSession) && ($loginIdInSession == $postLoginId)) {
-                $view->isLoggedInUser = true ;
-                $params = array('id' => $itemId , 'q' => urlencode(Url::current()));
-                $view->editUrl = Url::createUrl('/qa/edit.php',$params);
-            }
-
-            $template = '/fragments/item/toolbar.tmpl' ;
             $html = Template::render($template,$view);
             return $html;
         }
@@ -182,14 +215,10 @@ namespace com\indigloo\sc\html {
 
         }
 
-        static function getTile($postDBRow,$options=NULL) {
+        static function getTile($postDBRow) {
 
             $html = NULL ;
             $template = NULL ;
-
-            if(is_null($options)) {
-                $options = UIConstants::TILE_ALL & ~UIConstants::TILE_REMOVE ;
-            }
 
             $voptions = array("abbreviate" => true ,"group" => true);
             $view = self::createPostView($postDBRow,$voptions);
@@ -205,12 +234,16 @@ namespace com\indigloo\sc\html {
                 $template = '/fragments/tile/text.tmpl' ;
             }
 
+            $loginIdInSession = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
+            $view->hasLoginInSession = is_null($loginIdInSession) ? false : true ;
 
-            //set action flags
-            $view->hasLike = $options & UIConstants::TILE_LIKE ;
-            $view->hasSave = $options & UIConstants::TILE_SAVE ;
-            $view->hasRemove = $options & UIConstants::TILE_REMOVE  ;
-            $view->hasMore = $options & UIConstants::TILE_MORE ;
+            if(!$view->hasLoginInSession) {
+                
+                $params = array("item_id" => $view->itemId);
+                $listUrl = "/user/dashboard/list/select.php" ;
+                $listUrl = Url::createUrl($listUrl,$params);
+                $view->saveUrl = "/user/login.php?q=".base64_encode($listUrl) ;
+            }
 
             $html = Template::render($template,$view);
             return $html ;
@@ -236,64 +269,97 @@ namespace com\indigloo\sc\html {
             return $html ;
         }
 
-        static function getMoreLinks($postView,$siteDBRow) {
+        static function getUserPanel($postView,$loginIdInSession) {
+            $postView->followerId = (empty($loginIdInSession)) ? "{loginId}" : $loginIdInSession ;
+            $postView->followingId = $postView->loginId;
+
             $html = NULL ;
-            $postView->hasSite = false ;
-
-            if(!empty($siteDBRow)) {
-                $postView->siteId = $siteDBRow["id"];
-                $postView->siteUrl = $siteDBRow["canonical_url"];
-                $postView->hasSite = true ;
-            }
-
-            $template = '/fragments/item/more-links.tmpl' ;
+            $template = '/fragments/item/user-panel.tmpl' ;
             $html = Template::render($template,$postView);
             return $html ;
         }
-
-        static function getWidget($postDBRow,$options=NULL) {
-
+        
+        static function getImageGrid($rows) {
             $html = NULL ;
-            $voptions = array("abbreviate" => true);
-            $view = self::createPostView($postDBRow,$voptions);
+            $view = new \stdClass;
+            $view->posts = array();
 
-            if($view->hasImage) {
-                $template = '/fragments/widget/image.tmpl' ;
-                //Add thumbnail width and height
-                $td = Util::foldX($view->width,$view->height,100);
-                $view->twidth = $td["width"];
-                $view->theight = $td["height"];
+            $template = '/fragments/item/grid.tmpl' ;
 
-            } else {
-                $template = '/fragments/widget/text.tmpl' ;
+            foreach($rows as $row){
+                $post = self::createPostView($row);
+                $post->thumbnail = ($post->hasImage) ? $post->thumbnail : UIConstants::PH4_PIC ;
+                array_push($view->posts,$post);
             }
-
-
-            if(is_null($options)) {
-                $options = UIConstants::WIDGET_EDIT | UIConstants::WIDGET_DELETE ;
-            }
-
-            $view->hasEdit = $options & UIConstants::WIDGET_EDIT ;
-            $view->hasDelete = $options & UIConstants::WIDGET_DELETE ;
-            $params = array('id' => $view->itemId, 'q' => urlencode(Url::current()));
-            $view->editUrl = Url::createUrl('/qa/edit.php',$params);
-            $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
 
             $html = Template::render($template,$view);
             return $html ;
 
         }
 
-        static function getAdminWidget($postDBRow,$options=NULL) {
+        static function getSitePanel($siteMetaRow,$sitePostRows) {
 
-            $html = NULL ;
-            $voptions = array("abbreviate" => true);
-            $view = self::createPostView($postDBRow,$voptions);
-            if(is_null($options)) {
-                $options = UIConstants::WIDGET_ALL ;
+            if(sizeof($sitePostRows) == 0 ) {
+                return "" ;
             }
 
-             if($view->hasImage) {
+            $html = NULL ;
+            $template = '/fragments/item/site-panel.tmpl' ;
+            $view = new \stdClass;
+
+            if(!empty($siteMetaRow)) {
+                $view->hasSite = true ;
+                $view->siteId = $siteMetaRow["id"];
+                $view->siteUrl = $siteMetaRow["canonical_url"];
+            }
+
+            $posts = array();
+            foreach($sitePostRows as $row) {
+                $postView = self::createPostView($row);
+                if($postView->hasImage) {
+                    array_push($posts,$postView);
+                }
+            }
+
+            $view->posts = $posts ;
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+        
+        static function getWidget($postDBRow) {
+
+            $html = NULL ;
+            $voptions = array("abbreviate" => true, "group" => true);
+            $view = self::createPostView($postDBRow,$voptions);
+
+            if($view->hasImage) {
+                $template = '/fragments/widget/image.tmpl' ;
+                //Add thumbnail width and height
+                $td = Util::foldX($view->width,$view->height,190);
+                $view->twidth = $td["width"];
+                $view->theight = $td["height"];
+
+            } else {
+                $template = '/fragments/widget/text.tmpl' ;
+            }
+            
+            $params = array('id' => $view->itemId, 
+                            'q' => base64_encode(Url::current()));
+            $view->editUrl = Url::createUrl('/qa/edit.php',$params);
+            $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+        static function getAdminWidget($postDBRow,$score=0) {
+
+            $html = NULL ;
+            $voptions = array("abbreviate" => true, "group" => true);
+            $view = self::createPostView($postDBRow,$voptions);
+            
+            if($view->hasImage) {
                 $template = '/fragments/widget/admin/image.tmpl' ;
                 //Add thumbnail width and height
                 $td = Util::foldX($view->width,$view->height,100);
@@ -304,11 +370,15 @@ namespace com\indigloo\sc\html {
                 $template = '/fragments/widget/admin/text.tmpl' ;
             }
 
-            $params = array('id' => $view->itemId, 'q' => Url::current());
+            $params = array('id' => $view->itemId, 'q' => base64_encode(Url::current()));
             $view->editUrl = Url::createUrl('/qa/edit.php',$params);
             $view->deleteUrl = Url::createUrl('/qa/delete.php',$params);
-            $view->feature = ($postDBRow['is_feature'] == 0 ) ? true : false ;
-            $view->unfeature = ($postDBRow['is_feature'] == 1 ) ? true : false ;
+            
+            $view->feature = ($postDBRow['fp_bit'] == 0 ) ? true : false ;
+            $view->unfeature = ($postDBRow['fp_bit'] == 1 ) ? true : false ;
+            
+            $view->status = ($view->unfeature) ? "F" : "" ;
+            $view->score = ($score > 0 ) ? $score : "" ;
 
             $html = Template::render($template,$view);
             return $html ;
@@ -318,13 +388,13 @@ namespace com\indigloo\sc\html {
         static function getBookmarkWidget($postDBRow) {
 
             $html = NULL ;
-            $voptions = array("abbreviate" => true);
+            $voptions = array("group" => true);
             $view = self::createPostView($postDBRow,$voptions);
-
+          
              if($view->hasImage) {
                 $template = '/fragments/widget/bookmark/image.tmpl' ;
                 //Add thumbnail width and height
-                $td = Util::foldX($view->width,$view->height,100);
+                $td = Util::foldX($view->width,$view->height,190);
                 $view->twidth = $td["width"];
                 $view->theight = $td["height"];
 
@@ -335,6 +405,59 @@ namespace com\indigloo\sc\html {
             $html = Template::render($template,$view);
             return $html ;
 
+        }
+
+        static function getListWidget($postDBRow) {
+
+            $html = NULL ;
+
+            // case when list_item.item_id is not Tnull but post.id is NULL
+            if( empty($postDBRow["id"]) && !empty($postDBRow["item_id"]) ) {
+                $template = '/fragments/widget/lists/deleted-item.tmpl' ;
+                $view = new \stdClass;
+                $view->id = $postDBRow["item_id"];
+                $view->itemId = PseudoId::encode($postDBRow["item_id"]);
+                
+                $html = Template::render($template,$view);
+                return $html ;
+            }
+
+            $voptions = array("group" => true);
+            $view = self::createPostView($postDBRow,$voptions);
+          
+             if($view->hasImage) {
+                $template = '/fragments/widget/lists/image.tmpl' ;
+                //Add thumbnail width and height
+                $td = Util::foldX($view->width,$view->height,190);
+                $view->twidth = $td["width"];
+                $view->theight = $td["height"];
+
+            } else {
+                $template = '/fragments/widget/lists/text.tmpl' ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+        static function getListTile($postDBRow) {
+
+            $html = NULL ;
+
+            // case when list_item.item_id is not null but post.id is NULL
+            if( empty($postDBRow["id"]) && !empty($postDBRow["item_id"]) ) {
+                $template = '/fragments/tile/lists/deleted-item.tmpl' ;
+                $view = new \stdClass;
+                $view->id = $postDBRow["item_id"];
+                $view->itemId = PseudoId::encode($postDBRow["item_id"]);
+                
+                $html = Template::render($template,$view);
+                return $html ;
+            }
+
+            $html = self::getTile($postDBRow);
+            return $html ;
         }
 
         static function createPostView($row,$voptions=NULL) {
@@ -380,7 +503,7 @@ namespace com\indigloo\sc\html {
             
 
             $view->userName = $row['user_name'];
-            $view->createdOn = Util::formatDBTime($row['created_on'], AppConstants::TIME_MDYHM);
+            $view->createdOn = AppUtil::convertDBTime($row['created_on']);
             $view->pubUserId = PseudoId::encode($row['login_id']);
             $view->loginId = $row['login_id'];
             $view->userPageURI = "/pub/user/".$view->pubUserId;
@@ -405,13 +528,18 @@ namespace com\indigloo\sc\html {
             if($options["group"] === true) {
                 $group_slug = $row['group_slug'];
                 $groups = array();
-
+                
                 if(!is_null($group_slug) && (strlen($group_slug) > 0)) {
                     $slugs = explode(Constants::SPACE,$group_slug);
                     $display = NULL ;
 
                     foreach($slugs as $slug) {
                         if(empty($slug)) continue ;
+                        //@imp @todo @hack
+                        // dirty hack - for single quotes in group name - for old data
+                        // anything indexed as flury&#039;s - should be converted to flury
+                        // now we ignore the single quote in group name so we should be fine
+                        $slug = str_replace("&#039;s","",$slug);
                         $display = StringUtil::convertKeyToName($slug);
                         $groups[] = array("slug" => $slug, "display"=> $display);
                     }
@@ -426,7 +554,7 @@ namespace com\indigloo\sc\html {
             return $view ;
         }
 
-        static function getTileImage($json) {
+        static function getImageOrDefault($json) {
             $images = json_decode($json);
             $imgv = array();
 
@@ -441,8 +569,8 @@ namespace com\indigloo\sc\html {
             } else {
                 $imgv["name"] = "placeholder" ;
                 $imgv["tname"] = "placeholder" ;
-                $imgv["source"] = "/css/asset/sc/twitter-icon.png" ;
-                $imgv["thumbnail"] = "/css/asset/sc/twitter-icon.png" ;
+                $imgv["source"] = UIConstants::PH1_PIC ;
+                $imgv["thumbnail"] = UIConstants::PH1_PIC ;
                 $imgv["width"] = 48;
                 $imgv["height"] = 48;
                 $imgv["twidth"] = 40;
@@ -470,16 +598,28 @@ namespace com\indigloo\sc\html {
                     $fileName = $jsonObj->storeName ;
                 }
 
-                $view["source"] = $prefix.$jsonObj->bucket.'/'.$jsonObj->storeName;
-                $view["thumbnail"] = $prefix.$jsonObj->bucket.'/'.$fileName ;
+                // aws s3 bucket mapping for cloud front
+                $m_bucket = $jsonObj->bucket ;
+                // format is store.bucket.mapto=<mapped-bucket>
+                $mapKey = sprintf("%s.%s.mapto",$jsonObj->store,$m_bucket) ;
+                $bucket = Config::getInstance()->get_value($mapKey,$m_bucket);
+
+                $view["source"] = $prefix.$bucket.'/'.$jsonObj->storeName;
+                $view["thumbnail"] = $prefix.$bucket.'/'.$fileName ;
                 $view["width"] = $jsonObj->width ;
                 $view["height"] = $jsonObj->height;
                 //@todo add thumbnail width and height to image json data
 
             } else {
 
-                $message = sprintf("Unknown image store %s ", $jsonObj->store);
-                trigger_error($message,E_USER_ERROR);
+                $view["name"] = "placeholder" ;
+                $view["tname"] = "placeholder" ;
+                $view["source"] = UIConstants::PH1_PIC ;
+                $view["thumbnail"] = UIConstants::PH1_PIC ;
+                $view["width"] = 48;
+                $view["height"] = 48;
+                $view["twidth"] = 40;
+                $view["theight"] = 40;
             }
 
             return $view ;

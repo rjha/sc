@@ -18,28 +18,9 @@ namespace com\indigloo\sc\dao {
 
         }
 
-        function search($token,$limit) {
-            if(empty($token)) { return array(); }
-
-            $token = strtolower($token);  
-            $slug = \com\indigloo\util\StringUtil::convertNameToKey($token);
-            $rows = mysql\Group::search($slug,$limit);
-            return $rows ;
-        }
-
         function getLatest($limit,$filters=array()) {
             $rows = mysql\Group::getLatest($limit,$filters);
             return $rows ;
-        }
-
-        function getRandom($limit) {
-            $rows = mysql\Group::getRandom($limit);
-            return $rows ;
-        }
-
-        function getTotalCount($filters=array()){
-            $row = mysql\Group::getTotalCount($filters);
-            return $row['count'] ;
         }
 
         function getPaged($paginator,$filters=array()) {
@@ -79,86 +60,56 @@ namespace com\indigloo\sc\dao {
 
         }
 
-        function getCountOnLoginId($loginId) {
-            $count = 0 ;
-            $row = mysql\Group::getCountOnLoginId($loginId);
-            if(isset($row) && !empty($row)) {
-                $count = $row['count'];
-            }
-
-            return $count ;
-        }
-
-        function getFeatureSlug() {
-            $row = mysql\Group::getFeatureSlug();
-            $slug = $row['slug'];
-            return $slug;
-        }
-
-        function setFeatureSlug($slug) {
-            $loginId = \com\indigloo\sc\auth\Login::getLoginIdInSession();
-            mysql\Group::setFeatureSlug($loginId,$slug);
-             
-        }
-
-        function slugToGroups($slug){
+        function slugToGroupsMap($slug){
             if(Util::tryEmpty($slug)) { return array(); }
 
             $groups = array();
             $slugs = explode(Constants::SPACE,$slug);
+
             foreach($slugs as $slug){
+
                 if(!Util::tryEmpty($slug)) {
-                    $group = array('token' => $slug,'name' => StringUtil::convertKeyToName($slug));
+                    $group = array("token" => $slug,"name" => StringUtil::convertKeyToName($slug));
                     array_push($groups,$group);
                 }
             }
+
             return $groups;
         }
 
-        /*
-         * @param $dbSlug space separated group token stored in DB
-         *
-         */
-        function slugToNamesArray($dbslug) {
-            $names = array();
+        function tokenizeSlug($dbslug,$separator,$convert=false) {
+            $list = array() ;
+            $buffer = "" ;
+
             if(!Util::tryEmpty($dbslug)) {
+
                 $slugs = explode(Constants::SPACE,$dbslug);
-
                 foreach($slugs as $slug) {
+
                     if(Util::tryEmpty($slug)) { continue ; }
-                    $name = StringUtil::convertKeyToName($slug);
-                    array_push($names,$name);
+                    $slug = ($convert) ? StringUtil::convertKeyToName($slug) : $slug ;
+                    array_push($list,$slug);
                 }
+
             }
-            return $names ;
+
+            if(!empty($list)) {
+                $buffer = implode($separator,$list);
+            }
+
+            return $buffer ;
         }
 
         /*
-         * @param $dbSlug space separated group token stored in DB
-         *
-         */
-
-        function slugToName($dbslug){
-            $group_names = '' ;
-            $names = $this->slugToNamesArray($dbslug);
-            if(!empty($names)){
-                $group_names = implode(",",$names);
-            }
-            return $group_names;
-        }
-
-
-        /*
-         * we first convert all (new) names to array of slugs. we take this array
-         * and implode on space to make slugs to be stored in DB (we need to implode on space to
-         * index the field via sphinx.
-         *
-         * @param group_names - comma separated ucfirst names for display
-         *
+         * convert the group names from UI (multiple groups separated by comma)
+         * into a space separated list of hyphenated words 
+         * 
+         * @param group_names : what user types on the UI
+         * 
          */
 
         function nameToSlug($group_names) {
-            $group_slug = '' ;
+            $group_slug = "" ;
 
             if(!Util::tryEmpty($group_names)) {
                 $slugs = array();
@@ -166,6 +117,9 @@ namespace com\indigloo\sc\dao {
 
                 foreach($names as $name) {
                     if(Util::tryEmpty($name)) { continue ; }
+                    // remove single quotes from group names
+                    // it is a bit difficult to deal with single quotes and sphinx
+                    $name = str_replace("'","",$name);
                     $slug = \com\indigloo\util\StringUtil::convertNameToKey($name);
                     array_push($slugs,$slug);
                 }

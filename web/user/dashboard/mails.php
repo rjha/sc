@@ -17,16 +17,10 @@
     $gWeb = \com\indigloo\core\Web::getInstance();
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
+    $loginName = $gSessionLogin->name;
 
     if (is_null($loginId)) {
         trigger_error("Error : NULL or invalid login_id", E_USER_ERROR);
-    }
-
-    $userDao = new \com\indigloo\sc\dao\User();
-    $userDBRow = $userDao->getOnLoginId($loginId);
-
-    if (empty($userDBRow)) {
-        trigger_error("No user exists with this login_id", E_USER_ERROR);
     }
 
     $fUrl = Url::current();
@@ -38,6 +32,7 @@
     $checked["comment"] = ($pData->comment) ? "checked" : "" ;
     $checked["bookmark"] = ($pData->bookmark) ? "checked" : "" ;
 
+    
 ?>
 
 
@@ -45,7 +40,7 @@
 <html>
 
     <head>
-        <title> 3mik.com - user <?php echo $userDBRow['name']; ?>  </title>
+        <title> mail settings- <?php echo $loginName; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
@@ -54,21 +49,53 @@
 
     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-        <div class="container">
-            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+        <div class="container mh600">
+
+             <div class="row">
+                <div class="span12">
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+                </div>
+            </div>
             <div class="row">
-                <div class="span9 mh600">
+                 <div class="span12">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="span11 offset1">
                     <div class="page-header">
-                        <div class="faded-text"> Mail settings </div>
+                        <span style="padding-left:20px;padding-right:20px;">Mail preferences</span>
+                        <span>
+                            <a class="btn-flat" href="/user/dashboard/profile.php">Edit profile</a>
+                        </span>
+                        <span>
+                            <?php 
+                                if(\com\indigloo\sc\auth\Login::hasMikLogin()) {
+                                    echo '<a class="btn-flat" href="/user/account/change-password.php">Change password</a>';
+                                }
+                            ?>
+                            
+                        </span>
+
                     </div>
+                </div>
+            </div>
 
+            <div class="row">
+                <div class="span6 offset1">
+                    
                     <?php FormMessage::render(); ?>
-
+                    <p class="text-info">
+                        send me mails
+                    </p>
                     <div id="form-wrapper">
                         <form id="web-form1"  name="web-form1" action="/user/form/mails-preference.php" method="POST">
-                            <table class="table table-striped">
+                            <table class="table table-condensed table-striped">
 
                                 <tbody>
+                                    
                                     <tr>
                                         <td><input type="checkbox" name="p[follow]" value="true" <?php echo $checked["follow"]; ?> /></td>
                                         <td> When people start following me</td>
@@ -79,24 +106,21 @@
                                      </tr>
                                      <tr>
                                         <td><input type="checkbox" name="p[bookmark]" value="true" <?php echo $checked["bookmark"]; ?>/></td>
-                                        <td> When people like or favorite my post </td>
+                                        <td> When people like my post </td>
                                     </tr>
-                                     <tr>
-                                        <td>&nbsp;</td>
-                                        <td> &nbsp; </td>
-                                    </tr>
+                                      
                                 </tbody>
                                 </table>
                                     <div class="form-actions2">
-                                        <button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button>
+                                        <hr>
+                                        <button class="btn" type="submit" name="save" value="Save"><span>Save</span></button>
                                     </div>
                                 <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
                         </form>
                     </div>
                 </div>
+                
 
-                <div class="span3">
-                </div>
             </div> <!-- row -->
         </div> <!-- container -->
 
@@ -105,6 +129,7 @@
         <script>
             $(document).ready(function(){
                 webgloo.sc.toolbar.add();
+                webgloo.sc.dashboard.fixAlert();
             });
 
         </script>

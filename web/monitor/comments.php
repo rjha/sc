@@ -13,11 +13,12 @@
     $qparams = Url::getRequestQueryParams();
 
     $commentDao = new \com\indigloo\sc\dao\Comment() ;
-    $total = $commentDao->getTotalCount();
-
+    
     $pageSize = Config::getInstance()->get_value("user.page.items");
-    $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
+    $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $commentDBRows = $commentDao->getPaged($paginator);
+    $baseURI = "/monitor/comments.php" ;
+
 ?>
 
 
@@ -28,23 +29,7 @@
         <title> 3mik.com - All Comments  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
-        <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
-
-        <script>
-            $(document).ready(function(){
-                //show options on widget hover
-                $('.widget .options').hide();
-                $('.widget').mouseenter(function() {
-                    $(this).find('.options').toggle();
-                    $(this).css("background-color", "#FEFDF1");
-                });
-                $('.widget').mouseleave(function() {
-                    $(this).find('.options').toggle();
-                    $(this).css("background-color", "#FFFFFF");
-                });
-            });
-
-        </script>
+      
 
     </head>
 
@@ -59,7 +44,7 @@
 
             <div class="row">
                 <div class="span12">
-                <?php include('inc/menu.inc'); ?>
+                <?php include(APP_WEB_DIR.'/monitor/inc/top-unit.inc'); ?>
                 </div>
             </div>
             <div class="row">
@@ -71,15 +56,19 @@
             </div>
 
             <div class="row">
+                 <div class="span2">
+                    <?php include(APP_WEB_DIR.'/monitor/inc/menu.inc'); ?>
+                </div>
                 <div class="span9">
 
                         <?php
                             $startId = NULL ;
                             $endId = NULL ;
+                            $gNumRecords = sizeof($commentDBRows);
 
-                            if(sizeof($commentDBRows) > 0 ) {
+                            if( $gNumRecords > 0 ) {
                                 $startId = $commentDBRows[0]['id'] ;
-                                $endId =   $commentDBRows[sizeof($commentDBRows)-1]['id'] ;
+                                $endId =   $commentDBRows[$gNumRecords-1]['id'] ;
                             }
 
                             foreach($commentDBRows as $commentDBRow){
@@ -88,11 +77,28 @@
                         ?>
 
                 </div>
-                <div class="span3"> </div>
+                 
             </div>
         </div> <!-- container -->
+          <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
-        <?php $paginator->render('/monitor/comments.php', $startId, $endId); ?>
+        <script>
+            $(document).ready(function(){
+                //show options on widget hover
+                
+                $('.widget').mouseenter(function() {
+                    $(this).find('.options').css("visibility", "visible");
+                    $(this).css("background-color", "#FEFDF1");
+                });
+                $('.widget').mouseleave(function() {
+                    $(this).find('.options').css("visibility", "hidden");
+                    $(this).css("background-color", "#FFFFFF");
+                });
+            });
+
+        </script>
+
+        <?php $paginator->render($baseURI,$startId,$endId,$gNumRecords);  ?>
 
         <div id="ft">
             <?php include(APP_WEB_DIR . '/inc/site-footer.inc'); ?>

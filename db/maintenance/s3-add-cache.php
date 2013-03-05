@@ -145,5 +145,8 @@
         $count++ ;
     }
 
+    //close resources
+    $mysqli->close();
+
 
 ?>

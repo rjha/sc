@@ -4,6 +4,8 @@ namespace com\indigloo\sc\mysql {
 
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Util as Util ;
+    use \com\indigloo\mysql\PDOWrapper;
+    use \com\indigloo\exception\DBException as DBException;
 
     class User {
 
@@ -44,6 +46,18 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
+        static function getOnSearchLoginIds($strIds) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            $strIds = $mysqli->real_escape_string($strIds);
+
+            $sql = " select * from sc_denorm_user where login_id in (".$strIds. ") " ;
+            $sql .= " ORDER BY FIELD(login_id,".$strIds. ") " ;
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
         static function getOnLoginId($loginId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -56,22 +70,29 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
-        //@todo use filters
         static function getLatest($limit,$filters) {
+
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input
             settype($limit,"integer");
 
-            $sql = " select * from sc_denorm_user order by id desc LIMIT %d " ;
+            $sql = " select * from sc_denorm_user u" ;
+
+            $q = new MySQL\Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\User","u");
+            $q->filter($filters);
+            $condition = $q->get();
+            $sql .= $condition;
+
+            $sql .= " order by u.id desc LIMIT %d" ;
             $sql = sprintf($sql,$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
-
         }
 
-        //@todo - use filters
         static function getPaged($start,$direction,$limit,$filters) {
+
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input
@@ -82,6 +103,12 @@ namespace com\indigloo\sc\mysql {
             $sql = " select u.* from sc_denorm_user u " ;
 
             $q = new MySQL\Query($mysqli);
+            $q->setAlias("com\indigloo\sc\model\User","u");
+            $q->filter($filters);
+            $condition = $q->get();
+            $sql .= $condition;
+
+
             $sql .= $q->getPagination($start,$direction,"u.id",$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
 
@@ -127,6 +154,70 @@ namespace com\indigloo\sc\mysql {
                 MySQL\Error::handle($mysqli);
             }
 
+        }
+
+        static function set_bu_bit($loginId,$value,$sessionId) {
+            $dbh = NULL ;
+            
+            try {
+            
+                $sql1 = "update sc_denorm_user set updated_on = now(), bu_bit = :value " ;
+                $sql1 .= " where login_id = :login_id" ;
+
+                $dbh =  PDOWrapper::getHandle();
+                //Tx start
+                $dbh->beginTransaction();
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":login_id", $loginId);
+                $stmt1->bindParam(":value", $value);
+                
+                $stmt1->execute();
+                $stmt1 = NULL ;
+                
+                if(!empty($sessionId)) {
+                    //clear banned user session immediately!
+                    $sql2 = "delete from sc_php_session where session_id = :session_id ";
+                    $stmt2 = $dbh->prepare($sql2);
+                    $stmt2->bindParam(":session_id", $sessionId);
+                    $stmt2->execute();
+                    $stmt2 = NULL ;
+                }
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+                
+            } catch (\PDOException $e) {
+                $dbh->rollBack();
+                $dbh = null;
+                throw new DBException($e->getMessage(),$e->getCode());
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
+            }
+
+        }
+
+        static function set_tu_bit($userId,$value) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "update sc_denorm_user set updated_on = now(), tu_bit = ? where id = ?" ;
+            $stmt = $mysqli->prepare($sql);
+
+            if ($stmt) {
+                $stmt->bind_param("ii",$value,$userId) ;
+                $stmt->execute();
+
+                if ($mysqli->affected_rows != 1) {
+                    MySQL\Error::handle($stmt);
+                }
+                $stmt->close();
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
         }
 
     }

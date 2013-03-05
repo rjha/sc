@@ -15,8 +15,10 @@
 
     $gSessionLogin = Login::getLoginInSession();
     $loginId = $gSessionLogin->id ;
+
     if(strcmp($gSessionLogin->provider,Login::MIK) != 0 ) {
-        throw new UIException("change password only works for 3mik logins!");
+        $message = "change password only works for 3mik logins!" ;
+        throw new UIException(array($message));
     }
 
     $userDao = new \com\indigloo\sc\dao\User() ;
@@ -24,16 +26,16 @@
 
     //tokens for use in next screen
     $ftoken = Util::getMD5GUID();
-    $email = $userDBRow['email'];
+    $email = $userDBRow["email"];
     $femail = Util::encrypt($email);
     $gWeb = \com\indigloo\core\Web::getInstance();
     $gWeb->store("change.password.email",$femail);
     $gWeb->store("change.password.token",$ftoken);
 
-    $title = $userDBRow['email'];
+    $title = $userDBRow["email"];
 
 
-    $qUrl = Url::current();
+    $qUrl = base64_encode(Url::current());
     $fUrl = Url::current();
     $submitUrl = "/user/account/form/change-password.php" ;
 
@@ -50,19 +52,41 @@
     </head>
 
      <body>
-        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
+         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
-            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+
             <div class="row">
-                <div class="span9">
+                <div class="span12">
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                 <div class="span12">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="span11 offset1">
                     <div class="page-header">
-                        <div class="faded-text"> Change Password - <?php echo $title; ?> </div>
+                        <span style="padding-left:20px;padding-right:20px;">Change password</span>
+                        <span>
+                            <a class="btn-flat" href="/user/dashboard/mails.php">Mail preferences</a>
+                        </span>
+                        <span>
+                            <a class="btn-flat" href="/user/dashboard/profile.php">Edit profile</a>
+                        </span>
+
                     </div>
+                </div>
+            </div>
 
-                    <p class="help-text">
-                       Please select a new password and click on Submit.
-
-                    </p>
+            <div class="row">
+                <div class="span8 offset1">
+                   
+                    <div class="faded-text mb20">
+                        Please select a new password and click on Submit
+                    </div>
 
                     <?php \com\indigloo\ui\form\Message::render(); ?>
 
@@ -85,11 +109,8 @@
                         </table>
 
                         <div class="form-actions">
-                            <button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button>
-                             <a href="/">
-                                <button class="btn" type="button" name="cancel"><span>Cancel</span></button>
-                            </a>
-
+                            <button class="btn" type="submit" name="save" value="Save"><span>Save</span></button>
+                           
                         </div>
                         <input type="hidden" name="ftoken" value="<?php echo $ftoken; ?>" />
                         <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />

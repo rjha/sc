@@ -47,44 +47,74 @@
     $googleAuthUrl .= "&redirect_uri=".urlencode($googleCallback) ;
 ?>
 
+<p class="comment-text">
+    You can use your existing facebook, google or twitter account to sign up.
+    Advantages of registration are
+</p>
 
- 
-<div class="row">
-    <div class="span3">
-        <div class="p10">
-            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Sign in with Facebook</a>
+
+<style>
+    /* @inpage @hardcoded  styles */
+    .half-left {
+        width:50% ;
+        float:left ;
+        margin-bottom:20px;
+        color: #666;
+    }
+
+    #zocial-grid .column {
+        padding: 0px;
+        padding-left:20px;
+    }
+
+</style>
+
+<div class="half-left">
+    <ul>
+
+        <li>Unrestricted access to all items</li>
+        <li>Show your cool stuff to this world</li>
+        <li>Organize items and publish lists</li>
+    </ul>
+</div>
+<div class="half-left">
+    
+    <ul>
+        <li>Avail our offers and deals</li>
+        <li>Get our action packed newsletter about latest trends and cool products</li>
+    </ul>
+</div>
+<div class="clear"> </div>
+
+<div id="zocial-grid">
+    <div class="grid-row"> 
+        <div class="column">
+            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">&nbsp;&nbsp;Facebook</a>&nbsp;
+        </div>
+
+        <div class="column">
+            <a class="zocial twitter" href="/user/twitter-login.php">&nbsp;&nbsp;Twitter</a>&nbsp;
         </div>
     </div>
-    <div class="span3">
-        <div class="p10">
-            <a class="zocial twitter" href="/user/twitter-login.php">Sign in with Twitter</a>&nbsp;
-        </div>
-    </div>
+    <div class="clear"> </div>
 
-</div> <!-- row:1 -->
+    <div class="grid-row"> 
 
-<div class="row">
-  <div class="span3">
-        <div class="p10">
-            <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Sign in with Google</a>&nbsp;&nbsp;
+        <div class="column">
+             <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">&nbsp;&nbsp;Google</a>&nbsp;
         </div>
 
-    </div>
-    <div class="span3">
-        <div class="p10">
-            <a id="join-now-link" href="/user/register.php">Sign in with email&nbsp;&raquo;</a>
+        <div class="column"> 
+
+         Already have a 3mik account?
+            <a href="/user/login.php">click to login</a> 
+        &nbsp; 
         </div>
     </div>
+    <div class="clear"> </div>
 
-</div> <!-- row:2 -->
+</div> <!-- zocial-grid -->
 
-<div class="row">
-  <div class="span3 offset3">
-        <div class="p10">
-           Have a 3mik account? <a href="/user/login.php">login now</a>
-        </div>
 
-    </div>
-   
-</div> <!-- row:3 -->
+
 

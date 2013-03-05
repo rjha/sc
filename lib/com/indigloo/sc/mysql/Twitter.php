@@ -27,53 +27,50 @@ namespace com\indigloo\sc\mysql {
             return $row ;
         }
 
-        static function create($twitterId,$name,$screenName,$location,$image,$provider){
+        static function create(
+            $twitterId,
+            $name,
+            $screenName,
+            $location,
+            $image,
+            $provider,
+            $remoteIp){
 
             $dbh = NULL ;
             
             try {
-                $sql1 = "insert into sc_login (provider,name,created_on) values(:provider,:name,now()) " ;
-                $flag = true ;
-
+                $sql1 = "insert into sc_login (provider,name,ip_address,created_on) values(:provider,:name, :ip_address,now()) " ;
+                
                 $dbh =  PDOWrapper::getHandle();
                 //Tx start
                 $dbh->beginTransaction();
 
-                $stmt = $dbh->prepare($sql1);
-                $stmt->bindParam(":name", $name);
-                $stmt->bindParam(":provider", $provider);
-                $flag = $stmt->execute();
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":name", $name);
+                $stmt1->bindParam(":provider", $provider);
+                $stmt1->bindParam(":ip_address", $remoteIp);
 
-                if(!$flag){
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
-                    throw new DBException($message);
-                }
+                $stmt1->execute();
+                $stmt1 = NULL ;
 
                 $loginId = $dbh->lastInsertId();
                 settype($loginId, "integer");
 
                 $sql2 = " insert into sc_twitter(twitter_id,name,screen_name,location, " ;
-                $sql2 .= " profile_image,login_id,created_on) " ;
-                $sql2 .= " values(?,?,?,?,?,?,now()) ";
+                $sql2 .= " profile_image,login_id,ip_address,created_on) " ;
+                $sql2 .= " values(?,?,?,?,?,?,?,now()) ";
 
-                $stmt = $dbh->prepare($sql2);
-                $stmt->bindParam(1, $twitterId);
-                $stmt->bindParam(2, $name);
-                $stmt->bindParam(3, $screenName);
-                $stmt->bindParam(4, $location);
-                $stmt->bindParam(5, $image);
-                $stmt->bindParam(6, $loginId);
+                $stmt2 = $dbh->prepare($sql2);
+                $stmt2->bindParam(1, $twitterId);
+                $stmt2->bindParam(2, $name);
+                $stmt2->bindParam(3, $screenName);
+                $stmt2->bindParam(4, $location);
+                $stmt2->bindParam(5, $image);
+                $stmt2->bindParam(6, $loginId);
+                $stmt2->bindParam(7, $remoteIp);
 
-                $flag = $stmt->execute();
-
-                if(!$flag){
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
-                    throw new DBException($message);
-                }
+                $stmt2->execute();
+                $stmt2 = NULL ;
 
                 //Tx end
                 $dbh->commit();
@@ -81,12 +78,16 @@ namespace com\indigloo\sc\mysql {
 
                 return $loginId;
 
-            }catch (PDOException $e) {
+            } catch (\PDOException $e) {
                 $dbh->rollBack();
                 $dbh = null;
-                $message = sprintf("PDO error :: code %d message %s ",$e->getCode(),$e->getMessage());
-                throw new DBException($message);
+                throw new DBException($e->getMessage(),$e->getCode());
 
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
             }
 
         }

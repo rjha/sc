@@ -382,12 +382,13 @@ create table sc_feedback(
 alter database scdb character set utf8 collate utf8_general_ci ;
 alter table sc_question convert to character set utf8 collate utf8_general_ci ;
 
+
 #my.cnf settings
 
 [mysql]
 [client]
 [mysqldump]
- sections we have to add
+sections we have to add
 default-character-set=utf8
 
 [mysqld] section
@@ -407,4 +408,54 @@ $sudo mysqld --defaults-file=/etc/mysql/my.cnf --verbose --help > ~/help
 mysql> update user set password = password("osje8L") where user = "gloo" and host = "localhost" ;
 mysql> flush privileges;
 
+
+
+analyze/optimize/check a database
+--------------------------------------
+    + mysqlcheck -u root -p --check --database scdb2
+    + mysqlcheck -u root -p --analyze  --database scdb2
+    + mysqlcheck -u root -p --optimize  --database scdb2
+
+
+
+
+
+
+mysql tuning
+---------------
+
+
++ InnoDB tuning
+    - http://dev.mysql.com/doc/refman/5.0/en/innodb-tuning.html
+ 
+ 
+    - long primary keys are a No-No. PK is stored with any secondary index.
+    -  innodb_flush_log_at_trx_commit = 1 ?  mysqlperformance blog suggests setting it to 2  
+    - innodb_buffer_pool_size
+        - Donot set more than 80% of physical RAM
+        - Donot oversize! see how much data we have.
+        - 
+    - Donot do big rollback of mass inserts
+    - innodb_log_buffer_size
+    - innodb_log_file_size
+        - large files can increase performance but slow recovery
+        - 
+    - table_cache
+    - thread_cache
+    - query_cache_size
+    - key_buffer_size
+    - innodb_thread_concurrency
+    - innodb_flush_method
+
+
+
+
+    
+
+
+
+
+        
+ 
+    
 

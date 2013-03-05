@@ -5,11 +5,13 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
+
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
-
     use \com\indigloo\mysql\PDOWrapper;
+
     use \com\indigloo\exception\DBException;
+    use \com\indigloo\sc\Constants as AppConstants;
 
     class Post {
 
@@ -40,7 +42,10 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        //@see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/
+        // @todo fix expensive-query
+        // @see http://www.warpconduit.net/2011/03/23/selecting-a-random-record-using-mysql-benchmark-results/
+        // @examined This query is used on thanks page after logout 
+        // and Random posts controller.
         static function getRandom($limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -90,7 +95,7 @@ namespace com\indigloo\sc\mysql {
 
             $sql = " select q.*,l.name as user_name from sc_post q,sc_login l where q.login_id = l.id " ;
             $sql .= " and  q.login_id = %d order by id desc limit %d " ;
-            $sql = sprintf($sql,$limit);
+            $sql = sprintf($sql,$loginId,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
@@ -119,13 +124,13 @@ namespace com\indigloo\sc\mysql {
 
             $sql = " select q.*,l.name as user_name from sc_post q, sc_login l " ;
             $sql .= " where l.id = q.login_id and q.id in (".$strIds. ") " ;
-            $sql .= " ORDER BY q.id desc" ;
-
+            $sql .= " ORDER BY FIELD(q.id,".$strIds. ") " ;
+            
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
 
-        static function getLatest($offset,$limit,$filters) {
+        static function getLatest($limit,$filters) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -142,8 +147,8 @@ namespace com\indigloo\sc\mysql {
             $condition = $q->get();
             $sql .= $condition;
 
-            $sql .= " order by q.id desc LIMIT %d,%d " ;
-            $sql = sprintf($sql,$offset,$limit);
+            $sql .= " order by q.id desc LIMIT %d " ;
+            $sql = sprintf($sql,$limit);
             
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
@@ -239,44 +244,49 @@ namespace com\indigloo\sc\mysql {
         }
 
         static function create($title,
-                               $description,
-                               $loginId,
-                               $linksJson,
-                               $imagesJson,
-                               $groupSlug,
-                               $categoryCode) {
+                                $description,
+                                $loginId,
+                                $name,
+                                $linksJson,
+                                $imagesJson,
+                                $groupSlug,
+                                $categoryCode) {
 
 
             $dbh = NULL ;
 
             try {
                 $sql1 = " insert into sc_post(title,description,login_id,links_json, " ;
-                $sql1 .= "images_json,group_slug,cat_code,created_on) ";
-                $sql1 .= " values(?,?,?,?,?,?,?,now()) ";
+                $sql1 .= " images_json,group_slug,cat_code, pseudo_id,created_on) ";
+                $sql1 .= " values (:title,:description,:login_id,:links_json,:images_json, " ;
+                $sql1 .= " :group_slug, :cat_code, :pseudo_id, now()) ";
 
-                $flag = true ;
                 $dbh = PDOWrapper::getHandle();
                 //Tx start
                 $dbh->beginTransaction();
 
-                //insert post
-                $stmt = $dbh->prepare($sql1);
-                $stmt->bindParam(1, $title);
-                $stmt->bindParam(2, $description);
-                $stmt->bindParam(3, $loginId);
-                $stmt->bindParam(4, $linksJson);
-                $stmt->bindParam(5, $imagesJson);
-                $stmt->bindParam(6, $groupSlug);
-                $stmt->bindParam(7, $categoryCode);
+                //insert into sc_post, change counters via trigger
+                $stmt1 = $dbh->prepare($sql1);
 
-                $flag = $stmt->execute();
+                $stmt1->bindParam(":title", $title);
+                $stmt1->bindParam(":description", $description);
+                $stmt1->bindParam(":login_id", $loginId);
+                $stmt1->bindParam(":links_json", $linksJson);
+                $stmt1->bindParam(":images_json", $imagesJson);
+                $stmt1->bindParam(":group_slug", $groupSlug);
+                $stmt1->bindParam("cat_code", $categoryCode);
 
-                if(!$flag){
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("DB Error : code is  %s",$stmt->errorCode());
-                    throw new DBException($message);
-                }
+                // @see http://drupal.org/node/1369332
+                // pseudo_id is part of a UNIQUE index and mysql has to lock
+                // the index attached to pseudo_id if we do not insert anything
+                // NULL not being comparable to anything, it doesn't participate 
+                // in uniqueness constraints and MySQL doesn't have to lock the index.
+                // $pseudoId = NULL ;
+                // $stmt1->bindParam(":pseudo_id", $pseudoId);
+                $stmt1->bindValue(":pseudo_id", null,\PDO::PARAM_STR);
+
+                $stmt1->execute();
+                $stmt1 = NULL ;
 
                 $postId = $dbh->lastInsertId();
                 settype($postId, "integer");
@@ -287,17 +297,34 @@ namespace com\indigloo\sc\mysql {
                 }
 
                 $sql2 = "update sc_post set pseudo_id = :item_id where id = :post_id " ;
-                $stmt = $dbh->prepare($sql2);
-                $stmt->bindParam(":item_id", $itemId);
-                $stmt->bindParam(":post_id", $postId);
-                $flag = $stmt->execute();
+                $stmt2 = $dbh->prepare($sql2);
+                $stmt2->bindParam(":item_id", $itemId);
+                $stmt2->bindParam(":post_id", $postId);
+                $stmt2->execute();
+                $stmt2 = NULL ;
 
-                if(!$flag){
-                    $dbh->rollBack();
-                    $dbh = null;
-                    $message = sprintf("DB  Error : code is  %s",$stmt->errorCode());
-                    throw new DBException($message);
-                }
+                $sql3 = " insert into sc_activity(owner_id,subject_id,subject,object_id, " ;
+                $sql3 .= " object,verb, verb_name, op_bit, created_on) " ;
+                $sql3 .= " values(:owner_id, :subject_id, :subject, :object_id, " ;
+                $sql3 .= " :object, :verb, :verb_name, :op_bit, now()) ";
+               
+                $verb =  AppConstants::POST_VERB ;
+                $op_bit = 0 ;
+                $verbName = AppConstants::STR_POST ;
+
+                $stmt3 = $dbh->prepare($sql3);
+                $stmt3->bindParam(":owner_id", $loginId);
+                $stmt3->bindParam(":subject_id", $loginId);
+                $stmt3->bindParam(":object_id", $itemId);
+                $stmt3->bindParam(":subject", $name);
+                $stmt3->bindParam(":object", $title);
+                $stmt3->bindParam(":verb", $verb);
+                $stmt3->bindParam(":verb_name", $verbName);
+                $stmt3->bindParam(":op_bit", $op_bit);
+
+                $stmt3->execute();
+                $stmt3 = NULL ;
+                
 
                 //Tx end
                 $dbh->commit();
@@ -305,10 +332,17 @@ namespace com\indigloo\sc\mysql {
 
                 return $itemId;
 
-            } catch (PDOException $e) {
+            } catch (\PDOException $e) {
                 $dbh->rollBack();
                 $dbh = null;
                 throw new DBException($e->getMessage(),$e->getCode());
+                 
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                throw new DBException($ex->getMessage());
+                 
             }
 
         }
@@ -329,18 +363,79 @@ namespace com\indigloo\sc\mysql {
                 MySQL\Error::handle($mysqli);
             }
 
-        }
+        }  
 
-        static function setFeature($postId,$value){
+        static function getLatestOnCategory($code,$limit) {
+
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
             //sanitize input
-            settype($postId,"integer");
-            settype($value,"integer");
+            $code = $mysqli->real_escape_string($code);
+            settype($limit,"integer");
+
+            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l " ;
+            $sql .= " where l.id=q.login_id  and q.cat_code = '%s' order by q.id desc LIMIT %d ";
+            $sql = sprintf($sql,$code,$limit);
+
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+
+        }
+
+        static function getPagedOnCategory($start,$direction,$limit,$code) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            $code = $mysqli->real_escape_string($code);
+            $direction = $mysqli->real_escape_string($direction);
+            settype($start,"integer");
+            settype($limit,"integer");
+
+            $sql = " select q.*,l.name as user_name from sc_post q,sc_login l ";
+            $codeCondition = sprintf("cat_code = '%s'",$code);
+
+            $q = new MySQL\Query($mysqli);
+            $q->addCondition("l.id = q.login_id");
+            $q->addCondition($codeCondition);
+
+            $sql .= $q->get();
+            $sql .= $q->getPagination($start,$direction, "q.id",$limit);
+
+
+            if(Config::getInstance()->is_debug()) {
+                Logger::getInstance()->debug("sql => $sql \n");
+            }
+
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+
+            //reverse rows for 'before' direction
+            if($direction == 'before') {
+                $results = array_reverse($rows) ;
+                return $results ;
+            }
+
+            return $rows;
+
+        }
+
+        static function set_fp_bit($postId,$value) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "update sc_post set updated_on = now() ,fp_bit = ? where id = ?" ;
             
-            $sql = " update sc_post set is_feature = %d where ID = %d " ;
-            $sql = sprintf($sql,$value,$postId);
-            MySQL\Helper::executeSQL($mysqli,$sql);
+            $stmt = $mysqli->prepare($sql);
+
+            if ($stmt) {
+                $stmt->bind_param("ii",$value,$postId) ;
+                $stmt->execute();
+
+                if ($mysqli->affected_rows != 1) {
+                    MySQL\Error::handle($stmt);
+                }
+                $stmt->close();
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
         }
 
     }

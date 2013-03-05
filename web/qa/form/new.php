@@ -16,22 +16,22 @@
     use \com\indigloo\exception\UIException as UIException;
 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
+
+        $gWeb = \com\indigloo\core\Web::getInstance(); 
+        $fvalues = array();
+        $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
+
         try{
-
-            $gWeb = \com\indigloo\core\Web::getInstance();
-
+            
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('links_json', 'links_json', array('rawData' => 1));
             $fhandler->addRule('images_json', 'images_json', array('rawData' => 1));
-            $fhandler->addRule('group_names', 'Tags', array('maxlength' => 64));
-
-            $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
+            $fhandler->addRule('group_names', 'Tags', array('maxlength' => 64,'rawData' => 1));
 
             //check security token
             $fhandler->checkToken("token",$gWeb->find("form.token",true)) ;
             $fvalues = $fhandler->getValues();
-            $fUrl = $fvalues['fUrl'];
-
+            
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors());
             }
@@ -54,7 +54,7 @@
 
             //success - always go to item details
             $location = "/item/".$itemId;
-            header("Location: /qa/thanks.php?q=".$location );
+            header("Location: /qa/thanks.php?q=". base64_encode($location));
 
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);

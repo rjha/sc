@@ -12,7 +12,7 @@
 
     </head>
 
-     <body class="dark-body">
+     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
 
         <div class="container">
@@ -21,9 +21,9 @@
             <div class="row">
                 <div class="span12">
                     <div class="page-header">
-                    <h2> <?php echo $pageHeader; ?> </h2>
+                        <h2> <?php echo $pageHeader; ?> </h2>
                     </div>
-
+                    <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
                     <div id="tiles" class="mh600">
                         <?php
                             if(sizeof($postDBRows) > 0 ){
@@ -34,7 +34,7 @@
                                 }
                             } else {
                                 $message = "No results found " ;
-                                echo \com\indigloo\sc\html\NoResult::get($message);
+                                echo \com\indigloo\sc\html\Site::getNoResult($message);
                             }
                         ?>
 
@@ -54,6 +54,8 @@
             $(document).ready(function(){
                 webgloo.sc.home.addTiles();
                 webgloo.sc.toolbar.add();
+                webgloo.sc.dashboard.fixAlert();
+                webgloo.sc.Lists.init();
            });
         </script>
 

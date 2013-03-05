@@ -48,41 +48,41 @@ if (!window.JSON) {
  */
 
 function encodeBase64(str){
-	var chr1, chr2, chr3, rez = '', arr = [], i = 0, j = 0, code = 0;
-	var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='.split('');
+    var chr1, chr2, chr3, rez = '', arr = [], i = 0, j = 0, code = 0;
+    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='.split('');
 
-	while(code = str.charCodeAt(j++)){
-		if(code < 128){
-			arr[arr.length] = code;
-		}
-		else if(code < 2048){
-			arr[arr.length] = 192 | (code >> 6);
-			arr[arr.length] = 128 | (code & 63);
-		}
-		else if(code < 65536){
-			arr[arr.length] = 224 | (code >> 12);
-			arr[arr.length] = 128 | ((code >> 6) & 63);
-			arr[arr.length] = 128 | (code & 63);
-		}
-		else{
-			arr[arr.length] = 240 | (code >> 18);
-			arr[arr.length] = 128 | ((code >> 12) & 63);
-			arr[arr.length] = 128 | ((code >> 6) & 63);
-			arr[arr.length] = 128 | (code & 63);
-		}
-	};
+    while(code = str.charCodeAt(j++)){
+        if(code < 128){
+            arr[arr.length] = code;
+        }
+        else if(code < 2048){
+            arr[arr.length] = 192 | (code >> 6);
+            arr[arr.length] = 128 | (code & 63);
+        }
+        else if(code < 65536){
+            arr[arr.length] = 224 | (code >> 12);
+            arr[arr.length] = 128 | ((code >> 6) & 63);
+            arr[arr.length] = 128 | (code & 63);
+        }
+        else{
+            arr[arr.length] = 240 | (code >> 18);
+            arr[arr.length] = 128 | ((code >> 12) & 63);
+            arr[arr.length] = 128 | ((code >> 6) & 63);
+            arr[arr.length] = 128 | (code & 63);
+        }
+    };
 
-	while(i < arr.length){
-		chr1 = arr[i++];
-		chr2 = arr[i++];
-		chr3 = arr[i++];
+    while(i < arr.length){
+        chr1 = arr[i++];
+        chr2 = arr[i++];
+        chr3 = arr[i++];
 
-		rez += chars[chr1 >> 2];
-		rez += chars[((chr1 & 3) << 4) | (chr2 >> 4)];
-		rez += chars[chr2 === undefined ? 64 : ((chr2 & 15) << 2) | (chr3 >> 6)];
-		rez += chars[chr3 === undefined ? 64 : chr3 & 63];
-	};
-	return rez;
+        rez += chars[chr1 >> 2];
+        rez += chars[((chr1 & 3) << 4) | (chr2 >> 4)];
+        rez += chars[chr2 === undefined ? 64 : ((chr2 & 15) << 2) | (chr3 >> 6)];
+        rez += chars[chr3 === undefined ? 64 : chr3 & 63];
+    };
+    return rez;
 };
 
 /* + namepsaces */
@@ -97,8 +97,74 @@ webgloo.sc.util = {
             var current = text.length;
             $(counterId).text(current + "/" + max);
         });
-   }
+    },
+
+    initPanel : function(activePanelId) {
+
+        //show active panel on page load
+        var panelId = jQuery.trim(activePanelId);
+
+        if(panelId != '' ) { 
+            $("#" + panelId).show();
+        }
+
+        // bind events for panel open and close
+        // id of panel DIV is provided in rel attribute
+
+        $("a.open-panel").click(function(event) {
+            var divId = '#' + $(this).attr("rel");
+            //hide any open panels
+            $('.panel').hide();
+            //hide page message
+            $("#page-message").html('');
+            $("#page-message").hide();
+            // show target panel
+            $(divId).show("slow");
+        });
+
+        $("a.close-panel").click(function(event) {
+            var divId = '#' + $(this).attr("rel");
+            $(divId).hide("slow");
+            //hide page message as well
+            $("#page-message").html('');
+            $("#page-message").hide();
+        });
+
+    }
+
 }
+
+webgloo.sc.message = {
+    get : function(key,data) {
+        var buffer = '' ;
+        if(webgloo.sc.message.hasOwnProperty(key)) {
+            buffer = webgloo.sc.message[key].supplant(data);
+        }
+
+        return buffer ;
+    }
+} 
+
+//define message constants
+webgloo.sc.message.HELP_LIST_ITEM_URL = "3mik item URL is the page address displayed " 
+                        + " in your browser on item details page, like http://www.3mik.com/item/307853" 
+                        + " copy and paste that item URL in the box";
+webgloo.sc.message.SELECT_ITEM = "No items have been selected. Please select some items to do this action.";
+webgloo.sc.message.SELECT_IMAGE = "Please select an image first.";
+webgloo.sc.message.FETCH_IMAGE = "fetching images from webpage..." ;
+webgloo.sc.message.FETCH_IMAGE_RESULT = "{total} images found.&nbsp;&nbsp;Place your mouse over an image to select it. "
+                                + "&nbsp;&nbsp;Click Next after selecting images." ;
+webgloo.sc.message.NO_IMAGE = " No images found! ";
+
+webgloo.sc.message.UPLOAD_IMAGE = "uploading {total} images " ;
+webgloo.IMAGE_UPLOAD_ERROR = " Error uploading image - {counter} : {message} " ;
+webgloo.sc.message.IMAGE_UPLOAD_RESULT = "image - {counter} : uploaded successfully. " ;
+webgloo.sc.message.IMAGE_SIZE_ERROR = "Error: No suitable images found";
+webgloo.sc.message.POPUP_WAIT = '<div> Please wait...</div> '
+            + '<div> <img src="/css/asset/sc/round_loader.gif" alt="loading ..." /> </div>' ;
+webgloo.sc.message.POPUP_LOGIN = '<div> Redirecting to login page... </div> ' +
+    '<div> <img src="/css/asset/sc/round_loader.gif" alt="loader" /> </div>' ;
+webgloo.sc.message.FB_SPINNER = '<div> <img src="/css/asset/sc/fb_loader.gif" alt="spinner"/></div>' ;
 
 webgloo.sc.toolbar = {
     add : function() {
@@ -106,7 +172,7 @@ webgloo.sc.toolbar = {
         //group browser
         $("a#nav-popup-group").click(function(event) {
             event.preventDefault();
-            $targetUrl= "/group/popup/new.php";
+            $targetUrl= "/group/popup/featured.php";
             webgloo.sc.SimplePopup.init();
             webgloo.sc.SimplePopup.load($targetUrl);
         });
@@ -228,8 +294,7 @@ webgloo.sc.SimplePopup = {
     addSpinner : function() {
         this.close();
         $("#block-spinner").html('');
-        var content = '<div> Please wait...</div> '
-            + '<div> <img src="/css/asset/sc/round_loader.gif" alt="loading ..." /> </div>' ;
+        var content = webgloo.sc.message.POPUP_WAIT ;
         $("#block-spinner").html(content);
 
         /* show mask */
@@ -255,20 +320,24 @@ webgloo.sc.SimplePopup = {
         window.location.replace(webgloo.sc.SimplePopup.gotoUrl);
     },
 
-    processJson : function(response,options,dataObj) {
+    processJson : function(response,settings,dataObj) {
 
         switch(response.code) {
             case 200 :
                 //success
-                if(options.autoCloseInterval > 0 ) {
-                    window.setTimeout(this.close,options.autoCloseInterval);
+                if(settings.autoCloseInterval > 0 ) {
+                    window.setTimeout(this.close,settings.autoCloseInterval);
                 }
 
-                if(options.visible){
+                if(settings.visible){
                     this.show(response.message);
                 }
 
-                if(options.reload){
+                if(!settings.reload && (typeof settings.onSuccess !== "undefined")) {
+                    settings.onSuccess.call();
+                }
+
+                if(settings.reload){
                     window.location.reload(true);
                 }
 
@@ -292,14 +361,11 @@ webgloo.sc.SimplePopup = {
                 
                 g_action_data =  encodeBase64(JSON.stringify(dataObj));
                 //encode for use in URL query string
-                qUrl = encodeURIComponent(window.location.href);
                 webgloo.sc.SimplePopup.gotoUrl = '/user/login.php?q='
-                    +qUrl + '&g_session_action=' + g_action_data;
+                    + encodeBase64(window.location.href) + '&g_session_action=' + g_action_data;
 
                 //change spinner message
-                var message = '<div> Redirecting to login page... </div> ' +
-                    '<div> <img src="/css/asset/sc/round_loader.gif" alt="loader" /> </div>' ;
-
+                var message = webgloo.sc.message.POPUP_LOGIN ;
                 $("#block-spinner").html(message);
                 window.setTimeout(this.redirect,3000);
 
@@ -322,17 +388,23 @@ webgloo.sc.SimplePopup = {
         //show spinner
         this.addSpinner();
 
-        options.visible = (typeof options.visible === "undefined") ? true : options.visible;
-        options.autoCloseInterval = (typeof options.autoCloseInterval === "undefined") ? -1 :  options.autoCloseInterval ;
-        options.reload = (typeof options.reload === "undefined") ? false : options.reload;
-        options.type = (typeof options.type === "undefined") ? "POST" :  options.type ;
-        options.dataType = (typeof options.dataType === "undefined") ? "text" :  options.dataType ;
+        var defaults = {
+            visible : true ,
+            autoCloseInterval : -1,
+            reload : false ,
+            type : "POST",
+            dataType : "text" ,
+            onSuccess : undefined 
 
+        }
+
+        var settings = $.extend({}, defaults, options);
+        
         //ajax call start
         $.ajax({
             url: dataObj.endPoint,
-            type: options.type ,
-            dataType: options.dataType,
+            type: settings.type ,
+            dataType: settings.dataType,
             data :  dataObj.params,
             timeout: 9000,
             processData:true,
@@ -344,9 +416,9 @@ webgloo.sc.SimplePopup = {
 
             //server script errors are reported inside success callback
             success: function(response){
-                switch(options.dataType) {
+                switch(settings.dataType) {
                     case 'json' :
-                        webgloo.sc.SimplePopup.processJson(response,options,dataObj);
+                        webgloo.sc.SimplePopup.processJson(response,settings,dataObj);
                     break;
 
                     default:
@@ -372,42 +444,11 @@ webgloo.sc.SimplePopup = {
 }
 
 webgloo.sc.item = {
-    addAdminActions : function() {
-        //feature posts
-        $("a.feature-post-link").click(function(event){
-            event.preventDefault();
-
-            var dataObj = {} ;
-            dataObj.params = {} ;
-            dataObj.params.postId  = $(this).attr("id");
-            dataObj.params.action = "ADD" ;
-            dataObj.endPoint = "/monitor/ajax/feature.php";
-
-            //open popup
-            webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json"});
-        }) ;
-
-        //unfeature posts
-        $("a.unfeature-post-link").click(function(event){
-            event.preventDefault();
-
-            var dataObj = {} ;
-            dataObj.params = {} ;
-            dataObj.params.postId  = $(this).attr("id");
-            dataObj.params.action = "REMOVE" ;
-            dataObj.endPoint = "/monitor/ajax/feature.php";
-
-            //open popup
-            webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json"});
-        }) ;
-
-    },
 
     addActions : function() {
+
         //add like & save callbacks
-        $("a.like-post-link").live("click",function(event){
+        $("a.like-post").live("click",function(event){
             event.preventDefault();
 
             var dataObj = {} ;
@@ -421,28 +462,20 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
         }) ;
 
-        $("a.favorite-post-link").live("click", function(event){
+        $("a.save-post").live("click", function(event){
             event.preventDefault();
-
-            var dataObj = {} ;
-            dataObj.params = {} ;
-            dataObj.params.itemId  = $(this).attr("id");
-            dataObj.params.action = "SAVE" ;
-            dataObj.endPoint = "/qa/ajax/bookmark.php";
-
-            //open popup
-            webgloo.sc.SimplePopup.init();
-            webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
+            var itemId = $(this).attr("id");
+            webgloo.sc.Lists.openPopup(itemId);
         }) ;
 
-        //unfavorite
-        $("a.remove-post-link").live("click",function(event){
+        //unsave
+        $("a.unsave-post").live("click",function(event){
             event.preventDefault();
 
             var dataObj = {} ;
             dataObj.params = {} ;
             dataObj.params.itemId  = $(this).attr("id");
-            dataObj.params.action = "REMOVE" ;
+            dataObj.params.action = "UNSAVE" ;
             dataObj.endPoint = "/qa/ajax/bookmark.php";
 
             //open popup
@@ -455,7 +488,7 @@ webgloo.sc.item = {
 
         }) ;
 
-        $("a.follow-user-link").live("click",function(event){
+        $("a.follow-user").live("click",function(event){
             event.preventDefault();
 
             var id = $(this).attr("id");
@@ -477,7 +510,7 @@ webgloo.sc.item = {
             webgloo.sc.SimplePopup.post(dataObj,{"dataType" : "json", "autoCloseInterval" : 3000});
         }) ;
 
-        $("a.unfollow-user-link").live("click",function(event){
+        $("a.unfollow-user").live("click",function(event){
 
             event.preventDefault();
 
@@ -508,46 +541,252 @@ webgloo.sc.item = {
     }
 }
 
-webgloo.sc.groups = {
-    addPanelEvents : function() {
-        $("#add-group-btn").click(function(event) {
-            event.preventDefault();
-            var group = jQuery.trim($("#group-box").val());
-            if( group == '' ) {return ;}
-            //split on commas
-            var tokens = group.split(",");
-            for (var i = 0; i < tokens.length; i++) {
-               var token = jQuery.trim(tokens[i]);
-               if(token == '') continue ;
-                var node = ' <li> <input type="checkbox" name="g[]" checked ="checked" value="' + token + '"/>' + token + '</li> ' ;
-                //new groups are added to first panel
-                $(".group-panel .wrapper ul:first").append(node);
+
+webgloo.sc.dashboard = {
+
+    containerId : '' ,
+    
+    setContainer : function(containerId) {
+        webgloo.sc.dashboard.containerId = containerId ;
+    },
+
+    showMessage : function (message) {
+        $("#page-message").html(message);
+        $("#page-message").show("slow");
+        
+    },
+
+    init : function () {
+
+        $("a.item-action").click(function(event) {
+            //id of target panel DIV is in rel 
+            var divId = '#' + $(this).attr("rel");
+            //hide all panels
+            $('.panel').hide();
+            //any items clicked?
+            var itemIds = webgloo.sc.dashboard.getCheckedItems(webgloo.sc.dashboard.containerId);
+            if(itemIds.length > 0 ) {
+                $("#page-message").html('');
+                $("#page-message").hide();
+                $(divId).show("slow");
+
+            } else {
+                var message = webgloo.sc.message.SELECT_ITEM ;
+                $("#page-message").html(message);
+                $("#page-message").show("slow");
+                window.setTimeout(function () { $("#page-message").hide("slow");},5000);
+
             }
-
-            $("#group-box").val('');
-
         });
 
-        $("a#uncheck-all-groups").click(function(event) {
-            event.preventDefault();
-            $(".group-panel").find(":checkbox").removeAttr("checked");
-        });
-
-        $("a#check-all-groups").click(function(event) {
-            event.preventDefault();
-            $(".group-panel").find(":checkbox").attr("checked","checked");
+        $('input:checkbox[id=page-checkbox]').click(function(event) {
+            //@imp donot event.preventDefault();
+            var checkBoxes =  $('#'+ webgloo.sc.dashboard.containerId).find("input:checkbox");
+            var state =  $('input:checkbox[id=page-checkbox]').prop("checked");
+            checkBoxes.prop("checked", state);
+            
         });
 
     },
 
-    addCloudBox : function() {
-        $(".fancy-box").fancybox({
-            'type':'iframe',
-            'width' : '75%',
-            'height' : '75%'
+    getCheckedItems : function(containerId) {
+        var checkBoxes =  $('#'+containerId).find("input:checkbox");
+        var isChecked ;
+        var itemIds = [] ;
+
+        checkBoxes.each(function(i) {
+            isChecked = $(this).prop("checked");
+            if(isChecked) {
+                itemIds.push($(this).attr('id'));
+            }
+        
+        }) ;
+
+        return itemIds ;
+    },
+
+    fixAlert : function () {
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove(); 
+            });
+        }, 5000);
+    }
+}
+
+webgloo.sc.Lists = {
+
+    debug : false,
+    containerId : '' ,
+    
+    setContainer : function(containerId) {
+        webgloo.sc.Lists.containerId = containerId ;
+    },
+
+    openPopup : function(itemId) {
+
+        var dataObj = {} ;
+        dataObj.params = {} ;
+
+        dataObj.params.itemId  = itemId;
+        dataObj.params.action = "SHOW" ;
+        dataObj.params.qUrl = encodeBase64(window.location.href) ;
+        dataObj.endPoint = "/user/popup/lists.php";
+
+        //open popup
+        webgloo.sc.SimplePopup.init();
+        webgloo.sc.SimplePopup.post(dataObj,{
+                "dataType" : "text",
+                "reload" : false,
+                "visible" : true});
+
+    },
+
+    init : function () {
+
+        $("a.show-list").click(function(event){
+            event.preventDefault();
+            var itemId = $(this).attr("id");
+            webgloo.sc.Lists.openPopup(itemId);
+
+        }) ;
+
+        /*
+         $("a.select-list").live("click", function(event){
+            event.preventDefault();
+            var listId = $(this).attr("id");
+            webgloo.sc.Lists.submitList(listId);
+
+        }) ;
+        */
+
+        $("#lists li a").live("click", function(event){
+            event.preventDefault();
+            var listId = $(this).attr("id");
+            webgloo.sc.Lists.submitList(listId);
+
+        }) ;
+
+        $("#create-list").click(function(event){
+            event.preventDefault();
+            var name = jQuery.trim($("#new-list-name").val());
+            if( name == '' )
+                return ;
+            webgloo.sc.Lists.submitName();
+        }) ;
+
+        $("#delete-items").click(function(event){
+            var itemIds = webgloo.sc.dashboard.getCheckedItems(webgloo.sc.Lists.containerId);
+            if(itemIds.length > 0 ) {
+                webgloo.sc.Lists.submitDeleteItems(itemIds);
+            }
+
         });
 
-  }
+    },
+
+    submitDeleteItems : function(itemIds) {
+        var frm = document.forms["delete-item-form"];
+        frm.items_json.value = JSON.stringify(itemIds) ; 
+        $("#form4").submit();
+    },
+
+    submitList : function(listId) {
+
+        var frm = document.forms["list-form1"];
+        frm.list_id.value = listId;
+        frm.is_new.value = 0 ;
+
+        if(webgloo.sc.Lists.debug) {
+            console.log("item_id = " + frm.item_id.value);
+            console.log("list Id = " + frm.list_id.value);
+            console.log("is_new = " + frm.is_new.value);
+            return ;
+        }
+
+        $('#list-form1').submit();
+    },
+
+    submitName : function() {
+
+        var frm = document.forms["list-form1"];
+        frm.list_id.value = '';
+        frm.is_new.value = 1 ;
+
+        if(webgloo.sc.Lists.debug) {
+            console.log("item_id = " + frm.item_id.value);
+            console.log("list Id = " + frm.list_id.value);
+            console.log("is_new = " + frm.is_new.value);
+            return ;
+        }
+
+        $('#list-form1').submit();
+    }
+
+}
+
+webgloo.sc.admin = {
+
+    addSlugPanelItems : function (itemInBox) {
+        //split on commas
+        var tokens = itemInBox.split(",");
+
+        for (var i = 0; i < tokens.length; i++) {
+           var token = jQuery.trim(tokens[i]);
+           if(token == '') continue ;
+           var buffer = '<tr>' + 
+                        ' <td> <input type="checkbox" name="g[]" checked ="checked" value="' 
+                        + token + '"/> </td> ' 
+                        +'<td> &dash;</td> <td> <span class="comment-text">' 
+                        + token 
+                        + '</span> </td> </tr>';
+
+            $("#slug-panel table").prepend(buffer);
+            $("#new-item-box").val('');
+        }
+
+    },
+
+    addSlugPanelEvents : function() {
+
+        //capture ENTER
+        $("#new-item-box").keydown(function(event) {
+            //donot submit form
+            if(event.which == 13) {
+                event.preventDefault();
+                var itemInBox = jQuery.trim($("#new-item-box").val());
+                if( itemInBox == '' ) {
+                    return ;
+                } else {
+                    webgloo.sc.admin.addSlugPanelItems(itemInBox);
+                }
+
+            }
+
+        });
+
+        $("#add-item-btn").click(function(event) {
+            event.preventDefault();
+            var itemInBox = jQuery.trim($("#new-item-box").val());
+            if( itemInBox == '' ) {
+                return ;
+            } else {
+                webgloo.sc.admin.addSlugPanelItems(itemInBox);
+            }
+
+        });
+
+        $('input:checkbox[id=page-checkbox]').click(function(event) {
+            //@imp donot event.preventDefault();
+            var checkBoxes =  $("#slug-panel").find("input:checkbox");
+            var state =  $('input:checkbox[id=page-checkbox]').prop("checked");
+            checkBoxes.prop("checked", state);
+            
+        });
+
+    }
+
+  
 }
 
 /* + webgloo media object */
@@ -634,7 +873,7 @@ webgloo.media = {
 
     populateHidden : function () {
 
-        frm = document.forms["web-form1"];
+        var frm = document.forms["web-form1"];
 
         if(jQuery.inArray("image",webgloo.media.mode) != -1) {
             var images = new Array() ;
@@ -755,10 +994,10 @@ webgloo.sc.ImageSelector = {
 
         $('#image-preview .container .options').hide();
         $('#image-preview').hide();
-        $('#step2-container').hide();
-
+        
         $("#fetch-button").live("click", function(event){
             event.preventDefault();
+            $("#next-container").hide();
             var link = jQuery.trim($("#link-box").val());
             if( link == '' ){
                 return ;
@@ -769,6 +1008,7 @@ webgloo.sc.ImageSelector = {
 
         //capture ENTER on link box
         $("#link-box").keydown(function(event) {
+            $("#next-container").hide();
             //donot submit form
             if(event.which == 13) {
                 event.preventDefault();
@@ -795,16 +1035,16 @@ webgloo.sc.ImageSelector = {
             }
 
             if(webgloo.sc.ImageSelector.num_selected == 0 ) {
-                webgloo.sc.ImageSelector.showError("Please select an image first.");
+                var message = webgloo.sc.message.SELECT_IMAGE ;
+                webgloo.sc.ImageSelector.appendError(message);
                 return false;
 
             } else {
 
-                var tmpl = "uploading {total} images " ;
-                var message = tmpl.supplant({"total" : webgloo.sc.ImageSelector.num_selected});
+                var message = webgloo.sc.message.get("UPLOAD_IMAGE", {"total" : webgloo.sc.ImageSelector.num_selected});
                 webgloo.sc.ImageSelector.appendMessage(message,{});
 
-                var spinner = '<div> <img src="/css/asset/sc/fb_loader.gif" alt="spinner"/></div>' ;
+                var spinner = webgloo.sc.message.FB_SPINNER ;
                 webgloo.sc.ImageSelector.appendMessage(spinner,{});
 
                 $("#image-preview").find('.container').each(function(index) {
@@ -869,7 +1109,7 @@ webgloo.sc.ImageSelector = {
             //will split into image and 1
             var ids = imageId.split('-');
             var realId = ids[1] ;
-            imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
+            var imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
 
             if(!imageObj.selected) {
                 // show select button
@@ -886,7 +1126,7 @@ webgloo.sc.ImageSelector = {
             //will split into image and 1
             var ids = imageId.split('-');
             var realId = ids[1] ;
-            imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
+            var imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
 
             //if this image is selected?
             if(!imageObj.selected) {
@@ -900,7 +1140,7 @@ webgloo.sc.ImageSelector = {
             var realId = $(this).attr("id");
             var imageId = "#image-" + realId ;
 
-            imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
+            var imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
             //change selected state for imageObj
             imageObj.selected = true ;
             webgloo.sc.ImageSelector.bucket.realId = imageObj ;
@@ -917,7 +1157,7 @@ webgloo.sc.ImageSelector = {
             var realId = $(this).attr("id");
             var imageId = "#image-" + realId ;
 
-            imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
+            var imageObj = webgloo.sc.ImageSelector.bucket[realId] ;
             //change selected state for imageObj
             imageObj.selected = false ;
             webgloo.sc.ImageSelector.bucket.realId = imageObj ;
@@ -973,9 +1213,9 @@ webgloo.sc.ImageSelector = {
         }
 
         if(webgloo.sc.ImageSelector.num_added > 0 ) {
-            $("#step2-container").fadeIn("slow");
+            $("#next-container").fadeIn("slow");
         }else {
-            var message = "Error: No suitable images found";
+            var message = webgloo.sc.message.IMAGE_SIZE_ERROR;
             webgloo.sc.ImageSelector.showError(message);
         }
 
@@ -999,13 +1239,17 @@ webgloo.sc.ImageSelector = {
     },
 
     processUrlFetch : function(response) {
-        images = response.images ;
+        var images = response.images ;
         webgloo.sc.ImageSelector.num_total = images.length;
         webgloo.sc.ImageSelector.description = response.description;
         webgloo.sc.ImageSelector.website = $("#link-box").val();
 
-        var tmpl = "Total {total} images found" ;
-        var message = tmpl.supplant({"total" : webgloo.sc.ImageSelector.num_total}) ;
+        if(webgloo.sc.ImageSelector.num_total > 0 ) {
+            message = webgloo.sc.message.get("FETCH_IMAGE_RESULT",{"total" : webgloo.sc.ImageSelector.num_total});
+        } else {
+            message = webgloo.sc.message.NO_IMAGE ;
+        }
+        
         webgloo.sc.ImageSelector.showMessage(message);
 
         for(i = 0 ; i < images.length ; i++) {
@@ -1052,8 +1296,9 @@ webgloo.sc.ImageSelector = {
     fetch : function(target) {
 
         webgloo.sc.ImageSelector.init();
-        var message = "fetching images from webpage..." ;
-        var spinner = '<div> <img src="/css/asset/sc/fb_loader.gif" alt="spinner"/></div>' ;
+
+        var message = webgloo.sc.message.FETCH_IMAGE ;
+        var spinner = webgloo.sc.message.FB_SPINNER ;
 
         webgloo.sc.ImageSelector.clearMessage();
         webgloo.sc.ImageSelector.appendMessage(message,{});
@@ -1062,7 +1307,7 @@ webgloo.sc.ImageSelector = {
         $("#image-preview").fadeOut("slow");
         $("#image-preview").html('');
 
-        endPoint = webgloo.sc.ImageSelector.extractEndpoint ;
+        var endPoint = webgloo.sc.ImageSelector.extractEndpoint ;
         params = {} ;
         params.target = target ;
         //ajax call start
@@ -1071,7 +1316,7 @@ webgloo.sc.ImageSelector = {
             type: "POST",
             dataType: "json",
             data :  params,
-            timeout: 9000,
+            timeout: 18000,
             processData:true,
             //js errors callback
             error: function(XMLHttpRequest, response){
@@ -1109,8 +1354,11 @@ webgloo.sc.ImageSelector = {
     processUploadError : function(response) {
 
         webgloo.sc.ImageSelector.upload_counter++;
-        var tmpl = " Error uploading image - {counter} : {message} " ;
-        var message = tmpl.supplant({"counter":webgloo.sc.ImageSelector.upload_counter, "message":response });
+        var message = webgloo.sc.message.get("IMAGE_UPLOAD_ERROR", {
+            "counter":webgloo.sc.ImageSelector.upload_counter, 
+            "message":response}
+            );
+
         webgloo.sc.ImageSelector.appendError(message);
 
         if(webgloo.sc.ImageSelector.debug) {
@@ -1123,8 +1371,7 @@ webgloo.sc.ImageSelector = {
 
     processUpload : function(response) {
         webgloo.sc.ImageSelector.upload_counter++;
-        var tmpl = "image - {counter} : uploaded successfully. " ;
-        var message = tmpl.supplant({"counter" : webgloo.sc.ImageSelector.upload_counter });
+        var message = webgloo.sc.message.get("IMAGE_UPLOAD_RESULT", {"counter":webgloo.sc.ImageSelector.upload_counter});
         webgloo.sc.ImageSelector.appendMessage(message);
 
         if(webgloo.sc.ImageSelector.debug) {
@@ -1145,7 +1392,7 @@ webgloo.sc.ImageSelector = {
                 //stringify images
                 var strImagesJson =  JSON.stringify(webgloo.sc.ImageSelector.images);
                 //bind to form
-                frm = document.forms["web-form1"];
+                var frm = document.forms["web-form1"];
                 frm.images_json.value = strImagesJson ;
                 frm.description.value = webgloo.sc.ImageSelector.description ;
                 frm.link.value = webgloo.sc.ImageSelector.website ;

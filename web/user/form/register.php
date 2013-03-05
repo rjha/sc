@@ -8,26 +8,33 @@
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Logger ;
     use \com\indigloo\Constants as Constants ;
+
     use \com\indigloo\exception\UIException as UIException;
     use \com\indigloo\exception\DBException as DBException;
 
+    use \com\indigloo\sc\mysql as mysql;
+    use \com\indigloo\sc\auth\Login as Login ;
+    use \com\indigloo\sc\Constants as AppConstants ;
+
+
     if (isset($_POST['register']) && ($_POST['register'] == 'Register')) {
 
+        $gWeb = \com\indigloo\core\Web::getInstance();
+        $fvalues = array();
+        $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
+
         try{
+
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('first_name', 'First Name', array('required' => 1, 'maxlength' => 32));
             $fhandler->addRule('last_name', 'Last Name', array('required' => 1, 'maxlength' => 32));
             $fhandler->addRule('email', 'Email', array('required' => 1, 'maxlength' => 64));
             $fhandler->addRule('password', 'Password', array('required' => 1 , 'maxlength' => 32));
-            $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
-
+            
              //check security token
             $fhandler->checkToken("token",$gWeb->find("form.token",true)) ;
-            
             $fvalues = $fhandler->getValues();
-            $fUrl = $fvalues['fUrl'];
-            $gWeb = \com\indigloo\core\Web::getInstance();
- 
+            
             if(!empty($fvalues["adrisya_number"])) {
                 $message = "unexpected error with form submission!" ;
                 $fhandler->addError($message) ;
@@ -50,19 +57,33 @@
             //canonical email - all lower case
             $email = strtolower(trim($fvalues['email']));
             $password = trim($fvalues['password']);
-            $flag = \com\indigloo\auth\User::login('sc_user',$email,$password);
+            $loginId = NULL ;
 
-            if ($flag < 0 ) {
-                $message = "Wrong login or password. Please try again!";
-                throw new UIException(array($message));
+            try{
+                $loginId = \com\indigloo\auth\User::login('sc_user',$email,$password);
+            } catch(\Exception $ex) {
+                $code = $ex->getCode();
+                switch($code) {
+                    case 401 :
+                        $message = "Wrong login or password. Please try again!";
+                        throw new UIException(array($message));
+                    break ;
+                    default:
+                        $message = "Error during login. Please try after some time!";
+                        throw new UIException(array($message));
+                }
             }
 
-            //set session variables
-            \com\indigloo\sc\auth\Login::startMikSession();
+            //success - update login record
+            // start 3mik session
+            $remoteIp = \com\indigloo\Url::getRemoteIp();
+            mysql\Login::updateIp(session_id(),$loginId,$remoteIp);
+            Login::startOAuth2Session($loginId,Login::MIK);
+
             //add overlay message
             $message = "success! Thanks for joining ".$fvalues['first_name'];
             $gWeb->store("global.overlay.message", $message);
-            header("Location: /");
+            header("Location: ". AppConstants::DASHBOARD_URL);
 
             exit ;
 

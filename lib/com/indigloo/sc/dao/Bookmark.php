@@ -15,16 +15,7 @@ namespace com\indigloo\sc\dao {
             $count = $row['count'] ;
 
             if($count == 0 ) {
-                // get image from item.
-                $postDao = new \com\indigloo\sc\dao\Post();
-                $postId = PseudoId::decode($itemId);
-                $image = $postDao->getImageOnId($postId);
-                //actually insert
                 mysql\Bookmark::add($ownerId,$loginId,$name,$itemId,"post",$title,$verb);
-                //Add to activity feed
-                $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
-                $feedDao->addBookmark($ownerId,$loginId,$name,$itemId,$title,$image,$verb);
-
             }
 
         }
@@ -33,26 +24,12 @@ namespace com\indigloo\sc\dao {
             $verb = \com\indigloo\sc\Constants::LIKE_VERB ;
             $this->add($ownerId,$loginId,$name,$itemId,$title,$verb);
         }
-
-        function favorite($ownerId,$loginId,$name,$itemId,$title) {
-             $verb = \com\indigloo\sc\Constants::FAVORITE_VERB ;
-             $this->add($ownerId,$loginId,$name,$itemId,$title,$verb);
-        }
-
-        function unfavorite($loginId,$itemId) {
-            $verb = \com\indigloo\sc\Constants::FAVORITE_VERB ;
-            mysql\Bookmark::remove($loginId,$itemId,$verb);
-        }
-
+        
         function delete($bookmarkId) {
             mysql\Bookmark::delete($bookmarkId);
         }
-
-        function getTotal($filters=array()) {
-            $row = mysql\Bookmark::getTotal($filters);
-            return $row['count'];
-        }
-
+        
+        // return latest posts that have been bookmarked
         function getLatest($limit,$filters) {
             $rows = mysql\Bookmark::getLatest($limit,$filters);
             return $rows ;
@@ -70,6 +47,11 @@ namespace com\indigloo\sc\dao {
                 $rows = mysql\Bookmark::getPaged($start,$direction,$limit,$filters);
                 return $rows ;
             }
+        }
+
+        function getLikeOnItemId($itemId) {
+            $rows = mysql\Bookmark::getLikeOnItemId($itemId);
+            return $rows ;
         }
 
     }

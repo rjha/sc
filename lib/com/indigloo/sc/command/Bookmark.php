@@ -9,12 +9,13 @@ namespace com\indigloo\sc\command {
 
         function execute($params) {
             $action = $params->action;
-            $itemId = $params->itemId ;
-            $loginId = $params->loginId ;
+            $itemId = intval($params->itemId) ;
+            $loginId = intval($params->loginId) ;
             $name = $params->name ;
 
-            if(empty($action) || empty($itemId)) {
-                $response = array("code" => 500 , "message" => "Bad input: missing required parameters.");
+            if(empty($action) || empty($itemId) || empty($loginId) || empty($name)) {
+                $message = "Bad input: missing required parameters." ;
+                $response = array("code" => 500 , "message" => $message);
                 return $response ;
             }
 
@@ -31,14 +32,7 @@ namespace com\indigloo\sc\command {
                     $bookmarkDao->like($ownerId,$loginId,$name,$itemId,$title);
                     $message = sprintf(" Success! Like for item %s done.",$title);
                     break ;
-                case UIConstants::SAVE_POST:
-                    $bookmarkDao->favorite($ownerId,$loginId,$name,$itemId,$title);
-                    $message = sprintf("Success! Item %s added to favorites",$title);
-                    break;
-                case UIConstants::REMOVE_POST :
-                    $bookmarkDao->unfavorite($loginId,$itemId);
-                    $message = sprintf("Success! Item %s removed from favorites",$title);
-                    break ;
+                
                 default :
                     break;
             }

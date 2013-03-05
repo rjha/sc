@@ -5,8 +5,8 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\Util as Util;
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config ;
+
     use \com\indigloo\Constants as Constants;
-    use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\ui\form\Sticky;
     use \com\indigloo\sc\util\PseudoId as PseudoId ;
     use \com\indigloo\sc\html\Seo as SeoData ;
@@ -52,8 +52,7 @@ namespace com\indigloo\sc\controller{
 
             $links = array();
             foreach($dblinks as $link) {
-                $scheme = \parse_url($link,PHP_URL_SCHEME);
-                $link = empty($scheme) ? "http://".$link : $link ;
+                $link = Url::addHttp($link);
                 array_push($links,$link);
             }
 
@@ -83,78 +82,49 @@ namespace com\indigloo\sc\controller{
             // also used in item images alt text
             // item description should be 160 chars.
             $itemObj->title = Util::abbreviate($postView->title,70);
+            $itemObj->title = sprintf("item %s - %s",$itemId,$itemObj->title);
+
             $itemObj->description = Util::abbreviate($postView->description,160);
+            $itemObj->description = sprintf("item %s - %s by user %s",
+                $itemId,$itemObj->description,$postView->userName) ;
+           
 
             $strItemObj = json_encode($itemObj);
             //make the item json string form safe
             $strItemObj = Util::formSafeJson($strItemObj);
 
-            /* comments data */
-            $commentDao = new \com\indigloo\sc\dao\Comment();
-            $commentDBRows = $commentDao->getOnPostId($postId);
-
+            /* likes data */
+            $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
+            $likeDBRows = $bookmarkDao->getLikeOnItemId($itemId);
+            
             $gWeb = \com\indigloo\core\Web::getInstance();
+            /* sticky is used by comment form */
             $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
+            $gRegistrationPopup = false ;
+
             $loginIdInSession = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
-
-            $xids = array();
-            $xrows = array();
-            $group_slug = $postDBRow['group_slug'];
+            
+            //show registration popup
+            if(is_null($loginIdInSession)) {
+                $register_popup =  $gWeb->find("sc:browser:registration:popup");
+                $register_popup = (is_null($register_popup)) ? false : $register_popup ;
+                
+                if(!$register_popup) {
+                    $gRegistrationPopup = true ;
+                    $gWeb->store("sc:browser:registration:popup", true);
+                }
+                
+            }
+            
+            $group_slug = $postDBRow["group_slug"];
             $groupDao = new \com\indigloo\sc\dao\Group();
-            $group_names = $groupDao->slugToName($postDBRow['group_slug']);
+            $group_names = $groupDao->tokenizeSlug($group_slug,",",true);
 
-            if(!Util::tryEmpty($group_slug)) {
-
-                $groups = explode(Constants::SPACE,$group_slug);
-                $sphinx = new \com\indigloo\sc\search\SphinxQL();
-
-                foreach($groups as $group) {
-                    $ids = $sphinx->getGroups($group,0,8);
-                    foreach($ids as $id){
-                        if(!in_array($id,$xids) && ($id != $postId)) {
-                            array_push($xids,$id);
-                            if(sizeof($xids) >= 8 ) { break; }
-                        }
-                    }
-                    if(sizeof($xids) >= 8 ) { break; }
-                }
-
-                //get posts on groups
-                if(!empty($xids)) {
-                    $xrows = $postDao->getOnSearchIds($xids);
-                }
-            }
-
-            $catCode = $postDBRow['cat_code'];
-
-            if(!Util::tryEmpty($catCode)) {
-                $categoryDao = new \com\indigloo\sc\dao\Category();
-                $catRows = $categoryDao->getLatest($catCode,4);
-                foreach($catRows as $catRow) {
-                    if(!in_array($catRow['id'],$xids) && ($catRow['id'] != $postId)) {
-                        array_push($xrows,$catRow);
-                    }
-                }
-            }
-
-            if(sizeof($xrows) < 16 ) {
-                //how many?
-                $limit = 16 - (sizeof($xrows)) ;
-                $randomRows = $postDao->getRandom($limit);
-                $xrows = array_merge($xrows,$randomRows);
-            }
-
-            $siteDao = new \com\indigloo\sc\dao\Site();
-            $siteDBRow = $siteDao->getOnPostId($postId);
-
-            $loginUrl = "/user/login.php?q=".Url::current();
-            $formErrors = FormMessage::render();
 
             $pageTitle = $itemObj->title;
-            $metaDescription = Util::abbreviate($postDBRow['description'],160);
             $metaKeywords = SeoData::getMetaKeywords($group_names);
             $pageUrl = Url::base().Url::current() ;
-            
+             
             $file = APP_WEB_DIR. '/view/item.php' ;
             include($file);
         }

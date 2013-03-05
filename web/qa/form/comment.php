@@ -6,15 +6,23 @@
     
     use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\Util as Util ;
+    use \com\indigloo\Logger ;
+
     use \com\indigloo\sc\ui\Constants as UIConstants ;
- 
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
+
     use \com\indigloo\exception\UIException as UIException;
+
+    
 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
 
-        $gWeb = \com\indigloo\core\Web::getInstance();
+        $gWeb = \com\indigloo\core\Web::getInstance(); 
+        $fvalues = array();
+        $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
+
+       
 
         try{
 
@@ -24,17 +32,17 @@
             $fhandler->addRule('post_id', 'post id', array('required' => 1));
             $fhandler->addRule('owner_id', 'owner id', array('required' => 1));
             $fhandler->addRule('post_title', 'post title', array('required' => 1));
-            $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
-
+            
             $fvalues = $fhandler->getValues();
-            //redirect always happens to item details page.
-            $fUrl = $fvalues['fUrl'];
-
+            
             // UI checks
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors());
             }
 
+            //trim comments to 512 chars
+            $fvalues["comment"] = substr($fvalues["comment"],0,512);
+            
             //use login is required for comments
             if(Login::hasSession()) {
 
@@ -68,8 +76,10 @@
 
                 //base64 encode to transfer as payload in URL
                 $gSessionAction = base64_encode(json_encode($actionObj));
-                $fwd = "/user/login.php?q=".urlencode($fUrl)."&g_session_action=".$gSessionAction;
-                header('location: '.$fwd);
+                //encode again for user login page
+                $fwd = "/user/login.php?q=".base64_encode($fUrl)."&g_session_action=".$gSessionAction;
+                
+                header("Location: ".$fwd);
                 exit ;
             }
 
@@ -80,6 +90,16 @@
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
             header("Location: " . $fUrl);
             exit(1);
+
+        } catch(\Exception $ex) {
+            Logger::getInstance()->error($ex->getMessage());
+            Logger::getInstance()->backtrace($ex->getTrace());
+            $gWeb->store(Constants::STICKY_MAP, $fvalues);
+            $message = "Error: looks bad. something went wrong!" ;
+            $gWeb->store(Constants::FORM_ERRORS, array($message));
+            header("Location: " . $fUrl);
+            exit(1);
+
         }
 
     }

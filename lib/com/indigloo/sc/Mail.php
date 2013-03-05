@@ -13,8 +13,8 @@ namespace com\indigloo\sc {
          */
         static function sendResetPassword($name,$email,$token) {
             $templates = \com\indigloo\sc\html\Mail::getResetPassword($name,$email,$token);
-            $text = $templates['text'];
-            $html = $templates['html'];
+            $text = $templates["text"];
+            $html = $templates["html"];
             $subject = Config::getInstance()->get_value("reset.password.subject");
             $from = Config::getInstance()->get_value("default.mail.address");
             $fromName = Config::getInstance()->get_value("default.mail.name");
@@ -42,6 +42,20 @@ namespace com\indigloo\sc {
             $subject = Util::abbreviate("3mik.com - ".$feedText,100);
             $subject .= "..." ;
 
+            $from = Config::getInstance()->get_value("default.mail.address");
+            $fromName = Config::getInstance()->get_value("default.mail.name");
+
+            $tos = array($email);
+            $code = \com\indigloo\mail\SendGrid::sendViaWeb($tos,$from,$fromName,$subject,$text,$html);
+            return $code ;
+        }
+
+        static function newAccountMail($name,$email) {
+            
+            $templates = \com\indigloo\sc\html\Mail::getNewAccount($name);
+            $text = $templates["text"];
+            $html = $templates["html"];
+            $subject = Config::getInstance()->get_value("new.account.subject");
             $from = Config::getInstance()->get_value("default.mail.address");
             $fromName = Config::getInstance()->get_value("default.mail.name");
 

@@ -12,6 +12,7 @@
     
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
+    $loginName = $gSessionLogin->name;
 
     if (is_null($loginId)) {
         trigger_error("Error : NULL or invalid login_id", E_USER_ERROR);
@@ -31,7 +32,7 @@
 <html>
 
     <head>
-        <title> 3mik.com - user <?php echo $userDBRow['name']; ?>  </title>
+        <title> profile - <?php echo $loginName; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
@@ -39,19 +40,44 @@
 
     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-        <div class="container">
-            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+        <div class="container mh600">
+
             <div class="row">
-                  <div class="span9">
+                <div class="span12">
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                 <div class="span12">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="span11 offset1">
                     <div class="page-header">
-                        <div class="faded-text">Profile</div>
+                        <span style="padding-left:20px;padding-right:20px;">Profile </span>
+                        <span>
+                            <a class="btn-flat" href="/user/dashboard/mails.php">Mail preferences</a>
+                        </span>
+                        <span>
+                          <?php 
+                                if(\com\indigloo\sc\auth\Login::hasMikLogin()) {
+                                    echo '<a class="btn-flat" href="/user/account/change-password.php">Change password</a>';
+                                }
+                            ?>
+                        </span>
+
                     </div>
                 </div>
-                <div class="span9 mh600">
-                <?php echo \com\indigloo\sc\html\User::getProfile($gSessionLogin,$userDBRow) ; ?>
+            </div>
+
+            <div class="row">
+                <div class="span6 offset1">
+                    <?php echo \com\indigloo\sc\html\User::getProfile($gSessionLogin,$userDBRow) ; ?>
                 </div>
-                <div class="span3">
-                </div>
+                
+
             </div> <!-- row -->
         </div> <!-- container -->
 

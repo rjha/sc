@@ -8,7 +8,9 @@
     ~~$view['content']~
 </div>
 
+~if($view['hasImage']){~
 <div style="padding:20px;margin-top:20px">
     <img style="width:auto;height:auto;max-width:400px;max-height:300px;padding:6px;"
         src="~~$view['srcImage']~" alt="image of ~~$view['object']~" title="~~$view['object']~"/>
 </div>
+~}~

@@ -1,40 +1,30 @@
-<div class="row">
-    <div class="span4">
-        <div class="widget">
-            <div class="photo"> <img src="~~$view->photoUrl~" alt="~~$view->name~" /> </div>
-        </div>
-    </div>
-    <div class="span5">
-        <div class="">
-            <h3>About me </h3>
-            <p> ~~$view->aboutMe~ </p>
-
-        </div>
-
-    </div>
-
-</div> <!-- nested row -->
 
 <div class="p10">
-    <span> <a class="btn" href="~~$view->editUrl~">Edit profile</a> </span>
-    
+    <div class="photo"> <img src="~~$view->photoUrl~" alt="~~$view->name~" class="img-polaroid"/> </div>
 </div>
 
-<div class="row">
-    <div class="span6 p20">
-        <table class="table table-condensed">
-            <tr> <td>Real name</td> <td>~~$view->name~</td> </tr>
-            <tr> <td>Nick name</td> <td>~~$view->nickName~</td> </tr>
-            <tr> <td>Email</td> <td>~~$view->email~</td> </tr>
-            <tr> <td>Website</td> <td>~~$view->website~</td> </tr>
-            <tr> <td>Blog</td> <td>~~$view->blog~</td> </tr>
-            <tr> <td>Location</td> <td>~~$view->location~</td> </tr>
-            <tr> <td>Age</td> <td> ~~$view->age~</td> </tr>
-            <tr> <td>Created on</td> <td>~~$view->createdOn~</td> </tr>
-        </table>
-    </div>
+<div class="p10">
+    <h4>About me </h4>
+    <p class="text-info">~~$view->aboutMe~</p>
+</div>
 
-</div> <!-- nested row -->
+
+<div class="section">
+    <table class="table table-condensed">
+        <tr> <td>Real name</td> <td>~~$view->name~</td> </tr>
+        <tr> <td>Nick name</td> <td>~~$view->nickName~</td> </tr>
+        <tr> <td>Email</td> <td>~~$view->email~</td> </tr>
+        <tr> <td>Website</td> <td>~~$view->website~</td> </tr>
+        <tr> <td>Blog</td> <td>~~$view->blog~</td> </tr>
+        <tr> <td>Location</td> <td>~~$view->location~</td> </tr>
+        <tr> <td>Age</td> <td> ~~$view->age~</td> </tr>
+        <tr> <td>Created on</td> <td>~~$view->createdOn~</td> </tr>
+    </table>
+</div>
+
+<div class="section">
+     <a class="btn" href="~~$view->editUrl~">Edit profile</a> 
+ </div>
 
 
 

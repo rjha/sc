@@ -8,8 +8,8 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
 
-    $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
-    $feedDataObj = $feedDao->getGlobalFeeds(100);
+    $feedDao = new \com\indigloo\sc\dao\Activity();
+    $feedDataObj = $feedDao->getGlobalFeeds(50);
 
 ?>
 
@@ -30,10 +30,15 @@
         <div class="container">
             
             <div class="row">
+                <div class="span12">
+                    <div class="page-header">
+                        <h3> Activity feed </h3>
+                    </div>
+                </div>
                 <div class="span9">
                     <div class="feeds">
                         <?php
-                            $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
+                            $htmlObj = new \com\indigloo\sc\html\Activity();
                             $html = $htmlObj->getHtml($feedDataObj);
                             echo $html ;
 

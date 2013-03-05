@@ -15,8 +15,8 @@
 
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
-    $qUrl = Url::tryQueryParam("q");
-    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    //q is part of URL and base64 encoded
+    $qUrl = Url::tryBase64QueryParam("q","/");
     $fUrl = Url::current();
 
     $itemId = Url::getQueryParam("id");
@@ -26,7 +26,7 @@
     $postDBRow = $postDao->getOnId($postId);
 
     if(! (Login::isOwner($postDBRow['login_id']) || Login::isAdmin())) {
-        header("Location: /qa/noowner.php");
+        header("Location: /site/error/403.html");
         exit ;
     }
 
@@ -61,11 +61,11 @@
 
                     <?php FormMessage::render(); ?>
                     <?php echo \com\indigloo\sc\html\Post::getWidget($postDBRow); ?>
-
+                    <div class="p10">&nbsp;</div>
                     <form id="web-form1"  name="web-form1" action="/qa/form/delete.php" method="POST">
                         <div>
-                            <button class="btn btn-danger" type="submit" name="delete" value="Delete" onclick="this.setAttribute('value','Delete');">Delete</button>
-                            <a href="<?php echo $qUrl; ?>"><button class="btn" type="button">Cancel</a></button></a>
+                            <button class="btn btn-danger" type="submit" name="delete" value="Delete">Delete</button>
+                            <a href="<?php echo base64_decode($qUrl); ?>"><button class="btn" type="button">Cancel</a></button></a>
                         </div>
                         <input type="hidden" name="q" value="<?php echo $qUrl; ?>" />
                         <input type="hidden" name="post_id" value="<?php echo $postId; ?>" />

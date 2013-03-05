@@ -1,0 +1,23 @@
+
+
+<div>
+    <span class="faded-text">New list name (letters and numbers only)</span>
+</div>
+
+
+<div class="list-form">
+    <form  id="list-form1"  name="list-form1" action="/user/action/list/update.php"   method="POST">
+        
+        <input id="new-list-name" name="new-list-name" maxlength="64" type="text" value="" />
+        <br>
+        <button type="submit" id ="create-list" class="btn btn-small" name="create" value="Create"><span>Create</span></button>
+         &nbsp;
+        <a class="btn btn-small" href="~~$view->pageUrl~" >Cancel</a>
+                                
+        <input type="hidden" name="item_id" value="~~$view->itemId~" />
+        <input type="hidden" name="list_id" value="" />
+        <input type="hidden" name="is_new" value="1" />
+        <input type="hidden" name="qUrl" value="~~$view->qUrl~" />
+        
+    </form>
+</div>

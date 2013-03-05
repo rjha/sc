@@ -7,12 +7,15 @@
     use \com\indigloo\Util as Util;
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
-    use \com\indigloo\sc\auth\Login as Login;
 
+    use \com\indigloo\Constants as Constants;
     use \com\indigloo\sc\Constants as AppConstants ;
     use \com\indigloo\sc\ui\Constants as UIConstants ;
 
+    use \com\indigloo\sc\auth\Login as Login;
     use \com\indigloo\ui\Filter as Filter;
+    use \com\indigloo\ui\form\Message as FormMessage;
+    use \com\indigloo\ui\form\Sticky;
 
     
     $qparams = Url::getRequestQueryParams();
@@ -23,17 +26,7 @@
         trigger_error("Error : NULL or invalid login_id", E_USER_ERROR);
     }
 
-    $userDao = new \com\indigloo\sc\dao\User();
-    $userDBRow = $userDao->getOnLoginId($loginId);
-
-    if (empty($userDBRow)) {
-        trigger_error("No user record found for given login_id", E_USER_ERROR);
-    }
-
-    $tileOptions = ~UIConstants::TILE_ALL ;
-    $pageTitle = "your favorites on 3mik" ;
-    $tileOptions = UIConstants::TILE_REMOVE ;
-
+    $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
     $bookmarkDao = new \com\indigloo\sc\dao\Bookmark();
 
     //add login_id and code filters
@@ -47,92 +40,99 @@
 
     //filter-2
     $filter = new Filter($model);
-    $filter->add($model::VERB_COLUMN,Filter::EQ,AppConstants::FAVORITE_VERB);
+    $filter->add($model::VERB_COLUMN,Filter::EQ,AppConstants::LIKE_VERB);
     array_push($filters,$filter);
 
-    $total = $bookmarkDao->getTotal($filters);
     $pageSize = Config::getInstance()->get_value("user.page.items");
-    $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
+    $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $postDBRows = $bookmarkDao->getPaged($paginator,$filters);
-    $pageBaseUrl = "/user/dashboard/bookmark.php";
-
+    $baseURI = "/user/dashboard/bookmark.php";
 
 ?>
 <!DOCTYPE html>
 <html>
 
     <head>
-        <title> <?php echo $pageTitle; ?> </title>
+        <title> Likes of <?php echo $gSessionLogin->name; ?> </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         
     </head>
 
      <body>
-        <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-        <div class="container">
-            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
-            <div class="row">
-                <div class="span9 mh600">
-                    <div class="page-header">
-                        <div class="faded-text">
-                            All your favorite posts are shown here. To remove a post 
-                            from favorites, do mouse over the post and click Remove.
-                        </div>
-                    <div>
+       <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
+        <div class="container mh600">
 
+            <div class="row">
+                <div class="span12">
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                 <div class="span12">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+
+            </div>
+            <?php FormMessage::render(); ?>
+
+            <div class="row">
+                 <div class="span8 offset1">
+                    <div id="page-message" class="hide-me"> </div>
                     <div id="widgets">
                         <?php
                             $startId = NULL;
-                            $endId = NULL ;
-                            if(sizeof($postDBRows) > 0 ) {
-                                $startId = $postDBRows[0]['id'] ;
-                                $endId =   $postDBRows[sizeof($postDBRows)-1]['id'] ;
-                                foreach($postDBRows as $postDBRow) {
-                                    //$html = \com\indigloo\sc\html\Post::getTile($postDBRow,$tileOptions);
-                                    $html = \com\indigloo\sc\html\Post::getBookmarkWidget($postDBRow);
-                                    echo $html ;
+                            $endId = NULL;
+                            $gNumRecords = sizeof($postDBRows);
 
+                            if ( $gNumRecords > 0) {
+                                $startId = $postDBRows[0]['id'];
+                                $endId = $postDBRows[$gNumRecords - 1]['id'];
+
+                                foreach ($postDBRows as $postDBRow) {
+                                    //output post widget html
+                                    echo \com\indigloo\sc\html\Post::getBookmarkWidget($postDBRow);
                                 }
+
                             } else {
-                                $message = "No results found " ;
-                                echo \com\indigloo\sc\html\NoResult::get($message);
+                                 
+                                $message = "No likes found" ;
+                                $options = array("hkey" => "dashboard.item.like");
+                                echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
                             }
 
                         ?>
-
-                    </div><!-- tiles -->
+                    </div>
 
                 </div>
 
             </div>
 
         </div>  <!-- container -->
+        <?php $paginator->render($baseURI,$startId,$endId, $gNumRecords ); ?>
         
-        <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
-
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
         <script type="text/javascript">
-            /* column width = css width + margin */
+           
             $(document).ready(function(){
-
-                $('.widget .options').hide();
+                  
                 $('.widget').mouseenter(function() {
-                    $(this).find('.options').toggle();
-                    /* @todo move colors to a css style */
-                    $(this).css("background-color", "#f9f9f9");
+                    $(this).find('.options').css("visibility", "visible");
                 });
 
                 $('.widget').mouseleave(function() {
-                    $(this).find('.options').toggle();
-                    $(this).css("background-color", "#FFFFFF");
+                    $(this).find('.options').css("visibility", "hidden");
                 });
 
-                webgloo.sc.item.addActions();
                 webgloo.sc.toolbar.add();
+                webgloo.sc.item.addActions();
+                //fix twitter bootstrap alerts
+                webgloo.sc.dashboard.fixAlert();
+                webgloo.sc.Lists.init();
 
             });
+
         </script>
 
 

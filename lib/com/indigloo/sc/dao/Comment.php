@@ -38,11 +38,6 @@ namespace com\indigloo\sc\dao {
             return $rows ;
         }
 
-        function getTotalCount($filters=array()) {
-            $row = mysql\Comment::getTotalCount($filters);
-            return $row['count'] ;
-        }
-
         function update($commentId,$comment) {
             $loginId = \com\indigloo\sc\auth\Login::tryLoginIdInSession();
             mysql\Comment::update($commentId,$comment,$loginId) ;
@@ -50,16 +45,9 @@ namespace com\indigloo\sc\dao {
         }
 
         function create($loginId,$name,$ownerId,$postId,$title,$comment) {
-            mysql\Comment::create($postId, $comment, $loginId);
-            //Add to feed
-            $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
-            $verb = \com\indigloo\sc\Constants::COMMENT_VERB ;
-            $itemId = PseudoId::encode($postId);
-            $postDao = new \com\indigloo\sc\dao\Post();
-            $image = $postDao->getImageOnId($postId);
-            $content = Util::abbreviate($comment,100);
-            $feedDao->addComment($ownerId,$loginId,$name,$itemId,$title,$content,$image,$verb);
+            mysql\Comment::create($loginId,$name,$ownerId,$postId,$title,$comment);
 
+           
         }
 
         function delete($commentId){

@@ -1,0 +1,112 @@
+
+
+#it sucks and sucks bad
+The default linux desktop (with the possible exception of Ubuntu) just looks plain sucky!
+
++ The fonts look weird
+Yes. Atleast I use Debian and Arch.
++ The apperance of applications can vary!
+firefox will look different from open office and from calcutator.
+
++ The tools are DE or distro specific
+How you turn on subpixel hinting in LXDE is different from ..
++ There is just too many tools, configuration files and information for a beginner
+   Not working for you? what is your DPI? what does X say in log? what is your XDG_CONFIG_HOME set to?
++ There is a lot of emphasis on doing "user-specific" settings without providing a good default setting OOTB
+No default working system.
+
+Now you can tear your hair out in frustration. This is 2013. How hard can it be to make it look decent?
+On my windows and macbook I never had to answer questions like my graphic card make and DPI.
+
+# components - what is involved in font rendering?
++
+paths -  where are you reading information from?
+New toolkit will read using XDG_ environment variables whereas some old apps can still read
+using old X paths.
+
++ 
+fonts - what fonts do you have?
+mac and windows systems ship with all the fonts. Not linux. You have to get all the right fonts.
+ 
++
+http://freedesktop.org/wiki/Software/fontconfig
+fontconfig - a library that knows 
+ - what fonts are installed
+ - what configuration is supplied for what font
+
+This library supplies font configuration information to programs
+what you provide to this fontconfig library in turn determines what the programs can do
+Hinting/anti aliasing/ sub pixel rendering configuration is provided by this library
+
++ 
+freetype2
+The actual font backend that can read font files and provide information contained in them.
+Does not provide text layout or graphic processing. This is not at all related to X
+
+
++
+xft = X font library
+client side font API for X applications
+if you do not want to let X handle fonts then clients should have the capability of 
+handling font rendering. 
+
++
+X renderer extension (?)
+
++ XDG
+X desktop group. Old name of freedesktop. The xdg prefix survives in specifications.
+
+
+# How to do things?
+
+  + install fonts -  copy new fonts into ~/.fonts directory 
+  + install fonts globally - copy into  /usr/share/fonts folder
+  + ~/.fonts and /usr/share/fonts will be scanned recursively 
+  +  To load new fonts via fontconfig $fc-cache -vf
+  + check all fonts available on your system => $fc-list
+  + check fonts available to to X $xlsfonts | grep <fontname>
+  + include font paths for X -  using FontPath directive
+  + what is the difference between fc-list and xlsfonts? 
+  fc-list is for client side (?) and xlsfonts lists fonts that are available directly from X server
+  probably we should only worry about fc_list output 
+  + include user specific fontconfig
+  create ~/.config/fontconfig/conf.d
+  copy hinting and other font conf related files here.
+  global - make /etc/fonts/local.conf file
+  + to load new fontconfig : $pkill X
+
+
+
+#Debian wheezy
+
++ 
+
+install Arial/Times New Roman etc.
+Add contrib area in /etc/apt/source.list 
+(wheezy main - duplicate and change main to contrib)
+
+deb http://debian.lcs.mit.edu/debian/ wheezy contrib 
+$sudo aptitude install ttf-mscorefonts-installer
+
++
+fontconfig - the program that provides fonts and fonts rendering information
+to application reads from /etc/fonts directory. If we copy the content of /etc/fonts
+directory from a machine where fonts are working - That should work!
+/etc/fonts <- content <- replaced from Ubuntu machine.
+/usr/share/fonts -> verify that we have ms fonts
+
+Now fc-list should list Arial etc.
+
++ 
+To configure  fontconfig w/o manual copying
+$ sudo dpkg-reconfigure fontconfig-config
+ - select Native, Always on subpixel hinting and No to bitmap fonts
+$ sudo dpkg-reconfigure fontconfig
+
++
+Google Chrome
+ Standard : Times New Roman
+ Serif : Times New Roman
+ Sans-Serif : Arial 
+ Fixed-Width : Courier-New 
+

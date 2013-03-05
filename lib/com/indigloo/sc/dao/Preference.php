@@ -4,17 +4,19 @@ namespace com\indigloo\sc\dao {
 
     use \com\indigloo\Util as Util ;
     use \com\indigloo\sc\mysql as mysql;
+    use \com\indigloo\sc\util\Nest ;
 
     class Preference {
 
         function get($loginId) {
-            $row = mysql\Preference::get($loginId);
+            $key = Nest::preference("user",$loginId);
+            $row = mysql\Collection::glget($key);
             $pData = NULL ;
 
             
             if(!empty($row)) {
                 //json stored in DB for this login
-                $strPData = $row["p_data"] ;
+                $strPData = $row["t_value"] ;
                 $pData = json_decode($strPData);
             }
 
@@ -31,8 +33,9 @@ namespace com\indigloo\sc\dao {
             
         }
 
-        function update($loginId,$pData) {
-            mysql\Preference::update($loginId,$pData);
+        function set($loginId,$data) {
+            $key = Nest::preference("user",$loginId);
+            mysql\Collection::glset($key,$data);
         }
 
     }

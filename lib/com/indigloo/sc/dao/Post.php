@@ -5,7 +5,9 @@ namespace com\indigloo\sc\dao {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\sc\mysql as mysql;
+
     use \com\indigloo\Logger as Logger;
+    use \com\indigloo\sc\util\PseudoId ;
 
     class Post {
 
@@ -14,11 +16,58 @@ namespace com\indigloo\sc\dao {
             return $row ;
         }
 
+        function exists($itemId) {
+            $row = $this->getOnItemId($itemId);
+            $flag = (!empty($row) && ($row["pseudo_id"] == $itemId)) ? true : false ;
+            return $flag ;
+        }
+
+        function getOnItemId($itemId) {
+
+            $postId = PseudoId::decode($itemId);
+            $row = mysql\Post::getOnId($postId);
+            return $row ;
+        }
+
+        /*
+         * @return imgv array containing following keys
+         *  - name
+            - tname
+            - source
+            - thumbnail
+            - width
+            - height 
+        * 
+        * if no image found then return a placeholder image.
+        * 
+        */
+
         function getImageOnId($postId){
              $row = mysql\Post::getOnId($postId);
              $json = $row["images_json"];
-             $imgv =  \com\indigloo\sc\html\Post::getTileImage($json);
+             $imgv =  \com\indigloo\sc\html\Post::getImageOrDefault($json);
              return $imgv ;
+        }
+
+        /* 
+         * @return imgv array containing image details
+         * or NULL if no image found 
+         *
+         */
+        function tryImageOnId($postId){
+            
+            $row = mysql\Post::getOnId($postId);
+            $json = $row["images_json"];
+            $images = json_decode($json);
+
+            if( !empty($images) && (sizeof($images) > 0)) {
+                $image = $images[0] ;
+                $imgv = \com\indigloo\sc\html\Post::convertImageJsonObj($image);
+                return $imgv ;
+            }
+
+            return NULL ;
+
         }
 
         /**
@@ -74,10 +123,9 @@ namespace com\indigloo\sc\dao {
 
         function getPaged($paginator,$filters=array()) {
             $limit = $paginator->getPageSize();
-            $offset = ($paginator->getPageNo() -1 )  * $limit;
-
+            
             if($paginator->isHome()){
-                return $this->getLatest($offset,$limit,$filters);
+                return $this->getLatest($limit,$filters);
             } else {
 
                 $params = $paginator->getDBParams();
@@ -88,14 +136,32 @@ namespace com\indigloo\sc\dao {
             }
         }
 
-        function getLatest($offset,$limit,$filters=array()) {
-            $rows = mysql\Post::getLatest($offset,$limit,$filters);
+        function getLatest($limit,$filters=array()) {
+            $rows = mysql\Post::getLatest($limit,$filters);
             return $rows ;
         }
-
+        /*
+         * used in monitor posts and random posts controller 
+         * use site counter when filters is empty
+         * 
+         */
         function getTotalCount($filters=array()) {
-            $row = mysql\Post::getTotalCount($filters);
-            return $row['count'] ;
+            $count = 0 ;
+
+            if(empty($filters)) {
+                // no filter case
+                $row = mysql\Analytic::getSiteCounters();
+                if(!empty($row)) {
+                    $count = $row["post_count"];
+                }
+
+            }else {
+                //get from table using where condition
+                $row = mysql\Post::getTotalCount($filters);
+                $count = $row["count"];
+            }
+           
+            return $count ;
         }
 
         function create($title,
@@ -111,17 +177,13 @@ namespace com\indigloo\sc\dao {
                                 $title,
                                 $description,
                                 $loginId,
+                                $name,
                                 $linksJson,
                                 $imagesJson,
                                 $groupSlug,
                                 $categoryCode);
 
-            //Add to feed
-            $feedDao = new \com\indigloo\sc\dao\ActivityFeed();
-            $verb = \com\indigloo\sc\Constants::POST_VERB ;
-            $image =  \com\indigloo\sc\html\Post::getTileImage($imagesJson);
-            $feedDao->addPost($loginId, $name, $itemId, $title,$image,$verb);
-
+           
             return $itemId ;
         }
 
@@ -174,19 +236,37 @@ namespace com\indigloo\sc\dao {
             
 
         }
-
-        function doAdminAction($postId,$action){
-
-            if(! \com\indigloo\sc\auth\Login::isAdmin()) {
-                trigger_error("You need admin privileges to do this action.", E_USER_ERROR);
-            }
-            
-            //action => feature value map
-            $map = array(\com\indigloo\sc\Constants::FEATURE_POST => 1 ,
-                        \com\indigloo\sc\Constants::UNFEATURE_POST => 0 );
-            mysql\Post::setFeature($postId,$map[$action]);
-
+        
+        function getLatestOnCategory($code,$limit){
+            $rows = mysql\Post::getLatestOnCategory($code,$limit);
+            return $rows ;
         }
+        
+        function getPagedOnCategory($paginator,$code) {
+ 
+            $limit = $paginator->getPageSize();
+
+            if($paginator->isHome()){
+                return $this->getLatestOnCategory($code,$limit);
+                
+            } else {
+                $params = $paginator->getDBParams();
+                $start = $params["start"];
+                $direction = $params["direction"];
+
+                $rows = mysql\Post::getPagedOnCategory($start,$direction,$limit,$code);
+                return $rows ;
+            }
+        }
+
+        function feature ($postId) {
+            mysql\Post::set_fp_bit($postId,1);
+        }
+
+        function unfeature ($postId) {
+            mysql\Post::set_fp_bit($postId,0);
+        }
+        
     }
 
 }

@@ -3,11 +3,12 @@ namespace com\indigloo\sc\controller{
 
 
     use \com\indigloo\Util as Util;
-    use com\indigloo\Url;
+    use \com\indigloo\Url;
     use \com\indigloo\Configuration as Config ;
+
     use \com\indigloo\sc\html\Seo as SeoData ;
     use \com\indigloo\ui\Filter as Filter;
-
+    use \com\indigloo\sc\auth\Login as Login ;
 
     class Home {
 
@@ -37,34 +38,56 @@ namespace com\indigloo\sc\controller{
 
         }
 
-        private function loadHomePage() {
-
-            $postDao = new \com\indigloo\sc\dao\Post();
-            $randomDBRows = array();
-
-            //10 featured posts
+        private function getFeaturedPosts($postDao,$limit) {
+            //33 featured posts
             $filters = array();
             $model = new \com\indigloo\sc\model\Post();
             $filter = new Filter($model);
             $filter->add($model::FEATURED,Filter::EQ,TRUE);
             array_push($filters,$filter);
-            $featureDBRows = $postDao->getPosts(10,$filters);
+            $rows = $postDao->getPosts($limit,$filters);
+            return $rows ;
+        }
 
-            //20 latest posts
-            $latestDBRows = $postDao->getLatest(0,20);
+        /*
+         * Home page mixing
+         * 
+         * limit to - 04 user posts - To cover user session
+         * limit to - 23 featured posts 
+         * minimum 10 latest posts 
+         * - To cover global feeds and latest arrivals
+         * - still not pageSize?
+         * - fetch more latest DB rows
+         *
+         */
+        private function loadHomePage() {
             $pageSize = Config::getInstance()->get_value("main.page.items");
-            //rest are random rows.
-            $short = $pageSize - (sizeof($featureDBRows) + sizeof($latestDBRows)) ;
-            if($short > 0 ) {
-                //pull random rows
-                $randomDBRows = $postDao->getRandom($short);
+            $postDao = new \com\indigloo\sc\dao\Post();
+            $fp_size = $pageSize - 14 ;
+            $fp_size = ($fp_size <= 4 ) ? 4 : $fp_size ; 
+            
+            $featuredDBRows = $this->getFeaturedPosts($postDao,$fp_size);
+            $userDBRows = array();
+
+            // Do we have a login session? 4 user posts
+            $loginId = Login::tryLoginIdInSession();
+            if($loginId != null ) {
+                $userDBRows = $postDao->getOnLoginId($loginId,4);
             }
 
-            $bucket = array_merge($featureDBRows,$randomDBRows);
+            $short = $pageSize - (sizeof($featuredDBRows) + sizeof($userDBRows)) ; 
+            // if page size is less than feature + user DB rows 
+            // even then we need to fetch few latest DB rows to make the 
+            // pagination right.
+            $short = ($short <= 4) ? 4 : $short ;
+            // atleast 4 latest items, at max page size of latest items
+            $latestDBRows = $postDao->getLatest($short);
+
+            $bucket = array_merge($userDBRows,$featuredDBRows);
+            shuffle($bucket);
             $count = sizeof($bucket);
 
             for($i = 0 ; $i < $count ; $i++){
-                $this->combine($latestDBRows[$i]);
                 $this->combine($bucket[$i]);
             }
 
@@ -92,10 +115,9 @@ namespace com\indigloo\sc\controller{
         function loadNextPage($gpage) {
 
             $postDao = new \com\indigloo\sc\dao\Post();
-            $total = $postDao->getTotalCount();
             $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("main.page.items");
-            $paginator = new \com\indigloo\ui\Pagination($qparams,$total,$pageSize);
+            $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
 
             $postDBRows = $postDao->getPaged($paginator);
 

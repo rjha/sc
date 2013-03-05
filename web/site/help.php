@@ -9,7 +9,7 @@
 <html>
 
     <head>
-        <title> Help about 3mik </title>
+        <title> 3mik - Help page </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
@@ -18,120 +18,205 @@
     <body>
 
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-        <div class="container mh600">
-            
-            <div class="row">
-                <div class="span11">
-                <div class="page-header"> <h2> Help about 3mik </h2> </div>
-                    <div class="accordion" id="accordion2">
-                        <!-- items -->
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#question1">what is 3mik?</a>
-                            </div>
-                            <div id="question1" class="accordion-body collapse" style="height: 0px; ">
-                                <div class="accordion-inner">
-                                    <div class="p20 comment-text">
-                                    3mik is a sharing and discovery platform. 3mik lets you share interesting and unique things in India. You can use 3mik to discover your interests and see items shared by others. To learn more please <a href="/site/about.php" target="_blank">click this link</a>
+        <div class="container">
+            <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
+           
+                <div class="row">
+                    <div class="span12">
+                        <div class="page-header"> <h3> Looking for help?</h3></div>
+                    </div>
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div> <!-- item:1 -->
-
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#question2">How can I share an item on 3mik?</a>
-                            </div>
-                            <div id="question2" class="accordion-body collapse" style="height: 0px; ">
-                                <div class="accordion-inner">
-                                    <div> <img src="/site/images/help/share-link.png" alt="share link" /> </div>
-                                    <div class="p20 comment-text">
-                                    To share items on 3mik, just click on the share link in toolbar at top of page. You can select to upload images from your computer or you can share images from a webpage. To upload images from your computer, click on Add images button in the next screen. Browse to the folder where you have stored your images. You can select multiple images.
-
-                                    <br>
-                                    <br>
-Share a webpage by entering a URL and selecting images that you wish to share. Enter a URL and click on Fetch. The page would show images, you can select the appropriate ones and click on "Next". You can select multiple images. Note that some images may not appear if they are not of a suitable size.  The submitted images will appear at the bottom of the form on next screen.
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div> <!-- item:2 -->
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#question3">How can I edit what I have shared?</a>
-                            </div>
-                            <div id="question3" class="accordion-body collapse" style="height: 0px; ">
-                                <div class="accordion-inner">
-                                    <div> <img src="/site/images/help/item-edit-save.png" alt="item edit" /> </div>
-                                    <div class="p20 comment-text">
-                                Editing an item requires login. Please login into 3mik. You can go to the item page and click on the "Edit item" link. You can also click on your name in the toolbar and select Account  | Posts. There you can select a post to edit or delete it.
-                                    </div>
-                                    <div> <img src="/site/images/help/toolbar-account.png" alt="toolbar account" /> </div>
-                                </div>
-                            </div>
-                        </div> <!-- item:3 -->
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#question4">How can I share my 3mik items with my friends?</a>
-                            </div>
-                            <div id="question4" class="accordion-body collapse" style="height: 0px; ">
-                                <div class="accordion-inner">
-                                    <div> <img src="/site/images/help/item-share.png" alt="item share" /> </div>
-                                    <div class="p20 comment-text">
-                                Please login into 3mik. You can go to the item page and click on share links. We support
-sharing your items on Facebook and Google+.
-                                    </div>
-                                </div>
-                            </div>
-                        </div> <!-- item:4 -->
-
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#question5">How can I save the items I like on 3mik?</a>
-                            </div>
-                            <div id="question5" class="accordion-body collapse" style="height: 0px; ">
-                                <div class="accordion-inner">
-                                    <div> <img src="/site/images/help/item-save.png" alt="item save" /> </div>
-                                    <div class="p20 comment-text">
-                                You can click the favorite button on an item on home page and search results. You can also favorite the item on item details page. All the items you favorite will appear on your account page.
-                                    </div>
-                                </div>
-                            </div>
-                        </div> <!-- item:5 -->
-
-                         <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#question6">How can I open my acocunt page to see my posts, comments, favorites and followers?</a>
-                            </div>
-                            <div id="question6" class="accordion-body collapse" style="height: 0px; ">
-                                <div class="accordion-inner">
-                                    <div> <img src="/site/images/help/toolbar-account.png" alt="toolbar account" /> </div>
-                                    <div class="p20 comment-text">
-                                    Please login into 3mik. The toolbar will show you a link with your name. Please click your name in toolbar and select Account. Your account page showing your posts, comments and followers will open. You can edit or delete your posts on your account page.
-                                     </div>
-                                </div>
-                            </div>
-                        </div> <!-- item:6 -->
-
-                         <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#question7">How can I create a 3mik account?</a>
-                            </div>
-                            <div id="question7" class="accordion-body collapse" style="height: 0px; ">
-                                <div class="accordion-inner">
-                                    <div> <img src="/site/images/help/login-page.png" alt="login page" /> </div>
-                                    <div class="p20 comment-text">
-                                        To create a 3mik account click on <a href="http://www.3mik.com/user/register.php">register</a>. Register link is also available in toolbar at the top of page.
-
-                                You can also login using an existing Facebook, Google or Twitter account.
-                                     </div>
-                                </div>
-                            </div>
-                        </div> <!-- item:7 -->
-
-                    </div> <!-- accordion -->
                 </div>
+
+                <div class="row">
+                    <div class="span5 offset1">
+                       
+                        <p> 
+                            Look no further! The first place to start is our FAQ or frequently 
+                            asked questions. If you can't find your answer there, please send 
+                            us an email <a href="mailto:support@3mik.com">support@3mik.com</a>.
+                            We will try our best to help. 
+                            Other pages that you may be interested in:
+                        </p>
+                        <ul>
+                            <li> <a href="/site/contact.php">contact page </a> </li>
+                            <li> <a href="/site/copyright.php">copyright page </a> </li>
+                        </ul>   
+                    </div>
+                    <div class="span5">
+                        <div class="ml20">
+                            <h4> Follow 3mik on</h4>
+                            <a href="http://www.facebook.com/3mikindia" target="_blank">
+                                <div class="floatl p10">
+                                    <img src="/css/asset/sc/ico_facebook.png"/>
+                                    <br>
+                                    Facebook
+                                </div>
+                            </a>
+                            <a href="https://plus.google.com/108668124722035129135" target="_blank">
+                                <div class="floatl p10">
+                                    <img src="/css/asset/sc/ico_googleplus.png"/>
+                                    <br>
+                                    Google+
+                                </div>
+                            </a>
+
+                            <a href="http://www.twitter.com/3mikindia" target="_blank">
+                                <div class="floatl p10">
+                                    <img src="/css/asset/sc/ico_twitter.png"/>
+                                    <br>
+                                    Twitter
+                                </div>
+                            </a>
+
+                        </div> <!-- social:buttons -->
+                    </div>
+            </div> <!-- row -->
+          
+
+            <div class="row">
+                <div id="faq" class="span6 offset2 mt20">
+                    <h3> Frequently asked questions </h3>
+                    <ol>
+                        <li> <a href="#q1">How can I register / create a new account?</a></li>
+                        <li> <a href="#q2">How can I Sign in / access my account?</a></li>
+                        <li> <a href="#q3">I want to share. How can I add my items? </a></li>
+                        <li> <a href="#q4">How can I view more items from a shop?</a></li>
+                        
+                        <li> <a href="#q5">How can I view more items from a user?</a></li>
+                        <li> <a href="#q6">How can I bookmark my favorite items on 3mik to view later?</a></li>
+                        <li> <a href="#q7">How can I tell my friends about my 3mik items?</a></li>
+                        <li> <a href="#q8">How can I edit/delete my stuff?</a></li>
+                       
+                    </ol>
+                    <div  class="widget p10">
+                        <h4> what is 3mik?</h4>
+                        <div class="description">
+                             3mik is a sharing and discovery platform. 
+                             3mik lets you share interesting and unique 
+                             things in India. You can use 3mik to discover 
+                             your interests and see items shared by others. 
+                             To learn more please 
+                             <a href="/site/about.php" target="_blank">check the about 3mik page</a>
+
+                        </div>
+                        
+                    </div>
+
+                    <div id="q1" class="widget p10">
+                        <h4> How can I register / create a new account?</h4>
+                        <div class="photo">
+                            <img src="/site/images/help/3mik-join.png" />
+                        </div>
+                        <ul>
+                           <li> Click on Login/Registration in the top toolbar </li>
+                           <li> or click the red Join 3mik button at the top of page. </li>
+                           
+                        </ul>
+                        
+                        <div class="floatr p10"> <a href="#faq">Back to top&nbsp;&uarr;</a></div>
+                    </div>
+
+                    <div id="q2" class="widget p10">
+                        <h4> How can I Sign in / access my account?</h4>
+                        <div class="photo">
+                            <img src="/site/images/help/3mik-login.png" />
+                        </div>
+                        <ul>
+                           <li> Click on Login/Registratio in the top toolbar </li>
+                           <li> After sign in, click on your name in top toolbar</li>
+                            <li>Select Account</li>
+                        </ul>
+                        
+                        <div class="floatr p10"> <a href="#faq">Back to top&nbsp;&uarr;</a></div>
+                    </div>
+
+                    <div id="q3" class="widget p10">
+                        <h4>I want to share. How can I add my items?</h4>
+                        <div class="photo">
+                            <img src="/site/images/help/3mik-upload.png" />
+                        </div>
+                        <ul>
+                           <li> Click on Upload button at the top of page</li>
+                        </ul>
+                        
+                        <div class="floatr p10"> <a href="#faq">Back to top&nbsp;&uarr;</a></div>
+                    </div>
+
+                     <div id="q4" class="widget p10">
+                        <h4>How can I view more items from a shop?</h4>
+                        <div class="photo">
+                            <img src="/site/images/help/3mik-shop-link.png" />
+                        </div>
+                        <ul>
+                            <li>Go to item details page (by clicking on item image)</li>
+                            <li>After the item images, you will see website link for shop (if available)</li>
+                            <li>Click on shop link</li>
+                        </ul>
+                        
+                        <div class="floatr p10"> <a href="#faq">Back to top&nbsp;&uarr;</a></div>
+                    </div>
+
+                    <div id="q5" class="widget p10">
+                        <h4>How can I view more items from a user?</h4>
+                        <div class="photo">
+                            <img src="/site/images/help/3mik-user-link.png" />
+                        </div>
+                        <ul>
+                            <li>Go to item details page (by clicking on item image)</li>
+                            <li>you will see user name at the top right of page</li>
+                            <li>Click on user name link</li>
+                        </ul>
+                        
+                        <div class="floatr p10"> <a href="#faq">Back to top&nbsp;&uarr;</a></div>
+                    </div>
+
+                    <div id="q6" class="widget p10">
+                        <h4>How can I bookmark my favorite items on 3mik to view later?</h4>
+                        <div class="photo">
+                            <img src="/site/images/help/3mik-bookmark.png" />
+                        </div>
+                        <ul>
+                            <li>Click on save button on top of an item image</li>
+                            <li>Or click on Save link on item details page</li>
+                            <li>you can save this item to an existing list or create a new list</li>
+                            <li>You can view your lists from your public page or account page</li>
+                        </ul>
+                        
+                        <div class="floatr p10"> <a href="#faq">Back to top&nbsp;&uarr;</a></div>
+                    </div>
+
+                    <div id="q7" class="widget p10">
+                        <h4>How can I tell my friends about my 3mik items?</h4>
+                        <div class="photo">
+                            <img src="/site/images/help/3mik-social-sharing.png" />
+                        </div>
+                        <ul>
+                            <li>You can send your public page link</li>
+                            <li>Share 3mik items via Facebook/Google+/Twitter</li>
+                            
+                        </ul>
+                        
+                        <div class="floatr p10"> <a href="#faq">Back to top&nbsp;&uarr;</a></div>
+                    </div>
+
+                      <div id="q8" class="widget p10">
+                        <h4>How can I edit/delete my stuff?</h4>
+                        <div class="photo">
+                            <img src="/site/images/help/3mik-edit.png" />
+                        </div>
+                        <ul>
+                            <li>Sign in</li>
+                            <li>After sign in, you will be taken to your account page</li>
+                            <li>Click on on of the acocunt menu link</li>
+                            <li>Place your mouse over an item to get edit/delete options</li>
+                        </ul>
+                        
+                        <div class="floatr p10"> <a href="#faq">Back to top&nbsp;&uarr;</a></div>
+                    </div>
+
+
+                </div> <!-- span:wrapper -->
 
             </div> <!-- row -->
 

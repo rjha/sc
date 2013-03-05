@@ -24,12 +24,6 @@ namespace com\indigloo\sc\dao {
                 return $rows ;
             }
         }
-        
-        function getTotalCount() {
-            $row = mysql\Feedback::getTotalCount();
-            return $row['count'] ;
-        }
-
 
         function getLatest($limit) {
             $rows = mysql\Feedback::getLatest($limit);
@@ -40,7 +34,10 @@ namespace com\indigloo\sc\dao {
             mysql\Feedback::add($name,$email,$phone,$comment);
         }
 
-        
+        function delete($id) {
+            mysql\Feedback::delete($id);
+        }
+
     }
 
 }

@@ -15,11 +15,9 @@
         header("Location: / ");
     }
 
-    //qUrl and fUrl
-    $qUrl = Url::tryQueryParam("q");
-    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
-    //$qUrl = urldecode($qUrl);
-
+    $qUrl = Url::tryBase64QueryParam("q", "/user/dashboard/index.php");
+    $fUrl = Url::current();
+    
     // should login do some action?
     $gSessionAction = Url::tryQueryParam("g_session_action");
     if(!empty($gSessionAction)) {
@@ -72,27 +70,38 @@
      <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         
-        <div class="container mh800">
-            <div style="margin-top:100px;"> &nbsp; </div> <!-- row:1 -->
+        <div class="container mh600">
+
+            <div style="margin-top:100px;"> &nbsp; </div> <!-- top:padding -->
                 
-            <div class="row mt20">
-                <div class="span3 offset1">
-                    <div class="social-buttons floatr">
-                        <div class="p10">
-                            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">Login with Facebook</a>
+            <div class="row">
+                <div class="span9 offset1" style="border-bottom:1px dashed #333333;">
+                    <p class="comment-text">
+                        You can use your existing facebook, google or twitter account to sign in.
+                    </p>
+                    <div id="zocial-grid">
+                        <div class="column">
+                            <a class="zocial facebook" href="<?php echo $fbDialogUrl; ?>">&nbsp;&nbsp;Facebook</a>&nbsp;
                         </div>
-                        <div class="p10">
-                            <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">Login with Google</a>&nbsp;&nbsp;
-                        </div>
-                        <div class="p10">
-                            <a class="zocial twitter" href="/user/twitter-login.php">Login with Twitter</a>&nbsp;
-                        </div>
-                    </div>
 
-                </div> <!-- span3 -->
+                        <div class="column">
+                             <a class="zocial gmail" href="<?php echo $googleAuthUrl; ?>">&nbsp;&nbsp;Google</a>&nbsp;
+                        </div>
 
-                <div class="span6" style="border-left:1px dashed #333333;padding-left:40px;">
-                    <h3>3mik login</h3>
+                        <div class="column">
+                            <a class="zocial twitter" href="/user/twitter-login.php">&nbsp;&nbsp;Twitter</a>&nbsp;
+                        </div>
+
+                    </div> <!-- zocial-grid -->
+
+
+                </div>
+            </div> <!-- row:1 -->
+
+            <div class="row">
+
+                <div class="span6 offset1" style="padding-top:40px;padding-left:40px;">
+                    <h4>Sign in using 3mik account</h4>
                     <div class="p10"> <?php FormMessage::render(); ?> </div>
                     <div class="lb1">
                         <form id="web-form1"  name="web-form1" action="/user/form/login.php" method="POST">
@@ -117,8 +126,7 @@
                             </table>
 
                             <div class="form-actions">
-                                <button class="btn btn-primary" type="submit" name="login" value="Login" onclick="this.setAttribute('value','Login');" ><span>Login</span></button>
-                                
+                                <button class="btn gBtnUp" type="submit" name="login" value="Login"><span>Sign in</span></button>
                                 &nbsp;&nbsp;
                                 <a href="/user/account/mail-password.php">Forgot your password?</a>
                             </div>
@@ -128,9 +136,7 @@
 
                         </form>
                     </div> <!-- form wrapper -->
-                    <div class="mt20">
-                        <a href="/user/register.php">Register for a new 3mik account</a>&nbsp;(&nbsp;Free and takes only a minute! )
-                    </div>
+                    
             </div> 
 
         </div> <!-- row:2 -->

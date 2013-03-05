@@ -8,22 +8,21 @@
     use \com\indigloo\Url as Url;
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\sc\auth\Login as Login;
-
+    
+    use \com\indigloo\Constants as Constants;
+    use \com\indigloo\ui\form\Message as FormMessage;
+    use \com\indigloo\ui\form\Sticky;
     use \com\indigloo\ui\Filter as Filter;
 
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
+    $loginName = $gSessionLogin->name;
 
     if (is_null($loginId)) {
         trigger_error("Error : NULL login_id on user dashboard", E_USER_ERROR);
     }
 
-    $userDao = new \com\indigloo\sc\dao\User();
-    $userDBRow = $userDao->getOnLoginId($loginId);
-
-    if (empty($userDBRow)) {
-        trigger_error("No user record found for given login_id", E_USER_ERROR);
-    }
+    $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
     $postDao = new \com\indigloo\sc\dao\Post();
     
@@ -37,11 +36,13 @@
     array_push($filters,$filter);
 
     $postDBRows = array();
-    $total = $postDao->getTotalCount($filters);
+    $pageSize = Config::getInstance()->get_value("user.page.items");    
 
-    $pageSize = Config::getInstance()->get_value("user.page.items");
-    $paginator = new \com\indigloo\ui\Pagination($qparams, $total, $pageSize);
+    $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
     $postDBRows = $postDao->getPaged($paginator,$filters);
+    
+    $baseURI = "/user/dashboard/posts.php" ;
+
 
 ?>
 
@@ -50,7 +51,7 @@
 <html>
 
     <head>
-        <title> 3mik.com - user <?php echo $userDBRow['name']; ?>  </title>
+        <title> items - <?php echo $loginName; ?>  </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
         
@@ -58,60 +59,82 @@
 
     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-        <div class="container">
-            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+        <div class="container mh600">
+
             <div class="row">
-                <div class="span9 mh600">
-                    <div class="page-header">
-                        <div class="faded-text">
-                            All your posts are shown here. Do mouse over a post to get 
-                            edit and remove links.
-                        </div>
-                    </div>
+                <div class="span12">
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+                </div>
+            </div>
+            <div class="row">
+                 <div class="span12">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
 
-                    <?php
-                        $startId = NULL;
-                        $endId = NULL;
-                        if (sizeof($postDBRows) > 0) {
-                            $startId = $postDBRows[0]['id'];
-                            $endId = $postDBRows[sizeof($postDBRows) - 1]['id'];
-                            foreach ($postDBRows as $postDBRow) {
-                                echo \com\indigloo\sc\html\Post::getWidget($postDBRow);
+            </div>
+            <?php FormMessage::render(); ?>
+
+            <div class="row">
+               
+                <div class="span8 offset1">
+                    <div id="page-message" class="hide-me"> </div>
+                    <div id="widgets">
+                        <?php
+                            $startId = NULL;
+                            $endId = NULL;
+                            $gNumRecords = sizeof($postDBRows) ;
+
+                            if ( $gNumRecords > 0) {
+                                $startId = $postDBRows[0]['id'];
+                                $endId = $postDBRows[$gNumRecords-1]['id'];
+
+                                foreach ($postDBRows as $postDBRow) {
+                                    //output post widget html
+                                    echo \com\indigloo\sc\html\Post::getWidget($postDBRow);
+                                }
+
+                            } else {
+                                 
+                                $message = "No items found" ;
+                                $options = array("hkey" => "dashboard.item.create");
+                                echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
                             }
-                        } else {
-                            $message = "No posts found " ;
-                            echo \com\indigloo\sc\html\NoResult::get($message);
-                        }
 
-                    ?>
+                        ?>
+                    </div>
 
                 </div>
                 <div class="span3">
+                    
                 </div>
+               
             </div>
         </div> <!-- container -->
-        <div class="hr"> </div>
-        <?php $paginator->render('/user/dashboard/posts.php', $startId, $endId); ?>
+        
+        <?php $paginator->render($baseURI,$startId,$endId,$gNumRecords);  ?>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
-
+         
         <script>
+            
             $(document).ready(function(){
-                //show options on widget hover
-                $('.widget .options').hide();
                 $('.widget').mouseenter(function() {
-                    $(this).find('.options').toggle();
-                    /* @todo move colors to a css style */
-                    $(this).css("background-color", "#f9f9f9");
+                    $(this).find('.options').css("visibility", "visible");
                 });
 
                 $('.widget').mouseleave(function() {
-                    $(this).find('.options').toggle();
-                    $(this).css("background-color", "#FFFFFF");
+                    $(this).find('.options').css("visibility", "hidden");
                 });
 
-                 webgloo.sc.toolbar.add();
+                
+                webgloo.sc.toolbar.add();
+                //fix twitter bootstrap alerts
+                webgloo.sc.dashboard.fixAlert();
+                webgloo.sc.Lists.init();
+
             });
+
+
 
         </script>
 

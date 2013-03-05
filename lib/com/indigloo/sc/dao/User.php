@@ -26,18 +26,58 @@ namespace com\indigloo\sc\dao {
             return $row ;
         }
 
-        function update($loginId,$firstName,$lastName,$nickName,$email,
-                                $website,$blog,$location,$age,$photoUrl,$aboutMe) {
+        function getOnSearchLoginIds($arrayIds) {
+            if(empty($arrayIds)) { return array(); }
 
-            mysql\User::update($loginId,$firstName,$lastName,$nickName,$email,
-                                $website,$blog,$location,$age,$photoUrl,$aboutMe);
+            $strIds = implode(",",$arrayIds);
+            $rows = mysql\User::getOnSearchLoginIds($strIds);
+            return $rows ;
+        }
 
+        function update(
+            $loginId,
+            $firstName,
+            $lastName,
+            $nickName,
+            $email,
+            $website,
+            $blog,
+            $location,
+            $age,
+            $photoUrl,
+            $aboutMe) {
 
+            mysql\User::update(
+                $loginId,
+                $firstName,
+                $lastName,
+                $nickName,
+                $email,
+                $website,
+                $blog,
+                $location,
+                $age,
+                $photoUrl,
+                $aboutMe);
         }
 
         function getTotal($filters=array()) {
-            $row = mysql\User::getTotal($filters);
-            return $row["count"] ;
+            $count = 0 ;
+
+            if(empty($filters)) {
+                // no filter case
+                $row = mysql\Analytic::getSiteCounters();
+                if(!empty($row)) {
+                    $count = $row["user_count"];
+                }
+
+            }else {
+                //get from user table using where condition
+                $row = mysql\User::getTotal($filters);
+                $count = $row["count"];
+            }
+             
+            return $count ;
         }
 
         function getLatest($limit,$filters=array()) {
@@ -60,6 +100,22 @@ namespace com\indigloo\sc\dao {
                 return $rows ;
             }
         }
+
+        function ban ($loginId) {
+            // session Id for this user?
+            $loginRow = mysql\Login::getOnId($loginId);
+            $sessionId = $loginRow["session_id"];
+            mysql\User::set_bu_bit($loginId,1,$sessionId);
+        }
+
+        function unban ($loginId) {
+            mysql\User::set_bu_bit($loginId,0,NULL);
+        }
+
+        function taint ($userId) {
+            mysql\User::set_tu_bit($userId,1);
+        }
+
 
     }
 

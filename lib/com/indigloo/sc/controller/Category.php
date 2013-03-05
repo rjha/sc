@@ -5,33 +5,39 @@ namespace com\indigloo\sc\controller{
     use \com\indigloo\Util as Util;
     use \com\indigloo\Url;
     use \com\indigloo\Configuration as Config ;
+
     use \com\indigloo\Constants as Constants;
+    use \com\indigloo\sc\util\Nest as Nest;
     use \com\indigloo\ui\Pagination as Pagination;
     use \com\indigloo\sc\html\Seo as SeoData ;
 
     class Category {
 
         function process($params,$options) {
-            $categoryId = Util::getArrayKey($params,'category_id');
-            $categoryDao = new \com\indigloo\sc\dao\Category();
-            $code = $categoryDao->getCodeonId($categoryId);
 
-           if(is_null($code)) {
+            $seoKey = Util::getArrayKey($params,"category_id");
+            $collectionDao = new \com\indigloo\sc\dao\Collection();
+            $zmember = $collectionDao->uizmemberOnSeoKey(Nest::ui_category(),$seoKey);
+
+            if(is_null($zmember) || !isset($zmember["ui_code"])) {
                 $controller = new \com\indigloo\sc\controller\Http404();
                 $controller->process();
                 exit;
             }
 
-            $total = $categoryDao->getTotalCount($code);
+            $code = $zmember["ui_code"];
+            $catName = $zmember["name"];
+
+            $postDao = new \com\indigloo\sc\dao\Post();
+            
             $qparams = Url::getRequestQueryParams();
             $pageSize = Config::getInstance()->get_value("search.page.items");
-            $paginator = new Pagination($qparams,$total,$pageSize);
-            $postDBRows = $categoryDao->getPaged($paginator,$code);
-            $catName = $categoryDao->getName($code);
-
+            $paginator = new Pagination($qparams,$pageSize);
+            $postDBRows = $postDao->getPagedOnCategory($paginator,$code);
+            
             $pageHeader = $catName;
 
-            $pageBaseUrl = "/category/$categoryId";
+            $pageBaseUrl = "/category/$seoKey";
             $pageTitle = SeoData::getPageTitle($catName);
             $metaKeywords = SeoData::getMetaKeywords($catName);
             $metaDescription = SeoData::getMetaDescription($catName);

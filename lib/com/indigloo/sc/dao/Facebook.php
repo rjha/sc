@@ -2,7 +2,6 @@
 
 namespace com\indigloo\sc\dao {
 
-    
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\sc\mysql as mysql;
@@ -23,7 +22,9 @@ namespace com\indigloo\sc\dao {
 
             //is existing record?
             $facebookId = trim($facebookId);
-            $row = $this->getOnFacebookId($facebookId); 
+            $remoteIp =  \com\indigloo\Url::getRemoteIp();
+
+            $row = $this->getOnFacebookId($facebookId);
 
             if(empty($row)){
                 $message = sprintf("Login::Facebook::create id %s, email %s ",$facebookId,$email);
@@ -31,6 +32,7 @@ namespace com\indigloo\sc\dao {
 
                 //create login + facebook user
                 $provider = \com\indigloo\sc\auth\Login::FACEBOOK ;
+                
                 $loginId = mysql\Facebook::create(
                     $facebookId,
                     $name,
@@ -41,14 +43,13 @@ namespace com\indigloo\sc\dao {
                     $email,
                     $provider,
                     $access_token,
-                    $expires);
+                    $expires,
+                    $remoteIp);
                 
-             
 
             } else {
                 //found
                 $loginId = $row["login_id"];
-                mysql\Login::updateAccessToken($loginId,$access_token,$expires);
             }
 
             return $loginId ;

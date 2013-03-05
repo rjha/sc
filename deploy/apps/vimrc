@@ -22,6 +22,6 @@ set directory=/home/rjha/nuke/swap
 set guioptions-=T
 source /usr/share/vim/vim73/mswin.vim
 behave mswin
-
-" NERDTRee plugin
-" call pathogen#infect()
+"for loading nerdtree
+call pathogen#infect()
+map <F2> :NERDTreeToggle<CR>

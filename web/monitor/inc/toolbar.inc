@@ -1,36 +1,42 @@
+<?php
+
+    $gWeb = \com\indigloo\core\Web::getInstance();
+    $gomInSession = $gWeb->find("global.overlay.message",true);
+    $goverlay = \com\indigloo\sc\html\Site::getOverlay($gomInSession);
+
+?>
 
 <div id="site-toolbar" class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
             <a class="brand" href="/">3mik.com <span class="beta">BETA</span> </a>
             <ul class="nav">
-                <li> <a href="/"><i class="icon-home"></i>&nbsp;Home</a></li>
-                 <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-
-                            <li>
-                               <div id="submenu-col2"> 
-                                   
-                                    <ul>
-
-                                        <li><a href="/monitor/index.php">Posts</a></li>
-                                        <li><a href="/monitor/comments.php">Comments</a></li>
-                                        <li><a href="/monitor/feed.php">Activities</a></li>
-                                    </ul>
-                                     <ul>
-
-                                        <li><a href="/monitor/users.php">Users</a></li>
-                                        <li><a href="/monitor/groups.php">Groups</a></li>
-                                        <li><a href="/monitor/feedback.php">Feedback</a></li>
-                                    </ul>
-
-                                </div> <!-- 2-col submenu -->
-                            </li>
-                        </ul>
-                    </li>  <!-- user menu -->
-
+                <li> <a href="/"><i class="icon-home"></i>&nbsp;Home</a></li> 
             </ul>
         </div>
     </div>
 </div>
+
+<div class="row">
+    <?php if(!empty($goverlay)) { echo $goverlay ; } ?>
+</div> <!-- overlay -->
+
+
+<div id="block-spinner"> </div>
+
+<div id="simple-popup">
+     <div id="header">
+         <div class="wrapper">
+            <div class="floatr">
+                <a id="simple-popup-close" href="">close&nbsp;<i class="icon-remove"> </i></a>
+            </div>
+        </div>
+        <div class="clear"> </div>
+     </div>
+    <div id="content"> </div>
+
+</div>
+
+<div id="popup-mask"> </div>
+<!-- site simple popup -->
+

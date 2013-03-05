@@ -3,12 +3,15 @@
     use \com\indigloo\Url as Url ;
  
     if(!Login::isAdmin()) {
-        $qUrl = Url::tryQueryParam("q");
-        if(is_null($qUrl)) {
-            $qUrl = $_SERVER['REQUEST_URI'];
-        }
-
-        $fwd = '/user/login.php?q='.$qUrl;
+        /* 
+         * do not use Url::current() as default q params if we have 
+         * none coming in the request. the issue is that this role/admin.inc
+         * file can be included on forms also and we do not want to redirect
+         * back to form pages. 
+         * 
+         */
+        $qUrl = Url::tryBase64QueryParam("q", "/");
+        $fwd = '/user/login.php?q='. $qUrl ;
         header('location: '.$fwd);
         exit ;
   }

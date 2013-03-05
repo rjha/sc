@@ -1,0 +1,22 @@
+<h5>Following</h5>
+
+<table class="table table-condensed">
+  <thead>
+     
+  </thead>
+  <tbody>
+    
+    ~foreach($view->records as $record){~
+    <tr>
+      <td><b> <a href="~~$record['pubUserUrl']~" target="_blank"> ~~$record['name']~</a> </b></td>
+      <td> 
+        &nbsp;
+     </td>
+      
+    </tr>
+    ~}~
+  </tbody>
+</table>
+<div class="ml20">
+  <a href="~~$view->moreLink~">more &rarr;</a>
+</div>

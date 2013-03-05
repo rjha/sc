@@ -30,7 +30,7 @@
 
                     <div class="row">
                         <div class="span2 offset6">
-                            <a class="btn btn-primary" href="<?php echo $goUrl; ?>"><?php echo $goText; ?></a>
+                            <a class="btn b" href="<?php echo $goUrl; ?>"><?php echo $goText; ?></a>
                         </div>
                     </div>
 

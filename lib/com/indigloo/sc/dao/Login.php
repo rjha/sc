@@ -20,18 +20,26 @@ namespace com\indigloo\sc\dao {
             }
 
             $userName = $firstName. ' '.$lastName ;
-            mysql\Login::create($provider,$userName,$firstName,$lastName,$email,$password);
+            $remoteIp = \com\indigloo\Url::getRemoteIp();
+            mysql\Login::create(
+                $provider,
+                $userName,
+                $firstName,
+                $lastName,
+                $email,
+                $password,
+                $remoteIp);
 
         }
-
-        function getTotalCount($filters=array()) {
-            $row = mysql\Login::getTotalCount($filters);
-            return $row['count'] ;
-        }
-
+        
         function getLatest($limit) {
             $rows = mysql\Login::getLatest($limit);
             return $rows;
+        }
+
+        function getAggregate() {
+            $rows = mysql\Login::getAggregate();
+            return $rows; 
         }
 
     }

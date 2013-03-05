@@ -7,26 +7,28 @@
 
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
+    use \com\indigloo\sc\util\Nest as Nest;
+
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
 
+        $gWeb = \com\indigloo\core\Web::getInstance(); 
+        $fvalues = array();
+        $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
+
         try {
-
-
-            $fhandler = new Form\Handler('web-form-1', $_POST);
+            
+            $fhandler = new Form\Handler("web-form-1", $_POST);
             $fvalues = $fhandler->getValues();
-            $qUrl = $fvalues['q'];
-            $gWeb = \com\indigloo\core\Web::getInstance();
 
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors());
             }
-
-
-            $group_slug = '' ;
-            $slugs = Util::tryArrayKey($fvalues,'g');
+            
+            $group_slug = "" ;
+            $slugs = Util::tryArrayKey($fvalues,"g");
 
             if(!is_null($slugs)) {
 
@@ -39,16 +41,17 @@
 
             }
 
-            $groupDao = new \com\indigloo\sc\dao\Group();
-            $groupDao->setFeatureSlug($group_slug);
+            $collectionDao = new \com\indigloo\sc\dao\Collection();
+            $collectionDao->glset(Nest::fgroups(),$group_slug);
+
             //success
-            $gWeb->store(Constants::FORM_MESSAGES,array("Action is successful!"));
-            header("Location: ".$qUrl );
+            $gWeb->store(Constants::FORM_MESSAGES,array("featured groups list updated!"));
+            header("Location: ".$fUrl );
 
         } catch(UIException $ex) {
             $gWeb->store(Constants::STICKY_MAP, $fvalues);
             $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
-            header("Location: " . $qUrl);
+            header("Location: " . $fUrl);
             exit(1);
         }
 

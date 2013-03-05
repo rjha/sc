@@ -10,22 +10,22 @@
     use \com\indigloo\exception\UIException as UIException;
 
     if (isset($_POST['save']) && ($_POST['save'] == 'Save')) {
+        
+        $gWeb = \com\indigloo\core\Web::getInstance(); 
+        $fvalues = array();
+        $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
 
         try{
-
-            $gWeb = \com\indigloo\core\Web::getInstance();
+            
             $fhandler = new Form\Handler('web-form-1', $_POST);
             $fhandler->addRule('comment', 'Comment', array('required' => 1, 'maxlength' => 512));
             $fhandler->addRule('name', 'Name', array('required' => 1, 'maxlength' => 64));
             $fhandler->addRule('email', 'Email', array('required' => 1, 'maxlength' => 64));
-            $fhandler->addRule('fUrl', 'fUrl', array('required' => 1, 'rawData' =>1));
-
+            
             //check security token
             $fhandler->checkToken("token",$gWeb->find("form.token",true)) ;
-
             $fvalues = $fhandler->getValues();
-            $fUrl = $fvalues['fUrl'];
-
+            
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors());
             }

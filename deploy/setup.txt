@@ -1,13 +1,19 @@
 
+6:40 - 8:40 (end to end provisioning an image)
+2 HR module
+
 How to setup 3mik stack
 ----------------------------------
 
-1) Get VMWARE to install VMs. VMs would allow you to play and experiment without touching your own machine.
-    windows - Just download and install vmware player http://www.vmware.com/products/player
-    Mac - VMWARE Fusion
-    
+1) Get VMWARE to install VMs
+
+VMs would allow you to play and experiment without touching your own machine.
+windows - Just download and install vmware player http://www.vmware.com/products/player
+Mac - VMWARE Fusion
+
 2)
-Get a linux VM - For a desktop install linux mint13 with MATE desktop (based on Ubuntu 12.04 LTS)
+Get a linux VM - For a desktop install linux mint13 with MATE desktop 
+(based on Ubuntu 12.04 LTS)
 
    You can pick our own distro if you can manage your own stuff and not cry for help.
    Do a Vanilla (plain) install (Just select all defaults)
@@ -25,7 +31,8 @@ A) first do a bit of reading if you are not familiar with Git.
     https://help.github.com/articles/fork-a-repo
     http://git-scm.com/book
 
-    You can also read the online git book to understand git work flows and how is it different from 
+    You can also read the online git book to understand git work flows 
+    and how is it different from 
     other centralized SCM you may have used in past
 
 
@@ -37,12 +44,24 @@ D) Fork our private repository hosted here:-
     https://github.com/rjha/sc
     @see article #3 above.
 
-E) clone this forked repository (the one with your name and __not_the_one__ above in step D)
+E) clone this forked repository 
+(the one with your name and __not_the_one__ above in step D)
 like:
+ 
+
     + first create a folder to hold code. Better to follow standard layout
     + $ mkdir -p $HOME/code/github
-    + $ cd $HOME/code/github
-    + setup your github account to use SSH keys like explained in article #2 above.
+    + $ cd .ssh
+    + $ ssh-keygen -t rsa -C "email@some-domain"
+    + $ cat id_rsa.pub (copy + paste)
+    + Go to your github account settings
+    + Lef hand tab | click on SSH keys
+    + Add a title and paste the content of id_rsa.pub into box
+    + Test on your machine 
+        $ ssh -T git@github.com
+
+
+    + cd $HOME/code/github
     + git clone <your forked repo link> 
         imp : take the link that starts with git and uses SSH and do not take the one with https://
     + Verify that $HOME/code/github/sc indeed contains code and you have files.
@@ -62,6 +81,8 @@ H) To get changes from one of upstream branches
     pull changes from upstream redis branch here
     $git fetch upstream redis
     $git pull upstream redis
+
+
 
 I) install webgloo public repository
 ---------------------------------------
@@ -126,6 +147,11 @@ $sudo service php5-fpm stop
 $sudo service nginx start
 $sudo service php5-fpm start
 
+@imp
+    - verify /etc/nginx/sites-enabled/www.3mik.com vhost file
+        + should have the right domain
+    - verify /var/www/vhosts/www.3mik.com/htdocs location
+
 open a browser and type :- http://mint.3mik.com/echo.php
 
 @imp: This should show your path and loaded modules etc.  
@@ -148,6 +174,8 @@ If things work then we are ready to move onto next step, else we need to fix thi
 
     sudo cp  /etc/mysql/my.cnf /etc/mysql/my.cnf.orig
     sudo cp  my-5.5.cnf /etc/mysql/my.cnf
+
+    restart mysql
 
 10) copy sc_config.ini and sc-app.inc file 
     $sudo cp sc-app.inc /var/www/apps/.
@@ -172,6 +200,7 @@ Make changes to sc_config.ini
     - verify: redis host and port
     - verify: sphinx port
     - sensitive information (like sendgrid password, FB App Id etc. is removed)
+    - client  ID and client secret for social logins
 
 
 11)install and configure sphinx. 
@@ -201,7 +230,7 @@ using config file '/etc/sphinxsearch/sphinx.conf'...
 #remove daily cron job
 sudo rm /etc/cron.d/sphinxsearch
 
-# start searchd service
+# restart sphinxsearch service
 $sudo service sphinxsearch stop
 $sudo service sphinxsearch start
 
@@ -212,12 +241,14 @@ Open http://mint.3mik.com in your browser!
 
 12) Install redis
 @see deploy/redis/redis.install
+@load redis bulk data
 
 
 13) install logrotate script
-copy deploy/logrotate/webgloo  
+cd deploy/logrotate/webgloo  
 $ sudo cp webgloo /etc/logrotate.d/webgloo
 $ sudo logrotate --force /etc/logrotate.d/webgloo 
+
 
 14) install cron scripts
 $mkdir -p $HOME/cron
@@ -231,8 +262,15 @@ $sudo crontab -e
 49  * * * * /usr/bin/indexer --quiet --all --rotate >> /var/log/sphinxsearch/cron.log 2>&1
 */17 * * * * /home/rjha/cron/site-worker.sh >> /var/www/log/cron.log 2>&1
 
+@imp @very-imp
+=================
+fix send_activity_mail method on DEV machines
+patch it to return w/o sending mails
 
-15) Reboot your machine.
+run ./site-worker.sh from command line to test things!
+
+15) clean FB/twitter/google login test user accounts
+16) Reboot your machine.
 
 Now http://mint.3mik.com should show you local copy of 3mik site.
 

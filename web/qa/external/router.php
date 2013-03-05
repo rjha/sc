@@ -17,7 +17,6 @@
         $fhandler->addRule('images_json', 'images_json', array('rawData' => 1));
 
         $fvalues = $fhandler->getValues();
-        $qUrl = $fvalues['qUrl'];
         $fUrl = $fvalues['fUrl'];
 
         if ($fhandler->hasErrors()) {

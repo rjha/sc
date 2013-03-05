@@ -1,4 +1,5 @@
 
+
 set username and email
 ----------------------
 
@@ -11,6 +12,48 @@ $git checkout <branchname> <path>
 should do it. You need to commit to merge the changes.
 
 
+working with stash
+----------------------
++ save your work 
+    - $git stash
++ save stash with a name
+    - git stash save work_in_progress
+
++ see what all stash you have 
+    - git stash list
++ To see content of a stash
+    - git stash show -p stash@{0}
+    - gitk stash@{0}
+
++ To apply a particular stash 
+    -  git stash apply stash@{0}
++ To remove the last stash (w/o applying)
+    - git stash drop
++ To remove and apply last stash
+    - git stash pop
+
++ To remove all stashes
+    - git stash clear
+
+
+Undo git add before commit
+--------------------------------
+I accidently added one file to commit list. 
+$git rm --cached <file_to_remove>
+
+
+
+Rollback last commit
+----------------------
+first make sure you are on repo HEAD
+    + git fetch origin 
+    + git pull origin ml3
+
+Then revert the HEAD
+
+    + git revert HEAD
+    + git push origin ml3
+
 
 amend last commit message
 -------------------------
@@ -19,6 +62,47 @@ git commit --amend -m "new_message"
 
 To unstage a commit
 git reset HEAD
+
+
+revert a bad pull
+----------------------
+
+$git pull origin master
+whoops? want to revert? 
+
+$git reflog show 
+
+will show the changes in HEAD. Then you can just reset to wherever you want, like,
+$git reset HEAD@{1} 
+if there are modified files due to pull
+$git checkout .
+$git status
+
+
+
+revert a bad merge
+----------------------
+rjha@crunchbang12:~/code/github/sc$ git reset --hard HEAD^
+HEAD is now at ef58743 removed visit website button
+
+
+
+
+get a file from another branch
+--------------------------------------------
+$git checkout <branchname> <path>
+should do it. You need to commit to merge the changes.
+
+
+Merge selective files/folder from another branch
+-------------------------------------------------
+
+e.g. merge deploy/mysql folder from master branch into ml3 branch
+
+when in ml3 branch
+$git checkout master deploy/mysql
+
+And then commit the changes
 
 
 list all remote branches
@@ -40,11 +124,13 @@ git checkout xyz
 
 Tracking branch
 ---------------
-To create a local branch for origin/xyzworld  branch (pushed by someone else)
- git checkout -b myxyz origin/xyzworld
- Now myxyz points to origin/xyzworld branch
- How to push from local myxyz -> origin xyzworld branch
- This is a tracking branch so any push from myxyz -> goes to origin/xyzworld 
+To create a local branch for origin/xyz_world  branch (pushed by someone else)
+
+ $git checkout -b myxyz origin/xyz_world
+ Now myxyz points to origin/xyz_world branch
+
+ How to push from local myxyz -> origin/xyz_world branch
+ This is a tracking branch so any push from myxyz -> goes to origin/xyz_world 
 
 + To see your local branches
 git branch (the one you are working on will be starred)
@@ -60,6 +146,7 @@ git branch -d xyz
 
 + How to push your branch to origin server?
     git push origin xyz
+    
 when you local branch name is different from origin branch name 
 (e.g. say for local tracking branches)
     git push origin xyz:xyzworld
@@ -120,4 +207,5 @@ verify by issuing $git branch -a
 show logs after a certain date
 ----------------------------
 git log --after=2012-05-07 --pretty=oneline > logs 
+
 

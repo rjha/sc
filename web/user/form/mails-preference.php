@@ -11,6 +11,12 @@
     use \com\indigloo\Util as Util ;
 
     if (isset($_POST["save"]) && ($_POST["save"] == "Save")) {
+        
+        $gWeb = \com\indigloo\core\Web::getInstance();
+        $fvalues = array();
+        $fUrl = \com\indigloo\Url::tryFormUrl("fUrl");
+
+
         try{
             $fhandler = new Form\Handler("web-form-1", $_POST);
             $fvalues = $fhandler->getValues();
@@ -18,10 +24,7 @@
             if ($fhandler->hasErrors()) {
                 throw new UIException($fhandler->getErrors());
             }
-
-            $fUrl = $fvalues["fUrl"];
-
-            $gWeb = \com\indigloo\core\Web::getInstance();
+            
             $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
             $loginId = $gSessionLogin->id;
 
@@ -49,7 +52,7 @@
             //save data for this loginId
             $pDataObj = json_encode($pdata);
             $preferenceDao = new \com\indigloo\sc\dao\Preference();
-            $preferenceDao->update($loginId,$pDataObj);
+            $preferenceDao->set($loginId,$pDataObj);
 
 
             $gWeb->store(Constants::FORM_MESSAGES,array("Your settings have been updated."));

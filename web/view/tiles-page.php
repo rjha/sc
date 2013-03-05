@@ -7,12 +7,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="keywords" content="<?php echo $metaKeywords; ?>">
         <meta name="description" content="<?php echo $metaDescription;  ?>">
-
+        <meta property="fb:app_id" content="282966715106633" />
+    
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
     </head>
 
-     <body class="dark-body">
+     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
 
         <div class="container">
@@ -20,24 +21,26 @@
             
             <div class="row">
                 <div class="span12">
-                    <div class="page-header">
-                        <h2> <?php echo $pageHeader; ?> </h2>
-                    </div>
 
-                    <div id="tiles" class="mh800">
+                    <?php echo \com\indigloo\sc\html\Site::pageHeader($pageHeader); ?>
+                    <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
+
+                    <div id="tiles" class="mh600">
                         <?php
                             $startId = NULL;
                             $endId = NULL ;
-                            if(sizeof($postDBRows) > 0 ) {
+                            $gNumRecords = sizeof($postDBRows);
+
+                            if($gNumRecords> 0 ) {
                                 $startId = $postDBRows[0]['id'] ;
-                                $endId =   $postDBRows[sizeof($postDBRows)-1]['id'] ;
+                                $endId =   $postDBRows[$gNumRecords-1]['id'] ;
                                 foreach($postDBRows as $postDBRow) {
                                     $html = \com\indigloo\sc\html\Post::getTile($postDBRow);
                                     echo $html ;
                                 }
                             }else {
                                 $message = "No results found " ;
-                                echo \com\indigloo\sc\html\NoResult::get($message);
+                                echo \com\indigloo\sc\html\Site::getNoResult($message);
                             }
 
 
@@ -54,7 +57,7 @@
 
         </div>  <!-- container -->
 
-        <?php $paginator->render($pageBaseUrl,$startId,$endId);  ?>
+        <?php $paginator->render($pageBaseUrl,$startId,$endId,$gNumRecords);  ?>
 
          <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
          <script type="text/javascript">
@@ -85,8 +88,8 @@
 
                 $container.infinitescroll(
                     {
-                        navSelector  	: '.pager',
-                        nextSelector 	: '.pager a[rel="next"]',
+                        navSelector     : '.pager',
+                        nextSelector    : '.pager a[rel="next"]',
                         itemSelector : '.tile',
                         bufferPx : 80,
 
@@ -117,6 +120,9 @@
                 //Add item toolbar actions
                 webgloo.sc.item.addActions();
                 webgloo.sc.toolbar.add();
+                webgloo.sc.dashboard.fixAlert();
+                webgloo.sc.Lists.init();
+
             });
 
         </script>

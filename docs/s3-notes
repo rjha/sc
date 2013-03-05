@@ -1,0 +1,69 @@
+
++ why are we using a modified version of aws sdk-1.5.7?
+	 @issue with sdk-1.5.7 : the script will complain about bad SSL certificate,
+     whether you use in-built cert  (true) or use one from your system (false)
+     Right now the only way to make that work is to shut off SSL in sdk-1.5.7/service/s3.class.php
+     file at @line 552.
+     
+     552 $scheme = $this->use_ssl ? 'https://' : 'http://';
+     553 $scheme =  'http://';
+
++ where can I find a tarball of this modified sdk version?
+	- on 108.166.123.14 machine. look under $HOME/s3 folder.
+
+
++ How to view caching header on a 3mik.com image that we download in browser
+
+ - chrome | open developer console | network tab
+ - or click on inspect an element | click network tab | keep the console open
+ - Now load a new page (not seen in this browser)
+ - sort on response - look for image with 200 response code
+ - click on Image - right hand side - select headers
+ - look @ response headers
+ - look @ expired field
+ - something like Expires:Mon, 20 May 2013 04:40:16 GMT
+
+
++ How to change the headers on an object
+ - see db/s3/s3-add-cache script
+
++ How to enable versioning on a bucket
+	- see db/s3/s3-add-versioning.php
++ How to list versions of objects
+	@todo - the get_object_headers only returns the last version
+
++ Does changing headers count as a new version?
+	- yes. when you change header using copy_object API call
+	- the version is also changed.
+
++ is it a good idea to enable versioning on media1.3mik.com?
+ No. Better idea is to copy the objects to a bucket in singapore region.
+ Run an aws EC2 machine and copy objects as they become available.
+ Run this script as a cron JOB on EC2 worker machine.
+
++ Bucket names
+
+main bucket - media1.3mik.com
+Available from media1.3mik.com.s3.amazonaws.com
+CNAME mapping - media1.3mik.com => media1.3mik.com.s3.amazonaws.com
+
+SG bucket - sg-media1.3mik.com
+sg-media1.3mik.com => sg-media1.3mik.com.s3.amazonaws.com
+
+Cloud front
+	media1-cloud.3mik.com
+
+configuration settings
+ aws.bucket.prefix=sg
+ aws.bucket.cdn=1
+
+[prefix + "-"] + bucket + ["-cloud"] 
+
+
+
+
+
+
+
+
+

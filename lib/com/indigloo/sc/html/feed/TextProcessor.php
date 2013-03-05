@@ -19,7 +19,7 @@ namespace com\indigloo\sc\html\feed {
 
             if($flag){
                 $view['subject'] = $feedObj->subject ;
-                $title = ($feedObj->type == AppConstants::FOLLOW_FEED) ? $feedObj->object : $feedObj->title ;
+                $title = ($feedObj->verb == AppConstants::FOLLOW_VERB) ? $feedObj->object : $feedObj->title ;
                 $view['object'] = $title ;
                 $view['verb'] = $this->getVerb($feedObj->verb);
 

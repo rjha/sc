@@ -5,6 +5,10 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
+    
+    use \com\indigloo\sc\Constants as AppConstants ;
+    use \com\indigloo\mysql\PDOWrapper;
+    use \com\indigloo\exception\DBException as DBException;
 
     class Bookmark {
 
@@ -24,6 +28,9 @@ namespace com\indigloo\sc\mysql {
             return $row;
         }
 
+        // for historical reasons this method is used to fetch the posts that 
+        // have been bookmarked
+
         static function getLatest($limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -39,24 +46,16 @@ namespace com\indigloo\sc\mysql {
             $q->filter($filters);
             $sql .= $q->get();
 
-            $sql .= "order by id desc LIMIT %d ";
+            $sql .= "order by q.id desc LIMIT %d ";
             $sql = sprintf($sql,$limit);
+
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
 
-        static function getTotal($filters) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " select count(id) as count from sc_bookmark";
-
-            $q = new MySQL\Query($mysqli);
-            $q->filter($filters);
-            $sql .= $q->get();
-
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-        }
-
+        // for historical reasons this method is used to fetch the posts that 
+        // have been bookmarked
+        
         static function getPaged($start,$direction,$limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -74,9 +73,9 @@ namespace com\indigloo\sc\mysql {
             $q->filter($filters);
             $sql .= $q->get();
 
-            $sql .= $q->getPagination($start,$direction,"a.id",$limit);
+            $sql .= $q->getPagination($start,$direction,"q.id",$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-
+            
             //reverse rows for 'before' direction
             if($direction == 'before') {
                 $results = array_reverse($rows) ;
@@ -85,7 +84,7 @@ namespace com\indigloo\sc\mysql {
 
             return $rows;
         }
-
+        
         static function getOnLoginId($subjectId,$verb) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -103,6 +102,21 @@ namespace com\indigloo\sc\mysql {
             return $rows;
         }
 
+        static function getLikeOnItemId($itemId) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            settype($itemId,"integer");
+            //@todo change UI if num_likes > 10
+            $sql = " select l.id as login_id, l.name as user_name " ;
+            $sql .= " from sc_bookmark b , sc_login l " ;
+            $sql .= " where  b.subject_id = l.id and b.verb = 1 and b.object_id = %d limit 10 ";
+            
+            $sql = sprintf($sql,$itemId);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
         static function add(
                 $ownerId,
                 $subjectId,
@@ -112,31 +126,74 @@ namespace com\indigloo\sc\mysql {
                 $title,
                 $verb){
 
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " insert into sc_bookmark(owner_id,subject_id,subject,object_id, " ;
-            $sql .= " object, object_title, verb,created_on) " ;
-            $sql .= " values(?,?,?,?,?,?,?,now()) ";
 
-            $stmt = $mysqli->prepare($sql);
+            $dbh = NULL ;
+             
+            try {
 
-            if ($stmt) {
-                $stmt->bind_param("iisissi",
-                        $ownerId,
-                        $subjectId,
-                        $subject,
-                        $objectId,
-                        $objectType,
-                        $title,
-                        $verb);
+                //@todo column object should be renamed to object_type
+                //@todo column object_title should be renamed to object 
+                // insert into sc_bookmark, adjust counters via trigger
+                $sql1 = " insert into sc_bookmark(owner_id,subject_id,subject,object_id, " ;
+                $sql1 .= " object, object_title, verb,created_on) " ;
+                $sql1 .= " values(:owner_id, :subject_id, :subject, :object_id, :object_type, " ;
+                $sql1 .= " :object, :verb, now()) ";
+                
+                $dbh =  PDOWrapper::getHandle();
+                //Tx start
+                $dbh->beginTransaction();
 
-                $stmt->execute();
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":owner_id", $ownerId);
+                $stmt1->bindParam(":subject_id", $subjectId);
+                $stmt1->bindParam(":object_id", $objectId);
+                $stmt1->bindParam(":subject", $subject);
+                $stmt1->bindParam(":object", $title);
+                $stmt1->bindParam(":object_type", $objectType);
+                $stmt1->bindParam(":verb", $verb);
 
-                if ($mysqli->affected_rows != 1) {
-                    MySQL\Error::handle($stmt);
-                }
-                $stmt->close();
-            } else {
-                MySQL\Error::handle($mysqli);
+                $stmt1->execute();
+                $stmt1 = NULL ;
+                
+                $sql2 = " insert into sc_activity(owner_id,subject_id,subject,object_id, " ;
+                $sql2 .= " object,verb, verb_name, op_bit, created_on) " ;
+                $sql2 .= " values(:owner_id, :subject_id, :subject, :object_id, " ;
+                $sql2 .= " :object, :verb, :verb_name, :op_bit, now()) ";
+               
+                $verb =  AppConstants::LIKE_VERB ;
+                $op_bit = 0 ;
+                $verbName = AppConstants::STR_LIKE ;
+
+                $stmt2 = $dbh->prepare($sql2);
+                $stmt2->bindParam(":owner_id", $ownerId);
+                $stmt2->bindParam(":subject_id", $subjectId);
+                $stmt2->bindParam(":object_id", $objectId);
+                $stmt2->bindParam(":subject", $subject);
+                $stmt2->bindParam(":object", $title);
+                $stmt2->bindParam(":verb", $verb);
+                $stmt2->bindParam(":verb_name", $verbName);
+                $stmt2->bindParam(":op_bit", $op_bit);
+
+
+                $stmt2->execute();
+                $stmt2 = NULL ;
+                
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+                
+
+            }catch (\PDOException $e) {
+                $dbh->rollBack();
+                $dbh = null;
+                throw new DBException($e->getMessage(),$e->getCode());
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
             }
 
         }

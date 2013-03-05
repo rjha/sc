@@ -7,7 +7,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="keywords" content="<?php echo $metaKeywords; ?>">
         <meta name="description" content="<?php echo $metaDescription;  ?>">
-
+        <meta property="fb:app_id" content="282966715106633" />
+    
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -17,31 +18,21 @@
 
     </head>
 
-     <body class="dark-body">
+     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
 
         <div class="container">
             <?php include(APP_WEB_DIR . '/inc/top-unit.inc'); ?>
             <div class="row">
                 <div class="span12">
+                    <?php echo \com\indigloo\sc\html\Site::formMessage(); ?>
                     <div id="tiles">
 
                         <?php
-                            $count = 0 ;
+                            
                             foreach($this->homeDBRows as $postDBRow) {
-                                $count++ ;
-                                if($count == 1) {
-                                    //inject activity tile
-                                    $activityDao = new \com\indigloo\sc\dao\ActivityFeed();
-                                    $feedDataObj = $activityDao->getGlobalFeeds(10);
-                                    $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
-                                    $html = $htmlObj->getHomeTile($feedDataObj);
-                                    echo $html ;
-                                }
-
                                 $html = \com\indigloo\sc\html\Post::getTile($postDBRow);
                                 echo $html ;
-
                             }
 
                         ?>
@@ -52,14 +43,6 @@
                 </div>
             </div> <!-- row -->
             
-            <div id="feedback" class="vertical">
-                <a href="/site/contact.php">
-                    <br>
-                    F e e d b a c k
-                </a>
-            </div>  <!-- feedback -->
-
-
             <div id="scroll-loading"> </div>
 
         </div>  <!-- container -->
@@ -95,8 +78,8 @@
 
                 $container.infinitescroll(
                     {
-                        navSelector  	: '.pager',
-                        nextSelector 	: '.pager a[rel="next"]',
+                        navSelector     : '.pager',
+                        nextSelector    : '.pager a[rel="next"]',
                         itemSelector : '.tile',
                         bufferPx : 80,
 
@@ -127,6 +110,8 @@
                 //Add item toolbar actions
                 webgloo.sc.item.addActions();
                 webgloo.sc.toolbar.add();
+                webgloo.sc.dashboard.fixAlert();
+                webgloo.sc.Lists.init();
 
             });
 

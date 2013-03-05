@@ -21,13 +21,6 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function getTotalCount() {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " select count(id) as count from sc_feedback ";
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-        }
-
         static function getPaged($start,$direction,$limit) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -72,6 +65,24 @@ namespace com\indigloo\sc\mysql {
                 MySQL\Error::handle($mysqli);
             }
 
+        }
+
+        static function delete($id) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = "delete from sc_feedback where id = ?" ;
+
+            $stmt = $mysqli->prepare($sql);
+
+            if ($stmt) {
+                $stmt->bind_param("i",$id) ;
+                $stmt->execute();
+                $stmt->close();
+
+            } else {
+                MySQL\Error::handle($mysqli);
+            }
+            
         }
 
     }

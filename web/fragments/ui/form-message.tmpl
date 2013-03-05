@@ -1,0 +1,23 @@
+
+~if(sizeof($view->errors) > 0) {~
+<div class="alert ml20">
+    <a class="close" data-dismiss="alert" href="#">x</a>
+    <ul>
+        ~foreach($view->errors as $error){~
+            <li> ~~$error~ </li>
+        ~}~
+    </ul>
+</div>
+~}~
+
+~if(sizeof($view->messages) > 0) {~
+<div class="alert alert-success ml20">
+    <a class="close" data-dismiss="alert" href="#">x</a>
+    <ul>
+        ~foreach($view->messages as $message){~
+            <li> ~~$message~ </li>
+        ~}~
+    </ul>
+</div>
+~}~
+

@@ -1,0 +1,11 @@
+ <div class="p10">
+    <h5>
+        ~~$view->title~
+        &nbsp;&nbsp;
+        ~if($view->hasMore){~
+        <a class="b" href="~~$view->baseUrl~?show=~~$view->tab~">view all &rarr;</a>
+        ~}~
+
+    </h5>
+    ~~$view->content~
+</div>

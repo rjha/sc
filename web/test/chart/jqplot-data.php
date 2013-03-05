@@ -4,8 +4,8 @@
 
     $index = 0 ;
     for($x = 0 ; $x< 13 ; $x += 0.5) {
-    	$y[$index] =  sin($x);
-    	$index++ ;
+        $y[$index] =  sin($x);
+        $index++ ;
     }
 
     $series = array();

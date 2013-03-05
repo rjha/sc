@@ -10,23 +10,45 @@
     use \com\indigloo\sc\auth\Login as Login;
 
     use \com\indigloo\ui\Filter as Filter;
-    
+    use \com\indigloo\sc\html\SocialGraph as GraphHtml ;
+
     $gSessionLogin = \com\indigloo\sc\auth\Login::getLoginInSession();
     $loginId = $gSessionLogin->id;
+    $loginName = $gSessionLogin->name;
 
     if (is_null($loginId)) {
         trigger_error("Error : NULL login_id on user dashboard", E_USER_ERROR);
     }
 
-    $userDao = new \com\indigloo\sc\dao\User();
-    $userDBRow = $userDao->getOnLoginId($loginId);
-
-    if (empty($userDBRow)) {
-        trigger_error("No user record found for given login_id", E_USER_ERROR);
-    }
-
-    $activityDao = new \com\indigloo\sc\dao\ActivityFeed() ;
+    $activityDao = new \com\indigloo\sc\dao\Activity() ;
     $feedDataObj = $activityDao->getUserFeeds($loginId,50);
+
+    $socialGraphDao = new \com\indigloo\sc\dao\SocialGraph();
+    $followers = $socialGraphDao->getFollowers($loginId,5);
+    $followings = $socialGraphDao->getFollowing($loginId,5);
+
+
+
+    $options = array("ui" => "feed","image" => true);
+    $followersData = GraphHtml::getTable($loginId,$followers,1,$options);
+    $options = array(
+        "link" => "/user/dashboard/follower.php",
+        "size" => sizeof($followers),
+        "title" => "Followers");
+    $followersHtml = GraphHtml::getDashWrapper($followersData,$options);
+
+
+    $options = array("ui" => "feed","image" => true);
+    $followingsData = GraphHtml::getTable($loginId,$followings,2,$options);
+    $options = array(
+        "link" => "/user/dashboard/following.php",
+        "size" => sizeof($followings),
+        "title" => "Followings");
+
+    $followingsHtml = GraphHtml::getDashWrapper($followingsData,$options);
+
+    $htmlObj = new \com\indigloo\sc\html\Activity();
+    $activityHtml = $htmlObj->getHtml($feedDataObj);
 
 ?>
 
@@ -35,7 +57,7 @@
 <html>
 
     <head>
-        <title> 3mik.com - user <?php echo $userDBRow['name']; ?>  </title>
+        <title> Activities - <?php echo $loginName; ?> </title>
         <?php include(APP_WEB_DIR . '/inc/meta.inc'); ?>
         <?php echo \com\indigloo\sc\util\Asset::version("/css/bundle.css"); ?>
 
@@ -43,28 +65,40 @@
 
     <body>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
-        <div class="container">
-            <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
+        <div class="container mh600">
+
             <div class="row">
-                <div class="span9">
-                    <div class="page-header">
-                        <div class="faded-text">Activities</div>
-                    </div>
+                <div class="span12">
+                 <?php include(APP_WEB_DIR . '/inc/navigation/dashboard.inc'); ?>
                 </div>
-                
-                <div class="span9 mh600">
+            </div>
+            <div class="row">
+                 <div class="span12">
+                    <?php include(APP_WEB_DIR.'/user/dashboard/inc/menu.inc'); ?>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="span6">
                     <div class="feeds">
-                    <?php
-
-                        $htmlObj = new \com\indigloo\sc\html\ActivityFeed();
-                        $html = $htmlObj->getHtml($feedDataObj);
-                        echo $html ;
-
-                    ?>
+                        <?php echo $activityHtml ; ?>
                     </div>
 
                 </div>
-                <div class="span3">
+
+                <div class="span4 offset1">
+                    <?php 
+                        echo $followersHtml ; 
+                        echo $followingsHtml ;
+                        if(sizeof($followings) == 0 ) {
+                            $message = "No followings in your network" ;
+                            $options = array("hkey" => "dashboard.graph.add");
+                            echo \com\indigloo\sc\html\Site::getNoResult($message,$options);
+                        }
+                        
+                        ?> 
+
                 </div>
             </div>
         </div> <!-- container -->

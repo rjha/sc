@@ -18,16 +18,16 @@ namespace com\indigloo\sc\model {
          }
 
          public function getValue($alias,$column,$condition,$value) {
-
-             if(strcmp($column,'token') == 0 ) {
+           
+            if(strcmp($column,'token') == 0 ) {
                  $column = (is_null($alias)) ? $column : $alias.".".$column ;
                  $sql = sprintf("%s %s '%s%s' ", $column,$condition,$value,'%%');
                  return $sql ;
-             }
+            }
 
-             $column = (is_null($alias)) ? $column : $alias.".".$column ;
-             $sql = sprintf("%s %s %s ", $column,$condition,$value);
-             return $sql ;
+            $column = (is_null($alias)) ? $column : $alias.".".$column ;
+            $sql = sprintf("%s %s %s ", $column,$condition,$value);
+            return $sql ;
          }
          
     }

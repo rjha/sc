@@ -13,6 +13,7 @@ namespace com\indigloo\sc\dao {
 
             //is existing record?
             $twitterId = trim($twitterId);
+            $remoteIp =  \com\indigloo\Url::getRemoteIp();
             $row = $this->getOnTwitterId($twitterId); 
 
             if(empty($row)){
@@ -21,7 +22,14 @@ namespace com\indigloo\sc\dao {
                 Logger::getInstance()->info($message);
 
                 $provider = \com\indigloo\sc\auth\Login::TWITTER ;
-                $loginId = mysql\Twitter::create($twitterId,$name,$screenName,$location,$image,$provider);
+                $loginId = mysql\Twitter::create(
+                    $twitterId,
+                    $name,
+                    $screenName,
+                    $location,
+                    $image,
+                    $provider,
+                    $remoteIp);
                 
 
             } else {

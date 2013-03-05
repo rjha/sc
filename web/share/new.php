@@ -8,6 +8,7 @@
     use \com\indigloo\Util;
     use \com\indigloo\Url;
     use \com\indigloo\ui\form\Sticky;
+    
     use \com\indigloo\Constants as Constants;
     use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\sc\auth\Login as Login;
@@ -15,8 +16,7 @@
     $gWeb = \com\indigloo\core\Web::getInstance();
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
-    $qUrl = Url::tryQueryParam("q");
-    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = Url::current();
 
     $strImagesJson = $sticky->get('images_json') ;
@@ -46,6 +46,11 @@
     </head>
 
     <body>
+        <style>
+            /* @inpage @hardcoded remove hack */
+            .form-table {width:90%;}
+
+        </style>
         <?php include(APP_WEB_DIR . '/inc/toolbar.inc'); ?>
         <div class="container">
             
@@ -58,25 +63,22 @@
                 </div>
             </div>
             <div class="row">
-                <div class="span9">
-                    <div id="ful-message"> </div>
-                    <?php FormMessage::render(); ?>
+                <div class="span12">
+                     <?php FormMessage::render(); ?>
+                </div>
 
+                <div class="span6">
+                   
                     <form  id="web-form1"  name="web-form1" action="/qa/form/new.php" enctype="multipart/form-data"  method="POST">
-                        <div class="row">
-                            <div class="span9"><div id="image-uploader"> </div></div>
-                        </div>
-                        <div class="faded-text">
-                            <a href="#link-preview">+&nbsp;show images and websites &rAarr;</a>
-                        </div>
+                      
                         <table class="form-table">
                             <tr>
                                 <td> <label>Category</label>
 
                                 <?php
                                     $options = array('name' => 'category', 'empty' => true);
-                                    $selectBoxDao = new \com\indigloo\sc\dao\SelectBox();
-                                    $catRows = $selectBoxDao->get('CATEGORY');
+                                    $collectionDao = new \com\indigloo\sc\dao\Collection();
+                                    $catRows = $collectionDao->uizmembers(\com\indigloo\sc\util\Nest::ui_category());
                                     echo \com\indigloo\ui\SelectBox::render($catRows,$options);
                                   ?>
                                 </td>
@@ -85,44 +87,52 @@
                             <tr>
                                 <td>
                                     <label>Details*&nbsp;(max 512 chars)</label>
-                                    <textarea  id="description" maxlength="512" name="description" class="required h130 w500" cols="50" rows="4" ><?php echo $sticky->get('description'); ?></textarea>
+                                    <textarea  id="description" maxlength="512" name="description" class="required h130 wp100" cols="50" rows="4" ><?php echo $sticky->get('description'); ?></textarea>
                                     <br>
                                    <span id="description_counter"></span>
                                 </td>
                             </tr>
                             <tr>
-                                <td> <label>Groups (Separate groups using comma)</label>
-                                <input type="text" name="group_names" maxlength="64" value="<?php echo $sticky->get('group_names'); ?>" />
-
+                                <td> <label>Groups(separate groups using comma)</label>
+                                <input type="text" class="wp100" name="group_names" maxlength="64" value="<?php echo $sticky->get('group_names'); ?>" />
+                                <br>
+                                <span id="group_preview"></span>
                             </tr>
 
                             <tr>
                                 <td>
-                                    <label>Website (click Add or press Enter) </label>
-                                    <input id="link-box" name="link" value="<?php echo $sticky->get('link'); ?>" />
-                                    <button id="add-link" type="button" class="btn gBtnUp" value="Add"><i class="icon-plus-sign"> </i>&nbsp;Add</button>
+                                    <label>Website</label>
+                                    <input type="text" class="wp100" id="link-box" name="link" value="<?php echo $sticky->get('link'); ?>" />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div>
+                                        <span class="faded-text">
+                                            Note: by posting your content, you agree to abide by 
+                                            the 3mik <a href="/site/tos.php" target="_blank">terms of service</a> 
+                                            and
+                                           &nbsp;<a href="/site/privacy.php" target="_blank">privacy policy</a>
+                                        </span>
+                                                                
+                                    </div>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>
                                     <div class="form-actions">
-                                        <button class="btn btn-primary" type="submit" name="save" value="Save" onclick="this.setAttribute('value','Save');" ><span>Submit</span></button>
-                                        <a href="<?php echo $qUrl; ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
+                                        <button class="btn btn-primary" type="submit" name="save" value="Save"><span>Submit</span></button>
+                                        <a href="<?php echo base64_decode($qUrl); ?>"> <button class="btn" type="button" name="cancel"><span>Cancel</span></button> </a>
                                     </div>
 
                                 </td>
+                               
                             </tr>
 
                         </table>
 
-                        <span class="faded-text">Preview</span>
-                        <div class="section">
-                            <div id="link-preview"> </div>
-                        </div>
-                         
-                        <div id="image-preview"> </div>
-                       
                         
                         <!-- put json data in single quotes to avoid interpreting double quotes -->
                         <input type="hidden" name="links_json" value='<?php echo $strLinksJson ; ?>' />
@@ -136,11 +146,24 @@
 
 
 
-                </div> <!-- span9 -->
+                </div> <!-- col:1 -->
+                <div class="span6">
+                    <div id="ful-message"> </div>
+                     <div class="row">
+                            <div class="span6"><div id="image-uploader"> </div></div>
+                        </div>
+                        
+                        <div class="section1">
+                             <div id="image-preview"> </div>
+                            
+                        </div>
+                        <div class="section1">
+                            <div id="link-preview"> </div>
+                        </div>
+                       
+                       
 
-                <div class="span3">
-                    <?php include('sidebar/new.inc'); ?>
-                </div>
+                </div> <!-- col:2 -->
 
             </div>
 
@@ -166,7 +189,7 @@
                     action: '/upload/image.php', 
                     allowedExtensions: ['png','gif','jpg','jpeg'],
                     debug: false,
-                    labelOfButton : 'Upload Images',
+                    uploadButtonText : 'Add photo',
 
                     onComplete: function(id, fileName, responseJSON) {
                         webgloo.media.addImage(responseJSON.mediaVO);

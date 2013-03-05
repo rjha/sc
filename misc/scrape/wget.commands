@@ -1,0 +1,7 @@
+ 2107  wget --save-cookies wcookies.txt --keep-session-cookies --post-data "j_username=sri_saurabh2000@yahoo.com&j_password=Jantu211&rememberMe=1" http://toostep.com/j_security_check
+ 2111  wget http://toostep.com/nitin-jenwal/profile
+ 2112  wget --load-cookies wcookies.txt --keep-session-cookies http://toostep.com/nitin-jenwal/profile > nitin.profile
+ 2117  wget --load-cookies wcookies.txt --keep-session-cookies http://toostep.com/priyanka100srivastava/profile | grep email1__ID__ 
+ 2123  wget --load-cookies wcookies.txt --keep-session-cookies http://toostep.com/seo-guru/profile
+ 2130  history | grep wget 
+ 2131  history | grep wget | tee wget.comamnds

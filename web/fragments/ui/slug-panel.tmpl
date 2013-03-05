@@ -1,0 +1,36 @@
+<div id="page-action" class="mt20 p5">
+    <input id="page-checkbox" type="checkbox" name="page-checkbox" value="1" checked/>
+    <span class="label">&nbsp;select&nbsp;/&nbsp;unselect&nbsp;</span>
+</div>
+
+ <div id="slug-panel">
+  
+    <table class="table table-striped">
+        <thead>
+            <tr>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+              <th>Groups</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            ~for($i = 0 ; ($i < $view->total) ; $i++) {~
+            <tr>
+                <td>
+                    <input type="checkbox" name="g[]" value="~~$view->records[$i]['slug']~" ~~$view->records[$i]['checked']~  />
+                </td>
+                <td>
+                    <?php echo $i+1 ; ?> 
+                </td>
+                <td>
+                    <span class="comment-text">~~$view->records[$i]['name']~</span>
+                </td>
+
+            </tr>
+            ~}~
+        </tbody>
+
+    </table>
+    
+</div> <!-- slug panel -->

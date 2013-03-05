@@ -20,7 +20,7 @@ namespace com\indigloo\sc\html\feed {
             $view = array();
 
             if(empty($templates)) {
-                $templates = array(AppConstants::FOLLOW_FEED => "/fragments/feed/vanilla.tmpl");
+                $templates = array(AppConstants::FOLLOW_VERB => "/fragments/feed/vanilla.tmpl");
             }
 
             if($flag){
@@ -32,8 +32,8 @@ namespace com\indigloo\sc\html\feed {
                 $view['objectUrl'] = sprintf("%s/pub/user/%s",Url::base(),$pubId);
                 $view['verb'] = $this->getVerb($feedObj->verb);
 
-                if(isset($templates[$feedObj->type])) {
-                    $template = $templates[$feedObj->type];
+                if(isset($templates[$feedObj->verb])) {
+                    $template = $templates[$feedObj->verb];
                 } else {
                     trigger_error("invalid feed template", E_USER_ERROR);
                 }

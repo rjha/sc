@@ -22,10 +22,8 @@
     $filter->add($model::LOGIN_ID,Filter::EQ,$loginId);
     array_push($filters,$filter);
 
-
-    $total = $groupDao->getCountOnLoginId($loginId);
     $pageSize = 100;
-    $paginator = new Pagination($qparams,$total,$pageSize); 
+    $paginator = new Pagination($qparams,$pageSize); 
     $groups = $groupDao->getPagedUserGroups($paginator,$filters);
 
     $startId = NULL ;
@@ -39,7 +37,7 @@
     $pageBaseUrl = "/group/user/all.php" ;
     $title = sprintf("%s's groups",$login->name);
     $hasNavigation = false ;
-    include(APP_WEB_DIR."/view/group/folder.php");
+    include(APP_WEB_DIR."/view/group/cards-page.php");
 
 
 ?>

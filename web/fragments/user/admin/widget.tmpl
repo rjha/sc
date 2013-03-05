@@ -1,0 +1,49 @@
+<div class="widget">
+    <div class="options">
+        <div class="links">
+            ~if($view->ban){~
+              <a id="~~$view->loginId~" href="#" class="ban-user">Ban user&nbsp;<i class="icon-ban-circle"></i></a>
+            ~}~
+
+            ~if($view->unban){~
+              <a id="~~$view->loginId~" href="#" class="unban-user">Unban user</a>
+            ~}~
+            &nbsp;|&nbsp;
+            <a id="~~$view->id~" href="#" class="taint-user">Taint user</a>
+             
+        </div>
+    </div> <!-- options -->
+
+  <div class="comment-text">
+      ~if($view->last24hr){~
+        <span class="badge">24</span>
+        &nbsp;
+      ~}~
+      ~if($view->unban){~
+        <span class="badge">B</span>
+        &nbsp;
+      ~}~
+      ~if(!$view->taint){~
+        <span class="badge">T</span>
+        &nbsp;
+      ~}~
+
+      <span> ~~$view->pubId~ </span> &nbsp;
+      <span class="b"> ~~$view->provider~ </span> 
+      <br>
+
+      ~~$view->name~ &nbsp;
+      (<a href="mailto:~~$view->email~">~~$view->email~</a>) &nbsp;
+      ~~$view->location~ 
+      <br> 
+     
+      <span class="faded-text"> 
+        <a href="/pub/user/~~$view->pubId~" target="_blank">3mik page&nbsp;</a> 
+        &nbsp; ~~$view->createdOn~ 
+      </span>
+      
+      <span> <a href="~~$view->website~" target="_blank">~~$view->website~</a> </span> 
+      <span class="flickr-color b">&nbsp;~~$view->score~</span> 
+  </div>
+</div>
+    

@@ -20,10 +20,15 @@ namespace com\indigloo\sc\controller{
             $filter = new Filter($model);
             $filter->add($model::FEATURED,Filter::EQ,TRUE);
             array_push($filters,$filter);
-            $postDBRows = $postDao->getPosts(50,$filters);
+            $limit = Config::getInstance()->get_value("search.page.items");
+            
+            // fetch top N rows from sc_post that match our filter
+            // this relies on the default sorting in mysql#Posts::getPosts() method
+            
+            $postDBRows = $postDao->getPosts($limit,$filters);
 
             $pageHeader = 'Editor\'s Pick';
-            $pageTitle = SeoData::getHomePageTitle(); 
+            $pageTitle = "items on 3mik selected by our editors ";
             $metaDescription = SeoData::getHomeMetaDescription();
             $metaKeywords = SeoData::getHomeMetaKeywords();
 

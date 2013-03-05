@@ -15,8 +15,7 @@
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
 
 
-    $qUrl = Url::tryQueryParam("q");
-    $qUrl = is_null($qUrl) ? '/' : $qUrl ;
+    $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = Url::current();
 
     $encodedId = Url::getQueryParam("id");
@@ -24,9 +23,9 @@
 
     $commentDao = new \com\indigloo\sc\dao\Comment();
     $commentDBRow = $commentDao->getOnId($commentId);
-
-    if(!Login::isOwner($commentDBRow['login_id'])) {
-        header("Location: /qa/noowner.php");
+    
+    if(! (Login::isOwner($commentDBRow['login_id']) || Login::isAdmin())) {
+        header("Location: /site/error/403.html");
         exit ;
     }
 
@@ -60,11 +59,11 @@
 
                     <?php FormMessage::render(); ?>
                     <?php echo \com\indigloo\sc\html\Comment::getWidget($commentDBRow); ?>
-
+                    <div class="p10"> &nbsp;</div>
                     <form id="web-form1"  name="web-form1" action="/qa/comment/form/delete.php" method="POST">
                         <div>
-                            <button class="btn btn-danger" type="submit" name="delete" value="Delete" onclick="this.setAttribute('value','Delete');">Delete</button>
-                            <a href="<?php echo $qUrl; ?>"><button class="btn" type="button">Cancel</a></button></a>
+                            <button class="btn btn-danger" type="submit" name="delete" value="Delete">Delete</button>
+                            <a href="<?php echo base64_decode($qUrl); ?>" class="btn"s>Cancel</a>
                         </div>
                         <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                         <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />

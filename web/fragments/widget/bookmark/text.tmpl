@@ -1,11 +1,28 @@
 <div class="widget">
-    <p> ~~$view->description~ </p>
-    <p> <span>~~$view->createdOn~ </span> </p>
-
     <div class="options">
         <div class="links">
-            <a id="~~$view->itemId~" class ="remove-post-link" href="">Remove&nbsp;<i class="icon-remove"></i></a> &nbsp;
+             <a href="#" id="~~$view->itemId~" class="show-list"><i class="icon-list"></i> Add to list</a>
+            
         </div>
     </div>
 
+     <div class="row">
+        
+        <div class="span5">
+            <h5> <a href="/item/~~$view->itemId~">~~$view->title~</a> </h5>
+            <div class="p5">
+                ~if($view->hasGroups){
+                    foreach($view->groups as $group){~
+                    <a class="label" href="/group/~~$group["slug"]~">~~$group["display"]~</a>&nbsp;
+                ~}}~
+            </div>
+    
+            <div class="p5">~~$view->createdOn~ </div>
+            
+        </div>
+        
+
+    </div> <!-- widget:row -->
+
 </div>
+

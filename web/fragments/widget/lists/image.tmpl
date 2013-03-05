@@ -1,0 +1,27 @@
+<div class="widget pt10">
+    
+    <div class="row">
+        <div class="span1">
+            <input type="checkbox" id="~~$view->itemId~" name="g[]" value="~~$view->id~" />
+        </div>
+        <div class="span5">
+            
+            <h5> <a href="/item/~~$view->itemId~">~~$view->title~</a> </h5>
+            <div class="p5">
+                ~if($view->hasGroups){
+                    foreach($view->groups as $group){~
+                    <a class="label" href="/group/~~$group["slug"]~">~~$group["display"]~</a>&nbsp;
+                ~}}~
+            </div>
+    
+            <div class="p5">~~$view->createdOn~ </div>
+            
+
+        </div>
+        <div class="span2"> 
+             <a href="/item/~~$view->itemId~"> <img src="~~$view->thumbnail~" width="~~$view->twidth~" height="~~$view->theight~" alt="~~$view->title~"/> </a>
+        </div>
+
+    </div> <!-- widget:row -->
+
+</div> <!-- widget -->

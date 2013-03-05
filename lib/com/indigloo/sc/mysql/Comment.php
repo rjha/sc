@@ -5,6 +5,11 @@ namespace com\indigloo\sc\mysql {
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\sc\Constants as AppConstants;
+
+    use \com\indigloo\mysql\PDOWrapper;
+    use \com\indigloo\exception\DBException as DBException;
+
 
     class Comment {
 
@@ -55,19 +60,6 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function getTotalCount($filters) {
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " select count(id) as count from sc_comment ";
-
-            $q = new MySQL\Query($mysqli);
-            $q->filter($filters);
-            $condition = $q->get();
-
-            $sql .= $condition ;
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-        }
-
         static function getPaged($start,$direction,$limit,$filters) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -103,24 +95,67 @@ namespace com\indigloo\sc\mysql {
 
         }
 
-        static function create($postId, $comment, $loginId) {
+        static function create($loginId,$name,$ownerId,$postId,$title,$comment) {
 
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $sql = " insert into sc_comment(post_id,description,login_id, created_on) " ;
-            $sql .= " values(?,?,?,now()) ";
 
-            $stmt = $mysqli->prepare($sql);
+            $dbh = NULL ;
+             
+            try {
 
-            if ($stmt) {
-                $stmt->bind_param("isi",$postId,$comment,$loginId);
-                $stmt->execute();
+                // insert into sc_comment, adjust counters via trigger
+                $sql1 = " insert into sc_comment(post_id,description,login_id, created_on) " ;
+                $sql1 .= " values(:post_id,:comment,:login_id,now()) ";
 
-                if ($mysqli->affected_rows != 1) {
-                    MySQL\Error::handle($stmt);
-                }
-                $stmt->close();
-            } else {
-                MySQL\Error::handle($mysqli);
+                $dbh =  PDOWrapper::getHandle();
+                //Tx start
+                $dbh->beginTransaction();
+
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":post_id", $postId);
+                $stmt1->bindParam(":comment", $comment);
+                $stmt1->bindParam(":login_id", $loginId);
+
+                $stmt1->execute();
+                $stmt1 = NULL ;
+                
+                $sql2 = " insert into sc_activity(owner_id,subject_id,subject,object_id, " ;
+                $sql2 .= " object,verb, verb_name, op_bit, content,created_on) " ;
+                $sql2 .= " values(:owner_id, :subject_id, :subject, :object_id, " ;
+                $sql2 .= " :object, :verb, :verb_name, :op_bit, :content,now()) ";
+               
+                $verb =  AppConstants::COMMENT_VERB ;
+                $op_bit = 0 ;
+                $verbName = AppConstants::STR_COMMENT ;
+                $content = Util::abbreviate($comment,100);
+
+                $stmt2 = $dbh->prepare($sql2);
+                $stmt2->bindParam(":owner_id", $ownerId);
+                $stmt2->bindParam(":subject_id", $loginId);
+                $stmt2->bindParam(":object_id", $postId);
+                $stmt2->bindParam(":subject", $name);
+                $stmt2->bindParam(":object", $title);
+                $stmt2->bindParam(":verb", $verb);
+                $stmt2->bindParam(":verb_name", $verbName);
+                $stmt2->bindParam(":op_bit", $op_bit);
+                $stmt2->bindParam(":content", $content);
+
+                $stmt2->execute();
+                $stmt2 = NULL ;
+                
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+
+            }catch (\PDOException $e) {
+                $dbh->rollBack();
+                $dbh = null;
+                throw new DBException($e->getMessage(),$e->getCode());
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
             }
 
         }

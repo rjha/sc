@@ -1,0 +1,21 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Action</th>
+      <th>&nbsp;Item</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    ~foreach($view->rows as $row){ ~
+    <tr>
+      <td class="name"><a href="~~$row["subjectUrl"]~" target="_blank">~~$row["subject"]~</a></td>
+      <td>~~$row["action"]~</td>
+      <td><a href="~~$row["objectUrl"]~" target="_blank">~~$row["object_title"]~</a></td>
+      <td>~~$row["created_on"]~</td>
+    </tr>
+    
+    ~}~
+  </tbody>
+</table>

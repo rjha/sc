@@ -1,15 +1,15 @@
-
-
 <div class="item">
-        <div>
-            <a href="~~$view['subjectUrl']~"><span  class="b">~~$view['subject']~</span></a>
-            <span class="faded-text"> ~~$view['verb']~ </span>
-            <a href="~~$view['objectUrl']~"><span>~~$view['object']~</span></a>
+    ~if($view['hasImage']){~
+    <img src="~~$view['srcImage']~" alt="~~$view['nameImage']~" width="60" height="60"/>
+    ~}~
+    <div>
+        <a href="~~$view['subjectUrl']~"><span  class="b">~~$view['subject']~</span></a>
+        <span class="faded-text"> ~~$view['verb']~ </span>
+        <a href="~~$view['objectUrl']~"><span>~~$view['object']~</span></a>
 
-        </div>
-        <div class="message">
-            ~~$view['content']~
-        </div>
-
-    </a>
+    </div>
+    <div class="message">
+        ~~$view['content']~
+    </div>
+    <div class="clear"> </div>
 </div>
