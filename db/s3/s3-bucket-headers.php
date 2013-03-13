@@ -2,13 +2,12 @@
 
     /*
      * @author rajeev jha
-     * v 0.1 
-     * 12 March 2013
+     * @version 0.1 
+     * @date 12 March 2013
      *
      * what this script does?
-     * update caching headers of all objects in the bucket 
-     * to one year in future. This is useful for serving
-     * images from an s3 bucket.
+     * update caching headers of all objects in the bucket to one year in future. 
+     * This is useful for serving images from an s3 bucket.
      *
      */
 

@@ -93,7 +93,7 @@
         "certificate_authority" => true);
         
     $s3 = new AmazonS3($options);
-    $bucket = "media1.3mik.com" ;
+    $bucket = "xxxxxx" ;
 
 
     $exists = $s3->if_bucket_exists($bucket);
