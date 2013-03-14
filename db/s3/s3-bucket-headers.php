@@ -8,6 +8,12 @@
      * what this script does?
      * update caching headers of all objects in the bucket to one year in future. 
      * This is useful for serving images from an s3 bucket.
+     * 
+     * dependencies (on Ubuntu 12.04 LTS)
+     * -----------------------------------
+     * 1) aws sdk (tested with 1.5.7)
+     * 2) php5-cli + php5-curl
+     *
      *
      */
 

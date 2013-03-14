@@ -6,6 +6,11 @@
      * what this script does?
      * copy all objects from source bucket into target bucket
      *
+     * dependencies (on Ubuntu 12.04 LTS)
+     * -----------------------------------
+     * 1) aws sdk (tested with 1.5.7)
+     * 2) php5-cli + php5-curl
+     *
      */
 
     require_once "sdk-1.5.7/sdk.class.php";
