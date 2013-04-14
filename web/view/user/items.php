@@ -110,7 +110,7 @@
                 $container.infinitescroll(
                     {
                         navSelector     : '.pager',
-                        nextSelector    : '.pager a[rel="next"]',
+                        nextSelector    : '.pager a[rel*="next"]',
                         itemSelector : '.tile',
                         bufferPx : 80,
 
