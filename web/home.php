@@ -46,7 +46,7 @@
             <div id="scroll-loading"> </div>
 
         </div>  <!-- container -->
-        <ul class="pager"> <li> <a rel="next" href="<?php echo $nextPageUrl ?>">Next &rarr;</a> <li> </ul>
+        <ul class="pager"> <li> <a rel="nofollow next" href="<?php echo $nextPageUrl ?>">Next &rarr;</a> <li> </ul>
 
         <?php echo \com\indigloo\sc\util\Asset::version("/js/bundle.js"); ?>
 
