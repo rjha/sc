@@ -129,6 +129,12 @@ $mysql -u root -p < mysql.newdb.sql
 
 + install and configure sphinx. 
 
+  @see $HOME/code/github/sc/deploy/sphinx 
+
++ install and configure redis
+  
+  @see $HOME/code/github/sc/deploy/redis 
+
 + install logrotate script
 
 ```
