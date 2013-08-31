@@ -1,7 +1,7 @@
 sc
 ==
 
-This is the repository that used to power our website www.3mik.com. 3mik is a shopping curation site 
+This is the repository that powers our website www.3mik.com. 3mik is a shopping curation site 
 and a social network. To setup a copy of this application on your server please do the following
 
 + Get a linux VM. The instructions are for a Debian based system. We were using Ubuntu 12.04 LTS. 
